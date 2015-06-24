@@ -1,5 +1,6 @@
 # pytgbot
-python module to access the telegram bot api.
+###### Python module to access the telegram bot api.
 
-This is where a python plugin will be made.
-You can contribute, if you like.
+**Note:** This is a work in progress.
+
+[Official Telegram Bot API Documentation](https://core.telegram.org/bots)
