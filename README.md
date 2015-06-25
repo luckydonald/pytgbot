@@ -1,5 +1,6 @@
 # pytgbot
 ###### Python module to access the telegram bot api.
+###### Version ```Pre-Alpha 0.0.¼```
 
 **Note:** This is a work in progress.
 
