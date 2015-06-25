@@ -4,6 +4,7 @@ __author__ = 'luckydonald'
 import logging
 logger = logging.getLogger(__name__)
 
+VERSION = "0.0.0-pre0"
 
 import requests
 
