@@ -5,13 +5,21 @@
 
 [Official Telegram Bot API Documentation](https://core.telegram.org/bots)
 
-```python
+#### Installation  ####
+```sh
+python setup.py install
+```
+
+#### Usage ####
+
+
+```
 from pytgbot import Bot
 
 bot = Bot(API_KEY)
 
 
-# getting messages:
+# getting events:
 for x in bot.get_updates()["result"]:
 	print(x)
 

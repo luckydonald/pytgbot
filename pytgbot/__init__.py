@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 VERSION = "0.0.0-pre0"
 
 import requests
-
+from DictObject import DictObject  # just run `setup.py install`. If still missing install via `pip install DictObject`
 if __name__ == '__main__':
 	pass
 
