@@ -36,3 +36,34 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 		self.resize_keyboard = resize_keyboard
 		self.one_time_keyboard = one_time_keyboard
 		self.selective = selective
+
+
+class ReplyKeyboardHide(ReplyMarkup):
+	"""
+	Upon receiving a message with this object, Telegram clients will hide the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
+	"""
+	def __init__(self, selective=False):
+		"""
+		Upon receiving a message with this object, Telegram clients will hide the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
+
+		:keyword selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
+							Example: A user requests to change the bot‘s language, bot replies to the request with a keyboard to select the new language. Other users in the group don’t see the keyboard.
+		:type    selective: bool
+		"""
+		super(ReplyKeyboardHide, self).__init__()
+		self.hide_keyboard = True
+		self.selective = selective
+
+
+class ForceReply(ReplyMarkup):
+	def __init__(self, selective=False):
+		"""
+		Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot‘s message and tapped ’Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
+
+		:keyword selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
+							Example: A user requests to change the bot‘s language, bot replies to the request with a keyboard to select the new language. Other users in the group don’t see the keyboard.
+		:type    selective: bool
+		"""
+		super(ForceReply, self).__init__()
+		self.force_reply = True
+		self.selective = selective
