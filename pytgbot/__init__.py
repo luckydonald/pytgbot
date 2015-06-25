@@ -7,15 +7,12 @@ logger = logging.getLogger(__name__)
 
 import requests
 
-#from somewhere import API_KEY, TEST_CHAT  # so I don't upload them to github :D
-# Just remove the line, and add API_KEY="..." and TEST_CHAT = 12345
-
-base_url = "https://api.telegram.org/bot"
 if __name__ == '__main__':
 	pass
 
 
 class Bot(object):
+	_base_url = "https://api.telegram.org/bot{api_key}/{command}" # do not chance.
 	def __init__(self, api_key):
 		self.api_key = api_key
 
@@ -65,8 +62,22 @@ class Bot(object):
 		return self.do("SendMessage", chat_id=chat_id, text=text, disable_web_page_preview=disable_web_page_preview, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
 
 	def forward_message(self, chat_id, from_chat_id, message_id):
-		pass
+		"""
+		Use this method to forward messages of any kind. On success, the sent Message is returned.
+		
+		:param chat_id: Unique identifier for the message recepient — User or GroupChat id
+		:type  chat_id: int
 
+		:param from_chat_id: Unique identifier for the chat where the original message was sent — User or GroupChat id
+		:type  from_chat_id: int
+
+		:param message_id: Unique message identifier to forward.
+		:type  message_id: int
+
+		:return: the sent Message
+		:rtype:  Message
+		"""
+		self.do("ForwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id)
 
 	def do(self, action, data=None, **query):
 		"""
@@ -77,17 +88,9 @@ class Bot(object):
 		:param query:
 		:return:
 		"""
-		url = base_url + self.api_key + "/" + action
+		url = self._base_url.format(api_key=self.api_key, command=action)
 		r = requests.post(url, data=data, params=query)
 		return r.json()
-
-
-	#requests.utils.quote()
-
-
-bot = Bot(API_KEY)
-bot.send_msg(TEST_CHAT, "another test.")
-bot.get_me()
 
 
 """
