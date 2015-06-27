@@ -15,6 +15,8 @@ if __name__ == '__main__':
 class Bot(object):
 	_base_url = "https://api.telegram.org/bot{api_key}/{command}" # do not chance.
 	def __init__(self, api_key):
+		if api_key is None:
+			raise ValueError("No api_key given.")
 		self.api_key = api_key
 
 	def get_me(self):

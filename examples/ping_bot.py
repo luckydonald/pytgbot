@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 from pytgbot import Bot
 
-from examples.somewhere import API_KEY  # so I don't upload them to github :D
+from somewhere import API_KEY  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..." and TEST_CHAT = 12345
 
 # get you bot instance.
@@ -15,7 +15,6 @@ bot = Bot(API_KEY)
 
 my_info=bot.get_me()
 print("Information about myself: {info}".format(info=my_info))
-
 last_update_id = 0
 while True:
 	# loop forever.
