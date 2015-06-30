@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from DictObject import DictObject
+
 __author__ = 'luckydonald'
 
 import logging
@@ -6,23 +8,25 @@ logger = logging.getLogger(__name__)
 
 VERSION = "0.0.0-pre0"
 
+from . import types, encoding
+from .types.files import InputFile
+from .encoding import to_native as n
 import requests
-from DictObject import DictObject  # just run `setup.py install`. If still missing install via `pip install DictObject`
-if __name__ == '__main__':
-	pass
-
-
+from datetime import timedelta, datetime
+from time import sleep
 class Bot(object):
 	_base_url = "https://api.telegram.org/bot{api_key}/{command}" # do not chance.
 	def __init__(self, api_key):
 		if api_key is None:
 			raise ValueError("No api_key given.")
 		self.api_key = api_key
+		self._last_update = datetime.now()
 
 	def get_me(self):
 		return self.do("getMe")
 
-	def get_updates(self, offset=None, limit=100, timeout=0):
+
+	def get_updates(self, offset=None, limit=100, timeout=0, delta=timedelta(milliseconds=1000)):
 		"""
 		Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
 
@@ -35,10 +39,19 @@ class Bot(object):
 		:keyword timeout: Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling
 		:type    timeout: int
 
+		:keyword delta: Wait minimal 'delta' seconds, after between requests. Useful in a loop.
+		:type    delta: datetime.
+
 		:return: An Array of Update objects is returned.
 		:rtype : list of Update
 		"""
+		now = datetime.now()
+		if self._last_update - now < delta:
+			wait = abs(((now - self._last_update) - delta).total_seconds())
+			sleep(wait)
+		self._last_update = datetime.now()
 		return self.do("getUpdates", offset=offset, limit=limit, timeout=timeout)
+
 
 	def send_msg(self, chat_id, text, disable_web_page_preview=False, reply_to_message_id=None, reply_markup=None):
 		"""
@@ -86,6 +99,18 @@ class Bot(object):
 		"""
 		self.do("ForwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id)
 
+	def _do_fileupload(self, key, value, **kwargs):
+		if isinstance(value, str):
+			kwargs[key] = str(value)
+		elif isinstance(value, encoding.text_type):
+			kwargs[key] = encoding.to_native(value)
+		elif isinstance(value, types.files.InputFile):
+			kwargs["files"] = value.get_request_files(key)
+		else:
+			raise TypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
+				key=key, type=type(value), input_file_type=types.files.InputFile, text_type=encoding.text_type))
+		return self.do("send{cmd}".format(cmd=key.capitalize()), **kwargs)
+
 	def send_photo(self, chat_id, photo, caption=None, reply_to_message_id=None, reply_markup=None):
 		"""
 		Use this method to send photos. On success, the sent Message is returned.
@@ -98,8 +123,8 @@ class Bot(object):
 		:param chat_id: Unique identifier for the message recepient — User or GroupChat id
 		:type  chat_id: int
 
-		:param photo: Photo to send. You can either pass a file_id as String to resend a photo that is already on the Telegram servers, or upload a new photo using multipart/form-data.
-		:type  photo: InputFile | str
+		:param photo: Photo to send. You can either pass a file_id as String to resend a photo file that is already on the Telegram servers, or upload the new photo, specifying the file path as pytg.types.files.InputFile.
+		:type  photo: str | InputFile
 
 
 		Optional keyword parameters:
@@ -119,42 +144,8 @@ class Bot(object):
 		:return: the sent Message
 		:rtype:  Message
 		"""
-		return self.do("sendPhoto", chat_id=chat_id, photo=photo, caption=caption, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+		return self._do_fileupload("photo", photo, chat_id=chat_id, caption=caption, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
 
-	def send_photo(self, chat_id, photo, caption=None, reply_to_message_id=None, reply_markup=None):
-		"""
-		Use this method to send photos. On success, the sent Message is returned.
-
-		https://core.telegram.org/bots/api#sendphoto
-
-
-		Parameters:
-
-		:param chat_id: Unique identifier for the message recepient — User or GroupChat id
-		:type  chat_id: int
-
-		:param photo: Photo to send. You can either pass a file_id as String to resend a photo that is already on the Telegram servers, or upload a new photo using multipart/form-data.
-		:type  photo: InputFile | str
-
-
-		Optional keyword parameters:
-
-		:keyword caption: Photo caption (may also be used when resending photos by file_id).
-		:type    caption: str
-
-		:keyword reply_to_message_id: If the message is a reply, ID of the original message
-		:type    reply_to_message_id: int
-
-		:keyword reply_markup: Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-		:type    reply_markup: ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
-
-		Returns:
-
-		:return: the sent Message
-		:rtype:  Message
-		"""
-		return self.do("sendPhoto", chat_id=chat_id, photo=photo, caption=caption, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
 
 	def send_audio(self, chat_id, audio, reply_to_message_id=None, reply_markup=None):
 		"""
@@ -168,8 +159,8 @@ class Bot(object):
 		:param chat_id: Unique identifier for the message recepient — User or GroupChat id
 		:type  chat_id:  Integer
 
-		:param audio: Audio file to send. You can either pass a file_id as String to resend an audio that is already on the Telegram servers, or upload a new audio file using multipart/form-data.
-		:type  audio:  InputFile or String
+		:param audio: Audio to send. You can either pass a file_id as String to resend a audio file that is already on the Telegram servers, or upload the new audio, specifying the file path as pytg.types.files.InputFile.
+		:type  audio: str | InputFile
 
 
 		Optional keyword parameters:
@@ -186,7 +177,7 @@ class Bot(object):
 		:return: On success, the sent Message is returned.
 		:rtype:  Message
 		"""
-		return self.do("sendAudio", chat_id=chat_id, audio=audio, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+		return self._do_fileupload("audio", audio, chat_id=chat_id, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
 	# end def send_audio
 
 
@@ -202,8 +193,8 @@ class Bot(object):
 		:param chat_id: Unique identifier for the message recepient — User or GroupChat id
 		:type  chat_id:  Integer
 
-		:param document: File to send. You can either pass a file_id as String to resend a file that is already on the Telegram servers, or upload a new file using multipart/form-data.
-		:type  document:  InputFile or String
+		:param document: Document to send. You can either pass a file_id as String to resend a document file that is already on the Telegram servers, or upload the new document, specifying the file path as pytg.types.files.InputFile.
+		:type  document: str | InputFile
 
 
 		Optional keyword parameters:
@@ -220,7 +211,7 @@ class Bot(object):
 		:return: On success, the sent Message is returned.
 		:rtype:  Message
 		"""
-		return self.do("sendDocument", chat_id=chat_id, document=document, reply_to_message_id=reply_to_message_id)
+		return self._do_fileupload("document", document, chat_id=chat_id, document=document, reply_to_message_id=reply_to_message_id)
 	# end def send_document
 
 	def send_sticker(self, chat_id, sticker, reply_to_message_id=None, reply_markup=None):
@@ -234,8 +225,8 @@ class Bot(object):
 		:param chat_id: Unique identifier for the message recepient — User or GroupChat id
 		:type  chat_id:  Integer
 
-		:param sticker: Sticker to send. You can either pass a file_id as String to resend a sticker that is already on the Telegram servers, or upload a new sticker using multipart/form-data.
-		:type  sticker:  InputFile or String
+		:param sticker: Sticker to send. You can either pass a file_id as String to resend a sticker file that is already on the Telegram servers, or upload the new sticker, specifying the file path as pytg.types.files.InputFile.
+		:type  sticker: str | InputFile
 
 
 		Optional keyword parameters:
@@ -252,7 +243,7 @@ class Bot(object):
 		:return: On success, the sent Message is returned.
 		:rtype:  Message
 		"""
-		return self.do("sendSticker", chat_id=chat_id, sticker=sticker, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+		return self._do_fileupload("sticker", sticker, chat_id=chat_id, sticker=sticker, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
 	# end def send_sticker
 
 	def send_video(self, chat_id, video, reply_to_message_id=None, reply_markup=None):
@@ -267,8 +258,8 @@ class Bot(object):
 		:param chat_id: Unique identifier for the message recipient — User or GroupChat id
 		:type  chat_id:  Integer
 
-		:param video: Video to send. You can either pass a file_id as String to resend a video that is already on the Telegram servers, or upload a new video file using multipart/form-data.
-		:type  video:  InputFile or String
+		:param video: Video to send. You can either pass a file_id as String to resend a video file that is already on the Telegram servers, or upload the new video, specifying the file path as pytg.types.files.InputFile.
+		:type  video: str | InputFile
 
 
 		Optional keyword parameters:
@@ -285,7 +276,7 @@ class Bot(object):
 		:return: On success, the sent Message is returned.
 		:rtype:  Message
 		"""
-		return self.do("sendVideo", chat_id=chat_id, video=video, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+		return self._do_fileupload("video", video, chat_id=chat_id, video=video, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
 	# end def
 
 	def send_location(self, chat_id, latitude, longitude, reply_to_message_id=None, reply_markup=None):
@@ -378,7 +369,7 @@ class Bot(object):
 		return self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
 	# end def get_user_profile_photos
 
-	def do(self, command, data=None, **query):
+	def do(self, command, files=None, **query):
 		"""
 		Send a request to the api.
 
@@ -387,9 +378,9 @@ class Bot(object):
 		:param query:
 		:return:
 		"""
-		url = self._base_url.format(api_key=self.api_key, command=command)
-		r = requests.post(url, data=data, params=query)
-		return r.json()
+		url = self._base_url.format(api_key=n(self.api_key), command=n(command))
+		r = requests.post(url, params=query, files=files, verify=True) # No self signed certificates. Telegram should be trustworthy anyway...
+		return DictObject.objectify(r.json())
 
 
 """
