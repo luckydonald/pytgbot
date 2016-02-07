@@ -28,11 +28,14 @@ while True:
         print(update)
         if not "inline_query" in update:
             continue
+        inline_query_id = update.inline_query.id
         query_obj = update.inline_query
         query = query_obj.query
         print (query)
         foo = []
-        foo.append(InlineQueryResultArticle(id=u(hex(getrandbits(64))[2:]),title="test 1", message_text=query, parse_mode="Markdown"))
-        foo.append(InlineQueryResultArticle(id=u(hex(getrandbits(64))[2:]),title="test 2", message_text=query, parse_mode="Markdown"))
-        success = bot.answer_inline_query(last_update_id, foo)
+        foo.append(InlineQueryResultArticle(id=1, title="test 1", message_text=query, parse_mode="Markdown"))
+        foo.append(InlineQueryResultArticle(id=2, title="test 2", message_text=query, parse_mode="Markdown"))
+        success = bot.answer_inline_query(inline_query_id, foo)
         print(success)
+        if not success.ok:
+            print ("dayum!")

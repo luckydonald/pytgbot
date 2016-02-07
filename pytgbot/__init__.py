@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 
 __author__ = 'luckydonald'
 
@@ -11,7 +12,8 @@ from time import sleep
 from DictObject import DictObject
 
 from . import types, encoding
-from .encoding import to_native as n
+from .encoding import to_native as n, to_unicode as u
+from .encoding import native_type, text_type as unicode_type
 from .types.files import InputFile
 from .types.inline import InlineQueryResult
 
@@ -387,15 +389,22 @@ class Bot(object):
         :rtype:  None
         """
         assert(inline_query_id is not None)
-        assert(isinstance(inline_query_id, str))
+        if isinstance(inline_query_id, int):
+            inline_query_id = str(inline_query_id)
+        assert(isinstance(inline_query_id, (str, unicode_type)))
+        inline_query_id = n(inline_query_id)
         assert(results is not None)
         assert(isinstance(results, (list, tuple)))  # Array of InlineQueryResult
+        result_objects  = []
         for result in results:
             assert isinstance(result, InlineQueryResult)  # checks all elements of results
+            result_objects.append(result.to_array())
         assert(cache_time is None or isinstance(cache_time, int))
         assert(is_personal is None or isinstance(is_personal, bool))
-        assert(next_offset is None or isinstance(next_offset, str))
-        return self.do("answerInlineQuery", inline_query_id=inline_query_id, results=results, cache_time=cache_time, is_personal=is_personal, next_offset=next_offset)
+        if next_offset is not None:
+            assert(isinstance(next_offset, (str, unicode_type)))
+            next_offset = n(next_offset)
+        return self.do("answerInlineQuery", inline_query_id=inline_query_id, results=json.dumps(result_objects), cache_time=cache_time, is_personal=is_personal, next_offset=next_offset)
     # end def answer_inline_query
 
     def get_user_profile_photos(self, user_id, offset=None, limit=None):
@@ -441,7 +450,9 @@ class Bot(object):
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
         r = requests.post(url, params=query, files=files,
                           verify=True)  # No self signed certificates. Telegram should be trustworthy anyway...
-        return DictObject.objectify(r.json())
+        res = DictObject.objectify(r.json())
+        res["response"] = r
+        return res
 
 
 """
