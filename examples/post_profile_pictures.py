@@ -3,7 +3,6 @@ __author__ = 'luckydonald'
 
 import logging
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 from pytgbot import Bot
 
@@ -15,15 +14,15 @@ bot = Bot(API_KEY)
 last_update_id = -1
 while True:
 	# loop forever.
-	for update in bot.get_updates(limit=100, offset=last_update_id+1)["result"]:
+	for update in bot.get_updates(limit=100, offset=last_update_id+1, timeout=30)["result"]:
 		last_update_id = update["update_id"]
+		print("got message: {msg}".format(msg=update))
 		if not "message" in update:
 			continue
-		message = update["message"]
-		logger.info("got message: {msg}".format(msg=message))
+		message = update.message
 		if not "text" in message:
 			continue
-		logger.info("got message: {msg}".format(msg=message.text.encode("utf-8")))
+		logger.debug("got text: {msg}".format(msg=message.text.encode("utf-8")))
 		if "reply_to_message" in message and message.text == "/pics":
 			name = message.reply_to_message["from"].first_name
 			peer = message.reply_to_message["from"].id

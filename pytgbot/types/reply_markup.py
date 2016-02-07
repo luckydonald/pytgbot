@@ -14,12 +14,12 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 	"""
 	This object represents a custom keyboard with reply options.
 	"""
-	def __init__(self, keyboard, resize_keyboard=False, one_time_keyboard=False, selective=False):
+	def __init__(self, buttons, resize_keyboard=False, one_time_keyboard=False, selective=False):
 		"""
 		This object represents a custom keyboard with reply options.
 		
-		:param keyboard: Array of button rows, each represented by an Array of Strings
-		:type  keyboard: list of (list of str)
+		:param buttons: Array of button rows, each represented by an Array of Strings (aka. 2D Array of button Strings)
+		:type  buttons: list of (list of str)
 
 		:keyword resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
 		:type    resize_keyboard: bool
@@ -32,7 +32,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 		:type    selective: bool
 		"""
 		super(ReplyKeyboardMarkup, self).__init__()
-		self.keyboard = keyboard
+		self.keyboard = buttons
 		self.resize_keyboard = resize_keyboard
 		self.one_time_keyboard = one_time_keyboard
 		self.selective = selective
