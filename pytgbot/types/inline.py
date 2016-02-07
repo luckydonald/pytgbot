@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 __author__ = 'luckydonald'
 
+from ..encoding import text_type
 import logging
 logger = logging.getLogger(__name__)
 
@@ -10,13 +13,14 @@ class InlineQueryResult(object):
         self.type = type
         super(InlineQueryResult, self).__init__()
 
+
 class InlineQueryResultArticle (InlineQueryResult):
     """
     Represents a link to an article or web page.
 
     https://core.telegram.org/bots/api#inlinequeryresultarticle
     """
-    def __init__(self, type, title, message_text, parse_mode = None, disable_web_page_preview = None, url = None, hide_url = None, description = None, thumb_url = None, thumb_width = None, thumb_height = None):
+    def __init__(self, id, title, message_text, parse_mode = None, disable_web_page_preview = None, url = None, hide_url = None, description = None, thumb_url = None, thumb_width = None, thumb_height = None):
         """
         Represents a link to an article or web page.
 
@@ -25,8 +29,8 @@ class InlineQueryResultArticle (InlineQueryResult):
 
         Parameters:
 
-        :param type: Type of the result, must be article
-        :type  type:  str
+        :param id: Unique identifier for this result, 1-64 Bytes
+        :type  id:  str
 
         :param title: Title of the result
         :type  title:  str
@@ -63,41 +67,41 @@ class InlineQueryResultArticle (InlineQueryResult):
         """
         super(InlineQueryResultArticle, self).__init__("article")
 
-        self.type = type
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert(id is not None)
+        assert(isinstance(id, text_type))
+        self.id = id
 
-        self.title = title
         assert(title is not None)
-        assert(isinstance(title, str))
+        assert(isinstance(title, text_type))
+        self.title = title
 
-        self.message_text = message_text
         assert(message_text is not None)
-        assert(isinstance(message_text, str))
+        assert(isinstance(message_text, text_type))
+        self.message_text = message_text
 
-        self.parse_mode=parse_mode
-        assert(parse_mode is None or isinstance(parse_mode, str))
+        assert(parse_mode is None or isinstance(parse_mode, text_type))
+        self.parse_mode = parse_mode
 
-        self.disable_web_page_preview=disable_web_page_preview
         assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        self.disable_web_page_preview = disable_web_page_preview
 
-        self.url=url
-        assert(url is None or isinstance(url, str))
+        assert(url is None or isinstance(url, text_type))
+        self.url = url
 
-        self.hide_url=hide_url
         assert(hide_url is None or isinstance(hide_url, bool))
+        self.hide_url = hide_url
 
-        self.description=description
-        assert(description is None or isinstance(description, str))
+        assert(description is None or isinstance(description, text_type))
+        self.description = description
 
-        self.thumb_url=thumb_url
-        assert(thumb_url is None or isinstance(thumb_url, str))
+        assert(thumb_url is None or isinstance(thumb_url, text_type))
+        self.thumb_url = thumb_url
 
-        self.thumb_width=thumb_width
         assert(thumb_width is None or isinstance(thumb_width, int))
+        self.thumb_width = thumb_width
 
-        self.thumb_height=thumb_height
         assert(thumb_height is None or isinstance(thumb_height, int))
+        self.thumb_height = thumb_height
     # end def __init__
 # end class InlineQueryResultArticle
 
@@ -155,41 +159,41 @@ class InlineQueryResultPhoto (InlineQueryResult):
         """
         super(InlineQueryResultPhoto, self).__init__("photo")
 
-        self.id = id
         assert(id is not None)
-        assert(isinstance(id, str))
+        assert(isinstance(id, text_type))
+        self.id = id
 
-        self.photo_url = photo_url
         assert(photo_url is not None)
-        assert(isinstance(photo_url, str))
+        assert(isinstance(photo_url, text_type))
+        self.photo_url = photo_url
 
-        self.photo_width=photo_width
         assert(photo_width is None or isinstance(photo_width, int))
+        self.photo_width = photo_width
 
-        self.photo_height=photo_height
         assert(photo_height is None or isinstance(photo_height, int))
+        self.photo_height = photo_height
 
-        self.thumb_url = thumb_url
         assert(thumb_url is not None)
-        assert(isinstance(thumb_url, str))
+        assert(isinstance(thumb_url, text_type))
+        self.thumb_url = thumb_url
 
-        self.title=title
-        assert(title is None or isinstance(title, str))
+        assert(title is None or isinstance(title, text_type))
+        self.title = title
 
-        self.description=description
-        assert(description is None or isinstance(description, str))
+        assert(description is None or isinstance(description, text_type))
+        self.description = description
 
-        self.caption=caption
-        assert(caption is None or isinstance(caption, str))
+        assert(caption is None or isinstance(caption, text_type))
+        self.caption = caption
 
-        self.message_text=message_text
-        assert(message_text is None or isinstance(message_text, str))
+        assert(message_text is None or isinstance(message_text, text_type))
+        self.message_text = message_text
 
-        self.parse_mode=parse_mode
-        assert(parse_mode is None or isinstance(parse_mode, str))
+        assert(parse_mode is None or isinstance(parse_mode, text_type))
+        self.parse_mode = parse_mode
 
-        self.disable_web_page_preview=disable_web_page_preview
         assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        self.disable_web_page_preview = disable_web_page_preview
     # end def __init__
 # end class InlineQueryResultPhoto
 
@@ -244,38 +248,38 @@ class InlineQueryResultGif (InlineQueryResult):
         """
         super(InlineQueryResultGif, self).__init__("gif")
 
-        self.id = id
         assert(id is not None)
-        assert(isinstance(id, str))
+        assert(isinstance(id, text_type))
+        self.id = id
 
-        self.gif_url = gif_url
         assert(gif_url is not None)
-        assert(isinstance(gif_url, str))
+        assert(isinstance(gif_url, text_type))
+        self.gif_url = gif_url
 
-        self.gif_width=gif_width
         assert(gif_width is None or isinstance(gif_width, int))
+        self.gif_width = gif_width
 
-        self.gif_height=gif_height
         assert(gif_height is None or isinstance(gif_height, int))
+        self.gif_height = gif_height
 
-        self.thumb_url = thumb_url
         assert(thumb_url is not None)
-        assert(isinstance(thumb_url, str))
+        assert(isinstance(thumb_url, text_type))
+        self.thumb_url = thumb_url
 
-        self.title=title
-        assert(title is None or isinstance(title, str))
+        assert(title is None or isinstance(title, text_type))
+        self.title = title
 
-        self.caption=caption
-        assert(caption is None or isinstance(caption, str))
+        assert(caption is None or isinstance(caption, text_type))
+        self.caption = caption
 
-        self.message_text=message_text
-        assert(message_text is None or isinstance(message_text, str))
+        assert(message_text is None or isinstance(message_text, text_type))
+        self.message_text = message_text
 
-        self.parse_mode=parse_mode
-        assert(parse_mode is None or isinstance(parse_mode, str))
+        assert(parse_mode is None or isinstance(parse_mode, text_type))
+        self.parse_mode = parse_mode
 
-        self.disable_web_page_preview=disable_web_page_preview
         assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        self.disable_web_page_preview = disable_web_page_preview
     # end def __init__
 # end class InlineQueryResultGif
 
@@ -330,38 +334,38 @@ class InlineQueryResultMpeg4Gif (InlineQueryResult):
         """
         super(InlineQueryResultMpeg4Gif, self).__init__("mpeg4_gif")
 
-        self.id = id
         assert(id is not None)
-        assert(isinstance(id, str))
+        assert(isinstance(id, text_type))
+        self.id = id
 
-        self.mpeg4_url = mpeg4_url
         assert(mpeg4_url is not None)
-        assert(isinstance(mpeg4_url, str))
+        assert(isinstance(mpeg4_url, text_type))
+        self.mpeg4_url = mpeg4_url
 
-        self.mpeg4_width=mpeg4_width
         assert(mpeg4_width is None or isinstance(mpeg4_width, int))
+        self.mpeg4_width = mpeg4_width
 
-        self.mpeg4_height=mpeg4_height
         assert(mpeg4_height is None or isinstance(mpeg4_height, int))
+        self.mpeg4_height = mpeg4_height
 
-        self.thumb_url = thumb_url
         assert(thumb_url is not None)
-        assert(isinstance(thumb_url, str))
+        assert(isinstance(thumb_url, text_type))
+        self.thumb_url = thumb_url
 
-        self.title=title
-        assert(title is None or isinstance(title, str))
+        assert(title is None or isinstance(title, text_type))
+        self.title = title
 
-        self.caption=caption
-        assert(caption is None or isinstance(caption, str))
+        assert(caption is None or isinstance(caption, text_type))
+        self.caption = caption
 
-        self.message_text=message_text
-        assert(message_text is None or isinstance(message_text, str))
+        assert(message_text is None or isinstance(message_text, text_type))
+        self.message_text = message_text
 
-        self.parse_mode=parse_mode
-        assert(parse_mode is None or isinstance(parse_mode, str))
+        assert(parse_mode is None or isinstance(parse_mode, text_type))
+        self.parse_mode = parse_mode
 
-        self.disable_web_page_preview=disable_web_page_preview
         assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        self.disable_web_page_preview = disable_web_page_preview
     # end def __init__
 # end class InlineQueryResultMpeg4Gif
 
@@ -422,46 +426,46 @@ class InlineQueryResultVideo (InlineQueryResult):
         """
         super(InlineQueryResultVideo, self).__init__("video")
 
-        self.id = id
         assert(id is not None)
-        assert(isinstance(id, str))
+        assert(isinstance(id, text_type))
+        self.id = id
 
-        self.video_url = video_url
         assert(video_url is not None)
-        assert(isinstance(video_url, str))
+        assert(isinstance(video_url, text_type))
+        self.video_url = video_url
 
-        self.mime_type = mime_type
         assert(mime_type is not None)
-        assert(isinstance(mime_type, str))
+        assert(isinstance(mime_type, text_type))
+        self.mime_type = mime_type
 
-        self.message_text = message_text
         assert(message_text is not None)
-        assert(isinstance(message_text, str))
+        assert(isinstance(message_text, text_type))
+        self.message_text = message_text
 
-        self.parse_mode=parse_mode
-        assert(parse_mode is None or isinstance(parse_mode, str))
+        assert(parse_mode is None or isinstance(parse_mode, text_type))
+        self.parse_mode = parse_mode
 
-        self.disable_web_page_preview=disable_web_page_preview
         assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        self.disable_web_page_preview = disable_web_page_preview
 
-        self.video_width=video_width
         assert(video_width is None or isinstance(video_width, int))
+        self.video_width = video_width
 
-        self.video_height=video_height
         assert(video_height is None or isinstance(video_height, int))
+        self.video_height = video_height
 
-        self.video_duration=video_duration
         assert(video_duration is None or isinstance(video_duration, int))
+        self.video_duration = video_duration
 
-        self.thumb_url = thumb_url
         assert(thumb_url is not None)
-        assert(isinstance(thumb_url, str))
+        assert(isinstance(thumb_url, text_type))
+        self.thumb_url = thumb_url
 
-        self.title = title
         assert(title is not None)
-        assert(isinstance(title, str))
+        assert(isinstance(title, text_type))
+        self.title = title
 
-        self.description=description
-        assert(description is None or isinstance(description, str))
+        assert(description is None or isinstance(description, text_type))
+        self.description = description
     # end def __init__
 # end class InlineQueryResultVideo
