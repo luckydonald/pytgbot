@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
-from DictObject import DictObject
 
 __author__ = 'luckydonald'
 
 VERSION = "0.0.0-pre0"
 
-from . import types, encoding
-from .types.files import InputFile
-from .encoding import to_native as n
+import logging
 import requests
 from datetime import timedelta, datetime
 from time import sleep
-import logging
+from DictObject import DictObject
+
+from . import types, encoding
+from .encoding import to_native as n
+from .types.files import InputFile
+from .types.inline import InlineQueryResult
+
 logger = logging.getLogger(__name__)
 
 
@@ -387,12 +390,13 @@ class Bot(object):
         assert(isinstance(inline_query_id, str))
         assert(results is not None)
         assert(isinstance(results, (list, tuple)))  # Array of InlineQueryResult
+        for result in results:
+            assert isinstance(result, InlineQueryResult)  # checks all elements of results
         assert(cache_time is None or isinstance(cache_time, int))
         assert(is_personal is None or isinstance(is_personal, bool))
         assert(next_offset is None or isinstance(next_offset, str))
         return self.do("answerInlineQuery", inline_query_id=inline_query_id, results=results, cache_time=cache_time, is_personal=is_personal, next_offset=next_offset)
     # end def answer_inline_query
-
 
     def get_user_profile_photos(self, user_id, offset=None, limit=None):
         """

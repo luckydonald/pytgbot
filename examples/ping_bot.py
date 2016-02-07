@@ -17,6 +17,7 @@ bot = Bot(API_KEY)
 my_info=bot.get_me()
 print("Information about myself: {info}".format(info=my_info))
 last_update_id = 0
+
 while True:
 	# loop forever.
 	for update in bot.get_updates(limit=100, offset=last_update_id+1)["result"]:
