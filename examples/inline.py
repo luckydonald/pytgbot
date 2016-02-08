@@ -12,7 +12,7 @@ from somewhere import API_KEY, TEST_CHAT  # so I don't upload them to github :D
 
 from pytgbot import Bot
 from pytgbot.types.inline import InlineQueryResultArticle
-from pytgbot.encoding import to_unicode as u
+from pytgbot.encoding import to_native as n
 
 # get you bot instance.
 bot = Bot(API_KEY)
@@ -33,9 +33,9 @@ while True:
         query = query_obj.query
         print (query)
         foo = []
-        foo.append(InlineQueryResultArticle(id=1, title="test 1", message_text=query, parse_mode="Markdown"))
-        foo.append(InlineQueryResultArticle(id=2, title="test 2", message_text=query, parse_mode="Markdown"))
-        success = bot.answer_inline_query(inline_query_id, foo)
+        foo.append(InlineQueryResultArticle(id=1, title="test 1", message_text=query, description='Will send {}'.format(repr(n(query))), parse_mode="Markdown"))
+        foo.append(InlineQueryResultArticle(id=2, title="test 2", message_text=query, description='Will send {}'.format(repr(n(query))), parse_mode="Markdown"))
+        success = bot.answer_inline_query(inline_query_id, foo, cache_time=2)
         print(success)
         if not success.ok:
             print ("dayum!")
