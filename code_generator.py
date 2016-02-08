@@ -103,7 +103,7 @@ def func(command, description, link, params_string, returns="On success, the sen
     print (result)
     return result
 
-def clazz(clazz, parent_clazz, description, link, params_string):
+def clazz(clazz, parent_clazz, description, link, params_string, init_super_args=None):
     """
     Live template for pycharm:
 
@@ -118,6 +118,8 @@ def clazz(clazz, parent_clazz, description, link, params_string):
     asserts = []
     str_args = ""
     str_kwargs = ""
+    to_array1 = []
+    to_array2 = []
     param_strings = params_string.split("\n")
     for param in param_strings:
         table = param.split("\t")
@@ -135,8 +137,11 @@ def clazz(clazz, parent_clazz, description, link, params_string):
         for asses in assert_types.split("|"):  # short for asserts
             asses = asses.strip()  # always good!!
             asses = asses.strip("()")
-            if asses in ["int", "bool", "str"]:
+            if asses in ["int", "bool"]:
                 assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
+            elif asses == "str":
+                assert_commands.append("isinstance({var}, unicode_type)".format(var=param_name, type=asses))
+                assert_comments.append("unicode on python 2, str on python 3")
             elif asses.startswith("Array"):
                 assert_commands.append("isinstance({var}, (list, tuple))".format(var=param_name))
                 assert_comments.append(asses.replace("\n"," "))
@@ -150,27 +155,19 @@ def clazz(clazz, parent_clazz, description, link, params_string):
         asserts.append("")
         if param_needed:
             args.append(param_name)
-            asserts.append("self.{param_name} = {param_name}".format(param_name=param_name))
             str_args += '\n\n\t\t:param {key}: {descr}\n\t\t:type  {key}: {type}'.format(key=param_name, descr=param_description, type=param_type)
             if assert_commands:
                 asserts.append("assert({var} is not None)".format(var=param_name))
                 asserts.append("assert({ass})".format(ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))
+            to_array1.append('array["{var}"] = self.{var}'.format(var=param_name))
         else:
             kwargs.append("{param_name} = None".format(param_name=param_name))
-            asserts.append("self.{param_name}={param_name}".format(param_name=param_name))
             str_kwargs += '\n\n\t\t:keyword {key}: {descr}\n\t\t:type    {key}: {type}'.format(key=param_name, descr=param_description, type=param_type)
             if assert_commands:
                 asserts.append("assert({var} is None or {ass})".format(var=param_name, ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))
-        #str_args += '\n\n\t\t:param {key}: {descr}\n\t\t:type  {key}: {type}'.format(key=param_name, descr=param_description, type=param_type)
-        #if assert_commands:
-        #    asserts.append("assert({var} is not None)".format(var=param_name))
-        #    asserts.append("assert({ass})".format(ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))
-        #asserts.append("self.{var} = {var}".format(var=param_name))
-    #args.extend(kwargs)
-    #param_description = ""
-    #if len(str_args)>0:
-    #    param_description += '\n\t\tParameters:'
-    #    param_description += str_args
+            to_array2.append('if self.{var} is not None:'.format(var=param_name))
+            to_array2.append('\tarray["{var}"] = self.{var}'.format(var=param_name))
+        asserts.append("self.{param_name} = {param_name}".format(param_name=param_name))
     param_description = ""
     if len(str_args)>0:
         param_description += '\n\t\tParameters:'
@@ -179,6 +176,9 @@ def clazz(clazz, parent_clazz, description, link, params_string):
         param_description += '\n\n\n\t\tOptional keyword parameters:'
         param_description += str_kwargs
     args.extend(kwargs)
+    to_array = ["array = super({clazz}, self).to_array()".format(clazz=clazz)]
+    to_array.extend(to_array1)
+    to_array.extend(to_array2)
     result = 'class {clazz} ({parent_clazz}):\n' \
              '\t"""\n' \
              '\t{clazz_description_w_tabs}\n' \
@@ -193,13 +193,18 @@ def clazz(clazz, parent_clazz, description, link, params_string):
              '\n' \
              '{param_description}\n' \
              '\t\t"""\n' \
-             '\t\tsuper({clazz}, self).__init__()\n' \
+             '\t\tsuper({clazz}, self).__init__({init_super_args})\n' \
              '\t\t{asserts_with_tabs}\n' \
              '\t# end def __init__\n' \
+             '\n' \
+             '\tdef to_array(self):\n' \
+             '\t\t{to_array_with_tabs}\n' \
+             '\t\rreturn array\n' \
+             '\t# end def to_array\n' \
              '# end class {clazz}'.format(
         clazz=clazz, parent_clazz=parent_clazz, params=", ".join(args), param_description = param_description,
         clazz_description_w_tabs=clazz_description_w_tabs, init_description_w_tabs=init_description_w_tabs, link=link,
-        asserts_with_tabs="\n\t\t".join(asserts),
+        asserts_with_tabs="\n\t\t".join(asserts), to_array_with_tabs="\n\t\t".join(to_array), init_super_args=("id, " + ", ".join(init_super_args)) if init_super_args else "id"
     )
     result = result.replace("\t", "    ")
     print (result)
@@ -223,7 +228,7 @@ def examples():
     #func("answerInlineQuery", """Use this method to send answers to an inline query. On success, True is returned.
     #    No more than 50 results per query are allowed.""", "https://core.telegram.org/bots/api#answerinlinequery", "inline_query_id	String	Yes	Unique identifier for the answered query\nresults	Array of InlineQueryResult	Yes	A JSON-serialized array of results for the inline query\ncache_time	Integer	Optional	The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300.\nis_personal	Boolean	Optional	Pass True, if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query\nnext_offset	String	Optional	Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don‘t support pagination. Offset length can’t exceed 64 bytes.", "", "None")
 
-    clazz("InlineQueryResultArticle", "InlineQueryResult", "Represents a link to an article or web page.", "https://core.telegram.org/bots/api#inlinequeryresultarticle", """type	String	Type of the result, must be article
+    clazz("InlineQueryResultArticle", "InlineQueryResult", "Represents a link to an article or web page.", "https://core.telegram.org/bots/api#inlinequeryresultarticle", """id	String	Unique identifier for this result, 1-64 Bytes
         title	String	Title of the result
         message_text	String	Text of the message to be sent, 1-4096 characters
         parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
@@ -233,7 +238,8 @@ def examples():
         description	String	Optional. Short description of the result
         thumb_url	String	Optional. Url of the thumbnail for the result
         thumb_width	Integer	Optional. Thumbnail width
-        thumb_height	Integer	Optional. Thumbnail height""")
+        thumb_height	Integer	Optional. Thumbnail height""", ['"article"'])
+    print("\n")
 
     clazz("InlineQueryResultPhoto", "InlineQueryResult", "Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can provide message_text to send it instead of photo.", "https://core.telegram.org/bots/api#inlinequeryresultphoto", """id	String	Unique identifier for this result, 1-64 bytes
 photo_url	String	A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
@@ -245,7 +251,9 @@ description	String	Optional. Short description of the result
 caption	String	Optional. Caption of the photo to be sent, 0-200 characters
 message_text	String	Optional. Text of a message to be sent instead of the photo, 1-4096 characters
 parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message""")
+disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message""", ['"photo"'])
+    print("\n")
+
     clazz("InlineQueryResultGif", "InlineQueryResult", "Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can provide message_text to send it instead of the animation.", "https://core.telegram.org/bots/api#inlinequeryresultgif", """id	String	Unique identifier for this result, 1-64 bytes
 gif_url	String	A valid URL for the GIF file. File size must not exceed 1MB
 gif_width	Integer	Optional. Width of the GIF
@@ -255,7 +263,9 @@ title	String	Optional. Title for the result
 caption	String	Optional. Caption of the GIF file to be sent, 0-200 characters
 message_text	String	Optional. Text of a message to be sent instead of the animation, 1-4096 characters
 parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message""")
+disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message""", ['"gif"'])
+    print("\n")
+
     clazz("InlineQueryResultMpeg4Gif", "InlineQueryResult", "Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can provide message_text to send it instead of the animation.", "https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif", """id	String	Unique identifier for this result, 1-64 bytes
 mpeg4_url	String	A valid URL for the MP4 file. File size must not exceed 1MB
 mpeg4_width	Integer	Optional. Video width
@@ -265,7 +275,8 @@ title	String	Optional. Title for the result
 caption	String	Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
 message_text	String	Optional. Text of a message to be sent instead of the animation, 1-4096 characters
 parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message""")
+disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message""", ['"mpeg4_gif"'])
+    print("\n")
 
     clazz("InlineQueryResultVideo", "InlineQueryResult", "Represents link to a page containing an embedded video player or a video file.", "https://core.telegram.org/bots/api#inlinequeryresultvideo", """id	String	Unique identifier for this result, 1-64 bytes
 video_url	String	A valid URL for the embedded video player or video file
@@ -278,7 +289,7 @@ video_height	Integer	Optional. Video height
 video_duration	Integer	Optional. Video duration in seconds
 thumb_url	String	URL of the thumbnail (jpeg only) for the video
 title	String	Title for the result
-description	String	Optional. Short description of the result""")
+description	String	Optional. Short description of the result""", ['"video"'])
 #    clazz("class", "InlineQueryResult", "desc", "link", """lines""")
 #    clazz("", "InlineQueryResult", "", "", """""")
 
