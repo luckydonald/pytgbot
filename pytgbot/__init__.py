@@ -3,7 +3,7 @@ import json
 
 __author__ = 'luckydonald'
 
-VERSION = "0.0.0-pre0"
+VERSION = "1.0.0"
 
 import logging
 import requests

@@ -1,7 +1,8 @@
-# pytgbot
+# pytgbot `v1.0.0` (stable)
 ###### Python module to access the telegram bot api.
 
-**Note:** This is a work in progress. ```Pre-Alpha 0.0.¼```
+New in version `1.0.0`: [Inline mode](https://telegram.org/blog/inline-bots) including [inlinefeedback](https://core.telegram.org/bots/inline#collecting-feedback).
+
 
 [Official Telegram Bot API Documentation](https://core.telegram.org/bots)
 
