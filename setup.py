@@ -9,11 +9,9 @@ logger = logging.getLogger(__name__)
 __author__ = 'luckydonald'
 
 from setuptools import setup, find_packages  # Always prefer setuptools over distutils
-from codecs import open  # To use a consistent encoding
 from os import path
 
 here = path.abspath(path.dirname(__file__))
-from pytgbot import VERSION
 
 long_description = """A Python module that connects to a Telegram messenger CLI, allowing to interact with Telegram users or groups.
 Report any issues at https://github.com/luckydonald/pytg/issues/"""

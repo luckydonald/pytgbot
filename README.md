@@ -25,5 +25,5 @@ for x in bot.get_updates()["result"]:
 	print(x)
 
 # sending messages:
-bot.send_msg(TEST_CHAT, "another test.")
+bot.send_msg(CHAT_ID, "another test.")
 ```
