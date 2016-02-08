@@ -9,12 +9,11 @@ from random import getrandbits
 import logging
 logger = logging.getLogger(__name__)
 
-from somewhere import API_KEY, TEST_CHAT  # so I don't upload them to github :D
-# Just remove the line, and add API_KEY="..." and TEST_CHAT = 12345
+from somewhere import API_KEY  # so I don't upload them to github :D
+# Just remove the line, and add API_KEY="..."
 
 from pytgbot import Bot, u
 from pytgbot.types.inline import InlineQueryResultArticle, InlineQueryResultPhoto, InlineQueryResultGif
-from pytgbot.encoding import to_native as n
 
 
 def main():

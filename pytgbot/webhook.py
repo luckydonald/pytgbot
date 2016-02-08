@@ -5,7 +5,7 @@ import logging
 import time
 import json
 
-from . import VERSION
+from pytgbot import VERSION
 
 try:
     from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
@@ -68,11 +68,14 @@ class HookHandler(BaseHTTPRequestHandler):
     def callback(self, value):
         self._callback = value
 
+class HookHTTPServer(HTTPServer):
+    def handle_request(self,request):
+
 
 if __name__ == '__main__':
     httpd = HTTPServer((HOST_NAME, PORT_NUMBER), HookHandler)
-    HookHandler().callback(handle_hook)
-    # httpd.socket = ssl.wrap_socket(httpd.socket, certfile=CERT_FILE)
+    def handle_request(request,):
+    #httpd.socket = ssl.wrap_socket(httpd.socket, certfile=CERT_FILE)
     print("{time} Server Starts - {host}:{port} (using certificate (.pem) from {cert})".format(time=time.asctime(),
                                                                                                host=HOST_NAME,
                                                                                                port=PORT_NUMBER,
