@@ -8,6 +8,12 @@ __author__ = 'luckydonald'
 from random import getrandbits
 import logging
 logger = logging.getLogger(__name__)
+from luckydonaldUtils.download import get_json
+try:
+    from urllib import quote  # python 2
+except ImportError:
+    from urllib.parse import quote  # python 3
+# end tray
 
 from somewhere import API_KEY  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..."
@@ -40,9 +46,6 @@ def main():
             mlfw.search(query, inline_query_id, offset=query_obj.offset)
 
 
-
-from luckydonaldUtils.download import get_json
-from urllib import quote
 class MLFW(object):
     root = "http://mylittlefacewhen.com/"
     tag_search = "http://mylittlefacewhen.com/api/v2/tag/"
