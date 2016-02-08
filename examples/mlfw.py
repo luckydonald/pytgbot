@@ -3,7 +3,9 @@ from __future__ import unicode_literals
 
 from json import dumps
 
+
 __author__ = 'luckydonald'
+VERSION = "v0.2.0"
 
 from random import getrandbits
 import logging
@@ -25,7 +27,6 @@ from pytgbot.types.inline import InlineQueryResultArticle, InlineQueryResultPhot
 def main():
     # get you bot instance.
     bot = Bot(API_KEY)
-
 
     my_info=bot.get_me()
     print("Information about myself: {info}".format(info=my_info))
@@ -50,6 +51,7 @@ class MLFW(object):
     root = "http://mylittlefacewhen.com/"
     tag_search = "http://mylittlefacewhen.com/api/v2/tag/"
     tag_info = "http://mylittlefacewhen.com/api/v2/face/"
+    error_image = "http://www.iconsdb.com/icons/preview/red/warning-xxl.png"
 
     def __init__(self, bot):
         super(MLFW, self).__init__()
@@ -66,18 +68,26 @@ class MLFW(object):
         for string_part in string.split(","):
             string_part = string_part.strip()
             valid_tag_obj = get_json(self.tag_search, params=dict(format="json", name__startswith=string_part, limit=1))
+            if "error" in valid_tag_obj:
+                self.bot.answer_inline_query(inline_query_id,
+                    [InlineQueryResultArticle(id="404e:"+string, title=u"\"{tag}\" not found.".format(tag=string), message_text=string, description=valid_tag_obj.error, thumb_url=self.error_image)],
+                )
             for tag_obj in valid_tag_obj.objects:
                 valid_tag_names.append(tag_obj.name)
         if len(valid_tag_names) == 0:
-            return []
+            self.bot.answer_inline_query(inline_query_id,
+                [InlineQueryResultArticle(id="404t:"+string, title=u"\"{tag}\" not found.".format(tag=string), message_text=string, description="No similar tag found.", thumb_url=self.error_image)]
+             )
         print ("tags: {}".format(valid_tag_names))
         print("offset: {}".format(offset))
         images_of_tag = get_json(self.tag_info, params=dict(search=dumps(valid_tag_names), format="json", limit=10, offset=offset))
         print(images_of_tag)
         if images_of_tag.meta.total_count < 1 or len(images_of_tag.objects) < 1:
-            return []
+            self.bot.answer_inline_query(inline_query_id,
+               [InlineQueryResultArticle(id="404i:"+string, title=u"\"{tag}\" not found.".format(tag=string), message_text=string, description="Search results no images.", thumb_url=self.error_image)],
+            )
         if images_of_tag.meta.next:
-                next_offset = offset+10
+            next_offset = offset+10
         for img in images_of_tag.objects:
             #image = self.root + tag.objects[0].resizes.small
             image_full = self.root + img.image
@@ -91,7 +101,7 @@ class MLFW(object):
                     image_small = self.root + img.thumbnails.jpg
             image_gif = self.root + img.thumbnails.gif if "gif" in img.thumbnails else None
             tag_total_count = images_of_tag.meta.total_count
-            id = img.md5[4:]+u(hex(getrandbits(64))[2:])
+            id = img.md5[2:]  # +u(hex(getrandbits(64))[2:])
             #results.append(InlineQueryResultArticle(id=id, thumb_url=image_small, title=u"{tag}".format(tag=img.title), message_text=image_full, description=img.description))
             if image_gif:
                 results.append(InlineQueryResultGif(id=id, title=img.title, gif_url=image_full, thumb_url=image_small, caption=img.description))
@@ -104,7 +114,6 @@ class MLFW(object):
         print(success)
         if not success.ok:
             print ("dayum!")
-        return results
 
 
 
