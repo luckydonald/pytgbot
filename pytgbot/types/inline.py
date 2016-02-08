@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class InlineQueryResult(object):
     def __init__(self, id, type):
         assert(id is not None)
-        if isinstance(id, int):
+        if not isinstance(id, unicode_type):
             id = u(str(id))
         assert(isinstance(id, unicode_type))
         self.id = id

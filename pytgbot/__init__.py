@@ -402,8 +402,8 @@ class Bot(object):
         assert(cache_time is None or isinstance(cache_time, int))
         assert(is_personal is None or isinstance(is_personal, bool))
         if next_offset is not None:
-            assert(isinstance(next_offset, (str, unicode_type)))
-            next_offset = n(next_offset)
+            assert(isinstance(next_offset, (str, unicode_type, int)))
+            next_offset = n(str(next_offset))
         return self.do("answerInlineQuery", inline_query_id=inline_query_id, results=json.dumps(result_objects), cache_time=cache_time, is_personal=is_personal, next_offset=next_offset)
     # end def answer_inline_query
 
