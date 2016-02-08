@@ -28,7 +28,7 @@ def main():
     mlfw = MLFW(bot)
     while True:
         # loop forever.
-        for update in bot.get_updates(limit=100, offset=last_update_id+1)["result"]:
+        for update in bot.get_updates(limit=100, offset=last_update_id+1).result:
             last_update_id = update["update_id"]
             print(update)
             if not "inline_query" in update:
@@ -37,6 +37,7 @@ def main():
             query_obj = update.inline_query
             query = query_obj.query
             print (query)
+            print (query_obj)
             mlfw.search(query, inline_query_id, offset=query_obj.offset)
 
 
@@ -46,40 +47,58 @@ from urllib import quote
 class MLFW(object):
     root = "http://mylittlefacewhen.com/"
     tag_search = "http://mylittlefacewhen.com/api/v2/tag/"
-    tag_info = "http://mylittlefacewhen.com/api/v3/face/"
+    tag_info = "http://mylittlefacewhen.com/api/v2/face/"
 
     def __init__(self, bot):
         super(MLFW, self).__init__()
         self.bot = bot
 
-    def search(self, string, inline_query_id, offset=0):
+    def search(self, string, inline_query_id, offset):
         results = []
-        fo = get_json(self.tag_search, params=dict(format="json", name__startswith=string, limit=1))
-        total_count = fo.meta.total_count
-        if total_count <= 0:
+        next_offset=None
+        if offset is None or len(str(offset).strip()) < 1:
+            offset = 0
+        else:
+            offset = int(offset)
+        valid_tag_names = []
+        for string_part in string.split(","):
+            string_part = string_part.strip()
+            valid_tag_obj = get_json(self.tag_search, params=dict(format="json", name__startswith=string_part, limit=1))
+            for tag_obj in valid_tag_obj.objects:
+                valid_tag_names.append(tag_obj.name)
+        if len(valid_tag_names) == 0:
             return []
-        objects = fo.objects
-        for tag_obj in objects:
-            name = tag_obj.name
-            print ("tag: " + name)
-            tag = get_json(self.tag_info, params=dict(search=dumps([name]), format="json", limit=10, offset=0))
-            print(tag)
-            if tag.meta.total_count < 1 or len(tag.objects) < 1:
-                continue
-            for img in tag.objects:
-                #image = self.root + tag.objects[0].resizes.small
+        print ("tags: {}".format(valid_tag_names))
+        print("offset: {}".format(offset))
+        images_of_tag = get_json(self.tag_info, params=dict(search=dumps(valid_tag_names), format="json", limit=10, offset=offset))
+        print(images_of_tag)
+        if images_of_tag.meta.total_count < 1 or len(images_of_tag.objects) < 1:
+            return []
+        if images_of_tag.meta.next:
+                next_offset = offset+10
+        for img in images_of_tag.objects:
+            #image = self.root + tag.objects[0].resizes.small
+            image_full = self.root + img.image
+            image_small = image_full
+            if "resizes" in img and "small" in img.resizes:
                 image_small = self.root + img.resizes.small
-                image_gif = self.root + img.thumbnails.jpg if "gif" in img.thumbnails else None
-                image_full = self.root + img.image
-                tag_total_count = tag.meta.total_count
-                results.append(InlineQueryResultArticle(id=img.md5[4:]+u(hex(getrandbits(64))[:4]), thumb_url=image_small, title=u"{tag}".format(tag=img.title), message_text=image_full, description=img.description))
-                #if image_gif:
-                    #results.append(InlineQueryResultGif(id=img.md5, title=img.title, gif_url=image_full, thumb_url=image_small, caption=img.description))
-                #else:
-                    #results.append(InlineQueryResultPhoto(id=img.md5, title=img.title, photo_url=image_full, thumb_url=image_small, caption=img.description))
+            if "thumbnails" in img:
+                if "png" in img.thumbnails:
+                    image_small = self.root + img.thumbnails.png
+                elif "jpg" in img.thumbnails:
+                    image_small = self.root + img.thumbnails.jpg
+            image_gif = self.root + img.thumbnails.gif if "gif" in img.thumbnails else None
+            tag_total_count = images_of_tag.meta.total_count
+            id = img.md5[4:]+u(hex(getrandbits(64))[2:])
+            #results.append(InlineQueryResultArticle(id=id, thumb_url=image_small, title=u"{tag}".format(tag=img.title), message_text=image_full, description=img.description))
+            if image_gif:
+                results.append(InlineQueryResultGif(id=id, title=img.title, gif_url=image_full, thumb_url=image_small, caption=img.description))
+            else:
+                results.append(InlineQueryResultPhoto(id=id, title=img.title, photo_url=image_full, thumb_url=image_small, caption=img.description))
         for res in results:
             print( res.to_array())
-        success = self.bot.answer_inline_query(inline_query_id, results, cache_time=60, next_offset=10)
+        print("next_offset=" + str(next_offset))
+        success = self.bot.answer_inline_query(inline_query_id, results, cache_time=10, next_offset=next_offset)
         print(success)
         if not success.ok:
             print ("dayum!")
