@@ -11,7 +11,6 @@ from datetime import timedelta, datetime
 from time import sleep
 from DictObject import DictObject
 
-from . import types, encoding
 from .encoding import to_native as n, to_unicode as u
 from .encoding import native_type, text_type as unicode_type
 from .types.files import InputFile
@@ -108,13 +107,13 @@ class Bot(object):
     def _do_fileupload(self, key, value, **kwargs):
         if isinstance(value, str):
             kwargs[key] = str(value)
-        elif isinstance(value, encoding.text_type):
-            kwargs[key] = encoding.to_native(value)
-        elif isinstance(value, types.files.InputFile):
+        elif isinstance(value, unicode_type):
+            kwargs[key] = n(value)
+        elif isinstance(value, InputFile):
             kwargs["files"] = value.get_request_files(key)
         else:
             raise TypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
-                key=key, type=type(value), input_file_type=types.files.InputFile, text_type=encoding.text_type))
+                key=key, type=type(value), input_file_type=InputFile, text_type=unicode_type))
         return self.do("send{cmd}".format(cmd=key.capitalize()), **kwargs)
 
     def send_photo(self, chat_id, photo, caption=None, reply_to_message_id=None, reply_markup=None):
