@@ -34,7 +34,7 @@ def main():
     mlfw = MLFW(bot)
     while True:
         # loop forever.
-        for update in bot.get_updates(limit=100, offset=last_update_id+1).result:
+        for update in bot.get_updates(limit=100, offset=last_update_id+1, error_as_empty=True).result:
             last_update_id = update["update_id"]
             print(update)
             if not "inline_query" in update:
@@ -72,12 +72,14 @@ class MLFW(object):
                 self.bot.answer_inline_query(inline_query_id,
                     [InlineQueryResultArticle(id="404e:"+string, title=u"\"{tag}\" not found.".format(tag=string), message_text=string, description=valid_tag_obj.error, thumb_url=self.error_image)],
                 )
+                return
             for tag_obj in valid_tag_obj.objects:
                 valid_tag_names.append(tag_obj.name)
         if len(valid_tag_names) == 0:
             self.bot.answer_inline_query(inline_query_id,
                 [InlineQueryResultArticle(id="404t:"+string, title=u"\"{tag}\" not found.".format(tag=string), message_text=string, description="No similar tag found.", thumb_url=self.error_image)]
-             )
+            )
+            return
         print ("tags: {}".format(valid_tag_names))
         print("offset: {}".format(offset))
         images_of_tag = get_json(self.tag_info, params=dict(search=dumps(valid_tag_names), format="json", limit=10, offset=offset))
@@ -86,6 +88,7 @@ class MLFW(object):
             self.bot.answer_inline_query(inline_query_id,
                [InlineQueryResultArticle(id="404i:"+string, title=u"\"{tag}\" not found.".format(tag=string), message_text=string, description="Search results no images.", thumb_url=self.error_image)],
             )
+            return
         if images_of_tag.meta.next:
             next_offset = offset+10
         for img in images_of_tag.objects:
@@ -110,7 +113,7 @@ class MLFW(object):
         for res in results:
             print( res.to_array())
         print("next_offset=" + str(next_offset))
-        success = self.bot.answer_inline_query(inline_query_id, results, cache_time=10, next_offset=next_offset)
+        success = self.bot.answer_inline_query(inline_query_id, results, cache_time=300, next_offset=next_offset)
         print(success)
         if not success.ok:
             print ("dayum!")
