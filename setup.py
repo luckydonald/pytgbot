@@ -1,15 +1,7 @@
 # -*- coding: utf-8 -*-
-__author__ = 'luckydonald'
-
-import logging
-
-logger = logging.getLogger(__name__)
-
-# -*- coding: utf-8 -*-
-__author__ = 'luckydonald'
-
 from setuptools import setup, find_packages  # Always prefer setuptools over distutils
 from os import path
+__author__ = 'luckydonald'
 
 here = path.abspath(path.dirname(__file__))
 
@@ -53,7 +45,7 @@ setup(
         'Operating System :: Unix',
     ],
     # What does your project relate to?
-    keywords='telegram bot api python message send receive python secure fast answer reply image voice picture location contacts typing multi messanger',
+    keywords='telegram bot api python message send receive python secure fast answer reply image voice picture location contacts typing multi messanger inline quick reply gif image video mp4 mpeg4',
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     packages=['pytgbot', 'pytgbot.types'],  # find_packages(exclude=['contrib', 'docs', 'tests*']),
