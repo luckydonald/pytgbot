@@ -31,12 +31,24 @@ class Bot(object):
     def get_me(self):
         return self.do("getMe")
 
-    def get_updates(self, offset=None, limit=100, timeout=0, delta=timedelta(milliseconds=10)):
+    def get_updates(self, offset=None, limit=100, timeout=0, delta=timedelta(milliseconds=10), error_as_empty=False):
         """
-        Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
+        Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
 
-        :keyword offset: (Optional)	Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id.
-        :type    offset: int
+        You can choose to set `error_as_empty` to `True` or `False`.
+        If `error_as_empty` is set to `True`, it will log that exception as warning, and fake an empty result,
+        intended for use in for loops. In case of such error (and only in such case) it contains an "exception" field.
+        Ìt will look like this: `{"result": [], "exception": e}`
+        This is useful if you want to use a for loop, but ignore Network related burps.
+
+        If `error_as_empty` is set to `False` however, all `requests.RequestException` exceptions are normally raised.
+
+        :keyword offset: (Optional)	Identifier of the first update to be returned.
+                 Must be greater by one than the highest among the identifiers of previously received updates.
+                 By default, updates starting with the earliest unconfirmed update are returned.
+                 An update is considered confirmed as soon as `get_updates` is called with
+                 an offset higher than its `update_id`.
+        :type offset: int
 
         :keyword limit: Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100
         :type    limit: int
@@ -47,15 +59,27 @@ class Bot(object):
         :keyword delta: Wait minimal 'delta' seconds, after between requests. Useful in a loop.
         :type    delta: datetime.
 
-        :return: An Array of Update objects is returned.
-        :rtype : list of Update
+        :keyword error_as_empty: If errors which subclasses `requests.RequestException` will be logged but not raised.
+                 Instead the returned DictObject will contain an "exception" field containing the exception occured,
+                 the "result" field will be an empty list `[]`. Defaults to `False`.
+        :type error_as_empty: bool
+
+        :return: An Array of Update objects is returned, or an empty array if there was an requests.RequestException and error_as_empty is set to True.
+        :rtype : dict | DictObject
         """
         now = datetime.now()
         if self._last_update - now < delta:
             wait = abs(((now - self._last_update) - delta).total_seconds())
             sleep(wait)
         self._last_update = datetime.now()
-        return self.do("getUpdates", offset=offset, limit=limit, timeout=timeout)
+        try:
+            return self.do("getUpdates", offset=offset, limit=limit, timeout=timeout)
+        except requests.RequestException as e:
+            if error_as_empty:
+                logger.warn("Network related error happened in get_updates(), but will be ignored: " + str(e), exc_info = True)
+                return DictObject(result = [], exception=e)
+            else:
+                raise
 
     def send_msg(self, chat_id, text, disable_web_page_preview=False, reply_to_message_id=None, reply_markup=None):
         """
@@ -450,9 +474,9 @@ class Bot(object):
         r = requests.post(url, params=query, files=files,
                           verify=True)  # No self signed certificates. Telegram should be trustworthy anyway...
         res = DictObject.objectify(r.json())
-        res["response"] = r
+        res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
+        # TG should always return an dict, with at least a status or something.
         return res
-
 
 """
 Errors:
