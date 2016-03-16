@@ -104,19 +104,24 @@ class MLFW(object):
                     image_small = self.root + img.thumbnails.jpg
             image_gif = self.root + img.thumbnails.gif if "gif" in img.thumbnails else None
             tag_total_count = images_of_tag.meta.total_count
-            id = img.md5[2:]  # +u(hex(getrandbits(64))[2:])
-            #results.append(InlineQueryResultArticle(id=id, thumb_url=image_small, title=u"{tag}".format(tag=img.title), message_text=image_full, description=img.description))
+            id = "mlfw-{id}".format(id=img.id)  # +u(hex(getrandbits(64))[2:])
+            if not id:
+                logger.error("NO ID: {}".format(img))
+                continue
+            logger.debug("id: {id}".format(id=id))
+            # results.append(InlineQueryResultArticle(id=id, thumb_url=image_small, title=u"{tag}".format(tag=img.title), message_text=image_full, description=img.description))
             if image_gif:
                 results.append(InlineQueryResultGif(id=id, title=img.title, gif_url=image_full, thumb_url=image_small, caption=img.description))
             else:
                 results.append(InlineQueryResultPhoto(id=id, title=img.title, photo_url=image_full, thumb_url=image_small, caption=img.description))
         for res in results:
-            print( res.to_array())
-        print("next_offset=" + str(next_offset))
+            logger.debug(res.to_array())
+        logger.debug("next_offset=" + str(next_offset))
         success = self.bot.answer_inline_query(inline_query_id, results, cache_time=300, next_offset=next_offset)
-        print(success)
         if not success.ok:
-            print ("dayum!")
+            logger.error("dayum! {}".format(success))
+        else:
+            logger.success("{}".format(success))
 
 
 
