@@ -8,14 +8,14 @@ __author__ = 'luckydonald'
 VERSION = "v0.2.0"
 
 from random import getrandbits
-import logging
-logger = logging.getLogger(__name__)
+from luckydonaldUtils.logger import logging
 from luckydonaldUtils.download import get_json
 try:
     from urllib import quote  # python 2
 except ImportError:
     from urllib.parse import quote  # python 3
 # end tray
+logger = logging.getLogger(__name__)
 
 from somewhere import API_KEY  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..."
