@@ -15,7 +15,7 @@ python setup.py install
 #### Usage ####
 
 
-```
+```python
 from pytgbot import Bot
 
 bot = Bot(API_KEY)
