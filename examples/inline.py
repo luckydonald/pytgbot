@@ -11,7 +11,7 @@ from somewhere import API_KEY, TEST_CHAT  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..." and TEST_CHAT = 12345
 
 from pytgbot import Bot
-from pytgbot.types.inline import InlineQueryResultArticle
+from pytgbot.api_types.inline import InlineQueryResultArticle
 from pytgbot.encoding import to_native as n
 
 # get you bot instance.

@@ -13,8 +13,8 @@ from DictObject import DictObject
 
 from .encoding import to_native as n, to_unicode as u
 from .encoding import native_type, text_type as unicode_type
-from .types.files import InputFile
-from .types.inline import InlineQueryResult
+from .api_types.files import InputFile
+from .api_types.inline import InlineQueryResult
 
 logger = logging.getLogger(__name__)
 
@@ -152,7 +152,7 @@ class Bot(object):
         :param chat_id: Unique identifier for the message recepient — User or GroupChat id
         :type  chat_id: int
 
-        :param photo: Photo to send. You can either pass a file_id as String to resend a photo file that is already on the Telegram servers, or upload the new photo, specifying the file path as pytg.types.files.InputFile.
+        :param photo: Photo to send. You can either pass a file_id as String to resend a photo file that is already on the Telegram servers, or upload the new photo, specifying the file path as pytg.api_types.files.InputFile.
         :type  photo: str | InputFile
 
 
@@ -188,7 +188,7 @@ class Bot(object):
         :param chat_id: Unique identifier for the message recepient — User or GroupChat id
         :type  chat_id:  Integer
 
-        :param audio: Audio to send. You can either pass a file_id as String to resend a audio file that is already on the Telegram servers, or upload the new audio, specifying the file path as pytg.types.files.InputFile.
+        :param audio: Audio to send. You can either pass a file_id as String to resend a audio file that is already on the Telegram servers, or upload the new audio, specifying the file path as pytg.api_types.files.InputFile.
         :type  audio: str | InputFile
 
 
@@ -223,7 +223,7 @@ class Bot(object):
         :param chat_id: Unique identifier for the message recepient — User or GroupChat id
         :type  chat_id:  Integer
 
-        :param document: Document to send. You can either pass a file_id as String to resend a document file that is already on the Telegram servers, or upload the new document, specifying the file path as pytg.types.files.InputFile.
+        :param document: Document to send. You can either pass a file_id as String to resend a document file that is already on the Telegram servers, or upload the new document, specifying the file path as pytg.api_types.files.InputFile.
         :type  document: str | InputFile
 
 
@@ -257,7 +257,7 @@ class Bot(object):
         :param chat_id: Unique identifier for the message recepient — User or GroupChat id
         :type  chat_id:  Integer
 
-        :param sticker: Sticker to send. You can either pass a file_id as String to resend a sticker file that is already on the Telegram servers, or upload the new sticker, specifying the file path as pytg.types.files.InputFile.
+        :param sticker: Sticker to send. You can either pass a file_id as String to resend a sticker file that is already on the Telegram servers, or upload the new sticker, specifying the file path as pytg.api_types.files.InputFile.
         :type  sticker: str | InputFile
 
 
@@ -292,7 +292,7 @@ class Bot(object):
         :param chat_id: Unique identifier for the message recipient — User or GroupChat id
         :type  chat_id:  Integer
 
-        :param video: Video to send. You can either pass a file_id as String to resend a video file that is already on the Telegram servers, or upload the new video, specifying the file path as pytg.types.files.InputFile.
+        :param video: Video to send. You can either pass a file_id as String to resend a video file that is already on the Telegram servers, or upload the new video, specifying the file path as pytg.api_types.files.InputFile.
         :type  video: str | InputFile
 
 

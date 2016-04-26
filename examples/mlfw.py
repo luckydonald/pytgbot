@@ -21,7 +21,7 @@ from somewhere import API_KEY  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..."
 
 from pytgbot import Bot, u
-from pytgbot.types.inline import InlineQueryResultArticle, InlineQueryResultPhoto, InlineQueryResultGif
+from pytgbot.api_types.inline import InlineQueryResultArticle, InlineQueryResultPhoto, InlineQueryResultGif
 
 
 def main():
