@@ -37,6 +37,7 @@ def func(command, description, link, params_string, returns="On success, the sen
         param_name = table[0].strip()
         param_type = table[1].strip().join([" "," "])
         # " String or Boolean "
+        param_type = param_type.replace(" Array ",   " list ")
         param_type = param_type.replace(" String ",  " str ")
         param_type = param_type.replace(" Integer ", " int ")
         param_type = param_type.replace(" Boolean ", " bool ")
@@ -126,6 +127,7 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
         param_name = table[0].strip()
         param_type = table[1].strip().join([" "," "])
         # " String or Boolean "
+        param_type = param_type.replace(" Array ",   " list ")
         param_type = param_type.replace(" String ",  " str ")
         param_type = param_type.replace(" Integer ", " int ")
         param_type = param_type.replace(" Boolean ", " bool ")
@@ -224,79 +226,7 @@ class Param(object):
         self.needed = needed
         self.desc = desc
 
-def examples():
-    #func("answerInlineQuery", """Use this method to send answers to an inline query. On success, True is returned.
-    #    No more than 50 results per query are allowed.""", "https://core.telegram.org/bots/api#answerinlinequery", "inline_query_id	String	Yes	Unique identifier for the answered query\nresults	Array of InlineQueryResult	Yes	A JSON-serialized array of results for the inline query\ncache_time	Integer	Optional	The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300.\nis_personal	Boolean	Optional	Pass True, if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query\nnext_offset	String	Optional	Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don‘t support pagination. Offset length can’t exceed 64 bytes.", "", "None")
-
-    clazz("InlineQueryResultArticle", "InlineQueryResult", "Represents a link to an article or web page.", "https://core.telegram.org/bots/api#inlinequeryresultarticle", """id	String	Unique identifier for this result, 1-64 Bytes
-        title	String	Title of the result
-        message_text	String	Text of the message to be sent, 1-4096 characters
-        parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-        disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message
-        url	String	Optional. URL of the result
-        hide_url	Boolean	Optional. Pass True, if you don't want the URL to be shown in the message
-        description	String	Optional. Short description of the result
-        thumb_url	String	Optional. Url of the thumbnail for the result
-        thumb_width	Integer	Optional. Thumbnail width
-        thumb_height	Integer	Optional. Thumbnail height""", ['"article"'])
-    print("\n")
-
-    clazz("InlineQueryResultPhoto", "InlineQueryResult", "Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can provide message_text to send it instead of photo.", "https://core.telegram.org/bots/api#inlinequeryresultphoto", """id	String	Unique identifier for this result, 1-64 bytes
-photo_url	String	A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
-photo_width	Integer	Optional. Width of the photo
-photo_height	Integer	Optional. Height of the photo
-thumb_url	String	URL of the thumbnail for the photo
-title	String	Optional. Title for the result
-description	String	Optional. Short description of the result
-caption	String	Optional. Caption of the photo to be sent, 0-200 characters
-message_text	String	Optional. Text of a message to be sent instead of the photo, 1-4096 characters
-parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message""", ['"photo"'])
-    print("\n")
-
-    clazz("InlineQueryResultGif", "InlineQueryResult", "Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can provide message_text to send it instead of the animation.", "https://core.telegram.org/bots/api#inlinequeryresultgif", """id	String	Unique identifier for this result, 1-64 bytes
-gif_url	String	A valid URL for the GIF file. File size must not exceed 1MB
-gif_width	Integer	Optional. Width of the GIF
-gif_height	Integer	Optional. Height of the GIF
-thumb_url	String	URL of the static thumbnail for the result (jpeg or gif)
-title	String	Optional. Title for the result
-caption	String	Optional. Caption of the GIF file to be sent, 0-200 characters
-message_text	String	Optional. Text of a message to be sent instead of the animation, 1-4096 characters
-parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message""", ['"gif"'])
-    print("\n")
-
-    clazz("InlineQueryResultMpeg4Gif", "InlineQueryResult", "Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can provide message_text to send it instead of the animation.", "https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif", """id	String	Unique identifier for this result, 1-64 bytes
-mpeg4_url	String	A valid URL for the MP4 file. File size must not exceed 1MB
-mpeg4_width	Integer	Optional. Video width
-mpeg4_height	Integer	Optional. Video height
-thumb_url	String	URL of the static thumbnail (jpeg or gif) for the result
-title	String	Optional. Title for the result
-caption	String	Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
-message_text	String	Optional. Text of a message to be sent instead of the animation, 1-4096 characters
-parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message""", ['"mpeg4_gif"'])
-    print("\n")
-
-    clazz("InlineQueryResultVideo", "InlineQueryResult", "Represents link to a page containing an embedded video player or a video file.", "https://core.telegram.org/bots/api#inlinequeryresultvideo", """id	String	Unique identifier for this result, 1-64 bytes
-video_url	String	A valid URL for the embedded video player or video file
-mime_type	String	Mime type of the content of video url, “text/html” or “video/mp4”
-message_text	String	Text of the message to be sent with the video, 1-4096 characters
-parse_mode	String	Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-disable_web_page_preview	Boolean	Optional. Disables link previews for links in the sent message
-video_width	Integer	Optional. Video width
-video_height	Integer	Optional. Video height
-video_duration	Integer	Optional. Video duration in seconds
-thumb_url	String	URL of the thumbnail (jpeg only) for the video
-title	String	Title for the result
-description	String	Optional. Short description of the result""", ['"video"'])
-#    clazz("class", "InlineQueryResult", "desc", "link", """lines""")
-#    clazz("", "InlineQueryResult", "", "", """""")
-
-if __name__ == '__main__':
-    examples()
-
-def gett():
+def command_line_input():
     from luckydonaldUtils.interactions import confirm, answer
     do_func = confirm("Choose between generating function or class. Do you want a function?", True)
     if do_func:
@@ -340,3 +270,6 @@ regex for def -> class def
 "def ([a-z_]+)\((?!\))" -> "def $1(self, "
 
 """
+
+if __name__ == '__main__':
+    command_line_input()

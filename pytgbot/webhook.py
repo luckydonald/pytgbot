@@ -75,7 +75,8 @@ class HookHTTPServer(HTTPServer):
 if __name__ == '__main__':
     httpd = HTTPServer((HOST_NAME, PORT_NUMBER), HookHandler)
     def handle_request(request,):
-    #httpd.socket = ssl.wrap_socket(httpd.socket, certfile=CERT_FILE)
+        #httpd.socket = ssl.wrap_socket(httpd.socket, certfile=CERT_FILE)
+        pass
     print("{time} Server Starts - {host}:{port} (using certificate (.pem) from {cert})".format(time=time.asctime(),
                                                                                                host=HOST_NAME,
                                                                                                port=PORT_NUMBER,

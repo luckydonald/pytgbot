@@ -31,6 +31,81 @@ class Bot(object):
     def get_me(self):
         return self.do("getMe")
 
+    def get_updates(self, offset=None, limit=None, timeout=None):
+        """
+        Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
+
+        Notes1. This method will not work if an outgoing webhook is set up.2. In order to avoid getting duplicate updates, recalculate offset after each server response.
+
+        https://core.telegram.org/bots/api#getupdates
+
+
+        Optional keyword parameters:
+
+        :keyword offset: Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.
+        :type    offset:  int
+
+        :keyword limit: Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100.
+        :type    limit:  int
+
+        :keyword timeout: Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling
+        :type    timeout:  int
+
+
+        Returns:
+
+        :return: A DictObject I don't know
+        :rtype:  DictObject.DictObject
+        """
+        assert (offset is None or isinstance(offset, int))
+        assert (limit is None or isinstance(limit, int))
+        assert (timeout is None or isinstance(timeout, int))
+        return self.do("getUpdates", offset=offset, limit=limit, timeout=timeout)
+
+    # end def get_updates
+
+    def set_webhook(self, url=None, certificate=None):
+        """
+        Use this method to specify a url and receive incoming updates via an outgoing webhook.
+        Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url,
+        containing a JSON-serialized Update.
+        In case of an unsuccessful request, we will give up after a reasonable amount of attempts.
+
+        If you'd like to make sure that the Webhook request comes from Telegram,
+        we recommend using a secret path in the URL, e.g. https://www.example.com/<token>.
+        Since nobody else knows your bot‘s token, you can be pretty sure it’s us.
+
+        Notes:
+        1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.
+        2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter. Please upload as InputFile, sending a String will not work.3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
+
+        All types used in the Bot API responses are represented as JSON-objects.
+        It is safe to use 32-bit signed integers for storing all Integer fields unless otherwise noted.
+
+        Optional fields may be not returned when irrelevant.
+
+        https://core.telegram.org/bots/api#setwebhook
+
+
+        Optional keyword parameters:
+
+        :keyword url: HTTPS url to send updates to. Use an empty string to remove webhook integration
+        :type    url:  str
+
+        :keyword certificate: Upload your public key certificate so that the root certificate in use can be checked.
+                              See our self-signed guide for details.
+        :type    certificate:  InputFile
+
+
+        Returns:
+
+        :return: True if did work.
+        :rtype:  bool
+        """
+        assert (url is None or isinstance(url, str))
+        return self.do("setWebhook", url=url, certificate=certificate)
+    # end def set_webhook
+
     def get_updates(self, offset=None, limit=100, timeout=0, delta=timedelta(milliseconds=10), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
@@ -81,32 +156,59 @@ class Bot(object):
             else:
                 raise
 
-    def send_msg(self, chat_id, text, disable_web_page_preview=False, reply_to_message_id=None, reply_markup=None):
+    def send_msg(self, chat_id, text, parse_mode=None, disable_web_page_preview=False, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send text messages. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendmessage
 
-        :param chat_id: Unique identifier for the message recepient — User or GroupChat id
-        :type  chat_id: int
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
 
         :param text: Text of the message to be sent
         :type  text: str
 
+
+        Optional keyword parameters:
+
+        :keyword parse_mode: Send "Markdown" or "HTML", if you want Telegram apps to show bold, italic,
+                             fixed-width text or inline URLs in your bot's message.
+        :type    parse_mode:  str
+
         :keyword disable_web_page_preview: Disables link previews for links in this message
         :type    disable_web_page_preview: bool
 
-        :keyword reply_to_message: If the message is a reply, ID of the original message
-        :type    reply_to_message: int
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification,
+                                       Android users will receive a notification with no sound.
+        :type    disable_notification: bool
 
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-        :type    reply_markup: ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id: int
+
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom
+                               reply keyboard, instructions to hide reply keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
+
+
+        Returns:
 
         :return: The sent Message object
         :rtype:  Message
         """
-        return self.do("SendMessage", chat_id=chat_id, text=text, disable_web_page_preview=disable_web_page_preview,
+        assert(text is not None)
+        assert(isinstance(text, str))
+        assert(parse_mode is None or isinstance(parse_mode, str))
+        assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        return self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode,
+                       disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification,
                        reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+    # end def send_message
+
 
     def forward_message(self, chat_id, from_chat_id, message_id):
         """
