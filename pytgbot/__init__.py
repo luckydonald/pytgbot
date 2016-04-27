@@ -311,27 +311,43 @@ class Bot(object):
 
     def send_audio(self, chat_id, audio, reply_to_message_id=None, reply_markup=None):
         """
-        Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Document). On success, the sent Message is returned.
+        Use this method to send audio files, if you want Telegram clients to display them in the music player.
+        Your audio must be in the .mp3 format. Bots can currently send audio files of up to 50 MB in size,
+        this limit may be changed in the future.
+
+        For sending voice messages, use the sendVoice method instead.
 
         https://core.telegram.org/bots/api#sendaudio
 
 
         Parameters:
 
-        :param chat_id: Unique identifier for the message recepient — User or GroupChat id
-        :type  chat_id:  Integer
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
 
-        :param audio: Audio to send. You can either pass a file_id as String to resend a audio file that is already on the Telegram servers, or upload the new audio, specifying the file path as pytg.api_types.files.InputFile.
-        :type  audio: str | InputFile
+        :param audio: Audio file to send. You can either pass a file_id as String to resend a audio file that is already on the Telegram servers, or upload the new audio, specifying the file path as pytg.api_types.files.InputFile.
+        :type  audio:  InputFile | str
 
 
         Optional keyword parameters:
 
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id:  Integer
+        :keyword duration: Duration of the audio in seconds
+        :type    duration:  int
 
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-        :type    reply_markup:  ReplyKeyboardMarkup or ReplyKeyboardHide or ForceReply
+        :keyword performer: Performer
+        :type    performer:  str
+
+        :keyword title: Track name
+        :type    title:  str
+
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
+
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id:  int
+
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to hide reply keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
 
 
         Returns:
@@ -339,34 +355,49 @@ class Bot(object):
         :return: On success, the sent Message is returned.
         :rtype:  Message
         """
+        assert(duration is None or isinstance(duration, int))
+        assert(performer is None or isinstance(performer, str))
+        assert(title is None or isinstance(title, str))
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         return self._do_fileupload("Audio", audio, chat_id=chat_id, reply_to_message_id=reply_to_message_id,
-                                   reply_markup=reply_markup)
+                                   duration=duration, performer=performer, title=title,
+                                   disable_notification=disable_notification, reply_markup=reply_markup)
 
     # end def send_audio
 
-    def send_document(self, chat_id, document, reply_to_message_id=None, reply_markup=None):
+    def send_document(self, chat_id, document, caption=None, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send general files. On success, the sent Message is returned.
+        Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#senddocument
 
 
         Parameters:
 
-        :param chat_id: Unique identifier for the message recepient — User or GroupChat id
-        :type  chat_id:  Integer
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
 
-        :param document: Document to send. You can either pass a file_id as String to resend a document file that is already on the Telegram servers, or upload the new document, specifying the file path as pytg.api_types.files.InputFile.
-        :type  document: str | InputFile
+        :param document: Document to send. You can either pass a file_id as String to resend a
+                         file that is already on the Telegram servers, or upload the new document,
+                         specifying the file path as pytg.api_types.files.InputFile.
+        :type  document:  InputFile | str
 
 
         Optional keyword parameters:
 
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id:  Integer
+        :keyword caption: Document caption (may also be used when resending documents by file_id), 0-200 characters
+        :type    caption:  str
 
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-        :type    reply_markup:  ReplyKeyboardMarkup or ReplyKeyboardHide or ForceReply
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
+
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id:  int
+
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to hide reply keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
 
 
         Returns:
@@ -374,12 +405,16 @@ class Bot(object):
         :return: On success, the sent Message is returned.
         :rtype:  Message
         """
-        return self._do_fileupload("document", document, chat_id=chat_id, document=document,
-                                   reply_to_message_id=reply_to_message_id)
+        assert(caption is None or isinstance(caption, str))
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        return self._do_fileupload("Document", document, chat_id=chat_id, document=document, caption=caption,
+                                   disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+                                   reply_markup=reply_markup)
 
     # end def send_document
 
-    def send_sticker(self, chat_id, sticker, reply_to_message_id=None, reply_markup=None):
+    def send_sticker(self, chat_id, sticker, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send .webp stickers. On success, the sent Message is returned.
 
@@ -387,20 +422,28 @@ class Bot(object):
 
         Parameters:
 
-        :param chat_id: Unique identifier for the message recepient — User or GroupChat id
-        :type  chat_id:  Integer
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
 
-        :param sticker: Sticker to send. You can either pass a file_id as String to resend a sticker file that is already on the Telegram servers, or upload the new sticker, specifying the file path as pytg.api_types.files.InputFile.
-        :type  sticker: str | InputFile
+        :param sticker: Sticker to send. You can either pass a file_id as String to resend a
+                        sticker file that is already on the Telegram servers, or upload the new sticker,
+                        specifying the file path as pytg.api_types.files.InputFile.
+        :type  sticker:  InputFile | str
 
 
         Optional keyword parameters:
 
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id:  Integer
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification,
+                                       Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
 
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-        :type    reply_markup:  ReplyKeyboardMarkup or ReplyKeyboardHide or ForceReply
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id:  int
+
+        :keyword reply_markup: Additional interface options.
+                               A JSON-serialized object for an inline keyboard, custom reply keyboard,
+                               instructions to hide reply keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
 
 
         Returns:
@@ -408,34 +451,58 @@ class Bot(object):
         :return: On success, the sent Message is returned.
         :rtype:  Message
         """
-        return self._do_fileupload("sticker", sticker, chat_id=chat_id, sticker=sticker,
-                                   reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        return self._do_fileupload("Sticker", sticker, chat_id=chat_id, sticker=sticker,
+                                   disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+                                   reply_markup=reply_markup)
 
     # end def send_sticker
 
-    def send_video(self, chat_id, video, reply_to_message_id=None, reply_markup=None):
+    def send_video(self, chat_id, video, duration=None, width=None, height=None, caption=None, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
-        Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned.
+        Use this method to send video files. On success, the sent Message is returned.
+        Telegram clients support mp4 videos (other formats may be sent as Document).
+        Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#sendvideo
 
 
         Parameters:
 
-        :param chat_id: Unique identifier for the message recipient — User or GroupChat id
-        :type  chat_id:  Integer
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
 
-        :param video: Video to send. You can either pass a file_id as String to resend a video file that is already on the Telegram servers, or upload the new video, specifying the file path as pytg.api_types.files.InputFile.
-        :type  video: str | InputFile
+        :param video: Video to send. You can either pass a file_id as String to resend a
+                      video file that is already on the Telegram servers, or upload the new video,
+                      specifying the file path as pytg.api_types.files.InputFile.
+        :type  video:  InputFile | str
 
 
         Optional keyword parameters:
 
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id:  Integer
+        :keyword duration: Duration of sent video in seconds
+        :type    duration:  int
 
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-        :type    reply_markup:  ReplyKeyboardMarkup or ReplyKeyboardHide or ForceReply
+        :keyword width: Video width
+        :type    width:  int
+
+        :keyword height: Video height
+        :type    height:  int
+
+        :keyword caption: Video caption (may also be used when resending videos by file_id), 0-200 characters
+        :type    caption:  str
+
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification,
+                                       Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
+
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id:  int
+
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom
+                               reply keyboard, instructions to hide reply keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
 
 
         Returns:
@@ -443,12 +510,20 @@ class Bot(object):
         :return: On success, the sent Message is returned.
         :rtype:  Message
         """
-        return self._do_fileupload("video", video, chat_id=chat_id, video=video,
-                                   reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        assert(duration is None or isinstance(duration, int))
+        assert(width is None or isinstance(width, int))
+        assert(height is None or isinstance(height, int))
+        assert(caption is None or isinstance(caption, str))
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        return self._do_fileupload("Video", video, chat_id=chat_id, video=video,
+                                   duration=duration, width=width, height=height, caption=caption,
+                                   disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+                                   reply_markup=reply_markup)
 
-    # end def
+    # end def send_video
 
-    def send_location(self, chat_id, latitude, longitude, reply_to_message_id=None, reply_markup=None):
+    def send_location(self, chat_id, latitude, longitude, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send point on the map. On success, the sent Message is returned.
 
@@ -457,8 +532,8 @@ class Bot(object):
 
         Parameters:
 
-        :param chat_id: Unique identifier for the message recipient — User or GroupChat id
-        :type  chat_id:  Integer
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
 
         :param latitude: Latitude of location
         :type  latitude:  Float number
@@ -469,11 +544,14 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id:  Integer
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
 
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-        :type    reply_markup:  ReplyKeyboardMarkup or ReplyKeyboardHide or ForceReply
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id:  int
+
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to hide reply keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
 
 
         Returns:
@@ -481,8 +559,11 @@ class Bot(object):
         :return: On success, the sent Message is returned.
         :rtype:  Message
         """
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         return self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude,
-                       reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+                       disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+                       reply_markup=reply_markup)
     # end def send_location
 
     def send_chat_action(self, chat_id, action):
