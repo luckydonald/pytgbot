@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from pytgbot.api_types.reply_markup import InlineKeyboardMarkup
+from pytgbot.api_types.sendable import Sendable
+from pytgbot.api_types.sendable.inline import InputMessageContent
 
 __author__ = 'luckydonald'
 
@@ -9,8 +11,7 @@ from ..encoding import text_type as unicode_type, to_unicode as u
 import logging
 logger = logging.getLogger(__name__)
 
-
-class InlineQueryResult(object):
+class InlineQueryResult(Sendable):
     def __init__(self, id, type):
         assert(id is not None)
         if not isinstance(id,unicode_type):
@@ -34,7 +35,7 @@ class InlineQueryResultArticle (InlineQueryResult):
 
     https://core.telegram.org/bots/api#inlinequeryresultarticle
     """
-    def __init__(self, id, title, input_message_content, parse_mode = None, disable_web_page_preview = None, url = None, hide_url = None, description = None, thumb_url = None, thumb_width = None, thumb_height = None):
+    def __init__(self, id, title, input_message_content, reply_markup=None, parse_mode=None, disable_web_page_preview=None, url=None, hide_url=None, description=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a link to an article or web page.
 
@@ -63,6 +64,8 @@ class InlineQueryResultArticle (InlineQueryResult):
 
 
         Optional keyword parameters:
+        :keyword reply_markup: Optional. Inline keyboard attached to the message
+        :type    reply_markup: InlineKeyboardMarkup
 
         :keyword parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
         :type    parse_mode:  str 
@@ -110,7 +113,7 @@ class InlineQueryResultArticle (InlineQueryResult):
             self.disable_web_page_preview = disable_web_page_preview
         # end if
 
-        assert
+        assert(reply_markup is None or isinstance(reply_markup, ))
         self.reply_markup = reply_markup
 
 

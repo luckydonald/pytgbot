@@ -19,7 +19,11 @@ from .api_types.inline import InlineQueryResult
 logger = logging.getLogger(__name__)
 
 
-class Bot(object):
+class PytgBotObject(object):
+    pass
+# end def
+
+class Bot(PytgBotObject):
     _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # do not chance.
 
     def __init__(self, api_key):
