@@ -33,30 +33,7 @@ def func(command, description, link, params_string, returns="On success, the sen
     str_kwargs = ""
     param_strings = params_string.split("\n")
     for param in param_strings:
-        table = param.split("\t")
-        param_name = table[0].strip()
-        param_type = table[1].strip().join([" "," "])
-        # " String or Boolean "
-        param_type = param_type.replace(" Array ",   " list ")
-        param_type = param_type.replace(" String ",  " str ")
-        param_type = param_type.replace(" Integer ", " int ")
-        param_type = param_type.replace(" Boolean ", " bool ")
-        param_type = param_type.replace(" Nothing ", " None ")
-        assert_types = param_type
-        param_type = param_type.replace(" or ", " | ")
-        assert_commands = []
-        assert_comments = []
-        for asses in assert_types.split("|"):  # short for asserts
-            asses = asses.strip()  # always good!!
-            asses = asses.strip("()")
-            if asses in ["int", "bool", "str"]:
-                assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
-            elif asses.startswith("Array"):
-                assert_commands.append("isinstance({var}, (list, tuple))".format(var=param_name))
-                assert_comments.append(asses.replace("\n"," "))
-            else:
-                logger.warn("unrecognized type in param {var}: {type}".format(var=param_name, type=asses))
-        # end for
+        assert_commands, assert_comments, param_name, param_type, table = parse_param_types(param)
         param_required = table[2].strip()
         param_needed = None
         if param_required == "Yes":
@@ -101,8 +78,9 @@ def func(command, description, link, params_string, returns="On success, the sen
         paramshit = text
     )
     result = result.replace("\t", "    ")
-    print (result)
     return result
+# end def
+
 
 def clazz(clazz, parent_clazz, description, link, params_string, init_super_args=None):
     """
@@ -123,36 +101,8 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     to_array2 = []
     param_strings = params_string.split("\n")
     for param in param_strings:
-        table = param.split("\t")
-        param_name = table[0].strip()
-        param_type = table[1].strip().join([" "," "])
-        # " String or Boolean "
-        param_type = param_type.replace(" Array ",   " list ")
-        param_type = param_type.replace(" String ",  " str ")
-        param_type = param_type.replace(" Integer ", " int ")
-        param_type = param_type.replace(" Boolean ", " bool ")
-        param_type = param_type.replace(" Nothing ", " None ")
-        assert_types = param_type
-        param_type = param_type.replace(" or ", " | ")
-        assert_commands = []
-        assert_comments = []
-        for asses in assert_types.split("|"):  # short for asserts
-            asses = asses.strip()  # always good!!
-            asses = asses.strip("()")
-            if asses in ["int", "bool"]:
-                assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
-            elif asses == "str":
-                assert_commands.append("isinstance({var}, unicode_type)".format(var=param_name, type=asses))
-                assert_comments.append("unicode on python 2, str on python 3")
-            elif asses.startswith("Array"):
-                assert_commands.append("isinstance({var}, (list, tuple))".format(var=param_name))
-                assert_comments.append(asses.replace("\n"," "))
-            else:
-                logger.warn("unrecognized type in param {var}: {type}".format(var=param_name, type=asses))
-        # end for
-
+        assert_commands, assert_comments, param_name, param_type, table = parse_param_types(param)
         param_description = table[2].strip()
-
         param_needed = not param_description.startswith("Optional.")
         asserts.append("")
         if param_needed:
@@ -209,13 +159,43 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
         asserts_with_tabs="\n\t\t".join(asserts), to_array_with_tabs="\n\t\t".join(to_array), init_super_args=("id, " + ", ".join(init_super_args)) if init_super_args else "id"
     )
     result = result.replace("\t", "    ")
-    print (result)
     return result
 
 
 # func(command="", description="", link="", param_string="", returns="", return_type="")
 
 
+def parse_param_types(param):
+    table = param.split("\t")
+    param_name = table[0].strip()
+    param_type = table[1].strip().join([" ", " "])
+    # " String or Boolean "
+    param_type = param_type.replace(" Float number ", " float ")
+    param_type = param_type.replace(" Array ", " list ")
+    param_type = param_type.replace(" String ", " str ")
+    param_type = param_type.replace(" Integer ", " int ")
+    param_type = param_type.replace(" Boolean ", " bool ")
+    param_type = param_type.replace(" Nothing ", " None ")
+    assert_types = param_type
+    param_type = param_type.replace(" or ", " | ")
+    assert_commands = []
+    assert_comments = []
+    for asses in assert_types.split("|"):  # short for asserts
+        asses = asses.strip()  # always good!!
+        asses = asses.strip("()")
+        if asses in ["int", "bool"]:
+            assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
+        elif asses == "str":
+            assert_commands.append("isinstance({var}, unicode_type)".format(var=param_name, type=asses))
+            assert_comments.append("unicode on python 2, str on python 3")
+        elif asses.startswith("Array"):
+            assert_commands.append("isinstance({var}, (list, tuple))".format(var=param_name))
+            assert_comments.append(asses.replace("\n", " "))
+        else:
+            logger.warn("unrecognized type in param {var}: {type}".format(var=param_name, type=asses))
+    # end for
+    return assert_commands, assert_comments, param_name, param_type, table
+# end def
 
 
 class Param(object):
@@ -225,6 +205,7 @@ class Param(object):
         self.type = type
         self.needed = needed
         self.desc = desc
+
 
 def command_line_input():
     from luckydonaldUtils.interactions import confirm, answer

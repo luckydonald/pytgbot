@@ -250,7 +250,6 @@ class Bot(object):
         )
     # end def forward_message
 
-
     def _do_fileupload(self, key, value, **kwargs):
         if isinstance(value, str):
             kwargs[key] = str(value)
@@ -303,13 +302,13 @@ class Bot(object):
         assert(caption is None or isinstance(caption, str))
         assert(disable_notification is None or isinstance(disable_notification, bool))
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
-        return self._do_fileupload("Photo", photo, chat_id=chat_id, caption=caption,
+        return self._do_fileupload("photo", photo, chat_id=chat_id, caption=caption,
                                    disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
                                    reply_markup=reply_markup
         )
     # end def send_photo
 
-    def send_audio(self, chat_id, audio, reply_to_message_id=None, reply_markup=None):
+    def send_audio(self, chat_id, audio, duration=None, performer=None, title=None, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player.
         Your audio must be in the .mp3 format. Bots can currently send audio files of up to 50 MB in size,
@@ -360,7 +359,7 @@ class Bot(object):
         assert(title is None or isinstance(title, str))
         assert(disable_notification is None or isinstance(disable_notification, bool))
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
-        return self._do_fileupload("Audio", audio, chat_id=chat_id, reply_to_message_id=reply_to_message_id,
+        return self._do_fileupload("audio", audio, chat_id=chat_id, reply_to_message_id=reply_to_message_id,
                                    duration=duration, performer=performer, title=title,
                                    disable_notification=disable_notification, reply_markup=reply_markup)
 
@@ -408,7 +407,7 @@ class Bot(object):
         assert(caption is None or isinstance(caption, str))
         assert(disable_notification is None or isinstance(disable_notification, bool))
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
-        return self._do_fileupload("Document", document, chat_id=chat_id, document=document, caption=caption,
+        return self._do_fileupload("document", document, chat_id=chat_id, document=document, caption=caption,
                                    disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
                                    reply_markup=reply_markup)
 
@@ -453,7 +452,7 @@ class Bot(object):
         """
         assert(disable_notification is None or isinstance(disable_notification, bool))
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
-        return self._do_fileupload("Sticker", sticker, chat_id=chat_id, sticker=sticker,
+        return self._do_fileupload("sticker", sticker, chat_id=chat_id, sticker=sticker,
                                    disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
                                    reply_markup=reply_markup)
 
@@ -516,7 +515,7 @@ class Bot(object):
         assert(caption is None or isinstance(caption, str))
         assert(disable_notification is None or isinstance(disable_notification, bool))
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
-        return self._do_fileupload("Video", video, chat_id=chat_id, video=video,
+        return self._do_fileupload("video", video, chat_id=chat_id, video=video,
                                    duration=duration, width=width, height=height, caption=caption,
                                    disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
                                    reply_markup=reply_markup)
