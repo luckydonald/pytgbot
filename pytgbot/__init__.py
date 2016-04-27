@@ -210,25 +210,46 @@ class Bot(object):
     # end def send_message
 
 
-    def forward_message(self, chat_id, from_chat_id, message_id):
+    def forward_message(self, chat_id, from_chat_id, message_id, disable_notification=False):
         """
         Use this method to forward messages of any kind. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#forwardmessage
 
-        :param chat_id: Unique identifier for the message recepient — User or GroupChat id
-        :type  chat_id: int
+        Parameters:
 
-        :param from_chat_id: Unique identifier for the chat where the original message was sent — User or GroupChat id
-        :type  from_chat_id: int
+        :param chat_id: Unique identifier for the target chat (chat id of user chat or group chat) or username of the
+                        target channel (in the format @channelusername)
+        :type  chat_id:  int | str
+
+        :param from_chat_id: Unique identifier for the chat where the original message was sent
+                             (id for chats or the channel's username in the format @channelusername)
+        :type  from_chat_id:  int | str
 
         :param message_id: Unique message identifier to forward.
         :type  message_id: int
 
-        :return: the sent Message
+
+        Optional keyword parameters:
+
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification,
+                                       Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
+
+
+        Returns:
+
+        :return: On success, the sent Message is returned.
         :rtype:  Message
         """
-        self.do("ForwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id)
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        assert(message_id is not None)
+        assert(isinstance(message_id, int))
+        return self.do("forwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id,
+                       disable_notification=disable_notification
+        )
+    # end def forward_message
+
 
     def _do_fileupload(self, key, value, **kwargs):
         if isinstance(value, str):
@@ -242,7 +263,7 @@ class Bot(object):
                 key=key, type=type(value), input_file_type=InputFile, text_type=unicode_type))
         return self.do("send{cmd}".format(cmd=key.capitalize()), **kwargs)
 
-    def send_photo(self, chat_id, photo, caption=None, reply_to_message_id=None, reply_markup=None):
+    def send_photo(self, chat_id, photo, caption=None, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send photos. On success, the sent Message is returned.
 
@@ -251,32 +272,42 @@ class Bot(object):
 
         Parameters:
 
-        :param chat_id: Unique identifier for the message recepient — User or GroupChat id
-        :type  chat_id: int
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
 
-        :param photo: Photo to send. You can either pass a file_id as String to resend a photo file that is already on the Telegram servers, or upload the new photo, specifying the file path as pytg.api_types.files.InputFile.
-        :type  photo: str | InputFile
+        :param photo: Photo to send. You can either pass a file_id as String to resend a photo file that is already on
+                      the Telegram servers, or upload a new photo, specifying the file path as pytg.api_types.files.InputFile.
+        :type  photo:  InputFile | str
 
 
         Optional keyword parameters:
 
-        :keyword caption: Photo caption (may also be used when resending photos by file_id).
+        :keyword caption: Photo caption (may also be used when resending photos by file_id), 0-200 characters
         :type    caption: str
+
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
 
         :keyword reply_to_message_id: If the message is a reply, ID of the original message
         :type    reply_to_message_id: int
 
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-        :type    reply_markup: ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to hide reply keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
 
 
         Returns:
 
-        :return: the sent Message
+        :return: On success, the sent Message is returned.
         :rtype:  Message
         """
-        return self._do_fileupload("photo", photo, chat_id=chat_id, caption=caption,
-                                   reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        assert(caption is None or isinstance(caption, str))
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        return self._do_fileupload("Photo", photo, chat_id=chat_id, caption=caption,
+                                   disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+                                   reply_markup=reply_markup
+        )
+    # end def send_photo
 
     def send_audio(self, chat_id, audio, reply_to_message_id=None, reply_markup=None):
         """
@@ -308,7 +339,7 @@ class Bot(object):
         :return: On success, the sent Message is returned.
         :rtype:  Message
         """
-        return self._do_fileupload("audio", audio, chat_id=chat_id, reply_to_message_id=reply_to_message_id,
+        return self._do_fileupload("Audio", audio, chat_id=chat_id, reply_to_message_id=reply_to_message_id,
                                    reply_markup=reply_markup)
 
     # end def send_audio
