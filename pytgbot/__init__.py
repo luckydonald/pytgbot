@@ -724,18 +724,30 @@ class Bot(object):
 
     def send_chat_action(self, chat_id, action):
         """
-        Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status).
+        Use this method when you need to tell the user that something is happening on the bot's side.
+        The status is set for 5 seconds or less (when a message arrives from your bot,
+        Telegram clients clear its typing status).
+
+        Example: The ImageBot needs some time to process a request and upload the image.
+                 Instead of sending a text message along the lines of "Retrieving image, please wait...",
+                 the bot may use sendChatAction with action = "upload_photo".
+                 The user will see a "sending photo" status for the bot.
+
+        We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
 
         https://core.telegram.org/bots/api#sendchataction
 
 
         Parameters:
 
-        :param chat_id: Unique identifier for the message recipient — User or GroupChat id
-        :type  chat_id:  Integer
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
 
-        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data.
-        :type  action:  String
+        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive:
+                        "typing" for text messages, "upload_photo" for photos,
+                        "record_video" or "upload_video" for videos, "record_audio" or "upload_audio" for audio files,
+                        "upload_document" for general files, "find_location" for location data.
+        :type  action:  str
 
 
         Returns:
@@ -743,11 +755,198 @@ class Bot(object):
         :return:
         :rtype:
         """
+        assert(action is not None)
+        assert(isinstance(action, str))
         return self.do("sendChatAction", chat_id=chat_id, action=action)
-
     # end def send_chat_action
 
-    def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None):
+    def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None,
+                          disable_web_page_preview=None, reply_markup=None):
+        """
+        Use this method to edit text messages sent by the bot or via the bot (for inline bots).
+         On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#editmessagetext
+
+
+        Parameters:
+
+        :param text: New text of the message
+        :type  text:  str
+
+
+        Optional keyword parameters:
+
+        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type    chat_id:  int | str
+
+        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :type    message_id:  int
+
+        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type    inline_message_id:  str
+
+        :keyword parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+        :type    parse_mode:  str
+
+        :keyword disable_web_page_preview: Disables link previews for links in this message
+        :type    disable_web_page_preview:  bool
+
+        :keyword reply_markup: A JSON-serialized object for an inline keyboard.
+        :type    reply_markup:  InlineKeyboardMarkup
+
+
+        Returns:
+
+        :return: On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+        :rtype:  Message or bool
+        """
+        assert (message_id is None or isinstance(message_id, int))
+        assert (inline_message_id is None or isinstance(inline_message_id, str))
+        assert (text is not None)
+        assert (isinstance(text, str))
+        assert (parse_mode is None or isinstance(parse_mode, str))
+        assert (disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        return self.do("editMessageText", text=text, chat_id=chat_id, message_id=message_id,
+                       inline_message_id=inline_message_id, parse_mode=parse_mode,
+                       disable_web_page_preview=disable_web_page_preview, reply_markup=reply_markup)
+    # end def edit_message_text
+
+    def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None,
+                             reply_markup=None):
+        """
+        Use this method to edit captions of messages sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#editmessagecaption
+
+
+        Optional keyword parameters:
+
+        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type    chat_id:  int | str
+
+        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :type    message_id:  int
+
+        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type    inline_message_id:  str
+
+        :keyword caption: New caption of the message
+        :type    caption:  str
+
+        :keyword reply_markup: A JSON-serialized object for an inline keyboard.
+        :type    reply_markup:  InlineKeyboardMarkup
+
+
+        Returns:
+
+        :return: On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+        :rtype:  Message or bool
+        """
+        assert (message_id is None or isinstance(message_id, int))
+        assert (inline_message_id is None or isinstance(inline_message_id, str))
+        assert (caption is None or isinstance(caption, str))
+        return self.do("editMessageCaption", chat_id=chat_id, message_id=message_id,
+                       inline_message_id=inline_message_id, caption=caption, reply_markup=reply_markup)
+    # end def edit_message_caption
+
+    def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+        """
+        Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots).  On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+        The following methods and objects allow your bot to work in inline mode.Please see our Introduction to Inline bots for more details.
+        To enable this option, send the /setinline command to @BotFather and provide the placeholder text that the user will see in the input field after typing your bot’s name.
+
+        https://core.telegram.org/bots/api#editmessagereplymarkup
+
+
+        Optional keyword parameters:
+
+        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type    chat_id:  int | str
+
+        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :type    message_id:  int
+
+        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type    inline_message_id:  str
+
+        :keyword reply_markup: A JSON-serialized object for an inline keyboard.
+        :type    reply_markup:  InlineKeyboardMarkup
+
+
+        Returns:
+
+        :return: On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+        :rtype:  Message or bool
+        """
+        assert (message_id is None or isinstance(message_id, int))
+        assert (inline_message_id is None or isinstance(inline_message_id, str))
+        return self.do("editMessageReplyMarkup", chat_id=chat_id, message_id=message_id,
+                       inline_message_id=inline_message_id, reply_markup=reply_markup)
+    # end def edit_message_reply_markup
+
+    def kick_chat_member(self, chat_id, user_id):
+        """
+        Use this method to kick a user from a group or a supergroup. In the case of supergroups,
+        the user will not be able to return to the group on their own using invite links, etc., unless unbanned first.
+
+        The bot must be an administrator in the group for this to work. Returns True on success.
+
+        Note: This will method only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group's creator or by the member that added them.
+
+        https://core.telegram.org/bots/api#kickchatmember
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target group or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id:  int | str
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id:  int
+
+
+        Returns:
+
+        :return: True on success
+        :rtype:  bool
+        """
+        assert (user_id is not None)
+        assert (isinstance(user_id, int))
+        return self.do("kickChatMember", chat_id=chat_id, user_id=user_id)
+
+    # end def kick_chat_member
+
+    def unban_chat_member(self, chat_id, user_id):
+        """
+        Use this method to unban a previously kicked user in a supergroup.
+        The user will not return to the group automatically, but will be able to join via link, etc.
+
+        The bot must be an administrator in the group for this to work. Returns True on success.
+
+        https://core.telegram.org/bots/api#unbanchatmember
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target group or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id:  int | str
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id:  int
+
+
+        Returns:
+
+        :return: Returns True on success.
+        :rtype:  bool
+        """
+        assert (user_id is not None)
+        assert (isinstance(user_id, int))
+        return self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
+    # end def unban_chat_member
+
+    def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
         """
         Use this method to send answers to an inline query. On success, True is returned.
         No more than 50 results per query are allowed.
@@ -775,11 +974,17 @@ class Bot(object):
         :keyword next_offset: Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don‘t support pagination. Offset length can’t exceed 64 bytes.
         :type    next_offset:  str
 
+        :keyword switch_pm_text: If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
+        :type    switch_pm_text:  str
+
+        :keyword switch_pm_parameter: Parameter for the start message sent to the bot when user presses the switch buttonExample: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
+        :type    switch_pm_parameter:  str
+
 
         Returns:
 
-        :return:
-        :rtype:  None
+        :return: On success, True is returned.
+        :rtype:  bool
         """
         assert(inline_query_id is not None)
         if isinstance(inline_query_id, int):
@@ -797,8 +1002,46 @@ class Bot(object):
         if next_offset is not None:
             assert(isinstance(next_offset, (str, unicode_type, int)))
             next_offset = n(str(next_offset))
-        return self.do("answerInlineQuery", inline_query_id=inline_query_id, results=json.dumps(result_objects), cache_time=cache_time, is_personal=is_personal, next_offset=next_offset)
+        assert(switch_pm_text is None or isinstance(switch_pm_text, str))
+        assert(switch_pm_parameter is None or isinstance(switch_pm_parameter, str))
+        return self.do("answerInlineQuery", inline_query_id=inline_query_id, results=json.dumps(result_objects),
+                       cache_time=cache_time, is_personal=is_personal, next_offset=next_offset,
+                       switch_pm_text=switch_pm_text, switch_pm_parameter=switch_pm_parameter)
     # end def answer_inline_query
+
+    def answer_callback_query(self, callback_query_id, text=None, show_alert=None):
+        """
+        Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
+
+        https://core.telegram.org/bots/api#answercallbackquery
+
+
+        Parameters:
+
+        :param callback_query_id: Unique identifier for the query to be answered
+        :type  callback_query_id:  str
+
+
+        Optional keyword parameters:
+
+        :keyword text: Text of the notification. If not specified, nothing will be shown to the user
+        :type    text:  str
+
+        :keyword show_alert: If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
+        :type    show_alert:  bool
+
+
+        Returns:
+
+        :return: Returns True on success.
+        :rtype:  bool
+        """
+        assert (callback_query_id is not None)
+        assert (isinstance(callback_query_id, str))
+        assert (text is None or isinstance(text, str))
+        assert (show_alert is None or isinstance(show_alert, bool))
+        return self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert)
+    # end def answer_callback_query
 
     def get_user_profile_photos(self, user_id, offset=None, limit=None):
         """
@@ -810,16 +1053,16 @@ class Bot(object):
         Parameters:
 
         :param user_id: Unique identifier of the target user
-        :type  user_id:  Integer
+        :type  user_id:  int
 
 
         Optional keyword parameters:
 
         :keyword offset: Sequential number of the first photo to be returned. By default, all photos are returned.
-        :type    offset:  Integer
+        :type    offset:  int
 
         :keyword limit: Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.
-        :type    limit:  Integer
+        :type    limit:  int
 
 
         Returns:
@@ -827,9 +1070,35 @@ class Bot(object):
         :return: Returns a UserProfilePhotos object.
         :rtype:  UserProfilePhotos
         """
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        assert(offset is None or isinstance(offset, int))
+        assert(limit is None or isinstance(limit, int))
         return self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
-
     # end def get_user_profile_photos
+
+    def get_file(self, file_id):
+        """
+        Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
+
+        https://core.telegram.org/bots/api#getfile
+
+
+        Parameters:
+
+        :param file_id: File identifier to get info about
+        :type  file_id:  str
+
+
+        Returns:
+
+        :return: On success, a File object is returned
+        :rtype:  File
+        """
+        assert (file_id is not None)
+        assert (isinstance(file_id, str))
+        return self.do("getFile", file_id=file_id)
+    # end def get_file
 
     def do(self, command, files=None, **query):
         """
@@ -847,6 +1116,8 @@ class Bot(object):
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
         return res
+    # end def do
+# end class
 
 """
 Errors:
