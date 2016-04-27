@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class InlineQueryResult(object):
     def __init__(self, id, type):
         assert(id is not None)
-        if not isinstance(id, unicode_type):
+        if not isinstance(id,unicode_type):
             id = u(str(id))
         assert(isinstance(id, unicode_type))
         self.id = id
@@ -32,12 +32,19 @@ class InlineQueryResultArticle (InlineQueryResult):
 
     https://core.telegram.org/bots/api#inlinequeryresultarticle
     """
-    def __init__(self, id, title, message_text, parse_mode = None, disable_web_page_preview = None, url = None, hide_url = None, description = None, thumb_url = None, thumb_width = None, thumb_height = None):
+    def __init__(self, id, title, input_message_content, parse_mode = None, disable_web_page_preview = None, url = None, hide_url = None, description = None, thumb_url = None, thumb_width = None, thumb_height = None):
         """
         Represents a link to an article or web page.
 
         https://core.telegram.org/bots/api#inlinequeryresultarticle
 
+        Changelog:
+            `message_text`, `parse_mode` and `disable_web_page_preview` are now set in a `InputTextMessageContent`.
+            This allows to use other `InputMessageContent` types as well.
+
+            For backwards compatibility, the third argument (`message_text` renamed to `input_message_content`) still
+            accepts `str`, and the optional fields `parse_mode` and `disable_web_page_preview` are kept, too.
+            They are depricated and might be removed later.
 
         Parameters:
 
@@ -47,8 +54,10 @@ class InlineQueryResultArticle (InlineQueryResult):
         :param title: Title of the result
         :type  title:  str 
 
-        :param message_text: Text of the message to be sent, 1-4096 characters
-        :type  message_text:  str 
+        :param input_message_content: Content of the message to be send, a InputMessageContent subclass.
+                                      For backwards compatibility, this accepts text, and `parse_mode` and
+                                      `disable_web_page_preview` are both given.
+        :type  input_message_content:  InputMessageContent | str
 
 
         Optional keyword parameters:
@@ -83,16 +92,26 @@ class InlineQueryResultArticle (InlineQueryResult):
         assert(isinstance(title, unicode_type))  # unicode on python 2, str on python 3
         self.title = title
         
-        assert(message_text is not None)
-        assert(isinstance(message_text, unicode_type))  # unicode on python 2, str on python 3
-        self.message_text = message_text
-        
-        assert(parse_mode is None or isinstance(parse_mode, unicode_type))  # unicode on python 2, str on python 3
-        self.parse_mode = parse_mode
-        
-        assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
-        self.disable_web_page_preview = disable_web_page_preview
-        
+        assert(input_message_content is not None)
+        assert(isinstance(input_message_content, (unicode_type, InputMessageContent)))  # unicode on python 2, str on python 3
+        if isinstance(input_message_content, InputMessageContent):
+            assert(parse_mode is None, "InputMessageContent given. Set parse_mode there.")
+            assert(disable_web_page_preview is None, "InputMessageContent given. Set disable_web_page_preview there.")
+            self.input_message_content = input_message_content
+        else:
+            assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+            assert(parse_mode is None or isinstance(parse_mode, unicode_type))  # unicode on python 2, str on python 3
+            # TODO: constructor.
+            logging.warning("Nope")
+            self.message_text = message_text
+            self.parse_mode = parse_mode
+            self.disable_web_page_preview = disable_web_page_preview
+        # end if
+
+        assert
+        self.reply_markup = reply_markup
+
+
         assert(url is None or isinstance(url, unicode_type))  # unicode on python 2, str on python 3
         self.url = url
         
@@ -114,13 +133,11 @@ class InlineQueryResultArticle (InlineQueryResult):
 
     def to_array(self):
         array = super(InlineQueryResultArticle, self).to_array()
-        array["id"] = self.id
+        # array["id"] = self.id
         array["title"] = self.title
-        array["message_text"] = self.message_text
-        if self.parse_mode is not None:
-            array["parse_mode"] = self.parse_mode
-        if self.disable_web_page_preview is not None:
-            array["disable_web_page_preview"] = self.disable_web_page_preview
+        array["input_message_content"] = self.input_message_content
+        if self.reply_markup is not None:
+            array["reply_markup"] = self.reply_markup
         if self.url is not None:
             array["url"] = self.url
         if self.hide_url is not None:
@@ -149,6 +166,9 @@ class InlineQueryResultPhoto (InlineQueryResult):
         Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can provide message_text to send it instead of photo.
 
         https://core.telegram.org/bots/api#inlinequeryresultphoto
+
+        Changelog:
+            Instead of `message_text`, `parse_mode` and `disable_web_page_preview` use `input_message_content`
 
 
         Parameters:
@@ -180,25 +200,22 @@ class InlineQueryResultPhoto (InlineQueryResult):
         :keyword caption: Optional. Caption of the photo to be sent, 0-200 characters
         :type    caption:  str 
 
-        :keyword message_text: Optional. Text of a message to be sent instead of the photo, 1-4096 characters
-        :type    message_text:  str 
+        :keyword reply_markup: Optional. Inline keyboard attached to the message
+        :type    reply_markup:  InlineKeyboardMarkup
 
-        :keyword parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-        :type    parse_mode:  str 
-
-        :keyword disable_web_page_preview: Optional. Disables link previews for links in the sent message
-        :type    disable_web_page_preview:  bool 
+        :keyword input_message_content: Optional. Content of the message to be sent instead of the photo
+        :type    input_message_content:  InputMessageContent
         """
         super(InlineQueryResultPhoto, self).__init__(id, "photo")
-        
-        assert(id is not None)
-        assert(isinstance(id, unicode_type))  # unicode on python 2, str on python 3
-        self.id = id
         
         assert(photo_url is not None)
         assert(isinstance(photo_url, unicode_type))  # unicode on python 2, str on python 3
         self.photo_url = photo_url
         
+        assert(thumb_url is not None)
+        assert(isinstance(thumb_url, unicode_type))  # unicode on python 2, str on python 3
+        self.thumb_url = thumb_url
+
         assert(photo_width is None or isinstance(photo_width, int))
         self.photo_width = photo_width
         
@@ -218,11 +235,11 @@ class InlineQueryResultPhoto (InlineQueryResult):
         assert(caption is None or isinstance(caption, unicode_type))  # unicode on python 2, str on python 3
         self.caption = caption
         
-        assert(message_text is None or isinstance(message_text, unicode_type))  # unicode on python 2, str on python 3
-        self.message_text = message_text
+        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))  # unicode on python 2, str on python 3
+        self.reply_markup = reply_markup
         
-        assert(parse_mode is None or isinstance(parse_mode, unicode_type))  # unicode on python 2, str on python 3
-        self.parse_mode = parse_mode
+        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))  # unicode on python 2, str on python 3
+        self.input_message_content = input_message_content
         
         assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
         self.disable_web_page_preview = disable_web_page_preview
@@ -243,12 +260,10 @@ class InlineQueryResultPhoto (InlineQueryResult):
             array["description"] = self.description
         if self.caption is not None:
             array["caption"] = self.caption
-        if self.message_text is not None:
-            array["message_text"] = self.message_text
-        if self.parse_mode is not None:
-            array["parse_mode"] = self.parse_mode
-        if self.disable_web_page_preview is not None:
-            array["disable_web_page_preview"] = self.disable_web_page_preview
+        if self.reply_markup is not None:
+            array["reply_markup"] = self.reply_markup
+        if self.input_message_content is not None:
+            array["input_message_content"] = self.input_message_content
         return array     
     # end def to_array
 # end class InlineQueryResultPhoto
