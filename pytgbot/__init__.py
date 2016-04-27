@@ -522,6 +522,52 @@ class Bot(object):
 
     # end def send_video
 
+    def send_voice(self, chat_id, voice, duration=None, disable_notification=False, reply_to_message_id=None,
+                   reply_markup=None):
+        """
+        Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+
+        https://core.telegram.org/bots/api#sendvoice
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
+
+        :param voice: Audio file to send. You can either pass a file_id as String to resend an audio that is already on the Telegram servers, or upload a new audio file using multipart/form-data.
+        :type  voice:  InputFile | str
+
+
+        Optional keyword parameters:
+
+        :keyword duration: Duration of sent audio in seconds
+        :type    duration:  int
+
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
+
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id:  int
+
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to hide reply keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
+
+
+        Returns:
+
+        :return: On success, the sent Message is returned.
+        :rtype:  Message
+        """
+        assert (duration is None or isinstance(duration, int))
+        assert (disable_notification is None or isinstance(disable_notification, bool))
+        assert (reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        return self._do_fileupload("voice", voice, chat_id=chat_id, voice=voice, duration=duration,
+                       disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+                       reply_markup=reply_markup)
+
+    # end def send_voice
+
     def send_location(self, chat_id, latitude, longitude, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send point on the map. On success, the sent Message is returned.
@@ -564,6 +610,65 @@ class Bot(object):
                        disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
                        reply_markup=reply_markup)
     # end def send_location
+
+    def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, disable_notification=False,
+                   reply_to_message_id=None, reply_markup=None):
+        """
+        Use this method to send information about a venue. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendvenue
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
+
+        :param latitude: Latitude of the venue
+        :type  latitude:  float
+
+        :param longitude: Longitude of the venue
+        :type  longitude:  float
+
+        :param title: Name of the venue
+        :type  title:  str
+
+        :param address: Address of the venue
+        :type  address:  str
+
+
+        Optional keyword parameters:
+
+        :keyword foursquare_id: Foursquare identifier of the venue
+        :type    foursquare_id:  str
+
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
+
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id:  int
+
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to hide reply keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
+
+
+        Returns:
+
+        :return: On success, the sent Message is returned.
+        :rtype:  Message
+        """
+        assert (title is not None)
+        assert (isinstance(title, str))
+        assert (address is not None)
+        assert (isinstance(address, str))
+        assert (foursquare_id is None or isinstance(foursquare_id, str))
+        assert (disable_notification is None or isinstance(disable_notification, bool))
+        assert (reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        return self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title,
+                       address=address, foursquare_id=foursquare_id, disable_notification=disable_notification,
+                       reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+
+    # end def send_venue
 
     def send_chat_action(self, chat_id, action):
         """
