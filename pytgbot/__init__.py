@@ -670,6 +670,58 @@ class Bot(object):
 
     # end def send_venue
 
+    def send_contact(self, chat_id, phone_number, first_name, last_name=None, disable_notification=None,
+                     reply_to_message_id=None, reply_markup=None):
+        """
+        Use this method to send phone contacts. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendcontact
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id:  int | str
+
+        :param phone_number: Contact's phone number
+        :type  phone_number:  str
+
+        :param first_name: Contact's first name
+        :type  first_name:  str
+
+
+        Optional keyword parameters:
+
+        :keyword last_name: Contact's last name
+        :type    last_name:  str
+
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :type    disable_notification:  bool
+
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id:  int
+
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+        :type    reply_markup:  InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
+
+
+        Returns:
+
+        :return: On success, the sent Message is returned.
+        :rtype:  Message
+        """
+        assert (phone_number is not None)
+        assert (isinstance(phone_number, str))
+        assert (first_name is not None)
+        assert (isinstance(first_name, str))
+        assert (last_name is None or isinstance(last_name, str))
+        assert (disable_notification is None or isinstance(disable_notification, bool))
+        assert (reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        return self.do("sendContact", chat_id=chat_id, phone_number=phone_number,
+                       first_name=first_name, last_name=last_name, disable_notification=disable_notification,
+                       reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+    # end def send_contact
+
     def send_chat_action(self, chat_id, action):
         """
         Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status).
