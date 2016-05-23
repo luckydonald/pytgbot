@@ -70,6 +70,7 @@ class HookHandler(BaseHTTPRequestHandler):
 
 class HookHTTPServer(HTTPServer):
     def handle_request(self,request):
+        pass
 
 
 if __name__ == '__main__':

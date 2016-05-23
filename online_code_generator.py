@@ -48,6 +48,7 @@ superclasses = {
     "InputLocationMessageContent": "InputMessageContent",
     "InputVenueMessageContent": "InputMessageContent",
     "InputContactMessageContent": "InputMessageContent",
+    "MessageEntity": "Result",
 }
 
 def parse_table(tag):

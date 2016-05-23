@@ -205,6 +205,7 @@ def parse_param_types(param):
     param_type = param_type.replace(" Nothing ", " None ")
     assert_types = param_type
     param_type = param_type.replace(" or ", " | ")
+    param_type = param_type.strip()
     assert_commands = []
     assert_comments = []
     non_buildin_type = None
