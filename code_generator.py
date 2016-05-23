@@ -33,7 +33,7 @@ def func(command, description, link, params_string, returns="On success, the sen
     str_kwargs = ""
     param_strings = params_string.split("\n")
     for param in param_strings:
-        assert_commands, assert_comments, param_name, param_type, table = parse_param_types(param)
+        assert_commands, assert_comments, param_name, param_type, table, non_buildin_type, param_name_input = parse_param_types(param)
         param_required = table[2].strip()
         param_needed = None
         if param_required == "Yes":
@@ -81,6 +81,11 @@ def func(command, description, link, params_string, returns="On success, the sen
     return result
 # end def
 
+safe_var_translations = {
+    "from": "from_peer",
+    "to": "to_peer"
+}
+
 
 def clazz(clazz, parent_clazz, description, link, params_string, init_super_args=None):
     """
@@ -99,9 +104,11 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     str_kwargs = ""
     to_array1 = []
     to_array2 = []
+    from_array1 = []
+    from_array2 = []
     param_strings = params_string.split("\n")
     for param in param_strings:
-        assert_commands, assert_comments, param_name, param_type, table = parse_param_types(param)
+        assert_commands, assert_comments, param_name, param_type, table, non_buildin_type, param_name_input = parse_param_types(param)
         param_description = table[2].strip()
         param_needed = not param_description.startswith("Optional.")
         asserts.append("")
@@ -112,13 +119,17 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
                 asserts.append("assert({var} is not None)".format(var=param_name))
                 asserts.append("assert({ass})".format(ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))
             to_array1.append('array["{var}"] = self.{var}'.format(var=param_name))
+            if non_buildin_type:
+                from_array1.append("array['{var}'] = {type}.from_array(array.get('{array_key}'))".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
         else:
-            kwargs.append("{param_name} = None".format(param_name=param_name))
+            kwargs.append("{param_name}=None".format(param_name=param_name))
             str_kwargs += '\n\n\t\t:keyword {key}: {descr}\n\t\t:type    {key}: {type}'.format(key=param_name, descr=param_description, type=param_type)
             if assert_commands:
                 asserts.append("assert({var} is None or {ass})".format(var=param_name, ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))
             to_array2.append('if self.{var} is not None:'.format(var=param_name))
             to_array2.append('\tarray["{var}"] = self.{var}'.format(var=param_name))
+            if non_buildin_type:
+                from_array2.append("array['{var}'] = {type}.from_array(array.get('{array_key}'))".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
         asserts.append("self.{param_name} = {param_name}".format(param_name=param_name))
     param_description = ""
     if len(str_args)>0:
@@ -131,6 +142,10 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     to_array = ["array = super({clazz}, self).to_array()".format(clazz=clazz)]
     to_array.extend(to_array1)
     to_array.extend(to_array2)
+    from_array = []
+    from_array.extend(from_array1)
+    from_array.extend(from_array2)
+    from_array.append("return {clazz}(**array)".format(clazz=clazz))
     result = 'class {clazz} ({parent_clazz}):\n' \
              '\t"""\n' \
              '\t{clazz_description_w_tabs}\n' \
@@ -151,12 +166,19 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
              '\n' \
              '\tdef to_array(self):\n' \
              '\t\t{to_array_with_tabs}\n' \
-             '\t\rreturn array\n' \
+             '\t\treturn array\n' \
              '\t# end def to_array\n' \
+             '\n' \
+             '\t@staticmethod\n' \
+             '\tdef from_array(self, array):\n' \
+             '\t\t{from_array_with_tabs}\n' \
+             '\t# end def from_array\n' \
              '# end class {clazz}'.format(
         clazz=clazz, parent_clazz=parent_clazz, params=", ".join(args), param_description = param_description,
         clazz_description_w_tabs=clazz_description_w_tabs, init_description_w_tabs=init_description_w_tabs, link=link,
-        asserts_with_tabs="\n\t\t".join(asserts), to_array_with_tabs="\n\t\t".join(to_array), init_super_args=("id, " + ", ".join(init_super_args)) if init_super_args else "id"
+        asserts_with_tabs="\n\t\t".join(asserts), to_array_with_tabs="\n\t\t".join(to_array),
+        from_array_with_tabs="\n\t\t".join(from_array),
+        init_super_args=(", ".join(init_super_args) if init_super_args else "")
     )
     result = result.replace("\t", "    ")
     return result
@@ -164,13 +186,18 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
 
 # func(command="", description="", link="", param_string="", returns="", return_type="")
 
-
 def parse_param_types(param):
     table = param.split("\t")
-    param_name = table[0].strip()
+    param_name_input = table[0].strip()
+    if param_name_input in safe_var_translations:
+        param_name = safe_var_translations[param_name_input]
+    else:
+        param_name = param_name_input
+    # end if
     param_type = table[1].strip().join([" ", " "])
     # " String or Boolean "
     param_type = param_type.replace(" Float number ", " float ")
+    param_type = param_type.replace(" Float ", " float ")
     param_type = param_type.replace(" Array ", " list ")
     param_type = param_type.replace(" String ", " str ")
     param_type = param_type.replace(" Integer ", " int ")
@@ -180,21 +207,26 @@ def parse_param_types(param):
     param_type = param_type.replace(" or ", " | ")
     assert_commands = []
     assert_comments = []
+    non_buildin_type = None
     for asses in assert_types.split("|"):  # short for asserts
         asses = asses.strip()  # always good!!
         asses = asses.strip("()")
         if asses in ["int", "bool"]:
             assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
+        elif asses == "True":
+            assert_commands.append("{var} == True".format(var=param_name, type=asses))
         elif asses == "str":
             assert_commands.append("isinstance({var}, unicode_type)".format(var=param_name, type=asses))
             assert_comments.append("unicode on python 2, str on python 3")
-        elif asses.startswith("Array"):
+        elif asses.startswith("Array") or asses.startswith("list"):
             assert_commands.append("isinstance({var}, (list, tuple))".format(var=param_name))
             assert_comments.append(asses.replace("\n", " "))
         else:
-            logger.warn("unrecognized type in param {var}: {type}".format(var=param_name, type=asses))
+            assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
+            non_buildin_type = asses
+            logger.warn("Added unrecognized type in param {var}: {type}".format(var=param_name, type=asses))
     # end for
-    return assert_commands, assert_comments, param_name, param_type, table
+    return assert_commands, assert_comments, param_name, param_type, table, non_buildin_type, param_name_input
 # end def
 
 
