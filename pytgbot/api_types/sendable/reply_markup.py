@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type
-from result import Result
+from . import Sendable
 
 __author__ = 'luckydonald'
 
@@ -8,78 +8,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class Button(object):
+class Button(Sendable):
     def __init__(self):
         super(Button, self).__init__()
 
-class ReplyMarkup(object):
+class ReplyMarkup(Sendable):
     def __init__(self):
         super(ReplyMarkup, self).__init__()
-
-
-class CallbackQuery (Result):
-    """
-    This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be presented. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be presented.
-
-    https://core.telegram.org/bots/api#callbackquery
-    """
-    def __init__(self, id, from_peer, data, message = None, inline_message_id = None):
-        """
-        This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be presented. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be presented.
-
-        https://core.telegram.org/bots/api#callbackquery
-
-
-        Parameters:
-
-        :param id: Unique identifier for this query
-        :type  id:  str
-
-        :param from_peer: Sender
-        :type  from_peer:  User
-
-        :param data: Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field
-        :type  data:  str
-
-
-        Optional keyword parameters:
-
-        :keyword message: Optional. Message with the callback button that originated the query. Note that message content and message date will not be available if the message is too old
-        :type    message:  Message
-
-        :keyword inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query
-        :type    inline_message_id:  str
-        """
-        super(CallbackQuery, self).__init__(id)
-
-        assert(id is not None)
-        assert(isinstance(id, unicode_type))  # unicode on python 2, str on python 3
-        self.id = id
-
-        self.from_peer = from_peer
-
-        self.message = message
-
-        assert(inline_message_id is None or isinstance(inline_message_id, unicode_type))  # unicode on python 2, str on python 3
-        self.inline_message_id = inline_message_id
-
-        assert(data is not None)
-        assert(isinstance(data, unicode_type))  # unicode on python 2, str on python 3
-        self.data = data
-    # end def __init__
-
-    def to_array(self):
-        array = super(CallbackQuery, self).to_array()
-        array["id"] = self.id
-        array["from_peer"] = self.from_peer
-        array["data"] = self.data
-        if self.message is not None:
-            array["message"] = self.message
-        if self.inline_message_id is not None:
-            array["inline_message_id"] = self.inline_message_id
-        return array
-    # end def to_array
-# end class CallbackQuery
+# end class
 
 
 class KeyboardButton (Button):
@@ -196,7 +132,6 @@ class InlineKeyboardButton (Button):
         return array
     # end def to_array
 # end class InlineKeyboardButton
-
 
 
 class ReplyKeyboardMarkup(ReplyMarkup):
@@ -391,41 +326,3 @@ class InlineKeyboardMarkup(ReplyMarkup):
         return array
     # end def to_array
 # end class InlineKeyboardMarkup
-
-
-class CallbackQuery(ReplyMarkup):
-    pass
-
-class KeyboardButton(Button):
-    pass
-
-
-class InlineKeyboardButton(Button):
-    def __init__(self, text, url=None, callback_data=None, switch_inline_query=None):
-        """
-        This object represents one button of an inline keyboard. You *must* use exactly one of the optional fields.
-
-        Note: This will only work in Telegram versions released after 9 April, 2016.
-              Older clients will display unsupported message.
-
-        :param text: Label text on the button
-        :type  text: str
-
-        :keyword url: HTTP url to be opened when button is pressed.
-        :type    url: str
-
-        :keyword callback_data: Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
-        :type    callback_data: str
-
-        :keyword switch_inline_query: If set, pressing the button will prompt the user to select one of their chats,
-                                      open that chat and insert the bot‘s username and the specified inline query in
-                                      the input field.
-                                      Can be empty, in which case just the bot’s username will be inserted.
-                                      Note: This offers an easy way for users to start using your bot in inline mode
-                                      when they are currently in a private chat with it.
-                                      Especially useful when combined with switch_pm_* actions – in this case the user
-                                      will be automatically returned to the chat they switched from,
-                                      skipping the chat selection screen.
-        :type    switch_inline_query: str
-        """
-        super(InlineKeyboardButton, self).__init__()

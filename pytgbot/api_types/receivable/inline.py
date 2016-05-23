@@ -2,12 +2,14 @@
 from luckydonaldUtils.encoding import unicode_type
 from luckydonaldUtils.logger import logging
 
-from ..receivable import Receivable
+from ..responses.media import Location
+from ..receivable.updates import UpdateType
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
 
-class ChosenInlineResult (Receivable):
+
+class ChosenInlineResult (UpdateType):
     """
     Represents a result of an inline query that was chosen by the user and sent to their chat partner.
 
@@ -69,4 +71,12 @@ class ChosenInlineResult (Receivable):
             array["inline_message_id"] = self.inline_message_id
         return array
     # end def to_array
+
+    @staticmethod
+    def from_array(self, array):
+        if not array:
+            return None
+        assert (isinstance(array, dict))
+        array["location"] = Location.from_json(array.get("location"))
+        return ChosenInlineResult(**array)
 # end class ChosenInlineResult

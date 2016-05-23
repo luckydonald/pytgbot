@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from pytgbot.api_types.reply_markup import InlineKeyboardMarkup
 from pytgbot.api_types.sendable import Sendable
 from pytgbot.api_types.sendable.inline import InputMessageContent
+from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
 __author__ = 'luckydonald'
 

@@ -4,4 +4,5 @@ __author__ = 'luckydonald'
 import logging
 logger = logging.getLogger(__name__)
 
-from . import reply_markup, files
+from . import files
+from pytgbot.api_types.sendable import reply_markup

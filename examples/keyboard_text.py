@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from pytgbot import Bot
-from pytgbot.api_types.reply_markup import ReplyKeyboardMarkup, ForceReply
+from pytgbot.api_types.sendable.reply_markup import ForceReply
 
 from somewhere import API_KEY, TEST_CHAT  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..." and TEST_CHAT = 12345

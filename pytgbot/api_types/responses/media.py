@@ -3,6 +3,8 @@ import Result as Result
 from luckydonaldUtils.encoding import unicode_type
 from luckydonaldUtils.logger import logging
 
+from pytgbot.api_types.receivable import Receivable
+
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
 
@@ -129,7 +131,7 @@ class Contact(object):
     # end def to_array
 # end class Contact
 
-class Location (object):
+class Location (Receivable):
     """
     This object represents a point on the map.
 

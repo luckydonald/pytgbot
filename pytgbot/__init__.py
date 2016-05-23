@@ -19,11 +19,23 @@ from .api_types.inline import InlineQueryResult
 logger = logging.getLogger(__name__)
 
 
-class PytgBotObject(object):
-    pass
-# end def
+class TgBotApiObject(object):
+    def to_array(self):
+        array = dict()
+        return array
+    # end def to_array
 
-class Bot(PytgBotObject):
+    @staticmethod
+    def from_array(array):
+        if not array:
+            return None
+            array = array.copy()
+        return array
+    # end def
+# end class
+
+
+class Bot(object):
     _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # do not chance.
 
     def __init__(self, api_key):
@@ -921,6 +933,30 @@ class Bot(PytgBotObject):
 
     # end def kick_chat_member
 
+    def leave_chat(self, chat_id):
+        """
+        Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
+
+        https://core.telegram.org/bots/api#leavechat
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
+        :type  chat_id:  int | str
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  True
+        """
+        assert (chat_id is not None)
+        assert (isinstance(chat_id, int or str))
+        return self.do("leaveChat", chat_id=chat_id)
+
+    # end def leave_chat
+
     def unban_chat_member(self, chat_id, user_id):
         """
         Use this method to unban a previously kicked user in a supergroup.
@@ -949,6 +985,103 @@ class Bot(PytgBotObject):
         assert (isinstance(user_id, int))
         return self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
     # end def unban_chat_member
+
+    def get_chat(self, chat_id):
+        """
+        Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+
+        https://core.telegram.org/bots/api#getchat
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
+        :type  chat_id:  int | str
+
+
+        Returns:
+
+        :return: Returns a Chat object on success
+        :rtype:  Chat
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, int or str))
+        return self.do("getChat", chat_id=chat_id)
+    # end def get_chat
+
+    def get_chat_administrators(self, chat_id):
+        """
+        Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
+
+        https://core.telegram.org/bots/api#getchatadministrators
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
+        :type  chat_id:  int | str
+
+
+        Returns:
+
+        :return: On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned
+        :rtype:  Array of ChatMember
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, int or str))
+        return self.do("getChatAdministrators", chat_id=chat_id)
+    # end def get_chat_administrators
+
+    def get_chat_members_count(self, chat_id):
+        """
+        Use this method to get the number of members in a chat. Returns Int on success.
+
+        https://core.telegram.org/bots/api#getchatmemberscount
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
+        :type  chat_id:  int | str
+
+
+        Returns:
+
+        :return: Returns Int on success
+        :rtype:  Int
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, int or str))
+        return self.do("getChatMembersCount", chat_id=chat_id)
+    # end def get_chat_members_count
+
+    def get_chat_member(self, chat_id, user_id):
+        """
+        Use this method to get information about a member of a chat. Returns a ChatMember object on success.
+
+        https://core.telegram.org/bots/api#getchatmember
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
+        :type  chat_id:  int | str
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id:  int
+
+
+        Returns:
+
+        :return: Returns a ChatMember object on success
+        :rtype:  ChatMember
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, int or str))
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        return self.do("getChatMember", chat_id=chat_id, user_id=user_id)
+    # end def get_chat_member
 
     def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
         """
