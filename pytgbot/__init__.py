@@ -65,8 +65,8 @@ class Bot(object):
         assert (offset is None or isinstance(offset, int))
         assert (limit is None or isinstance(limit, int))
         assert (timeout is None or isinstance(timeout, int))
-        return self.do("getUpdates", offset=offset, limit=limit, timeout=timeout)
-
+        use_long_polling = timeout is not None and timeout and timeout > 0
+        return self.do("getUpdates", offset=offset, limit=limit, use_long_polling=use_long_polling, timeout=timeout)
     # end def get_updates
 
     def set_webhook(self, url=None, certificate=None):
@@ -1226,17 +1226,19 @@ class Bot(object):
         return self.do("getFile", file_id=file_id)
     # end def get_file
 
-    def do(self, command, files=None, **query):
+    def do(self, command, files=None, use_long_polling=False, **query):
         """
         Send a request to the api.
 
-        :param action:
-        :param data:
-        :param query:
+        :param command: The Url command parameter
+        :param files: if it needs to send files.
+        :param use_long_polling: if it should use long polling.
+                                (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
+        :param query: will get json encoded.
         :return:
         """
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
-        r = requests.post(url, params=query, files=files,
+        r = requests.post(url, params=query, files=files, stream=use_long_polling,
                           verify=True)  # No self signed certificates. Telegram should be trustworthy anyway...
         res = DictObject.objectify(r.json())
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
