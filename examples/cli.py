@@ -48,7 +48,6 @@ def main(API_KEY):
                 print(result_str)
         except Exception as e:
             print("Error: " + str(e))
-            raise
         # end try
     # end while
 # end def

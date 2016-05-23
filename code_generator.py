@@ -4,6 +4,7 @@ __author__ = 'luckydonald'
 import logging
 logger = logging.getLogger(__name__)
 
+
 import re
 _first_cap_re = re.compile(r'(.)([A-Z][a-z]+)')
 _all_cap_re = re.compile(r'([a-z0-9])([A-Z])')

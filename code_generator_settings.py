@@ -1,0 +1,51 @@
+CLASS_TYPE_PATHS = { # import, master_class
+    "TgBotApiObject": ("pytgbot.api_types.", "object"),
+
+    # pytgbot.api_types.sendable.inline.*
+    "InlineQueryResult":         ("pytgbot.api_types.sendable.inline.", "Sendable"),
+    "InlineQueryResultArticle":  ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultPhoto":    ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultGif":      ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultMpeg4Gif": ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultVideo":    ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultAudio":    ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultVoice":    ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultDocument": ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultLocation": ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultVenue":    ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+    "InlineQueryResultContact":  ("pytgbot.api_types.sendable.inline.", "InlineQueryResult"),
+
+    # pytgbot.api_types.media.*
+    "Media":                ("pytgbot.api_types.media.", "Receivable"),
+    "Voice":                ("pytgbot.api_types.media.", "Media"),
+    "Contact":              ("pytgbot.api_types.media.", "Media"),
+    "Location":             ("pytgbot.api_types.media.", "Media"),
+    "Venue":                ("pytgbot.api_types.media.", "Media"),
+    "PhotoSize":            ("pytgbot.api_types.media.", "Result"),
+    "UserProfilePhotos":    ("pytgbot.api_types.media.", "Result"),
+    "Audio":                ("pytgbot.api_types.media.", "Media"),
+    "Document":             ("pytgbot.api_types.media.", "Media"),
+    "Sticker":              ("pytgbot.api_types.media.", "Media"),
+    "Video":                ("pytgbot.api_types.media.", "Media"),
+    "File":                 ("pytgbot.api_types.media.", "Receivable"),
+
+    # pytgbot.api_types.responses.peer.*
+    "Peer":         ("pytgbot.api_types.responses.peer.", "Result"),
+    "User":         ("pytgbot.api_types.responses.peer.", "Peer"),
+    "Chat":         ("pytgbot.api_types.responses.peer.", "Peer"),
+
+    "Message": "UpdateType",
+    "ChosenInlineResult": "UpdateType",
+    "CallbackQuery": "UpdateType",
+    "ReplyKeyboardMarkup": "ReplyMarkup",
+    "ReplyKeyboardHide": "ReplyMarkup",
+    "ForceReply": "ReplyMarkup",
+    "InlineKeyboardMarkup": "ReplyMarkup",
+    "KeyboardButton": "Button",
+    "InlineKeyboardButton": "Button",
+    "InputTextMessageContent": "InputMessageContent",
+    "InputLocationMessageContent": "InputMessageContent",
+    "InputVenueMessageContent": "InputMessageContent",
+    "InputContactMessageContent": "InputMessageContent",
+    "MessageEntity": "Result",
+}

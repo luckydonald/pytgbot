@@ -9,7 +9,7 @@ __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
 
 
-class Media(object):
+class Media(Receivable):
     pass
 
 
@@ -614,7 +614,7 @@ class Video (Media):
 # end class Video
 
 
-class File (object):
+class File (Receivable):
     """
     This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
 
@@ -622,7 +622,7 @@ class File (object):
 
     https://core.telegram.org/bots/api#file
     """
-    def __init__(self, file_id, file_size = None, file_path = None):
+    def __init__(self, file_id, file_size=None, file_path=None):
         """
         This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
 
@@ -645,7 +645,7 @@ class File (object):
         :keyword file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
         :type    file_path:  str
         """
-        super(File, self).__init__(id)
+        super(File, self).__init__()
 
         assert(file_id is not None)
         assert(isinstance(file_id, unicode_type))  # unicode on python 2, str on python 3
@@ -657,6 +657,10 @@ class File (object):
         assert(file_path is None or isinstance(file_path, unicode_type))  # unicode on python 2, str on python 3
         self.file_path = file_path
     # end def __init__
+
+    @property
+    def file_url(self, api_key):
+        return "https://api.telegram.org/file/bot{token}/{file_path}".format(token=api_key, file_path=self.file_path)
 
     def to_array(self):
         array = super(File, self).to_array()
