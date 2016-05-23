@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.logger import logging
 
-from ... import TgBotApiObject
+from pytgbot.api_types import TgBotApiObject
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)

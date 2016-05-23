@@ -222,6 +222,9 @@ def parse_param_types(param):
         elif asses.startswith("Array") or asses.startswith("list"):
             assert_commands.append("isinstance({var}, (list, tuple))".format(var=param_name))
             assert_comments.append(asses.replace("\n", " "))
+        elif " or " in asses or " | " in asses:
+            asses2 = asses.replace(" or ", ", ").replace(" | ", ", ")
+            assert_commands.append("isinstance({var}, ({type}))".format(var=param_name, type=asses2))
         else:
             assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
             non_buildin_type = asses

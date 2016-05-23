@@ -19,22 +19,6 @@ from .api_types.inline import InlineQueryResult
 logger = logging.getLogger(__name__)
 
 
-class TgBotApiObject(object):
-    def to_array(self):
-        array = dict()
-        return array
-    # end def to_array
-
-    @staticmethod
-    def from_array(array):
-        if not array:
-            return None
-            array = array.copy()
-        return array
-    # end def
-# end class
-
-
 class Bot(object):
     _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # do not chance.
 
@@ -45,6 +29,11 @@ class Bot(object):
         self._last_update = datetime.now()
 
     def get_me(self):
+        """
+        A simple method for testing your bot's auth token. Requires no parameters.
+        :return: Returns basic information about the bot in form of a User object.
+        :rtype: User
+        """
         return self.do("getMe")
 
     def get_updates(self, offset=None, limit=None, timeout=None):
@@ -952,7 +941,7 @@ class Bot(object):
         :rtype:  True
         """
         assert (chat_id is not None)
-        assert (isinstance(chat_id, int or str))
+        assert (isinstance(chat_id, int, str))
         return self.do("leaveChat", chat_id=chat_id)
 
     # end def leave_chat
@@ -1005,7 +994,7 @@ class Bot(object):
         :rtype:  Chat
         """
         assert(chat_id is not None)
-        assert(isinstance(chat_id, int or str))
+        assert(isinstance(chat_id, (int, str)))
         return self.do("getChat", chat_id=chat_id)
     # end def get_chat
 
@@ -1028,7 +1017,7 @@ class Bot(object):
         :rtype:  Array of ChatMember
         """
         assert(chat_id is not None)
-        assert(isinstance(chat_id, int or str))
+        assert(isinstance(chat_id, int, str))
         return self.do("getChatAdministrators", chat_id=chat_id)
     # end def get_chat_administrators
 
@@ -1051,7 +1040,7 @@ class Bot(object):
         :rtype:  Int
         """
         assert(chat_id is not None)
-        assert(isinstance(chat_id, int or str))
+        assert(isinstance(chat_id, int, str))
         return self.do("getChatMembersCount", chat_id=chat_id)
     # end def get_chat_members_count
 
@@ -1077,7 +1066,7 @@ class Bot(object):
         :rtype:  ChatMember
         """
         assert(chat_id is not None)
-        assert(isinstance(chat_id, int or str))
+        assert(isinstance(chat_id, int, str))
         assert(user_id is not None)
         assert(isinstance(user_id, int))
         return self.do("getChatMember", chat_id=chat_id, user_id=user_id)

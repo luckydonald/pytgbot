@@ -1,8 +1,21 @@
 # -*- coding: utf-8 -*-
+import logging
 __author__ = 'luckydonald'
 
-import logging
 logger = logging.getLogger(__name__)
 
-from . import files
-from pytgbot.api_types.sendable import reply_markup
+
+class TgBotApiObject(object):
+    def to_array(self):
+        array = dict()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        if not array:
+            return None
+        array = array.copy()
+        return array
+    # end def
+# end class
