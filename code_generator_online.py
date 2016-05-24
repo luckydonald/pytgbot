@@ -6,6 +6,7 @@ from code_generator import func, clazz, get_type_path
 from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT
 
 FILE_HEADER = "# -*- coding: utf-8 -*-\n"
+MAIN_FILE_CLASS_HEADER = "class Bot(object):\n    _base_url = \"https://api.telegram.org/bot{api_key}/{command}\"\n"
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
@@ -213,9 +214,9 @@ for h in bs.select("#dev_page_content > h4"):
         try:
             if table_type == "class":
                 import_path = get_type_path(title)
-                if import_path == title:
-                    "pytgbot.api_types." + title.lower()
                 import_path = import_path.rstrip(".")
+                if import_path == title:
+                    "pytgbot.api_types." + title.lower() + "."
             else:
                 import_path = "pytgbot.__init__."
             file_path = abspath(path_join(file, import_path[:import_path.rfind(".")].replace(".", folder_seperator)+".py"))
@@ -224,6 +225,8 @@ for h in bs.select("#dev_page_content > h4"):
             with open(file_path, "a") as f:
                 if need_header:
                     f.write(FILE_HEADER)
+                    if table_type == "func":
+                        f.write(MAIN_FILE_CLASS_HEADER)
                 f.write("\n" + result + "\n")
             # end with
         except IOError:
