@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+
 __author__ = 'luckydonald'
 
 import logging
@@ -88,6 +90,14 @@ safe_var_translations = {
 }
 
 
+def get_type_path(param_class):
+    param_class = param_class.strip()
+    if param_class in CLASS_TYPE_PATHS:
+        return CLASS_TYPE_PATHS[param_class][CLASS_TYPE_PATHS__IMPORT]+param_class
+    else:
+        return param_class
+
+
 def clazz(clazz, parent_clazz, description, link, params_string, init_super_args=None):
     """
     Live template for pycharm:
@@ -115,7 +125,7 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
         asserts.append("")
         if param_needed:
             args.append(param_name)
-            str_args += '\n\n\t\t:param {key}: {descr}\n\t\t:type  {key}: {type}'.format(key=param_name, descr=param_description, type=param_type)
+            str_args += '\n\n\t\t:param {key}: {descr}\n\t\t:type  {key}: {type}'.format(key=param_name, descr=param_description, type=get_type_path(param_type))
             if assert_commands:
                 asserts.append("assert({var} is not None)".format(var=param_name))
                 asserts.append("assert({ass})".format(ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))

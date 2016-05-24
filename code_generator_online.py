@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.interactions import answer
 from luckydonaldUtils.logger import logging
+from luckydonaldUtils.files import mkdir_p  # luckydonaldUtils v0.43+
+from code_generator import func, clazz, get_type_path
+from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT
 
-from code_generator import func, clazz
+FILE_HEADER = "# -*- coding: utf-8 -*-\n"
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
@@ -10,6 +13,7 @@ logger = logging.getLogger(__name__)
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
+from os.path import abspath, dirname, join as path_join, sep as folder_seperator, isfile
 
 BASE_URL = "https://core.telegram.org/bots/api"
 
@@ -19,37 +23,6 @@ def lol1(tag):
 
 class_fields = ["Field", "Type", "Description"]
 func_fields = ["Parameters", "Type", "Required", "Description"]
-
-
-superclasses = {
-    "User": "Peer",
-    "Chat": "Peer",
-    "Message": "UpdateType",
-    "InlineQuery": "UpdateType",
-    "ChosenInlineResult": "UpdateType",
-    "CallbackQuery": "UpdateType",
-    "Audio": "Media",
-    "Document": "Media",
-    "Sticker": "Media",
-    "Video": "Media",
-    "Voice": "Media",
-    "Contact": "Media",
-    "Location": "Media",
-    "Venue": "Media",
-    "File": "Media",
-    "ReplyKeyboardMarkup": "ReplyMarkup",
-    "ReplyKeyboardHide": "ReplyMarkup",
-    "ForceReply": "ReplyMarkup",
-    "InlineKeyboardMarkup": "ReplyMarkup",
-    "KeyboardButton": "Button",
-    "InlineKeyboardButton": "Button",
-    "InlineQueryResultArticle": "InlineQueryResult",
-    "InputTextMessageContent": "InputMessageContent",
-    "InputLocationMessageContent": "InputMessageContent",
-    "InputVenueMessageContent": "InputMessageContent",
-    "InputContactMessageContent": "InputMessageContent",
-    "MessageEntity": "Result",
-}
 
 def parse_table(tag):
     """
@@ -96,11 +69,13 @@ def parse_table(tag):
 # end def
 
 
-file = answer("File path to store the result. Will also be printed.", default="/tmp/pytgbotapi.txt")
+file = answer("Folder path to store the results.", default="/tmp/pytgbotapi/")
 if file:
     try:
-        with open(file, "w") as f:
-            f.write("# -*- coding: utf-8 -*-\n\n")
+        file = abspath(file)
+        mkdir_p(file)
+        with open(path_join(file ,"__init__.py"), "w") as f:
+            f.write(FILE_HEADER)
             # end with
     except IOError:
         pass
@@ -108,7 +83,7 @@ if file:
 # end if file
 filter = answer(
     "Only generate the doc for specific functions/classes. Comma seperated list. Leave empty to generate all.",
-    default="getChat, leaveChat, getChatAdministrators, getChatMember, getChatMembersCount, Message, MessageEntity"
+    default=""# getChat, leaveChat, getChatAdministrators, getChatMember, getChatMembersCount, Message, MessageEntity"
 )
 if filter.strip():
     filter = [x.strip() for x in filter.split(",")]
@@ -198,6 +173,8 @@ for h in bs.select("#dev_page_content > h4"):
             table_type, param_strings = parse_table(sibling)
         elif sibling.name == "h4":
             break
+        elif sibling.name == "h3":
+            break
         elif sibling.name == "hr":  # end of page
             break
         else:
@@ -223,8 +200,8 @@ for h in bs.select("#dev_page_content > h4"):
         logger.debug("\n")
         result = func(title, descr, link, params_string, returns=returns, return_type=return_type)
     elif table_type == "class":
-        if title in superclasses:
-            parent_clazz = superclasses[title]
+        if title in CLASS_TYPE_PATHS:
+            parent_clazz = CLASS_TYPE_PATHS[title][CLASS_TYPE_PATHS__PARENT]
             print("superclass: " + parent_clazz)
         else:
             parent_clazz = answer("Parent class name", "TgBotApiObject")
@@ -234,8 +211,20 @@ for h in bs.select("#dev_page_content > h4"):
     results.append(result)
     if file:
         try:
-            with open(file, "a") as f:
-                f.write("\n\n" + result)
+            if table_type == "class":
+                import_path = get_type_path(title)
+                if import_path == title:
+                    "pytgbot.api_types." + title.lower()
+                import_path = import_path.rstrip(".")
+            else:
+                import_path = "pytgbot.__init__."
+            file_path = abspath(path_join(file, import_path[:import_path.rfind(".")].replace(".", folder_seperator)+".py"))
+            mkdir_p(dirname(file_path))
+            need_header = not isfile(file_path)
+            with open(file_path, "a") as f:
+                if need_header:
+                    f.write(FILE_HEADER)
+                f.write("\n" + result + "\n")
             # end with
         except IOError:
             pass
