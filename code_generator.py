@@ -157,7 +157,7 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     from_array.extend(from_array1)
     from_array.extend(from_array2)
     from_array.append("return {clazz}(**array)".format(clazz=clazz))
-    result = 'class {clazz} ({parent_clazz}):\n' \
+    result = 'class {clazz}({parent_clazz}):\n' \
              '\t"""\n' \
              '\t{clazz_description_w_tabs}\n' \
              '\n' \
@@ -181,10 +181,10 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
              '\t# end def to_array\n' \
              '\n' \
              '\t@staticmethod\n' \
-             '\tdef from_array(self, array):\n' \
+             '\tdef from_array(array):\n' \
              '\t\t{from_array_with_tabs}\n' \
              '\t# end def from_array\n' \
-             '# end class {clazz}'.format(
+             '# end class {clazz}\n'.format(
         clazz=clazz, parent_clazz=parent_clazz, params=", ".join(args), param_description = param_description,
         clazz_description_w_tabs=clazz_description_w_tabs, init_description_w_tabs=init_description_w_tabs, link=link,
         asserts_with_tabs="\n\t\t".join(asserts), to_array_with_tabs="\n\t\t".join(to_array),

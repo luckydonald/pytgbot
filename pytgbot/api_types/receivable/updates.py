@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type
 from luckydonaldUtils.logger import logging
+
+from pytgbot.api_types.receivable.inline import ChosenInlineResult
+from pytgbot.api_types.receivable.peer import User, Chat
+from pytgbot.api_types.receivable.responses import InlineQuery
 from . import Receivable
 
 __author__ = 'luckydonald'
@@ -17,7 +21,7 @@ class Update(Receivable):
 
     https://core.telegram.org/bots/api#update
     """
-    def __init__(self, update_id, message = None, inline_query = None, chosen_inline_result = None, callback_query = None):
+    def __init__(self, update_id, message=None, edited_message=None, inline_query=None, chosen_inline_result=None, callback_query=None):
         """
         This object represents an incoming update.Only one of the optional parameters can be present in any given update.
 
@@ -27,35 +31,45 @@ class Update(Receivable):
         Parameters:
 
         :param update_id: The update‘s unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you’re using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order.
-        :type  update_id:  int
+        :type  update_id: int
 
 
         Optional keyword parameters:
 
         :keyword message: Optional. New incoming message of any kind — text, photo, sticker, etc.
-        :type    message:  Message
+        :type    message: Message
+
+        :keyword edited_message: Optional. New version of a message that is known to the bot and was edited
+        :type    edited_message: Message
 
         :keyword inline_query: Optional. New incoming inline query
-        :type    inline_query:  InlineQuery
+        :type    inline_query: InlineQuery
 
         :keyword chosen_inline_result: Optional. The result of an inline query that was chosen by a user and sent to their chat partner.
-        :type    chosen_inline_result:  ChosenInlineResult
+        :type    chosen_inline_result: ChosenInlineResult
 
         :keyword callback_query: Optional. New incoming callback query
-        :type    callback_query:  CallbackQuery
+        :type    callback_query: CallbackQuery
         """
-        super(Update, self).__init__(id)
+        super(Update, self).__init__()
 
         assert(update_id is not None)
         assert(isinstance(update_id, int))
         self.update_id = update_id
 
+        assert(message is None or isinstance(message, Message))
         self.message = message
 
+        assert(edited_message is None or isinstance(edited_message, Message))
+        self.edited_message = edited_message
+
+        assert(inline_query is None or isinstance(inline_query, InlineQuery))
         self.inline_query = inline_query
 
+        assert(chosen_inline_result is None or isinstance(chosen_inline_result, ChosenInlineResult))
         self.chosen_inline_result = chosen_inline_result
 
+        assert(callback_query is None or isinstance(callback_query, CallbackQuery))
         self.callback_query = callback_query
     # end def __init__
 
@@ -64,6 +78,8 @@ class Update(Receivable):
         array["update_id"] = self.update_id
         if self.message is not None:
             array["message"] = self.message
+        if self.edited_message is not None:
+            array["edited_message"] = self.edited_message
         if self.inline_query is not None:
             array["inline_query"] = self.inline_query
         if self.chosen_inline_result is not None:
@@ -72,6 +88,16 @@ class Update(Receivable):
             array["callback_query"] = self.callback_query
         return array
     # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        array['message'] = Message.from_array(array.get('message'))
+        array['edited_message'] = Message.from_array(array.get('edited_message'))
+        array['inline_query'] = InlineQuery.from_array(array.get('inline_query'))
+        array['chosen_inline_result'] = ChosenInlineResult.from_array(array.get('chosen_inline_result'))
+        array['callback_query'] = CallbackQuery.from_array(array.get('callback_query'))
+        return Update(**array)
+    # end def from_array
 # end class Update
 
 
@@ -91,105 +117,105 @@ class Message(UpdateType):
         Parameters:
 
         :param message_id: Unique message identifier
-        :type  message_id:  int
+        :type  message_id: int
 
         :param date: Date the message was sent in Unix time
-        :type  date:  int
+        :type  date: int
 
         :param chat: Conversation the message belongs to
-        :type  chat:  Chat
+        :type  chat: pytgbot.api_types.receivable.responses.peer.Chat
 
 
         Optional keyword parameters:
 
         :keyword from_peer: Optional. Sender, can be empty for messages sent to channels
-        :type    from_peer:  User
+        :type    from_peer: User
 
         :keyword forward_from: Optional. For forwarded messages, sender of the original message
-        :type    forward_from:  User
+        :type    forward_from: User
 
         :keyword forward_from_chat: Optional. For messages forwarded from a channel, information about the original channel
-        :type    forward_from_chat:  Chat
+        :type    forward_from_chat: Chat
 
         :keyword forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
-        :type    forward_date:  int
+        :type    forward_date: int
 
         :keyword reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
-        :type    reply_to_message:  Message
+        :type    reply_to_message: Message
 
         :keyword edit_date: Optional. Date the message was last edited in Unix time
-        :type    edit_date:  int
+        :type    edit_date: int
 
         :keyword text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
-        :type    text:  str
+        :type    text: str
 
         :keyword entities: Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
-        :type    entities:  list of MessageEntity
+        :type    entities: list of MessageEntity
 
         :keyword audio: Optional. Message is an audio file, information about the file
-        :type    audio:  pytgbot.api_types.responses.media.Audio
+        :type    audio: pytgbot.api_types.responses.media.Audio
 
         :keyword document: Optional. Message is a general file, information about the file
-        :type    document:  pytgbot.api_types.responses.media.Document
+        :type    document: pytgbot.api_types.responses.media.Document
 
         :keyword photo: Optional. Message is a photo, available sizes of the photo
-        :type    photo:  list of PhotoSize
+        :type    photo: list of PhotoSize
 
         :keyword sticker: Optional. Message is a sticker, information about the sticker
-        :type    sticker:  pytgbot.api_types.responses.media.Sticker
+        :type    sticker: pytgbot.api_types.responses.media.Sticker
 
         :keyword video: Optional. Message is a video, information about the video
-        :type    video:  pytgbot.api_types.responses.media.Video
+        :type    video: pytgbot.api_types.responses.media.Video
 
         :keyword voice: Optional. Message is a voice message, information about the file
-        :type    voice:  Voice
+        :type    voice: Voice
 
         :keyword caption: Optional. Caption for the document, photo or video, 0-200 characters
-        :type    caption:  str
+        :type    caption: str
 
         :keyword contact: Optional. Message is a shared contact, information about the contact
-        :type    contact:  Contact
+        :type    contact: Contact
 
         :keyword location: Optional. Message is a shared location, information about the location
-        :type    location:  Location
+        :type    location: Location
 
         :keyword venue: Optional. Message is a venue, information about the venue
-        :type    venue:  Venue
+        :type    venue: Venue
 
         :keyword new_chat_member: Optional. A new member was added to the group, information about them (this member may be the bot itself)
-        :type    new_chat_member:  User
+        :type    new_chat_member: User
 
         :keyword left_chat_member: Optional. A member was removed from the group, information about them (this member may be the bot itself)
-        :type    left_chat_member:  User
+        :type    left_chat_member: User
 
         :keyword new_chat_title: Optional. A chat title was changed to this value
-        :type    new_chat_title:  str
+        :type    new_chat_title: str
 
         :keyword new_chat_photo: Optional. A chat photo was change to this value
-        :type    new_chat_photo:  list of PhotoSize
+        :type    new_chat_photo: list of PhotoSize
 
         :keyword delete_chat_photo: Optional. Service message: the chat photo was deleted
-        :type    delete_chat_photo:  True
+        :type    delete_chat_photo: True
 
         :keyword group_chat_created: Optional. Service message: the group has been created
-        :type    group_chat_created:  True
+        :type    group_chat_created: True
 
         :keyword supergroup_chat_created: Optional. Service message: the supergroup has been created
-        :type    supergroup_chat_created:  True
+        :type    supergroup_chat_created: True
 
         :keyword channel_chat_created: Optional. Service message: the channel has been created
-        :type    channel_chat_created:  True
+        :type    channel_chat_created: True
 
         :keyword migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier, not exceeding 1e13 by absolute value
-        :type    migrate_to_chat_id:  int
+        :type    migrate_to_chat_id: int
 
         :keyword migrate_from_chat_id: Optional. The supergroup has been migrated from a group with the specified identifier, not exceeding 1e13 by absolute value
-        :type    migrate_from_chat_id:  int
+        :type    migrate_from_chat_id: int
 
         :keyword pinned_message: Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
-        :type    pinned_message:  Message
+        :type    pinned_message: Message
         """
-        super(Message, self).__init__(id)
+        super(Message, self).__init__()
 
         assert(message_id is not None)
         assert(isinstance(message_id, int))
@@ -358,7 +384,7 @@ class Message(UpdateType):
     # end def to_array
 
     @staticmethod
-    def from_array(self, array):
+    def from_array(array):
         array['chat'] = Chat.from_array(array.get('chat'))
         array['from_peer'] = User.from_array(array.get('from'))
         array['forward_from'] = User.from_array(array.get('forward_from'))
@@ -386,7 +412,7 @@ class CallbackQuery (UpdateType):
 
     https://core.telegram.org/bots/api#callbackquery
     """
-    def __init__(self, id, from_peer, data, message = None, inline_message_id = None):
+    def __init__(self, id, from_peer, data, message=None, inline_message_id=None):
         """
         This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be presented. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be presented.
 
@@ -396,22 +422,22 @@ class CallbackQuery (UpdateType):
         Parameters:
 
         :param id: Unique identifier for this query
-        :type  id:  str
+        :type  id: str
 
         :param from_peer: Sender
-        :type  from_peer:  User
+        :type  from_peer: pytgbot.api_types.receivable.responses.peer.User
 
         :param data: Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field
-        :type  data:  str
+        :type  data: str
 
 
         Optional keyword parameters:
 
         :keyword message: Optional. Message with the callback button that originated the query. Note that message content and message date will not be available if the message is too old
-        :type    message:  Message
+        :type    message: Message
 
         :keyword inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query
-        :type    inline_message_id:  str
+        :type    inline_message_id: str
         """
         super(CallbackQuery, self).__init__(id)
 
@@ -419,8 +445,11 @@ class CallbackQuery (UpdateType):
         assert(isinstance(id, unicode_type))  # unicode on python 2, str on python 3
         self.id = id
 
+        assert(from_peer is not None)
+        assert(isinstance(from_peer, User))
         self.from_peer = from_peer
 
+        assert(message is None or isinstance(message, Message))
         self.message = message
 
         assert(inline_message_id is None or isinstance(inline_message_id, unicode_type))  # unicode on python 2, str on python 3
@@ -442,4 +471,11 @@ class CallbackQuery (UpdateType):
             array["inline_message_id"] = self.inline_message_id
         return array
     # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        array['from_peer'] = User.from_array(array.get('from'))
+        array['message'] = Message.from_array(array.get('message'))
+        return CallbackQuery(**array)
+    # end def from_array
 # end class CallbackQuery
