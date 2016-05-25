@@ -3,6 +3,8 @@ from luckydonaldUtils.encoding import unicode_type
 from luckydonaldUtils.logger import logging
 
 from pytgbot.api_types.receivable.inline import ChosenInlineResult
+from pytgbot.api_types.receivable.media import Audio, Sticker, Video, Voice, Contact, Location, Venue
+from pytgbot.api_types.receivable.media import Document
 from pytgbot.api_types.receivable.peer import User, Chat
 from pytgbot.api_types.receivable.responses import InlineQuery
 from . import Receivable

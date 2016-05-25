@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 
 class InlineQuery(Result):
     """
-    This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
+    This object represents an incoming inline query. When the user sends an empty query,
+    your bot could return some default or trending results.
 
     https://core.telegram.org/bots/api#inlinequery
     """
@@ -44,7 +45,7 @@ class InlineQuery(Result):
         :keyword location: Optional. Sender location, only for bots that request user location
         :type    location:  Location
         """
-        super(InlineQuery, self).__init__(id)
+        super(InlineQuery, self).__init__()
 
         assert(id is not None)
         assert(isinstance(id, unicode_type))  # unicode on python 2, str on python 3
@@ -75,7 +76,8 @@ class InlineQuery(Result):
     # end def to_array
 # end class InlineQuery
 
-class ChosenInlineResult (UpdateType):
+
+class ChosenInlineResult(UpdateType):
     """
     Represents a result of an inline query that was chosen by the user and sent to their chat partner.
 
@@ -121,7 +123,7 @@ class ChosenInlineResult (UpdateType):
         assert(location is None or isinstance(location, Location))
         self.location = location
 
-        assert(inline_message_id is None or isinstance(inline_message_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(inline_message_id is None or isinstance(inline_message_id, unicode_type))  # py2: unicode, py3: str
         self.inline_message_id = inline_message_id
 
         assert(query is not None)

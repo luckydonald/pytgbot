@@ -2,7 +2,7 @@
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type
 
-from pytgbot.api_types.responses import Result
+from pytgbot.api_types.receivable import Result
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
@@ -193,7 +193,6 @@ class ChatMember(Result):
         assert (status is not None)
         assert (isinstance(status, unicode_type))  # unicode on python 2, str on python 3
         self.status = status
-
     # end def __init__
 
     def to_array(self):
@@ -201,12 +200,11 @@ class ChatMember(Result):
         array["user"] = self.user
         array["status"] = self.status
         return array
-
     # end def to_array
 
     @staticmethod
     def from_array(array):
         array['user'] = User.from_array(array.get('user'))
         return ChatMember(**array)
-        # end def from_array
-        # end class ChatMember
+    # end def from_array
+# end class ChatMember

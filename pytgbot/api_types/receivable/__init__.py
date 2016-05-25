@@ -18,5 +18,3 @@ class Result(Receivable):
         return {}
     pass
 # end class Result
-
-

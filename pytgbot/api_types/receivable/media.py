@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type
 
-from pytgbot.api_types.receivable import Receivable
-from pytgbot.api_types.responses import Result
+from pytgbot.api_types.receivable import Receivable, Result
 
 
 class Media(Receivable):
     pass
 
 
-class PhotoSize (Result):
+class PhotoSize(Result):
     """
     This object represents one size of a photo or a file / sticker thumbnail.
 
