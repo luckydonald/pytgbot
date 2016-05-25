@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from json import dumps
 
+from pytgbot.api_types.sendable.inline import InlineQueryResultArticle, InlineQueryResultGif, InlineQueryResultPhoto
 
 __author__ = 'luckydonald'
 VERSION = "v0.2.0"
@@ -21,8 +22,6 @@ from somewhere import API_KEY  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..."
 
 from pytgbot import Bot, u
-from pytgbot.api_types.inline import InlineQueryResultArticle, InlineQueryResultPhoto, InlineQueryResultGif
-
 
 def main():
     # get you bot instance.

@@ -129,18 +129,26 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
             if assert_commands:
                 asserts.append("assert({var} is not None)".format(var=param_name))
                 asserts.append("assert({ass})".format(ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))
-            to_array1.append('array["{var}"] = self.{var}'.format(var=param_name))
             if non_buildin_type:
+                to_array1.append('array["{var}"] = self.{var}.to_array()'.format(var=param_name))
                 from_array1.append("array['{var}'] = {type}.from_array(array.get('{array_key}'))".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
+            else:
+                to_array1.append('array["{var}"] = self.{var}'.format(var=param_name))
+                from_array2.append("array['{var}'] = array.get('{array_key}')  # type {type}".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
+            # end if non_buildin_type
         else:
             kwargs.append("{param_name}=None".format(param_name=param_name))
             str_kwargs += '\n\n\t\t:keyword {key}: {descr}\n\t\t:type    {key}: {type}'.format(key=param_name, descr=param_description, type=param_type)
             if assert_commands:
                 asserts.append("assert({var} is None or {ass})".format(var=param_name, ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))
             to_array2.append('if self.{var} is not None:'.format(var=param_name))
-            to_array2.append('\tarray["{var}"] = self.{var}'.format(var=param_name))
             if non_buildin_type:
+                to_array2.append('\tarray["{var}"] = self.{var}.to_array()'.format(var=param_name))
                 from_array2.append("array['{var}'] = {type}.from_array(array.get('{array_key}'))".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
+            else:
+                to_array2.append('\tarray["{var}"] = self.{var}'.format(var=param_name))
+                from_array2.append("array['{var}'] = array.get('{array_key}')  # type {type}".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
+        # end if non_buildin_type
         asserts.append("self.{param_name} = {param_name}".format(param_name=param_name))
     param_description = ""
     if len(str_args)>0:
@@ -223,7 +231,7 @@ def parse_param_types(param):
     for asses in assert_types.split("|"):  # short for asserts
         asses = asses.strip()  # always good!!
         asses = asses.strip("()")
-        if asses in ["int", "bool"]:
+        if asses in ["int", "bool", "float"]:
             assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
         elif asses == "True":
             assert_commands.append("{var} == True".format(var=param_name, type=asses))

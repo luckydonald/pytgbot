@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from pytgbot.api_types.sendable.inline import InlineQueryResultArticle, InputTextMessageContent
+
 __author__ = 'luckydonald'
 
 from random import getrandbits
@@ -11,9 +13,7 @@ from somewhere import API_KEY, TEST_CHAT  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..." and TEST_CHAT = 12345
 
 from pytgbot import Bot
-from pytgbot.api_types.inline import InlineQueryResultArticle
-from pytgbot.encoding import to_native as n
-
+from luckydonaldUtils.encoding import to_native as n
 # get you bot instance.
 bot = Bot(API_KEY)
 
@@ -31,10 +31,26 @@ while True:
         inline_query_id = update.inline_query.id
         query_obj = update.inline_query
         query = query_obj.query
-        print (query)
-        foo = []
-        foo.append(InlineQueryResultArticle(id=1, title="test 1", message_text=query, description='Will send {}'.format(repr(n(query))), parse_mode="Markdown"))
-        foo.append(InlineQueryResultArticle(id=2, title="test 2", message_text=query, description='Will send {}'.format(repr(n(query))), parse_mode="Markdown"))
+        print(query)
+        foo = list()
+        foo.append(InlineQueryResultArticle(
+            id=query+"_normal",
+            title="test 1 (normal)",
+            input_message_content=InputTextMessageContent(query),
+            description='Will send {}'.format(repr(n(query)))
+        ))
+        foo.append(InlineQueryResultArticle(
+            id=query+"_markdown",
+            title="test 2 (markdown)",
+            input_message_content=InputTextMessageContent(query, parse_mode="Markdown"),
+            description='Will send {}'.format(repr(n(query)))
+        ))
+        foo.append(InlineQueryResultArticle(
+            id=query+"_html",
+            title="test 3 (html)",
+            input_message_content=InputTextMessageContent(query, parse_mode="HTML"),
+            description='Will send {}'.format(repr(n(query)))
+        ))
         success = bot.answer_inline_query(inline_query_id, foo, cache_time=2)
         print(success)
         if not success.ok:

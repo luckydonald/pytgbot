@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from luckydonaldUtils.encoding import unicode_type
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.logger import logging
 
 from pytgbot.api_types.sendable import Sendable
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class InlineQueryResult(Sendable):
     def __init__(self, id, type):
         assert(id is not None)
-        if not isinstance(id,unicode_type):
+        if not isinstance(id, unicode_type):
             id = u(str(id))
         assert(isinstance(id, unicode_type))
         self.id = id
@@ -124,9 +124,9 @@ class InlineQueryResultArticle (InlineQueryResult):
         array = super(InlineQueryResultArticle, self).to_array()
         array["id"] = self.id
         array["title"] = self.title
-        array["input_message_content"] = self.input_message_content
+        array["input_message_content"] = self.input_message_content.to_array()
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.url is not None:
             array["url"] = self.url
         if self.hide_url is not None:
@@ -251,9 +251,9 @@ class InlineQueryResultPhoto (InlineQueryResult):
         if self.caption is not None:
             array["caption"] = self.caption
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -358,9 +358,9 @@ class InlineQueryResultGif (InlineQueryResult):
         if self.caption is not None:
             array["caption"] = self.caption
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -465,9 +465,9 @@ class InlineQueryResultMpeg4Gif (InlineQueryResult):
         if self.caption is not None:
             array["caption"] = self.caption
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -596,9 +596,9 @@ class InlineQueryResultVideo (InlineQueryResult):
         if self.description is not None:
             array["description"] = self.description
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -689,9 +689,9 @@ class InlineQueryResultAudio (InlineQueryResult):
         if self.audio_duration is not None:
             array["audio_duration"] = self.audio_duration
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -774,9 +774,9 @@ class InlineQueryResultVoice (InlineQueryResult):
         if self.voice_duration is not None:
             array["voice_duration"] = self.voice_duration
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -893,9 +893,9 @@ class InlineQueryResultDocument(InlineQueryResult):
         if self.description is not None:
             array["description"] = self.description
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         if self.thumb_url is not None:
             array["thumb_url"] = self.thumb_url
         if self.thumb_width is not None:
@@ -1002,9 +1002,9 @@ class InlineQueryResultLocation (InlineQueryResult):
         array["longitude"] = self.longitude
         array["title"] = self.title
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         if self.thumb_url is not None:
             array["thumb_url"] = self.thumb_url
         if self.thumb_width is not None:
@@ -1129,9 +1129,9 @@ class InlineQueryResultVenue (InlineQueryResult):
         if self.foursquare_id is not None:
             array["foursquare_id"] = self.foursquare_id
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         if self.thumb_url is not None:
             array["thumb_url"] = self.thumb_url
         if self.thumb_width is not None:
@@ -1240,9 +1240,9 @@ class InlineQueryResultContact (InlineQueryResult):
         if self.last_name is not None:
             array["last_name"] = self.last_name
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         if self.thumb_url is not None:
             array["thumb_url"] = self.thumb_url
         if self.thumb_width is not None:
@@ -1337,9 +1337,9 @@ class InlineQueryResultCachedPhoto (InlineQueryCachedResult):
         if self.caption is not None:
             array["caption"] = self.caption
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -1421,9 +1421,9 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         if self.caption is not None:
             array["caption"] = self.caption
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -1504,9 +1504,9 @@ class InlineQueryResultCachedMpeg4Gif (InlineQueryCachedResult):
         if self.caption is not None:
             array["caption"] = self.caption
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -1597,9 +1597,9 @@ class InlineQueryResultCachedDocument (InlineQueryCachedResult):
         if self.caption is not None:
             array["caption"] = self.caption
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -1688,9 +1688,9 @@ class InlineQueryResultCachedVideo (InlineQueryCachedResult):
         if self.caption is not None:
             array["caption"] = self.caption
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -1765,9 +1765,9 @@ class InlineQueryResultCachedVoice (InlineQueryCachedResult):
         array["voice_file_id"] = self.voice_file_id
         array["title"] = self.title
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -1834,9 +1834,9 @@ class InlineQueryResultCachedAudio (InlineQueryCachedResult):
         array["id"] = self.id
         array["audio_file_id"] = self.audio_file_id
         if self.reply_markup is not None:
-            array["reply_markup"] = self.reply_markup
+            array["reply_markup"] = self.reply_markup.to_array()
         if self.input_message_content is not None:
-            array["input_message_content"] = self.input_message_content
+            array["input_message_content"] = self.input_message_content.to_array()
         return array
     # end def to_array
 
@@ -1855,7 +1855,7 @@ class InputTextMessageContent(InputMessageContent):
 
     https://core.telegram.org/bots/api#inputtextmessagecontent
     """
-    def __init__(self, message_text, parse_mode=None, disable_web_page_preview=None):
+    def __init__(self, message_text, parse_mode=None, disable_web_page_preview=False):
         """
         Represents the content of a text message to be sent as the result of an inline query.
 
