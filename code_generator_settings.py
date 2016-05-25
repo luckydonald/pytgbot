@@ -19,14 +19,14 @@ CLASS_TYPE_PATHS = { # import, master_class
     "File":                 ("pytgbot.api_types.receivable.media.", "Receivable", None),
 
     # pytgbot.api_types.receivable.responses.*
-    "InlineQuery": ("pytgbot.api_types.receivable.responses.", "Result", None),
-    "MessageEntity": ("pytgbot.api_types.receivable.responses.", "Result", None),
+    "InlineQuery": ("pytgbot.api_types.receivable.", "Result", None),
+    "MessageEntity": ("pytgbot.api_types.receivable.", "Result", None),
 
     # pytgbot.api_types.receivable.responses.peer.*
-    "ChatMember":   ("pytgbot.api_types.receivable.responses.peer.", "Result", None),
-    "Peer":         ("pytgbot.api_types.receivable.responses.peer.", "Result", None),
-    "User":         ("pytgbot.api_types.receivable.responses.peer.", "Peer", None),
-    "Chat":         ("pytgbot.api_types.receivable.responses.peer.", "Peer", None),
+    "ChatMember":   ("pytgbot.api_types.receivable.peer.", "Result", None),
+    "Peer":         ("pytgbot.api_types.receivable.peer.", "Result", None),
+    "User":         ("pytgbot.api_types.receivable.peer.", "Peer", None),
+    "Chat":         ("pytgbot.api_types.receivable.peer.", "Peer", None),
 
     # pytgbot.api_types.receivable.updates.*
     "Update":               ("pytgbot.api_types.receivable.updates.", "Receivable", None),
