@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from json import dumps
 
 from pytgbot.api_types.sendable.inline import InlineQueryResultArticle, InlineQueryResultGif, InlineQueryResultPhoto
+from pytgbot.api_types.sendable.inline import InputTextMessageContent
 
 __author__ = 'luckydonald'
 VERSION = "v0.2.0"
@@ -11,6 +12,9 @@ VERSION = "v0.2.0"
 from random import getrandbits
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.download import get_json
+from luckydonaldUtils.encoding import to_unicode as u
+from pytgbot import Bot
+
 try:
     from urllib import quote  # python 2
 except ImportError:
@@ -21,7 +25,7 @@ logger = logging.getLogger(__name__)
 from somewhere import API_KEY  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..."
 
-from pytgbot import Bot, u
+
 
 def main():
     # get you bot instance.
@@ -75,9 +79,14 @@ class MLFW(object):
             for tag_obj in valid_tag_obj.objects:
                 valid_tag_names.append(tag_obj.name)
         if len(valid_tag_names) == 0:
-            self.bot.answer_inline_query(inline_query_id,
-                [InlineQueryResultArticle(id="404t:"+string, title=u"\"{tag}\" not found.".format(tag=string), message_text=string, description="No similar tag found.", thumb_url=self.error_image)]
+            result = InlineQueryResultArticle(
+                    id="404t:"+string,
+                    title=u"\"{tag}\" not found.".format(tag=string),
+                    input_message_content=InputTextMessageContent(string),
+                    description="No similar tag found.",
+                    thumb_url=self.error_image
             )
+            self.bot.answer_inline_query(inline_query_id, result)
             return
         print ("tags: {}".format(valid_tag_names))
         print("offset: {}".format(offset))
@@ -103,7 +112,7 @@ class MLFW(object):
                     image_small = self.root + img.thumbnails.jpg
             image_gif = self.root + img.thumbnails.gif if "gif" in img.thumbnails else None
             tag_total_count = images_of_tag.meta.total_count
-            id = "mlfw-{id}".format(id=img.id)  # +u(hex(getrandbits(64))[2:])
+            id = "mlfw-{id}".format(id=img.id)
             if not id:
                 logger.error("NO ID: {}".format(img))
                 continue

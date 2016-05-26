@@ -1313,6 +1313,8 @@ class Bot(object):
         assert(isinstance(inline_query_id, (str, unicode_type)))
         inline_query_id = n(inline_query_id)
         assert(results is not None)
+        if isinstance(results, InlineQueryResult):
+            results = [results]
         assert(isinstance(results, (list, tuple)))  # list of InlineQueryResult
         result_objects = []
         for result in results:
