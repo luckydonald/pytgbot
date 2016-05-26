@@ -25,11 +25,17 @@ while True:
         if not "text" in message:
             continue
         logger.debug("got text: {msg}".format(msg=message.text.encode("utf-8")))
-        name = message.reply_to_message["from"].first_name
-        peer = message.reply_to_message["from"].id
+        if not message.text == "/pics":
+            continue
         origin = message.chat.id if "chat" in message else message["from"].id
-        if "reply_to_message" in message and message.text == "/pics":
-            for x in reversed(bot.get_user_profile_photos(peer)["result"]["photos"]):
+        if "reply_to_message" in message:
+            name = message.reply_to_message["from"].first_name
+            peer = message.reply_to_message["from"].id
+            photos = bot.get_user_profile_photos(peer)["result"]["photos"]
+            if len(photos) == 0:
+                bot.send_message(origin, "No images.")
+                continue
+            for x in reversed(photos):
                 biggest_image = max(x, key=lambda p: p["file_size"]) # get the biggest image.
                 bot.send_photo(origin, biggest_image["file_id"], caption="{name}".format(name=name,
                                                 w=biggest_image["width"], h=biggest_image["height"]) )
