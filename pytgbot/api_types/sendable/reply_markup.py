@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type
+
+from pytgbot.api_types import as_array
 from . import Sendable
 import logging
 
@@ -28,7 +30,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
     https://core.telegram.org/bots/api#replykeyboardmarkup
     """
-    def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, selective=None):
+    def __init__(self, keyboard, resize_keyboard=False, one_time_keyboard=False, selective=None):
         """
         This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 
@@ -82,13 +84,13 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
     def to_array(self):
         array = super(ReplyKeyboardMarkup, self).to_array()
-        array["keyboard"] = self.keyboard
+        array["keyboard"] = as_array(self.keyboard)
         if self.resize_keyboard is not None:
             array["resize_keyboard"] = self.resize_keyboard
         if self.one_time_keyboard is not None:
             array["one_time_keyboard"] = self.one_time_keyboard
         if self.selective is not None:
-            array["selective"] = self.selective
+            array["selective"] = as_array(self.selective)
         return array
     # end def to_array
 

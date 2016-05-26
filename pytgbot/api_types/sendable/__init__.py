@@ -14,6 +14,8 @@ class Sendable(TgBotApiObject):
         super(Sendable, self).__init__()
     # end def __init__
 # end class
+
+
 class InputFile(object):
     def __init__(self, file_path, file_name=None, file_mime=None):
         super(InputFile, self).__init__()
