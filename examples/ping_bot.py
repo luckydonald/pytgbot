@@ -19,19 +19,18 @@ print("Information about myself: {info}".format(info=my_info))
 last_update_id = 0
 
 while True:
-	# loop forever.
-	for update in bot.get_updates(limit=100, offset=last_update_id+1)["result"]:
-		last_update_id = update["update_id"]
-		print(update)
-		if "message" in update and "text" in update["message"]: #  we have a text message.
+    # loop forever.
+    for update in bot.get_updates(limit=100, offset=last_update_id+1).result:
+        last_update_id = update["update_id"]
+        print(update)
+        if "message" in update and "text" in update["message"]:  # we have a text message.
+            if "chat" in update["message"]: 	# is a group chat
+                sender = update["message"]["chat"]["id"]
+            else:  # user chat
+                sender = update["message"]["from"]["id"]
+            # end if
 
-			if "chat" in update["message"]:	# is a group chat
-				sender = update["message"]["chat"]["id"]
-			else:  						# user chat
-				sender = update["message"]["from"]["id"]
-			#end if
-
-			if update["message"]["text"] == "/ping":
-				bot.send_msg(sender, "pong!", reply_to_message_id=update["message"]["message_id"])
+            if update["message"]["text"] == "ping":
+                print(bot.send_msg(sender, "pong!", reply_to_message_id=update["message"]["message_id"]))
 
 

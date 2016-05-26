@@ -3,7 +3,7 @@ import json
 
 from pytgbot import Bot
 from pytgbot.api_types import as_array
-from pytgbot.api_types.sendable.reply_markup import ForceReply, ReplyKeyboardMarkup, KeyboardButton
+from pytgbot.api_types.sendable.reply_markup import ForceReply, ReplyKeyboardHide, ReplyKeyboardMarkup, KeyboardButton
 
 from somewhere import API_KEY, TEST_CHAT  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..." and TEST_CHAT = 12345
@@ -30,6 +30,10 @@ def main():
                     command = update.message.text[entity.offset:entity.offset+entity.length]
                     if command == "/key":
                         do_keyboard(update.message.chat.id)
+                    elif command == "/unkey":
+                        hide_keyboard(update.message.chat.id)
+                    # end if
+
             # end for
         # end for update
     # end while forever
@@ -41,11 +45,11 @@ def do_keyboard(chat_id):
         ["YES", "NO"],
         ["Maybe", "lol"]  # KeyboardButton("Contact?", request_contact=True)]
     ]
-    foo = as_array(buttons)
-    markup = ReplyKeyboardMarkup(buttons, resize_keyboard=True)
-    jayson = json.dumps(markup.to_array())
+    markup = ReplyKeyboardMarkup(buttons, resize_keyboard=True, one_time_keyboard=True)
     print(bot.send_msg(chat_id, "test!", reply_markup=markup))
 
 
+def hide_keyboard(chat_id):
+    print(bot.send_msg(chat_id, "okey, keyboard hidden.", reply_markup=ReplyKeyboardHide()))
 main()
 

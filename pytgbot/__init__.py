@@ -10,7 +10,7 @@ from luckydonaldUtils.encoding import to_native as n
 from luckydonaldUtils.encoding import text_type as unicode_type
 
 from pytgbot.api_types import as_array
-from pytgbot.api_types.sendable import InputFile
+from pytgbot.api_types.sendable import InputFile, Sendable
 from pytgbot.api_types.sendable.inline import InlineQueryResult
 from pytgbot.api_types.sendable.reply_markup import ForceReply
 from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -199,17 +199,9 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
         )))
-
-        def to_dict(**kwargs):
-            return kwargs
-        # end def
-
-        kwargs = to_dict(chat_id=chat_id, text=text,
+        return self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode,
             disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification,
             reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
-        if parse_mode:
-            kwargs["parse_mode"] = parse_mode
-        return self.do("sendMessage", **kwargs)
     # end def send_message
     send_msg = send_message  # alias to send_message(...)
 
@@ -1424,10 +1416,14 @@ class Bot(object):
         :param query: will get json encoded.
         :return:
         """
-        query = as_array(query)
         params = {}
         for key in query.keys():
-            params[key] = json.dumps(query[key])
+            element = query[key]
+            if element is not None:
+                if isinstance(element, Sendable):
+                    params[key] = json.dumps(as_array(element))
+                else:
+                    params[key] = element
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
         r = requests.post(url, params=params, files=files, stream=use_long_polling,
                           verify=True)  # No self signed certificates. Telegram should be trustworthy anyway...
