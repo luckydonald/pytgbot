@@ -33,6 +33,8 @@ while True:
                 biggest_image = max(x, key=lambda p: p["file_size"]) # get the biggest image.
                 bot.send_photo(origin, biggest_image["file_id"], caption="{name}".format(name=name,
                                                 w=biggest_image["width"], h=biggest_image["height"]) )
+        else:
+            bot.send_message(origin, "Please reply to some message to select a user.")
         #end if
     # end for
 #end while
