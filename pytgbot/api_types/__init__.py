@@ -2,7 +2,8 @@
 import logging
 from json import dumps as _json_dumps
 __author__ = 'luckydonald'
-
+# __all__ = ["sendable", "receivable", "TgBotApiObject", "as_array"]
+# __all__ = ["receivable", "TgBotApiObject", "as_array"]
 logger = logging.getLogger(__name__)
 
 
@@ -16,8 +17,8 @@ class TgBotApiObject(object):
     def from_array(array):
         if not array:
             return None
-        array = array.copy()
-        return array
+        data = array.copy()
+        return {}
     # end def
 # end class
 
@@ -36,3 +37,6 @@ def as_array(object):
     else:
         _json_dumps(object)  # raises error if is wrong json
         return object
+    # end if
+# end def
+from . import receivable

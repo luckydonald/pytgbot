@@ -86,9 +86,9 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         array = super(ReplyKeyboardMarkup, self).to_array()
         array["keyboard"] = as_array(self.keyboard)
         if self.resize_keyboard is not None:
-            array["resize_keyboard"] = self.resize_keyboard
+            array["resize_keyboard"] = as_array(self.resize_keyboard)
         if self.one_time_keyboard is not None:
-            array["one_time_keyboard"] = self.one_time_keyboard
+            array["one_time_keyboard"] = as_array(self.one_time_keyboard)
         if self.selective is not None:
             array["selective"] = as_array(self.selective)
         return array
@@ -154,11 +154,11 @@ class KeyboardButton(Button):
 
     def to_array(self):
         array = super(KeyboardButton, self).to_array()
-        array["text"] = self.text
+        array["text"] = as_array(self.text)
         if self.request_contact is not None:
-            array["request_contact"] = self.request_contact
+            array["request_contact"] = as_array(self.request_contact)
         if self.request_location is not None:
-            array["request_location"] = self.request_location
+            array["request_location"] = as_array(self.request_location)
         return array
     # end def to_array
 
@@ -215,9 +215,9 @@ class ReplyKeyboardHide(ReplyMarkup):
 
     def to_array(self):
         array = super(ReplyKeyboardHide, self).to_array()
-        array["hide_keyboard"] = self.hide_keyboard
+        array["hide_keyboard"] = as_array(self.hide_keyboard)
         if self.selective is not None:
-            array["selective"] = self.selective
+            array["selective"] = as_array(self.selective)
         return array
     # end def to_array
 
@@ -267,7 +267,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
 
     def to_array(self):
         array = super(InlineKeyboardMarkup, self).to_array()
-        array["inline_keyboard"] = self.inline_keyboard
+        array["inline_keyboard"] = as_array(self.inline_keyboard)
         return array
     # end def to_array
 
@@ -342,13 +342,13 @@ class InlineKeyboardButton(Button):
 
     def to_array(self):
         array = super(InlineKeyboardButton, self).to_array()
-        array["text"] = self.text
+        array["text"] = as_array(self.text)
         if self.url is not None:
-            array["url"] = self.url
+            array["url"] = as_array(self.url)
         if self.callback_data is not None:
-            array["callback_data"] = self.callback_data
+            array["callback_data"] = as_array(self.callback_data)
         if self.switch_inline_query is not None:
-            array["switch_inline_query"] = self.switch_inline_query
+            array["switch_inline_query"] = as_array(self.switch_inline_query)
         return array
     # end def to_array
 
@@ -420,9 +420,9 @@ class ForceReply(ReplyMarkup):
 
     def to_array(self):
         array = super(ForceReply, self).to_array()
-        array["force_reply"] = self.force_reply
+        array["force_reply"] = as_array(self.force_reply)
         if self.selective is not None:
-            array["selective"] = self.selective
+            array["selective"] = as_array(self.selective)
         return array
     # end def to_array
 

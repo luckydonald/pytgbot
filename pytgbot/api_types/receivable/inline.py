@@ -2,9 +2,8 @@
 from luckydonaldUtils.encoding import unicode_type
 from luckydonaldUtils.logger import logging
 
-from pytgbot.api_types.receivable import Result
-from pytgbot.api_types.receivable.peer import User
-from ..receivable.media import Location
+from .. import as_array
+from ..receivable import Result
 from ..receivable.updates import UpdateType
 
 __author__ = 'luckydonald'
@@ -67,11 +66,11 @@ class InlineQuery(Result):
     def to_array(self):
         array = super(InlineQuery, self).to_array()
         array["id"] = self.id
-        array["from_peer"] = self.from_peer
+        array["from_peer"] = as_array(self.from_peer)
         array["query"] = self.query
         array["offset"] = self.offset
         if self.location is not None:
-            array["location"] = self.location
+            array["location"] = as_array(self.location)
         return array
     # end def to_array
 # end class InlineQuery
@@ -112,6 +111,9 @@ class ChosenInlineResult(UpdateType):
         """
         super(ChosenInlineResult, self).__init__()
 
+        from ..receivable.peer import User
+        from ..receivable.media import Location
+
         assert(result_id is not None)
         assert(isinstance(result_id, unicode_type))  # unicode on python 2, str on python 3
         self.result_id = result_id
@@ -148,8 +150,13 @@ class ChosenInlineResult(UpdateType):
         if not array:
             return None
         assert (isinstance(array, dict))
-        array['from_peer'] = User.from_array(array.get('from'))
-        array['location'] = Location.from_array(array.get('location'))
-        return ChosenInlineResult(**array)
+
+        from ..receivable.peer import User
+        from ..receivable.media import Location
+
+        data = {}
+        data['from_peer'] = User.from_array(array.get('from'))
+        data['location'] = Location.from_array(array.get('location'))
+        return ChosenInlineResult(**data)
     # end def from_array
 # end class ChosenInlineResult

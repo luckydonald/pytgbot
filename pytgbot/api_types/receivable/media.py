@@ -1,14 +1,32 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type
 
-from pytgbot.api_types.receivable import Receivable, Result
+__all__ = ["Media", "PhotoSize", "Audio", ]
+
+from . import Receivable, Result
 
 
 class Media(Receivable):
     pass
 
 
-class PhotoSize(Result):
+class DownloadableMedia(Media):
+    @staticmethod
+    def from_array(array):
+        """
+        Subclass for all :class:`Media` which has a :py:attr:`file_id` and optionally a :def:`file_size`
+        :param array: a array to parse
+        :type  array: dict
+        :return: a dict with file_id and file_size extracted from the array
+        :rtype: dict
+        """
+        data = super(DownloadableMedia).from_array(array)
+        data["file_id"] = array.get("file_id")
+        data["file_size"] = array.get("file_size")  # can be None
+        return data
+
+
+class PhotoSize(Media):
     """
     This object represents one size of a photo or a file / sticker thumbnail.
 
@@ -68,6 +86,12 @@ class PhotoSize(Result):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
+        data = super(PhotoSize).from_array(array)
+        data["width"] = int(array.get("width"))
+        data["height"] = int(array.get("height"))
         return PhotoSize(**array)
     # end def from_array
 # end class PhotoSize
@@ -149,7 +173,15 @@ class Audio(Media):
 
     @staticmethod
     def from_array(array):
-        return Audio(**array)
+        if array is None:
+            return None
+        # end if
+        data = super(Audio).from_array(array)
+        data["duration"] = int(array.get("duration"))
+        data["performer"] = array.get("performer")
+        data["title"] = array.get("title")
+        data["mime_type"] = array.get("mime_type")
+        return Audio(**data)
     # end def from_array
 # end class Audio
 
@@ -222,8 +254,14 @@ class Document(Media):
 
     @staticmethod
     def from_array(array):
-        array['thumb'] = PhotoSize.from_array(array.get('thumb'))
-        return Document(**array)
+        if array is None:
+            return None
+        # end if
+        data = super(Document).from_array(array)
+        data['thumb'] = PhotoSize.from_array(array.get('thumb'))
+        data["file_name"] = array.get("file_name")
+        data["mime_type"] = array.get("mime_type")
+        return Document(**data)
     # end def from_array
 # end class Document
 
@@ -283,9 +321,11 @@ class Sticker(Media):
         
         assert(emoji is None or isinstance(emoji, unicode_type))  # unicode on python 2, str on python 3
         self.emoji = emoji
-        
+
         assert(file_size is None or isinstance(file_size, int))
         self.file_size = file_size
+
+        self.mime_type = "image/webp"
     # end def __init__
 
     def to_array(self):
@@ -304,8 +344,15 @@ class Sticker(Media):
 
     @staticmethod
     def from_array(array):
-        array['thumb'] = PhotoSize.from_array(array.get('thumb'))
-        return Sticker(**array)
+        if array is None:
+            return None
+        # end if
+        data = super(Sticker).from_array(array)
+        data["width"] = int(array.get("width"))
+        data["height"] = int(array.get("height"))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb'))
+        data['emoji'] = array.get('emoji')
+        return Sticker(**data)
     # end def from_array
 # end class Sticker
 
@@ -394,6 +441,9 @@ class Video(Media):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
         array['thumb'] = PhotoSize.from_array(array.get('thumb'))
         return Video(**array)
     # end def from_array
@@ -460,6 +510,9 @@ class Voice(Media):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
         return Voice(**array)
     # end def from_array
 # end class Voice
@@ -525,6 +578,9 @@ class Contact(Media):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
         return Contact(**array)
     # end def from_array
 # end class Contact
@@ -571,6 +627,9 @@ class Location(Media):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
         array['longitude'] = array.get('longitude')
         array['latitude'] = array.get('latitude')
         return Location(**array)
@@ -638,6 +697,9 @@ class Venue(Media):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
         array['location'] = Location.from_array(array.get('location'))
         return Venue(**array)
     # end def from_array
@@ -685,6 +747,9 @@ class UserProfilePhotos(Result):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
         return UserProfilePhotos(**array)
     # end def from_array
 # end class UserProfilePhotos
@@ -752,6 +817,9 @@ class File(Receivable):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
         return File(**array)
     # end def from_array
 # end class File

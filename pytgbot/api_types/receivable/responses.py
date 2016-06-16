@@ -152,8 +152,12 @@ class InlineQuery(Result):
 
     @staticmethod
     def from_array(array):
-        array['from_peer'] = User.from_array(array.get('from'))
-        array['location'] = Location.from_array(array.get('location'))
-        return InlineQuery(**array)
+        if array is None:
+            return None
+        # end if
+        data = {}
+        data['from_peer'] = User.from_array(array.get('from'))
+        data['location'] = Location.from_array(array.get('location'))
+        return InlineQuery(**data)
     # end def from_array
 # end class InlineQuery

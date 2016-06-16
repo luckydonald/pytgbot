@@ -2,9 +2,9 @@
 from luckydonaldUtils.logger import logging
 
 from pytgbot.api_types import TgBotApiObject
-from pytgbot.api_types.receivable.peer import User
 
 __author__ = 'luckydonald'
+__all__ = ["inline", "media", "peer", "responses", "updates", "Receivable", "Result"]
 logger = logging.getLogger(__name__)
 
 

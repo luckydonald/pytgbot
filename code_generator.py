@@ -106,6 +106,7 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     """
     init_description_w_tabs  = description.strip().replace("\n", "\n\t\t")
     clazz_description_w_tabs = description.strip().replace("\n", "\n\t")
+    imports = [[], []]
     args = []
     args2 = []
     kwargs = []
@@ -131,10 +132,10 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
                 asserts.append("assert({ass})".format(ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))
             if non_buildin_type:
                 to_array1.append('array["{var}"] = self.{var}.to_array()'.format(var=param_name))
-                from_array1.append("array['{var}'] = {type}.from_array(array.get('{array_key}'))".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
+                from_array1.append("data['{var}'] = {type}.from_array(array.get('{array_key}'))".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
             else:
                 to_array1.append('array["{var}"] = self.{var}'.format(var=param_name))
-                from_array2.append("array['{var}'] = array.get('{array_key}')  # type {type}".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
+                from_array2.append("data['{var}'] = array.get('{array_key}')  # type {type}".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
             # end if non_buildin_type
         else:
             kwargs.append("{param_name}=None".format(param_name=param_name))
@@ -144,10 +145,10 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
             to_array2.append('if self.{var} is not None:'.format(var=param_name))
             if non_buildin_type:
                 to_array2.append('\tarray["{var}"] = self.{var}.to_array()'.format(var=param_name))
-                from_array2.append("array['{var}'] = {type}.from_array(array.get('{array_key}'))".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
+                from_array2.append("data['{var}'] = {type}.from_array(array.get('{array_key}'))".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
             else:
                 to_array2.append('\tarray["{var}"] = self.{var}'.format(var=param_name))
-                from_array2.append("array['{var}'] = array.get('{array_key}')  # type {type}".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
+                from_array2.append("data['{var}'] = array.get('{array_key}')  # type {type}".format(var=param_name, array_key=param_name_input, type=non_buildin_type))
         # end if non_buildin_type
         asserts.append("self.{param_name} = {param_name}".format(param_name=param_name))
     param_description = ""
@@ -161,10 +162,10 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     to_array = ["array = super({clazz}, self).to_array()".format(clazz=clazz)]
     to_array.extend(to_array1)
     to_array.extend(to_array2)
-    from_array = []
+    from_array = ["data = super({clazz}).from_array(array)".format(clazz=clazz)]
     from_array.extend(from_array1)
     from_array.extend(from_array2)
-    from_array.append("return {clazz}(**array)".format(clazz=clazz))
+    from_array.append("return {clazz}(**data)".format(clazz=clazz))
     result = 'class {clazz}({parent_clazz}):\n' \
              '\t"""\n' \
              '\t{clazz_description_w_tabs}\n' \
@@ -190,6 +191,9 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
              '\n' \
              '\t@staticmethod\n' \
              '\tdef from_array(array):\n' \
+             '\t\tif array is None:\n' \
+             '\t\t\treturn None\n' \
+             '\t\t# end if\n' \
              '\t\t{from_array_with_tabs}\n' \
              '\t# end def from_array\n' \
              '# end class {clazz}\n'.format(

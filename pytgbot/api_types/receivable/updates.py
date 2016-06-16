@@ -2,11 +2,6 @@
 from luckydonaldUtils.encoding import unicode_type
 from luckydonaldUtils.logger import logging
 
-from pytgbot.api_types.receivable.inline import ChosenInlineResult
-from pytgbot.api_types.receivable.media import Audio, Sticker, Video, Voice, Contact, Location, Venue
-from pytgbot.api_types.receivable.media import Document
-from pytgbot.api_types.receivable.peer import User, Chat
-from pytgbot.api_types.receivable.responses import InlineQuery
 from . import Receivable
 
 __author__ = 'luckydonald'
@@ -55,6 +50,9 @@ class Update(Receivable):
         """
         super(Update, self).__init__()
 
+        from ..receivable.responses import InlineQuery
+        from ..receivable.inline import ChosenInlineResult
+
         assert(update_id is not None)
         assert(isinstance(update_id, int))
         self.update_id = update_id
@@ -93,12 +91,21 @@ class Update(Receivable):
 
     @staticmethod
     def from_array(array):
-        array['message'] = Message.from_array(array.get('message'))
-        array['edited_message'] = Message.from_array(array.get('edited_message'))
-        array['inline_query'] = InlineQuery.from_array(array.get('inline_query'))
-        array['chosen_inline_result'] = ChosenInlineResult.from_array(array.get('chosen_inline_result'))
-        array['callback_query'] = CallbackQuery.from_array(array.get('callback_query'))
-        return Update(**array)
+        if array is None:
+            return None
+        # end if
+
+        from ..receivable.responses import InlineQuery
+        from ..receivable.inline import ChosenInlineResult
+
+        data = {}
+        data['update_id'] = int(array.get('update_id'))
+        data['message'] = Message.from_array(array.get('message'))
+        data['edited_message'] = Message.from_array(array.get('edited_message'))
+        data['inline_query'] = InlineQuery.from_array(array.get('inline_query'))
+        data['chosen_inline_result'] = ChosenInlineResult.from_array(array.get('chosen_inline_result'))
+        data['callback_query'] = CallbackQuery.from_array(array.get('callback_query'))
+        return Update(**data)
     # end def from_array
 # end class Update
 
@@ -219,6 +226,9 @@ class Message(UpdateType):
         """
         super(Message, self).__init__()
 
+        from ..receivable.peer import User, Chat
+        from ..receivable.media import Audio, Sticker, Video, Voice, Contact, Location, Venue, Document
+
         assert(message_id is not None)
         assert(isinstance(message_id, int))
         self.message_id = message_id
@@ -325,11 +335,11 @@ class Message(UpdateType):
         array["date"] = self.date
         array["chat"] = self.chat
         if self.from_peer is not None:
-            array["from_peer"] = self.from_peer
+            array["from_peer"] = self.from_peer.to_array()
         if self.forward_from is not None:
-            array["forward_from"] = self.forward_from
+            array["forward_from"] = self.forward_from.to_array()
         if self.forward_from_chat is not None:
-            array["forward_from_chat"] = self.forward_from_chat
+            array["forward_from_chat"] = self.forward_from_chat.to_array()
         if self.forward_date is not None:
             array["forward_date"] = self.forward_date
         if self.reply_to_message is not None:
@@ -387,23 +397,32 @@ class Message(UpdateType):
 
     @staticmethod
     def from_array(array):
-        array['chat'] = Chat.from_array(array.get('chat'))
-        array['from_peer'] = User.from_array(array.get('from'))
-        array['forward_from'] = User.from_array(array.get('forward_from'))
-        array['forward_from_chat'] = Chat.from_array(array.get('forward_from_chat'))
-        array['reply_to_message'] = Message.from_array(array.get('reply_to_message'))
-        array['audio'] = Audio.from_array(array.get('audio'))
-        array['document'] = Document.from_array(array.get('document'))
-        array['sticker'] = Sticker.from_array(array.get('sticker'))
-        array['video'] = Video.from_array(array.get('video'))
-        array['voice'] = Voice.from_array(array.get('voice'))
-        array['contact'] = Contact.from_array(array.get('contact'))
-        array['location'] = Location.from_array(array.get('location'))
-        array['venue'] = Venue.from_array(array.get('venue'))
-        array['new_chat_member'] = User.from_array(array.get('new_chat_member'))
-        array['left_chat_member'] = User.from_array(array.get('left_chat_member'))
-        array['pinned_message'] = Message.from_array(array.get('pinned_message'))
-        return Message(**array)
+        if array is None:
+            return None
+        # end if
+        from ..receivable.peer import User, Chat
+        from ..receivable.media import Audio, Sticker, Video, Voice, Contact, Location, Venue, Document
+
+        data = {}
+        data['message_id'] = array.get('message_id')
+        data['date'] = array.get('date')
+        data['chat'] = Chat.from_array(array.get('chat'))
+        data['from_peer'] = User.from_array(array.get('from'))
+        data['forward_from'] = User.from_array(array.get('forward_from'))
+        data['forward_from_chat'] = Chat.from_array(array.get('forward_from_chat'))
+        data['reply_to_message'] = Message.from_array(array.get('reply_to_message'))
+        data['audio'] = Audio.from_array(array.get('audio'))
+        data['document'] = Document.from_array(array.get('document'))
+        data['sticker'] = Sticker.from_array(array.get('sticker'))
+        data['video'] = Video.from_array(array.get('video'))
+        data['voice'] = Voice.from_array(array.get('voice'))
+        data['contact'] = Contact.from_array(array.get('contact'))
+        data['location'] = Location.from_array(array.get('location'))
+        data['venue'] = Venue.from_array(array.get('venue'))
+        data['new_chat_member'] = User.from_array(array.get('new_chat_member'))
+        data['left_chat_member'] = User.from_array(array.get('left_chat_member'))
+        data['pinned_message'] = Message.from_array(array.get('pinned_message'))
+        return Message(**data)
     # end def from_array
 # end class Message
 
@@ -441,7 +460,9 @@ class CallbackQuery (UpdateType):
         :keyword inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query
         :type    inline_message_id: str
         """
-        super(CallbackQuery, self).__init__(id)
+        super(CallbackQuery, self).__init__()
+
+        from ..receivable.peer import User
 
         assert(id is not None)
         assert(isinstance(id, unicode_type))  # unicode on python 2, str on python 3
@@ -476,8 +497,15 @@ class CallbackQuery (UpdateType):
 
     @staticmethod
     def from_array(array):
-        array['from_peer'] = User.from_array(array.get('from'))
-        array['message'] = Message.from_array(array.get('message'))
-        return CallbackQuery(**array)
-    # end def from_array
+        if array is None:
+            return None
+        # end if
+
+        from ..receivable.peer import User
+
+        data = {}
+        data['from_peer'] = User.from_array(array.get('from'))
+        data['message'] = Message.from_array(array.get('message'))
+        return CallbackQuery(**data)
+        # end def from_array
 # end class CallbackQuery

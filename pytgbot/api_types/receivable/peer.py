@@ -73,6 +73,9 @@ class User(Peer):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
         return User(**array)
         # end def from_array
 
@@ -157,6 +160,9 @@ class Chat(Peer):
 
     @staticmethod
     def from_array(array):
+        if array is None:
+            return None
+        # end if
         return Chat(**array)
     # end def from_array
 # end class Chat
