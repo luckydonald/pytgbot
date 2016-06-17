@@ -82,7 +82,7 @@ def func(command, description, link, params_string, returns="On success, the sen
     imports = list(imports)
     imports.sort()
 
-    return_type = to_type(return_type, variable_name="return type")
+    return_type = as_types(return_type, variable_name="return type")
     result = func_template.render(
         imports=imports, func=command, link=link, description=description, returns=returns, return_type=return_type,
         variables=variables_needed + variables_optional,
@@ -257,28 +257,34 @@ def parse_param_types(param) -> Variable:
 
     param_types = table[1].strip().join([" ", " "])
     # ## " String or Boolean "
-    param_types = param_types.replace(" Float number ", " float ")
-    param_types = param_types.replace(" Float ",   " float ")
-    param_types = param_types.replace(" Array ",   " list ")
-    param_types = param_types.replace(" String ",  " str ")
-    param_types = param_types.replace(" Integer ", " int ")
-    param_types = param_types.replace(" Boolean ", " bool ")
-    param_types = param_types.replace(" Nothing ", " None ")
-    param_types = param_types.replace(" Null ",    " None ")
-    param_types = param_types.replace(" true ",    " True ")
+    variable.types = as_types(param_types, variable.api_name)
+    return variable
+# end def
 
-    param_types = param_types.replace(" or ", " | ")
-    param_types = param_types.strip()
+
+def as_types(types_string, variable_name):
+    # ## types_string = " String or Boolean "
+    types_string = types_string.replace(" Float number ", " float ")
+    types_string = types_string.replace(" Float ", " float ")
+    types_string = types_string.replace(" Array ", " list ")
+    types_string = types_string.replace(" String ", " str ")
+    types_string = types_string.replace(" Integer ", " int ")
+    types_string = types_string.replace(" Boolean ", " bool ")
+    types_string = types_string.replace(" Nothing ", " None ")
+    types_string = types_string.replace(" Null ", " None ")
+    types_string = types_string.replace(" true ", " True ")
+
+    types_string = types_string.replace(" or ", " | ")
+    types_string = types_string.strip()
     # ## "str | bool"
 
-    the_types = param_types.split("|")
-    variable.types = []
+    the_types = types_string.split("|")
+    types = []
     for t in the_types:
-        var_type = to_type(t, variable_name=variable.api_name)
-        variable.types.append(var_type)
+        var_type = to_type(t, variable_name=variable_name)
+        types.append(var_type)
     # end for
-    return variable
-
+    return types
 
 def to_type(type_string, variable_name):
     """

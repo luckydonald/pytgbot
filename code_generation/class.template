@@ -35,7 +35,8 @@ class {{ clazz }}({{ parent_clazz }}):
         {% block imports_block -%}
         {%- for import in imports -%}
         from {{ import.path }} import {{ import.name }}
-        {% endfor %}
+        {#  -#}
+        {%- endfor -%}
         {%- endblock %}
 
         {% for variable in variables -%}
