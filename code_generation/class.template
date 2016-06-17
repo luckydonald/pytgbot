@@ -1,5 +1,7 @@
 {% macro for_type(variable) -%}{% for type in variable.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
 {% macro types_as_tuple(variable) -%}{% if variable.type|length > 1 %}({{ for_type(variable) }}){% else -%}{{ for_type(variable) }}{% endif -%}{%- endmacro -%}
+{% macro for_args() -%}{%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
+
 
 class {{ clazz }}({{ parent_clazz }}):
     """
@@ -16,7 +18,7 @@ class {{ clazz }}({{ parent_clazz }}):
         {% endfor %}
     {% endif %}
     {% if keywords -%}
-        Optional keyword parameters:
+    Optional keyword parameters:
         {% for keyword in keywords %}
         :keyword {{ keyword.name }}: {{ keyword.description }}
         :type    {{ keyword.name }}: {{ for_type(keyword) }}
@@ -24,7 +26,7 @@ class {{ clazz }}({{ parent_clazz }}):
     {% endif -%}
     {% endblock %}
     """
-    def __init__(self, {%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}):
+    def __init__(self, {{ for_args() }}):
         """
         {{ self.class_docstring()|indent }}
         """

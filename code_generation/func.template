@@ -1,0 +1,35 @@
+{% macro for_type(variable) -%}{% for type in variable.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
+{% macro for_args() -%}{%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
+
+    def {{ func }}(self, {{ for_args() }}):
+    """
+    {% block func_docstring -%}
+    {{ description|indent }}
+
+    {{link}}
+
+    {% if parameters %}
+    Parameters:
+    {% for param in parameters %}
+        :param {{ param.name }}: {{ param.description }}
+        :type  {{ param.name }}: {{ for_type(param) }}
+    {% endfor %}
+    {% endif %}
+    {% if keywords -%}
+    Optional keyword parameters:
+    {% for keyword in keywords %}
+        :keyword {{ keyword.name }}: {{ keyword.description }}
+        :type    {{ keyword.name }}: {{ for_type(keyword) }}
+    {% endfor %}
+    {% endif -%}
+
+    Returns:
+
+        :return: {{ returns }}
+        :rtype:  {{return_type}}
+    {% endblock -%}
+    """
+
+
+        return self.do({do_args})
+    # end def {{ func }}

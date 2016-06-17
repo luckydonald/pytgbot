@@ -3,7 +3,7 @@ from jinja2 import Template
 from jinja2.exceptions import TemplateSyntaxError
 from luckydonaldUtils.logger import logging
 
-from code_generator import safe_var_translations, get_type_path
+from code_generator import safe_var_translations, get_type_path, convert_to_underscore
 from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
 
 __author__ = 'luckydonald'
@@ -34,7 +34,7 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     variables_optional = []
     imports = set()
     for param in params_string.split("\n"):
-        variable = parse_param_types(param, imports)
+        variable = parse_param_types(param)
         # any variable.types has always_is_value => lenght must be 1.
         assert(not any([type_.always_is_value is not None for type_ in variable.types]) or len(variable.types) == 1)
         if variable.optional:
@@ -55,6 +55,41 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     result = result.replace("\t", "    ")
     return result
 # end def clazz
+
+
+def func(command, description, link, params_string, returns="On success, the sent Message is returned.", return_type="Message"):
+    """
+    Live template for pycharm:
+
+    y = func(command="$cmd$", description="$desc$", link="$lnk$", params_string="$first_param$", returns="$returns$", return_type="$returntype$")
+    """
+    func_template = get_template("func.template")
+
+    variables_needed = []
+    variables_optional = []
+    imports = set()
+    for param in params_string.split("\n"):
+        variable = parse_param_types(param)
+        # any variable.types has always_is_value => lenght must be 1.
+        assert (not any([type_.always_is_value is not None for type_ in variable.types]) or len(variable.types) == 1)
+        if variable.optional:
+            variables_optional.append(variable)
+        else:
+            variables_needed.append(variable)
+        # end if
+        imports.update(variable.all_imports)
+    # end for
+    imports = list(imports)
+    imports.sort()
+
+    result = func_template.render(
+        imports=imports, func=command, link=link, description=description, returns=returns, return_type=return_type,
+        variables=variables_needed + variables_optional,
+        parameters=variables_needed, keywords=variables_optional,
+    )
+    result = result.replace("\t", "    ")
+    return result
+# end def
 
 
 class Variable(dict):
@@ -165,14 +200,26 @@ class Import(dict):
 # end class Import
 
 
-def parse_param_types(param, import_set) -> Variable:
+def parse_param_types(param) -> Variable:
     # ## "message_id\tString or Boolean\tUnique message identifier"
     table = param.split("\t")
     variable = Variable()
 
     variable.api_name=table[0].strip()
-    variable.description=variable.description=table[2]
-    variable.optional = variable.description.startswith("Optional.")
+    if len(table) == 3: # class
+        variable.description = variable.description = table[2]
+        variable.optional = variable.description.startswith("Optional.")
+    else:
+        variable.description = table[3]
+        param_required = table[2].strip().lower()
+        if param_required == "yes":
+            variable.optional = False
+        elif param_required == "optional":
+            variable.optional = True
+        else:
+            raise AssertionError("table[2] required \"{requiered}\" not in [\"yes\", \"optional\"]".format(requiered=param_required))
+        # end if
+    # end
     if not variable.optional and "optional" in variable.description.lower():
         logger.warn("Found \"optional\" in non-optional variable {variable_name}. Description:\n".format(variable_name=variable.api_name))
 
