@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from luckydonaldUtils.interactions import answer
-from luckydonaldUtils.logger import logging
-from luckydonaldUtils.files import mkdir_p  # luckydonaldUtils v0.43+
 from code_generator import func, get_type_path
 from code_generator_template import clazz
-from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT
+from luckydonaldUtils.files import mkdir_p  # luckydonaldUtils v0.43+
+from luckydonaldUtils.interactions import answer
+from luckydonaldUtils.logger import logging
+
+from code_generation.code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT
 
 FILE_HEADER = "# -*- coding: utf-8 -*-\n"
 MAIN_FILE_CLASS_HEADER = "class Bot(object):\n    _base_url = \"https://api.telegram.org/bot{api_key}/{command}\"\n"

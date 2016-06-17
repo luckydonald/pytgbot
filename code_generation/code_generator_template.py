@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from luckydonaldUtils.logger import logging
-from code_generator import get_type_path, safe_var_translations
-
 from jinja2 import Template
 from jinja2.exceptions import TemplateSyntaxError
+from luckydonaldUtils.logger import logging
+
+from code_generator import safe_var_translations
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
