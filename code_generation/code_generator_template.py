@@ -82,6 +82,7 @@ def func(command, description, link, params_string, returns="On success, the sen
     imports = list(imports)
     imports.sort()
 
+    return_type = to_type(return_type, variable_name="return type")
     result = func_template.render(
         imports=imports, func=command, link=link, description=description, returns=returns, return_type=return_type,
         variables=variables_needed + variables_optional,
@@ -119,7 +120,7 @@ class Variable(dict):
     def all_imports(self):
         imports = set()
         for type in self.types:
-            if not type.is_builtin and type.import_path:
+            if type.import_path:
                 imports.add(Import(type.import_path, type.string))
             # end if
         # end for
@@ -129,12 +130,19 @@ class Variable(dict):
 
 
 class Type(dict):
-    def __init__(self, string=None, is_builtin=None, always_is_value=None, is_list=False, import_path=None):
+    def __init__(self, string=None, is_builtin=None, always_is_value=None, is_list=False, import_path=None, description=None):
         self.string = string  # the type (e.g. "bool")
         self.is_builtin = is_builtin  # bool.  If it is a build in type (float, int, ...) or not (classes like "Message", "Peer"...)
         self.always_is_value = always_is_value  # None or the only possible value (e.g. a bool, always True) default: None.
         self.is_list = is_list  # if it is an list of that type. (e.g. list of bool would be [True, False] )
         self.import_path = import_path  # from <import_path> import <string>
+        self.description = description  # if there are additional comments needed.
+    # end def __init__
+
+    @property
+    def as_import(self):
+        return Import(self.import_path, self.string)
+    # end def as_import
 # end class Type
 
 
@@ -144,6 +152,24 @@ class Import(dict):
         self.path = path
         self.name = name
     # end def __init__
+
+    @property
+    def full(self):
+        """ self.path + "." + self.name """
+        if self.path:
+            if self.name:
+                return self.path + "." + self.name
+            else:
+                return self.path
+            # end if
+        else:
+            if self.name:
+                return self.name
+            else:
+                return ""
+            # end if
+        # end if
+    # end def full
 
     def __hash__(self):
         return hash(self.path + self.name)
@@ -248,24 +274,44 @@ def parse_param_types(param) -> Variable:
     the_types = param_types.split("|")
     variable.types = []
     for t in the_types:
-        var_type = Type(t.strip())
-        # remove "list of ", set .is_list accordingly.
-        var_type.is_list, var_type.string = can_strip_prefix(var_type.string, "list of ")
-        if var_type.string in ["int", "bool", "float", "str"]:
-            var_type.is_builtin = True
-        elif var_type.string == "True":
-            var_type.string = "bool"
-            var_type.is_builtin = True
-            var_type.always_is_value="True"
-        elif var_type.string in CLASS_TYPE_PATHS:
-            var_type.import_path = CLASS_TYPE_PATHS[var_type.string][CLASS_TYPE_PATHS__IMPORT].rstrip(".")
-            var_type.is_builtin = False
-        else:
-            logger.warn("Added unrecognized type in param {var}: {type}".format(var=variable.api_name, type=var_type.string))
-        # end if
+        var_type = to_type(t, variable_name=variable.api_name)
         variable.types.append(var_type)
     # end for
     return variable
+
+
+def to_type(type_string, variable_name):
+    """
+    Returns a :class:`Type` object of a given type name. Lookup is done via :var:`code_generator_settings.CLASS_TYPE_PATHS`
+
+    :param type_string: The type as string. E.g "bool".
+    :param variable_name: Only for logging, if an unrecognized type is found.
+    :return: a :class:`Type` instance
+    :rtype: Type
+    """
+    var_type = Type(type_string.strip())
+    # remove "list of " and set .is_list accordingly.
+    var_type.is_list, var_type.string = can_strip_prefix(var_type.string, "list of ")
+    if var_type.string == "True":
+        var_type.string = "bool"
+        var_type.always_is_value = "True"
+    elif var_type.string == "str":
+        var_type.string = "unicode_type"
+        var_type.import_path = "luckydonaldUtils.encoding"
+        var_type.description = "py2: unicode, py3: str"
+    # end if
+    if var_type.string in ["int", "bool", "float", "unicode_type"]:  # str is replaced by unicode_type
+        var_type.is_builtin = True
+    elif var_type.string in CLASS_TYPE_PATHS:
+        var_type.import_path = CLASS_TYPE_PATHS[var_type.string][CLASS_TYPE_PATHS__IMPORT].rstrip(".")
+        var_type.is_builtin = False
+    else:
+        logger.warn(
+            "Added unrecognized type in param <{var}>: {type}".format(var=variable_name, type=var_type.string))
+    # end if
+    return var_type
+
+
 # end def
 
 
