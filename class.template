@@ -1,0 +1,46 @@
+class {{ clazz }}({{ parent_clazz }}):
+    """
+    {% block class_docstring %}
+    {{ description }}
+
+    {{link}}
+
+    {% if parameters -%}
+    Parameters:
+
+        {% for param in parameters %}
+        :param {{ param.api_name }}: {{ param.description }}
+        :type  {{ param.api_name }}: {% for type in param.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}
+        {% endfor %}
+    {% endif %}
+    {% if keywords -%}
+        Optional keyword parameters:
+
+        {% for keyword in keywords %}
+        :keyword {{ keyword.api_name }}: {{ keyword.description }}
+        :type    {{ keyword.api_name }}: {% for type in keyword.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}
+        {% endfor %}
+    {% endif %}
+    {% endblock %}
+    """
+    def __init__(self, {%- for param in parameters %}{{ param }}{% if not loop.last %}, {% endif -%}{%- endfor %}):
+        """
+        {{ self.class_docstring()|indent }}
+        """
+        super({{ clazz }}, self).__init__({init_super_args})
+        {asserts_with_tabs}
+    # end def __init__
+
+    def to_array(self):
+        {to_array_with_tabs}
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        if array is None:
+            return None
+        # end if
+        {from_array_with_tabs}
+    # end def from_array
+# end class {{ clazz }}
