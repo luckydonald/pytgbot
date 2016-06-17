@@ -1,6 +1,5 @@
-{% macro for_type(variable) -%}{%- for type in variable.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
+{% macro for_type(variable) -%}{% for type in variable.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
 {% macro types_as_tuple(variable) -%}{% if variable.type|length > 1 %}({{ for_type(variable) }}){% else -%}{{ for_type(variable) }}{% endif -%}{%- endmacro -%}
-{% macro is_None_or(variable) -%}{% if variable.optional %}{{ variable.name }} is None or {% endif -%}{% endmacro -%}
 
 class {{ clazz }}({{ parent_clazz }}):
     """
@@ -42,31 +41,46 @@ class {{ clazz }}({{ parent_clazz }}):
         assert({{ variable.name }} is not None)
         assert(isinstance({{ variable.name }}, {{ types_as_tuple(variable) }}))
         {%- endif %}
-        {% if variable.always_is_value -%}
+        {% if variable.always_is_value %}
         assert({{ variable.name }} == {{ variable.always_is_value }})
         {% endif -%}
         self.{{ variable.name }} = {{ variable.name }}
-        {% endfor %}
+        {%- if not loop.last %}
+        {% endif %}
+        {%- endfor -%}
+    {#  #}
     # end def __init__
 
+    """
+    Serializes this {{ clazz }} to an dictionary.
+
+    :return: dictionary repesentation of this object.
+    :rtype: dict
+    """
     def to_array(self):
         array = super({{ clazz }}, self).to_array()
 
         {% for variable in variables -%}
         {% if variable.types|length == 1 -%}
         {% if variable.types[0].is_builtin -%}
-        array["{{ variable.api_name }}"] = self.{{ variable.name }}  # type {{ variable.types[0].string }}
+        array['{{ variable.api_name }}'] = {{ variable.types[0].string }}(self.{{ variable.name }})  # type {{ variable.types[0].string }}
         {% else -%}
-        array["{{ variable.api_name }}"] = self.{{ variable.name }}.to_array()  # type {{ variable.types[0].string }}
+        array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {{ variable.types[0].string }}
         {% endif -%}
         {% else -%}
         // ERROR: Multible types ({{ for_type(variable) }}) for
-        // array["{{ variable.api_name }}"] = {{ variable.name }}
+        // array['{{ variable.api_name }}'] = self.{{ variable.name }}
         {% endif -%}
         {% endfor -%}
         return array
     # end def to_array
 
+    """
+    Deserializes a new {{ clazz }} from an given dictionary.
+
+    :return: new {{ clazz }} instance.
+    :rtype: {{ clazz }}
+    """
     @staticmethod
     def from_array(array):
         if array is None:
@@ -78,12 +92,21 @@ class {{ clazz }}({{ parent_clazz }}):
         {%- endfor %}
 
         data = {}
-        data['update_id'] = int(array.get('update_id'))
-        data['message'] = Message.from_array(array.get('message'))
-        data['edited_message'] = Message.from_array(array.get('edited_message'))
-        data['inline_query'] = InlineQuery.from_array(array.get('inline_query'))
-        data['chosen_inline_result'] = ChosenInlineResult.from_array(array.get('chosen_inline_result'))
-        data['callback_query'] = CallbackQuery.from_array(array.get('callback_query'))
-        return Update(**data)
+        {% for variable in variables -%}
+
+        {% endfor %}
+        {% for variable in variables -%}
+        {% if variable.types|length == 1 -%}
+        {% if variable.types[0].is_builtin -%}
+        data['{{ variable.name }}'] = {{ variable.types[0].string }}(array.get('{{ variable.api_name }}'))
+        {% else -%}
+        data['{{ variable.name }}'] = {{ variable.types[0].string }}.from_array(array.get('{{ variable.api_name }}'))
+        {% endif -%}
+        {% else -%}
+        // ERROR: Multible types ({{ for_type(variable) }}) for
+        // data['{{ variable.api_name }}'] = {{ variable.name }}
+        {% endif -%}
+        {% endfor -%}
+        return {{ clazz }}(**data)
     # end def from_array
 # end class {{ clazz }}

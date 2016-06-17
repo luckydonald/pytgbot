@@ -145,6 +145,7 @@ def parse_param_types(param) -> Variable:
             var_type.is_builtin = True
         elif var_type.string == "True":
             var_type.string = "bool"
+            var_type.is_builtin = True
             var_type.always_is_value="True"
         else:
             logger.warn("Added unrecognized type in param {var}: {type}".format(var=variable.api_name, type=var_type.string))
