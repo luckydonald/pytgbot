@@ -18,6 +18,7 @@ def get_template(file_name):
             raise e
     # end with
     return class_template
+# end def get_template
 
 
 def clazz(clazz, parent_clazz, description, link, params_string, init_super_args=None):
@@ -28,14 +29,14 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     """
     class_template = get_template("class.template")
 
-    init_description_w_tabs  = description.strip().replace("\n", "\n\t\t")
-    clazz_description_w_tabs = description.strip().replace("\n", "\n\t")
     imports = [[], []]
 
     variables_needed = []
     variables_optional = []
     for param in params_string.split("\n"):
         variable = parse_param_types(param)
+        # any variable.types has always_is_value => lenght must be 1.
+        assert(not any([type_.always_is_value is not None for type_ in variable.types]) or len(variable.types) == 1)
         if variable.optional:
             variables_optional.append(variable)
         else:
@@ -43,29 +44,14 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
         # end if
     # end for
 
-
-    args = []
-    asserts = []
-    to_array1 = []
-    to_array2 = []
-    from_array1 = []
-    from_array2 = []
-
-    to_array = ["array = super({clazz}, self).to_array()".format(clazz=clazz)]
-    to_array.extend(to_array1)
-    to_array.extend(to_array2)
-    from_array = ["data = super({clazz}).from_array(array)".format(clazz=clazz)]
-    from_array.extend(from_array1)
-    from_array.extend(from_array2)
-    from_array.append("return {clazz}(**data)".format(clazz=clazz))
-    result = class_template.render(
+    result = class_template.render(imports=[Import("..somewhere", "File")],
         clazz=clazz, parent_clazz=parent_clazz, link=link, description=description,
         variables=variables_needed + variables_optional,
         parameters=variables_needed, keywords=variables_optional,
     )
     result = result.replace("\t", "    ")
     return result
-# end def
+# end def clazz
 
 
 class Variable(dict):
@@ -85,12 +71,35 @@ class Variable(dict):
         self.description = description  # some text about it.     # parse_param_types(param)
     # end def
 
+    """Note: if self.types is empty, the result of this function is undefined."""
+    @property
+    def all_builtin(self):
+        builtin = True
+        for type in self.types:
+            builtin = builtin and type.is_builtin  # keeps being True until False is found.
+        # end for
+        return builtin
+    # end def is_builtin
+# end class Variable
+
+
 class Type(dict):
     def __init__(self, string=None, is_builtin=None, always_is_value=None, is_list=False):
         self.string = string  # the type (e.g. "bool")
         self.is_builtin = is_builtin  # bool.  If it is a build in type (float, int, ...) or not (classes like "Message", "Peer"...)
         self.always_is_value = always_is_value  # None or the only possible value (e.g. a bool, always True) default: None.
         self.is_list = is_list  # if it is an list of that type. (e.g. list of bool would be [True, False] )
+# end class Type
+
+
+class Import(dict):
+    """ from <path> import <name> """
+    def __init__(self, path=None, name=None):
+        self.path = path
+        self.name = name
+    # end def __init__
+# end class Import
+
 
 
 def parse_param_types(param) -> Variable:
@@ -122,7 +131,6 @@ def parse_param_types(param) -> Variable:
     param_types = param_types.replace(" Null ",    " None ")
     param_types = param_types.replace(" true ",    " True ")
 
-    assert_types = param_types
     param_types = param_types.replace(" or ", " | ")
     param_types = param_types.strip()
     # ## "str | bool"
@@ -168,6 +176,14 @@ for asses in variable.types:  # short for asserts
         non_buildin_type = asses
         logger.warn("Added unrecognized type in param {var}: {type}".format(var=param_name, type=asses))
 # end for
+
+to_array = ["array = super({clazz}, self).to_array()".format(clazz=clazz)]
+    to_array.extend(to_array1)
+    to_array.extend(to_array2)
+    from_array = ["data = super({clazz}).from_array(array)".format(clazz=clazz)]
+    from_array.extend(from_array1)
+    from_array.extend(from_array2)
+    from_array.append("return {clazz}(**data)".format(clazz=clazz))
 """
 
 
@@ -175,3 +191,20 @@ def can_strip_prefix(text:str, prefix:str) -> (bool, str):
     if text.startswith(prefix):
         return True, text[len(prefix):]
     return False, text
+"""
+if asses in ["int", "bool", "float"]:
+    assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
+elif asses == "True":
+    assert_commands.append("{var} == True".format(var=param_name, type=asses))
+elif asses == "str":
+    assert_commands.append("isinstance({var}, unicode_type)".format(var=param_name, type=asses))
+    assert_comments.append("unicode on python 2, str on python 3")
+elif asses.startswith("Array") or asses.startswith("list"):
+    assert_commands.append("isinstance({var}, (list, tuple))".format(var=param_name))
+    assert_comments.append(asses.replace("\n", " "))
+elif " or " in asses or " | " in asses:
+    asses2 = asses.replace(" or ", ", ").replace(" | ", ", ")
+    assert_commands.append("isinstance({var}, ({type}))".format(var=param_name, type=asses2))
+else:
+    assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
+    """""""""

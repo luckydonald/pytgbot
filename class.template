@@ -1,38 +1,69 @@
+{% macro for_type(variable) -%}{%- for type in variable.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
+{% macro types_as_tuple(variable) -%}{% if variable.type|length > 1 %}({{ for_type(variable) }}){% else -%}{{ for_type(variable) }}{% endif -%}{%- endmacro -%}
+{% macro is_None_or(variable) -%}{% if variable.optional %}{{ variable.name }} is None or {% endif -%}{% endmacro -%}
+
 class {{ clazz }}({{ parent_clazz }}):
     """
-    {% block class_docstring %}
-    {{ description }}
+    {%- block class_docstring -%}
+    {{ description|indent }}
 
     {{link}}
 
-    {% if parameters -%}
+    {% if parameters %}
     Parameters:
-
         {% for param in parameters %}
-        :param {{ param.api_name }}: {{ param.description }}
-        :type  {{ param.api_name }}: {% for type in param.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}
+        :param {{ param.name }}: {{ param.description }}
+        :type  {{ param.name }}: {{ for_type(param) }}
         {% endfor %}
     {% endif %}
     {% if keywords -%}
         Optional keyword parameters:
-
         {% for keyword in keywords %}
-        :keyword {{ keyword.api_name }}: {{ keyword.description }}
-        :type    {{ keyword.api_name }}: {% for type in keyword.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}
+        :keyword {{ keyword.name }}: {{ keyword.description }}
+        :type    {{ keyword.name }}: {{ for_type(keyword) }}
         {% endfor %}
-    {% endif %}
+    {% endif -%}
     {% endblock %}
     """
-    def __init__(self, {%- for param in parameters %}{{ param }}{% if not loop.last %}, {% endif -%}{%- endfor %}):
+    def __init__(self, {%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}):
         """
         {{ self.class_docstring()|indent }}
         """
-        super({{ clazz }}, self).__init__({init_super_args})
-        {asserts_with_tabs}
+        super({{ clazz }}, self).__init__()
+
+        {% for import in imports -%}
+        from {{ import.path }} import {{ import.name }}
+        {%- endfor %}
+
+        {% for variable in variables -%}
+        {% if variable.optional %}
+        assert({{ variable.name }} is None or isinstance({{ variable.name }}, {{ types_as_tuple(variable) }}))
+        {%- else %}
+        assert({{ variable.name }} is not None)
+        assert(isinstance({{ variable.name }}, {{ types_as_tuple(variable) }}))
+        {%- endif %}
+        {% if variable.always_is_value -%}
+        assert({{ variable.name }} == {{ variable.always_is_value }})
+        {% endif -%}
+        self.{{ variable.name }} = {{ variable.name }}
+        {% endfor %}
     # end def __init__
 
     def to_array(self):
-        {to_array_with_tabs}
+        array = super({{ clazz }}, self).to_array()
+
+        {% for variable in variables -%}
+        {% if variable.types|length == 1 -%}
+        {% if variable.types[0].is_builtin -%}
+        array["{{ variable.api_name }}"] = self.{{ variable.name }}  # type {{ variable.types[0].string }}
+        {% else -%}
+        array["{{ variable.api_name }}"] = self.{{ variable.name }}.to_array()  # type {{ variable.types[0].string }}
+        {% endif -%}
+        {% else -%}
+        // ERROR: Multible types ({{ for_type(variable) }}) for
+        // array["{{ variable.api_name }}"] = {{ variable.name }}
+        {% endif -%}
+        {% endfor -%}
         return array
     # end def to_array
 
@@ -41,6 +72,18 @@ class {{ clazz }}({{ parent_clazz }}):
         if array is None:
             return None
         # end if
-        {from_array_with_tabs}
+
+        {% for import in imports -%}
+        from {{ import.path }} import {{ import.name }}
+        {%- endfor %}
+
+        data = {}
+        data['update_id'] = int(array.get('update_id'))
+        data['message'] = Message.from_array(array.get('message'))
+        data['edited_message'] = Message.from_array(array.get('edited_message'))
+        data['inline_query'] = InlineQuery.from_array(array.get('inline_query'))
+        data['chosen_inline_result'] = ChosenInlineResult.from_array(array.get('chosen_inline_result'))
+        data['callback_query'] = CallbackQuery.from_array(array.get('callback_query'))
+        return Update(**data)
     # end def from_array
 # end class {{ clazz }}
