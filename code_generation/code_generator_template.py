@@ -3,7 +3,8 @@ from jinja2 import Template
 from jinja2.exceptions import TemplateSyntaxError
 from luckydonaldUtils.logger import logging
 
-from code_generator import safe_var_translations
+from code_generator import safe_var_translations, get_type_path
+from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
@@ -29,12 +30,11 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     """
     class_template = get_template("class.template")
 
-    imports = [[], []]
-
     variables_needed = []
     variables_optional = []
+    imports = set()
     for param in params_string.split("\n"):
-        variable = parse_param_types(param)
+        variable = parse_param_types(param, imports)
         # any variable.types has always_is_value => lenght must be 1.
         assert(not any([type_.always_is_value is not None for type_ in variable.types]) or len(variable.types) == 1)
         if variable.optional:
@@ -42,9 +42,12 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
         else:
             variables_needed.append(variable)
         # end if
+        imports.update(variable.all_imports)
     # end for
+    imports = list(imports)
+    imports.sort()
 
-    result = class_template.render(imports=[Import("..somewhere", "File")],
+    result = class_template.render(imports=imports,
         clazz=clazz, parent_clazz=parent_clazz, link=link, description=description,
         variables=variables_needed + variables_optional,
         parameters=variables_needed, keywords=variables_optional,
@@ -71,24 +74,32 @@ class Variable(dict):
         self.description = description  # some text about it.     # parse_param_types(param)
     # end def
 
-    """Note: if self.types is empty, the result of this function is undefined."""
+    """
+    Get all needed Imports.
+
+    :return: Return set of all needed :class:`Import` s.
+    :rtype: set
+    """
     @property
-    def all_builtin(self):
-        builtin = True
+    def all_imports(self):
+        imports = set()
         for type in self.types:
-            builtin = builtin and type.is_builtin  # keeps being True until False is found.
+            if not type.is_builtin and type.import_path:
+                imports.add(Import(type.import_path, type.string))
+            # end if
         # end for
-        return builtin
-    # end def is_builtin
+        return imports
+    # end def all_imports
 # end class Variable
 
 
 class Type(dict):
-    def __init__(self, string=None, is_builtin=None, always_is_value=None, is_list=False):
+    def __init__(self, string=None, is_builtin=None, always_is_value=None, is_list=False, import_path=None):
         self.string = string  # the type (e.g. "bool")
         self.is_builtin = is_builtin  # bool.  If it is a build in type (float, int, ...) or not (classes like "Message", "Peer"...)
         self.always_is_value = always_is_value  # None or the only possible value (e.g. a bool, always True) default: None.
         self.is_list = is_list  # if it is an list of that type. (e.g. list of bool would be [True, False] )
+        self.import_path = import_path  # from <import_path> import <string>
 # end class Type
 
 
@@ -98,11 +109,63 @@ class Import(dict):
         self.path = path
         self.name = name
     # end def __init__
+
+    def __hash__(self):
+        return hash(self.path + self.name)
+    # end def __hash__
+
+    """
+    If it is bigger (+1), equal (0) or less (-1)
+    :return: +1, 0 or -1
+    :rtype: int
+    """
+    def compare(self, other):
+        if self.path < other.path:
+            return -1
+        elif self.path > other.path:
+            return +1
+        elif self.name < other.name:
+            return -1
+        elif self.name > other.name:
+            return +1
+        else:
+            return 0
+        # end if
+    # end def compare
+
+    """ self >= other """
+    def __ge__(self, other):
+        return self.compare(other) >= 0
+    # end def __ge__
+
+    """ self > other """
+    def __gt__(self, other):
+        return self.compare(other) > 0
+    # end def __gt__
+
+    """ self == other """
+    def __eq__(self, other):
+        return self.compare(other) == 0
+    # end def __eq__
+
+    """ self <= other """
+    def __le__(self, other):
+        return self.compare(other) <= 0
+    # end def __le__
+
+    """ self < other """
+    def __lt__(self, other):
+        return self.compare(other) < 0
+    # end def __lt__
+
+    """ self != other """
+    def __ne__(self, other):
+        return self.compare(other) != 0
+    # end def __ne__
 # end class Import
 
 
-
-def parse_param_types(param) -> Variable:
+def parse_param_types(param, import_set) -> Variable:
     # ## "message_id\tString or Boolean\tUnique message identifier"
     table = param.split("\t")
     variable = Variable()
@@ -147,6 +210,9 @@ def parse_param_types(param) -> Variable:
             var_type.string = "bool"
             var_type.is_builtin = True
             var_type.always_is_value="True"
+        elif var_type.string in CLASS_TYPE_PATHS:
+            var_type.import_path = CLASS_TYPE_PATHS[var_type.string][CLASS_TYPE_PATHS__IMPORT].rstrip(".")
+            var_type.is_builtin = False
         else:
             logger.warn("Added unrecognized type in param {var}: {type}".format(var=variable.api_name, type=var_type.string))
         # end if
@@ -155,57 +221,8 @@ def parse_param_types(param) -> Variable:
     return variable
 # end def
 
-"""
-for asses in variable.types:  # short for asserts
-    asses = asses.strip()  # always good!!
-    asses = asses.strip("()")
-    if asses in ["int", "bool", "float"]:
-        assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
-    elif asses == "True":
-        assert_commands.append("{var} == True".format(var=param_name, type=asses))
-    elif asses == "str":
-        assert_commands.append("isinstance({var}, unicode_type)".format(var=param_name, type=asses))
-        assert_comments.append("unicode on python 2, str on python 3")
-    elif asses.startswith("Array") or asses.startswith("list"):
-        assert_commands.append("isinstance({var}, (list, tuple))".format(var=param_name))
-        assert_comments.append(asses.replace("\n", " "))
-    elif " or " in asses or " | " in asses:
-        asses2 = asses.replace(" or ", ", ").replace(" | ", ", ")
-        assert_commands.append("isinstance({var}, ({type}))".format(var=param_name, type=asses2))
-    else:
-        assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
-        non_buildin_type = asses
-        logger.warn("Added unrecognized type in param {var}: {type}".format(var=param_name, type=asses))
-# end for
-
-to_array = ["array = super({clazz}, self).to_array()".format(clazz=clazz)]
-    to_array.extend(to_array1)
-    to_array.extend(to_array2)
-    from_array = ["data = super({clazz}).from_array(array)".format(clazz=clazz)]
-    from_array.extend(from_array1)
-    from_array.extend(from_array2)
-    from_array.append("return {clazz}(**data)".format(clazz=clazz))
-"""
-
 
 def can_strip_prefix(text:str, prefix:str) -> (bool, str):
     if text.startswith(prefix):
         return True, text[len(prefix):]
     return False, text
-"""
-if asses in ["int", "bool", "float"]:
-    assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
-elif asses == "True":
-    assert_commands.append("{var} == True".format(var=param_name, type=asses))
-elif asses == "str":
-    assert_commands.append("isinstance({var}, unicode_type)".format(var=param_name, type=asses))
-    assert_comments.append("unicode on python 2, str on python 3")
-elif asses.startswith("Array") or asses.startswith("list"):
-    assert_commands.append("isinstance({var}, (list, tuple))".format(var=param_name))
-    assert_comments.append(asses.replace("\n", " "))
-elif " or " in asses or " | " in asses:
-    asses2 = asses.replace(" or ", ", ").replace(" | ", ", ")
-    assert_commands.append("isinstance({var}, ({type}))".format(var=param_name, type=asses2))
-else:
-    assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
-    """""""""

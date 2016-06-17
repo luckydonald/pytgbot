@@ -30,9 +30,11 @@ class {{ clazz }}({{ parent_clazz }}):
         """
         super({{ clazz }}, self).__init__()
 
-        {% for import in imports -%}
+        {% block imports_block -%}
+        {%- for import in imports -%}
         from {{ import.path }} import {{ import.name }}
-        {%- endfor %}
+        {% endfor %}
+        {%- endblock %}
 
         {% for variable in variables -%}
         {% if variable.optional %}
@@ -87,9 +89,7 @@ class {{ clazz }}({{ parent_clazz }}):
             return None
         # end if
 
-        {% for import in imports -%}
-        from {{ import.path }} import {{ import.name }}
-        {%- endfor %}
+        {{ self.imports_block() }}
 
         data = {}
         {% for variable in variables -%}

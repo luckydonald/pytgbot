@@ -217,8 +217,8 @@ for h in bs.select("#dev_page_content > h4"):
             if table_type == "class":
                 import_path = get_type_path(title)
                 import_path = import_path.rstrip(".")
-                if import_path == title:
-                    "pytgbot.api_types." + title.lower() + "."
+                # if import_path == title:
+                #     import_path = "pytgbot.api_types." + title.lower() + "."
             else:
                 import_path = "pytgbot.__init__."
             file_path = abspath(path_join(file, import_path[:import_path.rfind(".")].replace(".", folder_seperator)+".py"))

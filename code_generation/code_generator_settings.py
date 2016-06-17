@@ -1,7 +1,7 @@
 CLASS_TYPE_PATHS__IMPORT = 0
 CLASS_TYPE_PATHS__PARENT = 1
 CLASS_TYPE_PATHS__DESCRIPTION = 2
-CLASS_TYPE_PATHS = { # import, master_class
+CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "TgBotApiObject": ("pytgbot.api_types.", "object", None),
 
     # pytgbot.api_types.receivable.media.*
