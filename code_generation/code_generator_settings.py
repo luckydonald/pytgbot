@@ -37,6 +37,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "ChosenInlineResult":           ("pytgbot.api_types.receivable.inline.", "UpdateType", None),
 
     # pytgbot.api_types.sendable.inline.*
+    "InputMessageContent":          ("pytgbot.api_types.sendable.inline.", "Sendable", None),
     "InputTextMessageContent":      ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),
     "InputLocationMessageContent":  ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),
     "InputVenueMessageContent":     ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),

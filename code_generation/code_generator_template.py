@@ -11,11 +11,13 @@ logger = logging.getLogger(__name__)
 
 def get_template(file_name):
     class_template = Template("# TEMPLATE COULD NOT BE LOADED #")
-    with open(file_name) as file:
+    import os
+    path = os.path.abspath(os.path.join("templates", file_name))
+    with open(path) as file:
         try:
             class_template = Template(file.read())
         except TemplateSyntaxError as e:
-            logger.warn("{file}:{line}: {msg}".format(msg=e.message, file=e.filename, line=e.lineno))
+            logger.warn("{file}:{line} {msg}".format(msg=e.message, file=e.filename if e.filename else path, line=e.lineno))
             raise e
     # end with
     return class_template
@@ -81,10 +83,10 @@ def func(command, description, link, params_string, returns="On success, the sen
     # end for
     imports = list(imports)
     imports.sort()
+    returns = Variable(types=as_types(return_type, variable_name="return type"), description=returns)
 
-    return_type = as_types(return_type, variable_name="return type")
     result = func_template.render(
-        imports=imports, func=command, link=link, description=description, returns=returns, return_type=return_type,
+        imports=imports, func=command, link=link, description=description, returns=returns,
         variables=variables_needed + variables_optional,
         parameters=variables_needed, keywords=variables_optional,
     )
@@ -242,6 +244,8 @@ def parse_param_types(param) -> Variable:
             variable.optional = False
         elif param_required == "optional":
             variable.optional = True
+        elif param_required == "no":
+            variable.optional = True  # https://core.telegram.org/bots/api#editmessagetext
         else:
             raise AssertionError("table[2] required \"{requiered}\" not in [\"yes\", \"optional\"]".format(requiered=param_required))
         # end if
@@ -269,6 +273,7 @@ def as_types(types_string, variable_name):
     types_string = types_string.replace(" Array ", " list ")
     types_string = types_string.replace(" String ", " str ")
     types_string = types_string.replace(" Integer ", " int ")
+    types_string = types_string.replace(" Int ", " int ")  # https://core.telegram.org/bots/api#getchatmemberscount
     types_string = types_string.replace(" Boolean ", " bool ")
     types_string = types_string.replace(" Nothing ", " None ")
     types_string = types_string.replace(" Null ", " None ")

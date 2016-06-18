@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from code_generator import get_type_path
-from code_generator_template import clazz, func
+from code_generator_template import clazz, func, get_template
 from luckydonaldUtils.files import mkdir_p  # luckydonaldUtils v0.43+
 from luckydonaldUtils.interactions import answer
 from luckydonaldUtils.logger import logging
@@ -72,6 +72,7 @@ def parse_table(tag):
 # end def
 
 
+bot_template = get_template("bot.template")
 file = answer("Folder path to store the results.", default="/tmp/pytgbotapi/")
 if file:
     try:
@@ -147,6 +148,7 @@ for h in bs.select("#dev_page_content > h4"):
                 # end for
                 returns__ = []  # array of strings
                 return_text__ = []  # array if strings. one item = one sentence. Not ending with a dot.
+                is_array = False
                 for lol_part in parts_splitted:
                     has_return = False
                     returns_ = []
@@ -154,15 +156,22 @@ for h in bs.select("#dev_page_content > h4"):
                     for lol_part_part in lol_part:
                         if isinstance(lol_part_part, str):
                             return_text_ += lol_part_part
+                            if lol_part_part.strip().lower().endswith("array of"):
+                                is_array = True
                             if "return" in lol_part_part.lower():
                                 has_return = True
                             # end if
                         else:  # not str
                             return_text_ += lol_part_part.text
-                            returns_.append(lol_part_part.text)
+                            if is_array:
+                                returns_.append("list of " + lol_part_part.text)
+                                is_array = False
+                            else:
+                                returns_.append(lol_part_part.text)
                     # end for
                     if has_return:  # append, so we can have multible sentences.
                         return_text__.append(return_text_.strip())
+                        returns__
                         returns__.extend(returns_)
                     # end if
                 # end for

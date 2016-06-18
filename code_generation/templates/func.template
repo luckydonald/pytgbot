@@ -1,36 +1,37 @@
 {% macro for_type(variable, full=False) -%}{% for type in variable.types %}{% if full %}{{ type.as_import.full }}{% else %}{{ type.string }}{% endif %}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
+{% macro for_type_full(variable) -%}{% for type in variable.types %}{{ type.as_import.full }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
 {% macro types_as_tuple(variable) -%}{% if variable.types|length > 1 %}({{ for_type(variable) }}){% else -%}{{ for_type(variable) }}{% endif -%}{%- endmacro -%}
 {% macro for_args()     -%}{%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None               {%- endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
 {% macro for_args_set() -%}{%- for variable in variables %}{{ variable.name }}{% if variable.optional %}={{ variable.name }}{%- endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
 
     def {{ func }}(self, {{ for_args() }}):
-    """
-    {% block func_docstring -%}
-    {{ description|indent }}
+        """
+        {% block func_docstring -%}
+        {{ description|indent(8) }}
 
-    {{link}}
+        {{link}}
 
-    {% if parameters %}
-    Parameters:
-    {% for param in parameters %}
-        :param {{ param.name }}: {{ param.description }}
-        :type  {{ param.name }}: {{ for_type(param) }}
-    {% endfor %}
-    {% endif %}
-    {% if keywords -%}
-    Optional keyword parameters:
-    {% for keyword in keywords %}
-        :keyword {{ keyword.name }}: {{ keyword.description }}
-        :type    {{ keyword.name }}: {{ for_type(keyword) }}
-    {% endfor %}
-    {% endif -%}
+        {% if parameters %}
+        Parameters:
+        {% for param in parameters %}
+            :param {{ param.name }}: {{ param.description }}
+            :type  {{ param.name }}: {{ for_type(param) }}
+        {% endfor %}
+        {% endif %}
+        {% if keywords -%}
+        Optional keyword parameters:
+        {% for keyword in keywords %}
+            :keyword {{ keyword.name }}: {{ keyword.description }}
+            :type    {{ keyword.name }}: {{ for_type(keyword) }}
+        {% endfor %}
+        {% endif -%}
 
-    Returns:
+        Returns:
 
-        :return: {{ returns }}
-        :rtype:  {{ for_type(return_type, full=False) }}
-    {% endblock -%}
-    """
+            :return: {{ returns.description }}
+            :rtype:  {{ for_type_full(returns) }}
+        {% endblock -%}
+        """
         {% block imports_block -%}
         {%- for import in imports -%}
         from {{ import.path }} import {{ import.name }}

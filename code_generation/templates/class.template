@@ -1,6 +1,7 @@
 {% macro for_type(variable) -%}{% for type in variable.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
 {% macro types_as_tuple(variable) -%}{% if variables.type|length > 1 %}({{ for_type(variable) }}){% else -%}{{ for_type(variable) }}{% endif -%}{%- endmacro -%}
-{% macro for_args() -%}{%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
+{% macro for_args_none() -%}{%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
+{% macro for_args_format_str() -%}{%- for variable in variables %}{{ variable.name }}={{ "{" }}self.{{ variable.name }}{{ "}" }}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
 
 
 class {{ clazz }}({{ parent_clazz }}):
@@ -26,7 +27,7 @@ class {{ clazz }}({{ parent_clazz }}):
     {% endif -%}
     {% endblock %}
     """
-    def __init__(self, {{ for_args() }}):
+    def __init__(self, {{ for_args_none() }}):
         """
         {{ self.class_docstring()|indent }}
         """
@@ -112,4 +113,7 @@ class {{ clazz }}({{ parent_clazz }}):
         {% endfor -%}
         return {{ clazz }}(**data)
     # end def from_array
+
+    def __str__(self):
+        return "{{ clazz }}({{ for_args_format_str() }})".format(self=self)
 # end class {{ clazz }}
