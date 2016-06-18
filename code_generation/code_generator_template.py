@@ -2,6 +2,8 @@
 from jinja2 import Template
 from jinja2.exceptions import TemplateSyntaxError
 from luckydonaldUtils.logger import logging
+from collections import Mapping
+
 
 from code_generator import safe_var_translations, get_type_path, convert_to_underscore
 from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
@@ -49,11 +51,12 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     imports = list(imports)
     imports.sort()
 
-    result = class_template.render(imports=imports,
+    clazz_object = Clazz(imports=imports,
         clazz=clazz, parent_clazz=parent_clazz, link=link, description=description,
-        variables=variables_needed + variables_optional,
-        parameters=variables_needed, keywords=variables_optional,
+        parameters=variables_needed, keywords=variables_optional
     )
+
+    result = class_template.render(**clazz_object)
     result = result.replace("\t", "    ")
     return result
 # end def clazz
@@ -85,14 +88,80 @@ def func(command, description, link, params_string, returns="On success, the sen
     imports.sort()
     returns = Variable(types=as_types(return_type, variable_name="return type"), description=returns)
 
-    result = func_template.render(
+    func_object = Function(
         imports=imports, func=command, link=link, description=description, returns=returns,
-        variables=variables_needed + variables_optional,
-        parameters=variables_needed, keywords=variables_optional,
+        parameters=variables_needed, keywords=variables_optional
     )
+    result = func_template.render(**func_object)
     result = result.replace("\t", "    ")
     return result
 # end def
+
+
+class KwargableObject(Mapping):
+    """ allow `**self`, and include all @property s """
+    def __getitem__(self, key):
+        try:
+            return self.__getattribute__(key)
+        except AttributeError as e:
+            raise KeyError(key)
+
+    # end def __getitem__
+
+    def __len__(self):
+        return len(list(self.__iter__()))
+
+    # end def __len__
+
+    def __iter__(self):
+        import inspect
+        def is_allowed(value):
+            return isinstance(value, property)
+
+        # end def
+        return iter(
+            [name for (name) in vars(self) if not name.startswith("_")] +
+            [name for (name, value) in inspect.getmembers(Clazz, is_allowed)]
+        )
+        # end def __iter__
+# end class KwargableObject
+
+
+class Clazz(KwargableObject):
+    def __init__(self, clazz=None, imports=None, parent_clazz=None, link=None, description=None, parameters=None, keywords=None):
+        super(Clazz, self).__init__()
+        self.clazz = clazz
+        self.imports = imports if imports else []
+        self.parent_clazz = parent_clazz if parent_clazz else "object"
+        self.link = link
+        self.description = description
+        self.parameters = parameters if parameters else []
+        self.keywords = keywords if keywords else []
+    # end def __init__
+
+    @property
+    def variables(self):
+        return self.parameters + self.keywords
+    # end def variables
+# end class Clazz
+
+
+class Function(KwargableObject):
+    def __init__(self, func=None, imports=None, link=None, description=None, returns=None, parameters=None, keywords=None):
+        self.func = func
+        self.imports = imports if imports else []
+        self.link = link
+        self.description = description
+        self.returns = returns
+        self.parameters = parameters
+        self.keywords = keywords
+    # end def __init__
+
+    @property
+    def variables(self):
+        return self.parameters + self.keywords
+    # end def variables
+# end class Function
 
 
 class Variable(dict):
