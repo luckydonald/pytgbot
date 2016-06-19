@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from jinja2 import Template
+from jinja2 import Template, Environment, FileSystemLoader
 from jinja2.exceptions import TemplateSyntaxError
 from luckydonaldUtils.logger import logging
 from collections import Mapping
+import os
 
 
 from code_generator import safe_var_translations, get_type_path, convert_to_underscore
@@ -11,7 +12,20 @@ from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
 
+class RelEnvironment(Environment):
+    """
+    Override join_path() to enable relative template paths.
+
+    http://stackoverflow.com/a/8530761/3423324
+    """
+    def join_path(self, template, parent):
+        return os.path.join(os.path.dirname(parent), template)
+    # end def join_path
+# end class RelEnvironment
+
+
 def get_template(file_name):
+    env = RelEnvironment(loader=FileSystemLoader("templates"))
     class_template = Template("# TEMPLATE COULD NOT BE LOADED #")
     import os
     path = os.path.abspath(os.path.join("templates", file_name))
@@ -97,6 +111,8 @@ def func(command, description, link, params_string, returns="On success, the sen
     return result
 # end def
 
+class ClassOrFunction(KwargableObject):
+    pass
 
 class KwargableObject(Mapping):
     """ allow `**self`, and include all @property s """
@@ -127,7 +143,7 @@ class KwargableObject(Mapping):
 # end class KwargableObject
 
 
-class Clazz(KwargableObject):
+class Clazz(ClassOrFunction):
     def __init__(self, clazz=None, imports=None, parent_clazz=None, link=None, description=None, parameters=None, keywords=None):
         super(Clazz, self).__init__()
         self.clazz = clazz
@@ -146,7 +162,7 @@ class Clazz(KwargableObject):
 # end class Clazz
 
 
-class Function(KwargableObject):
+class Function(ClassOrFunction):
     def __init__(self, func=None, imports=None, link=None, description=None, returns=None, parameters=None, keywords=None):
         self.func = func
         self.imports = imports if imports else []
