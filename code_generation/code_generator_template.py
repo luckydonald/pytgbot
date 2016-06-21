@@ -42,8 +42,6 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
 
     y = clazz(clazz="$clazz$", parent_clazz="%parent$", description="$description$", link="$lnk$", params_string="$first_param$")
     """
-    class_template = get_template("class.template")
-
     variables_needed = []
     variables_optional = []
     imports = set()
@@ -78,8 +76,6 @@ def func(command, description, link, params_string, returns="On success, the sen
 
     y = func(command="$cmd$", description="$desc$", link="$lnk$", params_string="$first_param$", returns="$returns$", return_type="$returntype$")
     """
-    func_template = get_template("func.template")
-
     variables_needed = []
     variables_optional = []
     imports = set()
@@ -139,7 +135,6 @@ class ClassOrFunction(KwargableObject):
         :param filepath: where this function or class should be stored.
         """
         self.filepath = filepath
-
 # end class ClassOrFunction
 
 
@@ -214,6 +209,8 @@ class Variable(dict):
     def all_imports(self):
         imports = set()
         for type in self.types:
+            if type.is_list:
+                imports.add(Import(CLASS_TYPE_PATHS["as_array"][CLASS_TYPE_PATHS__IMPORT].rstrip("."), "as_array"))
             if type.import_path:
                 imports.add(Import(type.import_path, type.string))
             # end if

@@ -1,4 +1,4 @@
-{% from "macros.template" import for_args_none, for_type_full, types_as_assert_tuple, for_args_set %}
+{% from "macros.template" import for_args_none, for_type_list_of_full, types_as_assert_tuple, for_args_set %}
     def {{ function.name }}(self, {{ for_args_none(function.variables) }}):
         """
         {% block func_docstring -%}
@@ -10,14 +10,14 @@
         Parameters:
         {% for param in function.parameters %}
         :param {{ param.name }}: {{ param.description }}
-        :type  {{ param.name }}: {{ for_type_full(param) }}
+        :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
         {% endfor %}
         {% endif %}
         {% if function.keywords -%}
         Optional keyword parameters:
         {% for keyword in function.keywords %}
         :keyword {{ keyword.name }}: {{ keyword.description }}
-        :type    {{ keyword.name }}: {{ for_type_full(keyword) }}
+        :type    {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
         {% endfor %}
         {% endif -%}
 
@@ -25,7 +25,7 @@
         Returns:
 
         :return: {{ function.returns.description }}
-        :rtype:  {{ for_type_full(function.returns) }}
+        :rtype:  {{ for_type_list_of_full(function.returns) }}
         {% endblock -%}
         """
         {% block imports_block -%}

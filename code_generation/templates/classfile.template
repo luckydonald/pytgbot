@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 {% for import in imports -%}
 from {{ import.path }} import {{ import.name }}
+{%- if loop.last %}
+{% endif %}
 {% endfor -%}
 {% for clazz in clazzes %}
 {% include "class.template" %}

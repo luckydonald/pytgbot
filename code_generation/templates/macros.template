@@ -1,7 +1,8 @@
 {%- macro for_type(variable)                  -%}{% for type in variable.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
 {%- macro for_type_or_list(variable)          -%}{% for type in variable.types %}{% if type.is_list > 0 %}{{ "list" }}{% else %}{{ type.string }}{% endif %}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
-{%- macro for_type_full(variable)             -%}{% for type in variable.types %}{% if type.is_list >0 %}{{ "list of " * type.is_list }}{% endif %}{{ type.as_import.full }}{% if not loop.last %} | {% endif -%}{% endfor %}{%- endmacro -%}
-{%- macro types_as_tuple(variables, variable) -%}{% if variables.type|length > 1 %}({{ for_type(variable) }}){% else -%}{{ for_type(variable) }}{% endif -%}{%- endmacro -%}
+{%- macro for_type_list_of_full(variable)     -%}{% for type in variable.types %}{% if type.is_list >0 %}{{ "list of " * type.is_list }}{% endif %}{{ type.as_import.full }}{% if not loop.last %} | {% endif -%}{% endfor %}{%- endmacro -%}
+{%- macro for_type_list_of(variable)          -%}{% for type in variable.types %}{% if type.is_list >0 %}{{ "list of " * type.is_list }}{% endif %}{{ type.string }}{% if not loop.last %} | {% endif -%}{% endfor %}{%- endmacro -%}
+{%- macro types_as_tuple(variables, variable) -%}{% if variables.type|length > 1 %}({{ for_type_or_list(variable) }}){% else -%}{{ for_type_or_list(variable) }}{% endif -%}{%- endmacro -%}
 {%- macro for_args_keys(variables)            -%}{%- for variable in variables %}"{{ variable.name }}"{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
 {%- macro for_args_set(variables)             -%}{%- for variable in variables %}{{ variable.name }}={{ variable.name }}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
 {%- macro for_args_none(variables)            -%}{%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
