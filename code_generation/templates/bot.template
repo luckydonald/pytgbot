@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 class Bot(object):
     _base_url = "https://api.telegram.org/bot{api_key}/{command}"
 
@@ -9,8 +10,8 @@ class Bot(object):
         self._last_update = datetime.now()
     # end def __init__
 
-    {% for func in functions -%}
-    {{ func|indent }}
+    {% for function in functions -%}
+    {% include "func.template" %}
     {%- endfor %}
 
     send_msg = send_message  """ alias to :func:`send_message` """

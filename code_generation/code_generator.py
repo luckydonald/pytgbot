@@ -251,7 +251,7 @@ def parse_param_types(param):
         else:
             assert_commands.append("isinstance({var}, {type})".format(var=param_name, type=asses))
             non_buildin_type = asses
-            logger.warn("Added unrecognized type in param {var}: {type}".format(var=param_name, type=asses))
+            logger.warn("parse_params: Added unrecognized type in param {var}: {type}".format(var=param_name, type=asses))
     # end for
     # non_buildin_type is None if is build in, else is ==
     return assert_commands, assert_comments, param_name, param_type, table, non_buildin_type, param_name_input

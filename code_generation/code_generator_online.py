@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from code_generator import get_type_path
-from code_generator_template import clazz, func, get_template
+from code_generator_template import clazz, func, get_template, Clazz, Function, ClassOrFunction, as_types, Type
 from luckydonaldUtils.files import mkdir_p  # luckydonaldUtils v0.43+
 from luckydonaldUtils.interactions import answer
 from luckydonaldUtils.logger import logging
@@ -180,17 +180,33 @@ def main():
         print("descr: " + repr(descr))
         params_string = "\n".join(param_strings)
         if table_type == "func":
-            if len(default_returns) == 0:
+            seems_valid = False
+            if len(default_returns) != 2:
                 if "return" in descr.lower():
                     default_returns = ["", "Message"]
                     default_returns[0] = [x for x in descr.split(".") if "return" in x.lower()][0].strip()
+                    seems_valid = len(default_returns[0].split(".")) == 1
                     default_returns[1] = " or ".join(type_strings) if type_strings else "Message"
+                    default_returns[1] = as_types(default_returns[1], "returns")
                 else:
-                    default_returns = ("On success, the sent Message is returned.", "Message")
-            returns       = answer("Textual description what the function returns", default_returns[0])
-            return_type   = answer("Return type", default_returns[1])
+                    default_returns = ("On success, True is returned", "True")
+                # end if "return" in description
+            else:
+                seems_valid = len(default_returns[0].split(".")) == 1
+            # end if default set
+            if not seems_valid:
+                returns       = answer("Textual description what the function returns", default_returns[0])
+                return_type   = answer("Return type", default_returns[1])
+                if isinstance(return_type, str):
+                    return_type = as_types(return_type, "return type")
+                # end if
+            else:
+                returns = default_returns[0]
+                return_type = default_returns[1]
+            # end if
             logger.debug("\n")
             result = func(title, descr, link, params_string, returns=returns, return_type=return_type)
+            results.append(result)
         elif table_type == "class":
             if title in CLASS_TYPE_PATHS:
                 parent_clazz = CLASS_TYPE_PATHS[title][CLASS_TYPE_PATHS__PARENT]
@@ -199,11 +215,12 @@ def main():
                 parent_clazz = answer("Parent class name", "TgBotApiObject")
             # end if
             result = clazz(title, parent_clazz, descr, link, params_string)
+            results.append(result)
         # end if
-        safe_to_file(folder, result, table_type, title)
     # end for
+    safe_to_file(folder, results)
     print("#########")
-    print("\n\n".join(results))
+    # print("\n\n".join(results))
 
 
 def get_filter():
@@ -236,31 +253,76 @@ def get_folder_path():
     return file
 
 
-def safe_to_file(file, result, table_type, title):
-    if file:
+
+def safe_to_file(folder, results):
+    """
+    Receives a list of results (type :class:`Clazz` or :class:`Function`), and put them into the right files in :var:`folder`
+
+    :param folder: Where the files should be in.
+    :type  folder: str
+
+    :param results: A list of :class:`Clazz` or :class:`Function` objects, which will be used to calculate the source code.
+    :type  results: Union(Clazz, Function)
+
+    """
+    functions = []
+    clazzes = {} # "filepath": [Class, Class, ...]
+
+    # split results into functions and classes
+    for result in results:
+        assert isinstance(result, (Clazz, Function))
+        if isinstance(result, Clazz):
+            import_path = get_type_path(result.clazz)
+            import_path = import_path.rstrip(".")
+            file_path = calc_path_and_create_folders(folder, import_path)
+            result.filepath = file_path
+            if file_path not in clazzes:
+                clazzes[file_path] = []
+            clazzes[file_path].append(result)
+        else:
+            assert isinstance(result, Function)
+            import_path = "pytgbot.bot."
+            file_path = calc_path_and_create_folders(folder, import_path)
+            result.filepath = file_path
+            functions.append(result)
+        # end if
+    # end for
+
+    bot_template = get_template("bot.template")
+    clazzfile_template = get_template("classfile.template")
+    for path, clazz_list in clazzes.items():
+        clazz_imports = set()
+        for clazz_ in clazz_list:
+            assert isinstance(clazz_, Clazz)
+            assert isinstance(clazz_.parent_clazz, Type)
+            clazz_imports.add(clazz_.parent_clazz.as_import)
+        # end for
+        clazz_imports = list(clazz_imports)
+        clazz_imports.sort()
         try:
-            if table_type == "class":
-                import_path = get_type_path(title)
-                import_path = import_path.rstrip(".")
-                # if import_path == title:
-                #     import_path = "pytgbot.api_types." + title.lower() + "."
-            else:
-                import_path = "pytgbot.__init__."
-            file_path = abspath(
-                path_join(file, import_path[:import_path.rfind(".")].replace(".", folder_seperator) + ".py"))
-            mkdir_p(dirname(file_path))
-            need_header = not isfile(file_path)
-            with open(file_path, "a") as f:
-                if need_header:
-                    f.write(FILE_HEADER)
-                    if table_type == "func":
-                        f.write(MAIN_FILE_CLASS_HEADER)
-                f.write("\n" + result + "\n")
+            with open(path, "w") as f:
+                result = clazzfile_template.render(clazzes=clazz_list, imports=clazz_imports)
+                result = result.replace("\t", "    ")
+                f.write(result)
                 # end with
         except IOError:
-            pass
+            raise  # lol
             # end try
-            # end if file
+    # end for classes
+    if functions:
+        txt = bot_template.render(functions=functions)
+        with open(functions[0].filepath, "w") as f:
+            f.write(txt)
+        # end with
+    # end if
+# end def
+
+
+def calc_path_and_create_folders(folder, import_path):
+    """ calculate the path and create the needed folders """
+    file_path = abspath(path_join(folder, import_path[:import_path.rfind(".")].replace(".", folder_seperator) + ".py"))
+    mkdir_p(dirname(file_path))
+    return file_path
 
 
 if __name__ == '__main__':

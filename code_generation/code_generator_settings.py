@@ -4,6 +4,10 @@ CLASS_TYPE_PATHS__DESCRIPTION = 2
 CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "TgBotApiObject": ("pytgbot.api_types.", "object", None),
 
+    # pytgbot.api_types.receivable.__init__.*
+    "Receivable":           ("pytgbot.api_types.receivable.", "TgBotApiObject", None),
+    "Result":               ("pytgbot.api_types.receivable.", "Receivable", None),
+
     # pytgbot.api_types.receivable.media.*
     "Media":                ("pytgbot.api_types.receivable.media.", "Receivable", None),
     "Voice":                ("pytgbot.api_types.receivable.media.", "Media", None),
@@ -30,13 +34,20 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
 
     # pytgbot.api_types.receivable.updates.*
     "Update":               ("pytgbot.api_types.receivable.updates.", "Receivable", None),
+    "UpdateType":           ("pytgbot.api_types.receivable.updates.", "Receivable", None),
     "Message":              ("pytgbot.api_types.receivable.updates.", "UpdateType", None),
     "CallbackQuery":        ("pytgbot.api_types.receivable.updates.", "UpdateType", None),
 
     # pytgbot.api_types.receivable.inline.*
     "ChosenInlineResult":           ("pytgbot.api_types.receivable.inline.", "UpdateType", None),
 
+    # pytgbot.api_types.sendable.*
+    "Sendable":                     ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
+    "InputFile":                    ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
+    "InputFileURL":                 ("pytgbot.api_types.sendable.", "InputFile", None),
+
     # pytgbot.api_types.sendable.inline.*
+
     "InputMessageContent":          ("pytgbot.api_types.sendable.inline.", "Sendable", None),
     "InputTextMessageContent":      ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),
     "InputLocationMessageContent":  ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),
@@ -54,7 +65,8 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InlineQueryResultLocation":    ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),
     "InlineQueryResultVenue":       ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),
     "InlineQueryResultContact":     ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),
-    "InlineQueryResultCached":            ("pytgbot.api_types.sendable.inline.", "Sendable", None),
+    # "InlineQueryResultCached":      ("pytgbot.api_types.sendable.inline.", "Sendable", None),
+    "InlineQueryCachedResult":      ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),
     "InlineQueryResultCachedArticle":     ("pytgbot.api_types.sendable.inline.", "InlineQueryCachedResult", None),
     "InlineQueryResultCachedPhoto":       ("pytgbot.api_types.sendable.inline.", "InlineQueryCachedResult", None),
     "InlineQueryResultCachedGif":         ("pytgbot.api_types.sendable.inline.", "InlineQueryCachedResult", None),
@@ -69,6 +81,10 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InlineQueryResultCachedContact":     ("pytgbot.api_types.sendable.inline.", "InlineQueryCachedResult", None),
 
     # pytgbot.api_types.sendable.reply_markup.*
+    "Button":               ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
+    "ReplyMarkup":          ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
+
+
     "ReplyKeyboardMarkup":  ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
     "ReplyKeyboardHide":    ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
     "ForceReply":           ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),

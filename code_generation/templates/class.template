@@ -1,26 +1,26 @@
-{% macro for_type(variable) -%}{% for type in variable.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
-{% macro types_as_tuple(variable) -%}{% if variables.type|length > 1 %}({{ for_type(variable) }}){% else -%}{{ for_type(variable) }}{% endif -%}{%- endmacro -%}
-{% macro for_args_none() -%}{%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
-{% macro for_args_format_str() -%}{%- for variable in variables %}{{ variable.name }}={{ "{" }}self.{{ variable.name }}{{ "}" }}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
+{%- macro for_type(variable) -%}{% for type in variable.types %}{{ type.string }}{% if not loop.last %}, {% endif -%}{% endfor %}{%- endmacro -%}
+{%- macro types_as_tuple(variable) -%}{% if clazz.variables.type|length > 1 %}({{ for_type(variable) }}){% else -%}{{ for_type(variable) }}{% endif -%}{%- endmacro -%}
+{%- macro for_args_none() -%}{%- for variable in clazz.variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
+{%- macro for_args_format_str() -%}{%- for variable in clazz.variables %}{{ variable.name }}={{ "{" }}self.{{ variable.name }}{{ "}" }}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
+{#- macros -#}
 
-
-class {{ clazz }}({{ parent_clazz }}):
+class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
     """
     {%- block class_docstring -%}
-    {{ description|indent }}
+    {{ clazz.description|indent }}
 
-    {{link}}
+    {{clazz.link}}
 
-    {% if parameters %}
+    {% if clazz.parameters %}
     Parameters:
-        {% for param in parameters %}
+        {% for param in clazz.parameters %}
         :param {{ param.name }}: {{ param.description }}
         :type  {{ param.name }}: {{ for_type(param) }}
         {% endfor %}
     {% endif %}
-    {% if keywords -%}
+    {% if clazz.keywords -%}
     Optional keyword parameters:
-        {% for keyword in keywords %}
+        {% for keyword in clazz.keywords %}
         :keyword {{ keyword.name }}: {{ keyword.description }}
         :type    {{ keyword.name }}: {{ for_type(keyword) }}
         {% endfor %}
@@ -31,16 +31,16 @@ class {{ clazz }}({{ parent_clazz }}):
         """
         {{ self.class_docstring()|indent }}
         """
-        super({{ clazz }}, self).__init__()
+        super({{ clazz.clazz }}, self).__init__()
 
         {% block imports_block -%}
-        {%- for import in imports -%}
+        {%- for import in clazz.imports -%}
         from {{ import.path }} import {{ import.name }}
         {#  -#}
         {%- endfor -%}
         {%- endblock %}
 
-        {% for variable in variables -%}
+        {% for variable in clazz.variables -%}
         {% if variable.optional %}
         assert({{ variable.name }} is None or isinstance({{ variable.name }}, {{ types_as_tuple(variable) }}))
         {%- else %}
@@ -58,15 +58,15 @@ class {{ clazz }}({{ parent_clazz }}):
     # end def __init__
 
     """
-    Serializes this {{ clazz }} to an dictionary.
+    Serializes this {{ clazz.clazz }} to an dictionary.
 
     :return: dictionary repesentation of this object.
     :rtype: dict
     """
     def to_array(self):
-        array = super({{ clazz }}, self).to_array()
+        array = super({{ clazz.clazz }}, self).to_array()
 
-        {% for variable in variables -%}
+        {% for variable in clazz.variables -%}
         {% if variable.types|length == 1 -%}
         {% if variable.types[0].is_builtin -%}
         array['{{ variable.api_name }}'] = {{ variable.types[0].string }}(self.{{ variable.name }})  # type {{ variable.types[0].string }}
@@ -82,10 +82,10 @@ class {{ clazz }}({{ parent_clazz }}):
     # end def to_array
 
     """
-    Deserializes a new {{ clazz }} from an given dictionary.
+    Deserializes a new {{ clazz.clazz }} from an given dictionary.
 
-    :return: new {{ clazz }} instance.
-    :rtype: {{ clazz }}
+    :return: new {{ clazz.clazz }} instance.
+    :rtype: {{ clazz.clazz }}
     """
     @staticmethod
     def from_array(array):
@@ -96,10 +96,10 @@ class {{ clazz }}({{ parent_clazz }}):
         {{ self.imports_block() }}
 
         data = {}
-        {% for variable in variables -%}
+        {% for variable in clazz.variables -%}
 
         {% endfor %}
-        {% for variable in variables -%}
+        {% for variable in clazz.variables -%}
         {% if variable.types|length == 1 -%}
         {% if variable.types[0].is_builtin -%}
         data['{{ variable.name }}'] = {{ variable.types[0].string }}(array.get('{{ variable.api_name }}'))
@@ -111,9 +111,9 @@ class {{ clazz }}({{ parent_clazz }}):
         // data['{{ variable.api_name }}'] = {{ variable.name }}
         {% endif -%}
         {% endfor -%}
-        return {{ clazz }}(**data)
+        return {{ clazz.clazz }}(**data)
     # end def from_array
 
     def __str__(self):
-        return "{{ clazz }}({{ for_args_format_str() }})".format(self=self)
-# end class {{ clazz }}
+        return "{{ clazz.clazz }}({{ for_args_format_str() }})".format(self=self)
+# end class {{ clazz.clazz }}

@@ -26,17 +26,13 @@ class RelEnvironment(Environment):
 
 def get_template(file_name):
     env = RelEnvironment(loader=FileSystemLoader("templates"))
-    class_template = Template("# TEMPLATE COULD NOT BE LOADED #")
     import os
-    path = os.path.abspath(os.path.join("templates", file_name))
-    with open(path) as file:
-        try:
-            class_template = Template(file.read())
-        except TemplateSyntaxError as e:
-            logger.warn("{file}:{line} {msg}".format(msg=e.message, file=e.filename if e.filename else path, line=e.lineno))
-            raise e
+    try:
+        return env.get_template(file_name)
+    except TemplateSyntaxError as e:
+        logger.warn("{file}:{line} {msg}".format(msg=e.message, file=e.filename if e.filename else file_name, line=e.lineno))
+        raise e
     # end with
-    return class_template
 # end def get_template
 
 
@@ -64,15 +60,15 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     # end for
     imports = list(imports)
     imports.sort()
+    if isinstance(parent_clazz, str):
+        parent_clazz = to_type(parent_clazz, "parent class")
+    assert isinstance(parent_clazz, Type)
 
     clazz_object = Clazz(imports=imports,
         clazz=clazz, parent_clazz=parent_clazz, link=link, description=description,
         parameters=variables_needed, keywords=variables_optional
     )
-
-    result = class_template.render(**clazz_object)
-    result = result.replace("\t", "    ")
-    return result
+    return clazz_object
 # end def clazz
 
 
@@ -106,13 +102,9 @@ def func(command, description, link, params_string, returns="On success, the sen
         imports=imports, func=command, link=link, description=description, returns=returns,
         parameters=variables_needed, keywords=variables_optional
     )
-    result = func_template.render(**func_object)
-    result = result.replace("\t", "    ")
-    return result
+    return func_object
 # end def
 
-class ClassOrFunction(KwargableObject):
-    pass
 
 class KwargableObject(Mapping):
     """ allow `**self`, and include all @property s """
@@ -133,22 +125,32 @@ class KwargableObject(Mapping):
         import inspect
         def is_allowed(value):
             return isinstance(value, property)
-
-        # end def
+        # end def is_allowed
         return iter(
             [name for (name) in vars(self) if not name.startswith("_")] +
             [name for (name, value) in inspect.getmembers(Clazz, is_allowed)]
         )
-        # end def __iter__
+    # end def __iter__
 # end class KwargableObject
+
+
+class ClassOrFunction(KwargableObject):
+    def __init__(self, filepath=None):
+        """
+        :param filepath: where this function or class should be stored.
+        """
+        self.filepath = filepath
+
+# end class ClassOrFunction
 
 
 class Clazz(ClassOrFunction):
     def __init__(self, clazz=None, imports=None, parent_clazz=None, link=None, description=None, parameters=None, keywords=None):
         super(Clazz, self).__init__()
         self.clazz = clazz
-        self.imports = imports if imports else []
-        self.parent_clazz = parent_clazz if parent_clazz else "object"
+        self.imports = imports if imports else []  # Imports needed by parameters and keywords.
+        self.parent_clazz = parent_clazz if parent_clazz is not None else Type("object", is_builtin=True)
+        assert(isinstance(parent_clazz, Type))
         self.link = link
         self.description = description
         self.parameters = parameters if parameters else []
@@ -164,6 +166,7 @@ class Clazz(ClassOrFunction):
 
 class Function(ClassOrFunction):
     def __init__(self, func=None, imports=None, link=None, description=None, returns=None, parameters=None, keywords=None):
+        super(Function, self).__init__()
         self.func = func
         self.imports = imports if imports else []
         self.link = link
@@ -217,11 +220,37 @@ class Variable(dict):
 
 
 class Type(dict):
-    def __init__(self, string=None, is_builtin=None, always_is_value=None, is_list=False, import_path=None, description=None):
+    def __init__(self, string=None, is_builtin=None, always_is_value=None, is_list=0, import_path=None, description=None):
+        """
+        Stores variable types.
+
+        :param string: the type (e.g. "bool")
+        :type  string: str
+
+        :param is_builtin: If it is a build in type (:class:`float`, :class:`int`, ...)
+                           or not (classes like :class:`Message`, :class:`Peer`...)
+        :type  is_builtin: bool
+
+        :param always_is_value: None or the only possible value (e.g. a bool, always "True")
+        :type  always_is_value: None or str
+
+        :param is_list:  Levels of lists.
+                        `0` = not a list.
+                        `1` = it is an list of :param:`string`s type (e.g. list of bool could be [True, False] ).
+                        If is "list of list of" that value is `2`
+        :type  is_list: int
+
+        :param import_path: from <import_path> import <string>. None for builtins.
+        :type  import_path: str or None
+
+        :param description:  if there are additional comments needed.
+        :type  description: str or None
+        """
+        super(Type, self).__init__()
         self.string = string  # the type (e.g. "bool")
-        self.is_builtin = is_builtin  # bool.  If it is a build in type (float, int, ...) or not (classes like "Message", "Peer"...)
-        self.always_is_value = always_is_value  # None or the only possible value (e.g. a bool, always True) default: None.
-        self.is_list = is_list  # if it is an list of that type. (e.g. list of bool would be [True, False] )
+        self.is_builtin = is_builtin  # bool.  If it is a build in type (float, int, ...) or not.
+        self.always_is_value = always_is_value  # None or the only possible value (e.g. a bool, always "True")
+        self.is_list = is_list
         self.import_path = import_path  # from <import_path> import <string>
         self.description = description  # if there are additional comments needed.
     # end def __init__
@@ -230,12 +259,16 @@ class Type(dict):
     def as_import(self):
         return Import(self.import_path, self.string)
     # end def as_import
+
+    def __str__(self):
+        return "{list}<{name}>".format(list="list of " * self.is_list, name=self.string)
 # end class Type
 
 
 class Import(dict):
     """ from <path> import <name> """
     def __init__(self, path=None, name=None):
+        super(Import, self).__init__()
         self.path = path
         self.name = name
     # end def __init__
@@ -258,6 +291,10 @@ class Import(dict):
         # end if
     # end def full
 
+    def __str__(self):
+        return self.full
+    # end def
+
     def __hash__(self):
         return hash(self.path + self.name)
     # end def __hash__
@@ -268,9 +305,11 @@ class Import(dict):
     :rtype: int
     """
     def compare(self, other):
-        if self.path < other.path:
+        self_path = "" if self.path is None else self.path
+        other_path = "" if other.path is None else other.path
+        if self_path < other_path:
             return -1
-        elif self.path > other.path:
+        elif self_path > other_path:
             return +1
         elif self.name < other.name:
             return -1
@@ -344,7 +383,7 @@ def parse_param_types(param) -> Variable:
         variable.name = variable.api_name
     # end if
 
-    param_types = table[1].strip().join([" ", " "])
+    param_types = table[1]
     # ## " String or Boolean "
     variable.types = as_types(param_types, variable.api_name)
     return variable
@@ -352,6 +391,18 @@ def parse_param_types(param) -> Variable:
 
 
 def as_types(types_string, variable_name):
+    # ## types_string = "String or Boolean"  or  [Type(str), Type(bool)]
+
+    if isinstance(types_string, list):
+        for typ in types_string:
+            assert isinstance(typ, Type)
+            # [Type(), Type(), ...]
+        return types_string
+    # end if
+
+    # ## types_string = "String or Boolean"
+    types_string = types_string.strip().join([" ", " "])
+
     # ## types_string = " String or Boolean "
     types_string = types_string.replace(" Float number ", " float ")
     types_string = types_string.replace(" Float ", " float ")
@@ -375,29 +426,43 @@ def as_types(types_string, variable_name):
         types.append(var_type)
     # end for
     return types
+# end def
 
-def to_type(type_string, variable_name):
+
+def to_type(type_string, variable_name) -> Type:
     """
     Returns a :class:`Type` object of a given type name. Lookup is done via :var:`code_generator_settings.CLASS_TYPE_PATHS`
 
-    :param type_string: The type as string. E.g "bool".
+    :param type_string: The type as string. E.g "bool". Need to be valid python.
     :param variable_name: Only for logging, if an unrecognized type is found.
     :return: a :class:`Type` instance
     :rtype: Type
     """
-    var_type = Type(type_string.strip())
+    # type_string = type_string.strip()
     # remove "list of " and set .is_list accordingly.
-    var_type.is_list, var_type.string = can_strip_prefix(var_type.string, "list of ")
+    # is_list, type_string = can_strip_prefix(type_string, "list of ")
+    # var_type = Type(string=type_string, is_list=is_list)
+
+    var_type = Type(type_string)
+    # remove "list of " and set .is_list accordingly.
+    is_list = True
+    while is_list:
+        is_list, var_type.string = can_strip_prefix(var_type.string, "list of ")
+        if is_list:
+            var_type.is_list += 1
+        # end if
+    # end for
     if var_type.string == "True":
         var_type.string = "bool"
         var_type.always_is_value = "True"
-    elif var_type.string == "str":
+    # end if
+    if var_type.string in ["int", "bool", "float", "object", "None"]:  # str is replaced by unicode_type
+        var_type.is_builtin = True
+    elif var_type.string in ["str", "unicode_type"]:
         var_type.string = "unicode_type"
+        var_type.is_builtin = False
         var_type.import_path = "luckydonaldUtils.encoding"
         var_type.description = "py2: unicode, py3: str"
-    # end if
-    if var_type.string in ["int", "bool", "float", "unicode_type"]:  # str is replaced by unicode_type
-        var_type.is_builtin = True
     elif var_type.string in CLASS_TYPE_PATHS:
         var_type.import_path = CLASS_TYPE_PATHS[var_type.string][CLASS_TYPE_PATHS__IMPORT].rstrip(".")
         var_type.is_builtin = False
@@ -412,6 +477,16 @@ def to_type(type_string, variable_name):
 
 
 def can_strip_prefix(text:str, prefix:str) -> (bool, str):
+    """
+    If the given text starts with the given prefix, True and the text without that prefix is returned.
+    Else False and the original text is returned.
+
+    Note: the text always is stripped, before returning.
+
+    :param text:
+    :param prefix:
+    :return: (bool, str)  :class:`bool` whether he text started with given prefix, :class:`str` the text without prefix
+    """
     if text.startswith(prefix):
-        return True, text[len(prefix):]
-    return False, text
+        return True, text[len(prefix):].strip()
+    return False, text.strip()
