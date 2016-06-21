@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from luckydonaldUtils.encoding import unicode_type
-
-__all__ = ["Media", "PhotoSize", "Audio", ]
+__all__ = ["Media", "PhotoSize", "Audio", "MessageEntity"]
 
 from . import Receivable, Result
 
@@ -9,6 +7,118 @@ from . import Receivable, Result
 class Media(Receivable):
     pass
 
+
+class MessageEntity(Result):
+    """
+    This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
+
+    https://core.telegram.org/bots/api#messageentity
+    """
+    def __init__(self, type, offset, length, url=None, user=None):
+        """
+        This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
+
+        https://core.telegram.org/bots/api#messageentity
+
+
+        Parameters:
+
+        :param type: Type of the entity. Can be mention (@username), hashtag, bot_command, url, email, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
+        :type  type: str
+
+        :param offset: Offset in UTF-16 code units to the start of the entity
+        :type  offset: int
+
+        :param length: Length of the entity in UTF-16 code units
+        :type  length: int
+
+
+        Optional keyword parameters:
+
+        :keyword url: Optional. For “text_link” only, url that will be opened after user taps on the text
+        :type    url: str
+
+        :keyword user: Optional. For “text_mention” only, the mentioned user
+        :type    user: pytgbot.api_types.receivable.peer.User
+        """
+        super(MessageEntity, self).__init__()
+        from pytgbot.api_types.receivable.peer import User
+
+        assert(type is not None)
+        assert(isinstance(type, str))
+        self.type = type
+
+        assert(offset is not None)
+        assert(isinstance(offset, int))
+        self.offset = offset
+
+        assert(length is not None)
+        assert(isinstance(length, int))
+        self.length = length
+
+        assert(url is None or isinstance(url, str))
+        self.url = url
+
+        assert(user is None or isinstance(user, User))
+        self.user = user
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this MessageEntity to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
+        array = super(MessageEntity, self).to_array()
+        array['type'] = str(self.type)  # type str
+        array['offset'] = int(self.offset)  # type int
+        array['length'] = int(self.length)  # type int
+        if self.url is not None:
+            array['url'] = str(self.url)  # type str
+        if self.user is not None:
+            array['user'] = self.user.to_array()  # type User
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserializes a new MessageEntity from a given dictionary.
+
+        :return: new MessageEntity instance.
+        :rtype: MessageEntity
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+
+        from pytgbot.api_types.receivable.peer import User
+
+        data = {}
+        data['type'] = str(array.get('type'))
+        data['offset'] = int(array.get('offset'))
+        data['length'] = int(array.get('length'))
+        data['url'] = str(array.get('url'))
+        data['user'] = User.from_array(array.get('user'))
+        return MessageEntity(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(messageentity_instance)`
+        """
+        return "MessageEntity(type={self.type}, offset={self.offset}, length={self.length}, url={self.url}, user={self.user})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in messageentity_instance`
+        """
+        return key in ["type", "offset", "length", "url", "user"]
+    # end def __contains__
+# end class MessageEntity
 
 class DownloadableMedia(Media):
     @staticmethod
@@ -24,9 +134,9 @@ class DownloadableMedia(Media):
         data["file_id"] = array.get("file_id")
         data["file_size"] = array.get("file_size")  # can be None
         return data
+# end class DownloadableMedia
 
-
-class PhotoSize(Media):
+class PhotoSize(Result):
     """
     This object represents one size of a photo or a file / sticker thumbnail.
 
@@ -57,9 +167,8 @@ class PhotoSize(Media):
         :type    file_size: int
         """
         super(PhotoSize, self).__init__()
-        
         assert(file_id is not None)
-        assert(isinstance(file_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(file_id, str))
         self.file_id = file_id
         
         assert(width is not None)
@@ -75,25 +184,55 @@ class PhotoSize(Media):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this PhotoSize to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(PhotoSize, self).to_array()
-        array["file_id"] = self.file_id
-        array["width"] = self.width
-        array["height"] = self.height
+        array['file_id'] = str(self.file_id)  # type str
+        array['width'] = int(self.width)  # type int
+        array['height'] = int(self.height)  # type int
         if self.file_size is not None:
-            array["file_size"] = self.file_size
+            array['file_size'] = int(self.file_size)  # type int
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new PhotoSize from a given dictionary.
+
+        :return: new PhotoSize instance.
+        :rtype: PhotoSize
+        """
+        if array is None or not array:
             return None
         # end if
-        data = super(PhotoSize).from_array(array)
-        data["width"] = int(array.get("width"))
-        data["height"] = int(array.get("height"))
-        return PhotoSize(**array)
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['file_id'] = str(array.get('file_id'))
+        data['width'] = int(array.get('width'))
+        data['height'] = int(array.get('height'))
+        data['file_size'] = int(array.get('file_size'))
+        return PhotoSize(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(photosize_instance)`
+        """
+        return "PhotoSize(file_id={self.file_id}, width={self.width}, height={self.height}, file_size={self.file_size})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in photosize_instance`
+        """
+        return key in ["file_id", "width", "height", "file_size"]
+    # end def __contains__
 # end class PhotoSize
 
 
@@ -134,22 +273,21 @@ class Audio(Media):
         :type    file_size: int
         """
         super(Audio, self).__init__()
-        
         assert(file_id is not None)
-        assert(isinstance(file_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(file_id, str))
         self.file_id = file_id
         
         assert(duration is not None)
         assert(isinstance(duration, int))
         self.duration = duration
         
-        assert(performer is None or isinstance(performer, unicode_type))  # unicode on python 2, str on python 3
+        assert(performer is None or isinstance(performer, str))
         self.performer = performer
         
-        assert(title is None or isinstance(title, unicode_type))  # unicode on python 2, str on python 3
+        assert(title is None or isinstance(title, str))
         self.title = title
         
-        assert(mime_type is None or isinstance(mime_type, unicode_type))  # unicode on python 2, str on python 3
+        assert(mime_type is None or isinstance(mime_type, str))
         self.mime_type = mime_type
         
         assert(file_size is None or isinstance(file_size, int))
@@ -157,32 +295,62 @@ class Audio(Media):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this Audio to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(Audio, self).to_array()
-        array["file_id"] = self.file_id
-        array["duration"] = self.duration
+        array['file_id'] = str(self.file_id)  # type str
+        array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
-            array["performer"] = self.performer
+            array['performer'] = str(self.performer)  # type str
         if self.title is not None:
-            array["title"] = self.title
+            array['title'] = str(self.title)  # type str
         if self.mime_type is not None:
-            array["mime_type"] = self.mime_type
+            array['mime_type'] = str(self.mime_type)  # type str
         if self.file_size is not None:
-            array["file_size"] = self.file_size
+            array['file_size'] = int(self.file_size)  # type int
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new Audio from a given dictionary.
+
+        :return: new Audio instance.
+        :rtype: Audio
+        """
+        if array is None or not array:
             return None
         # end if
-        data = super(Audio).from_array(array)
-        data["duration"] = int(array.get("duration"))
-        data["performer"] = array.get("performer")
-        data["title"] = array.get("title")
-        data["mime_type"] = array.get("mime_type")
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['file_id'] = str(array.get('file_id'))
+        data['duration'] = int(array.get('duration'))
+        data['performer'] = str(array.get('performer'))
+        data['title'] = str(array.get('title'))
+        data['mime_type'] = str(array.get('mime_type'))
+        data['file_size'] = int(array.get('file_size'))
         return Audio(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(audio_instance)`
+        """
+        return "Audio(file_id={self.file_id}, duration={self.duration}, performer={self.performer}, title={self.title}, mime_type={self.mime_type}, file_size={self.file_size})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in audio_instance`
+        """
+        return key in ["file_id", "duration", "performer", "title", "mime_type", "file_size"]
+    # end def __contains__
 # end class Audio
 
 
@@ -208,7 +376,7 @@ class Document(Media):
         Optional keyword parameters:
 
         :keyword thumb: Optional. Document thumbnail as defined by sender
-        :type    thumb: PhotoSize
+        :type    thumb: pytgbot.api_types.receivable.media.PhotoSize
 
         :keyword file_name: Optional. Original filename as defined by sender
         :type    file_name: str
@@ -220,18 +388,17 @@ class Document(Media):
         :type    file_size: int
         """
         super(Document, self).__init__()
-        
         assert(file_id is not None)
-        assert(isinstance(file_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(file_id, str))
         self.file_id = file_id
         
         assert(thumb is None or isinstance(thumb, PhotoSize))
         self.thumb = thumb
         
-        assert(file_name is None or isinstance(file_name, unicode_type))  # unicode on python 2, str on python 3
+        assert(file_name is None or isinstance(file_name, str))
         self.file_name = file_name
         
-        assert(mime_type is None or isinstance(mime_type, unicode_type))  # unicode on python 2, str on python 3
+        assert(mime_type is None or isinstance(mime_type, str))
         self.mime_type = mime_type
         
         assert(file_size is None or isinstance(file_size, int))
@@ -239,30 +406,60 @@ class Document(Media):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this Document to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(Document, self).to_array()
-        array["file_id"] = self.file_id
+        array['file_id'] = str(self.file_id)  # type str
         if self.thumb is not None:
-            array["thumb"] = self.thumb
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
         if self.file_name is not None:
-            array["file_name"] = self.file_name
+            array['file_name'] = str(self.file_name)  # type str
         if self.mime_type is not None:
-            array["mime_type"] = self.mime_type
+            array['mime_type'] = str(self.mime_type)  # type str
         if self.file_size is not None:
-            array["file_size"] = self.file_size
+            array['file_size'] = int(self.file_size)  # type int
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new Document from a given dictionary.
+
+        :return: new Document instance.
+        :rtype: Document
+        """
+        if array is None or not array:
             return None
         # end if
-        data = super(Document).from_array(array)
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['file_id'] = str(array.get('file_id'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb'))
-        data["file_name"] = array.get("file_name")
-        data["mime_type"] = array.get("mime_type")
+        data['file_name'] = str(array.get('file_name'))
+        data['mime_type'] = str(array.get('mime_type'))
+        data['file_size'] = int(array.get('file_size'))
         return Document(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(document_instance)`
+        """
+        return "Document(file_id={self.file_id}, thumb={self.thumb}, file_name={self.file_name}, mime_type={self.mime_type}, file_size={self.file_size})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in document_instance`
+        """
+        return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"]
+    # end def __contains__
 # end class Document
 
 
@@ -294,7 +491,7 @@ class Sticker(Media):
         Optional keyword parameters:
 
         :keyword thumb: Optional. Sticker thumbnail in .webp or .jpg format
-        :type    thumb: PhotoSize
+        :type    thumb: pytgbot.api_types.receivable.media.PhotoSize
 
         :keyword emoji: Optional. Emoji associated with the sticker
         :type    emoji: str
@@ -303,9 +500,8 @@ class Sticker(Media):
         :type    file_size: int
         """
         super(Sticker, self).__init__()
-        
         assert(file_id is not None)
-        assert(isinstance(file_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(file_id, str))
         self.file_id = file_id
         
         assert(width is not None)
@@ -319,41 +515,70 @@ class Sticker(Media):
         assert(thumb is None or isinstance(thumb, PhotoSize))
         self.thumb = thumb
         
-        assert(emoji is None or isinstance(emoji, unicode_type))  # unicode on python 2, str on python 3
+        assert(emoji is None or isinstance(emoji, str))
         self.emoji = emoji
 
         assert(file_size is None or isinstance(file_size, int))
         self.file_size = file_size
-
         self.mime_type = "image/webp"
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this Sticker to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(Sticker, self).to_array()
-        array["file_id"] = self.file_id
-        array["width"] = self.width
-        array["height"] = self.height
+        array['file_id'] = str(self.file_id)  # type str
+        array['width'] = int(self.width)  # type int
+        array['height'] = int(self.height)  # type int
         if self.thumb is not None:
-            array["thumb"] = self.thumb
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
         if self.emoji is not None:
-            array["emoji"] = self.emoji
+            array['emoji'] = str(self.emoji)  # type str
         if self.file_size is not None:
-            array["file_size"] = self.file_size
+            array['file_size'] = int(self.file_size)  # type int
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new Sticker from a given dictionary.
+
+        :return: new Sticker instance.
+        :rtype: Sticker
+        """
+        if array is None or not array:
             return None
         # end if
-        data = super(Sticker).from_array(array)
-        data["width"] = int(array.get("width"))
-        data["height"] = int(array.get("height"))
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['file_id'] = str(array.get('file_id'))
+        data['width'] = int(array.get('width'))
+        data['height'] = int(array.get('height'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb'))
-        data['emoji'] = array.get('emoji')
+        data['emoji'] = str(array.get('emoji'))
+        data['file_size'] = int(array.get('file_size'))
         return Sticker(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(sticker_instance)`
+        """
+        return "Sticker(file_id={self.file_id}, width={self.width}, height={self.height}, thumb={self.thumb}, emoji={self.emoji}, file_size={self.file_size})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in sticker_instance`
+        """
+        return key in ["file_id", "width", "height", "thumb", "emoji", "file_size"]
+    # end def __contains__
 # end class Sticker
 
 
@@ -388,7 +613,7 @@ class Video(Media):
         Optional keyword parameters:
 
         :keyword thumb: Optional. Video thumbnail
-        :type    thumb: PhotoSize
+        :type    thumb: pytgbot.api_types.receivable.media.PhotoSize
 
         :keyword mime_type: Optional. Mime type of a file as defined by sender
         :type    mime_type: str
@@ -397,9 +622,8 @@ class Video(Media):
         :type    file_size: int
         """
         super(Video, self).__init__()
-        
         assert(file_id is not None)
-        assert(isinstance(file_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(file_id, str))
         self.file_id = file_id
         
         assert(width is not None)
@@ -417,7 +641,7 @@ class Video(Media):
         assert(thumb is None or isinstance(thumb, PhotoSize))
         self.thumb = thumb
         
-        assert(mime_type is None or isinstance(mime_type, unicode_type))  # unicode on python 2, str on python 3
+        assert(mime_type is None or isinstance(mime_type, str))
         self.mime_type = mime_type
         
         assert(file_size is None or isinstance(file_size, int))
@@ -425,28 +649,63 @@ class Video(Media):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this Video to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(Video, self).to_array()
-        array["file_id"] = self.file_id
-        array["width"] = self.width
-        array["height"] = self.height
-        array["duration"] = self.duration
+        array['file_id'] = str(self.file_id)  # type str
+        array['width'] = int(self.width)  # type int
+        array['height'] = int(self.height)  # type int
+        array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
-            array["thumb"] = self.thumb
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
         if self.mime_type is not None:
-            array["mime_type"] = self.mime_type
+            array['mime_type'] = str(self.mime_type)  # type str
         if self.file_size is not None:
-            array["file_size"] = self.file_size
+            array['file_size'] = int(self.file_size)  # type int
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new Video from a given dictionary.
+
+        :return: new Video instance.
+        :rtype: Video
+        """
+        if array is None or not array:
             return None
         # end if
-        array['thumb'] = PhotoSize.from_array(array.get('thumb'))
-        return Video(**array)
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['file_id'] = str(array.get('file_id'))
+        data['width'] = int(array.get('width'))
+        data['height'] = int(array.get('height'))
+        data['duration'] = int(array.get('duration'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb'))
+        data['mime_type'] = str(array.get('mime_type'))
+        data['file_size'] = int(array.get('file_size'))
+        return Video(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(video_instance)`
+        """
+        return "Video(file_id={self.file_id}, width={self.width}, height={self.height}, duration={self.duration}, thumb={self.thumb}, mime_type={self.mime_type}, file_size={self.file_size})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in video_instance`
+        """
+        return key in ["file_id", "width", "height", "duration", "thumb", "mime_type", "file_size"]
+    # end def __contains__
 # end class Video
 
 
@@ -481,16 +740,15 @@ class Voice(Media):
         :type    file_size: int
         """
         super(Voice, self).__init__()
-        
         assert(file_id is not None)
-        assert(isinstance(file_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(file_id, str))
         self.file_id = file_id
         
         assert(duration is not None)
         assert(isinstance(duration, int))
         self.duration = duration
         
-        assert(mime_type is None or isinstance(mime_type, unicode_type))  # unicode on python 2, str on python 3
+        assert(mime_type is None or isinstance(mime_type, str))
         self.mime_type = mime_type
         
         assert(file_size is None or isinstance(file_size, int))
@@ -498,23 +756,56 @@ class Voice(Media):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this Voice to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(Voice, self).to_array()
-        array["file_id"] = self.file_id
-        array["duration"] = self.duration
+        array['file_id'] = str(self.file_id)  # type str
+        array['duration'] = int(self.duration)  # type int
         if self.mime_type is not None:
-            array["mime_type"] = self.mime_type
+            array['mime_type'] = str(self.mime_type)  # type str
         if self.file_size is not None:
-            array["file_size"] = self.file_size
+            array['file_size'] = int(self.file_size)  # type int
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new Voice from a given dictionary.
+
+        :return: new Voice instance.
+        :rtype: Voice
+        """
+        if array is None or not array:
             return None
         # end if
-        return Voice(**array)
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['file_id'] = str(array.get('file_id'))
+        data['duration'] = int(array.get('duration'))
+        data['mime_type'] = str(array.get('mime_type'))
+        data['file_size'] = int(array.get('file_size'))
+        return Voice(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(voice_instance)`
+        """
+        return "Voice(file_id={self.file_id}, duration={self.duration}, mime_type={self.mime_type}, file_size={self.file_size})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in voice_instance`
+        """
+        return key in ["file_id", "duration", "mime_type", "file_size"]
+    # end def __contains__
 # end class Voice
 
 
@@ -549,16 +840,15 @@ class Contact(Media):
         :type    user_id: int
         """
         super(Contact, self).__init__()
-        
         assert(phone_number is not None)
-        assert(isinstance(phone_number, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(phone_number, str))
         self.phone_number = phone_number
         
         assert(first_name is not None)
-        assert(isinstance(first_name, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(first_name, str))
         self.first_name = first_name
         
-        assert(last_name is None or isinstance(last_name, unicode_type))  # unicode on python 2, str on python 3
+        assert(last_name is None or isinstance(last_name, str))
         self.last_name = last_name
         
         assert(user_id is None or isinstance(user_id, int))
@@ -566,23 +856,56 @@ class Contact(Media):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this Contact to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(Contact, self).to_array()
-        array["phone_number"] = self.phone_number
-        array["first_name"] = self.first_name
+        array['phone_number'] = str(self.phone_number)  # type str
+        array['first_name'] = str(self.first_name)  # type str
         if self.last_name is not None:
-            array["last_name"] = self.last_name
+            array['last_name'] = str(self.last_name)  # type str
         if self.user_id is not None:
-            array["user_id"] = self.user_id
+            array['user_id'] = int(self.user_id)  # type int
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new Contact from a given dictionary.
+
+        :return: new Contact instance.
+        :rtype: Contact
+        """
+        if array is None or not array:
             return None
         # end if
-        return Contact(**array)
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['phone_number'] = str(array.get('phone_number'))
+        data['first_name'] = str(array.get('first_name'))
+        data['last_name'] = str(array.get('last_name'))
+        data['user_id'] = int(array.get('user_id'))
+        return Contact(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(contact_instance)`
+        """
+        return "Contact(phone_number={self.phone_number}, first_name={self.first_name}, last_name={self.last_name}, user_id={self.user_id})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in contact_instance`
+        """
+        return key in ["phone_number", "first_name", "last_name", "user_id"]
+    # end def __contains__
 # end class Contact
 
 
@@ -608,7 +931,6 @@ class Location(Media):
         :type  latitude: float
         """
         super(Location, self).__init__()
-        
         assert(longitude is not None)
         assert(isinstance(longitude, float))
         self.longitude = longitude
@@ -619,21 +941,50 @@ class Location(Media):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this Location to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(Location, self).to_array()
-        array["longitude"] = self.longitude
-        array["latitude"] = self.latitude
+        array['longitude'] = float(self.longitude)  # type float
+        array['latitude'] = float(self.latitude)  # type float
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new Location from a given dictionary.
+
+        :return: new Location instance.
+        :rtype: Location
+        """
+        if array is None or not array:
             return None
         # end if
-        array['longitude'] = array.get('longitude')
-        array['latitude'] = array.get('latitude')
-        return Location(**array)
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['longitude'] = float(array.get('longitude'))
+        data['latitude'] = float(array.get('latitude'))
+        return Location(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(location_instance)`
+        """
+        return "Location(longitude={self.longitude}, latitude={self.latitude})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in location_instance`
+        """
+        return key in ["longitude", "latitude"]
+    # end def __contains__
 # end class Location
 
 
@@ -668,41 +1019,72 @@ class Venue(Media):
         :type    foursquare_id: str
         """
         super(Venue, self).__init__()
-        
         assert(location is not None)
         assert(isinstance(location, Location))
         self.location = location
         
         assert(title is not None)
-        assert(isinstance(title, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(title, str))
         self.title = title
         
         assert(address is not None)
-        assert(isinstance(address, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(address, str))
         self.address = address
         
-        assert(foursquare_id is None or isinstance(foursquare_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(foursquare_id is None or isinstance(foursquare_id, str))
         self.foursquare_id = foursquare_id
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this Venue to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(Venue, self).to_array()
-        array["location"] = self.location
-        array["title"] = self.title
-        array["address"] = self.address
+        array['location'] = self.location.to_array()  # type Location
+        array['title'] = str(self.title)  # type str
+        array['address'] = str(self.address)  # type str
         if self.foursquare_id is not None:
-            array["foursquare_id"] = self.foursquare_id
+            array['foursquare_id'] = str(self.foursquare_id)  # type str
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new Venue from a given dictionary.
+
+        :return: new Venue instance.
+        :rtype: Venue
+        """
+        if array is None or not array:
             return None
         # end if
-        array['location'] = Location.from_array(array.get('location'))
-        return Venue(**array)
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['location'] = Location.from_array(array.get('location'))
+        data['title'] = str(array.get('title'))
+        data['address'] = str(array.get('address'))
+        data['foursquare_id'] = str(array.get('foursquare_id'))
+        return Venue(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(venue_instance)`
+        """
+        return "Venue(location={self.location}, title={self.title}, address={self.address}, foursquare_id={self.foursquare_id})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in venue_instance`
+        """
+        return key in ["location", "title", "address", "foursquare_id"]
+    # end def __contains__
 # end class Venue
 
 
@@ -725,10 +1107,9 @@ class UserProfilePhotos(Result):
         :type  total_count: int
 
         :param photos: Requested profile pictures (in up to 4 sizes each)
-        :type  photos: list of list of PhotoSize
+        :type  photos: list of list of pytgbot.api_types.receivable.media.PhotoSize
         """
         super(UserProfilePhotos, self).__init__()
-        
         assert(total_count is not None)
         assert(isinstance(total_count, int))
         self.total_count = total_count
@@ -739,19 +1120,51 @@ class UserProfilePhotos(Result):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this UserProfilePhotos to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
+        from api_types import as_array
         array = super(UserProfilePhotos, self).to_array()
-        array["total_count"] = self.total_count
-        array["photos"] = self.photos
+        array['total_count'] = int(self.total_count)  # type int
+        array['photos'] = as_array(self.photos)  # type list of list of PhotoSize
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new UserProfilePhotos from a given dictionary.
+
+        :return: new UserProfilePhotos instance.
+        :rtype: UserProfilePhotos
+        """
+        if array is None or not array:
             return None
         # end if
-        return UserProfilePhotos(**array)
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['total_count'] = int(array.get('total_count'))
+        data['photos'] = PhotoSize.from_array(array.get('photos'))
+        return UserProfilePhotos(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(userprofilephotos_instance)`
+        """
+        return "UserProfilePhotos(total_count={self.total_count}, photos={self.photos})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in userprofilephotos_instance`
+        """
+        return key in ["total_count", "photos"]
+    # end def __contains__
 # end class UserProfilePhotos
 
 
@@ -789,37 +1202,69 @@ class File(Receivable):
         :keyword file_size: Optional. File size, if known
         :type    file_size: int
 
-        :keyword file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<filepath> to get the file
+        :keyword file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file
         :type    file_path: str
         """
         super(File, self).__init__()
         
         assert(file_id is not None)
-        assert(isinstance(file_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(file_id, str))
         self.file_id = file_id
         
         assert(file_size is None or isinstance(file_size, int))
         self.file_size = file_size
         
-        assert(file_path is None or isinstance(file_path, unicode_type))  # unicode on python 2, str on python 3
+        assert(file_path is None or isinstance(file_path, str))
         self.file_path = file_path
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this File to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(File, self).to_array()
-        array["file_id"] = self.file_id
+        array['file_id'] = str(self.file_id)  # type str
         if self.file_size is not None:
-            array["file_size"] = self.file_size
+            array['file_size'] = int(self.file_size)  # type int
         if self.file_path is not None:
-            array["file_path"] = self.file_path
+            array['file_path'] = str(self.file_path)  # type str
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        if array is None:
+        """
+        Deserializes a new File from a given dictionary.
+
+        :return: new File instance.
+        :rtype: File
+        """
+        if array is None or not array:
             return None
         # end if
-        return File(**array)
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['file_id'] = str(array.get('file_id'))
+        data['file_size'] = int(array.get('file_size'))
+        data['file_path'] = str(array.get('file_path'))
+        return File(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(file_instance)`
+        """
+        return "File(file_id={self.file_id}, file_size={self.file_size}, file_path={self.file_path})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in file_instance`
+        """
+        return key in ["file_id", "file_size", "file_path"]
+    # end def __contains__
 # end class File

@@ -69,7 +69,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         super(ReplyKeyboardMarkup, self).__init__()
 
         assert(keyboard is not None)
-        assert(isinstance(keyboard, (list, tuple)))  # list of list of KeyboardButton
+        assert(isinstance(keyboard, list))
         self.keyboard = keyboard
 
         assert(resize_keyboard is None or isinstance(resize_keyboard, bool))
@@ -83,21 +83,57 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this ReplyKeyboardMarkup to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(ReplyKeyboardMarkup, self).to_array()
-        array["keyboard"] = as_array(self.keyboard)
+        array['keyboard'] = as_array(self.keyboard)  # type list of list of KeyboardButton
         if self.resize_keyboard is not None:
-            array["resize_keyboard"] = as_array(self.resize_keyboard)
+            array['resize_keyboard'] = bool(self.resize_keyboard)  # type bool
         if self.one_time_keyboard is not None:
-            array["one_time_keyboard"] = as_array(self.one_time_keyboard)
+            array['one_time_keyboard'] = bool(self.one_time_keyboard)  # type bool
         if self.selective is not None:
-            array["selective"] = as_array(self.selective)
+            array['selective'] = bool(self.selective)  # type bool
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        return ReplyKeyboardMarkup(**array)
+        """
+        Deserializes a new ReplyKeyboardMarkup from a given dictionary.
+
+        :return: new ReplyKeyboardMarkup instance.
+        :rtype: ReplyKeyboardMarkup
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['keyboard'] = KeyboardButton.from_array(array.get('keyboard'))
+        data['resize_keyboard'] = bool(array.get('resize_keyboard'))
+        data['one_time_keyboard'] = bool(array.get('one_time_keyboard'))
+        data['selective'] = bool(array.get('selective'))
+        return ReplyKeyboardMarkup(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(replykeyboardmarkup_instance)`
+        """
+        return "ReplyKeyboardMarkup(keyboard={self.keyboard}, resize_keyboard={self.resize_keyboard}, one_time_keyboard={self.one_time_keyboard}, selective={self.selective})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in replykeyboardmarkup_instance`
+        """
+        return key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"]
+    # end def __contains__
 # end class ReplyKeyboardMarkup
 
 
@@ -140,9 +176,8 @@ class KeyboardButton(Button):
         :type    request_location: bool
         """
         super(KeyboardButton, self).__init__()
-
         assert(text is not None)
-        assert(isinstance(text, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(text, str))
         self.text = text
 
         assert(request_contact is None or isinstance(request_contact, bool))
@@ -153,19 +188,54 @@ class KeyboardButton(Button):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this KeyboardButton to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(KeyboardButton, self).to_array()
-        array["text"] = as_array(self.text)
+        array['text'] = str(self.text)  # type str
         if self.request_contact is not None:
-            array["request_contact"] = as_array(self.request_contact)
+            array['request_contact'] = bool(self.request_contact)  # type bool
         if self.request_location is not None:
-            array["request_location"] = as_array(self.request_location)
+            array['request_location'] = bool(self.request_location)  # type bool
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        return KeyboardButton(**array)
+        """
+        Deserializes a new KeyboardButton from a given dictionary.
+
+        :return: new KeyboardButton instance.
+        :rtype: KeyboardButton
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['text'] = str(array.get('text'))
+        data['request_contact'] = bool(array.get('request_contact'))
+        data['request_location'] = bool(array.get('request_location'))
+        return KeyboardButton(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(keyboardbutton_instance)`
+        """
+        return "KeyboardButton(text={self.text}, request_contact={self.request_contact}, request_location={self.request_location})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in keyboardbutton_instance`
+        """
+        return key in ["text", "request_contact", "request_location"]
+    # end def __contains__
 # end class KeyboardButton
 
 
@@ -214,17 +284,50 @@ class ReplyKeyboardHide(ReplyMarkup):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this ReplyKeyboardHide to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(ReplyKeyboardHide, self).to_array()
-        array["hide_keyboard"] = as_array(self.hide_keyboard)
+        array['hide_keyboard'] = bool(self.hide_keyboard)  # type bool
         if self.selective is not None:
-            array["selective"] = as_array(self.selective)
+            array['selective'] = bool(self.selective)  # type bool
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        return ReplyKeyboardHide(**array)
+        """
+        Deserializes a new ReplyKeyboardHide from a given dictionary.
+
+        :return: new ReplyKeyboardHide instance.
+        :rtype: ReplyKeyboardHide
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['selective'] = bool(array.get('selective'))
+        return ReplyKeyboardHide(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(replykeyboardhide_instance)`
+        """
+        return "ReplyKeyboardHide(hide_keyboard={self.hide_keyboard}, selective={self.selective})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in replykeyboardhide_instance`
+        """
+        return key in ["hide_keyboard", "selective"]
+    # end def __contains__
 # end class ReplyKeyboardHide
 
 
@@ -232,8 +335,8 @@ class InlineKeyboardMarkup(ReplyMarkup):
     """
     This object represents an inline keyboard that appears right next to the message it belongs to.
 
-    Warning: Inline keyboards are currently being tested and are only available in one-on-one chats (i.e., user-bot or
-             user-user in the case of inline bots).
+    Warning: Inline keyboards are currently being tested and are not available in channels yet.
+         For now, feel free to use them in one-on-one chats or groups.
 
     Note: This will only work in Telegram versions released after 9 April, 2016.
           Older clients will display unsupported message.
@@ -244,8 +347,8 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         This object represents an inline keyboard that appears right next to the message it belongs to.
 
-        Warning: Inline keyboards are currently being tested and are only available in one-on-one chats
-                 (i.e., user-bot or user-user in the case of inline bots).
+        Warning: Inline keyboards are currently being tested and are not available in channels yet.
+             For now, feel free to use them in one-on-one chats or groups.
 
         Note: This will only work in Telegram versions released after 9 April, 2016.
               Older clients will display unsupported message.
@@ -261,20 +364,53 @@ class InlineKeyboardMarkup(ReplyMarkup):
         super(InlineKeyboardMarkup, self).__init__()
 
         assert(inline_keyboard is not None)
-        assert(isinstance(inline_keyboard, (list, tuple)))  # list of list of InlineKeyboardButton
+        assert(isinstance(inline_keyboard, list))
         self.inline_keyboard = inline_keyboard
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this InlineKeyboardMarkup to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(InlineKeyboardMarkup, self).to_array()
-        array["inline_keyboard"] = as_array(self.inline_keyboard)
+        array['inline_keyboard'] = as_array(self.inline_keyboard)  # type list of list of InlineKeyboardButton
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        return InlineKeyboardMarkup(**array)
+        """
+        Deserializes a new InlineKeyboardMarkup from a given dictionary.
+
+        :return: new InlineKeyboardMarkup instance.
+        :rtype: InlineKeyboardMarkup
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['inline_keyboard'] = list([InlineKeyboardButton.from_array(l1) for l1 in [l2 for l2 in array.get('inline_keyboard')]])
+        return InlineKeyboardMarkup(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inlinekeyboardmarkup_instance)`
+        """
+        return "InlineKeyboardMarkup(inline_keyboard={self.inline_keyboard})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inlinekeyboardmarkup_instance`
+        """
+        return key in ["inline_keyboard"]
+    # end def __contains__
 # end class InlineKeyboardMarkup
 
 
@@ -327,35 +463,71 @@ class InlineKeyboardButton(Button):
         super(InlineKeyboardButton, self).__init__()
 
         assert(text is not None)
-        assert(isinstance(text, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(text, str))
         self.text = text
 
-        assert(url is None or isinstance(url, unicode_type))  # unicode on python 2, str on python 3
+        assert(url is None or isinstance(url, str))
         self.url = url
 
-        assert(callback_data is None or isinstance(callback_data, unicode_type))  # unicode on python 2, str on python 3
+        assert(callback_data is None or isinstance(callback_data, str))
         self.callback_data = callback_data
 
-        assert(switch_inline_query is None or isinstance(switch_inline_query, unicode_type))  # py2: unicode, py3: str
+        assert(switch_inline_query is None or isinstance(switch_inline_query, str))
         self.switch_inline_query = switch_inline_query
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this InlineKeyboardButton to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(InlineKeyboardButton, self).to_array()
-        array["text"] = as_array(self.text)
+        array['text'] = str(self.text)  # type str
         if self.url is not None:
-            array["url"] = as_array(self.url)
+            array['url'] = str(self.url)  # type str
         if self.callback_data is not None:
-            array["callback_data"] = as_array(self.callback_data)
+            array['callback_data'] = str(self.callback_data)  # type str
         if self.switch_inline_query is not None:
-            array["switch_inline_query"] = as_array(self.switch_inline_query)
+            array['switch_inline_query'] = str(self.switch_inline_query)  # type str
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        return InlineKeyboardButton(**array)
+        """
+        Deserializes a new InlineKeyboardButton from a given dictionary.
+
+        :return: new InlineKeyboardButton instance.
+        :rtype: InlineKeyboardButton
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['text'] = str(array.get('text'))
+        data['url'] = str(array.get('url'))
+        data['callback_data'] = str(array.get('callback_data'))
+        data['switch_inline_query'] = str(array.get('switch_inline_query'))
+        return InlineKeyboardButton(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inlinekeyboardbutton_instance)`
+        """
+        return "InlineKeyboardButton(text={self.text}, url={self.url}, callback_data={self.callback_data}, switch_inline_query={self.switch_inline_query})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inlinekeyboardbutton_instance`
+        """
+        return key in ["text", "url", "callback_data", "switch_inline_query"]
+    # end def __contains__
 # end class InlineKeyboardButton
 
 
@@ -404,7 +576,7 @@ class ForceReply(ReplyMarkup):
         Parameters:
 
         Optional keyword parameters:
-        :keyword selective: Optional. Use this parameter if you want to show the keyboard to specific users only.
+        :keyword selective: Optional. Use this parameter if you want to show the keyboard to/force reply from specific users only.
                             Targets: 1) users that are @mentioned in the text of the Message object;
                                      2) if the bot's message is a reply (has reply_to_message_id),
                                         sender of the original message.
@@ -419,15 +591,48 @@ class ForceReply(ReplyMarkup):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this ForceReply to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
         array = super(ForceReply, self).to_array()
-        array["force_reply"] = as_array(self.force_reply)
+        array['force_reply'] = bool(self.force_reply)  # type bool
         if self.selective is not None:
-            array["selective"] = as_array(self.selective)
+            array['selective'] = bool(self.selective)  # type bool
         return array
     # end def to_array
 
     @staticmethod
     def from_array(array):
-        return ForceReply(**array)
+        """
+        Deserializes a new ForceReply from a given dictionary.
+
+        :return: new ForceReply instance.
+        :rtype: ForceReply
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['selective'] = bool(array.get('selective'))
+        return ForceReply(**data)
     # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(forcereply_instance)`
+        """
+        return "ForceReply(force_reply={self.force_reply}, selective={self.selective})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in forcereply_instance`
+        """
+        return key in ["force_reply", "selective"]
+    # end def __contains__
 # end class ForceReply

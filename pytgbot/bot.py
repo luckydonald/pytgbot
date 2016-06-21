@@ -7,7 +7,6 @@ from time import sleep
 from DictObject import DictObject
 
 from luckydonaldUtils.encoding import to_native as n
-from luckydonaldUtils.encoding import text_type as unicode_type
 from luckydonaldUtils.logger import logging
 
 from .api_types import as_array
@@ -28,10 +27,23 @@ logger = logging.getLogger(__name__)
 class Bot(object):
     _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # do not chance.
 
-    def __init__(self, api_key):
-        if api_key is None:
+    def __init__(self, api_key, return_python_objects=True):
+        """
+        A Bot instance. From here you can call all the functions.
+        The api key can be optained from @BotFather, see https://core.telegram.org/bots#6-botfather
+
+        :param api_key: The APi key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+        :type  api_key: str
+
+        :keyword return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects.
+        :type    return_python_objects: bool
+        """
+        from datetime import datetime
+
+        if api_key is None or not api_key:
             raise ValueError("No api_key given.")
         self.api_key = api_key
+        self.return_python_objects = return_python_objects
         self._last_update = datetime.now()
     # end def __init__
 
@@ -85,6 +97,12 @@ class Bot(object):
                  or an empty array if there was an requests.RequestException and error_as_empty is set to True.
         :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
+        from datetime import timedelta, datetime
+
+        assert (offset is None or isinstance(offset, int))
+        assert (limit is None or isinstance(limit, int))
+        assert (timeout is None or isinstance(timeout, int))
+
         now = datetime.now()
         if self._last_update - now < delta:
             wait = ((now - self._last_update) - delta).total_seconds()  # can be 0.2
@@ -141,11 +159,14 @@ class Bot(object):
 
         Returns:
 
-        :return: True if did work.
+        :return: On success, True is returned
         :rtype:  bool
         """
-        assert(url is None or isinstance(url, unicode_type))  # unicode on python 2, str on python 3
+        from pytgbot.api_types.sendable import InputFile
+
+        assert(url is None or isinstance(url, str))
         assert(certificate is None or isinstance(certificate, InputFile))
+
         return self.do("setWebhook", url=url, certificate=certificate)
     # end def set_webhook
 
@@ -186,19 +207,24 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(text is not None)
-        assert(isinstance(text, unicode_type))  # unicode on python 2, str on python 3
-        assert(parse_mode is None or isinstance(parse_mode, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(text, str))
+        assert(parse_mode is None or isinstance(parse_mode, str))
         assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
         assert(disable_notification is None or isinstance(disable_notification, bool))
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
@@ -241,32 +267,21 @@ class Bot(object):
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
         assert(from_chat_id is not None)
         assert(isinstance(from_chat_id, (int, str)))
-        assert(disable_notification is None or isinstance(disable_notification, bool))
         assert(message_id is not None)
         assert(isinstance(message_id, int))
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+
         return self.do(
             "forwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id,
             disable_notification=disable_notification
         )
     # end def forward_message
-
-    def _do_fileupload(self, file_param_name, value, **kwargs):
-        if isinstance(value, str):
-            kwargs[file_param_name] = str(value)
-        elif isinstance(value, unicode_type):
-            kwargs[file_param_name] = n(value)
-        elif isinstance(value, InputFile):
-            kwargs["files"] = value.get_request_files(file_param_name)
-        else:
-            raise TypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
-                key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
-        return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
 
     def send_photo(self, chat_id, photo, caption=None, disable_notification=False, reply_to_message_id=None,
                    reply_markup=None):
@@ -280,12 +295,12 @@ class Bot(object):
 
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format
                         @channelusername)
-        :type  chat_id: `int` or `str`
+        :type  chat_id: int | str
 
         :param photo: Photo to send. You can either pass a file_id as String to resend a photo
                       file that is already on the Telegram servers, or upload a new photo,
                       specifying the file path as :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
-        :type  photo: :class:`InputFile` | str
+        :type  photo: pytgbot.api_types.sendable.InputFile | str
 
 
         Optional keyword parameters:
@@ -303,24 +318,34 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup |
+                               pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup |
+                               pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide |
+                               pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
         assert(photo is not None)
         assert(isinstance(photo, (InputFile, str)))
-        assert(caption is None or isinstance(caption, unicode_type))  # unicode on python 2, str on python 3
+
+        assert(caption is None or isinstance(caption, str))
+
         assert(disable_notification is None or isinstance(disable_notification, bool))
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
-        assert(reply_markup is None or isinstance(reply_markup, (
-            InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
-        )))
+
+        assert(reply_markup is None or isinstance(reply_markup, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply)))
+
         return self._do_fileupload(
             "photo", photo, chat_id=chat_id, caption=caption, disable_notification=disable_notification,
             reply_to_message_id=reply_to_message_id, reply_markup=reply_markup
@@ -346,9 +371,9 @@ class Bot(object):
         :type  chat_id: int | str
 
         :param audio: Audio file to send. You can either pass a file_id as String to resend a audio
-                      file that is alreadyon the Telegram servers, or upload the new audio,
-                      specifying the file path as pytg.api_types.files.InputFile.
-        :type  audio: pytg.api_types.files.InputFile | str
+                      file that is already on the Telegram servers, or upload the new audio,
+                      specifying the file path as :class:`pytg.api_types.sendable.InputFile.
+        :type  audio: pytgbot.api_types.sendable.InputFile | str
 
 
         Optional keyword parameters:
@@ -372,22 +397,34 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from luckydonaldUtils.encoding import unicode_type
+        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(audio is not None)
         assert(isinstance(audio, (InputFile, str)))
+
         assert(duration is None or isinstance(duration, int))
-        assert(performer is None or isinstance(performer, unicode_type))  # unicode on python 2, str on python 3
-        assert(title is None or isinstance(title, unicode_type))  # unicode on python 2, str on python 3
+
+        assert(performer is None or isinstance(performer, str))
+
+        assert(title is None or isinstance(title, str))
+
         assert(disable_notification is None or isinstance(disable_notification, bool))
+
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
@@ -416,7 +453,7 @@ class Bot(object):
         :param document: Document to send. You can either pass a file_id as String to resend a
                          file that is already on the Telegram servers, or upload the new document,
                          specifying the file path as pytg.api_types.files.InputFile.
-        :type  document: pytg.api_types.files.InputFile | str
+        :type  document: pytgbot.api_types.sendable.InputFile | str
 
 
         Optional keyword parameters:
@@ -434,20 +471,29 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(document is not None)
         assert(isinstance(document, (InputFile, str)))
-        assert(caption is None or isinstance(caption, unicode_type))  # unicode on python 2, str on python 3
+
+        assert(caption is None or isinstance(caption, str))
+
         assert(disable_notification is None or isinstance(disable_notification, bool))
+
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
@@ -476,7 +522,7 @@ class Bot(object):
         :param sticker: Sticker to send. You can either pass a file_id as String to resend a
                         sticker file that is already on the Telegram servers, or upload the new sticker,
                         specifying the file path as pytg.api_types.files.InputFile.
-        :type  sticker: pytg.api_types.files.InputFile | str
+        :type  sticker: pytgbot.api_types.sendable.InputFile | str
 
 
         Optional keyword parameters:
@@ -491,19 +537,28 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from luckydonaldUtils.encoding import unicode_type
+        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(sticker is not None)
         assert(isinstance(sticker, (InputFile, str)))
+
         assert(disable_notification is None or isinstance(disable_notification, bool))
+
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
@@ -533,7 +588,7 @@ class Bot(object):
         :param video: Video to send. You can either pass a file_id as String to resend a
                       video file that is already on the Telegram servers, or upload the new video,
                       specifying the file path as pytg.api_types.files.InputFile.
-        :type  video: pytg.api_types.files.InputFile | str
+        :type  video: pytgbot.api_types.sendable.InputFile | str
 
 
         Optional keyword parameters:
@@ -560,23 +615,36 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from luckydonaldUtils.encoding import unicode_type
+        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(video is not None)
         assert(isinstance(video, (InputFile, str)))
+
         assert(duration is None or isinstance(duration, int))
+
         assert(width is None or isinstance(width, int))
+
         assert(height is None or isinstance(height, int))
-        assert(caption is None or isinstance(caption, unicode_type))  # unicode on python 2, str on python 3
+
+        assert(caption is None or isinstance(caption, str))
+
         assert(disable_notification is None or isinstance(disable_notification, bool))
+
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
@@ -609,9 +677,9 @@ class Bot(object):
         :type  chat_id: int | str
 
         :param voice: Audio file to send.
-                      You can either pass a file_id as str to resend an audio that is already on the Telegram servers,
+                      You can either pass a file_id as :class:`str` to resend an audio that is already on the Telegram servers,
                       or upload a new audio file using a pytg.api_types.files.InputFile.
-        :type  voice: pytg.api_types.files.InputFile | str
+        :type  voice: pytgbot.api_types.sendable.InputFile | str
 
 
         Optional keyword parameters:
@@ -629,20 +697,29 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(voice is not None)
         assert(isinstance(voice, (InputFile, str)))
+
         assert(duration is None or isinstance(duration, int))
+
         assert(disable_notification is None or isinstance(disable_notification, bool))
+
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
@@ -687,21 +764,30 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(latitude is not None)
         assert(isinstance(latitude, float))
+
+
         assert(longitude is not None)
         assert(isinstance(longitude, float))
+
         assert(disable_notification is None or isinstance(disable_notification, bool))
+
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
@@ -753,26 +839,37 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                 A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                 instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(latitude is not None)
         assert(isinstance(latitude, float))
+
         assert(longitude is not None)
         assert(isinstance(longitude, float))
+
         assert(title is not None)
-        assert(isinstance(title, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(title, str))
+
         assert(address is not None)
-        assert(isinstance(address, unicode_type))  # unicode on python 2, str on python 3
-        assert(foursquare_id is None or isinstance(foursquare_id, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(address, str))
+
+        assert(foursquare_id is None or isinstance(foursquare_id, str))
+
         assert(disable_notification is None or isinstance(disable_notification, bool))
+
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
@@ -819,22 +916,31 @@ class Bot(object):
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
                                instructions to hide keyboard or to force a reply from the user.
-        :type    reply_markup: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  Message
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(phone_number is not None)
-        assert(isinstance(phone_number, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(phone_number, str))
+
         assert(first_name is not None)
-        assert(isinstance(first_name, unicode_type))  # unicode on python 2, str on python 3
-        assert(last_name is None or isinstance(last_name, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(first_name, str))
+
+        assert(last_name is None or isinstance(last_name, str))
+
         assert(disable_notification is None or isinstance(disable_notification, bool))
+
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
@@ -875,15 +981,54 @@ class Bot(object):
 
         Returns:
 
-        :return:
-        :rtype:
+        :return: On success, True is returned
+        :rtype:  bool
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(action is not None)
-        assert(isinstance(action, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(action, str))
         return self.do("sendChatAction", chat_id=chat_id, action=action)
     # end def send_chat_action
+
+    def get_user_profile_photos(self, user_id, offset=None, limit=None):
+        """
+        TODO not in generator
+        Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
+
+        https://core.telegram.org/bots/api#getuserprofilephotos
+
+
+        Parameters:
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+
+
+        Optional keyword parameters:
+
+        :keyword offset: Sequential number of the first photo to be returned. By default, all photos are returned.
+        :type    offset: int
+
+        :keyword limit: Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.
+        :type    limit: int
+
+
+        Returns:
+
+        :return: Returns a UserProfilePhotos object
+        :rtype:  pytgbot.api_types.receivable.media.UserProfilePhotos
+
+        """
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+
+        assert(offset is None or isinstance(offset, int))
+
+        assert(limit is None or isinstance(limit, int))
+        return self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
+    # end def get_user_profile_photos
 
     def get_file(self, file_id):
         """
@@ -895,6 +1040,9 @@ class Bot(object):
         where <file_path> is taken from the response.
         It is guaranteed that the link will be valid for at least 1 hour.
         When the link expires, a new one can be requested by calling get_file again.
+
+        Note: This function may not preserve original file name. Mime type of the file and its name (if available) should be saved when the File object is received.
+
 
         https://core.telegram.org/bots/api#getfile
 
@@ -908,12 +1056,257 @@ class Bot(object):
         Returns:
 
         :return: On success, a File object is returned
-        :rtype:  File
+        :rtype:  pytgbot.api_types.receivable.media.File
         """
         assert(file_id is not None)
         assert(isinstance(file_id, str))
         return self.do("getFile", file_id=file_id)
     # end def get_file
+
+    def kick_chat_member(self, chat_id, user_id):
+        """
+        Use this method to kick a user from a group or a supergroup. In the case of supergroups,
+        the user will not be able to return to the group on their own using invite links, etc., unless unbanned first.
+
+        The bot must be an administrator in the group for this to work. Returns True on success.
+
+        Note: This will method only work if the ‘All Members Are Admins’ setting is off in the target group.
+              Otherwise members may only be removed by the group's creator or by the member that added them.
+
+        https://core.telegram.org/bots/api#kickchatmember
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target group or username of the target supergroup (in the format
+                        @supergroupusername)
+        :type  chat_id: int | str
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        return self.do("kickChatMember", chat_id=chat_id, user_id=user_id)
+    # end def kick_chat_member
+
+    def leave_chat(self, chat_id):
+        """
+        Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
+
+        https://core.telegram.org/bots/api#leavechat
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the
+                        format @channelusername)
+        :type  chat_id: int | str
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        return self.do("leaveChat", chat_id=chat_id)
+
+    # end def leave_chat
+
+    def unban_chat_member(self, chat_id, user_id):
+        """
+        Use this method to unban a previously kicked user in a supergroup.
+        The user will not return to the group automatically, but will be able to join via link, etc.
+
+        The bot must be an administrator in the group for this to work. Returns True on success.
+
+        https://core.telegram.org/bots/api#unbanchatmember
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target group or username of the target supergroup (in the format
+                         @supergroupusername)
+        :type  chat_id: int | str
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        return self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
+    # end def unban_chat_member
+
+    def get_chat(self, chat_id):
+        """
+        Use this method to get up to date information about the chat (current name of the user for one-on-one
+        conversations, current username of a user, group or channel, etc.)
+
+        Returns a Chat object on success.
+
+        https://core.telegram.org/bots/api#getchat
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the
+                        format @channelusername)
+        :type  chat_id: int | str
+
+
+        Returns:
+
+        :return: Returns a Chat object on success
+        :rtype:  pytgbot.api_types.receivable.peer.Chat
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        return self.do("getChat", chat_id=chat_id)
+    # end def get_chat
+
+    def get_chat_administrators(self, chat_id):
+        """
+        Use this method to get a list of administrators in a chat.
+
+        On success, returns an Array of ChatMember objects that contains information about all chat administrators
+        except other bots. If the chat is a group or a supergroup and no administrators were appointed,
+        only the creator will be returned.
+
+        https://core.telegram.org/bots/api#getchatadministrators
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the\n
+                        format @channelusername)
+        :type  chat_id: int | str
+
+
+        Returns:
+
+        :return: On success, returns an Array of ChatMember objects that contains information about all
+                 chat administrators except other bots. If the chat is a group or a supergroup and no administrators
+                 were appointed, only the creator will be returned
+        :rtype:  list of pytgbot.api_types.receivable.peer.ChatMember
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        return self.do("getChatAdministrators", chat_id=chat_id)
+    # end def get_chat_administrators
+
+    def get_chat_members_count(self, chat_id):
+        """
+        Use this method to get the number of members in a chat. Returns Int on success.
+
+        https://core.telegram.org/bots/api#getchatmemberscount
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the
+                         format @channelusername)
+        :type  chat_id: int | str
+
+
+        Returns:
+
+        :return: Returns Int on success
+        :rtype:  int
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        return self.do("getChatMembersCount", chat_id=chat_id)
+    # end def get_chat_members_count
+
+    def get_chat_member(self, chat_id, user_id):
+        """
+        Use this method to get information about a member of a chat. Returns a ChatMember object on success.
+
+        https://core.telegram.org/bots/api#getchatmember
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the
+                         format @channelusername)
+        :type  chat_id: int | str
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+
+
+        Returns:
+
+        :return: Returns a ChatMember object on success
+        :rtype:  pytgbot.api_types.receivable.peer.ChatMember
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+
+
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        return self.do("getChatMember", chat_id=chat_id, user_id=user_id)
+    # end def get_chat_member
+
+    def answer_callback_query(self, callback_query_id, text=None, show_alert=None):
+        """
+        Use this method to send answers to callback queries sent from inline keyboards.
+        The answer will be displayed to the user as a notification at the top of the chat screen or as an alert.
+        On success, True is returned.
+
+        https://core.telegram.org/bots/api#answercallbackquery
+
+
+        Parameters:
+
+        :param callback_query_id: Unique identifier for the query to be answered
+        :type  callback_query_id: str
+
+
+        Optional keyword parameters:
+
+        :keyword text: Text of the notification. If not specified, nothing will be shown to the user
+        :type    text: str
+
+        :keyword show_alert: If true, an alert will be shown by the client instead of a notification at the top of the
+                             chat screen. Defaults to false.
+        :type    show_alert: bool
+
+
+        Returns:
+
+        :return: On success, True is returned
+        :rtype: bool
+        """
+        assert(callback_query_id is not None)
+        assert(isinstance(callback_query_id, str))
+
+        assert(text is None or isinstance(text, str))
+
+        assert(show_alert is None or isinstance(show_alert, bool))
+        return self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert)
+    # end def answer_callback_query
 
     def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None,
                           disable_web_page_preview=None, reply_markup=None):
@@ -951,21 +1344,30 @@ class Bot(object):
         :type    disable_web_page_preview:  bool
 
         :keyword reply_markup: A JSON-serialized object for an inline keyboard.
-        :type    reply_markup:  InlineKeyboardMarkup
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
         Returns:
 
         :return: On success, if edited message is sent by the bot, the edited Message is returned,
-                 otherwise True is returned.
-        :rtype:  Message or bool
+                 otherwise True is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        assert (message_id is None or isinstance(message_id, int))
-        assert (inline_message_id is None or isinstance(inline_message_id, str))
+        from luckydonaldUtils.encoding import unicode_type
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
         assert (text is not None)
         assert (isinstance(text, str))
+
+        assert(chat_id is None or isinstance(chat_id, (int, str)))
+
+        assert (message_id is None or isinstance(message_id, int))
+
+        assert (inline_message_id is None or isinstance(inline_message_id, str))
+
         assert (parse_mode is None or isinstance(parse_mode, str))
         assert (disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+
         return self.do("editMessageText", text=text, chat_id=chat_id, message_id=message_id,
                        inline_message_id=inline_message_id, parse_mode=parse_mode,
                        disable_web_page_preview=disable_web_page_preview, reply_markup=reply_markup)
@@ -998,18 +1400,26 @@ class Bot(object):
         :type    caption:  str
 
         :keyword reply_markup: A JSON-serialized object for an inline keyboard.
-        :type    reply_markup:  InlineKeyboardMarkup
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
         Returns:
 
         :return: On success, if edited message is sent by the bot, the edited Message is returned,
                  otherwise True is returned.
-        :rtype:  Message or bool
+        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        assert(chat_id is None or isinstance(chat_id, (int, str)))
+
         assert (message_id is None or isinstance(message_id, int))
+
         assert (inline_message_id is None or isinstance(inline_message_id, str))
+
         assert (caption is None or isinstance(caption, str))
+
+        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+
         return self.do("editMessageCaption", chat_id=chat_id, message_id=message_id,
                        inline_message_id=inline_message_id, caption=caption, reply_markup=reply_markup)
     # end def edit_message_caption
@@ -1036,224 +1446,29 @@ class Bot(object):
         :type    inline_message_id:  str
 
         :keyword reply_markup: A JSON-serialized object for an inline keyboard.
-        :type    reply_markup:  InlineKeyboardMarkup
-
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
         Returns:
 
         :return: On success, if edited message is sent by the bot, the edited Message is returned,
                  otherwise True is returned.
-        :rtype:  Message or bool
+        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
+        from luckydonaldUtils.encoding import unicode_type
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        assert(chat_id is None or isinstance(chat_id, (int, str)))
+
         assert (message_id is None or isinstance(message_id, int))
+
         assert (inline_message_id is None or isinstance(inline_message_id, str))
+
+        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         return self.do(
             "editMessageReplyMarkup", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id,
             reply_markup=reply_markup
         )
     # end def edit_message_reply_markup
-
-    def kick_chat_member(self, chat_id, user_id):
-        """
-        Use this method to kick a user from a group or a supergroup. In the case of supergroups,
-        the user will not be able to return to the group on their own using invite links, etc., unless unbanned first.
-
-        The bot must be an administrator in the group for this to work. Returns True on success.
-
-        Note: This will method only work if the ‘All Members Are Admins’ setting is off in the target group.
-              Otherwise members may only be removed by the group's creator or by the member that added them.
-
-        https://core.telegram.org/bots/api#kickchatmember
-
-
-        Parameters:
-
-        :param chat_id: Unique identifier for the target group or username of the target supergroup (in the format
-                        @supergroupusername)
-        :type  chat_id: int | str
-
-        :param user_id: Unique identifier of the target user
-        :type  user_id: int
-
-
-        Returns:
-
-        :return: Returns True on success
-        :rtype:  bool
-        """
-        assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
-        assert(user_id is not None)
-        assert(isinstance(user_id, int))
-        return self.do("kickChatMember", chat_id=chat_id, user_id=user_id)
-    # end def kick_chat_member
-
-    def leave_chat(self, chat_id):
-        """
-        Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
-
-        https://core.telegram.org/bots/api#leavechat
-
-
-        Parameters:
-
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the
-                        format @channelusername)
-        :type  chat_id: int | str
-
-
-        Returns:
-
-        :return: Returns True on success
-        :rtype:  True
-        """
-        assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
-        return self.do("leaveChat", chat_id=chat_id)
-
-    # end def leave_chat
-
-    def unban_chat_member(self, chat_id, user_id):
-        """
-        Use this method to unban a previously kicked user in a supergroup.
-        The user will not return to the group automatically, but will be able to join via link, etc.
-
-        The bot must be an administrator in the group for this to work. Returns True on success.
-
-        https://core.telegram.org/bots/api#unbanchatmember
-
-
-        Parameters:
-
-        :param chat_id: Unique identifier for the target group or username of the target supergroup (in the format
-                         @supergroupusername)
-        :type  chat_id: int | str
-
-        :param user_id: Unique identifier of the target user
-        :type  user_id: int
-
-
-        Returns:
-
-        :return: Returns True on success
-        :rtype: bool
-        """
-        assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
-        assert(user_id is not None)
-        assert(isinstance(user_id, int))
-        return self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
-    # end def unban_chat_member
-
-    def get_chat(self, chat_id):
-        """
-        Use this method to get up to date information about the chat (current name of the user for one-on-one
-        conversations, current username of a user, group or channel, etc.)
-
-        Returns a Chat object on success.
-
-        https://core.telegram.org/bots/api#getchat
-
-
-        Parameters:
-
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the
-                        format @channelusername)
-        :type  chat_id: int | str
-
-
-        Returns:
-
-        :return: Returns a Chat object on success
-        :rtype:  Chat
-        """
-        assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
-        return self.do("getChat", chat_id=chat_id)
-    # end def get_chat
-
-    def get_chat_administrators(self, chat_id):
-        """
-        Use this method to get a list of administrators in a chat.
-
-        On success, returns an Array of ChatMember objects that contains information about all chat administrators
-        except other bots. If the chat is a group or a supergroup and no administrators were appointed,
-        only the creator will be returned.
-
-        https://core.telegram.org/bots/api#getchatadministrators
-
-
-        Parameters:
-
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the\n
-                        format @channelusername)
-        :type  chat_id: int | str
-
-
-        Returns:
-
-        :return: On success, returns an Array of ChatMember objects that contains information about all
-                 chat administrators except other bots. If the chat is a group or a supergroup and no administrators
-                 were appointed, only the creator will be returned
-        :rtype:  Array of ChatMember
-        """
-        assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
-        return self.do("getChatAdministrators", chat_id=chat_id)
-    # end def get_chat_administrators
-
-    def get_chat_members_count(self, chat_id):
-        """
-        Use this method to get the number of members in a chat. Returns Int on success.
-
-        https://core.telegram.org/bots/api#getchatmemberscount
-
-
-        Parameters:
-
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the
-                         format @channelusername)
-        :type  chat_id: int | str
-
-
-        Returns:
-
-        :return: Returns Int on success
-        :rtype:  Int
-        """
-        assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
-        return self.do("getChatMembersCount", chat_id=chat_id)
-    # end def get_chat_members_count
-
-    def get_chat_member(self, chat_id, user_id):
-        """
-        Use this method to get information about a member of a chat. Returns a ChatMember object on success.
-
-        https://core.telegram.org/bots/api#getchatmember
-
-
-        Parameters:
-
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the
-                         format @channelusername)
-        :type  chat_id: int | str
-
-        :param user_id: Unique identifier of the target user
-        :type  user_id: int
-
-
-        Returns:
-
-        :return: Returns a ChatMember object on success
-        :rtype:  ChatMember
-        """
-        assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
-        assert(user_id is not None)
-        assert(isinstance(user_id, int))
-        return self.do("getChatMember", chat_id=chat_id, user_id=user_id)
-    # end def get_chat_member
 
     def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None,
                             switch_pm_text=None, switch_pm_parameter=None):
@@ -1270,7 +1485,7 @@ class Bot(object):
         :type  inline_query_id: str
 
         :param results: A JSON-serialized array of results for the inline query
-        :type  results: list of InlineQueryResult
+        :type  results: list of pytgbot.api_types.sendable.inline.InlineQueryResult
 
 
         Optional keyword parameters:
@@ -1314,11 +1529,13 @@ class Bot(object):
         :return: On success, True is returned
         :rtype: bool
         """
+        from luckydonaldUtils.encoding import unicode_type
         assert(inline_query_id is not None)
         if isinstance(inline_query_id, int):
             inline_query_id = str(inline_query_id)
-        assert(isinstance(inline_query_id, (str, unicode_type)))
+        assert(isinstance(inline_query_id, str))
         inline_query_id = n(inline_query_id)
+
         assert(results is not None)
         if isinstance(results, InlineQueryResult):
             results = [results]
@@ -1327,13 +1544,21 @@ class Bot(object):
         for result in results:
             assert isinstance(result, InlineQueryResult)  # checks all elements of results
             result_objects.append(result.to_array())
+        # end for results
+
         assert(cache_time is None or isinstance(cache_time, int))
+
         assert(is_personal is None or isinstance(is_personal, bool))
+
         if next_offset is not None:
             assert(isinstance(next_offset, (str, unicode_type, int)))
             next_offset = n(str(next_offset))
+        # end if
+
         assert(switch_pm_text is None or isinstance(switch_pm_text, unicode_type))  # py2: unicode, py3: str
-        assert(switch_pm_parameter is None or isinstance(switch_pm_parameter, unicode_type))  # py2: unicode, py3: str
+
+        assert(switch_pm_parameter is None or isinstance(switch_pm_parameter, str))
+
         return self.do(
             "answerInlineQuery", inline_query_id=inline_query_id, results=json.dumps(result_objects),
             cache_time=cache_time, is_personal=is_personal, next_offset=next_offset, switch_pm_text=switch_pm_text,
@@ -1341,89 +1566,40 @@ class Bot(object):
         )
     # end def answer_inline_query
 
-    def answer_callback_query(self, callback_query_id, text=None, show_alert=None):
-        """
-        Use this method to send answers to callback queries sent from inline keyboards.
-        The answer will be displayed to the user as a notification at the top of the chat screen or as an alert.
-        On success, True is returned.
-
-        https://core.telegram.org/bots/api#answercallbackquery
-
-
-        Parameters:
-
-        :param callback_query_id: Unique identifier for the query to be answered
-        :type  callback_query_id: str
-
-
-        Optional keyword parameters:
-
-        :keyword text: Text of the notification. If not specified, nothing will be shown to the user
-        :type    text: str
-
-        :keyword show_alert: If true, an alert will be shown by the client instead of a notification at the top of the
-                             chat screen. Defaults to false.
-        :type    show_alert: bool
-
-
-        Returns:
-
-        :return: On success, True is returned
-        :rtype: bool
-        """
-        assert(callback_query_id is not None)
-        assert(isinstance(callback_query_id, unicode_type))  # unicode on python 2, str on python 3
-        assert(text is None or isinstance(text, unicode_type))  # unicode on python 2, str on python 3
-        assert(show_alert is None or isinstance(show_alert, bool))
-        return self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert)
-    # end def answer_callback_query
-
-    def get_user_profile_photos(self, user_id, offset=None, limit=None):
-        """
-        Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
-
-        https://core.telegram.org/bots/api#getuserprofilephotos
-
-
-        Parameters:
-
-        :param user_id: Unique identifier of the target user
-        :type  user_id: int
-
-
-        Optional keyword parameters:
-
-        :keyword offset: Sequential number of the first photo to be returned. By default, all photos are returned.
-        :type    offset: int
-
-        :keyword limit: Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.
-        :type    limit: int
-
-
-        Returns:
-
-        :return: Returns a UserProfilePhotos object.
-        :rtype:  UserProfilePhotos
-
-        """
-        assert(user_id is not None)
-        assert(isinstance(user_id, int))
-        assert(offset is None or isinstance(offset, int))
-        assert(limit is None or isinstance(limit, int))
-        return self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
-    # end def get_user_profile_photos
+    def send_msg(self, *args, **kwargs):
+        """ alias to :func:`send_message` """
+        return self.send_message(*args, **kwargs)
+    # end def send_msg
 
     def do(self, command, files=None, use_long_polling=False, **query):
         """
         Send a request to the api.
+
+        If the bot is set to return the json objects, it will look like this:
+
+        ```json
+        {
+            "ok": bool, "result": {...},
+            # optionally present:
+            "description": "human-readable description of the result",
+            "error_code": int
+        }
+        ```
 
         :param command: The Url command parameter
         :param files: if it needs to send files.
         :param use_long_polling: if it should use long polling.
                                 (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
         :param query: will get json encoded.
-        :return:
+        :return: The json response from the server.
+        :rtype: DictObject.DictObject
         """
+        from pytgbot.api_types.sendable import Sendable
+        from pytgbot.api_types import as_array
+        from DictObject import DictObject
+        import requests
+        import json
+
         params = {}
         for key in query.keys():
             element = query[key]
@@ -1438,6 +1614,25 @@ class Bot(object):
         res = DictObject.objectify(r.json())
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
+        if self.return_python_objects:
+            pass  # not implemented yet.
         return res
     # end def do
-# end class
+
+    def _do_fileupload(self, file_param_name, value, **kwargs):
+        from pytgbot.api_types.sendable import InputFile
+        from luckydonaldUtils.encoding import unicode_type
+        from luckydonaldUtils.encoding import to_native as n
+
+        if isinstance(value, str):
+            kwargs[file_param_name] = str(value)
+        elif isinstance(value, unicode_type):
+            kwargs[file_param_name] = n(value)
+        elif isinstance(value, InputFile):
+            kwargs["files"] = value.get_request_files(file_param_name)
+        else:
+            raise TypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
+                key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
+        return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
+    # end def _do_fileupload
+# end class Bot
