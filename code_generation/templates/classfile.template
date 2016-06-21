@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-{% for import in imports %}
+{% for import in imports -%}
 from {{ import.path }} import {{ import.name }}
-{%- endfor %}
+{% endfor -%}
 {% for clazz in clazzes %}
 {% include "class.template" %}
 

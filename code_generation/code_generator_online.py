@@ -2,10 +2,11 @@
 from code_generator import get_type_path
 from code_generator_template import clazz, func, get_template, Clazz, Function, ClassOrFunction, as_types, Type
 from luckydonaldUtils.files import mkdir_p  # luckydonaldUtils v0.43+
-from luckydonaldUtils.interactions import answer
+from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
 
 from code_generation.code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT
+from jinja2.exceptions import TemplateError, TemplateSyntaxError
 
 FILE_HEADER = "# -*- coding: utf-8 -*-\n"
 MAIN_FILE_CLASS_HEADER = "class Bot(object):\n    _base_url = \"https://api.telegram.org/bot{api_key}/{command}\"\n"
@@ -218,10 +219,33 @@ def main():
             results.append(result)
         # end if
     # end for
-    safe_to_file(folder, results)
+    can_quit = False
+    do_overwrite = confirm("Can the folder {path} be overwritten?".format(path=folder))
+    print("vvvvvvvvv")
+    while not can_quit:
+        if do_overwrite:
+            try:
+                import Send2Trash
+                Send2Trash.send2trash(folder)
+            except ImportError:
+                import shutil
+                shutil.rmtree(folder)
+            # end try
+        # end if
+        try:
+            safe_to_file(folder, results)
+            print("Writen to file.")
+        except TemplateError as e:
+            if isinstance(e, TemplateSyntaxError):
+                logger.exception("Template error at {file}:{line}".format(file=e.filename, line=e.lineno))
+            else:
+                logger.exception("Template error.")
+            # end if
+        # end try
+        can_quit = not confirm("Write again after reloading templates?", default=True)
     print("#########")
-    # print("\n\n".join(results))
-
+    print("Exit.")
+# end def main
 
 def get_filter():
     filter = answer(

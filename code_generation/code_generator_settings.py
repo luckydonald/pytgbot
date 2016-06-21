@@ -9,24 +9,23 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Result":               ("pytgbot.api_types.receivable.", "Receivable", None),
 
     # pytgbot.api_types.receivable.media.*
+    "MessageEntity":        ("pytgbot.api_types.receivable.media.", "Result", None),
+    "PhotoSize":            ("pytgbot.api_types.receivable.media.", "Result", None),
+    "UserProfilePhotos":    ("pytgbot.api_types.receivable.media.", "Result", None),
     "Media":                ("pytgbot.api_types.receivable.media.", "Receivable", None),
+    "File":                 ("pytgbot.api_types.receivable.media.", "Receivable", None),
     "Voice":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Contact":              ("pytgbot.api_types.receivable.media.", "Media", None),
     "Location":             ("pytgbot.api_types.receivable.media.", "Media", None),
     "Venue":                ("pytgbot.api_types.receivable.media.", "Media", None),
-    "PhotoSize":            ("pytgbot.api_types.receivable.media.", "Result", None),
-    "UserProfilePhotos":    ("pytgbot.api_types.receivable.media.", "Result", None),
     "Audio":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Document":             ("pytgbot.api_types.receivable.media.", "Media", None),
     "Sticker":              ("pytgbot.api_types.receivable.media.", "Media", None),
     "Video":                ("pytgbot.api_types.receivable.media.", "Media", None),
-    "File":                 ("pytgbot.api_types.receivable.media.", "Receivable", None),
 
     # pytgbot.api_types.receivable.responses.*
-    "InlineQuery": ("pytgbot.api_types.receivable.", "Result", None),
-    "MessageEntity": ("pytgbot.api_types.receivable.", "Result", None),
 
-    # pytgbot.api_types.receivable.responses.peer.*
+    # pytgbot.api_types.receivable.peer.*
     "ChatMember":   ("pytgbot.api_types.receivable.peer.", "Result", None),
     "Peer":         ("pytgbot.api_types.receivable.peer.", "Result", None),
     "User":         ("pytgbot.api_types.receivable.peer.", "Peer", None),
@@ -39,6 +38,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "CallbackQuery":        ("pytgbot.api_types.receivable.updates.", "UpdateType", None),
 
     # pytgbot.api_types.receivable.inline.*
+    "InlineQuery":                  ("pytgbot.api_types.receivable.inline.", "Result", None),
     "ChosenInlineResult":           ("pytgbot.api_types.receivable.inline.", "UpdateType", None),
 
     # pytgbot.api_types.sendable.*

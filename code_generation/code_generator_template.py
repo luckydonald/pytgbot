@@ -97,9 +97,8 @@ def func(command, description, link, params_string, returns="On success, the sen
     imports = list(imports)
     imports.sort()
     returns = Variable(types=as_types(return_type, variable_name="return type"), description=returns)
-
     func_object = Function(
-        imports=imports, func=command, link=link, description=description, returns=returns,
+        imports=imports, api_name=command, link=link, description=description, returns=returns,
         parameters=variables_needed, keywords=variables_optional
     )
     return func_object
@@ -165,9 +164,9 @@ class Clazz(ClassOrFunction):
 
 
 class Function(ClassOrFunction):
-    def __init__(self, func=None, imports=None, link=None, description=None, returns=None, parameters=None, keywords=None):
+    def __init__(self, api_name=None, imports=None, link=None, description=None, returns=None, parameters=None, keywords=None):
         super(Function, self).__init__()
-        self.func = func
+        self.api_name = api_name  # api_name
         self.imports = imports if imports else []
         self.link = link
         self.description = description
@@ -180,6 +179,11 @@ class Function(ClassOrFunction):
     def variables(self):
         return self.parameters + self.keywords
     # end def variables
+
+    @property
+    def name(self):
+        return convert_to_underscore(self.api_name)
+    # end def name
 # end class Function
 
 
@@ -456,9 +460,9 @@ def to_type(type_string, variable_name) -> Type:
         var_type.string = "bool"
         var_type.always_is_value = "True"
     # end if
-    if var_type.string in ["int", "bool", "float", "object", "None"]:  # str is replaced by unicode_type
+    if var_type.string in ["int", "bool", "float", "object", "None", "str"]:
         var_type.is_builtin = True
-    elif var_type.string in ["str", "unicode_type"]:
+    elif var_type.string == "unicode_type":
         var_type.string = "unicode_type"
         var_type.is_builtin = False
         var_type.import_path = "luckydonaldUtils.encoding"

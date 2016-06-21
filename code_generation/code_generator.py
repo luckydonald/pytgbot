@@ -11,11 +11,11 @@ import re
 _first_cap_re = re.compile(r'(.)([A-Z][a-z]+)')
 _all_cap_re = re.compile(r'([a-z0-9])([A-Z])')
 
+
 def convert_to_underscore(name):
     """ "someFunctionWhatever" -> "some_function_whatever" """
     s1 = _first_cap_re.sub(r'\1_\2', name)
     return _all_cap_re.sub(r'\1_\2', s1).lower()
-
 
 
 def func(command, description, link, params_string, returns="On success, the sent Message is returned.", return_type="Message"):
