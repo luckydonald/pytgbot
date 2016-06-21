@@ -405,12 +405,18 @@ class Message(UpdateType):
 
         data = {}
         data['message_id'] = array.get('message_id')
+        data['from_peer'] = User.from_array(array.get('from'))
         data['date'] = array.get('date')
         data['chat'] = Chat.from_array(array.get('chat'))
-        data['from_peer'] = User.from_array(array.get('from'))
         data['forward_from'] = User.from_array(array.get('forward_from'))
         data['forward_from_chat'] = Chat.from_array(array.get('forward_from_chat'))
+        data['forward_date'] = int(array.get('forward_date'))
         data['reply_to_message'] = Message.from_array(array.get('reply_to_message'))
+        data['edit_date'] = int(array.get('edit_date'))
+        data['text'] = unicode_type(array.get('reply_to_message'))
+        data['entities'] = (array.get('reply_to_message'))
+        # text
+        # entities
         data['audio'] = Audio.from_array(array.get('audio'))
         data['document'] = Document.from_array(array.get('document'))
         data['sticker'] = Sticker.from_array(array.get('sticker'))

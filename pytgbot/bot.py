@@ -33,6 +33,7 @@ class Bot(object):
             raise ValueError("No api_key given.")
         self.api_key = api_key
         self._last_update = datetime.now()
+    # end def __init__
 
     def get_me(self):
         """
@@ -42,6 +43,7 @@ class Bot(object):
         :rtype: User
         """
         return self.do("getMe")
+    # end def get_me
 
     def get_updates(self, offset=None, limit=100, timeout=0, delta=timedelta(milliseconds=100), error_as_empty=True):
         """
@@ -58,7 +60,7 @@ class Bot(object):
         :keyword offset: (Optional)	Identifier of the first update to be returned.
                  Must be greater by one than the highest among the identifiers of previously received updates.
                  By default, updates starting with the earliest unconfirmed update are returned.
-                 An update is considered confirmed as soon as `get_updates` is called with
+                 An update is considered confirmed as soon as :func:`get_updates` is called with
                  an offset higher than its `update_id`.
         :type offset: int
 
@@ -81,7 +83,7 @@ class Bot(object):
 
         :return: An Array of Update objects is returned,
                  or an empty array if there was an requests.RequestException and error_as_empty is set to True.
-        :rtype: list of Update
+        :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
         now = datetime.now()
         if self._last_update - now < delta:
