@@ -112,11 +112,11 @@ class Update(Receivable):
 
         data = {}
         data['update_id'] = int(array.get('update_id'))
-        data['message'] = Message.from_array(array.get('message'))
-        data['edited_message'] = Message.from_array(array.get('edited_message'))
-        data['inline_query'] = InlineQuery.from_array(array.get('inline_query'))
-        data['chosen_inline_result'] = ChosenInlineResult.from_array(array.get('chosen_inline_result'))
-        data['callback_query'] = CallbackQuery.from_array(array.get('callback_query'))
+        data['message'] = Message.from_array(array.get('message')) if array.get('message') is not None else None
+        data['edited_message'] = Message.from_array(array.get('edited_message')) if array.get('edited_message') is not None else None
+        data['inline_query'] = InlineQuery.from_array(array.get('inline_query')) if array.get('inline_query') is not None else None
+        data['chosen_inline_result'] = ChosenInlineResult.from_array(array.get('chosen_inline_result')) if array.get('chosen_inline_result') is not None else None
+        data['callback_query'] = CallbackQuery.from_array(array.get('callback_query')) if array.get('callback_query') is not None else None
         return Update(**data)
     # end def from_array
 
@@ -448,35 +448,35 @@ class Message(UpdateType):
         data['message_id'] = int(array.get('message_id'))
         data['date'] = int(array.get('date'))
         data['chat'] = Chat.from_array(array.get('chat'))
-        data['from_peer'] = User.from_array(array.get('from'))
-        data['forward_from'] = User.from_array(array.get('forward_from'))
-        data['forward_from_chat'] = Chat.from_array(array.get('forward_from_chat'))
-        data['forward_date'] = int(array.get('forward_date'))
-        data['reply_to_message'] = Message.from_array(array.get('reply_to_message'))
-        data['edit_date'] = int(array.get('edit_date'))
-        data['text'] = str(array.get('text'))
-        data['entities'] = MessageEntity.from_array(array.get('entities'))
-        data['audio'] = Audio.from_array(array.get('audio'))
-        data['document'] = Document.from_array(array.get('document'))
-        data['photo'] = PhotoSize.from_array(array.get('photo'))
-        data['sticker'] = Sticker.from_array(array.get('sticker'))
-        data['video'] = Video.from_array(array.get('video'))
-        data['voice'] = Voice.from_array(array.get('voice'))
-        data['caption'] = str(array.get('caption'))
-        data['contact'] = Contact.from_array(array.get('contact'))
-        data['location'] = Location.from_array(array.get('location'))
-        data['venue'] = Venue.from_array(array.get('venue'))
-        data['new_chat_member'] = User.from_array(array.get('new_chat_member'))
-        data['left_chat_member'] = User.from_array(array.get('left_chat_member'))
-        data['new_chat_title'] = str(array.get('new_chat_title'))
-        data['new_chat_photo'] = PhotoSize.from_array(array.get('new_chat_photo'))
-        data['delete_chat_photo'] = bool(array.get('delete_chat_photo'))
-        data['group_chat_created'] = bool(array.get('group_chat_created'))
-        data['supergroup_chat_created'] = bool(array.get('supergroup_chat_created'))
-        data['channel_chat_created'] = bool(array.get('channel_chat_created'))
-        data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id'))
-        data['migrate_from_chat_id'] = int(array.get('migrate_from_chat_id'))
-        data['pinned_message'] = Message.from_array(array.get('pinned_message'))
+        data['from_peer'] = User.from_array(array.get('from')) if array.get('from') is not None else None
+        data['forward_from'] = User.from_array(array.get('forward_from')) if array.get('forward_from') is not None else None
+        data['forward_from_chat'] = Chat.from_array(array.get('forward_from_chat')) if array.get('forward_from_chat') is not None else None
+        data['forward_date'] = int(array.get('forward_date')) if array.get('forward_date') is not None else None
+        data['reply_to_message'] = Message.from_array(array.get('reply_to_message')) if array.get('reply_to_message') is not None else None
+        data['edit_date'] = int(array.get('edit_date')) if array.get('edit_date') is not None else None
+        data['text'] = str(array.get('text')) if array.get('text') is not None else None
+        data['entities'] = MessageEntity.from_array(array.get('entities')) if array.get('entities') is not None else None
+        data['audio'] = Audio.from_array(array.get('audio')) if array.get('audio') is not None else None
+        data['document'] = Document.from_array(array.get('document')) if array.get('document') is not None else None
+        data['photo'] = PhotoSize.from_array(array.get('photo')) if array.get('photo') is not None else None
+        data['sticker'] = Sticker.from_array(array.get('sticker')) if array.get('sticker') is not None else None
+        data['video'] = Video.from_array(array.get('video')) if array.get('video') is not None else None
+        data['voice'] = Voice.from_array(array.get('voice')) if array.get('voice') is not None else None
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['contact'] = Contact.from_array(array.get('contact')) if array.get('contact') is not None else None
+        data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
+        data['venue'] = Venue.from_array(array.get('venue')) if array.get('venue') is not None else None
+        data['new_chat_member'] = User.from_array(array.get('new_chat_member')) if array.get('new_chat_member') is not None else None
+        data['left_chat_member'] = User.from_array(array.get('left_chat_member')) if array.get('left_chat_member') is not None else None
+        data['new_chat_title'] = str(array.get('new_chat_title')) if array.get('new_chat_title') is not None else None
+        data['new_chat_photo'] = PhotoSize.from_array(array.get('new_chat_photo')) if array.get('new_chat_photo') is not None else None
+        data['delete_chat_photo'] = bool(array.get('delete_chat_photo')) if array.get('delete_chat_photo') is not None else None
+        data['group_chat_created'] = bool(array.get('group_chat_created')) if array.get('group_chat_created') is not None else None
+        data['supergroup_chat_created'] = bool(array.get('supergroup_chat_created')) if array.get('supergroup_chat_created') is not None else None
+        data['channel_chat_created'] = bool(array.get('channel_chat_created')) if array.get('channel_chat_created') is not None else None
+        data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id')) if array.get('migrate_to_chat_id') is not None else None
+        data['migrate_from_chat_id'] = int(array.get('migrate_from_chat_id')) if array.get('migrate_from_chat_id') is not None else None
+        data['pinned_message'] = Message.from_array(array.get('pinned_message')) if array.get('pinned_message') is not None else None
         return Message(**data)
     # end def from_array
 
@@ -589,10 +589,10 @@ class CallbackQuery (UpdateType):
         data['id'] = str(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
         data['data'] = str(array.get('data'))
-        data['message'] = Message.from_array(array.get('message'))
-        data['inline_message_id'] = str(array.get('inline_message_id'))
+        data['message'] = Message.from_array(array.get('message')) if array.get('message') is not None else None
+        data['inline_message_id'] = str(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
         return CallbackQuery(**data)
-        # end def from_array
+    # end def from_array
 
     def __str__(self):
         """

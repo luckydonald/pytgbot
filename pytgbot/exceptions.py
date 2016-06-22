@@ -1,0 +1,39 @@
+# -*- coding: utf-8 -*-
+from luckydonaldUtils.logger import logging
+
+__author__ = 'luckydonald'
+logger = logging.getLogger(__name__)
+
+
+class TgApiException(BaseException):
+    """
+    Base Class for all exceptions.
+    """
+    pass
+# end class TgApiException
+
+
+class TgApiServerException(TgApiException):
+    """
+    Raised if the api returns "ok" == false
+    """
+    def __init__(self, error_code=None, response=None, description=None):
+        super(TgApiServerException, self).__init__(description)
+        self.error_code = error_code
+        self.response = response
+        self.description = description
+    # end def __init__
+
+    def __str__(self, *args, **kwargs):
+        return "TgApiException(error_code={self.error_code}, response={self.response}, " \
+               "description={self.description})".format(self=self)
+    # end def __str__
+# end class TgApiException
+
+
+class TgApiParseException(TgApiException):
+    """
+    Raised if something did go wrong with parsing.
+    E.g. a missing key, an unexpected value, etc.
+    """
+    pass

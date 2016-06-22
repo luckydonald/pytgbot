@@ -111,9 +111,9 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         {% for variable in clazz.variables -%}
         {% if variable.types|length == 1 -%}
         {% if variable.types[0].is_builtin -%}
-        data['{{ variable.name }}'] = {{ variable.types[0].string }}(array.get('{{ variable.api_name }}'))
+        data['{{ variable.name }}'] = {{ variable.types[0].string }}(array.get('{{ variable.api_name }}')){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
         {% else -%}
-        data['{{ variable.name }}'] = {{ variable.types[0].string }}.from_array(array.get('{{ variable.api_name }}'))
+        data['{{ variable.name }}'] = {{ variable.types[0].string }}.from_array(array.get('{{ variable.api_name }}')){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
         {% endif -%}
         {% else -%}
         // ERROR: Multible types ({{ for_type(variable) }}) for

@@ -1,21 +1,15 @@
 # -*- coding: utf-8 -*-
 import json
-
 import requests
-from datetime import timedelta, datetime
 from time import sleep
+from datetime import timedelta
 from DictObject import DictObject
 
 from luckydonaldUtils.encoding import to_native as n
 from luckydonaldUtils.logger import logging
 
-from .api_types import as_array
-from .api_types.sendable import InputFile, Sendable
+from .exceptions import TgApiServerException, TgApiParseException
 from .api_types.sendable.inline import InlineQueryResult
-from .api_types.sendable.reply_markup import ForceReply
-from .api_types.sendable.reply_markup import InlineKeyboardMarkup
-from .api_types.sendable.reply_markup import ReplyKeyboardHide
-from .api_types.sendable.reply_markup import ReplyKeyboardMarkup
 
 
 __author__ = 'luckydonald'
@@ -32,7 +26,7 @@ class Bot(object):
         A Bot instance. From here you can call all the functions.
         The api key can be optained from @BotFather, see https://core.telegram.org/bots#6-botfather
 
-        :param api_key: The APi key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+        :param api_key: The API key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
         :type  api_key: str
 
         :keyword return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects.
@@ -97,7 +91,7 @@ class Bot(object):
                  or an empty array if there was an requests.RequestException and error_as_empty is set to True.
         :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
-        from datetime import timedelta, datetime
+        from datetime import datetime
 
         assert (offset is None or isinstance(offset, int))
         assert (limit is None or isinstance(limit, int))
@@ -110,7 +104,19 @@ class Bot(object):
             sleep(wait)
         self._last_update = datetime.now()
         try:
-            return self.do("getUpdates", offset=offset, limit=limit, timeout=timeout)
+            result = self.do("getUpdates", offset=offset, limit=limit, timeout=timeout)
+            if self.return_python_objects:
+                logger.debug("Trying to parse {data}".format(data=repr(result)))
+                from pytgbot.api_types.receivable.updates import Update
+                try:
+                    return self._parse_api_type(result, Update, 1)
+                except TgApiParseException:
+                    logger.debug("Failed parsing as api_type Update", exc_info=True)
+                # end try
+                # no valid parsing so far
+                raise TgApiParseException("Could not parse result.")  # See debug log for details!
+            # end if return_python_objects
+            return result
         except requests.RequestException as e:
             if error_as_empty:
                 logger.warn("Network related error happened in get_updates(), but will be ignored: " + str(e),
@@ -154,8 +160,7 @@ class Bot(object):
 
         :keyword certificate: Upload your public key certificate so that the root certificate in use can be checked.
                               See our self-signed guide for details.
-        :type    certificate: pytg.api_types.files.InputFile
-
+        :type    certificate: pytgbot.api_types.sendable.InputFile
 
         Returns:
 
@@ -167,7 +172,18 @@ class Bot(object):
         assert(url is None or isinstance(url, str))
         assert(certificate is None or isinstance(certificate, InputFile))
 
-        return self.do("setWebhook", url=url, certificate=certificate)
+        result = self.do("setWebhook", url=url, certificate=certificate)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def set_webhook
 
     def send_message(self, chat_id, text, parse_mode=None, disable_web_page_preview=False, disable_notification=False,
@@ -231,9 +247,21 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
         )))
-        return self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode,
+        result = self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode,
             disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification,
             reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_message
     send_msg = send_message  # alias to send_message(...)
 
@@ -277,10 +305,22 @@ class Bot(object):
         assert(isinstance(message_id, int))
         assert(disable_notification is None or isinstance(disable_notification, bool))
 
-        return self.do(
+        result = self.do(
             "forwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id,
             disable_notification=disable_notification
         )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def forward_message
 
     def send_photo(self, chat_id, photo, caption=None, disable_notification=False, reply_to_message_id=None,
@@ -336,20 +376,33 @@ class Bot(object):
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
+
         assert(photo is not None)
         assert(isinstance(photo, (InputFile, str)))
 
         assert(caption is None or isinstance(caption, str))
 
         assert(disable_notification is None or isinstance(disable_notification, bool))
+
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
 
         assert(reply_markup is None or isinstance(reply_markup, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply)))
 
-        return self._do_fileupload(
+        result = self._do_fileupload(
             "photo", photo, chat_id=chat_id, caption=caption, disable_notification=disable_notification,
             reply_to_message_id=reply_to_message_id, reply_markup=reply_markup
         )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            parsed_result = self._parse_api_type(result, Message, 0)
+            if parsed_result:
+                return parsed_result
+            # end if parsed_result
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_photo
 
     def send_audio(self, chat_id, audio, duration=None, performer=None, title=None, disable_notification=False,
@@ -404,7 +457,6 @@ class Bot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from luckydonaldUtils.encoding import unicode_type
         from pytgbot.api_types.sendable import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -429,10 +481,22 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
         )))
-        return self._do_fileupload(
+        result = self._do_fileupload(
             "audio", audio, chat_id=chat_id, reply_to_message_id=reply_to_message_id, duration=duration,
             performer=performer, title=title, disable_notification=disable_notification, reply_markup=reply_markup
         )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_audio
 
     def send_document(self, chat_id, document, caption=None, disable_notification=False, reply_to_message_id=None,
@@ -498,12 +562,23 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
         )))
-        return self._do_fileupload(
+        result = self._do_fileupload(
             "document", document, chat_id=chat_id, document=document, caption=caption,
             disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
-
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_document
 
     def send_sticker(self, chat_id, sticker, disable_notification=False, reply_to_message_id=None, reply_markup=None):
@@ -563,10 +638,22 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
         )))
-        return self._do_fileupload(
+        result = self._do_fileupload(
             "sticker", sticker, chat_id=chat_id, sticker=sticker, disable_notification=disable_notification,
             reply_to_message_id=reply_to_message_id, reply_markup=reply_markup
         )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_sticker
 
     def send_video(self, chat_id, video, duration=None, width=None, height=None, caption=None,
@@ -649,11 +736,23 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
          )))
-        return self._do_fileupload(
+        result = self._do_fileupload(
             "video", video, chat_id=chat_id, video=video, duration=duration, width=width, height=height,
             caption=caption, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_video
 
     def send_voice(self, chat_id, voice, duration=None, disable_notification=False, reply_to_message_id=None,
@@ -724,11 +823,23 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
          )))
-        return self._do_fileupload(
+        result = self._do_fileupload(
             "voice", voice, chat_id=chat_id, voice=voice, duration=duration,
             disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_voice
 
     def send_location(self, chat_id, latitude, longitude, disable_notification=False, reply_to_message_id=None,
@@ -792,9 +903,21 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
          )))
-        return self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude,
+        result = self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude,
                        disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
                        reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_location
 
     def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, disable_notification=False,
@@ -874,10 +997,21 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
          )))
-        return self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title,
+        result = self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title,
                        address=address, foursquare_id=foursquare_id, disable_notification=disable_notification,
                        reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
-
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_venue
 
     def send_contact(self, chat_id, phone_number, first_name, last_name=None, disable_notification=None,
@@ -945,9 +1079,21 @@ class Bot(object):
         assert(reply_markup is None or isinstance(reply_markup, (
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
          )))
-        return self.do("sendContact", chat_id=chat_id, phone_number=phone_number,
+        result = self.do("sendContact", chat_id=chat_id, phone_number=phone_number,
                        first_name=first_name, last_name=last_name, disable_notification=disable_notification,
                        reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_contact
 
     def send_chat_action(self, chat_id, action):
@@ -989,7 +1135,18 @@ class Bot(object):
 
         assert(action is not None)
         assert(isinstance(action, str))
-        return self.do("sendChatAction", chat_id=chat_id, action=action)
+        result = self.do("sendChatAction", chat_id=chat_id, action=action)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def send_chat_action
 
     def get_user_profile_photos(self, user_id, offset=None, limit=None):
@@ -1027,7 +1184,19 @@ class Bot(object):
         assert(offset is None or isinstance(offset, int))
 
         assert(limit is None or isinstance(limit, int))
-        return self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
+        result = self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.media import UserProfilePhotos
+            try:
+                return self._parse_api_type(result, UserProfilePhotos, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type UserProfilePhotos", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def get_user_profile_photos
 
     def get_file(self, file_id):
@@ -1060,7 +1229,19 @@ class Bot(object):
         """
         assert(file_id is not None)
         assert(isinstance(file_id, str))
-        return self.do("getFile", file_id=file_id)
+        result = self.do("getFile", file_id=file_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.media import File
+            try:
+                return self._parse_api_type(result, File, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type File", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def get_file
 
     def kick_chat_member(self, chat_id, user_id):
@@ -1120,8 +1301,18 @@ class Bot(object):
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
-        return self.do("leaveChat", chat_id=chat_id)
-
+        result = self.do("leaveChat", chat_id=chat_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def leave_chat
 
     def unban_chat_member(self, chat_id, user_id):
@@ -1154,7 +1345,18 @@ class Bot(object):
 
         assert(user_id is not None)
         assert(isinstance(user_id, int))
-        return self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
+        result = self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def unban_chat_member
 
     def get_chat(self, chat_id):
@@ -1181,7 +1383,19 @@ class Bot(object):
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
-        return self.do("getChat", chat_id=chat_id)
+        result = self.do("getChat", chat_id=chat_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.peer import Chat
+            try:
+                return self._parse_api_type(result, Chat, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Chat", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def get_chat
 
     def get_chat_administrators(self, chat_id):
@@ -1211,7 +1425,19 @@ class Bot(object):
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
-        return self.do("getChatAdministrators", chat_id=chat_id)
+        result = self.do("getChatAdministrators", chat_id=chat_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.peer import ChatMember
+            try:
+                return self._parse_api_type(result, ChatMember, 1)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type ChatMember", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def get_chat_administrators
 
     def get_chat_members_count(self, chat_id):
@@ -1235,7 +1461,18 @@ class Bot(object):
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
-        return self.do("getChatMembersCount", chat_id=chat_id)
+        result = self.do("getChatMembersCount", chat_id=chat_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return self._parse_builtin_type(result, int, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive int", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def get_chat_members_count
 
     def get_chat_member(self, chat_id, user_id):
@@ -1266,7 +1503,19 @@ class Bot(object):
 
         assert(user_id is not None)
         assert(isinstance(user_id, int))
-        return self.do("getChatMember", chat_id=chat_id, user_id=user_id)
+        result = self.do("getChatMember", chat_id=chat_id, user_id=user_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.peer import ChatMember
+            try:
+                return self._parse_api_type(result, ChatMember, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type ChatMember", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def get_chat_member
 
     def answer_callback_query(self, callback_query_id, text=None, show_alert=None):
@@ -1305,7 +1554,18 @@ class Bot(object):
         assert(text is None or isinstance(text, str))
 
         assert(show_alert is None or isinstance(show_alert, bool))
-        return self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert)
+        result = self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def answer_callback_query
 
     def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None,
@@ -1355,22 +1615,41 @@ class Bot(object):
         from luckydonaldUtils.encoding import unicode_type
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
-        assert (text is not None)
-        assert (isinstance(text, str))
+        assert(text is not None)
+        assert(isinstance(text, str))
 
         assert(chat_id is None or isinstance(chat_id, (int, str)))
 
-        assert (message_id is None or isinstance(message_id, int))
+        assert(message_id is None or isinstance(message_id, int))
 
-        assert (inline_message_id is None or isinstance(inline_message_id, str))
+        assert(inline_message_id is None or isinstance(inline_message_id, str))
 
-        assert (parse_mode is None or isinstance(parse_mode, str))
-        assert (disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        assert(parse_mode is None or isinstance(parse_mode, str))
+
+        assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
 
-        return self.do("editMessageText", text=text, chat_id=chat_id, message_id=message_id,
+        result = self.do("editMessageText", text=text, chat_id=chat_id, message_id=message_id,
                        inline_message_id=inline_message_id, parse_mode=parse_mode,
                        disable_web_page_preview=disable_web_page_preview, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def edit_message_text
 
     def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None,
@@ -1420,8 +1699,25 @@ class Bot(object):
 
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
 
-        return self.do("editMessageCaption", chat_id=chat_id, message_id=message_id,
+        result = self.do("editMessageCaption", chat_id=chat_id, message_id=message_id,
                        inline_message_id=inline_message_id, caption=caption, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def edit_message_caption
 
     def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
@@ -1454,7 +1750,6 @@ class Bot(object):
                  otherwise True is returned.
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from luckydonaldUtils.encoding import unicode_type
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert(chat_id is None or isinstance(chat_id, (int, str)))
@@ -1464,10 +1759,26 @@ class Bot(object):
         assert (inline_message_id is None or isinstance(inline_message_id, str))
 
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
-        return self.do(
+        result = self.do(
             "editMessageReplyMarkup", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id,
             reply_markup=reply_markup
         )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
     # end def edit_message_reply_markup
 
     def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None,
@@ -1559,11 +1870,22 @@ class Bot(object):
 
         assert(switch_pm_parameter is None or isinstance(switch_pm_parameter, str))
 
-        return self.do(
+        result = self.do(
             "answerInlineQuery", inline_query_id=inline_query_id, results=json.dumps(result_objects),
             cache_time=cache_time, is_personal=is_personal, next_offset=next_offset, switch_pm_text=switch_pm_text,
             switch_pm_parameter=switch_pm_parameter
         )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def answer_inline_query
 
     def send_msg(self, *args, **kwargs):
@@ -1615,7 +1937,18 @@ class Bot(object):
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
         if self.return_python_objects:
-            pass  # not implemented yet.
+            if res.ok != True:
+                raise TgApiServerException(
+                    error_code=res.error_code if "error_code" in res else None,
+                    response=res.response if "response" in res else None,
+                    description=res.description if "description" in res else None
+                )
+            # end if not ok
+            if "result" not in res:
+                raise TgApiParseException('Key "result" is missing.')
+            # end if no result
+            return res.result
+        # end if return_python_objects
         return res
     # end def do
 
@@ -1635,4 +1968,66 @@ class Bot(object):
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
         return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
     # end def _do_fileupload
+
+    @staticmethod
+    def _parse_builtin_type(result, clazz, list_level):
+        """
+        Tries to parse the result as type given in clazz.
+
+        :param result: The result to parse
+
+        :param clazz: What it should be parsed as
+        :type  clazz: class
+
+        :param list_level: "list of" * list_level
+        :type  list_level: int
+
+        :return: the result as clazz type
+        """
+        assert (list_level == 0)  # todo: implement
+        try:
+            if isinstance(result, clazz):
+                logger.debug("Already is correct type.")
+                return clazz(result)
+            else:
+                import ast
+                logger.debug("Trying parsing with ast.literal_eval()...")
+                return ast.literal_eval(str(result))  # raises ValueError if it could not parse
+            # end if
+        except ValueError:
+            logger.debug("Failed parsing as primitive {type}".format(type=type(clazz)), exc_info=True)
+        # end try
+    # end def _parse_builtin_type
+
+    @staticmethod
+    def _parse_api_type(result, clazz, list_level):
+        """
+        Tries to parse the result as type given in clazz.
+
+        :param result: The result to parse
+
+        :param clazz: What it should be parsed as
+        :type  clazz: class
+
+        :param list_level: "list of" * list_level
+        :type  list_level: int
+
+        :return: the result as clazz type
+        """
+        logger.debug("Trying parsing as api_type {type}, list_level={list_level}".format(
+            type=clazz.__name__, list_level=list_level
+        ))
+        if list_level > 0:
+            results = []
+            for element in result:
+                result.append(Bot._parse_api_type(element, clazz, list_level-1))
+            # end for
+            return results
+        # end if
+        try:
+            return clazz.from_array(result)
+        except TgApiParseException:
+            logger.debug("Failed parsing as api_type {type}".format(type=type(clazz)), exc_info=True)
+        # end try
+    # end def _parse_api_type
 # end class Bot

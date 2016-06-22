@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+from luckydonaldUtils.logger import logging
+from .exceptions import TgApiServerException, TgApiParseException
+
+__author__ = 'luckydonald'
+__all__ = ["Bot"]
+
+logger = logging.getLogger(__name__)
+
 
 class Bot(object):
     _base_url = "https://api.telegram.org/bot{api_key}/{command}"
@@ -8,7 +16,7 @@ class Bot(object):
         A Bot instance. From here you can call all the functions.
         The api key can be optained from @BotFather, see https://core.telegram.org/bots#6-botfather
 
-        :param api_key: The APi key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+        :param api_key: The API key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
         :type  api_key: str
 
         :keyword return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects.
@@ -24,9 +32,9 @@ class Bot(object):
     # end def __init__
 
     {% for function in functions -%}
-    {% include "func.template" %}
-    {%- endfor %}
-
+    {% include "func.template" -%}
+    {#- strip end #}
+    {% endfor %}
     def send_msg(self, *args, **kwargs):
         """ alias to :func:`send_message` """
         return self.send_message(*args, **kwargs)
@@ -76,7 +84,18 @@ class Bot(object):
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
         if self.return_python_objects:
-            pass  # not implemented yet.
+            if res.ok != True:
+                raise TgApiServerException(
+                    error_code=res.error_code if "error_code" in res else None,
+                    response=res.response if "response" in res else None,
+                    description=res.description if "description" in res else None
+                )
+            # end if not ok
+            if "result" not in res:
+                raise TgApiParseException('Key "result" is missing.')
+            # end if no result
+            return res.result
+        # end if return_python_objects
         return res
     # end def do
 
@@ -96,4 +115,58 @@ class Bot(object):
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
         return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
     # end def _do_fileupload
+
+    @staticmethod
+    def _parse_builtin_type(result, clazz, list_level):
+        """
+        Tries to parse the result as type given in clazz.
+
+        :param result: The result to parse
+
+        :param clazz: What it should be parsed as
+        :type  clazz: class
+
+        :param list_level: "list of" * list_level
+        :type  list_level: int
+
+        :return: the result as clazz type
+        """
+        assert (list_level == 0)  # todo: implement
+        try:
+            if isinstance(result, clazz):
+                logger.debug("Already is correct type.")
+                return clazz(result)
+            else:
+                import ast
+                logger.debug("Trying parsing with ast.literal_eval()...")
+                return ast.literal_eval(str(result))  # raises ValueError if it could not parse
+            # end if
+        except ValueError:
+            logger.debug("Failed parsing as primitive {type}".format(type=type(clazz)), exc_info=True)
+        # end try
+    # end def _parse_builtin_type
+
+    @staticmethod
+    def _parse_api_type(result, clazz, list_level):
+        """
+        Tries to parse the result as type given in clazz.
+
+        :param result: The result to parse
+
+        :param clazz: What it should be parsed as
+        :type  clazz: class
+
+        :param list_level: "list of" * list_level
+        :type  list_level: int
+
+        :return: the result as clazz type
+        """
+        assert (list_level == 0)  # todo: implement
+        try:
+            return clazz.from_array(result)
+        except TgApiParseException:
+            logger.debug("Failed parsing as api_type {type}".format(type=type(clazz)), exc_info=True)
+        # end try
+    # end def _parse_api_type
 # end class Bot
+

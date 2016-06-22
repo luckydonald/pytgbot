@@ -115,9 +115,9 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
         data = {}
         data['keyboard'] = KeyboardButton.from_array(array.get('keyboard'))
-        data['resize_keyboard'] = bool(array.get('resize_keyboard'))
-        data['one_time_keyboard'] = bool(array.get('one_time_keyboard'))
-        data['selective'] = bool(array.get('selective'))
+        data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
+        data['one_time_keyboard'] = bool(array.get('one_time_keyboard')) if array.get('one_time_keyboard') is not None else None
+        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
         return ReplyKeyboardMarkup(**data)
     # end def from_array
 
@@ -218,8 +218,8 @@ class KeyboardButton(Button):
 
         data = {}
         data['text'] = str(array.get('text'))
-        data['request_contact'] = bool(array.get('request_contact'))
-        data['request_location'] = bool(array.get('request_location'))
+        data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
+        data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
         return KeyboardButton(**data)
     # end def from_array
 
@@ -311,7 +311,7 @@ class ReplyKeyboardHide(ReplyMarkup):
         assert(isinstance(array, dict))
 
         data = {}
-        data['selective'] = bool(array.get('selective'))
+        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
         return ReplyKeyboardHide(**data)
     # end def from_array
 
@@ -509,9 +509,9 @@ class InlineKeyboardButton(Button):
 
         data = {}
         data['text'] = str(array.get('text'))
-        data['url'] = str(array.get('url'))
-        data['callback_data'] = str(array.get('callback_data'))
-        data['switch_inline_query'] = str(array.get('switch_inline_query'))
+        data['url'] = str(array.get('url')) if array.get('url') is not None else None
+        data['callback_data'] = str(array.get('callback_data')) if array.get('callback_data') is not None else None
+        data['switch_inline_query'] = str(array.get('switch_inline_query')) if array.get('switch_inline_query') is not None else None
         return InlineKeyboardButton(**data)
     # end def from_array
 
@@ -618,7 +618,7 @@ class ForceReply(ReplyMarkup):
         assert(isinstance(array, dict))
 
         data = {}
-        data['selective'] = bool(array.get('selective'))
+        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
         return ForceReply(**data)
     # end def from_array
 

@@ -91,10 +91,10 @@ class User(Peer):
         data = {}
         data['id'] = int(array.get('id'))
         data['first_name'] = str(array.get('first_name'))
-        data['last_name'] = str(array.get('last_name'))
-        data['username'] = str(array.get('username'))
-        return User(**array)
-        # end def from_array
+        data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
+        data['username'] = str(array.get('username')) if array.get('username') is not None else None
+        return User(**data)
+    # end def from_array
 
     def __str__(self):
         """
@@ -208,10 +208,10 @@ class Chat(Peer):
         data = {}
         data['id'] = int(array.get('id'))
         data['type'] = str(array.get('type'))
-        data['title'] = str(array.get('title'))
-        data['username'] = str(array.get('username'))
-        data['first_name'] = str(array.get('first_name'))
-        data['last_name'] = str(array.get('last_name'))
+        data['title'] = str(array.get('title')) if array.get('title') is not None else None
+        data['username'] = str(array.get('username')) if array.get('username') is not None else None
+        data['first_name'] = str(array.get('first_name')) if array.get('first_name') is not None else None
+        data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
         return Chat(**data)
     # end def from_array
 

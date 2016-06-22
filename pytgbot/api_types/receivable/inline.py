@@ -105,7 +105,7 @@ class InlineQuery(Result):
         data['from_peer'] = User.from_array(array.get('from'))
         data['query'] = str(array.get('query'))
         data['offset'] = str(array.get('offset'))
-        data['location'] = Location.from_array(array.get('location'))
+        data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
         return InlineQuery(**data)
     # end def from_array
 
@@ -223,8 +223,8 @@ class ChosenInlineResult(UpdateType):
         data['result_id'] = str(array.get('result_id'))
         data['from_peer'] = User.from_array(array.get('from'))
         data['query'] = str(array.get('query'))
-        data['location'] = Location.from_array(array.get('location'))
-        data['inline_message_id'] = str(array.get('inline_message_id'))
+        data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
+        data['inline_message_id'] = str(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
         return ChosenInlineResult(**data)
     # end def from_array
 

@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+    logging.add_colored_handler(level=logging.DEBUG)
     # get you bot instance.
     bot = Bot(API_KEY)
     print(bot.get_me())
@@ -20,7 +21,9 @@ def main():
     # do the update loop.
     last_update_id = 0
     while True:  # loop forever.
-        for update in bot.get_updates(limit=100, offset=last_update_id+1).result:  # for every new update
+        updates = bot.get_updates(limit=100, offset=last_update_id + 1)
+        for update in updates:  # for every new update
+            updates = Update.from_array(update)
             last_update_id = update["update_id"]
             print(update)
             upd = Update.from_array(update)

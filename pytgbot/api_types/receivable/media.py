@@ -100,8 +100,8 @@ class MessageEntity(Result):
         data['type'] = str(array.get('type'))
         data['offset'] = int(array.get('offset'))
         data['length'] = int(array.get('length'))
-        data['url'] = str(array.get('url'))
-        data['user'] = User.from_array(array.get('user'))
+        data['url'] = str(array.get('url')) if array.get('url') is not None else None
+        data['user'] = User.from_array(array.get('user')) if array.get('user') is not None else None
         return MessageEntity(**data)
     # end def from_array
 
@@ -216,7 +216,7 @@ class PhotoSize(Result):
         data['file_id'] = str(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
-        data['file_size'] = int(array.get('file_size'))
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         return PhotoSize(**data)
     # end def from_array
 
@@ -331,10 +331,10 @@ class Audio(Media):
         data = {}
         data['file_id'] = str(array.get('file_id'))
         data['duration'] = int(array.get('duration'))
-        data['performer'] = str(array.get('performer'))
-        data['title'] = str(array.get('title'))
-        data['mime_type'] = str(array.get('mime_type'))
-        data['file_size'] = int(array.get('file_size'))
+        data['performer'] = str(array.get('performer')) if array.get('performer') is not None else None
+        data['title'] = str(array.get('title')) if array.get('title') is not None else None
+        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         return Audio(**data)
     # end def from_array
 
@@ -440,10 +440,10 @@ class Document(Media):
 
         data = {}
         data['file_id'] = str(array.get('file_id'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb'))
-        data['file_name'] = str(array.get('file_name'))
-        data['mime_type'] = str(array.get('mime_type'))
-        data['file_size'] = int(array.get('file_size'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['file_name'] = str(array.get('file_name')) if array.get('file_name') is not None else None
+        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         return Document(**data)
     # end def from_array
 
@@ -560,9 +560,9 @@ class Sticker(Media):
         data['file_id'] = str(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb'))
-        data['emoji'] = str(array.get('emoji'))
-        data['file_size'] = int(array.get('file_size'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['emoji'] = str(array.get('emoji')) if array.get('emoji') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         return Sticker(**data)
     # end def from_array
 
@@ -687,9 +687,9 @@ class Video(Media):
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['duration'] = int(array.get('duration'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb'))
-        data['mime_type'] = str(array.get('mime_type'))
-        data['file_size'] = int(array.get('file_size'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         return Video(**data)
     # end def from_array
 
@@ -788,8 +788,8 @@ class Voice(Media):
         data = {}
         data['file_id'] = str(array.get('file_id'))
         data['duration'] = int(array.get('duration'))
-        data['mime_type'] = str(array.get('mime_type'))
-        data['file_size'] = int(array.get('file_size'))
+        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         return Voice(**data)
     # end def from_array
 
@@ -888,8 +888,8 @@ class Contact(Media):
         data = {}
         data['phone_number'] = str(array.get('phone_number'))
         data['first_name'] = str(array.get('first_name'))
-        data['last_name'] = str(array.get('last_name'))
-        data['user_id'] = int(array.get('user_id'))
+        data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
+        data['user_id'] = int(array.get('user_id')) if array.get('user_id') is not None else None
         return Contact(**data)
     # end def from_array
 
@@ -1068,7 +1068,7 @@ class Venue(Media):
         data['location'] = Location.from_array(array.get('location'))
         data['title'] = str(array.get('title'))
         data['address'] = str(array.get('address'))
-        data['foursquare_id'] = str(array.get('foursquare_id'))
+        data['foursquare_id'] = str(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         return Venue(**data)
     # end def from_array
 
@@ -1249,8 +1249,8 @@ class File(Receivable):
 
         data = {}
         data['file_id'] = str(array.get('file_id'))
-        data['file_size'] = int(array.get('file_size'))
-        data['file_path'] = str(array.get('file_path'))
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        data['file_path'] = str(array.get('file_path')) if array.get('file_path') is not None else None
         return File(**data)
     # end def from_array
 

@@ -50,5 +50,27 @@
         {% endif %}
         {%- endfor -%}
         {#  #}
-        return self.do("{{ function.api_name }}", {{ for_args_set() }})
+        result = self.do("{{ function.api_name }}", {{ for_args_set(function.variables) }})
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+        {%- for import in function.returns.all_imports if import.full != "pytgbot.api_types.as_array"%}
+            from {{ import.path }} import {{ import.name }}
+        {%- endfor -%}
+        {%- for type in function.returns.types if type.is_builtin == False %}
+            try:
+                return self._parse_api_type(result, {{ type.string }}, {{ type.is_list }})
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type {{ type.string }}", exc_info=True)
+            # end try
+        {% endfor -%}
+        {%- for type in function.returns.types if type.is_builtin == True %}
+            try:
+                return self._parse_builtin_type(result, {{ type.string }}, {{ type.is_list }})
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive {{ type.string }}", exc_info=True)
+            # end try
+        {% endfor %}    # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def {{ function.name }}

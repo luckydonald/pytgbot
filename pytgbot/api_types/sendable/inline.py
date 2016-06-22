@@ -166,13 +166,13 @@ class InlineQueryResultArticle (InlineQueryResult):
         data['id'] = str(array.get('id'))
         data['title'] = str(array.get('title'))
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['url'] = str(array.get('url'))
-        data['hide_url'] = bool(array.get('hide_url'))
-        data['description'] = str(array.get('description'))
-        data['thumb_url'] = str(array.get('thumb_url'))
-        data['thumb_width'] = int(array.get('thumb_width'))
-        data['thumb_height'] = int(array.get('thumb_height'))
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['url'] = str(array.get('url')) if array.get('url') is not None else None
+        data['hide_url'] = bool(array.get('hide_url')) if array.get('hide_url') is not None else None
+        data['description'] = str(array.get('description')) if array.get('description') is not None else None
+        data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
+        data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
+        data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
         return InlineQueryResultArticle(**data)
     # end def from_array
 
@@ -324,13 +324,13 @@ class InlineQueryResultPhoto (InlineQueryResult):
         data['id'] = str(array.get('id'))
         data['photo_url'] = str(array.get('photo_url'))
         data['thumb_url'] = str(array.get('thumb_url'))
-        data['photo_width'] = int(array.get('photo_width'))
-        data['photo_height'] = int(array.get('photo_height'))
-        data['title'] = str(array.get('title'))
-        data['description'] = str(array.get('description'))
-        data['caption'] = str(array.get('caption'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['photo_width'] = int(array.get('photo_width')) if array.get('photo_width') is not None else None
+        data['photo_height'] = int(array.get('photo_height')) if array.get('photo_height') is not None else None
+        data['title'] = str(array.get('title')) if array.get('title') is not None else None
+        data['description'] = str(array.get('description')) if array.get('description') is not None else None
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultPhoto(**data)
     # end def from_array
 
@@ -475,12 +475,12 @@ class InlineQueryResultGif (InlineQueryResult):
         data['id'] = str(array.get('id'))
         data['gif_url'] = str(array.get('gif_url'))
         data['thumb_url'] = str(array.get('thumb_url'))
-        data['gif_width'] = int(array.get('gif_width'))
-        data['gif_height'] = int(array.get('gif_height'))
-        data['title'] = str(array.get('title'))
-        data['caption'] = str(array.get('caption'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['gif_width'] = int(array.get('gif_width')) if array.get('gif_width') is not None else None
+        data['gif_height'] = int(array.get('gif_height')) if array.get('gif_height') is not None else None
+        data['title'] = str(array.get('title')) if array.get('title') is not None else None
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultGif(**data)
     # end def from_array
 
@@ -621,16 +621,15 @@ class InlineQueryResultMpeg4Gif (InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
-        data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
         data['mpeg4_url'] = str(array.get('mpeg4_url'))
         data['thumb_url'] = str(array.get('thumb_url'))
-        data['mpeg4_width'] = int(array.get('mpeg4_width'))
-        data['mpeg4_height'] = int(array.get('mpeg4_height'))
-        data['title'] = str(array.get('title'))
-        data['caption'] = str(array.get('caption'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['mpeg4_width'] = int(array.get('mpeg4_width')) if array.get('mpeg4_width') is not None else None
+        data['mpeg4_height'] = int(array.get('mpeg4_height')) if array.get('mpeg4_height') is not None else None
+        data['title'] = str(array.get('title')) if array.get('title') is not None else None
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultMpeg4Gif(**data)
     # end def from_array
 
@@ -800,13 +799,13 @@ class InlineQueryResultVideo (InlineQueryResult):
         data['mime_type'] = str(array.get('mime_type'))
         data['thumb_url'] = str(array.get('thumb_url'))
         data['title'] = str(array.get('title'))
-        data['caption'] = str(array.get('caption'))
-        data['video_width'] = int(array.get('video_width'))
-        data['video_height'] = int(array.get('video_height'))
-        data['video_duration'] = int(array.get('video_duration'))
-        data['description'] = str(array.get('description'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['video_width'] = int(array.get('video_width')) if array.get('video_width') is not None else None
+        data['video_height'] = int(array.get('video_height')) if array.get('video_height') is not None else None
+        data['video_duration'] = int(array.get('video_duration')) if array.get('video_duration') is not None else None
+        data['description'] = str(array.get('description')) if array.get('description') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultVideo(**data)
     # end def from_array
 
@@ -935,10 +934,10 @@ class InlineQueryResultAudio (InlineQueryResult):
         data['id'] = str(array.get('id'))
         data['audio_url'] = str(array.get('audio_url'))
         data['title'] = str(array.get('title'))
-        data['performer'] = str(array.get('performer'))
-        data['audio_duration'] = int(array.get('audio_duration'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['performer'] = str(array.get('performer')) if array.get('performer') is not None else None
+        data['audio_duration'] = int(array.get('audio_duration')) if array.get('audio_duration') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultAudio(**data)
     # end def from_array
 
@@ -1060,9 +1059,9 @@ class InlineQueryResultVoice (InlineQueryResult):
         data['id'] = str(array.get('id'))
         data['voice_url'] = str(array.get('voice_url'))
         data['title'] = str(array.get('title'))
-        data['voice_duration'] = int(array.get('voice_duration'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['voice_duration'] = int(array.get('voice_duration')) if array.get('voice_duration') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultVoice(**data)
     # end def from_array
 
@@ -1222,14 +1221,14 @@ class InlineQueryResultDocument(InlineQueryResult):
         data['title'] = str(array.get('title'))
         data['document_url'] = str(array.get('document_url'))
         data['mime_type'] = str(array.get('mime_type'))
-        data['caption'] = str(array.get('caption'))
-        data['description'] = str(array.get('description'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
-        data['thumb_url'] = str(array.get('thumb_url'))
-        data['thumb_width'] = int(array.get('thumb_width'))
-        data['thumb_height'] = int(array.get('thumb_height'))
-        return InlineQueryResultDocument(**array)
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['description'] = str(array.get('description')) if array.get('description') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
+        data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
+        data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
+        data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
+        return InlineQueryResultDocument(**data)
     # end def from_array
 
     def __str__(self):
@@ -1375,8 +1374,11 @@ class InlineQueryResultLocation (InlineQueryResult):
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
         data['title'] = str(array.get('title'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
+        data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
+        data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
+        data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
         return InlineQueryResultLocation(**data)
     # end def from_array
 
@@ -1540,12 +1542,12 @@ class InlineQueryResultVenue (InlineQueryResult):
         data['longitude'] = float(array.get('longitude'))
         data['title'] = str(array.get('title'))
         data['address'] = str(array.get('address'))
-        data['foursquare_id'] = str(array.get('foursquare_id'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
-        data['thumb_url'] = str(array.get('thumb_url'))
-        data['thumb_width'] = int(array.get('thumb_width'))
-        data['thumb_height'] = int(array.get('thumb_height'))
+        data['foursquare_id'] = str(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
+        data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
+        data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
+        data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
         return InlineQueryResultVenue(**data)
     # end def from_array
 
@@ -1691,12 +1693,12 @@ class InlineQueryResultContact (InlineQueryResult):
         data['id'] = str(array.get('id'))
         data['phone_number'] = str(array.get('phone_number'))
         data['first_name'] = str(array.get('first_name'))
-        data['last_name'] = str(array.get('last_name'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
-        data['thumb_url'] = str(array.get('thumb_url'))
-        data['thumb_width'] = int(array.get('thumb_width'))
-        data['thumb_height'] = int(array.get('thumb_height'))
+        data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
+        data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
+        data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
+        data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
         return InlineQueryResultContact(**data)
     # end def from_array
 
@@ -1823,11 +1825,11 @@ class InlineQueryResultCachedPhoto (InlineQueryCachedResult):
         data = {}
         data['id'] = str(array.get('id'))
         data['photo_file_id'] = str(array.get('photo_file_id'))
-        data['title'] = str(array.get('title'))
-        data['description'] = str(array.get('description'))
-        data['caption'] = str(array.get('caption'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['title'] = str(array.get('title')) if array.get('title') is not None else None
+        data['description'] = str(array.get('description')) if array.get('description') is not None else None
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedPhoto(**data)
     # end def from_array
 
@@ -1946,10 +1948,10 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         data = {}
         data['id'] = str(array.get('id'))
         data['gif_file_id'] = str(array.get('gif_file_id'))
-        data['title'] = str(array.get('title'))
-        data['caption'] = str(array.get('caption'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['title'] = str(array.get('title')) if array.get('title') is not None else None
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedGif(**data)
     # end def from_array
 
@@ -2067,10 +2069,10 @@ class InlineQueryResultCachedMpeg4Gif (InlineQueryCachedResult):
         data = {}
         data['id'] = str(array.get('id'))
         data['mpeg4_file_id'] = str(array.get('mpeg4_file_id'))
-        data['title'] = str(array.get('title'))
-        data['caption'] = str(array.get('caption'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['title'] = str(array.get('title')) if array.get('title') is not None else None
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedMpeg4Gif(**data)
     # end def from_array
 
@@ -2174,8 +2176,8 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
 
         data = {}
         data['sticker_file_id'] = str(array.get('sticker_file_id'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedSticker(**data)
     # end def from_array
 
@@ -2305,10 +2307,10 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         data['id'] = str(array.get('id'))
         data['title'] = str(array.get('title'))
         data['document_file_id'] = str(array.get('document_file_id'))
-        data['description'] = str(array.get('description'))
-        data['caption'] = str(array.get('caption'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['description'] = str(array.get('description')) if array.get('description') is not None else None
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedDocument(**data)
     # end def from_array
 
@@ -2435,10 +2437,10 @@ class InlineQueryResultCachedVideo (InlineQueryCachedResult):
         data['id'] = str(array.get('id'))
         data['video_file_id'] = str(array.get('video_file_id'))
         data['title'] = str(array.get('title'))
-        data['description'] = str(array.get('description'))
-        data['caption'] = str(array.get('caption'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['description'] = str(array.get('description')) if array.get('description') is not None else None
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedVideo(**data)
     # end def from_array
 
@@ -2551,8 +2553,8 @@ class InlineQueryResultCachedVoice (InlineQueryCachedResult):
         data['id'] = str(array.get('id'))
         data['voice_file_id'] = str(array.get('voice_file_id'))
         data['title'] = str(array.get('title'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedVoice(**data)
     # end def from_array
 
@@ -2657,8 +2659,8 @@ class InlineQueryResultCachedAudio (InlineQueryCachedResult):
         data = {}
         data['id'] = str(array.get('id'))
         data['audio_file_id'] = str(array.get('audio_file_id'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedAudio(**data)
     # end def from_array
 
@@ -2749,8 +2751,8 @@ class InputTextMessageContent(InputMessageContent):
 
         data = {}
         data['message_text'] = str(array.get('message_text'))
-        data['parse_mode'] = str(array.get('parse_mode'))
-        data['disable_web_page_preview'] = bool(array.get('disable_web_page_preview'))
+        data['parse_mode'] = str(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['disable_web_page_preview'] = bool(array.get('disable_web_page_preview')) if array.get('disable_web_page_preview') is not None else None
         return InputTextMessageContent(**data)
     # end def from_array
 
@@ -2940,7 +2942,7 @@ class InputVenueMessageContent (InputMessageContent):
         data['longitude'] = float(array.get('longitude'))
         data['title'] = str(array.get('title'))
         data['address'] = str(array.get('address'))
-        data['foursquare_id'] = str(array.get('foursquare_id'))
+        data['foursquare_id'] = str(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         return InputVenueMessageContent(**data)
     # end def from_array
 
@@ -3032,7 +3034,7 @@ class InputContactMessageContent (InputMessageContent):
         data = {}
         data['phone_number'] = str(array.get('phone_number'))
         data['first_name'] = str(array.get('first_name'))
-        data['last_name'] = str(array.get('last_name'))
+        data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
         return InputContactMessageContent(**data)
     # end def from_array
 
