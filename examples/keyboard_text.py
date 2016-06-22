@@ -19,10 +19,10 @@ def main():
     print("Information about myself: {info}".format(info=my_info))
     last_update_id = -1
     while True:
-        for update in bot.get_updates(limit=1, offset=last_update_id+1)["result"]:
-            last_update_id = update["update_id"]
+        for update in bot.get_updates(limit=1, offset=last_update_id+1):
+            last_update_id = update.update_id
             print(update)
-            if "message" not in update or "entities" not in update.message:
+            if update.message or update.message.entities:
                 continue
             for entity in update.message.entities:
                 # MessageEntity
@@ -43,7 +43,8 @@ def main():
 def do_keyboard(chat_id):
     buttons = [
         ["YES", "NO"],
-        ["Maybe", "lol"]  # KeyboardButton("Contact?", request_contact=True)]
+        ["Maybe", "lol"],
+        # [KeyboardButton("Location?", request_location=True)]
     ]
     markup = ReplyKeyboardMarkup(buttons, resize_keyboard=True, one_time_keyboard=True)
     print(bot.send_msg(chat_id, "test!", reply_markup=markup))
