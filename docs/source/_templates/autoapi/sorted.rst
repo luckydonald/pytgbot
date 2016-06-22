@@ -2,7 +2,7 @@
 ``{{ node.name }}``
 =={{ '=' * node.name|length }}==
 
-.. automodule:: {{ node.name|split(".")|[-1] }}
+.. automodule:: {{ node.name.split(".")[-1] }}
 
    .. contents::
       :local:
