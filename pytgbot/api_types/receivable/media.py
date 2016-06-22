@@ -1148,7 +1148,7 @@ class UserProfilePhotos(Result):
 
         data = {}
         data['total_count'] = int(array.get('total_count'))
-        data['photos'] = PhotoSize.from_array(array.get('photos'))
+        data['photos'] = PhotoSize.from_array_list(array.get('photos'), list_level=2)
         return UserProfilePhotos(**data)
     # end def from_array
 
@@ -1217,6 +1217,10 @@ class File(Receivable):
         assert(file_path is None or isinstance(file_path, str))
         self.file_path = file_path
     # end def __init__
+
+    def download_url(self, token):
+        return "https://api.telegram.org/file/bot{token}/{file_path}".format(token=token, file_path=self.file_path)
+    # end def download_url
 
     def to_array(self):
         """

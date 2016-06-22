@@ -110,7 +110,7 @@ class Bot(object):
                 logger.debug("Trying to parse {data}".format(data=repr(result)))
                 from pytgbot.api_types.receivable.updates import Update
                 try:
-                    return from_array_list(Update, result, 1, True)
+                    return Update.from_array_list(result, 1)
                 except TgApiParseException:
                     logger.debug("Failed parsing as api_type Update", exc_info=True)
                 # end try
