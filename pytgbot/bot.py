@@ -2020,7 +2020,7 @@ class Bot(object):
         if list_level > 0:
             results = []
             for element in result:
-                result.append(Bot._parse_api_type(element, clazz, list_level-1))
+                results.append(Bot._parse_api_type(element, clazz, list_level-1))
             # end for
             return results
         # end if
