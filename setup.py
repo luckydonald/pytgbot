@@ -10,7 +10,7 @@ Report any issues at https://github.com/luckydonald/pytg/issues/"""
 
 setup(
     name='pytgbot',
-    version="1.0.1",
+    2.0.0,
     description='Connect to the Telegram Bot API, receive and send Telegram messages.',
     long_description=long_description,
     # The project's main homepage.
