@@ -131,7 +131,13 @@ class Bot(object):
 
         :return: the result as clazz type
         """
-        assert (list_level == 0)  # todo: implement
+        if list_level > 0:
+            results = []
+            for element in result:
+                results.append(Bot._parse_builtin_type(element, clazz, list_level-1))
+            # end for
+            return results
+        # end if
         try:
             if isinstance(result, clazz):
                 logger.debug("Already is correct type.")
@@ -161,12 +167,20 @@ class Bot(object):
 
         :return: the result as clazz type
         """
-        assert (list_level == 0)  # todo: implement
+        logger.debug("Trying parsing as api_type {type}, list_level={list_level}".format(
+            type=clazz.__name__, list_level=list_level
+        ))
+        if list_level > 0:
+            results = []
+            for element in result:
+                results.append(Bot._parse_api_type(element, clazz, list_level-1))
+            # end for
+            return results
+        # end if
         try:
             return clazz.from_array(result)
         except TgApiParseException:
             logger.debug("Failed parsing as api_type {type}".format(type=type(clazz)), exc_info=True)
-        # end try
-    # end def _parse_api_type
+        # end tryse_api_type
 # end class Bot
 

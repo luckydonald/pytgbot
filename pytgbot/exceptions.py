@@ -37,3 +37,8 @@ class TgApiParseException(TgApiException):
     E.g. a missing key, an unexpected value, etc.
     """
     pass
+
+
+class TgApiTypeError(TgApiException, TypeError):
+    """ Raised where a TypeError is needed"""
+    pass

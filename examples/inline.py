@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from pytgbot.exceptions import TgApiException
 from pytgbot.api_types.sendable.inline import InlineQueryResultArticle, InputTextMessageContent
+from pytgbot.api_types.receivable.inline import InlineQuery
+from pytgbot.api_types.receivable.updates import Update
 
 __author__ = 'luckydonald'
 
@@ -23,13 +26,15 @@ print("Information about myself: {info}".format(info=my_info))
 last_update_id = 0
 while True:
     # loop forever.
-    for update in bot.get_updates(limit=100, offset=last_update_id+1)["result"]:
-        last_update_id = update["update_id"]
+    for update in bot.get_updates(limit=100, offset=last_update_id+1, error_as_empty=True):
+        assert isinstance(update, Update)
+        last_update_id = update.update_id
         print(update)
-        if not "inline_query" in update:
+        if not update.inline_query:
             continue
-        inline_query_id = update.inline_query.id
         query_obj = update.inline_query
+        assert isinstance(query_obj, InlineQuery)
+        inline_query_id = query_obj.id
         query = query_obj.query
         print(query)
         foo = list()
@@ -51,7 +56,7 @@ while True:
             input_message_content=InputTextMessageContent(query, parse_mode="HTML"),
             description='Will send {}'.format(repr(n(query)))
         ))
-        success = bot.answer_inline_query(inline_query_id, foo, cache_time=2)
-        print(success)
-        if not success.ok:
-            print ("dayum!")
+        try:
+            success = bot.answer_inline_query(inline_query_id, foo, cache_time=2)
+        except TgApiException:
+            logger.warn("failed.", exc_info=True)

@@ -8,7 +8,7 @@ from DictObject import DictObject
 from luckydonaldUtils.encoding import to_native as n
 from luckydonaldUtils.logger import logging
 
-from .exceptions import TgApiServerException, TgApiParseException
+from .exceptions import TgApiServerException, TgApiParseException, TgApiTypeError
 from .api_types.sendable.inline import InlineQueryResult
 
 
@@ -51,7 +51,7 @@ class Bot(object):
         return self.do("getMe")
     # end def get_me
 
-    def get_updates(self, offset=None, limit=100, timeout=0, delta=timedelta(milliseconds=100), error_as_empty=True):
+    def get_updates(self, offset=None, limit=100, timeout=0, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
 
@@ -395,10 +395,11 @@ class Bot(object):
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
-            parsed_result = self._parse_api_type(result, Message, 0)
-            if parsed_result:
-                return parsed_result
-            # end if parsed_result
+            try:
+                return self._parse_api_type(result, Message, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
             # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
@@ -1277,7 +1278,19 @@ class Bot(object):
 
         assert(user_id is not None)
         assert(isinstance(user_id, int))
-        return self.do("kickChatMember", chat_id=chat_id, user_id=user_id)
+
+        result = self.do("kickChatMember", chat_id=chat_id, user_id=user_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return self._parse_builtin_type(result, bool, 0)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def kick_chat_member
 
     def leave_chat(self, chat_id):
@@ -1779,6 +1792,7 @@ class Bot(object):
             # no valid parsing so far
         raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
+        return result
     # end def edit_message_reply_markup
 
     def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None,
@@ -1909,18 +1923,21 @@ class Bot(object):
         ```
 
         :param command: The Url command parameter
+        :type  command: str
+
         :param files: if it needs to send files.
         :param use_long_polling: if it should use long polling.
                                 (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
         :param query: will get json encoded.
-        :return: The json response from the server.
-        :rtype: DictObject.DictObject
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
         from pytgbot.api_types.sendable import Sendable
         from pytgbot.api_types import as_array
         from DictObject import DictObject
         import requests
         import json
+
 
         params = {}
         for key in query.keys():
@@ -1953,10 +1970,25 @@ class Bot(object):
     # end def do
 
     def _do_fileupload(self, file_param_name, value, **kwargs):
+        """
+        :param file_param_name: For what field the file should be uploaded.
+        :type  file_param_name: str
+
+        :param value: File to send. You can either pass a file_id as String to resend a file
+                      file that is already on the Telegram servers, or upload a new file,
+                      specifying the file path as :class:`pytgbot.api_types.files.InputFile`.
+        :type  value: pytgbot.api_types.sendable.InputFile | str
+
+        :param kwargs: will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+
+        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
+        """
         from pytgbot.api_types.sendable import InputFile
         from luckydonaldUtils.encoding import unicode_type
         from luckydonaldUtils.encoding import to_native as n
-
         if isinstance(value, str):
             kwargs[file_param_name] = str(value)
         elif isinstance(value, unicode_type):
@@ -1964,7 +1996,7 @@ class Bot(object):
         elif isinstance(value, InputFile):
             kwargs["files"] = value.get_request_files(file_param_name)
         else:
-            raise TypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
+            raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
         return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
     # end def _do_fileupload
@@ -1984,7 +2016,13 @@ class Bot(object):
 
         :return: the result as clazz type
         """
-        assert (list_level == 0)  # todo: implement
+        if list_level > 0:
+            results = []
+            for element in result:
+                results.append(Bot._parse_builtin_type(element, clazz, list_level - 1))
+            # end for
+            return results
+        # end if
         try:
             if isinstance(result, clazz):
                 logger.debug("Already is correct type.")
