@@ -200,7 +200,7 @@ class Chat(Peer):
         :return: new Chat instance.
         :rtype: Chat
         """
-        if array is None:
+        if array is None or not array:
             return None
         # end if
         assert(isinstance(array, dict))
@@ -247,19 +247,19 @@ class ChatMember(Result):
         Parameters:
 
         :param user: Information about the user
-        :type  user: pytgbot.api_types.receivable.responses.peer.User
+        :type  user: pytgbot.api_types.receivable.peer.User
 
         :param status: The member's status in the chat. Can be “creator”, “administrator”, “member”, “left” or “kicked”
         :type  status: str
         """
         super(ChatMember, self).__init__()
 
-        assert (user is not None)
-        assert (isinstance(user, User))
+        assert(user is not None)
+        assert(isinstance(user, User))
         self.user = user
 
-        assert (status is not None)
-        assert (isinstance(status, unicode_type))  # unicode on python 2, str on python 3
+        assert(status is not None)
+        assert(isinstance(status, str))
         self.status = status
     # end def __init__
 
@@ -288,8 +288,6 @@ class ChatMember(Result):
             return None
         # end if
         assert(isinstance(array, dict))
-
-        from pytgbot.api_types.receivable.peer import User
 
         data = {}
         data['user'] = User.from_array(array.get('user'))

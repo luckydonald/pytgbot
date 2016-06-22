@@ -90,7 +90,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         array = super(ReplyKeyboardMarkup, self).to_array()
-        array['keyboard'] = as_array(self.keyboard)  # type list of list of KeyboardButton
+        array['keyboard'] = self._as_array(self.keyboard)  # type list of list of KeyboardButton
         if self.resize_keyboard is not None:
             array['resize_keyboard'] = bool(self.resize_keyboard)  # type bool
         if self.one_time_keyboard is not None:
@@ -114,7 +114,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         assert(isinstance(array, dict))
 
         data = {}
-        data['keyboard'] = KeyboardButton.from_array(array.get('keyboard'))
+        data['keyboard'] = KeyboardButton.from_array_list(array.get('keyboard'), list_level=2)
         data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
         data['one_time_keyboard'] = bool(array.get('one_time_keyboard')) if array.get('one_time_keyboard') is not None else None
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
@@ -376,7 +376,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         array = super(InlineKeyboardMarkup, self).to_array()
-        array['inline_keyboard'] = as_array(self.inline_keyboard)  # type list of list of InlineKeyboardButton
+        array['inline_keyboard'] = self._as_array(self.inline_keyboard)  # type list of list of InlineKeyboardButton
         return array
     # end def to_array
 
@@ -394,7 +394,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         assert(isinstance(array, dict))
 
         data = {}
-        data['inline_keyboard'] = list([InlineKeyboardButton.from_array(l1) for l1 in [l2 for l2 in array.get('inline_keyboard')]])
+        data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
         return InlineKeyboardMarkup(**data)
     # end def from_array
 

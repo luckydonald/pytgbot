@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from luckydonaldUtils.encoding import unicode_type
 from luckydonaldUtils.logger import logging
 
 from . import Receivable
@@ -102,7 +101,7 @@ class Update(Receivable):
         :return: new Update instance.
         :rtype: Update
         """
-        if array is None:
+        if array is None or not array:
             return None
         # end if
         assert(isinstance(array, dict))
@@ -363,7 +362,6 @@ class Message(UpdateType):
         :rtype: dict
         """
         array = super(Message, self).to_array()
-        from api_types import as_array
         array['message_id'] = int(self.message_id)  # type int
         array['date'] = int(self.date)  # type int
         array['chat'] = self.chat.to_array()  # type Chat
@@ -382,13 +380,13 @@ class Message(UpdateType):
         if self.text is not None:
             array['text'] = str(self.text)  # type str
         if self.entities is not None:
-            array['entities'] = as_array(self.entities)  # type list of MessageEntity
+            array['entities'] = self._as_array(self.entities)  # type list of MessageEntity
         if self.audio is not None:
             array['audio'] = self.audio.to_array()  # type Audio
         if self.document is not None:
             array['document'] = self.document.to_array()  # type Document
         if self.photo is not None:
-            array['photo'] = as_array(self.photo)  # type list of PhotoSize
+            array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
         if self.sticker is not None:
             array['sticker'] = self.sticker.to_array()  # type Sticker
         if self.video is not None:
@@ -410,7 +408,7 @@ class Message(UpdateType):
         if self.new_chat_title is not None:
             array['new_chat_title'] = str(self.new_chat_title)  # type str
         if self.new_chat_photo is not None:
-            array['new_chat_photo'] = as_array(self.new_chat_photo)  # type list of PhotoSize
+            array['new_chat_photo'] = self._as_array(self.new_chat_photo)  # type list of PhotoSize
         if self.delete_chat_photo is not None:
             array['delete_chat_photo'] = bool(self.delete_chat_photo)  # type bool
         if self.group_chat_created is not None:
@@ -455,10 +453,10 @@ class Message(UpdateType):
         data['reply_to_message'] = Message.from_array(array.get('reply_to_message')) if array.get('reply_to_message') is not None else None
         data['edit_date'] = int(array.get('edit_date')) if array.get('edit_date') is not None else None
         data['text'] = str(array.get('text')) if array.get('text') is not None else None
-        data['entities'] = MessageEntity.from_array(array.get('entities')) if array.get('entities') is not None else None
+        data['entities'] = MessageEntity.from_array_list(array.get('entities'), list_level=1) if array.get('entities') is not None else None
         data['audio'] = Audio.from_array(array.get('audio')) if array.get('audio') is not None else None
         data['document'] = Document.from_array(array.get('document')) if array.get('document') is not None else None
-        data['photo'] = PhotoSize.from_array(array.get('photo')) if array.get('photo') is not None else None
+        data['photo'] = PhotoSize.from_array_list(array.get('photo'), list_level=1) if array.get('photo') is not None else None
         data['sticker'] = Sticker.from_array(array.get('sticker')) if array.get('sticker') is not None else None
         data['video'] = Video.from_array(array.get('video')) if array.get('video') is not None else None
         data['voice'] = Voice.from_array(array.get('voice')) if array.get('voice') is not None else None
@@ -469,7 +467,7 @@ class Message(UpdateType):
         data['new_chat_member'] = User.from_array(array.get('new_chat_member')) if array.get('new_chat_member') is not None else None
         data['left_chat_member'] = User.from_array(array.get('left_chat_member')) if array.get('left_chat_member') is not None else None
         data['new_chat_title'] = str(array.get('new_chat_title')) if array.get('new_chat_title') is not None else None
-        data['new_chat_photo'] = PhotoSize.from_array(array.get('new_chat_photo')) if array.get('new_chat_photo') is not None else None
+        data['new_chat_photo'] = PhotoSize.from_array_list(array.get('new_chat_photo'), list_level=1) if array.get('new_chat_photo') is not None else None
         data['delete_chat_photo'] = bool(array.get('delete_chat_photo')) if array.get('delete_chat_photo') is not None else None
         data['group_chat_created'] = bool(array.get('group_chat_created')) if array.get('group_chat_created') is not None else None
         data['supergroup_chat_created'] = bool(array.get('supergroup_chat_created')) if array.get('supergroup_chat_created') is not None else None
@@ -496,7 +494,7 @@ class Message(UpdateType):
 # end class Message
 
 
-class CallbackQuery (UpdateType):
+class CallbackQuery(UpdateType):
     """
     This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be presented. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be presented.
 
@@ -534,7 +532,7 @@ class CallbackQuery (UpdateType):
         from ..receivable.peer import User
 
         assert(id is not None)
-        assert(isinstance(id, unicode_type))  # unicode on python 2, str on python 3
+        assert(isinstance(id, str))
         self.id = id
 
         assert(from_peer is not None)

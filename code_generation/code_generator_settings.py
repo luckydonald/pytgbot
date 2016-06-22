@@ -3,7 +3,6 @@ CLASS_TYPE_PATHS__PARENT = 1
 CLASS_TYPE_PATHS__DESCRIPTION = 2
 CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "TgBotApiObject": ("pytgbot.api_types.", "object", None),
-    "as_array": ("pytgbot.api_types.", None, None),
 
     # pytgbot.api_types.receivable.__init__.*
     "Receivable":           ("pytgbot.api_types.receivable.", "TgBotApiObject", None),

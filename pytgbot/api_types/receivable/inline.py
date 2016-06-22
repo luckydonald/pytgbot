@@ -46,23 +46,23 @@ class InlineQuery(Result):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.peer import User
 
-        assert (id is not None)
-        assert (isinstance(id, str))
+        assert(id is not None)
+        assert(isinstance(id, str))
         self.id = id
 
-        assert (from_peer is not None)
-        assert (isinstance(from_peer, User))
+        assert(from_peer is not None)
+        assert(isinstance(from_peer, User))
         self.from_peer = from_peer
 
-        assert (query is not None)
-        assert (isinstance(query, str))
+        assert(query is not None)
+        assert(isinstance(query, str))
         self.query = query
 
-        assert (offset is not None)
-        assert (isinstance(offset, str))
+        assert(offset is not None)
+        assert(isinstance(offset, str))
         self.offset = offset
 
-        assert (location is None or isinstance(location, Location))
+        assert(location is None or isinstance(location, Location))
         self.location = location
     # end def __init__
 
@@ -94,7 +94,7 @@ class InlineQuery(Result):
         if array is None or not array:
             return None
         # end if
-        assert (isinstance(array, dict))
+        assert(isinstance(array, dict))
 
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.peer import User
@@ -186,13 +186,12 @@ class ChosenInlineResult(UpdateType):
 
     def to_array(self):
         """
-        Serializes this ChosenInlineResult to an dictionary.
+        Serializes this ChosenInlineResult to a dictionary.
 
         :return: dictionary repesentation of this object.
         :rtype: dict
         """
         array = super(ChosenInlineResult, self).to_array()
-
         array['result_id'] = str(self.result_id)  # type str
         array['from'] = self.from_peer.to_array()  # type User
         array['query'] = str(self.query)  # type str
@@ -214,7 +213,7 @@ class ChosenInlineResult(UpdateType):
         if array is None or not array:
             return None
         # end if
-        assert (isinstance(array, dict))
+        assert(isinstance(array, dict))
 
         from ..receivable.peer import User
         from ..receivable.media import Location

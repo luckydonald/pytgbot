@@ -93,9 +93,9 @@ class Bot(object):
         """
         from datetime import datetime
 
-        assert (offset is None or isinstance(offset, int))
-        assert (limit is None or isinstance(limit, int))
-        assert (timeout is None or isinstance(timeout, int))
+        assert(offset is None or isinstance(offset, int))
+        assert(limit is None or isinstance(limit, int))
+        assert(timeout is None or isinstance(timeout, int))
 
         now = datetime.now()
         if self._last_update - now < delta:

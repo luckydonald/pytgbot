@@ -64,7 +64,6 @@ class Bot(object):
         :rtype: DictObject.DictObject
         """
         from pytgbot.api_types.sendable import Sendable
-        from pytgbot.api_types import as_array
         from DictObject import DictObject
         import requests
         import json
@@ -74,7 +73,7 @@ class Bot(object):
             element = query[key]
             if element is not None:
                 if isinstance(element, Sendable):
-                    params[key] = json.dumps(as_array(element))
+                    params[key] = json.dumps(self._as_array(element))
                 else:
                     params[key] = element
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))

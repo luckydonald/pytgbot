@@ -53,7 +53,7 @@
         result = self.do("{{ function.api_name }}", {{ for_args_set(function.variables) }})
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-        {%- for import in function.returns.all_imports if import.full != "pytgbot.api_types.as_array"%}
+        {%- for import in function.returns.all_imports %}
             from {{ import.path }} import {{ import.name }}
         {%- endfor -%}
         {%- for type in function.returns.types if type.is_builtin == False %}

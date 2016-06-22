@@ -1129,7 +1129,7 @@ class UserProfilePhotos(Result):
         from api_types import as_array
         array = super(UserProfilePhotos, self).to_array()
         array['total_count'] = int(self.total_count)  # type int
-        array['photos'] = as_array(self.photos)  # type list of list of PhotoSize
+        array['photos'] = self._as_array(self.photos)  # type list of list of PhotoSize
         return array
     # end def to_array
 

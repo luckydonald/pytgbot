@@ -209,8 +209,6 @@ class Variable(dict):
     def all_imports(self):
         imports = set()
         for type in self.types:
-            if type.is_list:
-                imports.add(Import(CLASS_TYPE_PATHS["as_array"][CLASS_TYPE_PATHS__IMPORT].rstrip("."), "as_array"))
             if type.import_path:
                 imports.add(Import(type.import_path, type.string))
             # end if
