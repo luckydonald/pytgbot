@@ -3,17 +3,17 @@ from __future__ import unicode_literals
 
 from json import dumps
 
+from pytgbot import Bot
+from pytgbot.exceptions import TgApiException
 from pytgbot.api_types.sendable.inline import InlineQueryResultArticle, InlineQueryResultGif, InlineQueryResultPhoto
 from pytgbot.api_types.sendable.inline import InputTextMessageContent
 
-__author__ = 'luckydonald'
-VERSION = "v0.2.0"
-
-from random import getrandbits
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.download import get_json
-from luckydonaldUtils.encoding import to_unicode as u
-from pytgbot import Bot
+
+
+__author__ = 'luckydonald'
+VERSION = "v0.3.0"
 
 try:
     from urllib import quote  # python 2
@@ -26,7 +26,6 @@ from somewhere import API_KEY  # so I don't upload them to github :D
 # Just remove the line, and add API_KEY="..."
 
 
-
 def main():
     # get you bot instance.
     bot = Bot(API_KEY)
@@ -37,17 +36,20 @@ def main():
     mlfw = MLFW(bot)
     while True:
         # loop forever.
-        for update in bot.get_updates(limit=100, offset=last_update_id+1, error_as_empty=True).result:
-            last_update_id = update["update_id"]
+        for update in bot.get_updates(limit=100, offset=last_update_id+1, error_as_empty=True):
+            last_update_id = update.update_id
             print(update)
-            if not "inline_query" in update:
+            if not update.inline_query:
                 continue
             inline_query_id = update.inline_query.id
             query_obj = update.inline_query
             query = query_obj.query
-            print (query)
-            print (query_obj)
+            print(query)
+            print(query_obj)
             mlfw.search(query, inline_query_id, offset=query_obj.offset)
+        # end for
+    # end while
+# end def main
 
 
 class MLFW(object):
@@ -61,6 +63,8 @@ class MLFW(object):
         self.bot = bot
 
     def search(self, string, inline_query_id, offset):
+        if not string:  # nothing entered.
+            string = "littlepip"
         results = []
         next_offset=None
         if offset is None or len(str(offset).strip()) < 1:
@@ -72,9 +76,16 @@ class MLFW(object):
             string_part = string_part.strip()
             valid_tag_obj = get_json(self.tag_search, params=dict(format="json", name__startswith=string_part, limit=1))
             if "error" in valid_tag_obj:
-                self.bot.answer_inline_query(inline_query_id,
-                    [InlineQueryResultArticle(id="404e:"+string, title=u"\"{tag}\" not found.".format(tag=string), message_text=string, description=valid_tag_obj.error, thumb_url=self.error_image)],
+                error_message = InlineQueryResultArticle(
+                    id="404e:"+string,
+                    title=u"\"{tag}\" not found.".format(tag=string),
+                    input_message_content=InputTextMessageContent(string),
+                    description=valid_tag_obj.error, thumb_url=self.error_image
                 )
+                try:
+                    self.bot.answer_inline_query(inline_query_id, [error_message])
+                except TgApiException:
+                    logger.exception("Answering query failed.")
                 return
             for tag_obj in valid_tag_obj.objects:
                 valid_tag_names.append(tag_obj.name)
@@ -86,21 +97,32 @@ class MLFW(object):
                     description="No similar tag found.",
                     thumb_url=self.error_image
             )
-            self.bot.answer_inline_query(inline_query_id, result)
+            try:
+                self.bot.answer_inline_query(inline_query_id, result)
+            except TgApiException:
+                logger.exception("Answering query failed.")
             return
         print ("tags: {}".format(valid_tag_names))
         print("offset: {}".format(offset))
         images_of_tag = get_json(self.tag_info, params=dict(search=dumps(valid_tag_names), format="json", limit=10, offset=offset))
         print(images_of_tag)
         if images_of_tag.meta.total_count < 1 or len(images_of_tag.objects) < 1:
-            self.bot.answer_inline_query(inline_query_id,
-               [InlineQueryResultArticle(id="404i:"+string, title=u"\"{tag}\" not found.".format(tag=string), message_text=string, description="Search results no images.", thumb_url=self.error_image)],
+            error_message = InlineQueryResultArticle(
+                id="404i:"+string,
+                title=u"\"{tag}\" not found.".format(tag=string),
+                input_message_content=InputTextMessageContent(string),
+                description="Search results no images.",
+                thumb_url=self.error_image
             )
+            try:
+                self.bot.answer_inline_query(inline_query_id, [error_message])
+            except TgApiException:
+                logger.exception("Answering query failed.")
             return
         if images_of_tag.meta.next:
             next_offset = offset+10
         for img in images_of_tag.objects:
-            #image = self.root + tag.objects[0].resizes.small
+            # image = self.root + tag.objects[0].resizes.small
             image_full = self.root + img.image
             image_small = image_full
             if "resizes" in img and "small" in img.resizes:
@@ -119,19 +141,23 @@ class MLFW(object):
             logger.debug("id: {id}".format(id=id))
             # results.append(InlineQueryResultArticle(id=id, thumb_url=image_small, title=u"{tag}".format(tag=img.title), message_text=image_full, description=img.description))
             if image_gif:
-                results.append(InlineQueryResultGif(id=id, title=img.title, gif_url=image_full, thumb_url=image_small, caption=img.description))
+                results.append(InlineQueryResultGif(id=id, title=img.title, gif_url=image_full, thumb_url=image_small, caption=self.str_to_caption(string)))
             else:
-                results.append(InlineQueryResultPhoto(id=id, title=img.title, photo_url=image_full, thumb_url=image_small, caption=img.description))
+                results.append(InlineQueryResultPhoto(id=id, title=img.title, photo_url=image_full, thumb_url=image_small, caption=self.str_to_caption(string)))
         for res in results:
             logger.debug(res.to_array())
         logger.debug("next_offset=" + str(next_offset))
-        success = self.bot.answer_inline_query(inline_query_id, results, cache_time=300, next_offset=next_offset)
-        if not success.ok:
-            logger.error("dayum! {}".format(success))
-        else:
-            logger.success("{}".format(success))
+        try:
+            self.bot.answer_inline_query(inline_query_id, results, cache_time=300, next_offset=next_offset)
+        except TgApiException:
+            logger.exception("Answering query failed.")
+        # end try
+    # end def
 
-
+    def str_to_caption(self, search_string):
+        return "#{search}".format(search=search_string.strip().lower().replace(" ", "_"))
+    # end def str_to_caption
+# end class
 
 if __name__ == '__main__':
     main()
