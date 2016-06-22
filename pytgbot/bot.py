@@ -10,6 +10,7 @@ from luckydonaldUtils.logger import logging
 
 from .exceptions import TgApiServerException, TgApiParseException, TgApiTypeError
 from .api_types.sendable.inline import InlineQueryResult
+from .api_types import from_array_list
 
 
 __author__ = 'luckydonald'
@@ -109,7 +110,7 @@ class Bot(object):
                 logger.debug("Trying to parse {data}".format(data=repr(result)))
                 from pytgbot.api_types.receivable.updates import Update
                 try:
-                    return self._parse_api_type(result, Update, 1)
+                    return from_array_list(Update, result, 1, True)
                 except TgApiParseException:
                     logger.debug("Failed parsing as api_type Update", exc_info=True)
                 # end try
@@ -176,7 +177,7 @@ class Bot(object):
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
@@ -254,7 +255,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -313,7 +314,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -396,7 +397,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -490,7 +491,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -572,7 +573,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -620,7 +621,6 @@ class Bot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from luckydonaldUtils.encoding import unicode_type
         from pytgbot.api_types.sendable import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -647,7 +647,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -710,7 +710,6 @@ class Bot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from luckydonaldUtils.encoding import unicode_type
         from pytgbot.api_types.sendable import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -746,7 +745,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -833,7 +832,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -911,7 +910,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -1005,7 +1004,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -1087,7 +1086,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
@@ -1140,7 +1139,7 @@ class Bot(object):
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
@@ -1190,7 +1189,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.media import UserProfilePhotos
             try:
-                return self._parse_api_type(result, UserProfilePhotos, 0)
+                return UserProfilePhotos.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type UserProfilePhotos", exc_info=True)
             # end try
@@ -1235,7 +1234,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.media import File
             try:
-                return self._parse_api_type(result, File, 0)
+                return File.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type File", exc_info=True)
             # end try
@@ -1283,7 +1282,7 @@ class Bot(object):
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
@@ -1318,7 +1317,7 @@ class Bot(object):
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
@@ -1362,7 +1361,7 @@ class Bot(object):
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
@@ -1401,7 +1400,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.peer import Chat
             try:
-                return self._parse_api_type(result, Chat, 0)
+                return Chat.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Chat", exc_info=True)
             # end try
@@ -1443,7 +1442,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.peer import ChatMember
             try:
-                return self._parse_api_type(result, ChatMember, 1)
+                return ChatMember.from_array_list(result, list_level=1)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type ChatMember", exc_info=True)
             # end try
@@ -1478,7 +1477,7 @@ class Bot(object):
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
-                return self._parse_builtin_type(result, int, 0)
+                return from_array_list(int, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive int", exc_info=True)
             # end try
@@ -1521,7 +1520,7 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.peer import ChatMember
             try:
-                return self._parse_api_type(result, ChatMember, 0)
+                return ChatMember.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type ChatMember", exc_info=True)
             # end try
@@ -1571,7 +1570,7 @@ class Bot(object):
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
@@ -1625,7 +1624,6 @@ class Bot(object):
                  otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from luckydonaldUtils.encoding import unicode_type
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert(text is not None)
@@ -1650,12 +1648,12 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
@@ -1718,12 +1716,12 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
@@ -1780,17 +1778,17 @@ class Bot(object):
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
             try:
-                return self._parse_api_type(result, Message, 0)
+                return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
             # end try
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
             # no valid parsing so far
-        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
     # end def edit_message_reply_markup
@@ -1892,7 +1890,7 @@ class Bot(object):
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
-                return self._parse_builtin_type(result, bool, 0)
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
             except TgApiParseException:
                 logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
@@ -1901,11 +1899,6 @@ class Bot(object):
         # end if return_python_objects
         return result
     # end def answer_inline_query
-
-    def send_msg(self, *args, **kwargs):
-        """ alias to :func:`send_message` """
-        return self.send_message(*args, **kwargs)
-    # end def send_msg
 
     def do(self, command, files=None, use_long_polling=False, **query):
         """
@@ -1937,7 +1930,6 @@ class Bot(object):
         from DictObject import DictObject
         import requests
         import json
-
 
         params = {}
         for key in query.keys():
@@ -1989,6 +1981,7 @@ class Bot(object):
         from pytgbot.api_types.sendable import InputFile
         from luckydonaldUtils.encoding import unicode_type
         from luckydonaldUtils.encoding import to_native as n
+
         if isinstance(value, str):
             kwargs[file_param_name] = str(value)
         elif isinstance(value, unicode_type):
@@ -2000,72 +1993,4 @@ class Bot(object):
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
         return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
     # end def _do_fileupload
-
-    @staticmethod
-    def _parse_builtin_type(result, clazz, list_level):
-        """
-        Tries to parse the result as type given in clazz.
-
-        :param result: The result to parse
-
-        :param clazz: What it should be parsed as
-        :type  clazz: class
-
-        :param list_level: "list of" * list_level
-        :type  list_level: int
-
-        :return: the result as clazz type
-        """
-        if list_level > 0:
-            results = []
-            for element in result:
-                results.append(Bot._parse_builtin_type(element, clazz, list_level - 1))
-            # end for
-            return results
-        # end if
-        try:
-            if isinstance(result, clazz):
-                logger.debug("Already is correct type.")
-                return clazz(result)
-            else:
-                import ast
-                logger.debug("Trying parsing with ast.literal_eval()...")
-                return ast.literal_eval(str(result))  # raises ValueError if it could not parse
-            # end if
-        except ValueError:
-            logger.debug("Failed parsing as primitive {type}".format(type=type(clazz)), exc_info=True)
-        # end try
-    # end def _parse_builtin_type
-
-    @staticmethod
-    def _parse_api_type(result, clazz, list_level):
-        """
-        Tries to parse the result as type given in clazz.
-
-        :param result: The result to parse
-
-        :param clazz: What it should be parsed as
-        :type  clazz: class
-
-        :param list_level: "list of" * list_level
-        :type  list_level: int
-
-        :return: the result as clazz type
-        """
-        logger.debug("Trying parsing as api_type {type}, list_level={list_level}".format(
-            type=clazz.__name__, list_level=list_level
-        ))
-        if list_level > 0:
-            results = []
-            for element in result:
-                results.append(Bot._parse_api_type(element, clazz, list_level-1))
-            # end for
-            return results
-        # end if
-        try:
-            return clazz.from_array(result)
-        except TgApiParseException:
-            logger.debug("Failed parsing as api_type {type}".format(type=type(clazz)), exc_info=True)
-        # end try
-    # end def _parse_api_type
 # end class Bot

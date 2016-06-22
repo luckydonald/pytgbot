@@ -17,7 +17,7 @@ array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {
 {%- endmacro %}
 {#- macros -#}
 
-class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
+class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     """
     {% block class_docstring -%}
     {{ clazz.description.strip()|indent }}

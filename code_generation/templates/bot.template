@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.logger import logging
-from .exceptions import TgApiServerException, TgApiParseException
+from .exceptions import TgApiServerException, TgApiParseException, TgApiTypeError
+from .api_types import from_array_list
 
 __author__ = 'luckydonald'
 __all__ = ["Bot"]
@@ -56,14 +57,17 @@ class Bot(object):
         ```
 
         :param command: The Url command parameter
+        :type  command: str
+
         :param files: if it needs to send files.
         :param use_long_polling: if it should use long polling.
                                 (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
         :param query: will get json encoded.
-        :return: The json response from the server.
-        :rtype: DictObject.DictObject
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
         from pytgbot.api_types.sendable import Sendable
+        from pytgbot.api_types import as_array
         from DictObject import DictObject
         import requests
         import json
@@ -73,7 +77,7 @@ class Bot(object):
             element = query[key]
             if element is not None:
                 if isinstance(element, Sendable):
-                    params[key] = json.dumps(self._as_array(element))
+                    params[key] = json.dumps(as_array(element))
                 else:
                     params[key] = element
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
@@ -99,6 +103,22 @@ class Bot(object):
     # end def do
 
     def _do_fileupload(self, file_param_name, value, **kwargs):
+        """
+        :param file_param_name: For what field the file should be uploaded.
+        :type  file_param_name: str
+
+        :param value: File to send. You can either pass a file_id as String to resend a file
+                      file that is already on the Telegram servers, or upload a new file,
+                      specifying the file path as :class:`pytgbot.api_types.files.InputFile`.
+        :type  value: pytgbot.api_types.sendable.InputFile | str
+
+        :param kwargs: will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+
+        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
+        """
         from pytgbot.api_types.sendable import InputFile
         from luckydonaldUtils.encoding import unicode_type
         from luckydonaldUtils.encoding import to_native as n
@@ -110,76 +130,9 @@ class Bot(object):
         elif isinstance(value, InputFile):
             kwargs["files"] = value.get_request_files(file_param_name)
         else:
-            raise TypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
+            raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
         return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
     # end def _do_fileupload
-
-    @staticmethod
-    def _parse_builtin_type(result, clazz, list_level):
-        """
-        Tries to parse the result as type given in clazz.
-
-        :param result: The result to parse
-
-        :param clazz: What it should be parsed as
-        :type  clazz: class
-
-        :param list_level: "list of" * list_level
-        :type  list_level: int
-
-        :return: the result as clazz type
-        """
-        if list_level > 0:
-            results = []
-            for element in result:
-                results.append(Bot._parse_builtin_type(element, clazz, list_level-1))
-            # end for
-            return results
-        # end if
-        try:
-            if isinstance(result, clazz):
-                logger.debug("Already is correct type.")
-                return clazz(result)
-            else:
-                import ast
-                logger.debug("Trying parsing with ast.literal_eval()...")
-                return ast.literal_eval(str(result))  # raises ValueError if it could not parse
-            # end if
-        except ValueError:
-            logger.debug("Failed parsing as primitive {type}".format(type=type(clazz)), exc_info=True)
-        # end try
-    # end def _parse_builtin_type
-
-    @staticmethod
-    def _parse_api_type(result, clazz, list_level):
-        """
-        Tries to parse the result as type given in clazz.
-
-        :param result: The result to parse
-
-        :param clazz: What it should be parsed as
-        :type  clazz: class
-
-        :param list_level: "list of" * list_level
-        :type  list_level: int
-
-        :return: the result as clazz type
-        """
-        logger.debug("Trying parsing as api_type {type}, list_level={list_level}".format(
-            type=clazz.__name__, list_level=list_level
-        ))
-        if list_level > 0:
-            results = []
-            for element in result:
-                results.append(Bot._parse_api_type(element, clazz, list_level-1))
-            # end for
-            return results
-        # end if
-        try:
-            return clazz.from_array(result)
-        except TgApiParseException:
-            logger.debug("Failed parsing as api_type {type}".format(type=type(clazz)), exc_info=True)
-        # end tryse_api_type
 # end class Bot
 
