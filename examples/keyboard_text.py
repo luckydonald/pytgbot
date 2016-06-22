@@ -22,7 +22,7 @@ def main():
         for update in bot.get_updates(limit=1, offset=last_update_id+1):
             last_update_id = update.update_id
             print(update)
-            if update.message or update.message.entities:
+            if not update.message or not update.message.entities:
                 continue
             for entity in update.message.entities:
                 # MessageEntity
@@ -44,7 +44,7 @@ def do_keyboard(chat_id):
     buttons = [
         ["YES", "NO"],
         ["Maybe", "lol"],
-        # [KeyboardButton("Location?", request_location=True)]
+        [KeyboardButton("Contact?", request_contact=True), KeyboardButton("Location?", request_location=True)],
     ]
     markup = ReplyKeyboardMarkup(buttons, resize_keyboard=True, one_time_keyboard=True)
     print(bot.send_msg(chat_id, "test!", reply_markup=markup))
