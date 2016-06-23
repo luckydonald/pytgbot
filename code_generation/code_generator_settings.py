@@ -44,7 +44,8 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     # pytgbot.api_types.sendable.*
     "Sendable":                     ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
     "InputFile":                    ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
-    "InputFileURL":                 ("pytgbot.api_types.sendable.", "InputFile", None),
+    "InputFileFromDisk":            ("pytgbot.api_types.sendable.", "InputFile", None),
+    "InputFileFromURL":             ("pytgbot.api_types.sendable.", "InputFile", None),
 
     # pytgbot.api_types.sendable.inline.*
 
