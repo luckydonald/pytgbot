@@ -5,12 +5,10 @@ __author__ = 'luckydonald'
 
 here = path.abspath(path.dirname(__file__))
 
-long_description = """A Python module that connects to a Telegram messenger CLI, allowing to interact with Telegram users or groups.
-Report any issues at https://github.com/luckydonald/pytg/issues/"""
+long_description = """A Python module that connects to the Telegram bot api, allowing to interact with Telegram users or groups."""
 
 setup(
-    name='pytgbot',
-    2.0.0,
+    name='pytgbot', version="2.0.0",
     description='Connect to the Telegram Bot API, receive and send Telegram messages.',
     long_description=long_description,
     # The project's main homepage.
@@ -48,7 +46,8 @@ setup(
     keywords='telegram bot api python message send receive python secure fast answer reply image voice picture location contacts typing multi messanger inline quick reply gif image video mp4 mpeg4',
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=['pytgbot', 'pytgbot.api_types'],  # find_packages(exclude=['contrib', 'docs', 'tests*']),
+    packages=['pytgbot', 'pytgbot.api_types', 'pytgbot.api_types.receivable', 'pytgbot.api_types.sendable'],
+              # find_packages(exclude=['contrib', 'docs', 'tests*']),
     # List run-time dependencies here. These will be installed by pip when your
     # project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
