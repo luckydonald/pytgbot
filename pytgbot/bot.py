@@ -45,11 +45,26 @@ class Bot(object):
     def get_me(self):
         """
         A simple method for testing your bot's auth token. Requires no parameters.
+        Returns basic information about the bot in form of a :class:`pytgbot.api_types.receivable.peer.User` object.
+
+        https://core.telegram.org/bots/api#getme
 
         :return: Returns basic information about the bot in form of a User object.
         :rtype: User
         """
-        return self.do("getMe")
+        result = self.do("getMe")
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.peer import User
+            try:
+                return User.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
     # end def get_me
 
     def get_updates(self, offset=None, limit=100, timeout=0, delta=timedelta(milliseconds=100), error_as_empty=False):

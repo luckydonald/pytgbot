@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from pytgbot.exceptions import TgApiException
 from pytgbot.api_types.sendable.inline import InlineQueryResultArticle, InputTextMessageContent
 from pytgbot.api_types.receivable.inline import InlineQuery
 from pytgbot.api_types.receivable.updates import Update
+from pytgbot.exceptions import TgApiException
 
 __author__ = 'luckydonald'
 
-from random import getrandbits
 import logging
 logger = logging.getLogger(__name__)
 

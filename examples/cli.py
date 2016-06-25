@@ -7,11 +7,11 @@ For the command
 Custom commands to make stuff easier:
 `msg <peer> <text>`
 """
-import json
 
 from pytgbot.api_types.receivable.inline import InlineQuery
 from pytgbot.api_types.receivable.updates import Message
 from pytgbot.api_types.receivable.peer import Peer, Chat, User
+from pytgbot.exceptions import TgApiException
 from pytgbot import Bot
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.interactions import input, answer
@@ -36,7 +36,7 @@ def main(API_KEY):
     if API_KEY is None:
         API_KEY = answer("Input API key")
     # get your bot instance.
-    bot = Bot(API_KEY)
+    bot = Bot(API_KEY, return_python_objects=True)
     my_info=bot.get_me()
     print("Information about myself: {info}".format(info=my_info))
     in_tread = Thread(target=get_updates, name="cli input thread", args=(bot,))
@@ -72,19 +72,28 @@ def parse_input(bot, cmd):
         user = cached_chats[user]
         return parse_call_result(bot.send_msg(user, message))
     cmd_func = getattr(bot, command)  # the function to call
-    if args:
-        parsed_args = parse_args(args)
-        if not isinstance(parsed_args, (list,dict)):
-            parsed_args = [str(parsed_args)]
-        if isinstance(parsed_args, list):
-            call_result = cmd_func(*parsed_args)
+    try:
+        if args:
+            parsed_args = parse_args(args)
+            if not isinstance(parsed_args, (list,dict)):
+                parsed_args = [str(parsed_args)]
+            # end if not isinstance
+            if isinstance(parsed_args, list):
+                call_result = cmd_func(*parsed_args)
+            else:
+                assert isinstance(parsed_args, dict)
+                call_result = cmd_func(**parsed_args)
+            # end if isinstance
         else:
-            assert isinstance(parsed_args, dict)
-            call_result = cmd_func(**parsed_args)
-        # end if isinstance
-    else:
-        return parse_call_result(cmd_func())
-    # end id
+            call_result = cmd_func()
+            # end if
+        # end if
+        print("[OK  ] {result}".format(
+            result=call_result
+        ))
+    except TgApiException as e:
+        print("[FAIL] {exception}".format(exception=e))
+    # end try
 # end def
 
 
