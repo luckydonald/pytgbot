@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from json import dumps
 
 from pytgbot import Bot
-from pytgbot.exceptions import TgApiException
+from pytgbot.exceptions import TgApiException, TgApiServerException, TgApiParseException
 from pytgbot.api_types.sendable.inline import InlineQueryResultArticle, InlineQueryResultGif, InlineQueryResultPhoto
 from pytgbot.api_types.sendable.inline import InputTextMessageContent
 
@@ -13,13 +13,13 @@ from luckydonaldUtils.download import get_json
 
 
 __author__ = 'luckydonald'
-VERSION = "v0.3.0"
+VERSION = "v0.3.1"
 
 try:
     from urllib import quote  # python 2
 except ImportError:
     from urllib.parse import quote  # python 3
-# end tray
+# end try
 logger = logging.getLogger(__name__)
 
 from somewhere import API_KEY  # so I don't upload them to github :D
@@ -28,25 +28,30 @@ from somewhere import API_KEY  # so I don't upload them to github :D
 
 def main():
     # get you bot instance.
-    bot = Bot(API_KEY)
+    bot = Bot(API_KEY, return_python_objects=False)
+    # Set `return_python_objects=False`
+    # because we need to be really fast to answer inline queries in time,
+    # and my computer is crap,
+    # so any nanosecond this adds is too much,
+    # resulting in the queries timing out.
 
-    my_info=bot.get_me()
-    print("Information about myself: {info}".format(info=my_info))
+    logging.add_colored_handler(logger_name=__name__, level=logging.DEBUG)
+
+    my_info = bot.get_me()
+    logger.info("Information about myself: {info}".format(info=my_info))
     last_update_id = 0
     mlfw = MLFW(bot)
     while True:
         # loop forever.
-        for update in bot.get_updates(limit=100, offset=last_update_id+1, error_as_empty=True):
+        for update in bot.get_updates(limit=100, offset=last_update_id+1, error_as_empty=True).result:
             last_update_id = update.update_id
-            print(update)
-            if not update.inline_query:
+            logger.debug(update)
+            if "inline_query" not in update or not update.inline_query:
                 continue
             inline_query_id = update.inline_query.id
-            query_obj = update.inline_query
-            query = query_obj.query
-            print(query)
-            print(query_obj)
-            mlfw.search(query, inline_query_id, offset=query_obj.offset)
+            query = update.inline_query.query
+            query_offset = update.inline_query.offset
+            mlfw.search(query, inline_query_id, offset=query_offset)
         # end for
     # end while
 # end def main
@@ -83,7 +88,9 @@ class MLFW(object):
                     description=valid_tag_obj.error, thumb_url=self.error_image
                 )
                 try:
-                    self.bot.answer_inline_query(inline_query_id, [error_message])
+                    logger.debug("Sending result: {}".format((inline_query_id, [error_message])))
+                    result = self.check_result(self.bot.answer_inline_query(inline_query_id, [error_message]))
+                    logger.success(result)
                 except TgApiException:
                     logger.exception("Answering query failed.")
                 return
@@ -98,14 +105,16 @@ class MLFW(object):
                     thumb_url=self.error_image
             )
             try:
-                self.bot.answer_inline_query(inline_query_id, result)
-            except TgApiException:
-                logger.exception("Answering query failed.")
+                logger.debug("Sending result: {}".format((inline_query_id, result)))
+                result = self.check_result(self.bot.answer_inline_query(inline_query_id, result))
+                logger.success(result)
+            except TgApiException as e:
+                logger.exception("Answering query failed: {e}".format(e=e))
             return
-        print ("tags: {}".format(valid_tag_names))
-        print("offset: {}".format(offset))
+        logger.info("tags: {}".format(valid_tag_names))
+        logger.debug("offset: {}".format(offset))
         images_of_tag = get_json(self.tag_info, params=dict(search=dumps(valid_tag_names), format="json", limit=10, offset=offset))
-        print(images_of_tag)
+        logger.debug(images_of_tag)
         if images_of_tag.meta.total_count < 1 or len(images_of_tag.objects) < 1:
             error_message = InlineQueryResultArticle(
                 id="404i:"+string,
@@ -115,9 +124,11 @@ class MLFW(object):
                 thumb_url=self.error_image
             )
             try:
-                self.bot.answer_inline_query(inline_query_id, [error_message])
-            except TgApiException:
-                logger.exception("Answering query failed.")
+                logger.debug("Sending result: {}".format((inline_query_id, [error_message])))
+                result = self.check_result(self.bot.answer_inline_query(inline_query_id, [error_message]))
+                logger.success(result)
+            except TgApiException as e:
+                logger.exception("Answering query failed: {e}".format(e=e))
             return
         if images_of_tag.meta.next:
             next_offset = offset+10
@@ -148,15 +159,31 @@ class MLFW(object):
             logger.debug(res.to_array())
         logger.debug("next_offset=" + str(next_offset))
         try:
-            self.bot.answer_inline_query(inline_query_id, results, cache_time=300, next_offset=next_offset)
-        except TgApiException:
-            logger.exception("Answering query failed.")
-        # end try
+            logger.debug("Sending result: {}, cache_time=300, next_offset={next_offset}".format((inline_query_id, results), next_offset=next_offset))
+            result = self.check_result(self.bot.answer_inline_query(inline_query_id, results, cache_time=300, next_offset=next_offset))
+            logger.success(result)
+        except TgApiException as e:
+            logger.exception("Answering query failed: {e}".format(e=e))
+            # end try
     # end def
 
-    def str_to_caption(self, search_string):
+    @staticmethod
+    def str_to_caption(search_string):
         return "#{search}".format(search=search_string.strip().lower().replace(" ", "_"))
     # end def str_to_caption
+
+    def check_result(self, res):
+        if res.ok != True:
+            raise TgApiServerException(
+                error_code=res.error_code if "error_code" in res else None,
+                response=res.response if "response" in res else None,
+                description=res.description if "description" in res else None,
+            )
+        # end if not ok
+        if "result" not in res:
+            raise TgApiParseException('Key "result" is missing.')
+        # end if no result
+        return res.result
 # end class
 
 if __name__ == '__main__':
