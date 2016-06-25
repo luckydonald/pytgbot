@@ -1950,7 +1950,8 @@ class Bot(object):
                 raise TgApiServerException(
                     error_code=res.error_code if "error_code" in res else None,
                     response=res.response if "response" in res else None,
-                    description=res.description if "description" in res else None
+                    description=res.description if "description" in res else None,
+                    request=r if r else None
                 )
             # end if not ok
             if "result" not in res:

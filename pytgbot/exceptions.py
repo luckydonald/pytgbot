@@ -17,16 +17,17 @@ class TgApiServerException(TgApiException):
     """
     Raised if the api returns "ok" == false
     """
-    def __init__(self, error_code=None, response=None, description=None):
+    def __init__(self, error_code=None, response=None, description=None, request=None):
         super(TgApiServerException, self).__init__(description)
         self.error_code = error_code
         self.response = response
         self.description = description
+        self.request=request
     # end def __init__
 
     def __str__(self, *args, **kwargs):
         return "TgApiException(error_code={self.error_code}, response={self.response}, " \
-               "description={self.description})".format(self=self)
+               "description={self.description}, request={self.request})".format(self=self)
     # end def __str__
 # end class TgApiException
 
