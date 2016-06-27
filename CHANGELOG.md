@@ -1,3 +1,4 @@
+# Changelog
 ## Version 2.0.1 ## 
 - Renamed `InputFileURL` to `InputFileFromURL`
 - Added `InputFileFromDisk`

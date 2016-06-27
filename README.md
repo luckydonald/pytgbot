@@ -1,4 +1,5 @@
-# pytgbot `v2.0.1` (stable)
+# pytgbot
+### Version [2.0.1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) 
 ###### Python module to access the telegram bot api.
 
 [Official Telegram Bot API Documentation](https://core.telegram.org/bots)
@@ -25,10 +26,10 @@ for x in bot.get_updates():
 bot.send_message(CHAT_ID, "Test!")
 ```
 
-All the functions can be find in [pytgbot/bot.py](https://github.com/luckydonald/pytgbotapi/blob/master/pytgbot/bot.py).
+All the functions can be found in [pytgbot/bot.py](https://github.com/luckydonald/pytgbot/blob/master/pytgbot/bot.py).
 
 #### Examples ####
-Have a look into the `examples` folder.
+Have a look into the [examples](https://github.com/luckydonald/pytgbot/tree/master/examples) folder.
 
 ## In case of errors ##
 First you should set logging to level `DEBUG` to see what's going on.
