@@ -1,4 +1,8 @@
 # Changelog
+## Version 2.1.0 ##
+- Renamed `pytgbot.api_types.receivable.media.File.download_url(token)` to `get_download_url(token)`
+- Added a `pytgbot.bot.Bot.get_download_url(file)` method.
+
 ## Version 2.0.1 ## 
 - Renamed `InputFileURL` to `InputFileFromURL`
 - Added `InputFileFromDisk`

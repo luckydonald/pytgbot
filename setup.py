@@ -20,7 +20,7 @@ setup(
     license='GPLv3+',
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',  # 3 - Alpha, 4 - Beta, 5 - Production/Stable
+        'Development Status :: 4 - Beta', # 2 - Pre-Alpha, 3 - Alpha, 4 - Beta, 5 - Production/Stable
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
         'Topic :: Communications',

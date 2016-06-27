@@ -1966,7 +1966,7 @@ class Bot(object):
                     error_code=res.error_code if "error_code" in res else None,
                     response=res.response if "response" in res else None,
                     description=res.description if "description" in res else None,
-                    request=r
+                    request=r.request
                 )
             # end if not ok
             if "result" not in res:
@@ -2009,4 +2009,20 @@ class Bot(object):
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
         return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
     # end def _do_fileupload
+
+    def get_download_url(self, file):
+        """
+        Creates a url to download the file.
+
+        Note: Contains the secret API key, so you should not share this url!
+
+        :param file: The File you want to get the url to download.
+        :type  file: pytgbot.api_types.receivable.media.File
+
+        :return: url
+        :rtype: str
+        """
+        from .api_types.receivable.media import File
+        assert isinstance(file, File)
+        file.get_download_url(self.api_key)
 # end class Bot

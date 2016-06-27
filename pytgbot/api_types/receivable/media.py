@@ -1218,9 +1218,20 @@ class File(Receivable):
         self.file_path = file_path
     # end def __init__
 
-    def download_url(self, token):
+    def get_download_url(self, token):
+        """
+        Creates a url to download the file.
+
+        Note: Contains the secret API key, so you should not share this url!
+
+        :param token: API key
+        :type  token: str
+
+        :return: url
+        :rtype: str
+        """
         return "https://api.telegram.org/file/bot{token}/{file_path}".format(token=token, file_path=self.file_path)
-    # end def download_url
+    # end def get_download_url
 
     def to_array(self):
         """
