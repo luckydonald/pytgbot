@@ -1,11 +1,5 @@
-# pytgbot `v2.0.0` (stable)
+# pytgbot `v2.0.1` (stable)
 ###### Python module to access the telegram bot api.
-
-`2.0.1`: Renamed `InputFileURL` to `InputFileFromURL`, added `InputFileFromDisk` (`InputFile` is for buffers now) 
-`2.0.0`: Big overhaul. Real Objects for everything. Also most of this module can now be generated from the api website automatically.
-`1.0.1`: Added ability to ignore network errors in `get_updates(...)` without raising a exception by setting `error_as_empty=True`. Useful in `for` constructs. 
-New in version `1.0.0`: [Inline mode](https://telegram.org/blog/inline-bots) including [inlinefeedback](https://core.telegram.org/bots/inline#collecting-feedback).
-
 
 [Official Telegram Bot API Documentation](https://core.telegram.org/bots)
 
@@ -24,9 +18,24 @@ bot = Bot(API_KEY)
 
 
 # getting events:
-for x in bot.get_updates()["result"]:
+for x in bot.get_updates():
 	print(x)
 
 # sending messages:
-bot.send_msg(CHAT_ID, "another test.")
+bot.send_message(CHAT_ID, "Test!")
 ```
+
+All the functions can be find in [pytgbot/bot.py](https://github.com/luckydonald/pytgbotapi/blob/master/pytgbot/bot.py).
+
+#### Examples ####
+Have a look into the `examples` folder.
+
+## In case of errors ##
+First you should set logging to level `DEBUG` to see what's going on.
+```python
+# add this to the first lines in your file
+import logging
+logging.basicConfig(level=logging.DEBUG)
+```
+If you are about to open a new issue, search the existing ones (open and closed) first.
+Sometimes they are already reported or even solved.
