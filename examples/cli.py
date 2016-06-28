@@ -138,7 +138,7 @@ def get_func_str(func):
 def get_updates(bot):
     last_update_id = 0
     while True:  # loop forever.
-        for update in bot.get_updates(limit=100, offset=last_update_id+1, timeout=60, error_as_empty=True):  # for every new update
+        for update in bot.get_updates(limit=100, offset=last_update_id+1, poll_timeout=60, error_as_empty=True):  # for every new update
             last_update_id = update.update_id
             print(repr(last_update_id))
             try:

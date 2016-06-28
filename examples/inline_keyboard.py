@@ -25,7 +25,7 @@ def main():
     while True:
         # loop forever.
         try:
-            updates = bot.get_updates(limit=100, offset=last_update_id+1, timeout=30, error_as_empty=True)
+            updates = bot.get_updates(limit=100, offset=last_update_id+1, poll_timeout=30, error_as_empty=True)
             for update in updates:
                 last_update_id = update.update_id
                 if not (update.message and "/start" in update.message.text) and not update.callback_query:

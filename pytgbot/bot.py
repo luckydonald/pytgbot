@@ -67,7 +67,7 @@ class Bot(object):
         return result
     # end def get_me
 
-    def get_updates(self, offset=None, limit=100, timeout=0, delta=timedelta(milliseconds=100), error_as_empty=False):
+    def get_updates(self, offset=None, limit=100, poll_timeout=0, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
 
@@ -89,8 +89,13 @@ class Bot(object):
         :keyword limit: Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100
         :type    limit: int
 
-        :keyword timeout: Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling
-        :type    timeout: int
+        :keyword poll_timeout: Timeout in seconds for long polling, e.g. how long we want to wait maximum.
+                               Defaults to 0, i.e. usual short polling.
+        :type    poll_timeout: int
+
+        :keyword request_timeout: Timeout of the request. Not the long polling server side timeout.
+                                  If not specified, it is set to `poll_timeout`+2.
+        :type    request_timeout: int
 
         :keyword delta: Wait minimal 'delta' seconds, between requests. Useful in a loop.
         :type    delta: datetime.
@@ -111,16 +116,28 @@ class Bot(object):
 
         assert(offset is None or isinstance(offset, int))
         assert(limit is None or isinstance(limit, int))
-        assert(timeout is None or isinstance(timeout, int))
+        assert(poll_timeout is None or isinstance(poll_timeout, int))
+        if poll_timeout and not request_timeout is None:
+            request_timeout = poll_timeout + 2
+        # end if
 
-        now = datetime.now()
-        if self._last_update - now < delta:
-            wait = ((now - self._last_update) - delta).total_seconds()  # can be 0.2
-            wait = 0 if wait < 0 else wait
-            sleep(wait)
+        if delta.total_seconds() > poll_timeout:
+            now = datetime.now()
+            if self._last_update - now < delta:
+                wait = ((now - self._last_update) - delta).total_seconds()  # can be 0.2
+                wait = 0 if wait < 0 else wait
+                if wait != 0:
+                    logger.debug("Sleeping {i} seconds.".format(i=wait))
+                # end if
+                sleep(wait)
+            # end if
+        # end if
         self._last_update = datetime.now()
         try:
-            result = self.do("getUpdates", offset=offset, limit=limit, timeout=timeout)
+            result = self.do(
+                "getUpdates", offset=offset, limit=limit, timeout=poll_timeout, use_long_polling=poll_timeout != 0,
+                request_timeout=request_timeout
+            )
             if self.return_python_objects:
                 logger.debug("Trying to parse {data}".format(data=repr(result)))
                 from pytgbot.api_types.receivable.updates import Update
@@ -1915,7 +1932,7 @@ class Bot(object):
         return result
     # end def answer_inline_query
 
-    def do(self, command, files=None, use_long_polling=False, **query):
+    def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.
 
@@ -1933,10 +1950,17 @@ class Bot(object):
         :param command: The Url command parameter
         :type  command: str
 
+        :keyword request_timeout: When the request should time out.
+        :type    request_timeout: int
+
         :param files: if it needs to send files.
-        :param use_long_polling: if it should use long polling.
+
+        :keyword use_long_polling: if it should use long polling.
                                 (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
+        :type    use_long_polling: bool
+
         :param query: will get json encoded.
+
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
@@ -1956,7 +1980,7 @@ class Bot(object):
                     params[key] = element
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
         r = requests.post(url, params=params, files=files, stream=use_long_polling,
-                          verify=True)  # No self signed certificates. Telegram should be trustworthy anyway...
+                          verify=True, timeout=request_timeout)  # No self signed certificates. Telegram should be trustworthy anyway...
         res = DictObject.objectify(r.json())
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
@@ -2024,5 +2048,5 @@ class Bot(object):
         """
         from .api_types.receivable.media import File
         assert isinstance(file, File)
-        file.get_download_url(self.api_key)
+        return file.get_download_url(self.api_key)
 # end class Bot

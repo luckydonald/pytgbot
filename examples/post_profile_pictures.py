@@ -16,7 +16,7 @@ bot = Bot(API_KEY)
 last_update_id = -1
 while True:
     # loop forever.
-    for update in bot.get_updates(limit=100, offset=last_update_id+1, timeout=30):
+    for update in bot.get_updates(limit=100, offset=last_update_id+1, poll_timeout=30):
         last_update_id = update.update_id
         print("got message: {msg}".format(msg=update))
         if not "message" in update:

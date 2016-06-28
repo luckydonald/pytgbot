@@ -1,4 +1,8 @@
 # Changelog
+## Version 2.1.1 ##
+- Renamed `get_updates(...)`'s `timeout` parameter to `poll_timeout`.
+- Added `request_timeout` to `do(...)` method. Currently only `get_updates(...)` has that.
+
 ## Version 2.1.0 ##
 - Renamed `pytgbot.api_types.receivable.media.File.download_url(token)` to `get_download_url(token)`
 - Added a `pytgbot.bot.Bot.get_download_url(file)` method.
