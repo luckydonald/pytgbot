@@ -1,4 +1,8 @@
 # Changelog
+
+## Version 2.1.2 ##
+- Fix: Also catching `TgApiException`s if `get_updates(..., error_as_empty=True)`
+
 ## Version 2.1.1 ##
 - Renamed `get_updates(...)`'s `timeout` parameter to `poll_timeout`.
 - Added `request_timeout` to `do(...)` method. Currently only `get_updates(...)` has that.

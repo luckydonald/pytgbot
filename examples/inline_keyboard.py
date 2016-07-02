@@ -47,7 +47,7 @@ def main():
                         reply_markup=markup
                     )
                     print(result)
-                else if update.callback_query:
+                elif update.callback_query:
                     # callback_query.message is the original message the bot sent
                     peer_id, current_image, do_submit = update.callback_query.data.split(";")
                     peer_id, current_image = int(peer_id), int(current_image)  # str -> int

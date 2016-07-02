@@ -8,7 +8,7 @@ from DictObject import DictObject
 from luckydonaldUtils.encoding import to_native as n
 from luckydonaldUtils.logger import logging
 
-from .exceptions import TgApiServerException, TgApiParseException, TgApiTypeError
+from .exceptions import TgApiServerException, TgApiParseException, TgApiTypeError, TgApiException
 from .api_types.sendable.inline import InlineQueryResult
 from .api_types import from_array_list
 
@@ -150,7 +150,7 @@ class Bot(object):
                 raise TgApiParseException("Could not parse result.")  # See debug log for details!
             # end if return_python_objects
             return result
-        except requests.RequestException as e:
+        except (requests.RequestException, TgApiException) as e:
             if error_as_empty:
                 logger.warn("Network related error happened in get_updates(), but will be ignored: " + str(e),
                             exc_info=True)
