@@ -69,8 +69,16 @@ def parse_input(bot, cmd):
         return get_help(bot, args)
     if command == "msg":
         user, message = args.split(" ", maxsplit=1)
-        user = cached_chats[user]
-        return parse_call_result(bot.send_msg(user, message))
+        try:
+            user = cached_chats[user]
+        except KeyError:
+            return "[FAIL] I don't have that peer cached."
+            # TODO: accept anyway? So you can use a username or something?
+        try:
+            result = bot.send_msg(user, message)
+            return "[ OK ] {}".format(result)
+        except TgApiException as e:
+            return "[FAIL] {}".format(e)
     cmd_func = getattr(bot, command)  # the function to call
     try:
         if args:
@@ -88,7 +96,7 @@ def parse_input(bot, cmd):
             call_result = cmd_func()
             # end if
         # end if
-        print("[OK  ] {result}".format(
+        print("[ OK ] {result}".format(
             result=call_result
         ))
     except TgApiException as e:
@@ -182,22 +190,27 @@ def update_to_string(data):
                 return "[msg {message_id}] {from_print}: {text}".format(message_id=msg.message_id, from_print=msg_from_print, text=msg.text)
         elif msg.chat.type == 'group':
             if "text" in msg:
-                return "[msg {message_id}] {from_print} ({title}): {text}".format(message_id=msg.message_id, from_print=msg_from_print, title=msg.chat.title, text=msg.text)
-    elif "inline_query" in data:
+                group_print = peer_to_string_and_cache(msg.chat)
+                return "[msg {message_id}] {from_print} ({title}): {text}".format(message_id=msg.message_id, from_print=msg_from_print, title=group_print, text=msg.text)
+    elif data.inline_query:
         qry = data.inline_query
         assert isinstance(qry, InlineQuery)
         qry_from_print = peer_to_string_and_cache(qry.from_peer)
         return "[query {id}] {from_print}: {text}".format(from_print=qry_from_print, id=qry.id, text=qry.query)
+    else:
+        print(data)
     # end if message
     return str(data)
 # end def
 
 
-def peer_to_string_and_cache(peer, show_id=True):
+def peer_to_string_and_cache(peer, show_id=True, reply=True):
     peer_string = peer_to_string(peer)
     cached_chats[peer_string.strip()] = peer.id
     cached_chats[str(peer.id).strip()] = peer.id
-    cached_chats["!"] = peer.id
+    if reply:
+        cached_chats["!"] = peer.id
+    # end if
     if show_id and "id" in peer:
         peer_string += " (#{id})".format(id=peer.id)
     return peer_string
@@ -209,7 +222,7 @@ def peer_to_string(peer):
         return "{title}".format(title=peer.title)
     assert isinstance(peer, User)
     if peer.first_name:
-        if "last_name" in peer:
+        if peer.last_name:
             return "{first_name} {last_name}".format(first_name=peer.first_name, last_name=peer.last_name)
         # end if last_name
         return "{first_name}".format(first_name=peer.first_name)
