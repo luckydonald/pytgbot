@@ -169,6 +169,10 @@ class MLFW(object):
 
     @staticmethod
     def str_to_caption(search_string):
+        search_string = search_string.strip()
+        if search_string.lower() == "littlepip":
+            return "#littlepip #best_pony"
+        # end def
         return "#{search}".format(search=search_string.strip().lower().replace(" ", "_"))
     # end def str_to_caption
 

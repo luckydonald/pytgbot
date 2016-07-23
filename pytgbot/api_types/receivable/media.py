@@ -109,8 +109,13 @@ class MessageEntity(Result):
         """
         Implements `str(messageentity_instance)`
         """
-        return "MessageEntity(type={self.type}, offset={self.offset}, length={self.length}, url={self.url}, user={self.user})".format(self=self)
+        return "MessageEntity(type={self.type}, offset={self.offset}, length={self.length}, " \
+               "url={self.url}, user={self.user})".format(self=self)
     # end def __str__
+
+    def __repr__(self):
+        return self.__str__()
+    # end def _repr__
 
     def __contains__(self, key):
         """
