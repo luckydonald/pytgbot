@@ -54,6 +54,6 @@ class InputFileFromURL(InputFile):
     # end def __init__
 
     def get_request_files(self, var_name):
-        return {var_name: (self.file_name, self.file, self.file_mime)}
+        return {var_name: (self.file_name, self.file.content, self.file_mime)}
     # end def get_request_files
 # end class InputFileFromURL
