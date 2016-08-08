@@ -1981,7 +1981,11 @@ class Bot(object):
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
         r = requests.post(url, params=params, files=files, stream=use_long_polling,
                           verify=True, timeout=request_timeout)  # No self signed certificates. Telegram should be trustworthy anyway...
-        res = DictObject.objectify(r.json())
+        if str(r.content) != "":
+            res = DictObject.objectify(r.json())
+        else:
+            res = DictObject.objectify({})
+        # end if
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
         if self.return_python_objects:
@@ -2049,4 +2053,5 @@ class Bot(object):
         from .api_types.receivable.media import File
         assert isinstance(file, File)
         return file.get_download_url(self.api_key)
+    # end def get_download_url
 # end class Bot
