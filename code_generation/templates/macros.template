@@ -6,5 +6,5 @@
 {%- macro for_args_keys(variables)            -%}{%- for variable in variables %}"{{ variable.name }}"{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
 {%- macro for_args_set(variables)             -%}{%- for variable in variables %}{{ variable.name }}={{ variable.name }}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
 {%- macro for_args_none(variables)            -%}{%- for variable in variables %}{{ variable.name }}{% if variable.optional %}=None{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
-{%- macro for_args_format_str(variables)      -%}{%- for variable in variables %}{{ variable.name }}={{ "{" }}self.{{ variable.name }}{{ "}" }}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
+{%- macro for_args_format_str(variables)      -%}{%- for variable in variables %}{{ variable.name }}={{ "{" }}self.{{ variable.name }}{{ "!r}" }}{% if not loop.last %}, {% endif -%}{%- endfor %}{% endmacro %}
 {%- macro types_as_assert_tuple(variable)     -%}{%- if  variable.types|length > 1 %}({{ for_type_or_list(variable) }}){% else -%}{{ for_type_or_list(variable) }}{% endif -%}{%- endmacro -%}

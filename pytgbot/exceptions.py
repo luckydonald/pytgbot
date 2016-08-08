@@ -26,8 +26,8 @@ class TgApiServerException(TgApiException):
     # end def __init__
 
     def __str__(self, *args, **kwargs):
-        return "TgApiException(error_code={self.error_code}, response={self.response}, " \
-               "description={self.description}, request={self.request})".format(self=self)
+        return "TgApiServerException(error_code={self.error_code!r}, response={self.response!r}, " \
+               "description={self.description!r}, request={self.request!r})".format(self=self)
     # end def __str__
 # end class TgApiException
 
