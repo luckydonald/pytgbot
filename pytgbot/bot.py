@@ -1981,10 +1981,12 @@ class Bot(object):
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
         r = requests.post(url, params=params, files=files, stream=use_long_polling,
                           verify=True, timeout=request_timeout)  # No self signed certificates. Telegram should be trustworthy anyway...
-        if str(r.content) != "":
+        try:
+            logger.debug(r.json())
             res = DictObject.objectify(r.json())
-        else:
-            res = DictObject.objectify({})
+        except Exception:
+            logger.exception("Parsing answer failed.\nRequest: {r!s}\nContent: {r.content}".format(r=r))
+            raise
         # end if
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
