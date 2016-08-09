@@ -52,7 +52,7 @@ setup(
     # project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=["DictObject", "requests", "requests[security]"]
+    install_requires=["DictObject", "requests", "requests[security]", "python-magic"]
     # List additional groups of dependencies here (e.g. development dependencies).
     # You can install these using the following syntax, for example:
     # $ pip install -e .[dev,test]
