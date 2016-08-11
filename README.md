@@ -1,5 +1,5 @@
 # pytgbot
-### Version [2.1.4.post1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) 
+### Version [2.1.4.post2 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) 
 ###### Python module to access the telegram bot api.
 
 [Official Telegram Bot API Documentation](https://core.telegram.org/bots)
