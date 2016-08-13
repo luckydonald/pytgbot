@@ -23,7 +23,7 @@ class Sendable(TgBotApiObject):
 
 class InputFile(object):
     def __init__(self, file_blob, file_name="file.unknown", file_mime=None):
-        super(InputFile, self).__init__()#
+        super(InputFile, self).__init__()
         if not file_blob:
             raise ValueError("The file content (file_blob argument) is required to be non-empty.")
         # end if
@@ -36,6 +36,7 @@ class InputFile(object):
         if file_mime:
             self.file_mime = file_mime
         else:
+            self.file_mime = None
             self.update_mime_from_blob()
         # end if
     # end def
@@ -52,7 +53,6 @@ class InputFile(object):
     # end def
 
     def get_request_files(self, var_name):
-        self.update_mime_from_blob(self)
         return {var_name: (self.file_name, self.file_blob, self.file_mime)}
     # end def get_request_files
 # end class InputFile
@@ -60,14 +60,15 @@ class InputFile(object):
 
 class InputFileFromDisk(InputFile):
     def __init__(self, file_path, file_name=None, file_mime=None):
-        super(InputFile, self).__init__()
         self.file_path = file_path
         self.file_name = file_name if file_name else path.basename(file_path)
         if file_mime:
             self.file_mime = file_mime
-        else:
-            self.update_mime_from_blob(self)
+        else:  # can't use super.update_mime_from_blob() because we have no blob.
+            import magic  # pip install python-magic
+            self.file_mime = magic.from_buffer(requests.get(self.file_url).content, mime=True)
         # end if file_mime
+        super(InputFileFromDisk, self).__init__(self.file_blob, self.file_name, self.file_mime)
     # end def __init__
 
     def get_request_files(self, var_name):
@@ -78,7 +79,6 @@ class InputFileFromDisk(InputFile):
 
 class InputFileFromURL(InputFile):
     def __init__(self, file_url, file_name=None, file_mime=None):
-        super(InputFileFromURL, self).__init__(None, file_name, file_mime)
         # URL
         self.file_url = file_url
 
@@ -89,15 +89,18 @@ class InputFileFromURL(InputFile):
         if file_name:
             self.file_name = file_name
         else:
+            self.file_name = None
             self.update_name_from_url()
         # end if
 
         # MIME
         if file_mime:
-            self.file_mime = file_name
+            self.file_mime = file_mime
         else:
+            self.file_mime = None
             self.update_mime_from_blob()
         # end if
+        super(InputFileFromURL, self).__init__(self.file_blob, self.file_name, self.file_mime)
     # end def __init__
 
     def __str__(self):
