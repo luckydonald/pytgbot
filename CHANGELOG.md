@@ -1,4 +1,9 @@
 # Changelog
+## _Version 2.2.0 (Planned)_ ##
+ - Moving `InputFile`, `InputFileFromDisk`, `InputFileFromURL` to `api_types.sendable.files.*` [#4](https://github.com/luckydonald/pytgbot/issues/4)
+
+## Version 2.1.4 ##
+- Reworked `InputFile`, `InputFileFromDisk`, `InputFileFromURL` internals. They now should handle input better. [#3](https://github.com/luckydonald/pytgbot/issues/3)
 
 ## Version 2.1.2 ##
 - Fix: Also catching `TgApiException`s if `get_updates(..., error_as_empty=True)`
