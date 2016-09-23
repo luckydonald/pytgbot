@@ -109,8 +109,7 @@ class MessageEntity(Result):
         """
         Implements `str(messageentity_instance)`
         """
-        return "MessageEntity(type={self.type}, offset={self.offset}, length={self.length}, " \
-               "url={self.url}, user={self.user})".format(self=self)
+        return "MessageEntity(type={self.type!r}, offset={self.offset!r}, length={self.length!r}, url={self.url!r}, user={self.user!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -229,7 +228,7 @@ class PhotoSize(Result):
         """
         Implements `str(photosize_instance)`
         """
-        return "PhotoSize(file_id={self.file_id}, width={self.width}, height={self.height}, file_size={self.file_size})".format(self=self)
+        return "PhotoSize(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -347,7 +346,7 @@ class Audio(Media):
         """
         Implements `str(audio_instance)`
         """
-        return "Audio(file_id={self.file_id}, duration={self.duration}, performer={self.performer}, title={self.title}, mime_type={self.mime_type}, file_size={self.file_size})".format(self=self)
+        return "Audio(file_id={self.file_id!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -456,7 +455,7 @@ class Document(Media):
         """
         Implements `str(document_instance)`
         """
-        return "Document(file_id={self.file_id}, thumb={self.thumb}, file_name={self.file_name}, mime_type={self.mime_type}, file_size={self.file_size})".format(self=self)
+        return "Document(file_id={self.file_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -575,7 +574,7 @@ class Sticker(Media):
         """
         Implements `str(sticker_instance)`
         """
-        return "Sticker(file_id={self.file_id}, width={self.width}, height={self.height}, thumb={self.thumb}, emoji={self.emoji}, file_size={self.file_size})".format(self=self)
+        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -702,7 +701,7 @@ class Video(Media):
         """
         Implements `str(video_instance)`
         """
-        return "Video(file_id={self.file_id}, width={self.width}, height={self.height}, duration={self.duration}, thumb={self.thumb}, mime_type={self.mime_type}, file_size={self.file_size})".format(self=self)
+        return "Video(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -802,7 +801,7 @@ class Voice(Media):
         """
         Implements `str(voice_instance)`
         """
-        return "Voice(file_id={self.file_id}, duration={self.duration}, mime_type={self.mime_type}, file_size={self.file_size})".format(self=self)
+        return "Voice(file_id={self.file_id!r}, duration={self.duration!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -902,7 +901,7 @@ class Contact(Media):
         """
         Implements `str(contact_instance)`
         """
-        return "Contact(phone_number={self.phone_number}, first_name={self.first_name}, last_name={self.last_name}, user_id={self.user_id})".format(self=self)
+        return "Contact(phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, user_id={self.user_id!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -981,7 +980,7 @@ class Location(Media):
         """
         Implements `str(location_instance)`
         """
-        return "Location(longitude={self.longitude}, latitude={self.latitude})".format(self=self)
+        return "Location(longitude={self.longitude!r}, latitude={self.latitude!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -1081,7 +1080,7 @@ class Venue(Media):
         """
         Implements `str(venue_instance)`
         """
-        return "Venue(location={self.location}, title={self.title}, address={self.address}, foursquare_id={self.foursquare_id})".format(self=self)
+        return "Venue(location={self.location!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -1161,7 +1160,7 @@ class UserProfilePhotos(Result):
         """
         Implements `str(userprofilephotos_instance)`
         """
-        return "UserProfilePhotos(total_count={self.total_count}, photos={self.photos})".format(self=self)
+        return "UserProfilePhotos(total_count={self.total_count!r}, photos={self.photos!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -1278,7 +1277,7 @@ class File(Receivable):
         """
         Implements `str(file_instance)`
         """
-        return "File(file_id={self.file_id}, file_size={self.file_size}, file_path={self.file_path})".format(self=self)
+        return "File(file_id={self.file_id!r}, file_size={self.file_size!r}, file_path={self.file_path!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):

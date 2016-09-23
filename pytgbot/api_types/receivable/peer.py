@@ -100,7 +100,7 @@ class User(Peer):
         """
         Implements `str(user_instance)`
         """
-        return "User(id={self.id}, first_name={self.first_name}, last_name={self.last_name}, username={self.username})".format(self=self)
+        return "User(id={self.id!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -137,17 +137,17 @@ class Chat(Peer):
 
         Optional keyword parameters:
 
-        :keyword title: Optional. Title, for channels and group chats
+        :keyword title: Optional. Title, for supergroups, channels and group chats
         :type    title: str
 
         :keyword username: Optional. Username, for private chats, supergroups and channels if available
         :type    username: str
 
         :keyword first_name: Optional. First name of the other party in a private chat
-        :type    first_name:  str
+        :type    first_name: str
 
         :keyword last_name: Optional. Last name of the other party in a private chat
-        :type    last_name:  str
+        :type    last_name: str
         """
         super(Chat, self).__init__()
         assert(id is not None)
@@ -219,7 +219,7 @@ class Chat(Peer):
         """
         Implements `str(chat_instance)`
         """
-        return "Chat(id={self.id}, type={self.type}, title={self.title}, username={self.username}, first_name={self.first_name}, last_name={self.last_name})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -299,7 +299,7 @@ class ChatMember(Result):
         """
         Implements `str(chatmember_instance)`
         """
-        return "ChatMember(user={self.user}, status={self.status})".format(self=self)
+        return "ChatMember(user={self.user!r}, status={self.status!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):

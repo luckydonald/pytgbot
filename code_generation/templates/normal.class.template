@@ -1,0 +1,149 @@
+{% from "macros.template" import for_args_none, for_type_list_of_full, for_type_list_of, types_as_tuple, for_args_format_str, for_args_keys %}
+{% macro set_array(variable, class_name) -%}
+{% if variable.types|length == 1 -%}
+{% if variable.types[0].is_list > 0 -%}
+array['{{ variable.api_name }}'] = self._as_array(self.{{ variable.name }})  # type {{ for_type_list_of(variable) }}
+{% else -%}
+{% if variable.types[0].is_builtin -%}
+array['{{ variable.api_name }}'] = {{ variable.types[0].string }}(self.{{ variable.name }})  # type {{ variable.types[0].string }}
+{% else -%}
+array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {{ variable.types[0].string }}
+{% endif -%}
+{% endif -%}
+{% else -%}
+// ERROR: Multible types ({{ for_type(variable) }}) for
+// array['{{ variable.api_name }}'] = self.{{ variable.name }}
+{% endif -%}
+{%- endmacro %}
+{#- macros -#}
+
+class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
+    """
+    {% block class_docstring -%}
+    {{ clazz.description.strip()|indent }}
+
+    {{clazz.link}}
+    {%- endblock %}
+    """
+    def __init__(self, {{ for_args_none(clazz.variables) }}):
+        """
+        {{ self.class_docstring()|indent -}}
+        {# first line #}
+        {%- if clazz.parameters %}
+
+
+        Parameters:
+        {% for param in clazz.parameters %}
+        :param {{ param.name }}: {{ param.description }}
+        :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
+        {% endfor -%}
+        {%- endif -%}
+        {%- if clazz.keywords %}
+
+        Optional keyword parameters:
+        {% for keyword in clazz.keywords %}
+        :keyword {{ keyword.name }}: {{ keyword.description }}
+        :type    {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
+        {% endfor %}
+        {%- endif -%}
+        """
+        super({{ clazz.clazz }}, self).__init__()
+
+        {%- block imports_block -%}
+        {%- if clazz.imports %}
+        {% for import in clazz.imports -%}
+        from {{ import.path }} import {{ import.name }}
+        {% endfor -%}
+        {% endif -%}
+        {%- endblock -%}
+        {% for variable in clazz.variables -%}
+        {% if variable.optional %}
+        assert({{ variable.name }} is None or isinstance({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}))
+        {%- else %}
+        assert({{ variable.name }} is not None)
+        assert(isinstance({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}))
+        {%- endif %}
+        {% if variable.always_is_value %}
+        assert({{ variable.name }} == {{ variable.always_is_value }})
+        {% endif -%}
+        self.{{ variable.name }} = {{ variable.name }}
+        {%- if not loop.last %}
+        {% endif %}
+        {%- endfor -%}
+    {# force line tabs #}
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this {{ clazz.clazz }} to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
+        array = super({{ clazz.clazz }}, self).to_array()
+        {# fresh line #}
+        {%- for variable in clazz.variables -%}
+        {%- if variable.optional %}if self.{{ variable.name }} is not None:
+            {{ set_array(variable)|indent(12) }}
+        {% else -%}
+        {{ set_array(variable)|indent(8) }}
+        {% endif -%}
+        {% endfor -%}
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserializes a new {{ clazz.clazz }} from a given dictionary.
+
+        :return: new {{ clazz.clazz }} instance.
+        :rtype: {{ clazz.clazz }}
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+        {# strip linebreak after #}
+        {{- self.imports_block() -}}
+        {# does strip before  #}
+        data = {}
+        {% for variable in clazz.variables -%}
+        {% if variable.types|length == 1 -%}
+        {% set type = variable.types[0] -%}
+        {% if type.is_builtin -%}
+        {% if type.is_list > 0 -%}
+        data['{{ variable.name }}'] = {{ clazz.clazz }}._builtin_from_array_list(required_type={{ type.string }}, value=array.get('{{ variable.api_name }}'), list_level={{ type.is_list }}){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% else -%}
+        data['{{ variable.name }}'] = {{ type.string }}(array.get('{{ variable.api_name }}')){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% endif -%}
+        {% else -%}
+        {% if type.is_list > 0 -%}
+        data['{{ variable.name }}'] = {{ type.string }}.from_array_list(array.get('{{ variable.api_name }}'), list_level={{ type.is_list }}){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% else -%}
+        data['{{ variable.name }}'] = {{ type.string }}.from_array(array.get('{{ variable.api_name }}')){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% endif -%}
+        {% endif -%}
+        {% else -%}
+        // ERROR: Multible types ({{ for_type(variable) }}) for
+        // data['{{ variable.api_name }}'] = {{ variable.name }}
+        // not sure what to do...
+        {% endif -%}
+        {% endfor -%}
+        return {{ clazz.clazz }}(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str({{ clazz.clazz|lower }}_instance)`
+        """
+        return "{{ clazz.clazz }}({{ for_args_format_str(clazz.variables) }})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in {{ clazz.clazz|lower }}_instance`
+        """
+        return key in [{{ for_args_keys(clazz.variables) }}]
+    # end def __contains__
+# end class {{ clazz.clazz }}

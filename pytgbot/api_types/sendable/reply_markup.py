@@ -125,7 +125,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         """
         Implements `str(replykeyboardmarkup_instance)`
         """
-        return "ReplyKeyboardMarkup(keyboard={self.keyboard}, resize_keyboard={self.resize_keyboard}, one_time_keyboard={self.one_time_keyboard}, selective={self.selective})".format(self=self)
+        return "ReplyKeyboardMarkup(keyboard={self.keyboard!r}, resize_keyboard={self.resize_keyboard!r}, one_time_keyboard={self.one_time_keyboard!r}, selective={self.selective!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -319,7 +319,7 @@ class ReplyKeyboardHide(ReplyMarkup):
         """
         Implements `str(replykeyboardhide_instance)`
         """
-        return "ReplyKeyboardHide(hide_keyboard={self.hide_keyboard}, selective={self.selective})".format(self=self)
+        return "ReplyKeyboardHide(hide_keyboard={self.hide_keyboard!r}, selective={self.selective!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -402,7 +402,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         Implements `str(inlinekeyboardmarkup_instance)`
         """
-        return "InlineKeyboardMarkup(inline_keyboard={self.inline_keyboard})".format(self=self)
+        return "InlineKeyboardMarkup(inline_keyboard={self.inline_keyboard!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -519,7 +519,7 @@ class InlineKeyboardButton(Button):
         """
         Implements `str(inlinekeyboardbutton_instance)`
         """
-        return "InlineKeyboardButton(text={self.text}, url={self.url}, callback_data={self.callback_data}, switch_inline_query={self.switch_inline_query})".format(self=self)
+        return "InlineKeyboardButton(text={self.text!r}, url={self.url!r}, callback_data={self.callback_data!r}, switch_inline_query={self.switch_inline_query!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -626,7 +626,7 @@ class ForceReply(ReplyMarkup):
         """
         Implements `str(forcereply_instance)`
         """
-        return "ForceReply(force_reply={self.force_reply}, selective={self.selective})".format(self=self)
+        return "ForceReply(force_reply={self.force_reply!r}, selective={self.selective!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):

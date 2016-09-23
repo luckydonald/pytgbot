@@ -85,37 +85,39 @@ class InlineQueryResultArticle(InlineQueryResult):
         :type    thumb_height: int
         """
         super(InlineQueryResultArticle, self).__init__(id, "article")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
         assert(input_message_content is not None)
         assert(isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(url is None or isinstance(url, str))
         self.url = url
-        
+
         assert(hide_url is None or isinstance(hide_url, bool))
         self.hide_url = hide_url
-        
+
         assert(description is None or isinstance(description, str))
         self.description = description
-        
+
         assert(thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
-        
+
         assert(thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
-        
+
         assert(thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
@@ -128,6 +130,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultArticle, self).to_array()
+        # 'type' and 'id' given by superclass
         array['title'] = str(self.title)  # type str
         array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         if self.reply_markup is not None:
@@ -163,6 +166,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['title'] = str(array.get('title'))
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
@@ -180,7 +184,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         Implements `str(inlinequeryresultarticle_instance)`
         """
-        return "InlineQueryResultArticle(type={self.type}, id={self.id}, title={self.title}, input_message_content={self.input_message_content}, reply_markup={self.reply_markup}, url={self.url}, hide_url={self.hide_url}, description={self.description}, thumb_url={self.thumb_url}, thumb_width={self.thumb_width}, thumb_height={self.thumb_height})".format(self=self)
+        return "InlineQueryResultArticle(type={self.type!r}, id={self.id!r}, title={self.title!r}, input_message_content={self.input_message_content!r}, reply_markup={self.reply_markup!r}, url={self.url!r}, hide_url={self.hide_url!r}, description={self.description!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -241,37 +245,39 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultPhoto, self).__init__(id, "photo")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(photo_url is not None)
         assert(isinstance(photo_url, str))
         self.photo_url = photo_url
-        
+
         assert(thumb_url is not None)
         assert(isinstance(thumb_url, str))
         self.thumb_url = thumb_url
-        
+
         assert(photo_width is None or isinstance(photo_width, int))
         self.photo_width = photo_width
-        
+
         assert(photo_height is None or isinstance(photo_height, int))
         self.photo_height = photo_height
-        
+
         assert(title is None or isinstance(title, str))
         self.title = title
-        
+
         assert(description is None or isinstance(description, str))
         self.description = description
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -284,6 +290,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultPhoto, self).to_array()
+        # 'type' and 'id' given by superclass
         array['photo_url'] = str(self.photo_url)  # type str
         array['thumb_url'] = str(self.thumb_url)  # type str
         if self.photo_width is not None:
@@ -319,6 +326,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['photo_url'] = str(array.get('photo_url'))
         data['thumb_url'] = str(array.get('thumb_url'))
@@ -336,7 +344,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         Implements `str(inlinequeryresultphoto_instance)`
         """
-        return "InlineQueryResultPhoto(type={self.type}, id={self.id}, photo_url={self.photo_url}, thumb_url={self.thumb_url}, photo_width={self.photo_width}, photo_height={self.photo_height}, title={self.title}, description={self.description}, caption={self.caption}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultPhoto(type={self.type!r}, id={self.id!r}, photo_url={self.photo_url!r}, thumb_url={self.thumb_url!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -395,33 +403,35 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         super(InlineQueryResultGif, self).__init__(id, "gif")
 
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(gif_url is not None)
         assert(isinstance(gif_url, str))
         self.gif_url = gif_url
-        
+
         assert(thumb_url is not None)
         assert(isinstance(thumb_url, str))
         self.thumb_url = thumb_url
 
         assert(gif_width is None or isinstance(gif_width, int))
         self.gif_width = gif_width
-        
+
         assert(gif_height is None or isinstance(gif_height, int))
         self.gif_height = gif_height
 
         assert(title is None or isinstance(title, str))
         self.title = title
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -434,6 +444,7 @@ class InlineQueryResultGif(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultGif, self).to_array()
+        # 'type' and 'id' given by superclass
         array['gif_url'] = str(self.gif_url)  # type str
         array['thumb_url'] = str(self.thumb_url)  # type str
         if self.gif_width is not None:
@@ -467,6 +478,7 @@ class InlineQueryResultGif(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['gif_url'] = str(array.get('gif_url'))
         data['thumb_url'] = str(array.get('thumb_url'))
@@ -483,7 +495,7 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         Implements `str(inlinequeryresultgif_instance)`
         """
-        return "InlineQueryResultGif(type={self.type}, id={self.id}, gif_url={self.gif_url}, thumb_url={self.thumb_url}, gif_width={self.gif_width}, gif_height={self.gif_height}, title={self.title}, caption={self.caption}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -541,34 +553,36 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultMpeg4Gif, self).__init__(id, "mpeg4_gif")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(mpeg4_url is not None)
         assert(isinstance(mpeg4_url, str))
         self.mpeg4_url = mpeg4_url
-        
+
         assert(thumb_url is not None)
         assert(isinstance(thumb_url, str))
         self.thumb_url = thumb_url
 
         assert(mpeg4_width is None or isinstance(mpeg4_width, int))
         self.mpeg4_width = mpeg4_width
-        
+
         assert(mpeg4_height is None or isinstance(mpeg4_height, int))
         self.mpeg4_height = mpeg4_height
 
         assert(title is None or isinstance(title, str))
         self.title = title
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -581,6 +595,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultMpeg4Gif, self).to_array()
+        # 'type' and 'id' given by superclass
         array['mpeg4_url'] = str(self.mpeg4_url)  # type str
         array['thumb_url'] = str(self.thumb_url)  # type str
         if self.mpeg4_width is not None:
@@ -614,6 +629,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['mpeg4_url'] = str(array.get('mpeg4_url'))
         data['thumb_url'] = str(array.get('thumb_url'))
@@ -630,7 +646,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         Implements `str(inlinequeryresultmpeg4gif_instance)`
         """
-        return "InlineQueryResultMpeg4Gif(type={self.type}, id={self.id}, mpeg4_url={self.mpeg4_url}, thumb_url={self.thumb_url}, mpeg4_width={self.mpeg4_width}, mpeg4_height={self.mpeg4_height}, title={self.title}, caption={self.caption}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -697,45 +713,47 @@ class InlineQueryResultVideo(InlineQueryResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultVideo, self).__init__(id, "video")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(video_url is not None)
         assert(isinstance(video_url, str))
         self.video_url = video_url
-        
+
         assert(mime_type is not None)
         assert(isinstance(mime_type, str))
         self.mime_type = mime_type
-        
+
         assert(thumb_url is not None)
         assert(isinstance(thumb_url, str))
         self.thumb_url = thumb_url
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
-        
+
         assert(video_width is None or isinstance(video_width, int))
         self.video_width = video_width
-        
+
         assert(video_height is None or isinstance(video_height, int))
         self.video_height = video_height
-        
+
         assert(video_duration is None or isinstance(video_duration, int))
         self.video_duration = video_duration
-        
+
         assert(description is None or isinstance(description, str))
         self.description = description
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -748,6 +766,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultVideo, self).to_array()
+        # 'type' and 'id' given by superclass
         array['video_url'] = str(self.video_url)  # type str
         array['mime_type'] = str(self.mime_type)  # type str
         array['thumb_url'] = str(self.thumb_url)  # type str
@@ -785,6 +804,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['video_url'] = str(array.get('video_url'))
         data['mime_type'] = str(array.get('mime_type'))
@@ -804,7 +824,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         Implements `str(inlinequeryresultvideo_instance)`
         """
-        return "InlineQueryResultVideo(type={self.type}, id={self.id}, video_url={self.video_url}, mime_type={self.mime_type}, thumb_url={self.thumb_url}, title={self.title}, caption={self.caption}, video_width={self.video_width}, video_height={self.video_height}, video_duration={self.video_duration}, description={self.description}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultVideo(type={self.type!r}, id={self.id!r}, video_url={self.video_url!r}, mime_type={self.mime_type!r}, thumb_url={self.thumb_url!r}, title={self.title!r}, caption={self.caption!r}, video_width={self.video_width!r}, video_height={self.video_height!r}, video_duration={self.video_duration!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -823,7 +843,7 @@ class InlineQueryResultAudio(InlineQueryResult):
 
     https://core.telegram.org/bots/api#inlinequeryresultaudio
     """
-    def __init__(self, id, audio_url, title, performer=None, audio_duration=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, audio_url, title, caption=None, performer=None, audio_duration=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an mp3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -845,6 +865,9 @@ class InlineQueryResultAudio(InlineQueryResult):
 
         Optional keyword parameters:
 
+        :keyword caption: Optional. Caption, 0-200 characters
+        :type    caption: str
+
         :keyword performer: Optional. Performer
         :type    performer: str
 
@@ -858,28 +881,33 @@ class InlineQueryResultAudio(InlineQueryResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultAudio, self).__init__(id, "audio")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(audio_url is not None)
         assert(isinstance(audio_url, str))
         self.audio_url = audio_url
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
+        assert(caption is None or isinstance(caption, str))
+        self.caption = caption
+
         assert(performer is None or isinstance(performer, str))
         self.performer = performer
-        
+
         assert(audio_duration is None or isinstance(audio_duration, int))
         self.audio_duration = audio_duration
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -892,9 +920,11 @@ class InlineQueryResultAudio(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultAudio, self).to_array()
-        array['id'] = str(self.id)  # type str
+        # 'type' and 'id' given by superclass
         array['audio_url'] = str(self.audio_url)  # type str
         array['title'] = str(self.title)  # type str
+        if self.caption is not None:
+            array['caption'] = str(self.caption)  # type str
         if self.performer is not None:
             array['performer'] = str(self.performer)  # type str
         if self.audio_duration is not None:
@@ -922,9 +952,11 @@ class InlineQueryResultAudio(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['audio_url'] = str(array.get('audio_url'))
         data['title'] = str(array.get('title'))
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['performer'] = str(array.get('performer')) if array.get('performer') is not None else None
         data['audio_duration'] = int(array.get('audio_duration')) if array.get('audio_duration') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
@@ -936,14 +968,14 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         Implements `str(inlinequeryresultaudio_instance)`
         """
-        return "InlineQueryResultAudio(type={self.type}, id={self.id}, audio_url={self.audio_url}, title={self.title}, performer={self.performer}, audio_duration={self.audio_duration}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultAudio(type={self.type!r}, id={self.id!r}, audio_url={self.audio_url!r}, title={self.title!r}, caption={self.caption!r}, performer={self.performer!r}, audio_duration={self.audio_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultaudio_instance`
         """
-        return key in ["type", "id", "audio_url", "title", "performer", "audio_duration", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "audio_url", "title", "caption", "performer", "audio_duration", "reply_markup", "input_message_content"]
     # end def __contains__
 # end class InlineQueryResultAudio
 
@@ -955,7 +987,7 @@ class InlineQueryResultVoice(InlineQueryResult):
 
     https://core.telegram.org/bots/api#inlinequeryresultvoice
     """
-    def __init__(self, id, voice_url, title, voice_duration=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, voice_url, title, caption=None, voice_duration=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a voice recording in an .ogg container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -977,6 +1009,9 @@ class InlineQueryResultVoice(InlineQueryResult):
 
         Optional keyword parameters:
 
+        :keyword caption: Optional. Caption, 0-200 characters
+        :type    caption: str
+
         :keyword voice_duration: Optional. Recording duration in seconds
         :type    voice_duration: int
 
@@ -987,25 +1022,30 @@ class InlineQueryResultVoice(InlineQueryResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultVoice, self).__init__(id, "voice")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(voice_url is not None)
         assert(isinstance(voice_url, str))
         self.voice_url = voice_url
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
+        assert(caption is None or isinstance(caption, str))
+        self.caption = caption
+
         assert(voice_duration is None or isinstance(voice_duration, int))
         self.voice_duration = voice_duration
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -1018,8 +1058,11 @@ class InlineQueryResultVoice(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultVoice, self).to_array()
+        # 'type' and 'id' given by superclass
         array['voice_url'] = str(self.voice_url)  # type str
         array['title'] = str(self.title)  # type str
+        if self.caption is not None:
+            array['caption'] = str(self.caption)  # type str
         if self.voice_duration is not None:
             array['voice_duration'] = int(self.voice_duration)  # type int
         if self.reply_markup is not None:
@@ -1045,9 +1088,11 @@ class InlineQueryResultVoice(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['voice_url'] = str(array.get('voice_url'))
         data['title'] = str(array.get('title'))
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['voice_duration'] = int(array.get('voice_duration')) if array.get('voice_duration') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
@@ -1058,14 +1103,14 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         Implements `str(inlinequeryresultvoice_instance)`
         """
-        return "InlineQueryResultVoice(type={self.type}, id={self.id}, voice_url={self.voice_url}, title={self.title}, voice_duration={self.voice_duration}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultVoice(type={self.type!r}, id={self.id!r}, voice_url={self.voice_url!r}, title={self.title!r}, caption={self.caption!r}, voice_duration={self.voice_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultvoice_instance`
         """
-        return key in ["type", "id", "voice_url", "title", "voice_duration", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "voice_url", "title", "caption", "voice_duration", "reply_markup", "input_message_content"]
     # end def __contains__
 # end class InlineQueryResultVoice
 
@@ -1124,11 +1169,13 @@ class InlineQueryResultDocument(InlineQueryResult):
         :type    thumb_height: int
         """
         super(InlineQueryResultDocument, self).__init__(id, "document")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
@@ -1136,29 +1183,29 @@ class InlineQueryResultDocument(InlineQueryResult):
         assert(document_url is not None)
         assert(isinstance(document_url, str))
         self.document_url = document_url
-        
+
         assert(mime_type is not None)
         assert(isinstance(mime_type, str))
         self.mime_type = mime_type
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
 
         assert(description is None or isinstance(description, str))
         self.description = description
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
-        
+
         assert(thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
-        
+
         assert(thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
-        
+
         assert(thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
@@ -1171,6 +1218,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultDocument, self).to_array()
+        # 'type' and 'id' given by superclass
         array['title'] = str(self.title)  # type str
         array['document_url'] = str(self.document_url)  # type str
         array['mime_type'] = str(self.mime_type)  # type str
@@ -1207,6 +1255,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['title'] = str(array.get('title'))
         data['document_url'] = str(array.get('document_url'))
@@ -1225,7 +1274,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         Implements `str(inlinequeryresultdocument_instance)`
         """
-        return "InlineQueryResultDocument(type={self.type}, id={self.id}, title={self.title}, document_url={self.document_url}, mime_type={self.mime_type}, caption={self.caption}, description={self.description}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content}, thumb_url={self.thumb_url}, thumb_width={self.thumb_width}, thumb_height={self.thumb_height})".format(self=self)
+        return "InlineQueryResultDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_url={self.document_url!r}, mime_type={self.mime_type!r}, caption={self.caption!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -1286,34 +1335,36 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         super(InlineQueryResultLocation, self).__init__(id, "location")
 
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(latitude is not None)
         assert(isinstance(latitude, float))
         self.latitude = latitude
-        
+
         assert(longitude is not None)
         assert(isinstance(longitude, float))
         self.longitude = longitude
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
-        
+
         assert(thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
-        
+
         assert(thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
-        
+
         assert(thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
@@ -1326,6 +1377,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultLocation, self).to_array()
+        # 'type' and 'id' given by superclass
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = str(self.title)  # type str
@@ -1358,6 +1410,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
@@ -1374,7 +1427,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         Implements `str(inlinequeryresultlocation_instance)`
         """
-        return "InlineQueryResultLocation(type={self.type}, id={self.id}, latitude={self.latitude}, longitude={self.longitude}, title={self.title}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content}, thumb_url={self.thumb_url}, thumb_width={self.thumb_width}, thumb_height={self.thumb_height})".format(self=self)
+        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -1440,42 +1493,44 @@ class InlineQueryResultVenue(InlineQueryResult):
         :type    thumb_height: int
         """
         super(InlineQueryResultVenue, self).__init__(id, "venue")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(latitude is not None)
         assert(isinstance(latitude, float))
         self.latitude = latitude
-        
+
         assert(longitude is not None)
         assert(isinstance(longitude, float))
         self.longitude = longitude
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
         assert(address is not None)
         assert(isinstance(address, str))
         self.address = address
-        
+
         assert(foursquare_id is None or isinstance(foursquare_id, str))
         self.foursquare_id = foursquare_id
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
-        
+
         assert(thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
-        
+
         assert(thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
-        
+
         assert(thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
@@ -1488,6 +1543,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultVenue, self).to_array()
+        # 'type' and 'id' given by superclass
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = str(self.title)  # type str
@@ -1523,6 +1579,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
@@ -1541,7 +1598,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         Implements `str(inlinequeryresultvenue_instance)`
         """
-        return "InlineQueryResultVenue(type={self.type}, id={self.id}, latitude={self.latitude}, longitude={self.longitude}, title={self.title}, address={self.address}, foursquare_id={self.foursquare_id}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content}, thumb_url={self.thumb_url}, thumb_width={self.thumb_width}, thumb_height={self.thumb_height})".format(self=self)
+        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -1602,33 +1659,35 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         super(InlineQueryResultContact, self).__init__(id, "contact")
 
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(phone_number is not None)
         assert(isinstance(phone_number, str))
         self.phone_number = phone_number
-        
+
         assert(first_name is not None)
         assert(isinstance(first_name, str))
         self.first_name = first_name
-        
+
         assert(last_name is None or isinstance(last_name, str))
         self.last_name = last_name
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
-        
+
         assert(thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
-        
+
         assert(thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
-        
+
         assert(thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
@@ -1641,6 +1700,7 @@ class InlineQueryResultContact(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultContact, self).to_array()
+        # 'type' and 'id' given by superclass
         array['phone_number'] = str(self.phone_number)  # type str
         array['first_name'] = str(self.first_name)  # type str
         if self.last_name is not None:
@@ -1674,6 +1734,7 @@ class InlineQueryResultContact(InlineQueryResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # type is given by class type
         data['id'] = str(array.get('id'))
         data['phone_number'] = str(array.get('phone_number'))
         data['first_name'] = str(array.get('first_name'))
@@ -1690,7 +1751,7 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         Implements `str(inlinequeryresultcontact_instance)`
         """
-        return "InlineQueryResultContact(type={self.type}, id={self.id}, phone_number={self.phone_number}, first_name={self.first_name}, last_name={self.last_name}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content}, thumb_url={self.thumb_url}, thumb_width={self.thumb_width}, thumb_height={self.thumb_height})".format(self=self)
+        return "InlineQueryResultContact(type={self.type!r}, id={self.id!r}, phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -1742,27 +1803,29 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultCachedPhoto, self).__init__(id, "photo")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(photo_file_id is not None)
         assert(isinstance(photo_file_id, str))
         self.photo_file_id = photo_file_id
-        
+
         assert(title is None or isinstance(title, str))
         self.title = title
-        
+
         assert(description is None or isinstance(description, str))
         self.description = description
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -1805,6 +1868,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['photo_file_id'] = str(array.get('photo_file_id'))
         data['title'] = str(array.get('title')) if array.get('title') is not None else None
@@ -1819,7 +1883,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedphoto_instance)`
         """
-        return "InlineQueryResultCachedPhoto(type={self.type}, id={self.id}, photo_file_id={self.photo_file_id}, title={self.title}, description={self.description}, caption={self.caption}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultCachedPhoto(type={self.type!r}, id={self.id!r}, photo_file_id={self.photo_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -1868,24 +1932,26 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultCachedGif, self).__init__(id, "gif")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(gif_file_id is not None)
         assert(isinstance(gif_file_id, str))
         self.gif_file_id = gif_file_id
-        
+
         assert(title is None or isinstance(title, str))
         self.title = title
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -1898,6 +1964,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedGif, self).to_array()
+        # 'type' and 'id' given by superclass
         array['gif_file_id'] = str(self.gif_file_id)  # type str
         if self.title is not None:
             array['title'] = str(self.title)  # type str
@@ -1926,6 +1993,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # type is given by class type
         data['id'] = str(array.get('id'))
         data['gif_file_id'] = str(array.get('gif_file_id'))
         data['title'] = str(array.get('title')) if array.get('title') is not None else None
@@ -1939,7 +2007,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedgif_instance)`
         """
-        return "InlineQueryResultCachedGif(type={self.type}, id={self.id}, gif_file_id={self.gif_file_id}, title={self.title}, caption={self.caption}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultCachedGif(type={self.type!r}, id={self.id!r}, gif_file_id={self.gif_file_id!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -1951,7 +2019,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
 # end class InlineQueryResultCachedGif
 
 
-class InlineQueryResultCachedMpeg4Gif (InlineQueryCachedResult):
+class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     """
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -1989,23 +2057,25 @@ class InlineQueryResultCachedMpeg4Gif (InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedMpeg4Gif, self).__init__(id, "mpeg4_gif")
 
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(mpeg4_file_id is not None)
         assert(isinstance(mpeg4_file_id, str))
         self.mpeg4_file_id = mpeg4_file_id
-        
+
         assert(title is None or isinstance(title, str))
         self.title = title
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -2018,6 +2088,7 @@ class InlineQueryResultCachedMpeg4Gif (InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
+        # 'type' and 'id' given by superclass
         array['mpeg4_file_id'] = str(self.mpeg4_file_id)  # type str
         if self.title is not None:
             array['title'] = str(self.title)  # type str
@@ -2046,6 +2117,7 @@ class InlineQueryResultCachedMpeg4Gif (InlineQueryCachedResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['mpeg4_file_id'] = str(array.get('mpeg4_file_id'))
         data['title'] = str(array.get('title')) if array.get('title') is not None else None
@@ -2059,7 +2131,7 @@ class InlineQueryResultCachedMpeg4Gif (InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedmpeg4gif_instance)`
         """
-        return "InlineQueryResultCachedMpeg4Gif(type={self.type}, id={self.id}, mpeg4_file_id={self.mpeg4_file_id}, title={self.title}, caption={self.caption}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultCachedMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_file_id={self.mpeg4_file_id!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -2107,6 +2179,8 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         super(InlineQueryResultCachedSticker, self).__init__(id, "sicker")
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
@@ -2130,6 +2204,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedSticker, self).to_array()
+        # 'type' and 'id' given by superclass
         array['sticker_file_id'] = str(self.sticker_file_id)  # type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -2154,6 +2229,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['sticker_file_id'] = str(array.get('sticker_file_id'))
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
@@ -2165,7 +2241,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedsticker_instance)`
         """
-        return "InlineQueryResultCachedSticker(type={self.type}, id={self.id}, sticker_file_id={self.sticker_file_id}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultCachedSticker(type={self.type!r}, id={self.id!r}, sticker_file_id={self.sticker_file_id!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -2220,28 +2296,30 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultCachedDocument, self).__init__(id, "document")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
         assert(document_file_id is not None)
         assert(isinstance(document_file_id, str))
         self.document_file_id = document_file_id
-        
+
         assert(description is None or isinstance(description, str))
         self.description = description
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -2254,6 +2332,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedDocument, self).to_array()
+        # 'type' and 'id' given by superclass
         array['title'] = str(self.title)  # type str
         array['document_file_id'] = str(self.document_file_id)  # type str
         if self.description is not None:
@@ -2297,7 +2376,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcacheddocument_instance)`
         """
-        return "InlineQueryResultCachedDocument(type={self.type}, id={self.id}, title={self.title}, document_file_id={self.document_file_id}, description={self.description}, caption={self.caption}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultCachedDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_file_id={self.document_file_id!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -2349,28 +2428,30 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultCachedVideo, self).__init__(id, "video")
-        
+
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(video_file_id is not None)
         assert(isinstance(video_file_id, str))
         self.video_file_id = video_file_id
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
         assert(description is None or isinstance(description, str))
         self.description = description
-        
+
         assert(caption is None or isinstance(caption, str))
         self.caption = caption
-        
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -2383,6 +2464,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedVideo, self).to_array()
+        # 'type' and 'id' given by superclass
         array['video_file_id'] = str(self.video_file_id)  # type str
         array['title'] = str(self.title)  # type str
         if self.description is not None:
@@ -2412,6 +2494,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['video_file_id'] = str(array.get('video_file_id'))
         data['title'] = str(array.get('title'))
@@ -2426,7 +2509,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedvideo_instance)`
         """
-        return "InlineQueryResultCachedVideo(type={self.type}, id={self.id}, video_file_id={self.video_file_id}, title={self.title}, description={self.description}, caption={self.caption}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultCachedVideo(type={self.type!r}, id={self.id!r}, video_file_id={self.video_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -2445,7 +2528,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedvoice
     """
-    def __init__(self, id, voice_file_id, title, reply_markup=None, input_message_content=None):
+    def __init__(self, id, voice_file_id, title, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -2467,6 +2550,9 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
+        :keyword caption: Optional. Caption, 0-200 characters
+        :type    caption: str
+
         :keyword reply_markup: Optional. An Inline keyboard attached to the message
         :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
@@ -2475,21 +2561,26 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedVoice, self).__init__(id, "voice")
 
+        # type is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(voice_file_id is not None)
         assert(isinstance(voice_file_id, str))
         self.voice_file_id = voice_file_id
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
+        assert(caption is None or isinstance(caption, str))
+        self.caption = caption
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -2502,8 +2593,11 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedVoice, self).to_array()
+        # 'type' and 'id' given by superclass
         array['voice_file_id'] = str(self.voice_file_id)  # type str
         array['title'] = str(self.title)  # type str
+        if self.caption is not None:
+            array['caption'] = str(self.caption)  # type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -2527,9 +2621,11 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['voice_file_id'] = str(array.get('voice_file_id'))
         data['title'] = str(array.get('title'))
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedVoice(**data)
@@ -2539,14 +2635,14 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedvoice_instance)`
         """
-        return "InlineQueryResultCachedVoice(type={self.type}, id={self.id}, voice_file_id={self.voice_file_id}, title={self.title}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultCachedVoice(type={self.type!r}, id={self.id!r}, voice_file_id={self.voice_file_id!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcachedvoice_instance`
         """
-        return key in ["type", "id", "voice_file_id", "title", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "voice_file_id", "title", "caption", "reply_markup", "input_message_content"]
     # end def __contains__
 # end class InlineQueryResultCachedVoice
 
@@ -2558,7 +2654,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
     """
-    def __init__(self, id, audio_file_id, reply_markup=None, input_message_content=None):
+    def __init__(self, id, audio_file_id, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -2577,6 +2673,9 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
+        :keyword caption: Optional. Caption, 0-200 characters
+        :type    caption: str
+
         :keyword reply_markup: Optional. An Inline keyboard attached to the message
         :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
@@ -2584,18 +2683,23 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :type    input_message_content: InputMessageContent
         """
         super(InlineQueryResultCachedAudio, self).__init__(id, "audio")
-        
+
+        # 'type' is given by class type
+
         assert(id is not None)
         assert(isinstance(id, str))
         self.id = id
-        
+
         assert(audio_file_id is not None)
         assert(isinstance(audio_file_id, str))
         self.audio_file_id = audio_file_id
-        
+
+        assert(caption is None or isinstance(caption, str))
+        self.caption = caption
+
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
-        
+
         assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
@@ -2608,7 +2712,10 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedAudio, self).to_array()
+        # 'type' and 'id' given by superclass
         array['audio_file_id'] = str(self.audio_file_id)  # type str
+        if self.caption is not None:
+            array['caption'] = str(self.caption)  # type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -2632,8 +2739,10 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         data = {}
+        # 'type' is given by class type
         data['id'] = str(array.get('id'))
         data['audio_file_id'] = str(array.get('audio_file_id'))
+        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return InlineQueryResultCachedAudio(**data)
@@ -2643,14 +2752,14 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedaudio_instance)`
         """
-        return "InlineQueryResultCachedAudio(type={self.type}, id={self.id}, audio_file_id={self.audio_file_id}, reply_markup={self.reply_markup}, input_message_content={self.input_message_content})".format(self=self)
+        return "InlineQueryResultCachedAudio(type={self.type!r}, id={self.id!r}, audio_file_id={self.audio_file_id!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcachedaudio_instance`
         """
-        return key in ["type", "id", "audio_file_id", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "audio_file_id", "caption", "reply_markup", "input_message_content"]
     # end def __contains__
 # end class InlineQueryResultCachedAudio
 
@@ -2686,10 +2795,10 @@ class InputTextMessageContent(InputMessageContent):
         assert(message_text is not None)
         assert(isinstance(message_text, str))
         self.message_text = message_text
-        
+
         assert(parse_mode is None or isinstance(parse_mode, str))
         self.parse_mode = parse_mode
-        
+
         assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
         self.disable_web_page_preview = disable_web_page_preview
     # end def __init__
@@ -2734,7 +2843,7 @@ class InputTextMessageContent(InputMessageContent):
         """
         Implements `str(inputtextmessagecontent_instance)`
         """
-        return "InputTextMessageContent(message_text={self.message_text}, parse_mode={self.parse_mode}, disable_web_page_preview={self.disable_web_page_preview})".format(self=self)
+        return "InputTextMessageContent(message_text={self.message_text!r}, parse_mode={self.parse_mode!r}, disable_web_page_preview={self.disable_web_page_preview!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -2748,14 +2857,14 @@ class InputTextMessageContent(InputMessageContent):
 
 class InputLocationMessageContent(InputMessageContent):
     """
-    Represents the content of a location message to be sent as the result of an inline query. 
+    Represents the content of a location message to be sent as the result of an inline query.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inputlocationmessagecontent
     """
     def __init__(self, latitude, longitude):
         """
-        Represents the content of a location message to be sent as the result of an inline query. 
+        Represents the content of a location message to be sent as the result of an inline query.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
         https://core.telegram.org/bots/api#inputlocationmessagecontent
@@ -2773,7 +2882,7 @@ class InputLocationMessageContent(InputMessageContent):
         assert(latitude is not None)
         assert(isinstance(latitude, float))
         self.latitude = latitude
-        
+
         assert(longitude is not None)
         assert(isinstance(longitude, float))
         self.longitude = longitude
@@ -2815,7 +2924,7 @@ class InputLocationMessageContent(InputMessageContent):
         """
         Implements `str(inputlocationmessagecontent_instance)`
         """
-        return "InputLocationMessageContent(latitude={self.latitude}, longitude={self.longitude})".format(self=self)
+        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -2829,14 +2938,14 @@ class InputLocationMessageContent(InputMessageContent):
 
 class InputVenueMessageContent(InputMessageContent):
     """
-    Represents the content of a venue message to be sent as the result of an inline query. 
+    Represents the content of a venue message to be sent as the result of an inline query.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inputvenuemessagecontent
     """
     def __init__(self, latitude, longitude, title, address, foursquare_id=None):
         """
-        Represents the content of a venue message to be sent as the result of an inline query. 
+        Represents the content of a venue message to be sent as the result of an inline query.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
         https://core.telegram.org/bots/api#inputvenuemessagecontent
@@ -2866,19 +2975,19 @@ class InputVenueMessageContent(InputMessageContent):
         assert(latitude is not None)
         assert(isinstance(latitude, float))
         self.latitude = latitude
-        
+
         assert(longitude is not None)
         assert(isinstance(longitude, float))
         self.longitude = longitude
-        
+
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
-        
+
         assert(address is not None)
         assert(isinstance(address, str))
         self.address = address
-        
+
         assert(foursquare_id is None or isinstance(foursquare_id, str))
         self.foursquare_id = foursquare_id
     # end def __init__
@@ -2926,7 +3035,7 @@ class InputVenueMessageContent(InputMessageContent):
         """
         Implements `str(inputvenuemessagecontent_instance)`
         """
-        return "InputVenueMessageContent(latitude={self.latitude}, longitude={self.longitude}, title={self.title}, address={self.address}, foursquare_id={self.foursquare_id})".format(self=self)
+        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -2940,14 +3049,14 @@ class InputVenueMessageContent(InputMessageContent):
 
 class InputContactMessageContent(InputMessageContent):
     """
-    Represents the content of a contact message to be sent as the result of an inline query. 
+    Represents the content of a contact message to be sent as the result of an inline query.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inputcontactmessagecontent
     """
     def __init__(self, phone_number, first_name, last_name=None):
         """
-        Represents the content of a contact message to be sent as the result of an inline query. 
+        Represents the content of a contact message to be sent as the result of an inline query.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
         https://core.telegram.org/bots/api#inputcontactmessagecontent
@@ -2971,11 +3080,11 @@ class InputContactMessageContent(InputMessageContent):
         assert(phone_number is not None)
         assert(isinstance(phone_number, str))
         self.phone_number = phone_number
-        
+
         assert(first_name is not None)
         assert(isinstance(first_name, str))
         self.first_name = first_name
-        
+
         assert(last_name is None or isinstance(last_name, str))
         self.last_name = last_name
     # end def __init__
@@ -3019,7 +3128,7 @@ class InputContactMessageContent(InputMessageContent):
         """
         Implements `str(inputcontactmessagecontent_instance)`
         """
-        return "InputContactMessageContent(phone_number={self.phone_number}, first_name={self.first_name}, last_name={self.last_name})".format(self=self)
+        return "InputContactMessageContent(phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):

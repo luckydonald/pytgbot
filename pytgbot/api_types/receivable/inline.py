@@ -231,7 +231,7 @@ class ChosenInlineResult(UpdateType):
         """
         Implements `str(choseninlineresult_instance)`
         """
-        return "ChosenInlineResult(result_id={self.result_id}, from_peer={self.from_peer}, query={self.query}, location={self.location}, inline_message_id={self.inline_message_id})".format(self=self)
+        return "ChosenInlineResult(result_id={self.result_id!r}, from_peer={self.from_peer!r}, query={self.query!r}, location={self.location!r}, inline_message_id={self.inline_message_id!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):

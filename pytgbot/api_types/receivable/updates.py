@@ -13,7 +13,7 @@ class UpdateType(Receivable):
 
 class Update(Receivable):
     """
-    This object represents an incoming update. Only one of the optional parameters can be present in any given update.
+    This object represents an incoming update.Only one of the optional parameters can be present in any given update.
 
     https://core.telegram.org/bots/api#update
     """
@@ -482,7 +482,7 @@ class Message(UpdateType):
         """
         Implements `str(message_instance)`
         """
-        return "Message(message_id={self.message_id}, date={self.date}, chat={self.chat}, from_peer={self.from_peer}, forward_from={self.forward_from}, forward_from_chat={self.forward_from_chat}, forward_date={self.forward_date}, reply_to_message={self.reply_to_message}, edit_date={self.edit_date}, text={self.text}, entities={self.entities}, audio={self.audio}, document={self.document}, photo={self.photo}, sticker={self.sticker}, video={self.video}, voice={self.voice}, caption={self.caption}, contact={self.contact}, location={self.location}, venue={self.venue}, new_chat_member={self.new_chat_member}, left_chat_member={self.left_chat_member}, new_chat_title={self.new_chat_title}, new_chat_photo={self.new_chat_photo}, delete_chat_photo={self.delete_chat_photo}, group_chat_created={self.group_chat_created}, supergroup_chat_created={self.supergroup_chat_created}, channel_chat_created={self.channel_chat_created}, migrate_to_chat_id={self.migrate_to_chat_id}, migrate_from_chat_id={self.migrate_from_chat_id}, pinned_message={self.pinned_message})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, text={self.text!r}, entities={self.entities!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, new_chat_member={self.new_chat_member!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -596,7 +596,7 @@ class CallbackQuery(UpdateType):
         """
         Implements `str(callbackquery_instance)`
         """
-        return "CallbackQuery(id={self.id}, from_peer={self.from_peer}, data={self.data}, message={self.message}, inline_message_id={self.inline_message_id})".format(self=self)
+        return "CallbackQuery(id={self.id!r}, from_peer={self.from_peer!r}, data={self.data!r}, message={self.message!r}, inline_message_id={self.inline_message_id!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
