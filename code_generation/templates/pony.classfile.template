@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from . import updates
+from pony import orm as pony
 {% for import in imports -%}
 from {{ import.path }} import {{ import.name }}
 {%- if loop.last %}
 {% endif %}
 {% endfor -%}
+db = pony.Database()
 
 {% for clazz in clazzes %}
 {% include "class.template" %}

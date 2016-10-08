@@ -113,9 +113,7 @@ class InlineQuery(Result):
         """
         Implements `str(inlinequery_instance)`
         """
-        return "InlineQuery(id={self.id}, from_peer={self.from_peer}, query={self.query}, offset={self.offset}, location={self.location})".format(
-            self=self)
-
+        return "InlineQuery(id={self.id!r}, from_peer={self.from_peer!r}, query={self.query!r}, offset={self.offset!r}, location={self.location!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):

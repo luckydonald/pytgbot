@@ -18,3 +18,16 @@ class Result(Receivable):
         return {}
     pass
 # end class Result
+
+class WebhookInfo(updates.WebhookInfo, db.Entity):
+    """
+    Contains information about the current status of a webhook.
+
+    https://core.telegram.org/bots/api#webhookinfo
+    """
+    url = pony.Required(str)
+    has_custom_certificate = pony.Required(bool)
+    pending_update_count = pony.Required(int)
+    last_error_date = pony.Optional(int)
+    last_error_message = pony.Optional(str)
+# end class WebhookInfo

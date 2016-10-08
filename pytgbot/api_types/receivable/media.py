@@ -1287,3 +1287,245 @@ class File(Receivable):
         return key in ["file_id", "file_size", "file_path"]
     # end def __contains__
 # end class File
+
+
+
+class Game(Media):
+    """
+    This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
+
+    https://core.telegram.org/bots/api#game
+    """
+    def __init__(self, title, description, photo, text=None, text_entities=None, animation=None):
+        """
+        This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
+    
+        https://core.telegram.org/bots/api#game
+
+
+        Parameters:
+        
+        :param title: Title of the game
+        :type  title: str
+        
+        :param description: Description of the game
+        :type  description: str
+        
+        :param photo: Photo that will be displayed in the game message in chats.
+        :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
+        
+
+        Optional keyword parameters:
+        
+        :keyword text: Optional. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters.
+        :type    text: str
+        
+        :keyword text_entities: Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
+        :type    text_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
+        :keyword animation: Optional. Animation that will be displayed in the game message in chats. Upload via BotFather
+        :type    animation: pytgbot.api_types.receivable.media.Animation
+        """
+        super(Game, self).__init__()
+        from pytgbot.api_types.receivable.media import Animation
+        from pytgbot.api_types.receivable.media import MessageEntity
+        from pytgbot.api_types.receivable.media import PhotoSize
+        
+        assert(title is not None)
+        assert(isinstance(title, str))
+        self.title = title
+        
+        assert(description is not None)
+        assert(isinstance(description, str))
+        self.description = description
+        
+        assert(photo is not None)
+        assert(isinstance(photo, list))
+        self.photo = photo
+        
+        assert(text is None or isinstance(text, str))
+        self.text = text
+        
+        assert(text_entities is None or isinstance(text_entities, list))
+        self.text_entities = text_entities
+        
+        assert(animation is None or isinstance(animation, Animation))
+        self.animation = animation
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Game to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
+        array = super(Game, self).to_array()
+        array['title'] = str(self.title)  # type str
+        array['description'] = str(self.description)  # type str
+        array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
+        if self.text is not None:
+            array['text'] = str(self.text)  # type str
+        if self.text_entities is not None:
+            array['text_entities'] = self._as_array(self.text_entities)  # type list of MessageEntity
+        if self.animation is not None:
+            array['animation'] = self.animation.to_array()  # type Animation
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserializes a new Game from a given dictionary.
+
+        :return: new Game instance.
+        :rtype: Game
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+        
+        from pytgbot.api_types.receivable.media import Animation
+        from pytgbot.api_types.receivable.media import MessageEntity
+        from pytgbot.api_types.receivable.media import PhotoSize
+        
+        data = {}
+        data['title'] = str(array.get('title'))
+        data['description'] = str(array.get('description'))
+        data['photo'] = PhotoSize.from_array_list(array.get('photo'), list_level=1)
+        data['text'] = str(array.get('text')) if array.get('text') is not None else None
+        data['text_entities'] = MessageEntity.from_array_list(array.get('text_entities'), list_level=1) if array.get('text_entities') is not None else None
+        data['animation'] = Animation.from_array(array.get('animation')) if array.get('animation') is not None else None
+        return Game(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(game_instance)`
+        """
+        return "Game(title={self.title!r}, description={self.description!r}, photo={self.photo!r}, text={self.text!r}, text_entities={self.text_entities!r}, animation={self.animation!r})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in game_instance`
+        """
+        return key in ["title", "description", "photo", "text", "text_entities", "animation"]
+    # end def __contains__
+# end class Game
+
+
+
+class Animation(Media):
+    """
+    You can provide an animation for your game so that it looks stylish in chats (check out Lumberjack for an example). This object represents an animation file to be displayed in the message containing a game.
+
+    https://core.telegram.org/bots/api#animation
+    """
+    def __init__(self, file_id, thumb=None, file_name=None, mime_type=None, file_size=None):
+        """
+        You can provide an animation for your game so that it looks stylish in chats (check out Lumberjack for an example). This object represents an animation file to be displayed in the message containing a game.
+    
+        https://core.telegram.org/bots/api#animation
+
+
+        Parameters:
+        
+        :param file_id: Unique file identifier
+        :type  file_id: str
+        
+
+        Optional keyword parameters:
+        
+        :keyword thumb: Optional. Animation thumbnail as defined by sender
+        :type    thumb: pytgbot.api_types.receivable.media.PhotoSize
+        
+        :keyword file_name: Optional. Original animation filename as defined by sender
+        :type    file_name: str
+        
+        :keyword mime_type: Optional. MIME type of the file as defined by sender
+        :type    mime_type: str
+        
+        :keyword file_size: Optional. File size
+        :type    file_size: int
+        """
+        super(Animation, self).__init__()
+        from pytgbot.api_types.receivable.media import PhotoSize
+        
+        assert(file_id is not None)
+        assert(isinstance(file_id, str))
+        self.file_id = file_id
+        
+        assert(thumb is None or isinstance(thumb, PhotoSize))
+        self.thumb = thumb
+        
+        assert(file_name is None or isinstance(file_name, str))
+        self.file_name = file_name
+        
+        assert(mime_type is None or isinstance(mime_type, str))
+        self.mime_type = mime_type
+        
+        assert(file_size is None or isinstance(file_size, int))
+        self.file_size = file_size
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Animation to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
+        array = super(Animation, self).to_array()
+        array['file_id'] = str(self.file_id)  # type str
+        if self.thumb is not None:
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        if self.file_name is not None:
+            array['file_name'] = str(self.file_name)  # type str
+        if self.mime_type is not None:
+            array['mime_type'] = str(self.mime_type)  # type str
+        if self.file_size is not None:
+            array['file_size'] = int(self.file_size)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserializes a new Animation from a given dictionary.
+
+        :return: new Animation instance.
+        :rtype: Animation
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+        
+        from pytgbot.api_types.receivable.media import PhotoSize
+        
+        data = {}
+        data['file_id'] = str(array.get('file_id'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['file_name'] = str(array.get('file_name')) if array.get('file_name') is not None else None
+        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        return Animation(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(animation_instance)`
+        """
+        return "Animation(file_id={self.file_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in animation_instance`
+        """
+        return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"]
+    # end def __contains__
+# end class Animation
+

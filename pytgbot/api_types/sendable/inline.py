@@ -1763,6 +1763,108 @@ class InlineQueryResultContact(InlineQueryResult):
 # end class InlineQueryResultContact
 
 
+
+class InlineQueryResultGame(InlineQueryResult):
+    """
+    Represents a Game.
+    Note: This will only work in Telegram versions released after October 1, 2016. Older clients will not display any inline results if a game result is among them.
+
+    https://core.telegram.org/bots/api#inlinequeryresultgame
+    """
+    def __init__(self, type, id, game_short_name, reply_markup=None):
+        """
+        Represents a Game.
+        Note: This will only work in Telegram versions released after October 1, 2016. Older clients will not display any inline results if a game result is among them.
+
+        https://core.telegram.org/bots/api#inlinequeryresultgame
+
+
+        Parameters:
+
+        :param id: Unique identifier for this result, 1-64 bytes
+        :type  id: str
+
+        :param game_short_name: Short name of the game
+        :type  game_short_name: str
+
+
+        Optional keyword parameters:
+
+        :keyword reply_markup: Optional. Inline keyboard attached to the message
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        """
+        super(InlineQueryResultGame, self).__init__(id, "game")
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        # type is given by class type
+
+        assert(id is not None)
+        assert(isinstance(id, str))
+        self.id = id
+
+        assert(game_short_name is not None)
+        assert(isinstance(game_short_name, str))
+        self.game_short_name = game_short_name
+
+        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        self.reply_markup = reply_markup
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this InlineQueryResultGame to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
+        array = super(InlineQueryResultGame, self).to_array()
+        # 'type' and 'id' given by superclass
+        array['game_short_name'] = str(self.game_short_name)  # type str
+        if self.reply_markup is not None:
+            array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserializes a new InlineQueryResultGame from a given dictionary.
+
+        :return: new InlineQueryResultGame instance.
+        :rtype: InlineQueryResultGame
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        data = {}
+        # type is given by class type
+        data['id'] = str(array.get('id'))
+        data['game_short_name'] = str(array.get('game_short_name'))
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        return InlineQueryResultGame(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inlinequeryresultgame_instance)`
+        """
+        return "InlineQueryResultGame(type={self.type!r}, id={self.id!r}, game_short_name={self.game_short_name!r}, reply_markup={self.reply_markup!r})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inlinequeryresultgame_instance`
+        """
+        return key in ["type", "id", "game_short_name", "reply_markup"]
+    # end def __contains__
+# end class InlineQueryResultGame
+
+
+
 class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     """
     Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.

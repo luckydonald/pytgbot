@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class Bot(object):
-    _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # do not chance.
+    _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # do not change.
 
     def __init__(self, api_key, return_python_objects=True):
         """
@@ -371,8 +371,10 @@ class Bot(object):
         :type  chat_id: int | str
 
         :param photo: Photo to send. You can either pass a file_id as String to resend a photo
-                      file that is already on the Telegram servers, or upload a new photo,
-                      specifying the file path as :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
+                      file that is already on the Telegram servers (recommended),
+                      pass an HTTP URL as a String for Telegram to get a photo from the Internet,
+                      or upload a new photo, by specifying the file path as
+                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
         :type  photo: pytgbot.api_types.sendable.InputFile | str
 
 
@@ -439,11 +441,11 @@ class Bot(object):
         return result
     # end def send_photo
 
-    def send_audio(self, chat_id, audio, duration=None, performer=None, title=None, disable_notification=False,
+    def send_audio(self, chat_id, audio, caption=None, duration=None, performer=None, title=None, disable_notification=False,
                    reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player.
-        Your audio must be in the .mp3 format. Bots can currently send audio files of up to 50 MB in size,
+        Your audio must be in the .mp3 format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size,
         this limit may be changed in the future.
 
         For sending voice messages, use the sendVoice method instead.
@@ -457,9 +459,11 @@ class Bot(object):
                         @channelusername)
         :type  chat_id: int | str
 
-        :param audio: Audio file to send. You can either pass a file_id as String to resend a audio
-                      file that is already on the Telegram servers, or upload the new audio,
-                      specifying the file path as :class:`pytg.api_types.sendable.InputFile.
+        :param audio: Audio file to send. You can either pass a file_id as String to resend an audio
+                      file that is already on the Telegram servers (recommended),
+                      pass an HTTP URL as a String for Telegram to get an audio from the Internet,
+                      or upload a new audio, by specifying the file path as
+                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
         :type  audio: pytgbot.api_types.sendable.InputFile | str
 
 
@@ -516,7 +520,7 @@ class Bot(object):
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
         )))
         result = self._do_fileupload(
-            "audio", audio, chat_id=chat_id, reply_to_message_id=reply_to_message_id, duration=duration,
+            "audio", audio, caption=caption, chat_id=chat_id, reply_to_message_id=reply_to_message_id, duration=duration,
             performer=performer, title=title, disable_notification=disable_notification, reply_markup=reply_markup
         )
         if self.return_python_objects:
@@ -548,9 +552,11 @@ class Bot(object):
                         @channelusername)
         :type  chat_id: int | str
 
-        :param document: Document to send. You can either pass a file_id as String to resend a
-                         file that is already on the Telegram servers, or upload the new document,
-                         specifying the file path as pytg.api_types.files.InputFile.
+        :param document: Document to send. You can either pass a file_id as String to resend a document
+                      file that is already on the Telegram servers (recommended),
+                      pass an HTTP URL as a String for Telegram to get a document from the Internet,
+                      or upload a new document, by specifying the file path as
+                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
         :type  document: pytgbot.api_types.sendable.InputFile | str
 
 
@@ -628,9 +634,11 @@ class Bot(object):
                         @channelusername)
         :type  chat_id: int | str
 
-        :param sticker: Sticker to send. You can either pass a file_id as String to resend a
-                        sticker file that is already on the Telegram servers, or upload the new sticker,
-                        specifying the file path as pytg.api_types.files.InputFile.
+        :param sticker: Sticker to send. You can either pass a file_id as String to resend a sticker
+                      file that is already on the Telegram servers (recommended),
+                      pass an HTTP URL as a String for Telegram to get a sticker from the Internet,
+                      or upload a new sticker, by specifying the file path as
+                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
         :type  sticker: pytgbot.api_types.sendable.InputFile | str
 
 
@@ -705,9 +713,11 @@ class Bot(object):
                         @channelusername)
         :type  chat_id: int | str
 
-        :param video: Video to send. You can either pass a file_id as String to resend a
-                      video file that is already on the Telegram servers, or upload the new video,
-                      specifying the file path as pytg.api_types.files.InputFile.
+        :param video: Video to send. You can either pass a file_id as String to resend a video
+                      file that is already on the Telegram servers (recommended),
+                      pass an HTTP URL as a String for Telegram to get a video from the Internet,
+                      or upload a new video, by specifying the file path as
+                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
         :type  video: pytgbot.api_types.sendable.InputFile | str
 
 
@@ -787,8 +797,8 @@ class Bot(object):
         return result
     # end def send_video
 
-    def send_voice(self, chat_id, voice, duration=None, disable_notification=False, reply_to_message_id=None,
-                   reply_markup=None):
+    def send_voice(self, chat_id, voice, caption=caption, duration=None, disable_notification=False,
+                   reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send audio files,
         if you want Telegram clients to display the file as a playable voice message.
@@ -807,9 +817,11 @@ class Bot(object):
                          @channelusername)
         :type  chat_id: int | str
 
-        :param voice: Audio file to send.
-                      You can either pass a file_id as :class:`str` to resend an audio that is already on the Telegram servers,
-                      or upload a new audio file using a pytg.api_types.files.InputFile.
+        :param voice: Audio file to send. You can either pass a file_id as String to resend an audio
+                      file that is already on the Telegram servers (recommended),
+                      pass an HTTP URL as a String for Telegram to get an audio from the Internet,
+                      or upload a new audio, by specifying the file path as
+                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
         :type  voice: pytgbot.api_types.sendable.InputFile | str
 
 
@@ -856,7 +868,7 @@ class Bot(object):
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
          )))
         result = self._do_fileupload(
-            "voice", voice, chat_id=chat_id, voice=voice, duration=duration,
+            "voice", voice, caption=caption, chat_id=chat_id, voice=voice, duration=duration,
             disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -1183,7 +1195,6 @@ class Bot(object):
 
     def get_user_profile_photos(self, user_id, offset=None, limit=None):
         """
-        TODO not in generator
         Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
 
         https://core.telegram.org/bots/api#getuserprofilephotos
@@ -1242,7 +1253,9 @@ class Bot(object):
         It is guaranteed that the link will be valid for at least 1 hour.
         When the link expires, a new one can be requested by calling get_file again.
 
-        Note: This function may not preserve original file name. Mime type of the file and its name (if available) should be saved when the File object is received.
+        Note: This function may not preserve the original file name.
+              The MIME type of the file and its name (if available)
+              should be saved when the File object is received.
 
 
         https://core.telegram.org/bots/api#getfile
@@ -1382,7 +1395,7 @@ class Bot(object):
         Returns:
 
         :return: Returns True on success
-        :rtype: bool
+        :rtype:  bool
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1562,11 +1575,13 @@ class Bot(object):
         return result
     # end def get_chat_member
 
-    def answer_callback_query(self, callback_query_id, text=None, show_alert=None):
+    def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None):
         """
         Use this method to send answers to callback queries sent from inline keyboards.
         The answer will be displayed to the user as a notification at the top of the chat screen or as an alert.
         On success, True is returned.
+
+        Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via BotFather and accept the terms. Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
 
         https://core.telegram.org/bots/api#answercallbackquery
 
@@ -1579,13 +1594,15 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :keyword text: Text of the notification. If not specified, nothing will be shown to the user
+        :keyword text: Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
         :type    text: str
 
         :keyword show_alert: If true, an alert will be shown by the client instead of a notification at the top of the
-                             chat screen. Defaults to false.
+                             chat screen. Defaults to false
         :type    show_alert: bool
 
+        :keyword url: URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game – note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
+        :type    url: str
 
         Returns:
 
@@ -1598,7 +1615,10 @@ class Bot(object):
         assert(text is None or isinstance(text, str))
 
         assert(show_alert is None or isinstance(show_alert, bool))
-        result = self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert)
+
+        assert(url is None or isinstance(url, str))
+
+        result = self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert, url=url)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1616,7 +1636,7 @@ class Bot(object):
                           disable_web_page_preview=None, reply_markup=None):
         """
         Use this method to edit text messages sent by the bot or via the bot (for inline bots).
-         On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+        On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 
         https://core.telegram.org/bots/api#editmessagetext
 
@@ -1624,28 +1644,28 @@ class Bot(object):
         Parameters:
 
         :param text: New text of the message
-        :type  text:  str
+        :type  text: str
 
 
         Optional keyword parameters:
 
         :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or
                           username of the target channel (in the format @channelusername)
-        :type    chat_id:  int | str
+        :type    chat_id: int | str
 
         :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
-        :type    message_id:  int
+        :type    message_id: int
 
         :keyword inline_message_id: Required if chat_id and message_id are not specified.
                                     Identifier of the inline message
-        :type    inline_message_id:  str
+        :type    inline_message_id: str
 
         :keyword parse_mode: Send "Markdown" or "HTML", if you want Telegram apps to show bold, italic, fixed-width text
                              or inline URLs in your bot's message.
-        :type    parse_mode:  str
+        :type    parse_mode: str
 
         :keyword disable_web_page_preview: Disables link previews for links in this message
-        :type    disable_web_page_preview:  bool
+        :type    disable_web_page_preview: bool
 
         :keyword reply_markup: A JSON-serialized object for an inline keyboard.
         :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -1709,17 +1729,17 @@ class Bot(object):
 
         :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or
                           username of the target channel (in the format @channelusername)
-        :type    chat_id:  int | str
+        :type    chat_id: int | str
 
         :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
-        :type    message_id:  int
+        :type    message_id: int
 
         :keyword inline_message_id: Required if chat_id and message_id are not specified.
                                     Identifier of the inline message
-        :type    inline_message_id:  str
+        :type    inline_message_id: str
 
         :keyword caption: New caption of the message
-        :type    caption:  str
+        :type    caption: str
 
         :keyword reply_markup: A JSON-serialized object for an inline keyboard.
         :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -1734,11 +1754,11 @@ class Bot(object):
 
         assert(chat_id is None or isinstance(chat_id, (int, str)))
 
-        assert (message_id is None or isinstance(message_id, int))
+        assert(message_id is None or isinstance(message_id, int))
 
-        assert (inline_message_id is None or isinstance(inline_message_id, str))
+        assert(inline_message_id is None or isinstance(inline_message_id, str))
 
-        assert (caption is None or isinstance(caption, str))
+        assert(caption is None or isinstance(caption, str))
 
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
 
@@ -1775,14 +1795,14 @@ class Bot(object):
 
         :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or
                           username of the target channel (in the format @channelusername)
-        :type    chat_id:  int | str
+        :type    chat_id: int | str
 
         :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
-        :type    message_id:  int
+        :type    message_id: int
 
         :keyword inline_message_id: Required if chat_id and message_id are not specified.
                                     Identifier of the inline message
-        :type    inline_message_id:  str
+        :type    inline_message_id: str
 
         :keyword reply_markup: A JSON-serialized object for an inline keyboard.
         :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -1797,9 +1817,9 @@ class Bot(object):
 
         assert(chat_id is None or isinstance(chat_id, (int, str)))
 
-        assert (message_id is None or isinstance(message_id, int))
+        assert(message_id is None or isinstance(message_id, int))
 
-        assert (inline_message_id is None or isinstance(inline_message_id, str))
+        assert(inline_message_id is None or isinstance(inline_message_id, str))
 
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         result = self.do(
@@ -1932,6 +1952,199 @@ class Bot(object):
         return result
     # end def answer_inline_query
 
+    def send_game(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+        """
+        Use this method to send a game. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendgame
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+
+        :param game_short_name: Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
+        :type  game_short_name: str
+
+
+        Optional keyword parameters:
+
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :type    disable_notification: bool
+
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id: int
+
+        :keyword reply_markup: A JSON-serialized object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown. If not empty, the first button must launch the game.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+
+        Returns:
+
+        :return: On success, the sent Message is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+
+        assert(game_short_name is not None)
+        assert(isinstance(game_short_name, str))
+
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
+
+        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+
+        result = self.do("sendGame", chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def send_game
+
+    def set_game_score(self, user_id, score, chat_id=None, message_id=None, inline_message_id=None, edit_message=None):
+        """
+        Use this method to set the score of the specified user in a game.
+        On success, if the message was sent by the bot, returns the edited Message, otherwise returns True.
+        Returns an error, if the new score is not greater than the user's current score in the chat.
+
+        https://core.telegram.org/bots/api#setgamescore
+
+
+        Parameters:
+
+        :param user_id: User identifier
+        :type  user_id: int
+
+        :param score: New score, must be positive
+        :type  score: int
+
+
+        Optional keyword parameters:
+
+        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat (or username of the target channel in the format @channelusername)
+        :type    chat_id: int | str
+
+        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :type    message_id: int
+
+        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type    inline_message_id: str
+
+        :keyword edit_message: Pass True, if the game message should be automatically edited to include the current scoreboard
+        :type    edit_message: bool
+
+        Returns:
+
+        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat
+        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
+        """
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+
+        assert(score is not None)
+        assert(isinstance(score, int))
+
+        assert(chat_id is None or isinstance(chat_id, (int, str)))
+
+        assert(message_id is None or isinstance(message_id, int))
+
+        assert(inline_message_id is None or isinstance(inline_message_id, str))
+
+        assert(edit_message is None or isinstance(edit_message, bool))
+
+        result = self.do("setGameScore", user_id=user_id, score=score, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, edit_message=edit_message)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_game_score
+
+    def get_game_high_scores(self, user_id, chat_id=None, message_id=None, inline_message_id=None):
+        """
+        Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
+
+        This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+
+        https://core.telegram.org/bots/api#getgamehighscores
+
+
+        Parameters:
+
+        :param user_id: Target user id
+        :type  user_id: int
+
+
+        Optional keyword parameters:
+
+        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat (or username of the target channel in the format @channelusername)
+        :type    chat_id: int | str
+
+        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :type    message_id: int
+
+        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type    inline_message_id: str
+
+        Returns:
+
+        :return: This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+        :rtype:  list of pytgbot.api_types.receivable.game.GameHighScore
+        """
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+
+        assert(chat_id is None or isinstance(chat_id, (int, str)))
+
+        assert(message_id is None or isinstance(message_id, int))
+
+        assert(inline_message_id is None or isinstance(inline_message_id, str))
+
+        result = self.do("getGameHighScores", user_id=user_id, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.game import GameHighScore
+            try:
+                return GameHighScore.from_array_list(result, list_level=1)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type GameHighScore", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def get_game_high_scores
+
+    def send_msg(self, *args, **kwargs):
+        """ alias to :func:`send_message` """
+        return self.send_message(*args, **kwargs)
+    # end def send_msg
+
     def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.
@@ -1940,7 +2153,8 @@ class Bot(object):
 
         ```json
         {
-            "ok": bool, "result": {...},
+            "ok": bool,
+            "result": {...},
             # optionally present:
             "description": "human-readable description of the result",
             "error_code": int
@@ -1964,10 +2178,28 @@ class Bot(object):
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
+        import requests
+
+        url, params = self._prepare_request(command, query)
+        r = requests.post(url, params=params, files=files, stream=use_long_polling,
+                          verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+                          timeout=request_timeout)
+        return self._postprocess_request(r)
+    # end def do
+
+    def _prepare_request(self, command, query):
+        """
+        Prepares the command url, and converts the query json.
+
+        :param command: The Url command parameter
+        :type  command: str
+
+        :param query: Will get json encoded.
+
+        :return: params and a url, for use with requests etc.
+        """
         from pytgbot.api_types.sendable import Sendable
         from pytgbot.api_types import as_array
-        from DictObject import DictObject
-        import requests
         import json
 
         params = {}
@@ -1979,8 +2211,23 @@ class Bot(object):
                 else:
                     params[key] = element
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
-        r = requests.post(url, params=params, files=files, stream=use_long_polling,
-                          verify=True, timeout=request_timeout)  # No self signed certificates. Telegram should be trustworthy anyway...
+        return url, params
+    # end def _prepare_request
+
+    def _postprocess_request(self, r):
+        """
+        This converts the response to either the response or a parsed :class:`pytgbot.api_types.receivable.Receivable`.
+
+        :param r: the request response
+        :type  r: requests.Response
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        """
+        from DictObject import DictObject
+        import requests
+
+        assert isinstance(r, requests.Response)
+
         try:
             logger.debug(r.json())
             res = DictObject.objectify(r.json())
@@ -2005,7 +2252,7 @@ class Bot(object):
             return res.result
         # end if return_python_objects
         return res
-    # end def do
+    # end def _postprocess_request
 
     def _do_fileupload(self, file_param_name, value, **kwargs):
         """

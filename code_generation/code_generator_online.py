@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from code_generator import get_type_path
 from code_generator_template import clazz, func, get_template, Clazz, Function, ClassOrFunction, as_types, Type
-from luckydonaldUtils.files import mkdir_p  # luckydonaldUtils v0.43+
+from luckydonaldUtils.files.basics import mkdir_p  # luckydonaldUtils v0.49+
 from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
 

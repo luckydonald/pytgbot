@@ -1,0 +1,36 @@
+{% from "macros.template" import for_args_none, for_type_list_of_full, for_type_set_of_full, for_type_list_of, types_as_tuple, for_args_format_str, for_args_keys %}
+{% macro set_array(variable, class_name) -%}
+{% if variable.types|length == 1 -%}
+{% if variable.types[0].is_list > 0 -%}
+array['{{ variable.api_name }}'] = self._as_array(self.{{ variable.name }})  # type {{ for_type_list_of(variable) }}
+{% else -%}
+{% if variable.types[0].is_builtin -%}
+array['{{ variable.api_name }}'] = {{ variable.types[0].string }}(self.{{ variable.name }})  # type {{ variable.types[0].string }}
+{% else -%}
+array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {{ variable.types[0].string }}
+{% endif -%}
+{% endif -%}
+{% else -%}
+// ERROR: Multible types ({{ for_type(variable) }}) for
+// array['{{ variable.api_name }}'] = self.{{ variable.name }}
+{% endif -%}
+{%- endmacro %}
+{#- macros -#}
+
+class {{ clazz.clazz -}}(updates.{{ clazz.clazz -}}, db.Entity):
+    """
+    {% block class_docstring -%}
+    {{ clazz.description.strip()|indent }}
+
+    {{clazz.link}}
+    {%- endblock %}
+    """
+    {%- for param in clazz.parameters %}
+    {{ param.name }} = pony.Required({{ for_type_set_of_full(param) }})
+    {%- endfor %}
+    {% for keyword in clazz.keywords -%}
+    {{ keyword.name }} = pony.Optional({{ for_type_set_of_full(keyword) }})
+    {#  -#}
+    {%- endfor -%}
+{#-  #}
+# end class {{ clazz.clazz }}

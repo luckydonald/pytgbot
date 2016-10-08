@@ -227,7 +227,7 @@ class KeyboardButton(Button):
         """
         Implements `str(keyboardbutton_instance)`
         """
-        return "KeyboardButton(text={self.text}, request_contact={self.request_contact}, request_location={self.request_location})".format(self=self)
+        return "KeyboardButton(text={self.text!r}, request_contact={self.request_contact!r}, request_location={self.request_location!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -423,7 +423,7 @@ class InlineKeyboardButton(Button):
 
     https://core.telegram.org/bots/api#inlinekeyboardbutton
     """
-    def __init__(self, text, url=None, callback_data=None, switch_inline_query=None):
+    def __init__(self, text, url=None, callback_data=None, switch_inline_query=None, switch_inline_query_current_chat=None, callback_game=None):
         """
         This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
 
@@ -459,8 +459,15 @@ class InlineKeyboardButton(Button):
                                              user will be automatically returned to the chat they switched from,
                                              skipping the chat selection screen.
         :type    switch_inline_query: str
+        
+        :keyword switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
+        :type    switch_inline_query_current_chat: str
+        
+        :keyword callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
+        :type    callback_game: pytgbot.api_types.receivable.updates.CallbackGame
         """
         super(InlineKeyboardButton, self).__init__()
+        from pytgbot.api_types.receivable.updates import CallbackGame
 
         assert(text is not None)
         assert(isinstance(text, str))
@@ -474,6 +481,12 @@ class InlineKeyboardButton(Button):
 
         assert(switch_inline_query is None or isinstance(switch_inline_query, str))
         self.switch_inline_query = switch_inline_query
+        
+        assert(switch_inline_query_current_chat is None or isinstance(switch_inline_query_current_chat, str))
+        self.switch_inline_query_current_chat = switch_inline_query_current_chat
+        
+        assert(callback_game is None or isinstance(callback_game, CallbackGame))
+        self.callback_game = callback_game
     # end def __init__
 
     def to_array(self):
@@ -491,6 +504,10 @@ class InlineKeyboardButton(Button):
             array['callback_data'] = str(self.callback_data)  # type str
         if self.switch_inline_query is not None:
             array['switch_inline_query'] = str(self.switch_inline_query)  # type str
+        if self.switch_inline_query_current_chat is not None:
+            array['switch_inline_query_current_chat'] = str(self.switch_inline_query_current_chat)  # type str
+        if self.callback_game is not None:
+            array['callback_game'] = self.callback_game.to_array()  # type CallbackGame
         return array
     # end def to_array
 
@@ -506,12 +523,16 @@ class InlineKeyboardButton(Button):
             return None
         # end if
         assert(isinstance(array, dict))
+        
+        from pytgbot.api_types.receivable.updates import CallbackGame
 
         data = {}
         data['text'] = str(array.get('text'))
         data['url'] = str(array.get('url')) if array.get('url') is not None else None
         data['callback_data'] = str(array.get('callback_data')) if array.get('callback_data') is not None else None
         data['switch_inline_query'] = str(array.get('switch_inline_query')) if array.get('switch_inline_query') is not None else None
+        data['switch_inline_query_current_chat'] = str(array.get('switch_inline_query_current_chat')) if array.get('switch_inline_query_current_chat') is not None else None
+        data['callback_game'] = CallbackGame.from_array(array.get('callback_game')) if array.get('callback_game') is not None else None
         return InlineKeyboardButton(**data)
     # end def from_array
 
@@ -519,14 +540,14 @@ class InlineKeyboardButton(Button):
         """
         Implements `str(inlinekeyboardbutton_instance)`
         """
-        return "InlineKeyboardButton(text={self.text!r}, url={self.url!r}, callback_data={self.callback_data!r}, switch_inline_query={self.switch_inline_query!r})".format(self=self)
+        return "InlineKeyboardButton(text={self.text!r}, url={self.url!r}, callback_data={self.callback_data!r}, switch_inline_query={self.switch_inline_query!r}, switch_inline_query_current_chat={self.switch_inline_query_current_chat!r}, callback_game={self.callback_game!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinekeyboardbutton_instance`
         """
-        return key in ["text", "url", "callback_data", "switch_inline_query"]
+        return key in ["text", "url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game"]
     # end def __contains__
 # end class InlineKeyboardButton
 

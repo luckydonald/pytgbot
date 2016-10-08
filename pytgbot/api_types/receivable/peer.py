@@ -118,7 +118,7 @@ class Chat(Peer):
 
     https://core.telegram.org/bots/api#chat
     """
-    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None):
+    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, all_members_are_administrators=None):
         """
         This object represents a chat.
 
@@ -148,6 +148,9 @@ class Chat(Peer):
 
         :keyword last_name: Optional. Last name of the other party in a private chat
         :type    last_name: str
+        
+        :keyword all_members_are_administrators: Optional. True if a group has ‘All Members Are Admins’ enabled.
+        :type    all_members_are_administrators: bool
         """
         super(Chat, self).__init__()
         assert(id is not None)
@@ -169,6 +172,9 @@ class Chat(Peer):
 
         assert(last_name is None or isinstance(last_name, str))
         self.last_name = last_name
+        
+        assert(all_members_are_administrators is None or isinstance(all_members_are_administrators, bool))
+        self.all_members_are_administrators = all_members_are_administrators
     # end def __init__
 
     def to_array(self):
@@ -189,6 +195,8 @@ class Chat(Peer):
             array['first_name'] = str(self.first_name)  # type str
         if self.last_name is not None:
             array['last_name'] = str(self.last_name)  # type str
+        if self.all_members_are_administrators is not None:
+            array['all_members_are_administrators'] = bool(self.all_members_are_administrators)  # type bool
         return array
     # end def to_array
 
@@ -212,6 +220,7 @@ class Chat(Peer):
         data['username'] = str(array.get('username')) if array.get('username') is not None else None
         data['first_name'] = str(array.get('first_name')) if array.get('first_name') is not None else None
         data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
+        data['all_members_are_administrators'] = bool(array.get('all_members_are_administrators')) if array.get('all_members_are_administrators') is not None else None
         return Chat(**data)
     # end def from_array
 
@@ -219,14 +228,14 @@ class Chat(Peer):
         """
         Implements `str(chat_instance)`
         """
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in chat_instance`
         """
-        return key in ["id", "type", "title", "username", "first_name", "last_name"]
+        return key in ["id", "type", "title", "username", "first_name", "last_name", "all_members_are_administrators"]
     # end def __contains__
 # end class Chat
 

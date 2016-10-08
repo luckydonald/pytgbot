@@ -7,6 +7,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     # pytgbot.api_types.receivable.__init__.*
     "Receivable":           ("pytgbot.api_types.receivable.", "TgBotApiObject", None),
     "Result":               ("pytgbot.api_types.receivable.", "Receivable", None),
+    "WebhookInfo":          ("pytgbot.api_types.receivable.", "Receivable", None),  # October 3, 2016
 
     # pytgbot.api_types.receivable.media.*
     "MessageEntity":        ("pytgbot.api_types.receivable.media.", "Result", None),
@@ -22,6 +23,8 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Document":             ("pytgbot.api_types.receivable.media.", "Media", None),
     "Sticker":              ("pytgbot.api_types.receivable.media.", "Media", None),
     "Video":                ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Game":                 ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Animation":            ("pytgbot.api_types.receivable.media.", "Media", None),
 
     # pytgbot.api_types.receivable.responses.*
 
@@ -36,10 +39,15 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "UpdateType":           ("pytgbot.api_types.receivable.updates.", "Receivable", None),
     "Message":              ("pytgbot.api_types.receivable.updates.", "UpdateType", None),
     "CallbackQuery":        ("pytgbot.api_types.receivable.updates.", "UpdateType", None),
+    "CallbackGame":         ("pytgbot.api_types.receivable.updates.", "UpdateType", None),  # October 3, 2016
+    "ResponseParameters":   ("pytgbot.api_types.receivable.updates.", "Receivable", None),  # October 3, 2016
 
     # pytgbot.api_types.receivable.inline.*
     "InlineQuery":                  ("pytgbot.api_types.receivable.inline.", "Result", None),
     "ChosenInlineResult":           ("pytgbot.api_types.receivable.inline.", "UpdateType", None),
+
+    # pytgbot.api_types.receivable.game.*
+    "GameHighScore": ("pytgbot.api_types.receivable.game.", "Result", None),  # October 3, 2016
 
     # pytgbot.api_types.sendable.*
     "Sendable":                     ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
@@ -48,7 +56,6 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InputFileFromURL":             ("pytgbot.api_types.sendable.", "InputFile", None),
 
     # pytgbot.api_types.sendable.inline.*
-
     "InputMessageContent":          ("pytgbot.api_types.sendable.inline.", "Sendable", None),
     "InputTextMessageContent":      ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),
     "InputLocationMessageContent":  ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),
@@ -66,6 +73,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InlineQueryResultLocation":    ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),
     "InlineQueryResultVenue":       ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),
     "InlineQueryResultContact":     ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),
+    "InlineQueryResultGame":        ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),  # October 3, 2016
     # "InlineQueryResultCached":      ("pytgbot.api_types.sendable.inline.", "Sendable", None),
     "InlineQueryCachedResult":      ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),
     "InlineQueryResultCachedArticle":     ("pytgbot.api_types.sendable.inline.", "InlineQueryCachedResult", None),
@@ -94,3 +102,13 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InlineKeyboardButton": ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
 
 }
+
+
+"""
+You can either pass a file_id as String to resend a photo
+                      file that is already on the Telegram servers (recommended),
+                      pass an HTTP URL as a String for Telegram to get a photo from the Internet,
+                      or upload a new photo, by specifying the file path as
+                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
+
+"""

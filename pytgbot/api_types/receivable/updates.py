@@ -13,7 +13,7 @@ class UpdateType(Receivable):
 
 class Update(Receivable):
     """
-    This object represents an incoming update.Only one of the optional parameters can be present in any given update.
+    This object represents an incoming update. Only one of the optional parameters can be present in any given update.
 
     https://core.telegram.org/bots/api#update
     """
@@ -123,7 +123,7 @@ class Update(Receivable):
         """
         Implements `str(update_instance)`
         """
-        return "Update(update_id={self.update_id}, message={self.message}, edited_message={self.edited_message}, inline_query={self.inline_query}, chosen_inline_result={self.chosen_inline_result}, callback_query={self.callback_query})".format(self=self)
+        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
@@ -141,7 +141,7 @@ class Message(UpdateType):
 
     https://core.telegram.org/bots/api#message
     """
-    def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_date=None, reply_to_message=None, edit_date=None, text=None, entities=None, audio=None, document=None, photo=None, sticker=None, video=None, voice=None, caption=None, contact=None, location=None, venue=None, new_chat_member=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None):
+    def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_date=None, reply_to_message=None, edit_date=None, text=None, entities=None, audio=None, document=None, game=None, photo=None, sticker=None, video=None, voice=None, caption=None, contact=None, location=None, venue=None, new_chat_member=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None):
         """
         This object represents a message.
 
@@ -191,6 +191,9 @@ class Message(UpdateType):
 
         :keyword document: Optional. Message is a general file, information about the file
         :type    document: pytgbot.api_types.receivable.media.Document
+
+        :keyword game: Optional. Message is a game, information about the game. More about games »
+        :type    game: pytgbot.api_types.receivable.media.Game
 
         :keyword photo: Optional. Message is a photo, available sizes of the photo
         :type    photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -252,7 +255,7 @@ class Message(UpdateType):
         super(Message, self).__init__()
 
         from ..receivable.peer import User, Chat
-        from ..receivable.media import Audio, Sticker, Video, Voice, Contact, Location, Venue, Document
+        from ..receivable.media import Audio, Contact, Document, Game, Location, Sticker, Venue, Video, Voice
 
         assert(message_id is not None)
         assert(isinstance(message_id, int))
@@ -295,6 +298,9 @@ class Message(UpdateType):
 
         assert(document is None or isinstance(document, Document))
         self.document = document
+
+        assert(game is None or isinstance(game, Game))
+        self.game = game
 
         assert(photo is None or isinstance(photo, (list, tuple)))  # list of PhotoSize
         self.photo = photo
@@ -385,6 +391,8 @@ class Message(UpdateType):
             array['audio'] = self.audio.to_array()  # type Audio
         if self.document is not None:
             array['document'] = self.document.to_array()  # type Document
+        if self.game is not None:
+            array['game'] = self.game.to_array()  # type Game
         if self.photo is not None:
             array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
         if self.sticker is not None:
@@ -456,6 +464,7 @@ class Message(UpdateType):
         data['entities'] = MessageEntity.from_array_list(array.get('entities'), list_level=1) if array.get('entities') is not None else None
         data['audio'] = Audio.from_array(array.get('audio')) if array.get('audio') is not None else None
         data['document'] = Document.from_array(array.get('document')) if array.get('document') is not None else None
+        data['game'] = Game.from_array(array.get('game')) if array.get('game') is not None else None
         data['photo'] = PhotoSize.from_array_list(array.get('photo'), list_level=1) if array.get('photo') is not None else None
         data['sticker'] = Sticker.from_array(array.get('sticker')) if array.get('sticker') is not None else None
         data['video'] = Video.from_array(array.get('video')) if array.get('video') is not None else None
@@ -482,28 +491,32 @@ class Message(UpdateType):
         """
         Implements `str(message_instance)`
         """
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, text={self.text!r}, entities={self.entities!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, new_chat_member={self.new_chat_member!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, text={self.text!r}, entities={self.entities!r}, audio={self.audio!r}, document={self.document!r}, game={self.game!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, new_chat_member={self.new_chat_member!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in message_instance`
         """
-        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_date", "reply_to_message", "edit_date", "text", "entities", "audio", "document", "photo", "sticker", "video", "voice", "caption", "contact", "location", "venue", "new_chat_member", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message"]
+        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_date", "reply_to_message", "edit_date", "text", "entities", "audio", "document", "game", "photo", "sticker", "video", "voice", "caption", "contact", "location", "venue", "new_chat_member", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message"]
     # end def __contains__
 # end class Message
 
 
 class CallbackQuery(UpdateType):
     """
-    This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be presented. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be presented.
+    This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
+
+    NOTE: After the user presses an inline button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
 
     https://core.telegram.org/bots/api#callbackquery
     """
-    def __init__(self, id, from_peer, data, message=None, inline_message_id=None):
+    def __init__(self, id, from_peer, chat_instance, message=None, inline_message_id=None, data=None, game_short_name=None):
         """
-        This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be presented. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be presented.
+        This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
 
+        NOTE: After the user presses an inline button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
+    
         https://core.telegram.org/bots/api#callbackquery
 
 
@@ -515,8 +528,8 @@ class CallbackQuery(UpdateType):
         :param from_peer: Sender
         :type  from_peer: pytgbot.api_types.receivable.peer.User
 
-        :param data: Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field
-        :type  data: str
+        :param chat_instance: Identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
+        :type  chat_instance: str
 
 
         Optional keyword parameters:
@@ -526,6 +539,12 @@ class CallbackQuery(UpdateType):
 
         :keyword inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query
         :type    inline_message_id: str
+        
+        :keyword data: Optional. Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field.
+        :type    data: str
+        
+        :keyword game_short_name: Optional. Short name of a Game to be returned, serves as the unique identifier for the game
+        :type    game_short_name: str
         """
         super(CallbackQuery, self).__init__()
 
@@ -539,15 +558,21 @@ class CallbackQuery(UpdateType):
         assert(isinstance(from_peer, User))
         self.from_peer = from_peer
 
-        assert(data is not None)
-        assert(isinstance(data, str))
-        self.data = data
+        assert(chat_instance is not None)
+        assert(isinstance(chat_instance, str))
+        self.chat_instance = chat_instance
 
         assert(message is None or isinstance(message, Message))
         self.message = message
 
         assert(inline_message_id is None or isinstance(inline_message_id, str))
         self.inline_message_id = inline_message_id
+        
+        assert(data is None or isinstance(data, str))
+        self.data = data
+        
+        assert(game_short_name is None or isinstance(game_short_name, str))
+        self.game_short_name = game_short_name
     # end def __init__
 
     def to_array(self):
@@ -560,11 +585,15 @@ class CallbackQuery(UpdateType):
         array = super(CallbackQuery, self).to_array()
         array['id'] = str(self.id)  # type str
         array['from'] = self.from_peer.to_array()  # type User
-        array['data'] = str(self.data)  # type str
+        array['chat_instance'] = str(self.chat_instance)  # type str
         if self.message is not None:
             array['message'] = self.message.to_array()  # type Message
         if self.inline_message_id is not None:
             array['inline_message_id'] = str(self.inline_message_id)  # type str
+        if self.data is not None:
+            array['data'] = str(self.data)  # type str
+        if self.game_short_name is not None:
+            array['game_short_name'] = str(self.game_short_name)  # type str
         return array
     # end def to_array
 
@@ -586,9 +615,11 @@ class CallbackQuery(UpdateType):
         data = {}
         data['id'] = str(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
-        data['data'] = str(array.get('data'))
+        data['chat_instance'] = str(array.get('chat_instance'))
         data['message'] = Message.from_array(array.get('message')) if array.get('message') is not None else None
         data['inline_message_id'] = str(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
+        data['data'] = str(array.get('data')) if array.get('data') is not None else None
+        data['game_short_name'] = str(array.get('game_short_name')) if array.get('game_short_name') is not None else None
         return CallbackQuery(**data)
     # end def from_array
 
@@ -596,13 +627,93 @@ class CallbackQuery(UpdateType):
         """
         Implements `str(callbackquery_instance)`
         """
-        return "CallbackQuery(id={self.id!r}, from_peer={self.from_peer!r}, data={self.data!r}, message={self.message!r}, inline_message_id={self.inline_message_id!r})".format(self=self)
+        return "CallbackQuery(id={self.id!r}, from_peer={self.from_peer!r}, chat_instance={self.chat_instance!r}, message={self.message!r}, inline_message_id={self.inline_message_id!r}, data={self.data!r}, game_short_name={self.game_short_name!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in callbackquery_instance`
         """
-        return key in ["id", "from_peer", "data", "message", "inline_message_id"]
+        return key in ["id", "from_peer", "chat_instance", "message", "inline_message_id", "data", "game_short_name"]
     # end def __contains__
 # end class CallbackQuery
+
+
+
+class ResponseParameters(Receivable):
+    """
+    Contains information about why a request was unsuccessfull.
+
+    https://core.telegram.org/bots/api#responseparameters
+    """
+    def __init__(self, migrate_to_chat_id=None, retry_after=None):
+        """
+        Contains information about why a request was unsuccessfull.
+    
+        https://core.telegram.org/bots/api#responseparameters
+
+        Optional keyword parameters:
+        
+        :keyword migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+        :type    migrate_to_chat_id: int
+        
+        :keyword retry_after: Optional. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated
+        :type    retry_after: int
+        """
+        super(ResponseParameters, self).__init__()
+        assert(migrate_to_chat_id is None or isinstance(migrate_to_chat_id, int))
+        self.migrate_to_chat_id = migrate_to_chat_id
+        
+        assert(retry_after is None or isinstance(retry_after, int))
+        self.retry_after = retry_after
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this ResponseParameters to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
+        array = super(ResponseParameters, self).to_array()
+        if self.migrate_to_chat_id is not None:
+            array['migrate_to_chat_id'] = int(self.migrate_to_chat_id)  # type int
+        if self.retry_after is not None:
+            array['retry_after'] = int(self.retry_after)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserializes a new ResponseParameters from a given dictionary.
+
+        :return: new ResponseParameters instance.
+        :rtype: ResponseParameters
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+        
+        data = {}
+        data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id')) if array.get('migrate_to_chat_id') is not None else None
+        data['retry_after'] = int(array.get('retry_after')) if array.get('retry_after') is not None else None
+        return ResponseParameters(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(responseparameters_instance)`
+        """
+        return "ResponseParameters(migrate_to_chat_id={self.migrate_to_chat_id!r}, retry_after={self.retry_after!r})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in responseparameters_instance`
+        """
+        return key in ["migrate_to_chat_id", "retry_after"]
+    # end def __contains__
+# end class ResponseParameters
+
