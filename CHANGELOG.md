@@ -1,7 +1,7 @@
 # Changelog
-## _Version 2.2.0 (Planned)_ ##
+## Version 2.2.0 ##
  - Moving `InputFile`, `InputFileFromDisk`, `InputFileFromURL` to `api_types.sendable.files.*` [#4](https://github.com/luckydonald/pytgbot/issues/4)
- - Implemented the changes from October 3, 2016 (gaming platform)
+ - Implemented the changes from [October 3, 2016](https://core.telegram.org/bots/api-changelog#october-3-2016) ([gaming](https://core.telegram.org/bots/api#games) platform)
  - Improved templates, seperated some stuff in the `Bot.do(...)` function for better subclassing. This will hopefully allow a subclass capable of returning infos, from an open webhook, later.
 
 ## Version 2.1.4 ##
