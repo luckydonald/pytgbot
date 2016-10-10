@@ -5,6 +5,12 @@
 Native python package witch pure Python interface for the [Telegram Bot API](https://core.telegram.org/bots).
 > The code is genereated directly from the API documentation, meaning up-to-date code is a matter of minutes.
 
+#### Latest changes:
+ - Moving `InputFile`, `InputFileFromDisk`, `InputFileFromURL` to `api_types.sendable.files.*` [#4](https://github.com/luckydonald/pytgbot/issues/4)
+ - Implemented the changes from [October 3, 2016](https://core.telegram.org/bots/api-changelog#october-3-2016) ([gaming](https://core.telegram.org/bots/api#games) platform)
+ - Improved templates, seperated some stuff in the `Bot.do(...)` function for better subclassing. This will hopefully allow a subclass capable of returning infos, from an open webhook, later.
+ - [Older changes...](CHANGELOG.md)
+
 #### Installation  ####
 ```sh
 python setup.py install
