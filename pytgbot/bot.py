@@ -797,7 +797,7 @@ class Bot(object):
         return result
     # end def send_video
 
-    def send_voice(self, chat_id, voice, caption=caption, duration=None, disable_notification=False,
+    def send_voice(self, chat_id, voice, caption=None, duration=None, disable_notification=False,
                    reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send audio files,
