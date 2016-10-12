@@ -1,4 +1,14 @@
 # Changelog
+## Version 2.2.1 ##
+
+**Version 2.2.1a2**
+
+- Manually added placeholder class `pytgbot.api_types.receiveable.updates.`[`CallbackGame`](https://core.telegram.org/bots/api#callbackgame)
+
+**Version 2.2.1a1**
+
+- Fixed using wrong templates
+
 ## Version 2.2.0 ##
  - Moving `InputFile`, `InputFileFromDisk`, `InputFileFromURL` to `api_types.sendable.files.*` [#4](https://github.com/luckydonald/pytgbot/issues/4)
  - Implemented the changes from [October 3, 2016](https://core.telegram.org/bots/api-changelog#october-3-2016) ([gaming](https://core.telegram.org/bots/api#games) platform)

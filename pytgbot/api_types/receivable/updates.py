@@ -639,6 +639,20 @@ class CallbackQuery(UpdateType):
 # end class CallbackQuery
 
 
+class CallbackGame(UpdateType):
+    """
+    A placeholder, currently holds no information. Use BotFather to set up your game.
+    """
+    def to_array(self):
+        return {}
+    # end def
+
+    @staticmethod
+    def from_array(array):
+        return CallbackGame()
+    # end def
+# end class
+
 
 class ResponseParameters(Receivable):
     """
