@@ -1,5 +1,5 @@
 # pytgbot
-### Version [2.2.1.a2.0post1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) 
+### Version [2.2.1.a3.0post1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) 
 ###### Python module to access the telegram bot api.
 
 Native python package witch pure Python interface for the [Telegram Bot API](https://core.telegram.org/bots).
