@@ -175,7 +175,7 @@ class Bot(object):
 
         1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.
         2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter.
-           Please upload as pytg.api_types.files.InputFile, sending a String will not work.
+           Please upload as pytg.api_types.sendable.files.InputFile, sending a String will not work.
         3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
 
         All types used in the Bot API responses are represented as JSON-objects.
@@ -193,14 +193,14 @@ class Bot(object):
 
         :keyword certificate: Upload your public key certificate so that the root certificate in use can be checked.
                               See our self-signed guide for details.
-        :type    certificate: pytgbot.api_types.sendable.InputFile
+        :type    certificate: pytgbot.api_types.sendable.files.InputFile
 
         Returns:
 
         :return: On success, True is returned
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
 
         assert(url is None or isinstance(url, str))
         assert(certificate is None or isinstance(certificate, InputFile))
@@ -374,8 +374,8 @@ class Bot(object):
                       file that is already on the Telegram servers (recommended),
                       pass an HTTP URL as a String for Telegram to get a photo from the Internet,
                       or upload a new photo, by specifying the file path as
-                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
-        :type  photo: pytgbot.api_types.sendable.InputFile | str
+                      :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
+        :type  photo: pytgbot.api_types.sendable.files.InputFile | str
 
 
         Optional keyword parameters:
@@ -403,7 +403,7 @@ class Bot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
@@ -463,8 +463,8 @@ class Bot(object):
                       file that is already on the Telegram servers (recommended),
                       pass an HTTP URL as a String for Telegram to get an audio from the Internet,
                       or upload a new audio, by specifying the file path as
-                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
-        :type  audio: pytgbot.api_types.sendable.InputFile | str
+                      :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
+        :type  audio: pytgbot.api_types.sendable.files.InputFile | str
 
 
         Optional keyword parameters:
@@ -495,7 +495,7 @@ class Bot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
@@ -556,8 +556,8 @@ class Bot(object):
                       file that is already on the Telegram servers (recommended),
                       pass an HTTP URL as a String for Telegram to get a document from the Internet,
                       or upload a new document, by specifying the file path as
-                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
-        :type  document: pytgbot.api_types.sendable.InputFile | str
+                      :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
+        :type  document: pytgbot.api_types.sendable.files.InputFile | str
 
 
         Optional keyword parameters:
@@ -582,7 +582,7 @@ class Bot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
@@ -638,8 +638,8 @@ class Bot(object):
                       file that is already on the Telegram servers (recommended),
                       pass an HTTP URL as a String for Telegram to get a sticker from the Internet,
                       or upload a new sticker, by specifying the file path as
-                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
-        :type  sticker: pytgbot.api_types.sendable.InputFile | str
+                      :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
+        :type  sticker: pytgbot.api_types.sendable.files.InputFile | str
 
 
         Optional keyword parameters:
@@ -661,7 +661,7 @@ class Bot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
@@ -717,8 +717,8 @@ class Bot(object):
                       file that is already on the Telegram servers (recommended),
                       pass an HTTP URL as a String for Telegram to get a video from the Internet,
                       or upload a new video, by specifying the file path as
-                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
-        :type  video: pytgbot.api_types.sendable.InputFile | str
+                      :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
+        :type  video: pytgbot.api_types.sendable.files.InputFile | str
 
 
         Optional keyword parameters:
@@ -752,7 +752,7 @@ class Bot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
@@ -821,8 +821,8 @@ class Bot(object):
                       file that is already on the Telegram servers (recommended),
                       pass an HTTP URL as a String for Telegram to get an audio from the Internet,
                       or upload a new audio, by specifying the file path as
-                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
-        :type  voice: pytgbot.api_types.sendable.InputFile | str
+                      :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
+        :type  voice: pytgbot.api_types.sendable.files.InputFile | str
 
 
         Optional keyword parameters:
@@ -847,7 +847,7 @@ class Bot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
@@ -2261,8 +2261,8 @@ class Bot(object):
 
         :param value: File to send. You can either pass a file_id as String to resend a file
                       file that is already on the Telegram servers, or upload a new file,
-                      specifying the file path as :class:`pytgbot.api_types.files.InputFile`.
-        :type  value: pytgbot.api_types.sendable.InputFile | str
+                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
+        :type  value: pytgbot.api_types.sendable.files.InputFile | str
 
         :param kwargs: will get json encoded.
 
@@ -2271,7 +2271,7 @@ class Bot(object):
 
         :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
         from luckydonaldUtils.encoding import unicode_type
         from luckydonaldUtils.encoding import to_native as n
 

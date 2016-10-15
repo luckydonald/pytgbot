@@ -51,9 +51,10 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
 
     # pytgbot.api_types.sendable.*
     "Sendable":                     ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
-    "InputFile":                    ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
-    "InputFileFromDisk":            ("pytgbot.api_types.sendable.", "InputFile", None),
-    "InputFileFromURL":             ("pytgbot.api_types.sendable.", "InputFile", None),
+    # pytgbot.api_types.sendable.files.*
+    "InputFile":                    ("pytgbot.api_types.sendable.files.", "TgBotApiObject", None),
+    "InputFileFromDisk":            ("pytgbot.api_types.sendable.files.", "InputFile", None),
+    "InputFileFromURL":             ("pytgbot.api_types.sendable.files.", "InputFile", None),
 
     # pytgbot.api_types.sendable.inline.*
     "InputMessageContent":          ("pytgbot.api_types.sendable.inline.", "Sendable", None),
@@ -109,6 +110,6 @@ You can either pass a file_id as String to resend a photo
                       file that is already on the Telegram servers (recommended),
                       pass an HTTP URL as a String for Telegram to get a photo from the Internet,
                       or upload a new photo, by specifying the file path as
-                      :class:`InputFile <pytgbot/pytgbot.api_types.files.InputFile>`.
+                      :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
 
 """
