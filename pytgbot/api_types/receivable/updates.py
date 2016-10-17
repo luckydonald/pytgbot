@@ -448,7 +448,8 @@ class Message(UpdateType):
         assert(isinstance(array, dict))
 
         from ..receivable.peer import User, Chat
-        from ..receivable.media import Audio, Sticker, Video, Voice, Contact, Location, Venue, Document, MessageEntity, PhotoSize
+        from ..receivable.media import Audio, Sticker, Video, Voice, Contact, Location, Venue, Document, MessageEntity
+        from ..receivable.media import PhotoSize, Game
 
         data = {}
         data['message_id'] = int(array.get('message_id'))

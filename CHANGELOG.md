@@ -3,6 +3,10 @@
 
 > Bugfix release
 
+**Version 2.2.1a4**
+
+- Fixed importing of `Game` in `Update.from_array(array)`.
+
 **Version 2.2.1a3**
 
 - Fixed importing of `InputFile*` after the package location change in [V2.2.0](#version-220).
