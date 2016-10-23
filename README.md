@@ -1,11 +1,11 @@
-# pytgbot
+# pytgbot [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
+
 ### Version [2.2.1.a4.0post1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) 
 ###### Python module to access the telegram bot api.
 
 Native python package witch pure Python interface for the [Telegram Bot API](https://core.telegram.org/bots).
 > The code is genereated directly from the API documentation, meaning up-to-date code is a matter of minutes.
 
-[![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
 #### Latest changes:
  - Moving `InputFile`, `InputFileFromDisk`, `InputFileFromURL` to `api_types.sendable.files.*` [#4](https://github.com/luckydonald/pytgbot/issues/4)
  - Implemented the changes from [October 3, 2016](https://core.telegram.org/bots/api-changelog#october-3-2016) ([gaming](https://core.telegram.org/bots/api#games) platform)
