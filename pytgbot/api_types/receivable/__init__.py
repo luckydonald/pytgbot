@@ -19,6 +19,7 @@ class Result(Receivable):
     pass
 # end class Result
 
+
 class WebhookInfo(Receivable):
     """
     Contains information about the current status of a webhook.
@@ -116,7 +117,6 @@ class WebhookInfo(Receivable):
         data['last_error_message'] = str(array.get('last_error_message')) if array.get(
             'last_error_message') is not None else None
         return WebhookInfo(**data)
-
     # end def from_array
 
     def __str__(self):

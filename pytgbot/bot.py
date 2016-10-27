@@ -158,7 +158,35 @@ class Bot(object):
                 return DictObject(result=[], exception=e)
             else:
                 raise
+            # end if
+        # end try
     # end def get_updates
+
+    def get_webhook_info(self):
+        """
+        Use this method to get current webhook status.
+        Requires no parameters.
+        If the bot is using get_updates, will return an object with the url field empty.
+
+        https://core.telegram.org/bots/api#getwebhookinfo
+
+        :return: On success, returns a :class:`pytgbot.api_types.receivable.WebhookInfo` object.
+        :rtype:  pytgbot.api_types.receivable.WebhookInfo`
+        """
+        result = self.do("getWebhookInfo")
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable import WebhookInfo
+            try:
+                return WebhookInfo.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type WebhookInfo", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def get_webhook_info
 
     def set_webhook(self, url=None, certificate=None):
         """
