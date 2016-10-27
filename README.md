@@ -1,4 +1,5 @@
-# pytgbot
+# pytgbot [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
+
 ### Version [2.2.1.a5.0post1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) 
 ###### Python module to access the telegram bot api.
 
