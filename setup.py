@@ -8,7 +8,7 @@ here = path.abspath(path.dirname(__file__))
 long_description = """A Python module that connects to the Telegram bot api, allowing to interact with Telegram users or groups."""
 
 setup(
-    name='pytgbot', version="2.2.1",
+    name='pytgbot', version="2.3",
     description='Connect to the Telegram Bot API, receive and send Telegram messages.',
     long_description=long_description,
     # The project's main homepage.
