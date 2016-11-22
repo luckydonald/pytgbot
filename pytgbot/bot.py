@@ -42,30 +42,6 @@ class Bot(object):
         self._last_update = datetime.now()
     # end def __init__
 
-    def get_me(self):
-        """
-        A simple method for testing your bot's auth token. Requires no parameters.
-        Returns basic information about the bot in form of a :class:`pytgbot.api_types.receivable.peer.User` object.
-
-        https://core.telegram.org/bots/api#getme
-
-        :return: Returns basic information about the bot in form of a User object.
-        :rtype: User
-        """
-        result = self.do("getMe")
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.peer import User
-            try:
-                return User.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
-    # end def get_me
 
     def get_updates(self, offset=None, limit=100, poll_timeout=0, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
@@ -162,32 +138,6 @@ class Bot(object):
         # end try
     # end def get_updates
 
-    def get_webhook_info(self):
-        """
-        Use this method to get current webhook status.
-        Requires no parameters.
-        If the bot is using get_updates, will return an object with the url field empty.
-
-        https://core.telegram.org/bots/api#getwebhookinfo
-
-        :return: On success, returns a :class:`pytgbot.api_types.receivable.WebhookInfo` object.
-        :rtype:  pytgbot.api_types.receivable.WebhookInfo`
-        """
-        result = self.do("getWebhookInfo")
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable import WebhookInfo
-            try:
-                return WebhookInfo.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type WebhookInfo", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
-    # end def get_webhook_info
-
     def set_webhook(self, url=None, certificate=None):
         """
         Use this method to specify a url and receive incoming updates via an outgoing webhook.
@@ -247,6 +197,60 @@ class Bot(object):
         return result
     # end def set_webhook
 
+    def get_webhook_info(self):
+        """
+        Use this method to get current webhook status.
+        Requires no parameters.
+        If the bot is using get_updates, will return an object with the url field empty.
+
+        https://core.telegram.org/bots/api#getwebhookinfo
+
+        :return: On success, returns a :class:`pytgbot.api_types.receivable.WebhookInfo` object.
+        :rtype:  pytgbot.api_types.receivable.WebhookInfo`
+        """
+        result = self.do("getWebhookInfo")
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable import WebhookInfo
+            try:
+                return WebhookInfo.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type WebhookInfo", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def get_webhook_info
+
+    def get_me(self):
+        """
+        A simple method for testing your bot's auth token. Requires no parameters.
+        Returns basic information about the bot in form of a :class:`pytgbot.api_types.receivable.peer.User` object.
+
+        https://core.telegram.org/bots/api#getme
+
+
+        Returns:
+
+        :return: Returns basic information about the bot in form of a User object
+        :rtype:  pytgbot.api_types.receivable.peer.User
+        """
+        result = self.do("getMe")
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.peer import User
+            try:
+                return User.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type User", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def get_me
+
     def send_message(self, chat_id, text, parse_mode=None, disable_web_page_preview=False, disable_notification=False,
                      reply_to_message_id=None, reply_markup=None):
         """
@@ -283,8 +287,8 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                               instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
+                               instructions to remove reply keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
@@ -293,8 +297,8 @@ class Bot(object):
         """
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -306,7 +310,7 @@ class Bot(object):
         assert(disable_notification is None or isinstance(disable_notification, bool))
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
-            InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
+            InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
         )))
         result = self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode,
             disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification,
@@ -342,7 +346,7 @@ class Bot(object):
                              (id for chats or the channel's username in the format @channelusername)
         :type  from_chat_id: int | str
 
-        :param message_id: Unique message identifier to forward
+        :param message_id: Message identifier in the chat specified in from_chat_id
         :type  message_id: int
 
 
@@ -420,10 +424,10 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                               instructions to hide reply keyboard or to force a reply from the user.
+                               instructions to remove reply keyboard or to force a reply from the user.
         :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup |
                                pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup |
-                               pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide |
+                               pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove |
                                pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
@@ -434,8 +438,8 @@ class Bot(object):
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -449,7 +453,7 @@ class Bot(object):
 
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
 
-        assert(reply_markup is None or isinstance(reply_markup, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply)))
+        assert(reply_markup is None or isinstance(reply_markup, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply)))
 
         result = self._do_fileupload(
             "photo", photo, chat_id=chat_id, caption=caption, disable_notification=disable_notification,
@@ -497,6 +501,9 @@ class Bot(object):
 
         Optional keyword parameters:
 
+        :keyword caption: Audio caption, 0-200 characters
+        :type    caption: str
+
         :keyword duration: Duration of the audio in seconds
         :type    duration: int
 
@@ -515,8 +522,8 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                               instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
+                               instructions to remove reply keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
@@ -526,14 +533,16 @@ class Bot(object):
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
 
         assert(audio is not None)
         assert(isinstance(audio, (InputFile, str)))
+
+        assert(caption is None or isinstance(caption, str))
 
         assert(duration is None or isinstance(duration, int))
 
@@ -545,7 +554,7 @@ class Bot(object):
 
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
-            InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
+            InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
         )))
         result = self._do_fileupload(
             "audio", audio, caption=caption, chat_id=chat_id, reply_to_message_id=reply_to_message_id, duration=duration,
@@ -602,8 +611,8 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                               instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
+                               instructions to remove reply keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
@@ -613,8 +622,8 @@ class Bot(object):
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -628,7 +637,7 @@ class Bot(object):
 
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
-            InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
+            InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
         )))
         result = self._do_fileupload(
             "document", document, chat_id=chat_id, document=document, caption=caption,
@@ -681,8 +690,8 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                               instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
+                               instructions to remove reply keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
@@ -692,8 +701,8 @@ class Bot(object):
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -705,7 +714,7 @@ class Bot(object):
 
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
-            InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
+            InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
         )))
         result = self._do_fileupload(
             "sticker", sticker, chat_id=chat_id, sticker=sticker, disable_notification=disable_notification,
@@ -772,8 +781,8 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                               instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
+                               instructions to remove reply keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
@@ -783,8 +792,8 @@ class Bot(object):
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -804,7 +813,7 @@ class Bot(object):
 
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
-             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
+             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
          )))
         result = self._do_fileupload(
             "video", video, chat_id=chat_id, video=video, duration=duration, width=width, height=height,
@@ -855,7 +864,10 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :keyword duration: Duration of sent audio in seconds
+        :keyword caption: Voice message caption, 0-200 characters
+        :type    caption: str
+
+        :keyword duration: Duration of the voice message in seconds
         :type    duration: int
 
         :keyword disable_notification: Sends the message silently. iOS users will not receive a notification,
@@ -867,8 +879,8 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                               instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
+                               instructions to remove reply keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
@@ -878,8 +890,8 @@ class Bot(object):
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -887,16 +899,18 @@ class Bot(object):
         assert(voice is not None)
         assert(isinstance(voice, (InputFile, str)))
 
+        assert(caption is None or isinstance(caption, str))
+
         assert(duration is None or isinstance(duration, int))
 
         assert(disable_notification is None or isinstance(disable_notification, bool))
 
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
-             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
+             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
          )))
         result = self._do_fileupload(
-            "voice", voice, caption=caption, chat_id=chat_id, voice=voice, duration=duration,
+            "voice", voice, chat_id=chat_id, voice=voice, caption=caption, duration=duration,
             disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -946,8 +960,8 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                               instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
+                               instructions to remove reply keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
@@ -956,8 +970,8 @@ class Bot(object):
         """
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -973,7 +987,7 @@ class Bot(object):
 
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
-             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
+             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
          )))
         result = self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude,
                        disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
@@ -1033,8 +1047,8 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                 A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                                instructions to hide reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
+                                instructions to remove reply keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
@@ -1043,8 +1057,8 @@ class Bot(object):
         """
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1067,7 +1081,7 @@ class Bot(object):
 
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
-             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
+             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
          )))
         result = self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title,
                        address=address, foursquare_id=foursquare_id, disable_notification=disable_notification,
@@ -1121,8 +1135,8 @@ class Bot(object):
 
         :keyword reply_markup: Additional interface options.
                                A JSON-serialized object for an inline keyboard, custom reply keyboard,
-                               instructions to hide keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardHide | pytgbot.api_types.sendable.reply_markup.ForceReply
+                               instructions to remove keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
 
         Returns:
 
@@ -1131,8 +1145,8 @@ class Bot(object):
         """
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardHide
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1149,7 +1163,7 @@ class Bot(object):
 
         assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
         assert(reply_markup is None or isinstance(reply_markup, (
-             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardHide, ForceReply
+             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
          )))
         result = self.do("sendContact", chat_id=chat_id, phone_number=phone_number,
                        first_name=first_name, last_name=last_name, disable_notification=disable_notification,
@@ -1199,7 +1213,7 @@ class Bot(object):
 
         Returns:
 
-        :return: On success, True is returned
+        :return: Returns True on success
         :rtype:  bool
         """
         assert(chat_id is not None)
@@ -1281,9 +1295,8 @@ class Bot(object):
         It is guaranteed that the link will be valid for at least 1 hour.
         When the link expires, a new one can be requested by calling get_file again.
 
-        Note: This function may not preserve the original file name.
-              The MIME type of the file and its name (if available)
-              should be saved when the File object is received.
+        Note: This function may not preserve the original file name and MIME type.
+              You should save the file's MIME type and name (if available) when the File object is received.
 
 
         https://core.telegram.org/bots/api#getfile
@@ -1496,7 +1509,7 @@ class Bot(object):
 
         Parameters:
 
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the\n
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the
                         format @channelusername)
         :type  chat_id: int | str
 
@@ -1603,7 +1616,7 @@ class Bot(object):
         return result
     # end def get_chat_member
 
-    def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None):
+    def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
         """
         Use this method to send answers to callback queries sent from inline keyboards.
         The answer will be displayed to the user as a notification at the top of the chat screen or as an alert.
@@ -1632,6 +1645,10 @@ class Bot(object):
         :keyword url: URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game – note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
         :type    url: str
 
+        :keyword cache_time: The maximum amount of time in seconds that the result of the callback query may be cached
+                             client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0
+        :type    cache_time: int
+
         Returns:
 
         :return: On success, True is returned
@@ -1646,7 +1663,9 @@ class Bot(object):
 
         assert(url is None or isinstance(url, str))
 
-        result = self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert, url=url)
+        assert(cache_time is None or isinstance(cache_time, int))
+
+        result = self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert, url=url, cache_time=cache_time)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1663,7 +1682,7 @@ class Bot(object):
     def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None,
                           disable_web_page_preview=None, reply_markup=None):
         """
-        Use this method to edit text messages sent by the bot or via the bot (for inline bots).
+        Use this method to edit text and game messages sent by the bot or via the bot (for inline bots).
         On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 
         https://core.telegram.org/bots/api#editmessagetext
@@ -1681,7 +1700,7 @@ class Bot(object):
                           username of the target channel (in the format @channelusername)
         :type    chat_id: int | str
 
-        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
         :type    message_id: int
 
         :keyword inline_message_id: Required if chat_id and message_id are not specified.
@@ -1759,7 +1778,7 @@ class Bot(object):
                           username of the target channel (in the format @channelusername)
         :type    chat_id: int | str
 
-        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
         :type    message_id: int
 
         :keyword inline_message_id: Required if chat_id and message_id are not specified.
@@ -1775,7 +1794,7 @@ class Bot(object):
         Returns:
 
         :return: On success, if edited message is sent by the bot, the edited Message is returned,
-                 otherwise True is returned.
+                 otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1825,7 +1844,7 @@ class Bot(object):
                           username of the target channel (in the format @channelusername)
         :type    chat_id: int | str
 
-        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
         :type    message_id: int
 
         :keyword inline_message_id: Required if chat_id and message_id are not specified.
@@ -1837,8 +1856,7 @@ class Bot(object):
 
         Returns:
 
-        :return: On success, if edited message is sent by the bot, the edited Message is returned,
-                 otherwise True is returned.
+        :return: On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -2041,11 +2059,11 @@ class Bot(object):
         return result
     # end def send_game
 
-    def set_game_score(self, user_id, score, chat_id=None, message_id=None, inline_message_id=None, edit_message=None):
+    def set_game_score(self, user_id, score, force=False, disable_edit_message=False, chat_id=None, message_id=None, inline_message_id=None):
         """
         Use this method to set the score of the specified user in a game.
         On success, if the message was sent by the bot, returns the edited Message, otherwise returns True.
-        Returns an error, if the new score is not greater than the user's current score in the chat.
+        Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
 
         https://core.telegram.org/bots/api#setgamescore
 
@@ -2055,27 +2073,33 @@ class Bot(object):
         :param user_id: User identifier
         :type  user_id: int
 
-        :param score: New score, must be positive
+        :param score: New score, must be non-negative
         :type  score: int
 
 
         Optional keyword parameters:
 
+        :keyword force: Pass True, if the high score is allowed to decrease.
+                        This can be useful when fixing mistakes or banning cheaters
+        :type    force: bool
+
+        :keyword disable_edit_message: Pass True, if the game message should not be automatically edited to include
+                                       the current scoreboard
+        :type    disable_edit_message: bool
+
         :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat (or username of the target channel in the format @channelusername)
         :type    chat_id: int | str
 
-        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
         :type    message_id: int
 
         :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
         :type    inline_message_id: str
 
-        :keyword edit_message: Pass True, if the game message should be automatically edited to include the current scoreboard
-        :type    edit_message: bool
-
         Returns:
 
-        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat
+        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True.
+                 Returns an error, if the new score is not greater than the user's current score in the chat and force is False
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         assert(user_id is not None)
@@ -2084,15 +2108,17 @@ class Bot(object):
         assert(score is not None)
         assert(isinstance(score, int))
 
+        assert(force is None or isinstance(force, bool))
+
+        assert(disable_edit_message is None or isinstance(disable_edit_message, bool))
+
         assert(chat_id is None or isinstance(chat_id, (int, str)))
 
         assert(message_id is None or isinstance(message_id, int))
 
         assert(inline_message_id is None or isinstance(inline_message_id, str))
 
-        assert(edit_message is None or isinstance(edit_message, bool))
-
-        result = self.do("setGameScore", user_id=user_id, score=score, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, edit_message=edit_message)
+        result = self.do("setGameScore", user_id=user_id, score=score, force=force, disable_edit_message=disable_edit_message, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2133,7 +2159,7 @@ class Bot(object):
         :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat (or username of the target channel in the format @channelusername)
         :type    chat_id: int | str
 
-        :keyword message_id: Required if inline_message_id is not specified. Unique identifier of the sent message
+        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
         :type    message_id: int
 
         :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -2141,7 +2167,7 @@ class Bot(object):
 
         Returns:
 
-        :return: This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+        :return: On success, returns an Array of GameHighScore objects
         :rtype:  list of pytgbot.api_types.receivable.game.GameHighScore
         """
         assert(user_id is not None)

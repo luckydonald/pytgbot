@@ -13,13 +13,13 @@ class UpdateType(Receivable):
 
 class Update(Receivable):
     """
-    This object represents an incoming update. Only one of the optional parameters can be present in any given update.
+    This object represents an incoming update. At most one of the optional parameters can be present in any given update.
 
     https://core.telegram.org/bots/api#update
     """
-    def __init__(self, update_id, message=None, edited_message=None, inline_query=None, chosen_inline_result=None, callback_query=None):
+    def __init__(self, update_id, message=None, edited_message=None, channel_post=None, edited_channel_post=None, inline_query=None, chosen_inline_result=None, callback_query=None):
         """
-        This object represents an incoming update.Only one of the optional parameters can be present in any given update.
+        This object represents an incoming update. At most one of the optional parameters can be present in any given update.
 
         https://core.telegram.org/bots/api#update
 
@@ -37,6 +37,13 @@ class Update(Receivable):
 
         :keyword edited_message: Optional. New version of a message that is known to the bot and was edited
         :type    edited_message: Message
+
+        :keyword channel_post: Optional. New incoming channel post of any kind — text, photo, sticker, etc.
+        :type    channel_post: Message
+
+        :keyword edited_channel_post: Optional. New version of a channel post that is known to the bot and was edited
+        :type    edited_channel_post: Message
+
 
         :keyword inline_query: Optional. New incoming inline query
         :type    inline_query: pytgbot.api_types.receivable.inline.InlineQuery
@@ -61,6 +68,12 @@ class Update(Receivable):
         assert(edited_message is None or isinstance(edited_message, Message))
         self.edited_message = edited_message
 
+        assert(channel_post is None or isinstance(channel_post, Message))
+        self.channel_post = channel_post
+
+        assert(edited_channel_post is None or isinstance(edited_channel_post, Message))
+        self.edited_channel_post = edited_channel_post
+
         assert(inline_query is None or isinstance(inline_query, InlineQuery))
         self.inline_query = inline_query
 
@@ -84,6 +97,10 @@ class Update(Receivable):
             array['message'] = self.message.to_array()  # type Message
         if self.edited_message is not None:
             array['edited_message'] = self.edited_message.to_array()  # type Message
+        if self.channel_post is not None:
+            array['channel_post'] = self.channel_post.to_array()  # type Message
+        if self.edited_channel_post is not None:
+            array['edited_channel_post'] = self.edited_channel_post.to_array()  # type Message
         if self.inline_query is not None:
             array['inline_query'] = self.inline_query.to_array()  # type InlineQuery
         if self.chosen_inline_result is not None:
@@ -123,14 +140,14 @@ class Update(Receivable):
         """
         Implements `str(update_instance)`
         """
-        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r})".format(self=self)
+        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in update_instance`
         """
-        return key in ["update_id", "message", "edited_message", "inline_query", "chosen_inline_result", "callback_query"]
+        return key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query"]
     # end def __contains__
 # end class Update
 
@@ -141,7 +158,7 @@ class Message(UpdateType):
 
     https://core.telegram.org/bots/api#message
     """
-    def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_date=None, reply_to_message=None, edit_date=None, text=None, entities=None, audio=None, document=None, game=None, photo=None, sticker=None, video=None, voice=None, caption=None, contact=None, location=None, venue=None, new_chat_member=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None):
+    def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_date=None, reply_to_message=None, edit_date=None, text=None, entities=None, audio=None, document=None, game=None, photo=None, sticker=None, video=None, voice=None, caption=None, contact=None, location=None, venue=None, new_chat_member=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None):
         """
         This object represents a message.
 
@@ -150,7 +167,7 @@ class Message(UpdateType):
 
         Parameters:
 
-        :param message_id: Unique message identifier
+        :param message_id: Unique message identifier inside this chat
         :type  message_id: int
 
         :param date: Date the message was sent in Unix time
@@ -170,6 +187,9 @@ class Message(UpdateType):
 
         :keyword forward_from_chat: Optional. For messages forwarded from a channel, information about the original channel
         :type    forward_from_chat: pytgbot.api_types.receivable.peer.Chat
+
+        :keyword forward_from_message_id: Optional. For forwarded channel posts, identifier of the original message in the channel
+        :type    forward_from_message_id: int
 
         :keyword forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
         :type    forward_date: int
@@ -278,6 +298,9 @@ class Message(UpdateType):
         assert(forward_from_chat is None or isinstance(forward_from_chat, Chat))
         self.forward_from_chat = forward_from_chat
 
+        assert(forward_from_message_id is None or isinstance(forward_from_message_id, int))
+        self.forward_from_message_id = forward_from_message_id
+
         assert(forward_date is None or isinstance(forward_date, int))
         self.forward_date = forward_date
 
@@ -377,6 +400,8 @@ class Message(UpdateType):
             array['forward_from'] = self.forward_from.to_array()  # type User
         if self.forward_from_chat is not None:
             array['forward_from_chat'] = self.forward_from_chat.to_array()  # type Chat
+        if self.forward_from_message_id is not None:
+            array['forward_from_message_id'] = int(self.forward_from_message_id)  # type int
         if self.forward_date is not None:
             array['forward_date'] = int(self.forward_date)  # type int
         if self.reply_to_message is not None:
@@ -458,6 +483,7 @@ class Message(UpdateType):
         data['from_peer'] = User.from_array(array.get('from')) if array.get('from') is not None else None
         data['forward_from'] = User.from_array(array.get('forward_from')) if array.get('forward_from') is not None else None
         data['forward_from_chat'] = Chat.from_array(array.get('forward_from_chat')) if array.get('forward_from_chat') is not None else None
+        data['forward_from_message_id'] = int(array.get('forward_from_message_id')) if array.get('forward_from_message_id') is not None else None
         data['forward_date'] = int(array.get('forward_date')) if array.get('forward_date') is not None else None
         data['reply_to_message'] = Message.from_array(array.get('reply_to_message')) if array.get('reply_to_message') is not None else None
         data['edit_date'] = int(array.get('edit_date')) if array.get('edit_date') is not None else None
@@ -492,14 +518,14 @@ class Message(UpdateType):
         """
         Implements `str(message_instance)`
         """
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, text={self.text!r}, entities={self.entities!r}, audio={self.audio!r}, document={self.document!r}, game={self.game!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, new_chat_member={self.new_chat_member!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, text={self.text!r}, entities={self.entities!r}, audio={self.audio!r}, document={self.document!r}, game={self.game!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, new_chat_member={self.new_chat_member!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in message_instance`
         """
-        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_date", "reply_to_message", "edit_date", "text", "entities", "audio", "document", "game", "photo", "sticker", "video", "voice", "caption", "contact", "location", "venue", "new_chat_member", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message"]
+        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_date", "reply_to_message", "edit_date", "text", "entities", "audio", "document", "game", "photo", "sticker", "video", "voice", "caption", "contact", "location", "venue", "new_chat_member", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message"]
     # end def __contains__
 # end class Message
 
@@ -529,7 +555,7 @@ class CallbackQuery(UpdateType):
         :param from_peer: Sender
         :type  from_peer: pytgbot.api_types.receivable.peer.User
 
-        :param chat_instance: Identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
+        :param chat_instance: Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
         :type  chat_instance: str
 
 

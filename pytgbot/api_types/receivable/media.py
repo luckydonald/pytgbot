@@ -1130,7 +1130,6 @@ class UserProfilePhotos(Result):
         :return: dictionary repesentation of this object.
         :rtype: dict
         """
-        from api_types import as_array
         array = super(UserProfilePhotos, self).to_array()
         array['total_count'] = int(self.total_count)  # type int
         array['photos'] = self._as_array(self.photos)  # type list of list of PhotoSize
@@ -1206,7 +1205,7 @@ class File(Receivable):
         :keyword file_size: Optional. File size, if known
         :type    file_size: int
 
-        :keyword file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file
+        :keyword file_path: Optional. File path. Use `.get_download_url(token)` to get the file
         :type    file_path: str
         """
         super(File, self).__init__()
@@ -1327,10 +1326,6 @@ class Game(Media):
         :type    animation: pytgbot.api_types.receivable.media.Animation
         """
         super(Game, self).__init__()
-        from pytgbot.api_types.receivable.media import Animation
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.receivable.media import PhotoSize
-        
         assert(title is not None)
         assert(isinstance(title, str))
         self.title = title
@@ -1385,10 +1380,6 @@ class Game(Media):
             return None
         # end if
         assert(isinstance(array, dict))
-        
-        from pytgbot.api_types.receivable.media import Animation
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.receivable.media import PhotoSize
         
         data = {}
         data['title'] = str(array.get('title'))
@@ -1451,8 +1442,7 @@ class Animation(Media):
         :type    file_size: int
         """
         super(Animation, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
-        
+
         assert(file_id is not None)
         assert(isinstance(file_id, str))
         self.file_id = file_id
@@ -1502,8 +1492,6 @@ class Animation(Media):
             return None
         # end if
         assert(isinstance(array, dict))
-        
-        from pytgbot.api_types.receivable.media import PhotoSize
         
         data = {}
         data['file_id'] = str(array.get('file_id'))

@@ -30,7 +30,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
     https://core.telegram.org/bots/api#replykeyboardmarkup
     """
-    def __init__(self, keyboard, resize_keyboard=False, one_time_keyboard=False, selective=None):
+    def __init__(self, keyboard, resize_keyboard=False, one_time_keyboard=False, selective=False):
         """
         This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 
@@ -239,32 +239,32 @@ class KeyboardButton(Button):
 # end class KeyboardButton
 
 
-class ReplyKeyboardHide(ReplyMarkup):
+class ReplyKeyboardRemove(ReplyMarkup):
     """
     Upon receiving a message with this object,
-    Telegram clients will hide the current custom keyboard and display the default letter-keyboard.
+    Telegram clients will remove the current custom keyboard and display the default letter-keyboard.
     By default, custom keyboards are displayed until a new keyboard is sent by a bot.
     An exception is made for one-time keyboards that are hidden immediately after the user presses a button
     (see ReplyKeyboardMarkup).
 
-    https://core.telegram.org/bots/api#replykeyboardhide
+    https://core.telegram.org/bots/api#replykeyboardremove
     """
     def __init__(self, selective=False):
         """
         Upon receiving a message with this object,
-        Telegram clients will hide the current custom keyboard and display the default letter-keyboard.
+        Telegram clients will remove the current custom keyboard and display the default letter-keyboard.
         By default, custom keyboards are displayed until a new keyboard is sent by a bot.
         An exception is made for one-time keyboards that are hidden immediately after the user presses a button
         (see ReplyKeyboardMarkup).
 
-        https://core.telegram.org/bots/api#replykeyboardhide
+        https://core.telegram.org/bots/api#replykeyboardremove
 
 
         Parameters:
 
         Optional keyword parameters:
 
-        :keyword selective: Optional. Use this parameter if you want to show the keyboard to specific users only.
+        :keyword selective: Optional. Use this parameter if you want to remove the keyboard for specific users only.
                             Targets: 1) users that are @mentioned in the text of the Message object;
                                      2) if the bot's message is a reply (has reply_to_message_id),
                                         sender of the original message.
@@ -272,12 +272,12 @@ class ReplyKeyboardHide(ReplyMarkup):
                                      bot replies to the request with a keyboard to select the new language.
                                      Other users in the group don’t see the keyboard.
                             Example: A user votes in a poll, bot returns confirmation message in reply to the vote and
-                                     hides keyboard for that user, while still showing the keyboard with poll options to
+                                     removes keyboard for that user, while still showing the keyboard with poll options to
                                      users who haven't voted yet.
         :type    selective: bool
         """
-        super(ReplyKeyboardHide, self).__init__()
-        self.hide_keyboard = True
+        super(ReplyKeyboardRemove, self).__init__()
+        self.remove_keyboard = True
 
         assert(selective is None or isinstance(selective, bool))
         self.selective = selective
@@ -285,13 +285,13 @@ class ReplyKeyboardHide(ReplyMarkup):
 
     def to_array(self):
         """
-        Serializes this ReplyKeyboardHide to a dictionary.
+        Serializes this ReplyKeyboardRemove to a dictionary.
 
         :return: dictionary repesentation of this object.
         :rtype: dict
         """
-        array = super(ReplyKeyboardHide, self).to_array()
-        array['hide_keyboard'] = bool(self.hide_keyboard)  # type bool
+        array = super(ReplyKeyboardRemove, self).to_array()
+        array['remove_keyboard'] = bool(self.remove_keyboard)  # type bool
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
         return array
@@ -300,10 +300,10 @@ class ReplyKeyboardHide(ReplyMarkup):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new ReplyKeyboardHide from a given dictionary.
+        Deserializes a new ReplyKeyboardRemove from a given dictionary.
 
-        :return: new ReplyKeyboardHide instance.
-        :rtype: ReplyKeyboardHide
+        :return: new ReplyKeyboardRemove instance.
+        :rtype: ReplyKeyboardRemove
         """
         if array is None or not array:
             return None
@@ -311,33 +311,30 @@ class ReplyKeyboardHide(ReplyMarkup):
         assert(isinstance(array, dict))
 
         data = {}
+        assert (bool(array.get('remove_keyboard')) == True)
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        return ReplyKeyboardHide(**data)
+        return ReplyKeyboardRemove(**data)
     # end def from_array
 
     def __str__(self):
         """
-        Implements `str(replykeyboardhide_instance)`
+        Implements `str(replykeyboardremove_instance)`
         """
-        return "ReplyKeyboardHide(hide_keyboard={self.hide_keyboard!r}, selective={self.selective!r})".format(self=self)
+        return "ReplyKeyboardRemove(remove_keyboard={self.remove_keyboard!r}, selective={self.selective!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
-        Implements `"key" in replykeyboardhide_instance`
+        Implements `"key" in replykeyboardremove_instance`
         """
-        return key in ["hide_keyboard", "selective"]
+        return key in ["remove_keyboard", "selective"]
     # end def __contains__
-# end class ReplyKeyboardHide
+# end class ReplyKeyboardRemove
 
 
 class InlineKeyboardMarkup(ReplyMarkup):
     """
     This object represents an inline keyboard that appears right next to the message it belongs to.
-
-    Warning: Inline keyboards are currently being tested and are not available in channels yet.
-         For now, feel free to use them in one-on-one chats or groups.
-
     Note: This will only work in Telegram versions released after 9 April, 2016.
           Older clients will display unsupported message.
 
@@ -346,10 +343,6 @@ class InlineKeyboardMarkup(ReplyMarkup):
     def __init__(self, inline_keyboard):
         """
         This object represents an inline keyboard that appears right next to the message it belongs to.
-
-        Warning: Inline keyboards are currently being tested and are not available in channels yet.
-             For now, feel free to use them in one-on-one chats or groups.
-
         Note: This will only work in Telegram versions released after 9 April, 2016.
               Older clients will display unsupported message.
 
@@ -455,7 +448,7 @@ class InlineKeyboardButton(Button):
                                       username will be inserted.
                                       Note:  This offers an easy way for users to start using your bot in inline mode
                                              when they are currently in a private chat with it.
-                                             Especially useful when combined with switch_pm… action – in this case the
+                                             Especially useful when combined with switch_pm… actions – in this case the
                                              user will be automatically returned to the chat they switched from,
                                              skipping the chat selection screen.
         :type    switch_inline_query: str
@@ -639,6 +632,7 @@ class ForceReply(ReplyMarkup):
         assert(isinstance(array, dict))
 
         data = {}
+        assert(bool(array.get('force_reply')) == True)
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
         return ForceReply(**data)
     # end def from_array
