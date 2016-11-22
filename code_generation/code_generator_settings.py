@@ -96,7 +96,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
 
 
     "ReplyKeyboardMarkup":  ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
-    "ReplyKeyboardHide":    ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
+    "ReplyKeyboardRemove":  ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
     "ForceReply":           ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
     "InlineKeyboardMarkup": ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
     "KeyboardButton":       ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
@@ -104,6 +104,10 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
 
 }
 
+WHITELISTED_FUNCS = [  # Array with names of functions which have no parameters table and thus wouldn't be detected.
+    "getMe",
+    "getWebhookInfo",
+]
 
 """
 You can either pass a file_id as String to resend a photo

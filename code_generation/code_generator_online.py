@@ -5,7 +5,7 @@ from luckydonaldUtils.files.basics import mkdir_p  # luckydonaldUtils v0.49+
 from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
 
-from code_generation.code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT
+from code_generation.code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS
 from jinja2.exceptions import TemplateError, TemplateSyntaxError
 
 FILE_HEADER = "# -*- coding: utf-8 -*-\n"
@@ -175,11 +175,20 @@ def main():
                 print("unknown: " + sibling.name)
                 # end if
         # end for
-        if not all([table_type, param_strings, link, title, descr]):
+        if not all([link, title, descr]):
+            print("Skipped: Missing link, title or description")
             continue
+        if not all([table_type, param_strings]):
+            if title not in WHITELISTED_FUNCS:
+                print("Skipped. Has no table with Parameters or Fields.\n"
+                      "Also isn't a whitelisted function in `code_generator_settings.WHITELISTED_FUNCS`.")
+                continue
+            # -> else: is in WHITELISTED_FUNCS:
+            table_type = "func"
+        # end if
         descr = "\n".join(descr)
         print("descr: " + repr(descr))
-        params_string = "\n".join(param_strings)
+        params_string = "\n".join(param_strings) if param_strings else None  # WHITELISTED_FUNCS have no params
         if table_type == "func":
             seems_valid = False
             if len(default_returns) != 2:
