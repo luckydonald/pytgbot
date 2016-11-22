@@ -1,4 +1,29 @@
 # Changelog
+
+## Version 2.3
+- Updated API changes of [`Bot API 2.3` (November 21, 2016)](https://core.telegram.org/bots/api-changelog#november-21-2016)
+
+Changes I observed:
+> Bot
+>> **`answer_callback_query`**: added `cache_time`
+>> **`edit_message_text`**: works for game messages too.
+>> **`set_game_score`**: added `force`
+>> **`set_game_score`**: added `disable_edit_message`
+>> **`set_game_score`**: removed `edit_message`
+>> **`set_game_score`**: `score` can be `0`. Now must be non-negative, before it must be postive.
+>
+> Classes:
+>> **`updates.Update`**: added `channel_post`
+>> **`updates.Update`**: added `edited_channel_post`
+>> **`updates.Message`**: added `forward_from_message_id`
+>
+> Documentation:
+>> **`Message`** ids are not called _unique_ no more.
+>> **`CallbackQuery`** ids are not called _global_ no more.
+>> **Inline Keyboard** Warnings removed.
+>
+> Might be a incomplete list, also have a look at the api changelog.
+
 ## Version 2.2.1
 
 > Bugfix release
@@ -21,7 +46,7 @@
 
 ## Version 2.2.0 ##
  - Moving `InputFile`, `InputFileFromDisk`, `InputFileFromURL` to `api_types.sendable.files.*` [#4](https://github.com/luckydonald/pytgbot/issues/4)
- - Implemented the changes from [October 3, 2016](https://core.telegram.org/bots/api-changelog#october-3-2016) ([gaming](https://core.telegram.org/bots/api#games) platform)
+ - Implemented the changes from [`Bot API 2.2` (October 3, 2016)](https://core.telegram.org/bots/api-changelog#october-3-2016) ([gaming](https://core.telegram.org/bots/api#games) platform)
  - Improved templates, separated some stuff in the `Bot.do(...)` function for better subclassing. This will hopefully allow a subclass capable of returning infos, from an open webhook, later.
 
 ## Version 2.1.4 ##
@@ -57,6 +82,7 @@ Big overhaul:
  
 ## Version 1.0.0 ##
 - Added [Inline mode](https://telegram.org/blog/inline-bots) including [inlinefeedback](https://core.telegram.org/bots/inline#collecting-feedback).
+  This should be [`Bot API 2.0` (April 9, 2016)](https://core.telegram.org/bots/api-changelog#april-9-2016).
 
 ## Version 0.0.0 ##
 - First implementation

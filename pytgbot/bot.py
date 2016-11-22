@@ -42,7 +42,6 @@ class Bot(object):
         self._last_update = datetime.now()
     # end def __init__
 
-
     def get_updates(self, offset=None, limit=100, poll_timeout=0, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
