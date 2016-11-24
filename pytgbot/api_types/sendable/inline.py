@@ -2278,7 +2278,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :keyword input_message_content: Optional. Content of the message to be sent instead of the sticker
         :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
-        super(InlineQueryResultCachedSticker, self).__init__(id, "sicker")
+        super(InlineQueryResultCachedSticker, self).__init__(id, "sticker")
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         # type is given by class type
