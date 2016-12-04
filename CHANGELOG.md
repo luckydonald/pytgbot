@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 2.3.3
+- Updated Official API changes of [`Bot API 2`.`3`.`1` (December 4, 2016)](https://core.telegram.org/bots/api-changelog#december-4-2016)
+
+
+### Version 2.3.2
+- Fixed failed version bump, which causing importing this package impossible.
+
+### Version 2.3.1
+- This is **not** Telegram `Bot API 2.3.1`!
+- This version doesn't work. Use `2.3.2` instead.
+- Fixed InlineQueryResultCachedSticker.
+
+
 ## Version 2.3
 - Updated API changes of [`Bot API 2.3` (November 21, 2016)](https://core.telegram.org/bots/api-changelog#november-21-2016)
 
