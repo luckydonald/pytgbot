@@ -42,7 +42,7 @@ class Bot(object):
         self._last_update = datetime.now()
     # end def __init__
 
-    def get_updates(self, offset=None, limit=100, poll_timeout=0, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
+    def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
 
@@ -68,6 +68,16 @@ class Bot(object):
                                Defaults to 0, i.e. usual short polling.
         :type    poll_timeout: int
 
+        :keyword allowed_updates: List the types of updates you want your bot to receive.
+                                  For example, specify [“message”, “edited_channel_post”, “callback_query”] to only
+                                  receive updates of these types. See Update for a complete list of available update
+                                  types. Specify an empty list to receive all updates regardless of type (default).
+                                  If not specified, the previous setting will be used. Please note that this parameter
+                                  doesn't affect updates created before the call to the get_updates,
+                                  so unwanted updates may be received for a short period of time.
+        :type    allowed_updates: list of str
+
+
         :keyword request_timeout: Timeout of the request. Not the long polling server side timeout.
                                   If not specified, it is set to `poll_timeout`+2.
         :type    request_timeout: int
@@ -92,6 +102,7 @@ class Bot(object):
         assert(offset is None or isinstance(offset, int))
         assert(limit is None or isinstance(limit, int))
         assert(poll_timeout is None or isinstance(poll_timeout, int))
+        assert(allowed_updates is None or isinstance(allowed_updates, list))
         if poll_timeout and not request_timeout is None:
             request_timeout = poll_timeout + 2
         # end if
@@ -110,8 +121,8 @@ class Bot(object):
         self._last_update = datetime.now()
         try:
             result = self.do(
-                "getUpdates", offset=offset, limit=limit, timeout=poll_timeout, use_long_polling=poll_timeout != 0,
-                request_timeout=request_timeout
+                "getUpdates", offset=offset, limit=limit, timeout=poll_timeout, allowed_updates=allowed_updates,
+                use_long_polling=poll_timeout != 0, request_timeout=request_timeout
             )
             if self.return_python_objects:
                 logger.debug("Trying to parse {data}".format(data=repr(result)))
@@ -137,12 +148,13 @@ class Bot(object):
         # end try
     # end def get_updates
 
-    def set_webhook(self, url=None, certificate=None):
+    def set_webhook(self, url, certificate=None, max_connections=None, allowed_updates=None):
         """
         Use this method to specify a url and receive incoming updates via an outgoing webhook.
         Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url,
         containing a JSON-serialized Update.
         In case of an unsuccessful request, we will give up after a reasonable amount of attempts.
+        Returns true.
 
         If you'd like to make sure that the Webhook request comes from Telegram,
         we recommend using a secret path in the URL, e.g. https://www.example.com/<token>.
@@ -163,26 +175,46 @@ class Bot(object):
         https://core.telegram.org/bots/api#setwebhook
 
 
-        Optional keyword parameters:
+        Parameters:
 
-        :keyword url: HTTPS url to send updates to. Use an empty string to remove webhook integration
-        :type    url: str
+        :param url: HTTPS url to send updates to. Use an empty string to remove webhook integration
+        :type  url: str
+
+
+        Optional keyword parameters:
 
         :keyword certificate: Upload your public key certificate so that the root certificate in use can be checked.
                               See our self-signed guide for details.
         :type    certificate: pytgbot.api_types.sendable.files.InputFile
 
+        :keyword max_connections: Maximum allowed number of simultaneous HTTPS connections to the webhook for update
+                                  delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's
+                                  server, and higher values to increase your bot's throughput.
+        :type    max_connections: int
+
+        :keyword allowed_updates: List the types of updates you want your bot to receive. For example, specify
+                                  [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these
+                                  types. See Update for a complete list of available update types.  Specify an empty
+                                  list to receive all updates regardless of type (default). If not specified,
+                                  the previous setting will be used. Please note that this parameter doesn't affect
+                                  updates created before the call to the setWebhook, so unwanted updates may be received
+                                  for a short period of time.
+        :type    allowed_updates: list of str
+
         Returns:
 
-        :return: On success, True is returned
+        :return: Returns True
         :rtype:  bool
         """
         from pytgbot.api_types.sendable.files import InputFile
 
-        assert(url is None or isinstance(url, str))
+        assert(url is not None)
+        assert (isinstance(url, str))
         assert(certificate is None or isinstance(certificate, InputFile))
+        assert(max_connections is None or isinstance(max_connections, int))
+        assert(allowed_updates is None or isinstance(allowed_updates, list))
 
-        result = self.do("setWebhook", url=url, certificate=certificate)
+        result = self.do("setWebhook", url=url, certificate=certificate, max_connections=max_connections, allowed_updates=allowed_updates)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1516,8 +1548,7 @@ class Bot(object):
         Returns:
 
         :return: On success, returns an Array of ChatMember objects that contains information about all
-                 chat administrators except other bots. If the chat is a group or a supergroup and no administrators
-                 were appointed, only the creator will be returned
+                 chat administrators except other bots
         :rtype:  list of pytgbot.api_types.receivable.peer.ChatMember
         """
         assert(chat_id is not None)
@@ -2006,7 +2037,8 @@ class Bot(object):
 
         Parameters:
 
-        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :param chat_id: Unique identifier for the target chat (or username of the target channel, in the format
+                        @channelusername)
         :type  chat_id: int | str
 
         :param game_short_name: Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.

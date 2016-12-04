@@ -33,7 +33,7 @@ class Bot(object):
     # end def __init__
 
     
-    def get_updates(self, offset=None, limit=None, timeout=None):
+    def get_updates(self, offset=None, limit=None, timeout=None, allowed_updates=None):
         """
         Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
         
@@ -53,6 +53,9 @@ class Bot(object):
         :keyword timeout: Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
         :type    timeout: int
         
+        :keyword allowed_updates: List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
+        :type    allowed_updates: list of str
+        
         Returns:
 
         :return: An Array of Update objects is returned
@@ -64,7 +67,9 @@ class Bot(object):
         
         assert(timeout is None or isinstance(timeout, int))
         
-        result = self.do("getUpdates", offset=offset, limit=limit, timeout=timeout)
+        assert(allowed_updates is None or isinstance(allowed_updates, list))
+        
+        result = self.do("getUpdates", offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Update
@@ -79,9 +84,9 @@ class Bot(object):
         return result
     # end def get_updates
     
-    def set_webhook(self, url=None, certificate=None):
+    def set_webhook(self, url, certificate=None, max_connections=None, allowed_updates=None):
         """
-        Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts.
+        Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns true.
         If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot‘s token, you can be pretty sure it’s us.
         
         Notes1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter. Please upload as InputFile, sending a String will not work.3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
@@ -90,34 +95,42 @@ class Bot(object):
         https://core.telegram.org/bots/api#setwebhook
 
         
-        Optional keyword parameters:
+        Parameters:
         
-        :keyword url: HTTPS url to send updates to. Use an empty string to remove webhook integration
-        :type    url: str
+        :param url: HTTPS url to send updates to. Use an empty string to remove webhook integration
+        :type  url: str
+        
+        
+        Optional keyword parameters:
         
         :keyword certificate: Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.
         :type    certificate: pytgbot.api_types.sendable.files.InputFile
         
+        :keyword max_connections: Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s throughput.
+        :type    max_connections: int
+        
+        :keyword allowed_updates: List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
+        :type    allowed_updates: list of str
+        
         Returns:
 
-        :return: On success, True is returned
-        :rtype:  bool
+        :return: Returns true
+        :rtype:  
         """
         from pytgbot.api_types.sendable.files import InputFile
         
-        assert(url is None or isinstance(url, str))
+        assert(url is not None)
+        assert(isinstance(url, str))
         
         assert(certificate is None or isinstance(certificate, InputFile))
         
-        result = self.do("setWebhook", url=url, certificate=certificate)
+        assert(max_connections is None or isinstance(max_connections, int))
+        
+        assert(allowed_updates is None or isinstance(allowed_updates, list))
+        
+        result = self.do("setWebhook", url=url, certificate=certificate, max_connections=max_connections, allowed_updates=allowed_updates)
         if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
+            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
@@ -1291,7 +1304,7 @@ class Bot(object):
         
         Returns:
 
-        :return: On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned
+        :return: On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots
         :rtype:  list of pytgbot.api_types.receivable.peer.ChatMember
         """
         assert(chat_id is not None)
@@ -1722,8 +1735,8 @@ class Bot(object):
         
         Parameters:
         
-        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-        :type  chat_id: int | str
+        :param chat_id: Unique identifier for the target chat
+        :type  chat_id: int
         
         :param game_short_name: Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
         :type  game_short_name: str
@@ -1748,7 +1761,7 @@ class Bot(object):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
+        assert(isinstance(chat_id, int))
         
         assert(game_short_name is not None)
         assert(isinstance(game_short_name, str))
@@ -1798,8 +1811,8 @@ class Bot(object):
         :keyword disable_edit_message: Pass True, if the game message should not be automatically edited to include the current scoreboard
         :type    disable_edit_message: bool
         
-        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat (or username of the target channel in the format @channelusername)
-        :type    chat_id: int | str
+        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat
+        :type    chat_id: int
         
         :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
         :type    message_id: int
@@ -1809,8 +1822,8 @@ class Bot(object):
         
         Returns:
 
-        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False
-        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
+        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True
+        :rtype:  pytgbot.api_types.receivable.updates.Message
         """
         assert(user_id is not None)
         assert(isinstance(user_id, int))
@@ -1822,7 +1835,7 @@ class Bot(object):
         
         assert(disable_edit_message is None or isinstance(disable_edit_message, bool))
         
-        assert(chat_id is None or isinstance(chat_id, (int, str)))
+        assert(chat_id is None or isinstance(chat_id, int))
         
         assert(message_id is None or isinstance(message_id, int))
         
@@ -1836,12 +1849,6 @@ class Bot(object):
                 return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-        
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
             # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
@@ -1866,8 +1873,8 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat (or username of the target channel in the format @channelusername)
-        :type    chat_id: int | str
+        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat
+        :type    chat_id: int
         
         :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
         :type    message_id: int
@@ -1883,7 +1890,7 @@ class Bot(object):
         assert(user_id is not None)
         assert(isinstance(user_id, int))
         
-        assert(chat_id is None or isinstance(chat_id, (int, str)))
+        assert(chat_id is None or isinstance(chat_id, int))
         
         assert(message_id is None or isinstance(message_id, int))
         

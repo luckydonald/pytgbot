@@ -243,6 +243,9 @@ def main():
         # end if
         try:
             safe_to_file(folder, results)
+            with open(path_join(folder, "api.html"), "wb") as f:
+                f.write(document.content)
+            # end if
             print("Writen to file.")
         except TemplateError as e:
             if isinstance(e, TemplateSyntaxError):
