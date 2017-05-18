@@ -18,7 +18,7 @@ class User(Peer):
 
     https://core.telegram.org/bots/api#user
     """
-    def __init__(self, id, first_name, last_name=None, username=None):
+    def __init__(self, id, first_name, last_name=None, username=None, language_code=None):
         """
         This object represents a Telegram user or bot.
 
@@ -41,6 +41,9 @@ class User(Peer):
 
         :keyword username: Optional. User‘s or bot’s username
         :type    username: str
+        
+        :keyword language_code: Optional. IETF language tag of the user's language
+        :type    language_code: str
         """
         super(User, self).__init__()
         assert(id is not None)
@@ -56,6 +59,9 @@ class User(Peer):
 
         assert(username is None or isinstance(username, str))
         self.username = username
+
+        assert(language_code is None or isinstance(language_code, str))
+        self.language_code = language_code
     # end def __init__
 
     def to_array(self):
@@ -72,6 +78,8 @@ class User(Peer):
             array['last_name'] = str(self.last_name)  # type str
         if self.username is not None:
             array['username'] = str(self.username)  # type str
+        if self.language_code is not None:
+            array['language_code'] = str(self.language_code)  # type str
         return array
     # end def to_array
 
@@ -93,6 +101,7 @@ class User(Peer):
         data['first_name'] = str(array.get('first_name'))
         data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
         data['username'] = str(array.get('username')) if array.get('username') is not None else None
+        data['language_code'] = str(array.get('language_code')) if array.get('language_code') is not None else None
         return User(**data)
     # end def from_array
 
@@ -100,14 +109,14 @@ class User(Peer):
         """
         Implements `str(user_instance)`
         """
-        return "User(id={self.id!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r})".format(self=self)
+        return "User(id={self.id!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r}, language_code={self.language_code!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in user_instance`
         """
-        return key in ["id", "first_name", "last_name", "username"]
+        return key in ["id", "first_name", "last_name", "username", "language_code"]
     # end def __contains__
 # end class User
 

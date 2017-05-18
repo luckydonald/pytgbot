@@ -4,7 +4,7 @@ from luckydonaldUtils.logger import logging
 from pytgbot.api_types import TgBotApiObject
 
 __author__ = 'luckydonald'
-__all__ = ["inline", "media", "peer", "responses", "updates", "Receivable", "Result"]
+__all__ = ["game", "inline", "media", "payments", "peer", "updates", "Receivable", "Result", "WebhookInfo"]
 logger = logging.getLogger(__name__)
 
 

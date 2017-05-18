@@ -813,6 +813,118 @@ class Voice(Media):
 # end class Voice
 
 
+
+class VideoNote(Media):
+    """
+    This object represents a video message (available in Telegram apps as of v.4.0).
+
+    https://core.telegram.org/bots/api#videonote
+    """
+    def __init__(self, file_id, length, duration, thumb=None, file_size=None):
+        """
+        This object represents a video message (available in Telegram apps as of v.4.0).
+    
+        https://core.telegram.org/bots/api#videonote
+
+
+        Parameters:
+        
+        :param file_id: Unique identifier for this file
+        :type  file_id: str
+        
+        :param length: Video width and height as defined by sender
+        :type  length: int
+        
+        :param duration: Duration of the video in seconds as defined by sender
+        :type  duration: int
+        
+
+        Optional keyword parameters:
+        
+        :keyword thumb: Optional. Video thumbnail
+        :type    thumb: pytgbot.api_types.receivable.media.PhotoSize
+        
+        :keyword file_size: Optional. File size
+        :type    file_size: int
+        """
+        super(VideoNote, self).__init__()
+
+        assert(file_id is not None)
+        assert(isinstance(file_id, str))
+        self.file_id = file_id
+
+        assert(length is not None)
+        assert(isinstance(length, int))
+        self.length = length
+
+        assert(duration is not None)
+        assert(isinstance(duration, int))
+        self.duration = duration
+
+        assert(thumb is None or isinstance(thumb, PhotoSize))
+        self.thumb = thumb
+
+        assert(file_size is None or isinstance(file_size, int))
+        self.file_size = file_size
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this VideoNote to a dictionary.
+
+        :return: dictionary repesentation of this object.
+        :rtype: dict
+        """
+        array = super(VideoNote, self).to_array()
+        array['file_id'] = str(self.file_id)  # type str
+        array['length'] = int(self.length)  # type int
+        array['duration'] = int(self.duration)  # type int
+        if self.thumb is not None:
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        if self.file_size is not None:
+            array['file_size'] = int(self.file_size)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserializes a new VideoNote from a given dictionary.
+
+        :return: new VideoNote instance.
+        :rtype: VideoNote
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert(isinstance(array, dict))
+
+        data = {}
+        data['file_id'] = str(array.get('file_id'))
+        data['length'] = int(array.get('length'))
+        data['duration'] = int(array.get('duration'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        return VideoNote(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(videonote_instance)`
+        """
+        return "VideoNote(file_id={self.file_id!r}, length={self.length!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __str__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in videonote_instance`
+        """
+        return key in ["file_id", "length", "duration", "thumb", "file_size"]
+    # end def __contains__
+# end class VideoNote
+
+
+
 class Contact(Media):
     """
     This object represents a phone contact.

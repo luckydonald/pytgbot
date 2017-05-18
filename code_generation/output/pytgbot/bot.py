@@ -145,8 +145,8 @@ class Bot(object):
         
         Returns:
 
-        :return: On success, returns a WebhookInfo object
-        :rtype:  pytgbot.api_types.receivable.WebhookInfo
+        :return: On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty
+        :rtype:  pytgbot.api_types.receivable.WebhookInfo | getUpdates | str
         """
         
         result = self.do("getWebhookInfo", )
@@ -157,6 +157,12 @@ class Bot(object):
                 return WebhookInfo.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type WebhookInfo", exc_info=True)
+            # end try
+        
+            try:
+                return from_array_list(str, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive str", exc_info=True)
             # end try
             # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
@@ -772,6 +778,81 @@ class Bot(object):
         return result
     # end def send_voice
     
+    def send_video_note(self, chat_id, video_note, duration=None, length=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+        """
+        As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendvideonote
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+        
+        :param video_note: Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More info on Sending Files ». Sending video notes by a URL is currently unsupported
+        :type  video_note: pytgbot.api_types.sendable.files.InputFile | str
+        
+        
+        Optional keyword parameters:
+        
+        :keyword duration: Duration of sent video in seconds
+        :type    duration: int
+        
+        :keyword length: Video width and height
+        :type    length: int
+        
+        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :type    disable_notification: bool
+        
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id: int
+        
+        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        
+        Returns:
+
+        :return: On success, the sent Message is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message
+        """
+        from pytgbot.api_types.sendable.files import InputFile
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(video_note is not None)
+        assert(isinstance(video_note, (InputFile, str)))
+        
+        assert(duration is None or isinstance(duration, int))
+        
+        assert(length is None or isinstance(length, int))
+        
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        
+        assert(reply_markup is None or isinstance(reply_markup, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply)))
+        
+        result = self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def send_video_note
+    
     def send_location(self, chat_id, latitude, longitude, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send point on the map. On success, the sent Message is returned.
@@ -1020,7 +1101,7 @@ class Bot(object):
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str
         
-        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data.
+        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
         :type  action: str
         
         
@@ -1176,6 +1257,47 @@ class Bot(object):
         # end if return_python_objects
         return result
     # end def kick_chat_member
+
+    def unban_chat_member(self, chat_id, user_id):
+        """
+        Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns True on success.
+
+        https://core.telegram.org/bots/api#unbanchatmember
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target group or username of the target supergroup or channel (in the format @username)
+        :type  chat_id: int | str
+        
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        
+        result = self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def unban_chat_member
     
     def leave_chat(self, chat_id):
         """
@@ -1211,47 +1333,6 @@ class Bot(object):
         # end if return_python_objects
         return result
     # end def leave_chat
-    
-    def unban_chat_member(self, chat_id, user_id):
-        """
-        Use this method to unban a previously kicked user in a supergroup. The user will not return to the group automatically, but will be able to join via link, etc. The bot must be an administrator in the group for this to work. Returns True on success.
-
-        https://core.telegram.org/bots/api#unbanchatmember
-
-        
-        Parameters:
-        
-        :param chat_id: Unique identifier for the target group or username of the target supergroup (in the format @supergroupusername)
-        :type  chat_id: int | str
-        
-        :param user_id: Unique identifier of the target user
-        :type  user_id: int
-        
-        
-        Returns:
-
-        :return: Returns True on success
-        :rtype:  bool
-        """
-        assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
-        
-        assert(user_id is not None)
-        assert(isinstance(user_id, int))
-        
-        result = self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
-    # end def unban_chat_member
     
     def get_chat(self, chat_id):
         """
@@ -1304,7 +1385,7 @@ class Bot(object):
         
         Returns:
 
-        :return: On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots
+        :return: On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned
         :rtype:  list of pytgbot.api_types.receivable.peer.ChatMember
         """
         assert(chat_id is not None)
@@ -1656,6 +1737,47 @@ class Bot(object):
         return result
     # end def edit_message_reply_markup
     
+    def delete_message(self, chat_id, message_id):
+        """
+        Use this method to delete a message. A message can only be deleted if it was sent less than 48 hours ago. Any such recently sent outgoing message may be deleted. Additionally, if the bot is an administrator in a group chat, it can delete any message. If the bot is an administrator in a supergroup, it can delete messages from any other user and service messages about people joining or leaving the group (other types of service messages may only be removed by the group creator). In channels, bots can only remove their own messages. Returns True on success. 
+
+        https://core.telegram.org/bots/api#deletemessage
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+        
+        :param message_id: Identifier of the message to delete
+        :type  message_id: int
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(message_id is not None)
+        assert(isinstance(message_id, int))
+        
+        result = self.do("deleteMessage", chat_id=chat_id, message_id=message_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def delete_message
+    
     def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
         """
         Use this method to send answers to an inline query. On success, True is returned.No more than 50 results per query are allowed.
@@ -1686,7 +1808,7 @@ class Bot(object):
         :keyword switch_pm_text: If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
         :type    switch_pm_text: str
         
-        :keyword switch_pm_parameter: Parameter for the start message sent to the bot when user presses the switch buttonExample: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
+        :keyword switch_pm_parameter: Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
         :type    switch_pm_parameter: str
         
         Returns:
@@ -1725,6 +1847,240 @@ class Bot(object):
         # end if return_python_objects
         return result
     # end def answer_inline_query
+    
+    def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+        """
+        Use this method to send invoices. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendinvoice
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target private chat
+        :type  chat_id: int
+        
+        :param title: Product name
+        :type  title: str
+        
+        :param description: Product description
+        :type  description: str
+        
+        :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
+        :type  payload: str
+        
+        :param provider_token: Payments provider token, obtained via Botfather
+        :type  provider_token: str
+        
+        :param start_parameter: Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
+        :type  start_parameter: str
+        
+        :param currency: Three-letter ISO 4217 currency code, see more on currencies
+        :type  currency: str
+        
+        :param prices: Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+        :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
+        
+        
+        Optional keyword parameters:
+        
+        :keyword photo_url: URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
+        :type    photo_url: str
+        
+        :keyword photo_size: Photo size
+        :type    photo_size: int
+        
+        :keyword photo_width: Photo width
+        :type    photo_width: int
+        
+        :keyword photo_height: Photo height
+        :type    photo_height: int
+        
+        :keyword need_name: Pass True, if you require the user's full name to complete the order
+        :type    need_name: Bool
+        
+        :keyword need_phone_number: Pass True, if you require the user's phone number to complete the order
+        :type    need_phone_number: bool
+        
+        :keyword need_email: Pass True, if you require the user's email to complete the order
+        :type    need_email: Bool
+        
+        :keyword need_shipping_address: Pass True, if you require the user's shipping address to complete the order
+        :type    need_shipping_address: bool
+        
+        :keyword is_flexible: Pass True, if the final price depends on the shipping method
+        :type    is_flexible: bool
+        
+        :keyword disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type    disable_notification: bool
+        
+        :keyword reply_to_message_id: If the message is a reply, ID of the original message
+        :type    reply_to_message_id: int
+        
+        :keyword reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        
+        Returns:
+
+        :return: On success, the sent Message is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message
+        """
+        from pytgbot.api_types.sendable.payments import LabeledPrice
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, int))
+        
+        assert(title is not None)
+        assert(isinstance(title, str))
+        
+        assert(description is not None)
+        assert(isinstance(description, str))
+        
+        assert(payload is not None)
+        assert(isinstance(payload, str))
+        
+        assert(provider_token is not None)
+        assert(isinstance(provider_token, str))
+        
+        assert(start_parameter is not None)
+        assert(isinstance(start_parameter, str))
+        
+        assert(currency is not None)
+        assert(isinstance(currency, str))
+        
+        assert(prices is not None)
+        assert(isinstance(prices, list))
+        
+        assert(photo_url is None or isinstance(photo_url, str))
+        
+        assert(photo_size is None or isinstance(photo_size, int))
+        
+        assert(photo_width is None or isinstance(photo_width, int))
+        
+        assert(photo_height is None or isinstance(photo_height, int))
+        
+        assert(need_name is None or isinstance(need_name, Bool))
+        
+        assert(need_phone_number is None or isinstance(need_phone_number, bool))
+        
+        assert(need_email is None or isinstance(need_email, Bool))
+        
+        assert(need_shipping_address is None or isinstance(need_shipping_address, bool))
+        
+        assert(is_flexible is None or isinstance(is_flexible, bool))
+        
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        
+        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        
+        result = self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def send_invoice
+    
+    def answer_shipping_query(self, shipping_query_id, ok, shipping_options=None, error_message=None):
+        """
+        If you sent an invoice requesting a shipping address and the parameter is_flexible was specified, the Bot API will send an Update with a shipping_query field to the bot. Use this method to reply to shipping queries. On success, True is returned.
+
+        https://core.telegram.org/bots/api#answershippingquery
+
+        
+        Parameters:
+        
+        :param shipping_query_id: Unique identifier for the query to be answered
+        :type  shipping_query_id: str
+        
+        :param ok: Specify True if delivery to the specified address is possible and False if there are any problems (for example, if delivery to the specified address is not possible)
+        :type  ok: bool
+        
+        
+        Optional keyword parameters:
+        
+        :keyword shipping_options: Required if ok is True. A JSON-serialized array of available shipping options.
+        :type    shipping_options: list of pytgbot.api_types.sendable.payments.ShippingOption
+        
+        :keyword error_message: Required if ok is False. Error message in human readable form that explains why it is impossible to complete the order (e.g. "Sorry, delivery to your desired address is unavailable'). Telegram will display this message to the user.
+        :type    error_message: str
+        
+        Returns:
+
+        :return: On success, True is returned
+        :rtype:  
+        """
+        from pytgbot.api_types.sendable.payments import ShippingOption
+        
+        assert(shipping_query_id is not None)
+        assert(isinstance(shipping_query_id, str))
+        
+        assert(ok is not None)
+        assert(isinstance(ok, bool))
+        
+        assert(shipping_options is None or isinstance(shipping_options, list))
+        
+        assert(error_message is None or isinstance(error_message, str))
+        
+        result = self.do("answerShippingQuery", shipping_query_id=shipping_query_id, ok=ok, shipping_options=shipping_options, error_message=error_message)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def answer_shipping_query
+    
+    def answer_pre_checkout_query(self, pre_checkout_query_id, ok, error_message=None):
+        """
+        Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an Update with the field pre_checkout_query. Use this method to respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.
+
+        https://core.telegram.org/bots/api#answerprecheckoutquery
+
+        
+        Parameters:
+        
+        :param pre_checkout_query_id: Unique identifier for the query to be answered
+        :type  pre_checkout_query_id: str
+        
+        :param ok: Specify True if everything is alright (goods are available, etc.) and the bot is ready to proceed with the order. Use False if there are any problems.
+        :type  ok: bool
+        
+        
+        Optional keyword parameters:
+        
+        :keyword error_message: Required if ok is False. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.
+        :type    error_message: str
+        
+        Returns:
+
+        :return: On success, True is returned
+        :rtype:  
+        """
+        assert(pre_checkout_query_id is not None)
+        assert(isinstance(pre_checkout_query_id, str))
+        
+        assert(ok is not None)
+        assert(isinstance(ok, bool))
+        
+        assert(error_message is None or isinstance(error_message, str))
+        
+        result = self.do("answerPreCheckoutQuery", pre_checkout_query_id=pre_checkout_query_id, ok=ok, error_message=error_message)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def answer_pre_checkout_query
     
     def send_game(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
@@ -1822,8 +2178,8 @@ class Bot(object):
         
         Returns:
 
-        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False
+        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         assert(user_id is not None)
         assert(isinstance(user_id, int))
@@ -1849,6 +2205,12 @@ class Bot(object):
                 return Message.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+        
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
             # end try
             # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
@@ -1884,7 +2246,7 @@ class Bot(object):
         
         Returns:
 
-        :return: On success, returns an Array of GameHighScore objects
+        :return: Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
         :rtype:  list of pytgbot.api_types.receivable.game.GameHighScore
         """
         assert(user_id is not None)

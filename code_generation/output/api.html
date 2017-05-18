@@ -12,7 +12,7 @@ To learn how to create..">
 
     <link href="/css/bootstrap.min.css?2" rel="stylesheet">
     
-    <link href="/css/telegram.css?112" rel="stylesheet" media="screen">
+    <link href="/css/telegram.css?118" rel="stylesheet" media="screen">
     <style>
     </style>
   </head>
@@ -45,26 +45,36 @@ To learn how to create..">
 <p>The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.<br>To learn how to create and set up a bot, please consult our <a href="https://core.telegram.org/bots"><strong>Introduction to Bots</strong></a> and <a href="/bots/faq"><strong>Bot FAQ</strong></a>.</p>
 </blockquote>
 <h3><a class="anchor" name="recent-changes" href="#recent-changes"><i class="anchor-icon"></i></a>Recent changes</h3>
-<p><strong>December 4, 2016</strong></p>
-<p>Introducing <strong>Bot API 2.3.1</strong>, a nifty little update that will give you more control over how your bot gets its updates.</p>
+<h4><a class="anchor" name="may-18-2017" href="#may-18-2017"><i class="anchor-icon"></i></a>May 18, 2017</h4>
+<p>Introducing <strong>Bot API 3.0.</strong></p>
+<p><strong>NEW Payment Platform</strong></p>
+<p>See <a href="/bots/payments">Introduction to Bot Payments</a> for a brief overview. If you&#39;re not a developer, you may like <a href="https://telegram.org/blog/payments">this user-friendly blog post</a> better.</p>
 <ul>
-<li>Use the new field <em>max_connections</em> in <a href="/bots/api#setwebhook">setWebhook</a> to optimize your bot&#39;s server load</li>
-<li>Use <em>allowed_updates</em> in <a href="/bots/api#setwebhook">setWebhook</a> and <a href="/bots/api#getupdates">getUpdates</a> to selectively subscribe to updates of a certain type. Among other things, this allows you to stop getting updates about new posts in channels where your bot is an admin.</li>
-<li><a href="/bots/api#deletewebhook">deleteWebhook</a> moved out of <a href="/bots/api#setwebhook">setWebhook</a> to get a whole separate method for itself.</li>
+<li>Your bot can now accept <a href="#payments">payments</a> for goods and services via Telegram. </li>
+<li>Added new kinds of <a href="/bots/api#update">updates</a>, <em>shipping_query</em> and <em>pre_checkout_query</em>, and new types of <a href="/bots/api#message">message</a> content, <em>invoice</em> and <em>successful_payment</em>.</li>
+<li>Added new methods for payments: <a href="#sendinvoice">sendInvoice</a>, <a href="#answershippingquery">answerShippingQuery</a>, and <a href="#answerprecheckoutquery">answerPreCheckoutQuery</a>.</li>
+<li>Added a new type of button, the <strong>pay</strong> button to <a href="#inlinekeyboardbutton">InlineKeyboardButton</a>.</li>
 </ul>
-<p><strong>November 21, 2016</strong></p>
-<p>Bot API <strong>2.3</strong></p>
+<p><strong>NEW Video Messages</strong></p>
 <ul>
-<li>Modified <a href="/bots/faq#what-messages-will-my-bot-get"><strong>bot privacy mode</strong></a> for the sake of consistency. </li>
-<li><p>Your bot will now get <strong>updates about posts in channels</strong>. Added new fields <em>channel_post</em> and <em>edited_channel_post</em> to <a href="#update">Update</a>.</p>
-</li>
-<li><p>You can now update high scores to a lower value by using the new <em>force</em> parameter in <a href="#setgamescore">setGameScore</a>. Handy for punishing <strong>cheaters</strong> or fixing errors in your game&#39;s High Score table.</p>
-</li>
-<li>Starting today, messages with high scores will be updated with new high scores by default. Use <em>disable_edit_message</em> in <a href="#setgamescore">setGameScore</a> if you don&#39;t want this.</li>
-<li>The <em>edit_message</em> parameter from <a href="#setgamescore">setGameScore</a> is no longer in use. For backward compatibility, it will be taken into account for a while, unless <em>disable_edit_message</em> is passed explicitly.</li>
-<li>Added the new field <em>forward_from_message_id</em> to <a href="#message">Message</a>.</li>
-<li>Added the new parameter <em>cache_time</em> to <a href="#answercallbackquery">answerCallbackQuery</a>. Will eventually work in Telegram apps — somewhere after version 3.14, maybe 3.15.</li>
-<li>Renamed <em>hide_keyboard</em> to <em>remove_keyboard</em> in <a href="#replykeyboardremove">ReplyKeyboardRemove</a> for clarity. <em>hide_keyboard</em> will still work for a while for backward compatibility.</li>
+<li>As of Telegram v.4.0, users can send short rounded <a href="https://telegram.org/blog/payments">video messages</a>, using an interface similar to that of voice notes.</li>
+<li>Added the <a href="#sendvideonote">sendVideoNote</a> method, the new field <em>video_note</em> to <a href="#message">Message</a>, the fields <em>record_video_note</em> or <em>upload_video_note</em> to <a href="#sendchataction">sendChatAction</a>.</li>
+</ul>
+<p><strong>NEW Multilingual Bots</strong></p>
+<ul>
+<li>The <a href="/bots/api#user">User</a> object now may have a <em>language_code</em> field that contains the <a href="https://en.wikipedia.org/wiki/IETF_language_tag">IETF language tag</a> of the user&#39;s language.</li>
+<li>Thanks to this, your bot can now offer localized responses to users that speak different languages.</li>
+</ul>
+<p><strong>More power to admin bots</strong></p>
+<ul>
+<li><a href="#unbanchatmember">unbanChatMember</a> now also works in channels!</li>
+<li>New method <a href="#deletemessages">deleteMessage</a> that allows the bot to delete its own messages, as well as messages posted by other in groups and channels where the bot is an administrator.</li>
+</ul>
+<p><strong>Minor Changes</strong></p>
+<ul>
+<li>Replaced the field <em>new_chat_member</em> in <a href="#message">Message</a> with <em>new_chat_members</em> (the old field will still be available for a while for compatibility purposes).</li>
+<li><a href="https://core.telegram.org/bots/api#inlinekeyboardbutton">Inline keyboards</a> with <em>switch_inline_query</em> and <em>switch_inline_query_current_chat</em> can no longer be sent to channels because they are useless there.</li>
+<li>New fields <em>gif_duration</em> in <a href="#inlinequeryresultgif">InlineQueryResultGif</a> and <em>mpeg4_duration</em> in <a href="#inlinequeryresultmpeg4gif">InlineQueryResultMpeg4Gif</a>.</li>
 </ul>
 <p><strong><a href="/bots/api-changelog">See earlier changes »</a></strong></p>
 <h3><a class="anchor" name="authorizing-your-bot" href="#authorizing-your-bot"><i class="anchor-icon"></i></a>Authorizing your bot</h3>
@@ -140,6 +150,16 @@ To learn how to create..">
 <td>callback_query</td>
 <td><a href="#callbackquery">CallbackQuery</a></td>
 <td><em>Optional</em>. New incoming callback query</td>
+</tr>
+<tr>
+<td>shipping_query</td>
+<td><a href="#shippingquery">ShippingQuery</a></td>
+<td><em>Optional</em>. New incoming shipping query. Only for invoices with flexible price</td>
+</tr>
+<tr>
+<td>pre_checkout_query</td>
+<td><a href="#precheckoutquery">PreCheckoutQuery</a></td>
+<td><em>Optional</em>. New incoming pre-checkout query. Contains full information about checkout</td>
 </tr>
 </tbody>
 </table>
@@ -308,6 +328,11 @@ To learn how to create..">
 <td>String</td>
 <td><em>Optional</em>. User‘s or bot’s username</td>
 </tr>
+<tr>
+<td>language_code</td>
+<td>String</td>
+<td><em>Optional</em>. <a href="https://en.wikipedia.org/wiki/IETF_language_tag">IETF language tag</a> of the user&#39;s language</td>
+</tr>
 </tbody>
 </table>
 <h4><a class="anchor" name="chat" href="#chat"><i class="anchor-icon"></i></a>Chat</h4>
@@ -322,7 +347,7 @@ To learn how to create..">
 <tr>
 <td>id</td>
 <td>Integer</td>
-<td>Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.</td>
+<td>Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.</td>
 </tr>
 <tr>
 <td>type</td>
@@ -461,6 +486,16 @@ To learn how to create..">
 <td><em>Optional</em>. Message is a voice message, information about the file</td>
 </tr>
 <tr>
+<td>video_note</td>
+<td><a href="#videonote">VideoNote</a></td>
+<td><em>Optional</em>. Message is a <a href="https://telegram.org/blog/video-messages-and-telescope">video note</a>, information about the video message</td>
+</tr>
+<tr>
+<td>new_chat_members</td>
+<td>Array of <a href="#user">User</a></td>
+<td><em>Optional</em>. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)</td>
+</tr>
+<tr>
 <td>caption</td>
 <td>String</td>
 <td><em>Optional</em>. Caption for the document, photo or video, 0-200 characters</td>
@@ -523,17 +558,27 @@ To learn how to create..">
 <tr>
 <td>migrate_to_chat_id</td>
 <td>Integer</td>
-<td><em>Optional</em>. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.</td>
+<td><em>Optional</em>. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.</td>
 </tr>
 <tr>
 <td>migrate_from_chat_id</td>
 <td>Integer</td>
-<td><em>Optional</em>. The supergroup has been migrated from a group with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.</td>
+<td><em>Optional</em>. The supergroup has been migrated from a group with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.</td>
 </tr>
 <tr>
 <td>pinned_message</td>
 <td><a href="#message">Message</a></td>
 <td><em>Optional</em>. Specified message was pinned. Note that the Message object in this field will not contain further <em>reply_to_message</em> fields even if it is itself a reply.</td>
+</tr>
+<tr>
+<td>invoice</td>
+<td><a href="#invoice">Invoice</a></td>
+<td><em>Optional</em>. Message is an invoice for a <a href="#payments">payment</a>, information about the invoice. <a href="#payments">More about payments »</a></td>
+</tr>
+<tr>
+<td>successful_payment</td>
+<td><a href="#successfulpayment">SuccessfulPayment</a></td>
+<td><em>Optional</em>. Message is a service message about a successful payment, information about the payment. <a href="#payments">More about payments »</a></td>
 </tr>
 </tbody>
 </table>
@@ -791,6 +836,42 @@ To learn how to create..">
 <td>mime_type</td>
 <td>String</td>
 <td><em>Optional</em>. MIME type of the file as defined by sender</td>
+</tr>
+<tr>
+<td>file_size</td>
+<td>Integer</td>
+<td><em>Optional</em>. File size</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="videonote" href="#videonote"><i class="anchor-icon"></i></a>VideoNote</h4>
+<p>This object represents a <a href="https://telegram.org/blog/video-messages-and-telescope">video message</a> (available in Telegram apps as of <a href="https://telegram.org/blog/video-messages-and-telescope">v.4.0</a>).</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>file_id</td>
+<td>String</td>
+<td>Unique identifier for this file</td>
+</tr>
+<tr>
+<td>length</td>
+<td>Integer</td>
+<td>Video width and height as defined by sender</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>Integer</td>
+<td>Duration of the video in seconds as defined by sender</td>
+</tr>
+<tr>
+<td>thumb</td>
+<td><a href="#photosize">PhotoSize</a></td>
+<td><em>Optional</em>. Video thumbnail</td>
 </tr>
 <tr>
 <td>file_size</td>
@@ -1067,6 +1148,11 @@ To learn how to create..">
 <td><a href="#callbackgame">CallbackGame</a></td>
 <td><em>Optional</em>. Description of the game that will be launched when the user presses the button.<br><br><strong>NOTE:</strong> This type of button <strong>must</strong> always be the first button in the first row.</td>
 </tr>
+<tr>
+<td>pay</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Specify True, to send a <a href="#payments">Pay button</a>.<br><br><strong>NOTE:</strong> This type of button <strong>must</strong> always be the first button in the first row.</td>
+</tr>
 </tbody>
 </table>
 <h4><a class="anchor" name="callbackquery" href="#callbackquery"><i class="anchor-icon"></i></a>CallbackQuery</h4>
@@ -1208,7 +1294,7 @@ To learn how to create..">
 <p><strong>Sending by URL</strong></p>
 <ul>
 <li>When sending by URL the target file must have the correct MIME type (e.g., audio/mpeg for <a href="#sendaudio">sendAudio</a>, etc.).</li>
-<li>In <a href="#senddocument">sendDocument</a>, sending by URL will currently only work for <strong>pdf</strong> and <strong>zip</strong> files. </li>
+<li>In <a href="#senddocument">sendDocument</a>, sending by URL will currently only work for <strong>gif</strong>, <strong>pdf</strong> and <strong>zip</strong> files. </li>
 <li>To use <a href="#sendvoice">sendVoice</a>, the file must have the type audio/ogg and be no more than 1MB in size. 1–20MB voice notes will be sent as files.</li>
 <li>Other configurations may work but we can&#39;t guarantee that they will.</li>
 </ul>
@@ -1662,6 +1748,60 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
+<h4><a class="anchor" name="sendvideonote" href="#sendvideonote"><i class="anchor-icon"></i></a>sendVideoNote</h4>
+<p>As of <a href="https://telegram.org/blog/video-messages-and-telescope">v.4.0</a>, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent <a href="#message">Message</a> is returned.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>video_note</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Yes</td>
+<td>Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. <a href="#sending-files">More info on Sending Files »</a>. Sending video notes by a URL is currently unsupported</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Duration of sent video in seconds</td>
+</tr>
+<tr>
+<td>length</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Video width and height</td>
+</tr>
+<tr>
+<td>disable_notification</td>
+<td>Boolean</td>
+<td>Optional</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+</tr>
+<tr>
+<td>reply_to_message_id</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>If the message is a reply, ID of the original message</td>
+</tr>
+<tr>
+<td>reply_markup</td>
+<td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a> or <a href="#replykeyboardmarkup">ReplyKeyboardMarkup</a> or <a href="#replykeyboardremove">ReplyKeyboardRemove</a> or <a href="#forcereply">ForceReply</a></td>
+<td>Optional</td>
+<td>Additional interface options. A JSON-serialized object for an <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>, <a href="https://core.telegram.org/bots#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard or to force a reply from the user.</td>
+</tr>
+</tbody>
+</table>
 <h4><a class="anchor" name="sendlocation" href="#sendlocation"><i class="anchor-icon"></i></a>sendLocation</h4>
 <p>Use this method to send point on the map. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
@@ -1854,7 +1994,7 @@ pre-formatted fixed-width code block
 <td>action</td>
 <td>String</td>
 <td>Yes</td>
-<td>Type of action to broadcast. Choose one, depending on what the user is about to receive: <em>typing</em> for <a href="#sendmessage">text messages</a>, <em>upload_photo</em> for <a href="#sendphoto">photos</a>, <em>record_video</em> or <em>upload_video</em> for <a href="#sendvideo">videos</a>, <em>record_audio</em> or <em>upload_audio</em> for <a href="#sendaudio">audio files</a>, <em>upload_document</em> for <a href="#senddocument">general files</a>, <em>find_location</em> for <a href="#sendlocation">location data</a>.</td>
+<td>Type of action to broadcast. Choose one, depending on what the user is about to receive: <em>typing</em> for <a href="#sendmessage">text messages</a>, <em>upload_photo</em> for <a href="#sendphoto">photos</a>, <em>record_video</em> or <em>upload_video</em> for <a href="#sendvideo">videos</a>, <em>record_audio</em> or <em>upload_audio</em> for <a href="#sendaudio">audio files</a>, <em>upload_document</em> for <a href="#senddocument">general files</a>, <em>find_location</em> for <a href="#sendlocation">location data</a>, <em>record_video_note</em> or <em>upload_video_note</em> for <a href="#sendvideonote">video notes</a>.</td>
 </tr>
 </tbody>
 </table>
@@ -1934,6 +2074,30 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
+<h4><a class="anchor" name="unbanchatmember" href="#unbanchatmember"><i class="anchor-icon"></i></a>unbanChatMember</h4>
+<p>Use this method to unban a previously kicked user in a supergroup or channel. The user will <strong>not</strong> return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns <em>True</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target group or username of the target supergroup or channel (in the format <code>@username</code>)</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>Unique identifier of the target user</td>
+</tr>
+</tbody>
+</table>
 <h4><a class="anchor" name="leavechat" href="#leavechat"><i class="anchor-icon"></i></a>leaveChat</h4>
 <p>Use this method for your bot to leave a group, supergroup or channel. Returns <em>True</em> on success.</p>
 <table class="table">
@@ -1949,30 +2113,6 @@ pre-formatted fixed-width code block
 <td>Integer or String</td>
 <td>Yes</td>
 <td>Unique identifier for the target chat or username of the target supergroup or channel (in the format <code>@channelusername</code>)</td>
-</tr>
-</tbody>
-</table>
-<h4><a class="anchor" name="unbanchatmember" href="#unbanchatmember"><i class="anchor-icon"></i></a>unbanChatMember</h4>
-<p>Use this method to unban a previously kicked user in a supergroup. The user will <strong>not</strong> return to the group automatically, but will be able to join via link, etc. The bot must be an administrator in the group for this to work. Returns <em>True</em> on success.</p>
-<table class="table">
-<tbody>
-<tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
-</tr>
-<tr>
-<td>chat_id</td>
-<td>Integer or String</td>
-<td>Yes</td>
-<td>Unique identifier for the target group or username of the target supergroup (in the format <code>@supergroupusername</code>)</td>
-</tr>
-<tr>
-<td>user_id</td>
-<td>Integer</td>
-<td>Yes</td>
-<td>Unique identifier of the target user</td>
 </tr>
 </tbody>
 </table>
@@ -2236,6 +2376,30 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
+<h4><a class="anchor" name="deletemessage" href="#deletemessage"><i class="anchor-icon"></i></a>deleteMessage</h4>
+<p>Use this method to delete a message. A message can only be deleted if it was sent less than 48 hours ago. Any such recently sent outgoing message may be deleted. Additionally, if the bot is an administrator in a group chat, it can delete any message. If the bot is an administrator in a supergroup, it can delete messages from any other user and service messages about people joining or leaving the group (other types of service messages may only be removed by the group creator). In channels, bots can only remove their own messages. Returns <em>True</em> on success. </p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>message_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>Identifier of the message to delete</td>
+</tr>
+</tbody>
+</table>
 <h3><a class="anchor" name="inline-mode" href="#inline-mode"><i class="anchor-icon"></i></a>Inline mode</h3>
 <p>The following methods and objects allow your bot to work in <a href="/bots/inline">inline mode</a>.<br>Please see our <a href="/bots/inline">Introduction to Inline bots</a> for more details.</p>
 <p>To enable this option, send the <code>/setinline</code> command to <a href="https://telegram.me/botfather">@BotFather</a> and provide the placeholder text that the user will see in the input field after typing your bot’s name.</p>
@@ -2325,7 +2489,7 @@ pre-formatted fixed-width code block
 <td>switch_pm_parameter</td>
 <td>String</td>
 <td>Optional</td>
-<td>Parameter for the start message sent to the bot when user presses the switch button<br><br><em>Example:</em> An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a <a href="#inlinekeyboardmarkup"><em>switch_inline</em></a> button so that the user can easily return to the chat where they wanted to use the bot&#39;s inline capabilities.</td>
+<td><a href="/bots#deep-linking">Deep-linking</a> parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only <code>A-Z</code>, <code>a-z</code>, <code>0-9</code>, <code>_</code> and <code>-</code> are allowed.<br><br><em>Example:</em> An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a <a href="#inlinekeyboardmarkup"><em>switch_inline</em></a> button so that the user can easily return to the chat where they wanted to use the bot&#39;s inline capabilities.</td>
 </tr>
 </tbody>
 </table>
@@ -2520,6 +2684,11 @@ pre-formatted fixed-width code block
 <td><em>Optional</em>. Height of the GIF</td>
 </tr>
 <tr>
+<td>gif_duration</td>
+<td>Integer</td>
+<td><em>Optional</em>. Duration of the GIF</td>
+</tr>
+<tr>
 <td>thumb_url</td>
 <td>String</td>
 <td>URL of the static thumbnail for the result (jpeg or gif)</td>
@@ -2579,6 +2748,11 @@ pre-formatted fixed-width code block
 <td>mpeg4_height</td>
 <td>Integer</td>
 <td><em>Optional</em>. Video height</td>
+</tr>
+<tr>
+<td>mpeg4_duration</td>
+<td>Integer</td>
+<td><em>Optional</em>. Video duration</td>
 </tr>
 <tr>
 <td>thumb_url</td>
@@ -3620,6 +3794,484 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
+<h3><a class="anchor" name="payments" href="#payments"><i class="anchor-icon"></i></a>Payments</h3>
+<p>Your bot can accept payments from Telegram users. Please see the <a href="/bots/payments">introduction to payments</a> for more details on the process and how to set up payments for your bot. Please note that users will need Telegram v.4.0 or higher to use payments (released on May 18, 2017).</p>
+<h4><a class="anchor" name="sendinvoice" href="#sendinvoice"><i class="anchor-icon"></i></a>sendInvoice</h4>
+<p>Use this method to send invoices. On success, the sent <a href="#message">Message</a> is returned.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>Unique identifier for the target private chat</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>Yes</td>
+<td>Product name</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td>Yes</td>
+<td>Product description</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>String</td>
+<td>Yes</td>
+<td>Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.</td>
+</tr>
+<tr>
+<td>provider_token</td>
+<td>String</td>
+<td>Yes</td>
+<td>Payments provider token, obtained via <a href="/">Botfather</a></td>
+</tr>
+<tr>
+<td>start_parameter</td>
+<td>String</td>
+<td>Yes</td>
+<td>Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>String</td>
+<td>Yes</td>
+<td>Three-letter ISO 4217 currency code, see <a href="/bots/payments#supported-currencies">more on currencies</a></td>
+</tr>
+<tr>
+<td>prices</td>
+<td>Array of <a href="#labeledprice">LabeledPrice</a></td>
+<td>Yes</td>
+<td>Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)</td>
+</tr>
+<tr>
+<td>photo_url</td>
+<td>String</td>
+<td>Optional</td>
+<td>URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.</td>
+</tr>
+<tr>
+<td>photo_size</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Photo size</td>
+</tr>
+<tr>
+<td>photo_width</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Photo width</td>
+</tr>
+<tr>
+<td>photo_height</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Photo height</td>
+</tr>
+<tr>
+<td>need_name</td>
+<td>Bool</td>
+<td>Optional</td>
+<td>Pass <em>True</em>, if you require the user&#39;s full name to complete the order</td>
+</tr>
+<tr>
+<td>need_phone_number</td>
+<td>Boolean</td>
+<td>Optional</td>
+<td>Pass <em>True</em>, if you require the user&#39;s phone number to complete the order</td>
+</tr>
+<tr>
+<td>need_email</td>
+<td>Bool</td>
+<td>Optional</td>
+<td>Pass <em>True</em>, if you require the user&#39;s email to complete the order</td>
+</tr>
+<tr>
+<td>need_shipping_address</td>
+<td>Boolean</td>
+<td>Optional</td>
+<td>Pass <em>True</em>, if you require the user&#39;s shipping address to complete the order</td>
+</tr>
+<tr>
+<td>is_flexible</td>
+<td>Boolean</td>
+<td>Optional</td>
+<td>Pass <em>True</em>, if the final price depends on the shipping method</td>
+</tr>
+<tr>
+<td>disable_notification</td>
+<td>Boolean</td>
+<td>Optional</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
+</tr>
+<tr>
+<td>reply_to_message_id</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>If the message is a reply, ID of the original message</td>
+</tr>
+<tr>
+<td>reply_markup</td>
+<td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a></td>
+<td>Optional</td>
+<td>A JSON-serialized object for an <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>. If empty, one &#39;Pay <code>total price</code>&#39; button will be shown. If not empty, the first button must be a Pay button.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="answershippingquery" href="#answershippingquery"><i class="anchor-icon"></i></a>answerShippingQuery</h4>
+<p>If you sent an invoice requesting a shipping address and the parameter <em>is_flexible</em> was specified, the Bot API will send an <a href="#updates">Update</a> with a <em>shipping_query</em> field to the bot. Use this method to reply to shipping queries. On success, True is returned.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>shipping_query_id</td>
+<td>String</td>
+<td>Yes</td>
+<td>Unique identifier for the query to be answered</td>
+</tr>
+<tr>
+<td>ok</td>
+<td>Boolean</td>
+<td>Yes</td>
+<td>Specify True if delivery to the specified address is possible and False if there are any problems (for example, if delivery to the specified address is not possible)</td>
+</tr>
+<tr>
+<td>shipping_options</td>
+<td>Array of <a href="#shippingoption">ShippingOption</a></td>
+<td>Optional</td>
+<td>Required if <em>ok</em> is True. A JSON-serialized array of available shipping options.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td>String</td>
+<td>Optional</td>
+<td>Required if <em>ok</em> is False. Error message in human readable form that explains why it is impossible to complete the order (e.g. &quot;Sorry, delivery to your desired address is unavailable&#39;). Telegram will display this message to the user.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="answerprecheckoutquery" href="#answerprecheckoutquery"><i class="anchor-icon"></i></a>answerPreCheckoutQuery</h4>
+<p>Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an <a href="#">Update</a> with the field <em>pre_checkout_query</em>. Use this method to respond to such pre-checkout queries. On success, True is returned. <strong>Note:</strong> The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>pre_checkout_query_id</td>
+<td>String</td>
+<td>Yes</td>
+<td>Unique identifier for the query to be answered</td>
+</tr>
+<tr>
+<td>ok</td>
+<td>Boolean</td>
+<td>Yes</td>
+<td>Specify <em>True</em> if everything is alright (goods are available, etc.) and the bot is ready to proceed with the order. Use <em>False</em> if there are any problems.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td>String</td>
+<td>Optional</td>
+<td>Required if <em>ok</em> is <em>False</em>. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. &quot;Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!&quot;). Telegram will display this message to the user.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="labeledprice" href="#labeledprice"><i class="anchor-icon"></i></a>LabeledPrice</h4>
+<p>This object represents a portion of the price for goods or services.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>label</td>
+<td>String</td>
+<td>Portion label</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>Integer</td>
+<td>Price of the product in the <em>smallest units</em> of the <a href="/bots/payments#supported-currencies">currency</a> (integer, <strong>not</strong> float/double). For example, for a price of <code>US$ 1.45</code> pass <code>amount = 145</code>. See the <em>exp</em> parameter in <a href="https://core.telegram.org/bots/payments/currencies.json">currencies.json</a>, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="invoice" href="#invoice"><i class="anchor-icon"></i></a>Invoice</h4>
+<p>This object contains basic information about an invoice.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>Product name</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td>Product description</td>
+</tr>
+<tr>
+<td>start_parameter</td>
+<td>String</td>
+<td>Unique bot deep-linking parameter that can be used to generate this invoice</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>String</td>
+<td>Three-letter ISO 4217 <a href="/bots/payments#supported-currencies">currency</a> code</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>Integer</td>
+<td>Total price in the <em>smallest units</em> of the currency (integer, <strong>not</strong> float/double). For example, for a price of <code>US$ 1.45</code> pass <code>amount = 145</code>. See the <em>exp</em> parameter in <a href="https://core.telegram.org/bots/payments/currencies.json">currencies.json</a>, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="shippingaddress" href="#shippingaddress"><i class="anchor-icon"></i></a>ShippingAddress</h4>
+<p>This object represents a shipping address.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>country_code</td>
+<td>String</td>
+<td>ISO 3166-1 alpha-2 country code</td>
+</tr>
+<tr>
+<td>state</td>
+<td>String</td>
+<td>State, if applicable</td>
+</tr>
+<tr>
+<td>city</td>
+<td>String</td>
+<td>City</td>
+</tr>
+<tr>
+<td>street_line1</td>
+<td>String</td>
+<td>First line for the address</td>
+</tr>
+<tr>
+<td>street_line2</td>
+<td>String</td>
+<td>Second line for the address</td>
+</tr>
+<tr>
+<td>post_code</td>
+<td>String</td>
+<td>Address post code</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="orderinfo" href="#orderinfo"><i class="anchor-icon"></i></a>OrderInfo</h4>
+<p>This object represents information about an order.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td><em>Optional</em>. User name</td>
+</tr>
+<tr>
+<td>phone_number</td>
+<td>String</td>
+<td><em>Optional</em>. User&#39;s phone number</td>
+</tr>
+<tr>
+<td>email</td>
+<td>String</td>
+<td><em>Optional</em>. User email</td>
+</tr>
+<tr>
+<td>shipping_address</td>
+<td><a href="#shippingaddress">ShippingAddress</a></td>
+<td><em>Optional</em>. User shipping address</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="shippingoption" href="#shippingoption"><i class="anchor-icon"></i></a>ShippingOption</h4>
+<p>This object represents one shipping option.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Shipping option identifier</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>Option title</td>
+</tr>
+<tr>
+<td>prices</td>
+<td>Array of <a href="#labeledprice">LabeledPrice</a></td>
+<td>List of price portions</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="successfulpayment" href="#successfulpayment"><i class="anchor-icon"></i></a>SuccessfulPayment</h4>
+<p>This object contains basic information about a successful payment.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>currency</td>
+<td>String</td>
+<td>Three-letter ISO 4217 <a href="/bots/payments#supported-currencies">currency</a> code</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>Integer</td>
+<td>Total price in the <em>smallest units</em> of the currency (integer, <strong>not</strong> float/double). For example, for a price of <code>US$ 1.45</code> pass <code>amount = 145</code>. See the <em>exp</em> parameter in <a href="https://core.telegram.org/bots/payments/currencies.json">currencies.json</a>, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).</td>
+</tr>
+<tr>
+<td>invoice_payload</td>
+<td>String</td>
+<td>Bot specified invoice payload</td>
+</tr>
+<tr>
+<td>shipping_option_id</td>
+<td>String</td>
+<td><em>Optional</em>. Identifier of the shipping option chosen by the user</td>
+</tr>
+<tr>
+<td>order_info</td>
+<td><a href="#orderinfo">OrderInfo</a></td>
+<td><em>Optional</em>. Order info provided by the user</td>
+</tr>
+<tr>
+<td>telegram_payment_charge_id</td>
+<td>String</td>
+<td>Telegram payment identifier</td>
+</tr>
+<tr>
+<td>provider_payment_charge_id</td>
+<td>String</td>
+<td>Provider payment identifier</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="shippingquery" href="#shippingquery"><i class="anchor-icon"></i></a>ShippingQuery</h4>
+<p>This object contains information about an incoming shipping query.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Unique query identifier</td>
+</tr>
+<tr>
+<td>from</td>
+<td><a href="#user">User</a></td>
+<td>User who sent the query</td>
+</tr>
+<tr>
+<td>invoice_payload</td>
+<td>String</td>
+<td>Bot specified invoice payload</td>
+</tr>
+<tr>
+<td>shipping_address</td>
+<td><a href="#shippingaddress">ShippingAddress</a></td>
+<td>User specified shipping address</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="precheckoutquery" href="#precheckoutquery"><i class="anchor-icon"></i></a>PreCheckoutQuery</h4>
+<p>This object contains information about an incoming pre-checkout query.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Unique query identifier</td>
+</tr>
+<tr>
+<td>from</td>
+<td><a href="#user">User</a></td>
+<td>User who sent the query</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>String</td>
+<td>Three-letter ISO 4217 <a href="/bots/payments#supported-currencies">currency</a> code</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>Integer</td>
+<td>Total price in the <em>smallest units</em> of the currency (integer, <strong>not</strong> float/double). For example, for a price of <code>US$ 1.45</code> pass <code>amount = 145</code>. See the <em>exp</em> parameter in <a href="https://core.telegram.org/bots/payments/currencies.json">currencies.json</a>, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).</td>
+</tr>
+<tr>
+<td>invoice_payload</td>
+<td>String</td>
+<td>Bot specified invoice payload</td>
+</tr>
+<tr>
+<td>shipping_option_id</td>
+<td>String</td>
+<td><em>Optional</em>. Identifier of the shipping option chosen by the user</td>
+</tr>
+<tr>
+<td>order_info</td>
+<td><a href="#orderinfo">OrderInfo</a></td>
+<td><em>Optional</em>. Order info provided by the user</td>
+</tr>
+</tbody>
+</table>
 <h3><a class="anchor" name="games" href="#games"><i class="anchor-icon"></i></a>Games</h3>
 <p>Your bot can offer users <strong>HTML5 games</strong> to play solo or to compete against each other in groups and one-on-one chats. Create games via <a href="https://telegram.me/botfather">@BotFather</a> using the <em>/newgame</em> command. Please note that this kind of power requires responsibility: you will need to accept the terms for each game that your bots will be offering.</p>
 <ul>
@@ -3941,7 +4593,7 @@ pre-formatted fixed-width code block
   </div>
 </div>
     </div>
-    <script src="/js/main.js?18"></script>
+    <script src="/js/main.js?20"></script>
     <script src="/js/jquery.min.js?1"></script>
 <script src="/js/bootstrap.min.js"></script>
     <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -3949,10 +4601,10 @@ pre-formatted fixed-width code block
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-45099287-1', 'telegram.org');
+ga('create', 'UA-45099287-4', 'auto');
 ga('send', 'pageview');initDevPageNav();
 backToTopInit();
 </script>
   </body>
 </html>
-<!-- page generated in 17.49ms -->
+<!-- page generated in 17.5ms -->

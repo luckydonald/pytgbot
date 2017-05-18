@@ -5,7 +5,7 @@ from luckydonaldUtils.logger import logging
 from pytgbot.api_types import TgBotApiObject
 
 __author__ = 'luckydonald'
-__all__ = ["inline", "reply_markup", "files", "Sendable", "InputFile", "InputFileFromURL", "InputFileFromDisk"]
+__all__ = ["files", "inline", "payments", "reply_markup", "Sendable", "InputFile", "InputFileFromURL", "InputFileFromDisk"]
 
 # UPCOMING CHANGE IN v2.2.0:
 from . import files  # backwards compatibility, before v2.2.0

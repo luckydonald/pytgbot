@@ -7,7 +7,6 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     # pytgbot.api_types.receivable.__init__.*
     "Receivable":           ("pytgbot.api_types.receivable.", "TgBotApiObject", None),
     "Result":               ("pytgbot.api_types.receivable.", "Receivable", None),
-    "WebhookInfo":          ("pytgbot.api_types.receivable.", "Receivable", None),  # October 3, 2016
 
     # pytgbot.api_types.receivable.media.*
     "MessageEntity":        ("pytgbot.api_types.receivable.media.", "Result", None),
@@ -16,6 +15,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Media":                ("pytgbot.api_types.receivable.media.", "Receivable", None),
     "File":                 ("pytgbot.api_types.receivable.media.", "Receivable", None),
     "Voice":                ("pytgbot.api_types.receivable.media.", "Media", None),
+    "VideoNote":            ("pytgbot.api_types.receivable.media.", "Media", None), # May 18, 2017
     "Contact":              ("pytgbot.api_types.receivable.media.", "Media", None),
     "Location":             ("pytgbot.api_types.receivable.media.", "Media", None),
     "Venue":                ("pytgbot.api_types.receivable.media.", "Media", None),
@@ -41,6 +41,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "CallbackQuery":        ("pytgbot.api_types.receivable.updates.", "UpdateType", None),
     "CallbackGame":         ("pytgbot.api_types.receivable.updates.", "UpdateType", None),  # October 3, 2016
     "ResponseParameters":   ("pytgbot.api_types.receivable.updates.", "Receivable", None),  # October 3, 2016
+    "WebhookInfo":          ("pytgbot.api_types.receivable.updates.", "Receivable", None),  # October 3, 2016
 
     # pytgbot.api_types.receivable.inline.*
     "InlineQuery":                  ("pytgbot.api_types.receivable.inline.", "Result", None),
@@ -48,6 +49,14 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
 
     # pytgbot.api_types.receivable.game.*
     "GameHighScore": ("pytgbot.api_types.receivable.game.", "Result", None),  # October 3, 2016
+
+    # pytgbot.api_types.receivable.payments.*
+    "Invoice":              ("pytgbot.api_types.receivable.payments.", "Result", None),  # May 18, 2017
+    "OrderInfo":            ("pytgbot.api_types.receivable.payments.", "Result", None),  # May 18, 2017
+    "ShippingAddress":      ("pytgbot.api_types.receivable.payments.", "Result", None),  # May 18, 2017
+    "SuccessfulPayment":    ("pytgbot.api_types.receivable.payments.", "Result", None),  # May 18, 2017
+    "ShippingQuery":        ("pytgbot.api_types.receivable.payments.", "UpdateType", None),  # May 18, 2017
+    "PreCheckoutQuery":     ("pytgbot.api_types.receivable.payments.", "UpdateType", None),  # May 18, 2017
 
     # pytgbot.api_types.sendable.*
     "Sendable":                     ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
@@ -93,8 +102,6 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     # pytgbot.api_types.sendable.reply_markup.*
     "Button":               ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
     "ReplyMarkup":          ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
-
-
     "ReplyKeyboardMarkup":  ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
     "ReplyKeyboardRemove":  ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
     "ForceReply":           ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
@@ -102,11 +109,16 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "KeyboardButton":       ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
     "InlineKeyboardButton": ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
 
+    # pytgbot.api_types.sendable.payments.*
+    "LabeledPrice":     ("pytgbot.api_types.sendable.payments.", "Sendable", None),  # May 18, 2017
+    "ShippingOption":   ("pytgbot.api_types.sendable.payments.", "Sendable", None),  # May 18, 2017
+
 }
 
 WHITELISTED_FUNCS = [  # Array with names of functions which have no parameters table and thus wouldn't be detected.
     "getMe",
     "getWebhookInfo",
+    "deleteWebhook",
 ]
 
 """

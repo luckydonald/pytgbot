@@ -469,7 +469,7 @@ def to_type(type_string, variable_name) -> Type:
         var_type.is_builtin = False
     else:
         logger.warn(
-            "Added unrecognized type in param <{var}>: {type}".format(var=variable_name, type=var_type.string))
+            "Added unrecognized type in param <{var}>: {type!r}".format(var=variable_name, type=var_type.string))
     # end if
     return var_type
 

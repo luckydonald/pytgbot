@@ -1,5 +1,26 @@
 # Changelog
 
+## Version 3.0.0
+- Updated Official API changes of [`Bot API 3`.`0` (May 18, 2017)](https://core.telegram.org/bots/api-changelog#may-18-2017)
+    - Added `pytgbot.api_types.receivable.VideoNote`.
+    - Updated `pytgbot.api_types.receivable.peer.User` to include the new `language_code` field.
+    - Updated `pytgbot.api_types.receivable.updates.Update` to include the new `shipping_query` and `pre_checkout_query` fields.
+    - Updated `pytgbot.api_types.receivable.updates.Message` to include the new `video_note`, `new_chat_members`, `invoice` and `successful_payment` fields.
+    - Added `pytgbot.api_types.receivable.updates.WebhookInfo`
+    - Updated `pytgbot.api_types.sendable.inline.InlineQueryResultGif` to include the new `gif_duration` field.
+    - Updated `pytgbot.api_types.sendable.inline.InlineQueryResultMpeg4Gif` to include the new `mpeg4_duration` field.
+    - Added `pytgbot.api_types.sendable.payments.LabeledPrice`
+    - Added `pytgbot.api_types.sendable.payments.ShippingOption`
+    - Updated `pytgbot.api_types.sendable.reply_markup.InlineKeyboardButton` to include the new `pay` field.
+    - Added `pytgbot.bot.Bot.delete_webhook` function.
+    - Added `pytgbot.bot.Bot.send_video_note` function.
+    - Documented that `pytgbot.bot.Bot.unban_chat_member` now works with channels too.
+    - Added `pytgbot.bot.Bot.delete_message` function.
+    - Added `pytgbot.bot.Bot.send_invoice` function.
+    - Added `pytgbot.bot.Bot.answer_shipping_query` function.
+    - Added `pytgbot.bot.Bot.answer_pre_checkout_query` function.
+
+
 ## Version 2.3.3
 - Updated Official API changes of [`Bot API 2`.`3`.`1` (December 4, 2016)](https://core.telegram.org/bots/api-changelog#december-4-2016)
 

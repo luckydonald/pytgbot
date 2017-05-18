@@ -362,7 +362,7 @@ class InlineQueryResultGif(InlineQueryResult):
 
     https://core.telegram.org/bots/api#inlinequeryresultgif
     """
-    def __init__(self, id, gif_url, thumb_url, gif_width=None, gif_height=None, title=None, caption=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, gif_url, thumb_url, gif_width=None, gif_height=None, gif_duration=None, title=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -389,6 +389,9 @@ class InlineQueryResultGif(InlineQueryResult):
         :keyword gif_height: Optional. Height of the GIF
         :type    gif_height: int
 
+        :keyword gif_duration: Optional. Duration of the GIF
+        :type    gif_duration: int
+        
         :keyword title: Optional. Title for the result
         :type    title: str
 
@@ -399,7 +402,7 @@ class InlineQueryResultGif(InlineQueryResult):
         :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
         :keyword input_message_content: Optional. Content of the message to be sent instead of the GIF animation
-        :type    input_message_content: inputMessageContent
+        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultGif, self).__init__(id, "gif")
 
@@ -422,6 +425,9 @@ class InlineQueryResultGif(InlineQueryResult):
 
         assert(gif_height is None or isinstance(gif_height, int))
         self.gif_height = gif_height
+
+        assert(gif_duration is None or isinstance(gif_duration, int))
+        self.gif_duration = gif_duration
 
         assert(title is None or isinstance(title, str))
         self.title = title
@@ -451,6 +457,8 @@ class InlineQueryResultGif(InlineQueryResult):
             array['gif_width'] = int(self.gif_width)  # type int
         if self.gif_height is not None:
             array['gif_height'] = int(self.gif_height)  # type int
+        if self.gif_duration is not None:
+            array['gif_duration'] = int(self.gif_duration)  # type int
         if self.title is not None:
             array['title'] = str(self.title)  # type str
         if self.caption is not None:
@@ -484,6 +492,7 @@ class InlineQueryResultGif(InlineQueryResult):
         data['thumb_url'] = str(array.get('thumb_url'))
         data['gif_width'] = int(array.get('gif_width')) if array.get('gif_width') is not None else None
         data['gif_height'] = int(array.get('gif_height')) if array.get('gif_height') is not None else None
+        data['gif_duration'] = int(array.get('gif_duration')) if array.get('gif_duration') is not None else None
         data['title'] = str(array.get('title')) if array.get('title') is not None else None
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
@@ -495,14 +504,14 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         Implements `str(inlinequeryresultgif_instance)`
         """
-        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultgif_instance`
         """
-        return key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "title", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "reply_markup", "input_message_content"]
     # end def __contains__
 # end class InlineQueryResultGif
 
@@ -513,7 +522,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
     https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif
     """
-    def __init__(self, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, title=None, caption=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, title=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -540,6 +549,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :keyword mpeg4_height: Optional. Video height
         :type    mpeg4_height: int
 
+        :keyword mpeg4_duration: Optional. Video duration
+        :type    mpeg4_duration: int
+        
         :keyword title: Optional. Title for the result
         :type    title: str
 
@@ -547,10 +559,10 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :type    caption: str
 
         :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: InlineKeyboardMarkup
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
         :keyword input_message_content: Optional. Content of the message to be sent instead of the video animation
-        :type    input_message_content: InputMessageContent
+        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultMpeg4Gif, self).__init__(id, "mpeg4_gif")
 
@@ -573,6 +585,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
         assert(mpeg4_height is None or isinstance(mpeg4_height, int))
         self.mpeg4_height = mpeg4_height
+
+        assert(mpeg4_duration is None or isinstance(mpeg4_duration, int))
+        self.mpeg4_duration = mpeg4_duration
 
         assert(title is None or isinstance(title, str))
         self.title = title
@@ -602,6 +617,8 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             array['mpeg4_width'] = int(self.mpeg4_width)  # type int
         if self.mpeg4_height is not None:
             array['mpeg4_height'] = int(self.mpeg4_height)  # type int
+        if self.mpeg4_duration is not None:
+            array['mpeg4_duration'] = int(self.mpeg4_duration)  # type int
         if self.title is not None:
             array['title'] = str(self.title)  # type str
         if self.caption is not None:
@@ -635,6 +652,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         data['thumb_url'] = str(array.get('thumb_url'))
         data['mpeg4_width'] = int(array.get('mpeg4_width')) if array.get('mpeg4_width') is not None else None
         data['mpeg4_height'] = int(array.get('mpeg4_height')) if array.get('mpeg4_height') is not None else None
+        data['mpeg4_duration'] = int(array.get('mpeg4_duration')) if array.get('mpeg4_duration') is not None else None
         data['title'] = str(array.get('title')) if array.get('title') is not None else None
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
@@ -646,14 +664,14 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         Implements `str(inlinequeryresultmpeg4gif_instance)`
         """
-        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultmpeg4gif_instance`
         """
-        return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "title", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "reply_markup", "input_message_content"]
     # end def __contains__
 # end class InlineQueryResultMpeg4Gif
 
@@ -707,7 +725,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         :type    description: str
 
         :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: InlineKeyboardMarkup
+        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
         :keyword input_message_content: Optional. Content of the message to be sent instead of the video
         :type    input_message_content: InputMessageContent
