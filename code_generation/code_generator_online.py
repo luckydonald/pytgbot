@@ -28,6 +28,7 @@ def lol1(tag):
 class_fields = ["Field", "Type", "Description"]
 func_fields = ["Parameters", "Type", "Required", "Description"]
 
+
 def parse_table(tag):
     """
     returns tuple of type ("class"/"func") and list of param strings.
@@ -243,6 +244,12 @@ def main():
         # end if
         try:
             safe_to_file(folder, results)
+            with open(path_join(folder, "api.py"), "w") as f:
+                f.write("results = [\n    ")
+                f.write(",\n    ".join([repr(result) in results]))
+                f.write("]")
+                # end for
+            # end with
             with open(path_join(folder, "api.html"), "wb") as f:
                 f.write(document.content)
             # end if
@@ -259,6 +266,7 @@ def main():
     print("Exit.")
 # end def main
 
+
 def get_filter():
     filter = answer(
         "Only generate the doc for specific functions/classes. Comma seperated list. Leave empty to generate all.",
@@ -271,6 +279,7 @@ def get_filter():
         filter = None
     # end if
     return filter
+# end def
 
 
 def get_folder_path():
@@ -287,7 +296,7 @@ def get_folder_path():
             # end try
     # end if file
     return file
-
+# end def
 
 
 def safe_to_file(folder, results):
@@ -359,7 +368,9 @@ def calc_path_and_create_folders(folder, import_path):
     file_path = abspath(path_join(folder, import_path[:import_path.rfind(".")].replace(".", folder_seperator) + ".py"))
     mkdir_p(dirname(file_path))
     return file_path
+# end def
 
 
 if __name__ == '__main__':
     main()
+# end if

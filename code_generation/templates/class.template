@@ -1,4 +1,4 @@
-{% from "macros.template" import for_args_none, for_type_list_of_full, for_type_list_of, types_as_tuple, for_args_format_str, for_args_keys %}
+{% from "macros.template" import for_args_none, for_type_list_of_full, for_type_list_of, types_as_tuple, for_args_format_repr, for_args_keys %}
 {% macro set_array(variable, class_name) -%}
 {% if variable.types|length == 1 -%}
 {% if variable.types[0].is_list > 0 -%}
@@ -21,31 +21,32 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     """
     {% block class_docstring -%}
     {{ clazz.description.strip()|indent }}
+    {# first line #}
+    {%- if clazz.parameters %}
 
+
+    Parameters:
+    {% for param in clazz.parameters %}
+    :param {{ param.name }}: {{ param.description }}
+    :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
+    {% endfor -%}
+    {%- endif -%}
+    {#- {%- if clazz.keywords %} #}
+
+    Optional keyword parameters:
+    {% for keyword in clazz.keywords %}
+    :param {{ keyword.name }}: {{ keyword.description }}
+    :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
+    {% endfor %}
+    :param _raw: this may be the dict of the json this object was generated from. May be null.
+    :type  _raw: None | dict
+    {#- {%- endif -%} -#}
     {{clazz.link}}
     {%- endblock %}
     """
-    def __init__(self, {{ for_args_none(clazz.variables) }}):
+    def __init__(self, {{ for_args_none(clazz.variables) }}, _raw=None):
         """
         {{ self.class_docstring()|indent -}}
-        {# first line #}
-        {%- if clazz.parameters %}
-
-
-        Parameters:
-        {% for param in clazz.parameters %}
-        :param {{ param.name }}: {{ param.description }}
-        :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
-        {% endfor -%}
-        {%- endif -%}
-        {%- if clazz.keywords %}
-
-        Optional keyword parameters:
-        {% for keyword in clazz.keywords %}
-        :keyword {{ keyword.name }}: {{ keyword.description }}
-        :type    {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
-        {% endfor %}
-        {%- endif -%}
         """
         super({{ clazz.clazz }}, self).__init__()
 
@@ -70,6 +71,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {%- if not loop.last %}
         {% endif %}
         {%- endfor -%}
+        self._raw = _raw
     {# force line tabs #}
     # end def __init__
 
@@ -77,7 +79,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         """
         Serializes this {{ clazz.clazz }} to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super({{ clazz.clazz }}, self).to_array()
@@ -95,7 +97,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new {{ clazz.clazz }} from a given dictionary.
+        Deserialize a new {{ clazz.clazz }} from a given dictionary.
 
         :return: new {{ clazz.clazz }} instance.
         :rtype: {{ clazz.clazz }}
@@ -130,6 +132,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         // not sure what to do...
         {% endif -%}
         {% endfor -%}
+        data['_raw'] = array
         return {{ clazz.clazz }}(**data)
     # end def from_array
 
@@ -137,13 +140,23 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         """
         Implements `str({{ clazz.clazz|lower }}_instance)`
         """
-        return "{{ clazz.clazz }}({{ for_args_format_str(clazz.variables) }})".format(self=self)
+        return "{{ clazz.clazz }}({{ for_args_format_repr(clazz.variables) }})".format(self=self)
     # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr({{ clazz.clazz|lower }}_instance)`
+        """
+        if self._raw:
+            return "{{ clazz.clazz }}.from_array({self._raw})".format(self=self)
+        # end if
+        return "{{ clazz.clazz }}({{ for_args_format_repr(clazz.variables) }})".format(self=self)
+    # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in {{ clazz.clazz|lower }}_instance`
         """
-        return key in [{{ for_args_keys(clazz.variables) }}]
+        return key in [{{ for_args_keys(clazz.variables) }}] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class {{ clazz.clazz }}

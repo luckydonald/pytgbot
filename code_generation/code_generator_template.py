@@ -110,12 +110,11 @@ class KwargableObject(Mapping):
             return self.__getattribute__(key)
         except AttributeError as e:
             raise KeyError(key)
-
+        # end try
     # end def __getitem__
 
     def __len__(self):
         return len(list(self.__iter__()))
-
     # end def __len__
 
     def __iter__(self):
@@ -128,6 +127,14 @@ class KwargableObject(Mapping):
             [name for (name, value) in inspect.getmembers(Clazz, is_allowed)]
         )
     # end def __iter__
+
+    def __repr__(self):
+        return (
+            "{s.__class__.__name__}(" +
+            (", ".join(["{key}={value!r}".format(key=k, value=self[k]) for k in self])) +
+            ")"
+        ).format(s=self)
+    # end def __repr__
 # end class KwargableObject
 
 
@@ -157,6 +164,15 @@ class Clazz(ClassOrFunction):
     def variables(self):
         return self.parameters + self.keywords
     # end def variables
+
+    def __repr__(self):
+        return (
+            "Clazz("
+                "clazz={s.clazz!r}, imports={s.imports!r}, parent_clazz={s.parent_clazz!r}, link={s.link!r}, "
+                "description={s.description!r}, parameters={s.parameters!r}, keywords={s.keywords!r}"
+            ")".format(s=self)
+        )
+    # end def __repr__
 # end class Clazz
 
 
@@ -181,6 +197,15 @@ class Function(ClassOrFunction):
     def name(self):
         return convert_to_underscore(self.api_name)
     # end def name
+
+    def __repr__(self):
+        return (
+            "Function("
+                "api_name={s.api_name!r}, imports={s.imports!r}, link={s.link!r}, description={s.description!r}, "
+                "returns={s.returns!r}, parameters={s.parameters!r}, keywords={s.keywords!r}"
+            ")".format(s=self)
+        )
+    # end def __repr__
 # end class Function
 
 
