@@ -12,6 +12,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "MessageEntity":        ("pytgbot.api_types.receivable.media.", "Result", None),
     "PhotoSize":            ("pytgbot.api_types.receivable.media.", "Result", None),
     "UserProfilePhotos":    ("pytgbot.api_types.receivable.media.", "Result", None),
+    "ChatPhoto":            ("pytgbot.api_types.receivable.media.", "Result", None),
     "Media":                ("pytgbot.api_types.receivable.media.", "Receivable", None),
     "File":                 ("pytgbot.api_types.receivable.media.", "Receivable", None),
     "Voice":                ("pytgbot.api_types.receivable.media.", "Media", None),

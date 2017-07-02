@@ -1,4 +1,9 @@
+# Normal install
+```sh
+pip3 install pytgbot
+```
 
+# Manual install:
 ```sh
 sudo apt-get install python3-pip
 sudo apt-get install libffi-dev

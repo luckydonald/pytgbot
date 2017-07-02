@@ -20,8 +20,8 @@ class Bot(object):
         :param api_key: The API key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
         :type  api_key: str
 
-        :keyword return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects.
-        :type    return_python_objects: bool
+        :param return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects. Default: `True`
+        :type  return_python_objects: bool
         """
         from datetime import datetime
 
@@ -60,16 +60,16 @@ class Bot(object):
         :param command: The Url command parameter
         :type  command: str
 
-        :keyword request_timeout: When the request should time out.
-        :type    request_timeout: int
+        :param request_timeout: When the request should time out. Default: `None`
+        :type  request_timeout: int
 
         :param files: if it needs to send files.
 
-        :keyword use_long_polling: if it should use long polling.
+        :param use_long_polling: if it should use long polling. Default: `False`
                                 (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
-        :type    use_long_polling: bool
+        :type  use_long_polling: bool
 
-        :param query: will get json encoded.
+        :param query: all the other `**kwargs` will get json encoded.
 
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable

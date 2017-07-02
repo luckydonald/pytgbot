@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -11,8 +12,8 @@ To learn how to create..">
     <link rel="shortcut icon" href="/favicon.ico?3" type="image/x-icon" />
 
     <link href="/css/bootstrap.min.css?2" rel="stylesheet">
-    
-    <link href="/css/telegram.css?118" rel="stylesheet" media="screen">
+
+    <link href="/css/telegram.css?120" rel="stylesheet" media="screen">
     <style>
     </style>
   </head>
@@ -38,15 +39,23 @@ To learn how to create..">
           <div id="dev_page_content_wrap" class=" ">
   <div class="dev_page_bread_crumbs"><ul class="breadcrumb clearfix"><li><a  href="/bots" >Telegram Bots</a></li><i class="icon icon-breadcrumb-divider"></i><li><a  href="/bots/api" >Telegram Bot API</a></li></ul></div>
   <h1 id="dev_page_title" dir="auto">Telegram Bot API</h1>
-  
+
   <div id="dev_page_content" dir="auto"><!-- scroll_nav -->
 
 <blockquote>
 <p>The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.<br>To learn how to create and set up a bot, please consult our <a href="https://core.telegram.org/bots"><strong>Introduction to Bots</strong></a> and <a href="/bots/faq"><strong>Bot FAQ</strong></a>.</p>
 </blockquote>
 <h3><a class="anchor" name="recent-changes" href="#recent-changes"><i class="anchor-icon"></i></a>Recent changes</h3>
+<h4><a class="anchor" name="june-30-2017" href="#june-30-2017"><i class="anchor-icon"></i></a>June 30, 2017</h4>
+<p><strong>Bot API 3.1</strong>. Build your own robotic police force for supergoups with these new methods for admin bots:</p>
+<ul>
+<li>Added new methods <a href="#restrictchatmember">restrictChatMember</a> and <a href="#promotechatmember">promoteChatMember</a> to manage users and admins, added new parameter <em>until_date</em> to <a href="#kickchatmember">kickChatMember</a> for temporary bans.</li>
+<li>Added new methods <a href="#exportchatinvitelink">exportChatInviteLink</a>, <a href="#setchatphoto">setChatPhoto</a>, <a href="#deletechatphoto">deleteChatPhoto</a>, <a href="#setchattitle">setChatTitle</a>, <a href="#setchatdescription">setChatDescription</a>, <a href="#pinchatmessage">pinChatMessage</a> and <a href="#unpinchatmessage">unpinChatMessage</a> to manage groups and channels.</li>
+<li>Added the new fields <em>photo</em>, <em>description</em> and <em>invite_link</em> to the <a href="#chat">Chat</a> object.</li>
+<li>Added the new fields <em>until_date</em>, <em>can_be_edited</em>, <em>can_change_info</em>, <em>can_post_messages</em>, <em>can_edit_messages</em>, <em>can_delete_messages</em>, <em>can_invite_users</em>, <em>can_restrict_members</em>, <em>can_pin_messages</em>, <em>can_promote_members</em>, <em>can_send_messages</em>, <em>can_send_media_messages</em>, <em>can_send_other_messages</em> and <em>can_add_web_page_previews</em> to the <a href="#chatmember">ChatMember</a> object.</li>
+</ul>
 <h4><a class="anchor" name="may-18-2017" href="#may-18-2017"><i class="anchor-icon"></i></a>May 18, 2017</h4>
-<p>Introducing <strong>Bot API 3.0.</strong></p>
+<p>Introducing <strong>Bot API 3.0</strong>.</p>
 <p><strong>NEW Payment Platform</strong></p>
 <p>See <a href="/bots/payments">Introduction to Bot Payments</a> for a brief overview. If you&#39;re not a developer, you may like <a href="https://telegram.org/blog/payments">this user-friendly blog post</a> better.</p>
 <ul>
@@ -57,7 +66,7 @@ To learn how to create..">
 </ul>
 <p><strong>NEW Video Messages</strong></p>
 <ul>
-<li>As of Telegram v.4.0, users can send short rounded <a href="https://telegram.org/blog/payments">video messages</a>, using an interface similar to that of voice notes.</li>
+<li>As of Telegram v.4.0, users can send short rounded <a href="https://telegram.org/blog/video-messages-and-telescope">video messages</a>, using an interface similar to that of voice notes.</li>
 <li>Added the <a href="#sendvideonote">sendVideoNote</a> method, the new field <em>video_note</em> to <a href="#message">Message</a>, the fields <em>record_video_note</em> or <em>upload_video_note</em> to <a href="#sendchataction">sendChatAction</a>.</li>
 </ul>
 <p><strong>NEW Multilingual Bots</strong></p>
@@ -68,7 +77,7 @@ To learn how to create..">
 <p><strong>More power to admin bots</strong></p>
 <ul>
 <li><a href="#unbanchatmember">unbanChatMember</a> now also works in channels!</li>
-<li>New method <a href="#deletemessages">deleteMessage</a> that allows the bot to delete its own messages, as well as messages posted by other in groups and channels where the bot is an administrator.</li>
+<li>New method <a href="#deletemessage">deleteMessage</a> that allows the bot to delete its own messages, as well as messages posted by other in groups and channels where the bot is an administrator.</li>
 </ul>
 <p><strong>Minor Changes</strong></p>
 <ul>
@@ -378,6 +387,21 @@ To learn how to create..">
 <td>all_members_are_administrators</td>
 <td>Boolean</td>
 <td><em>Optional</em>. True if a group has ‘All Members Are Admins’ enabled.</td>
+</tr>
+<tr>
+<td>photo</td>
+<td>ChatPhoto</td>
+<td><em>Optional</em>. Chat photo. Returned only in getChat.</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td><em>Optional</em>. Description, for supergroups and channel chats. Returned only in getChat.</td>
+</tr>
+<tr>
+<td>invite_link</td>
+<td>String</td>
+<td><em>Optional</em>. Chat invite link, for supergroups and channel chats. Returned only in getChat.</td>
 </tr>
 </tbody>
 </table>
@@ -1226,15 +1250,36 @@ To learn how to create..">
 </tbody>
 </table>
 <blockquote>
-<p><strong>Example:</strong> A <a href="https://telegram.me/PollBot">poll bot</a> for groups runs in privacy mode (only receives commands, replies to its messages and mentions). There could be two ways to create a new poll:</p>
+<p><strong>Example:</strong> A <a href="https://t.me/PollBot">poll bot</a> for groups runs in privacy mode (only receives commands, replies to its messages and mentions). There could be two ways to create a new poll:</p>
 </blockquote>
 <ul>
 <li>Explain the user how to send a command with parameters (e.g. /newpoll question answer1 answer2). May be appealing for hardcore users but lacks modern day polish.</li>
 <li>Guide the user through a step-by-step process. ‘Please send me your question’, ‘Cool, now let’s add the first answer option‘, ’Great. Keep adding answer options, then send /done when you‘re ready’.</li>
 </ul>
 <p>The last option is definitely more attractive. And if you use <a href="#forcereply">ForceReply</a> in your bot‘s questions, it will receive the user’s answers even if it only receives replies, commands and mentions — without any extra work for the user.</p>
+<h4><a class="anchor" name="chatphoto" href="#chatphoto"><i class="anchor-icon"></i></a>ChatPhoto</h4>
+<p>This object represents a chat photo.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>small_file_id</td>
+<td>String</td>
+<td>Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.</td>
+</tr>
+<tr>
+<td>big_file_id</td>
+<td>String</td>
+<td>Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.</td>
+</tr>
+</tbody>
+</table>
 <h4><a class="anchor" name="chatmember" href="#chatmember"><i class="anchor-icon"></i></a>ChatMember</h4>
-<p>This object contains information about one member of the chat.</p>
+<p>This object contains information about one member of a chat.</p>
 <table class="table">
 <tbody>
 <tr>
@@ -1250,7 +1295,77 @@ To learn how to create..">
 <tr>
 <td>status</td>
 <td>String</td>
-<td>The member&#39;s status in the chat. Can be “creator”, “administrator”, “member”, “left” or “kicked”</td>
+<td>The member&#39;s status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”</td>
+</tr>
+<tr>
+<td>until_date</td>
+<td>Integer</td>
+<td><em>Optional</em>. Restictred and kicked only. Date when restrictions will be lifted for this user, unix time</td>
+</tr>
+<tr>
+<td>can_be_edited</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Administrators only. True, if the bot is allowed to edit administrator privileges of that user</td>
+</tr>
+<tr>
+<td>can_change_info</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Administrators only. True, if the administrator can change the chat title, photo and other settings</td>
+</tr>
+<tr>
+<td>can_post_messages</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Administrators only. True, if the administrator can post in the channel, channels only</td>
+</tr>
+<tr>
+<td>can_edit_messages</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Administrators only. True, if the administrator can edit messages of other users, channels only</td>
+</tr>
+<tr>
+<td>can_delete_messages</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Administrators only. True, if the administrator can delete messages of other users</td>
+</tr>
+<tr>
+<td>can_invite_users</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Administrators only. True, if the administrator can invite new users to the chat</td>
+</tr>
+<tr>
+<td>can_restrict_members</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Administrators only. True, if the administrator can restrict, ban or unban chat members</td>
+</tr>
+<tr>
+<td>can_pin_messages</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Administrators only. True, if the administrator can pin messages, supergroups only</td>
+</tr>
+<tr>
+<td>can_promote_members</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Administrators only. True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)</td>
+</tr>
+<tr>
+<td>can_send_messages</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Restricted only. True, if the user can send text messages, contacts, locations and venues</td>
+</tr>
+<tr>
+<td>can_send_media_messages</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Restricted only. True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages</td>
+</tr>
+<tr>
+<td>can_send_other_messages</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Restricted only. True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages</td>
+</tr>
+<tr>
+<td>can_add_web_page_previews</td>
+<td>Boolean</td>
+<td><em>Optional</em>. Restricted only. True, if user may add web page previews to his messages, implies can_send_media_messages</td>
 </tr>
 </tbody>
 </table>
@@ -1344,7 +1459,7 @@ To learn how to create..">
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1413,7 +1528,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>message_id</td>
@@ -1455,7 +1570,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1522,7 +1637,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1570,7 +1685,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1612,7 +1727,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1678,7 +1793,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1732,7 +1847,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1786,7 +1901,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1834,7 +1949,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1900,7 +2015,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1954,7 +2069,7 @@ pre-formatted fixed-width code block
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -1973,7 +2088,7 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendchataction" href="#sendchataction"><i class="anchor-icon"></i></a>sendChatAction</h4>
 <p>Use this method when you need to tell the user that something is happening on the bot&#39;s side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns <em>True</em> on success.</p>
 <blockquote>
-<p>Example: The <a href="https://telegram.me/imagebot">ImageBot</a> needs some time to process a request and upload the image. Instead of sending a text message along the lines of “Retrieving image, please wait…”, the bot may use <a href="#sendchataction">sendChatAction</a> with <em>action</em> = <em>upload_photo</em>. The user will see a “sending photo” status for the bot.</p>
+<p>Example: The <a href="https://t.me/imagebot">ImageBot</a> needs some time to process a request and upload the image. Instead of sending a text message along the lines of “Retrieving image, please wait…”, the bot may use <a href="#sendchataction">sendChatAction</a> with <em>action</em> = <em>upload_photo</em>. The user will see a “sending photo” status for the bot.</p>
 </blockquote>
 <p>We only recommend using this method when a response from the bot will take a <strong>noticeable</strong> amount of time to arrive.</p>
 <table class="table">
@@ -2048,9 +2163,9 @@ pre-formatted fixed-width code block
 </table>
 <p><strong>Note:</strong> This function may not preserve the original file name and MIME type. You should save the file&#39;s MIME type and name (if available) when the File object is received.</p>
 <h4><a class="anchor" name="kickchatmember" href="#kickchatmember"><i class="anchor-icon"></i></a>kickChatMember</h4>
-<p>Use this method to kick a user from a group or a supergroup. In the case of supergroups, the user will not be able to return to the group on their own using invite links, etc., unless <a href="#unbanchatmember">unbanned</a> first. The bot must be an administrator in the group for this to work. Returns <em>True</em> on success.</p>
+<p>Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless <a href="#unbanchatmember">unbanned</a> first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success.</p>
 <blockquote>
-<p>Note: This will method only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group&#39;s creator or by the member that added them.</p>
+<p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group&#39;s creator or by the member that added them.</p>
 </blockquote>
 <table class="table">
 <tbody>
@@ -2064,13 +2179,19 @@ pre-formatted fixed-width code block
 <td>chat_id</td>
 <td>Integer or String</td>
 <td>Yes</td>
-<td>Unique identifier for the target group or username of the target supergroup (in the format <code>@supergroupusername</code>)</td>
+<td>Unique identifier for the target group or username of the target supergroup or channel (in the format <code>@channelusername</code>)</td>
 </tr>
 <tr>
 <td>user_id</td>
 <td>Integer</td>
 <td>Yes</td>
 <td>Unique identifier of the target user</td>
+</tr>
+<tr>
+<td>until_date</td>
+<td>Integer</td>
+<td>No</td>
+<td>Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever</td>
 </tr>
 </tbody>
 </table>
@@ -2095,6 +2216,297 @@ pre-formatted fixed-width code block
 <td>Integer</td>
 <td>Yes</td>
 <td>Unique identifier of the target user</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="restrictchatmember" href="#restrictchatmember"><i class="anchor-icon"></i></a>restrictChatMember</h4>
+<p>Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass <em>True</em> for all boolean parameters to lift restrictions from a user. Returns <em>True</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target supergroup (in the format <code>@supergroupusername</code>)</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>Unique identifier of the target user</td>
+</tr>
+<tr>
+<td>until_date</td>
+<td>Integer</td>
+<td>No</td>
+<td>Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever</td>
+</tr>
+<tr>
+<td>can_send_messages</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the user can send text messages, contacts, locations and venues</td>
+</tr>
+<tr>
+<td>can_send_media_messages</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages</td>
+</tr>
+<tr>
+<td>can_send_other_messages</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages</td>
+</tr>
+<tr>
+<td>can_add_web_page_previews</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the user may add web page previews to their messages, implies can_send_media_messages</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="promotechatmember" href="#promotechatmember"><i class="anchor-icon"></i></a>promoteChatMember</h4>
+<p>Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass <em>False</em> for all boolean parameters to demote a user. Returns <em>True</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>Unique identifier of the target user</td>
+</tr>
+<tr>
+<td>can_change_info</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the administrator can change chat title, photo and other settings</td>
+</tr>
+<tr>
+<td>can_post_messages</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the administrator can create channel posts, channels only</td>
+</tr>
+<tr>
+<td>can_edit_messages</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the administrator can edit messages of other users, channels only</td>
+</tr>
+<tr>
+<td>can_delete_messages</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the administrator can delete messages of other users</td>
+</tr>
+<tr>
+<td>can_invite_users</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the administrator can invite new users to the chat</td>
+</tr>
+<tr>
+<td>can_restrict_members</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the administrator can restrict, ban or unban chat members</td>
+</tr>
+<tr>
+<td>can_pin_messages</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the administrator can pin messages, supergroups only</td>
+</tr>
+<tr>
+<td>can_promote_members</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="exportchatinvitelink" href="#exportchatinvitelink"><i class="anchor-icon"></i></a>exportChatInviteLink</h4>
+<p>Use this method to export an invite link to a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns exported invite link as <em>String</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="setchatphoto" href="#setchatphoto"><i class="anchor-icon"></i></a>setChatPhoto</h4>
+<p>Use this method to set a new profile photo for the chat. Photos can&#39;t be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
+<blockquote>
+<p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.</p>
+</blockquote>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>photo</td>
+<td><a href="#inputfile">InputFile</a></td>
+<td>Yes</td>
+<td>New chat photo, uploaded using multipart/form-data</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="deletechatphoto" href="#deletechatphoto"><i class="anchor-icon"></i></a>deleteChatPhoto</h4>
+<p>Use this method to delete a chat photo. Photos can&#39;t be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
+<blockquote>
+<p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.</p>
+</blockquote>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="setchattitle" href="#setchattitle"><i class="anchor-icon"></i></a>setChatTitle</h4>
+<p>Use this method to change the title of a chat. Titles can&#39;t be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
+<blockquote>
+<p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.</p>
+</blockquote>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>Yes</td>
+<td>New chat title, 1-255 characters</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="setchatdescription" href="#setchatdescription"><i class="anchor-icon"></i></a>setChatDescription</h4>
+<p>Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td>No</td>
+<td>New chat description, 0-255 characters</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="pinchatmessage" href="#pinchatmessage"><i class="anchor-icon"></i></a>pinChatMessage</h4>
+<p>Use this method to pin a message in a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target supergroup (in the format <code>@supergroupusername</code>)</td>
+</tr>
+<tr>
+<td>message_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>Identifier of a message to pin</td>
+</tr>
+<tr>
+<td>disable_notification</td>
+<td>Boolean</td>
+<td>No</td>
+<td>Pass <em>True</em>, if it is not necessary to send a notification to all group members about the new pinned message</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="unpinchatmessage" href="#unpinchatmessage"><i class="anchor-icon"></i></a>unpinChatMessage</h4>
+<p>Use this method to unpin a message in a supergroup chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target supergroup (in the format <code>@supergroupusername</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -2197,7 +2609,7 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="answercallbackquery" href="#answercallbackquery"><i class="anchor-icon"></i></a>answerCallbackQuery</h4>
 <p>Use this method to send answers to callback queries sent from <a href="/bots#inline-keyboards-and-on-the-fly-updating">inline keyboards</a>. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, <em>True</em> is returned.</p>
 <blockquote>
-<p>Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via BotFather and accept the terms. Otherwise, you may use links like <code>telegram.me/your_bot?start=XXXX</code> that open your bot with a parameter.</p>
+<p>Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via BotFather and accept the terms. Otherwise, you may use links like <code>t.me/your_bot?start=XXXX</code> that open your bot with a parameter.</p>
 </blockquote>
 <table class="table">
 <tbody>
@@ -2229,7 +2641,7 @@ pre-formatted fixed-width code block
 <td>url</td>
 <td>String</td>
 <td>Optional</td>
-<td>URL that will be opened by the user&#39;s client. If you have created a <a href="#game">Game</a> and accepted the conditions via <a href="https://telegram.me/botfather">@Botfather</a>, specify the URL that opens your game – note that this will only work if the query comes from a <a href="#inlinekeyboardbutton"><em>callback_game</em></a> button.<br><br>Otherwise, you may use links like <code>telegram.me/your_bot?start=XXXX</code> that open your bot with a parameter.</td>
+<td>URL that will be opened by the user&#39;s client. If you have created a <a href="#game">Game</a> and accepted the conditions via <a href="https://t.me/botfather">@Botfather</a>, specify the URL that opens your game – note that this will only work if the query comes from a <a href="#inlinekeyboardbutton"><em>callback_game</em></a> button.<br><br>Otherwise, you may use links like <code>t.me/your_bot?start=XXXX</code> that open your bot with a parameter.</td>
 </tr>
 <tr>
 <td>cache_time</td>
@@ -2377,7 +2789,7 @@ pre-formatted fixed-width code block
 </tbody>
 </table>
 <h4><a class="anchor" name="deletemessage" href="#deletemessage"><i class="anchor-icon"></i></a>deleteMessage</h4>
-<p>Use this method to delete a message. A message can only be deleted if it was sent less than 48 hours ago. Any such recently sent outgoing message may be deleted. Additionally, if the bot is an administrator in a group chat, it can delete any message. If the bot is an administrator in a supergroup, it can delete messages from any other user and service messages about people joining or leaving the group (other types of service messages may only be removed by the group creator). In channels, bots can only remove their own messages. Returns <em>True</em> on success. </p>
+<p>Use this method to delete a message, including service messages, with the following limitations:<br>- A message can only be deleted if it was sent less than 48 hours ago.<br>- Bots can delete outgoing messages in groups and supergroups.<br>- Bots granted <em>can_post_messages</em> permissions can delete outgoing messages in channels.<br>- If the bot is an administrator of a group, it can delete any message there.<br>- If the bot has <em>can_delete_messages</em> permission in a supergroup or a channel, it can delete any message there.<br>Returns <em>True</em> on success.</p>
 <table class="table">
 <tbody>
 <tr>
@@ -2402,7 +2814,7 @@ pre-formatted fixed-width code block
 </table>
 <h3><a class="anchor" name="inline-mode" href="#inline-mode"><i class="anchor-icon"></i></a>Inline mode</h3>
 <p>The following methods and objects allow your bot to work in <a href="/bots/inline">inline mode</a>.<br>Please see our <a href="/bots/inline">Introduction to Inline bots</a> for more details.</p>
-<p>To enable this option, send the <code>/setinline</code> command to <a href="https://telegram.me/botfather">@BotFather</a> and provide the placeholder text that the user will see in the input field after typing your bot’s name.</p>
+<p>To enable this option, send the <code>/setinline</code> command to <a href="https://t.me/botfather">@BotFather</a> and provide the placeholder text that the user will see in the input field after typing your bot’s name.</p>
 <h4><a class="anchor" name="inlinequery" href="#inlinequery"><i class="anchor-icon"></i></a>InlineQuery</h4>
 <p>This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.</p>
 <table class="table">
@@ -3816,13 +4228,7 @@ pre-formatted fixed-width code block
 <td>title</td>
 <td>String</td>
 <td>Yes</td>
-<td>Product name</td>
-</tr>
-<tr>
-<td>description</td>
-<td>String</td>
-<td>Yes</td>
-<td>Product description</td>
+<td>Product name, 1-32 characters</td>
 </tr>
 <tr>
 <td>payload</td>
@@ -3834,7 +4240,7 @@ pre-formatted fixed-width code block
 <td>provider_token</td>
 <td>String</td>
 <td>Yes</td>
-<td>Payments provider token, obtained via <a href="/">Botfather</a></td>
+<td>Payments provider token, obtained via <a href="https://t.me/botfather">Botfather</a></td>
 </tr>
 <tr>
 <td>start_parameter</td>
@@ -3861,6 +4267,12 @@ pre-formatted fixed-width code block
 <td>URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.</td>
 </tr>
 <tr>
+<td>description</td>
+<td>String</td>
+<td>Optional</td>
+<td>Product description, 0-255 characters</td>
+</tr>
+<tr>
 <td>photo_size</td>
 <td>Integer</td>
 <td>Optional</td>
@@ -3880,7 +4292,7 @@ pre-formatted fixed-width code block
 </tr>
 <tr>
 <td>need_name</td>
-<td>Bool</td>
+<td>Boolean</td>
 <td>Optional</td>
 <td>Pass <em>True</em>, if you require the user&#39;s full name to complete the order</td>
 </tr>
@@ -3892,7 +4304,7 @@ pre-formatted fixed-width code block
 </tr>
 <tr>
 <td>need_email</td>
-<td>Bool</td>
+<td>Boolean</td>
 <td>Optional</td>
 <td>Pass <em>True</em>, if you require the user&#39;s email to complete the order</td>
 </tr>
@@ -3929,7 +4341,7 @@ pre-formatted fixed-width code block
 </tbody>
 </table>
 <h4><a class="anchor" name="answershippingquery" href="#answershippingquery"><i class="anchor-icon"></i></a>answerShippingQuery</h4>
-<p>If you sent an invoice requesting a shipping address and the parameter <em>is_flexible</em> was specified, the Bot API will send an <a href="#updates">Update</a> with a <em>shipping_query</em> field to the bot. Use this method to reply to shipping queries. On success, True is returned.</p>
+<p>If you sent an invoice requesting a shipping address and the parameter <em>is_flexible</em> was specified, the Bot API will send an <a href="#update">Update</a> with a <em>shipping_query</em> field to the bot. Use this method to reply to shipping queries. On success, True is returned.</p>
 <table class="table">
 <tbody>
 <tr>
@@ -3965,7 +4377,7 @@ pre-formatted fixed-width code block
 </tbody>
 </table>
 <h4><a class="anchor" name="answerprecheckoutquery" href="#answerprecheckoutquery"><i class="anchor-icon"></i></a>answerPreCheckoutQuery</h4>
-<p>Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an <a href="#">Update</a> with the field <em>pre_checkout_query</em>. Use this method to respond to such pre-checkout queries. On success, True is returned. <strong>Note:</strong> The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.</p>
+<p>Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an <a href="#update">Update</a> with the field <em>pre_checkout_query</em>. Use this method to respond to such pre-checkout queries. On success, True is returned. <strong>Note:</strong> The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.</p>
 <table class="table">
 <tbody>
 <tr>
@@ -4273,17 +4685,17 @@ pre-formatted fixed-width code block
 </tbody>
 </table>
 <h3><a class="anchor" name="games" href="#games"><i class="anchor-icon"></i></a>Games</h3>
-<p>Your bot can offer users <strong>HTML5 games</strong> to play solo or to compete against each other in groups and one-on-one chats. Create games via <a href="https://telegram.me/botfather">@BotFather</a> using the <em>/newgame</em> command. Please note that this kind of power requires responsibility: you will need to accept the terms for each game that your bots will be offering.</p>
+<p>Your bot can offer users <strong>HTML5 games</strong> to play solo or to compete against each other in groups and one-on-one chats. Create games via <a href="https://tme/botfather">@BotFather</a> using the <em>/newgame</em> command. Please note that this kind of power requires responsibility: you will need to accept the terms for each game that your bots will be offering.</p>
 <ul>
 <li>Games are a new type of content on Telegram, represented by the <a href="#game">Game</a> and <a href="#inlinequeryresultgame">InlineQueryResultGame</a> objects.</li>
-<li>Once you&#39;ve created a game via <a href="https://telegram.me/botfather">BotFather</a>, you can send games to chats as regular messages using the <a href="#sendgame">sendGame</a> method, or use <a href="#inline-mode">inline mode</a> with <a href="#inlinequeryresultgame">InlineQueryResultGame</a>.</li>
+<li>Once you&#39;ve created a game via <a href="https://t.me/botfather">BotFather</a>, you can send games to chats as regular messages using the <a href="#sendgame">sendGame</a> method, or use <a href="#inline-mode">inline mode</a> with <a href="#inlinequeryresultgame">InlineQueryResultGame</a>.</li>
 <li>If you send the game message without any buttons, it will automatically have a &#39;Play <em>GameName</em>&#39; button. When this button is pressed, your bot gets a <a href="#callbackquery">CallbackQuery</a> with the <em>game_short_name</em> of the requested game. You provide the correct URL for this particular user and the app opens the game in the in-app browser.</li>
 <li>You can manually add multiple buttons to your game message. Please note that the first button in the first row <strong>must always</strong> launch the game, using the field <em>callback_game</em> in <a href="#inlinekeyboardbutton">InlineKeyboardButton</a>. You can add extra buttons according to taste: e.g., for a description of the rules, or to open the game&#39;s official community.</li>
-<li>To make your game more attractive, you can upload a GIF animation that demostrates the game to the users via <a href="https://telegram.me/botfather">BotFather</a> (see <a href="https://telegram.me/gamebot?game=lumberjack">Lumberjack</a> for example).</li>
+<li>To make your game more attractive, you can upload a GIF animation that demostrates the game to the users via <a href="https://t.me/botfather">BotFather</a> (see <a href="https://t.me/gamebot?game=lumberjack">Lumberjack</a> for example).</li>
 <li>A game message will also display high scores for the current chat. Use <a href="#setgamescore">setGameScore</a> to post high scores to the chat with the game, add the <em>edit_message</em> parameter to automatically update the message with the current scoreboard.</li>
 <li>Use <a href="#getgamehighscores">getGameHighScores</a> to get data for in-game high score tables.</li>
 <li>You can also add an extra <a href="/bots/games#sharing-your-game-to-telegram-chats">sharing button</a> for users to share their best score to different chats.</li>
-<li>For examples of what can be done using this new stuff, check the <a href="https://telegram.me/gamebot">@gamebot</a> and <a href="https://telegram.me/gamee">@gamee</a> bots.</li>
+<li>For examples of what can be done using this new stuff, check the <a href="https://t.me/gamebot">@gamebot</a> and <a href="https://t.me/gamee">@gamee</a> bots.</li>
 </ul>
 <h4><a class="anchor" name="sendgame" href="#sendgame"><i class="anchor-icon"></i></a>sendGame</h4>
 <p>Use this method to send a game. On success, the sent <a href="#message">Message</a> is returned.</p>
@@ -4305,13 +4717,13 @@ pre-formatted fixed-width code block
 <td>game_short_name</td>
 <td>String</td>
 <td>Yes</td>
-<td>Short name of the game, serves as the unique identifier for the game. Set up your games via <a href="https://telegram.me/botfather">Botfather</a>.</td>
+<td>Short name of the game, serves as the unique identifier for the game. Set up your games via <a href="https://t.me/botfather">Botfather</a>.</td>
 </tr>
 <tr>
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. iOS users will not receive a notification, Android users will receive a notification with no sound.</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
 </tr>
 <tr>
 <td>reply_to_message_id</td>
@@ -4364,12 +4776,12 @@ pre-formatted fixed-width code block
 <tr>
 <td>animation</td>
 <td><a href="#animation">Animation</a></td>
-<td><em>Optional</em>. Animation that will be displayed in the game message in chats. Upload via <a href="https://telegram.me/botfather">BotFather</a></td>
+<td><em>Optional</em>. Animation that will be displayed in the game message in chats. Upload via <a href="https://t.me/botfather">BotFather</a></td>
 </tr>
 </tbody>
 </table>
 <h4><a class="anchor" name="animation" href="#animation"><i class="anchor-icon"></i></a>Animation</h4>
-<p>You can provide an animation for your <a href="#game">game</a> so that it looks stylish in chats (check out <a href="https://telegram.me/gamebot">Lumberjack</a> for an example). This object represents an animation file to be displayed in the message containing a <a href="#games">game</a>.</p>
+<p>You can provide an animation for your <a href="#game">game</a> so that it looks stylish in chats (check out <a href="https://t.me/gamebot">Lumberjack</a> for an example). This object represents an animation file to be displayed in the message containing a <a href="#games">game</a>.</p>
 <table class="table">
 <tbody>
 <tr>
@@ -4405,7 +4817,7 @@ pre-formatted fixed-width code block
 </tbody>
 </table>
 <h4><a class="anchor" name="callbackgame" href="#callbackgame"><i class="anchor-icon"></i></a>CallbackGame</h4>
-<p>A placeholder, currently holds no information. Use <a href="https://telegram.me/botfather">BotFather</a> to set up your game.</p>
+<p>A placeholder, currently holds no information. Use <a href="https://t.me/botfather">BotFather</a> to set up your game.</p>
 <h4><a class="anchor" name="setgamescore" href="#setgamescore"><i class="anchor-icon"></i></a>setGameScore</h4>
 <p>Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited <a href="#message">Message</a>, otherwise returns <em>True</em>. Returns an error, if the new score is not greater than the user&#39;s current score in the chat and <em>force</em> is <em>False</em>.</p>
 <table class="table">
@@ -4528,9 +4940,9 @@ pre-formatted fixed-width code block
 <hr>
 <p>And that‘s about all we’ve got for now.<br>If you&#39;ve got any questions, please check out our <a href="/bots/faq"><strong>Bot FAQ »</strong></a></p>
 </div>
-  
+
 </div>
-          
+
         </div>
       </div>
       <div class="footer_wrap">
@@ -4607,4 +5019,4 @@ backToTopInit();
 </script>
   </body>
 </html>
-<!-- page generated in 17.5ms -->
+<!-- page generated in 20.68ms -->

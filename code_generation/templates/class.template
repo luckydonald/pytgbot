@@ -16,14 +16,14 @@ array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {
 {% endif -%}
 {%- endmacro %}
 {#- macros -#}
-
 class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     """
     {% block class_docstring -%}
     {{ clazz.description.strip()|indent }}
-    {# first line #}
-    {%- if clazz.parameters %}
 
+    {{clazz.link}}
+    {# first line -#}
+    {%- if clazz.parameters %}
 
     Parameters:
     {% for param in clazz.parameters %}
@@ -37,14 +37,13 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     {% for keyword in clazz.keywords %}
     :param {{ keyword.name }}: {{ keyword.description }}
     :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
-    {% endfor %}
-    :param _raw: this may be the dict of the json this object was generated from. May be null.
+    {% endfor -%}{%- if not is_sendable %}
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
-    {#- {%- endif -%} -#}
-    {{clazz.link}}
-    {%- endblock %}
+    {% endif -%}{%- endblock -%}
     """
-    def __init__(self, {{ for_args_none(clazz.variables) }}, _raw=None):
+
+    def __init__(self, {{ for_args_none(clazz.variables) }}{% if not is_sendable %}, _raw=None{% endif %}):
         """
         {{ self.class_docstring()|indent -}}
         """
@@ -59,20 +58,21 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {%- endblock -%}
         {% for variable in clazz.variables -%}
         {% if variable.optional %}
-        assert({{ variable.name }} is None or isinstance({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}))
+        assert ({{ variable.name }} is None or isinstance({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}))
         {%- else %}
-        assert({{ variable.name }} is not None)
-        assert(isinstance({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}))
+        assert ({{ variable.name }} is not None)
+        assert (isinstance({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}))
         {%- endif %}
         {% if variable.always_is_value %}
-        assert({{ variable.name }} == {{ variable.always_is_value }})
+        assert ({{ variable.name }} == {{ variable.always_is_value }})
         {% endif -%}
         self.{{ variable.name }} = {{ variable.name }}
         {%- if not loop.last %}
-        {% endif %}
-        {%- endfor -%}
-        self._raw = _raw
-    {# force line tabs #}
+        {% endif -%}
+        {% endfor %}{% if not is_sendable %}
+
+        self._raw = _raw{% endif %}{# not is_sendable #}
+    {# force line tabs -#}
     # end def __init__
 
     def to_array(self):
@@ -106,9 +106,10 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
             return None
         # end if
         assert(isinstance(array, dict))
-        {# strip linebreak after #}
+        {#- strip linebreak after #}
         {{- self.imports_block() -}}
-        {# does strip before  #}
+        {#- does strip before #}
+
         data = {}
         {% for variable in clazz.variables -%}
         {% if variable.types|length == 1 -%}
@@ -131,9 +132,12 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         // data['{{ variable.api_name }}'] = {{ variable.name }}
         // not sure what to do...
         {% endif -%}
-        {% endfor -%}
+        {%- endfor -%}{%- if not is_sendable -%}
         data['_raw'] = array
-        return {{ clazz.clazz }}(**data)
+        return {{ clazz.clazz }}(**data){% else %}
+        instance = {{ clazz.clazz }}(**data)
+        instance._raw = array
+        return instance{% endif %}
     # end def from_array
 
     def __str__(self):

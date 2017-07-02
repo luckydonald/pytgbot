@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+try:
+    from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+except ImportError:
+    from .code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+# end try
+
 
 __author__ = 'luckydonald'
 

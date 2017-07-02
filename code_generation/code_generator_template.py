@@ -6,8 +6,13 @@ from collections import Mapping
 import os
 
 
-from code_generator import safe_var_translations, get_type_path, convert_to_underscore
-from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+try:
+    from code_generator import safe_var_translations, get_type_path, convert_to_underscore
+    from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+except ImportError:
+    from .code_generator import safe_var_translations, get_type_path, convert_to_underscore
+    from .code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+# end if
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
@@ -170,8 +175,8 @@ class Clazz(ClassOrFunction):
             "Clazz("
                 "clazz={s.clazz!r}, imports={s.imports!r}, parent_clazz={s.parent_clazz!r}, link={s.link!r}, "
                 "description={s.description!r}, parameters={s.parameters!r}, keywords={s.keywords!r}"
-            ")".format(s=self)
-        )
+            ")"
+        ).format(s=self)
     # end def __repr__
 # end class Clazz
 
@@ -242,6 +247,15 @@ class Variable(dict):
         # end for
         return imports
     # end def all_imports
+
+    def __repr__(self):
+        return (
+            "Variable("
+                "api_name={s.api_name!r}, name={s.name!r}, types={s.types!r}, optional={s.optional!r}, "
+                "description={s.description!r}"
+            ")"
+        ).format(s=self)
+    # end def __repr__
 # end class Variable
 
 
@@ -288,6 +302,16 @@ class Type(dict):
 
     def __str__(self):
         return "{list}<{name}>".format(list="list of " * self.is_list, name=self.string)
+    # end def __str__
+
+    def __repr__(self):
+        return (
+            "Type("
+                "string={s.string!r}, is_builtin={s.is_builtin!r}, always_is_value={s.always_is_value!r}, "
+                "is_list={s.is_list!r}, import_path={s.import_path!r}, description={s.description!r}"
+            ")"
+        ).format(s=self)
+    # end def __repr__
 # end class Type
 
 
@@ -375,6 +399,14 @@ class Import(dict):
     def __ne__(self, other):
         return self.compare(other) != 0
     # end def __ne__
+
+    def __repr__(self):
+        return (
+            "Import("
+                "path={s.path!r}, name={s.name!r}"
+            ")"
+        ).format(s=self)
+    # end def __repr__
 # end class Import
 
 

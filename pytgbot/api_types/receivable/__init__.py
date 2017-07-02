@@ -153,5 +153,5 @@ class WebhookInfo(Receivable):
         Implements `"key" in webhookinfo_instance`
         """
         return key in ["url", "has_custom_certificate", "pending_update_count", "last_error_date", "last_error_message", "max_connections", "allowed_updates"]
-        # end def __contains__
+    # end def __contains__
 # end class WebhookInfo

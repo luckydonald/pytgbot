@@ -9,14 +9,33 @@ class GameHighScore(Result):
     This object represents one row of the high scores table for a game.
 
     https://core.telegram.org/bots/api#gamehighscore
+    
+
+    Parameters:
+    
+    :param position: Position in high score table for the game
+    :type  position: int
+    
+    :param user: User
+    :type  user: pytgbot.api_types.receivable.peer.User
+    
+    :param score: Score
+    :type  score: int
+    
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
     """
-    def __init__(self, position, user, score):
+
+    def __init__(self, position, user, score, _raw=None):
         """
         This object represents one row of the high scores table for a game.
     
         https://core.telegram.org/bots/api#gamehighscore
-
-
+        
+    
         Parameters:
         
         :param position: Position in high score table for the game
@@ -27,28 +46,36 @@ class GameHighScore(Result):
         
         :param score: Score
         :type  score: int
+        
+    
+        Optional keyword parameters:
+        
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
         """
         super(GameHighScore, self).__init__()
         from pytgbot.api_types.receivable.peer import User
         
-        assert(position is not None)
-        assert(isinstance(position, int))
+        assert (position is not None)
+        assert (isinstance(position, int))
         self.position = position
         
-        assert(user is not None)
-        assert(isinstance(user, User))
+        assert (user is not None)
+        assert (isinstance(user, User))
         self.user = user
         
-        assert(score is not None)
-        assert(isinstance(score, int))
+        assert (score is not None)
+        assert (isinstance(score, int))
         self.score = score
+
+        self._raw = _raw
     # end def __init__
 
     def to_array(self):
         """
         Serializes this GameHighScore to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(GameHighScore, self).to_array()
@@ -61,7 +88,7 @@ class GameHighScore(Result):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new GameHighScore from a given dictionary.
+        Deserialize a new GameHighScore from a given dictionary.
 
         :return: new GameHighScore instance.
         :rtype: GameHighScore
@@ -70,13 +97,14 @@ class GameHighScore(Result):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.receivable.peer import User
         
+
         data = {}
         data['position'] = int(array.get('position'))
         data['user'] = User.from_array(array.get('user'))
         data['score'] = int(array.get('score'))
+        data['_raw'] = array
         return GameHighScore(**data)
     # end def from_array
 
@@ -87,11 +115,21 @@ class GameHighScore(Result):
         return "GameHighScore(position={self.position!r}, user={self.user!r}, score={self.score!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(gamehighscore_instance)`
+        """
+        if self._raw:
+            return "GameHighScore.from_array({self._raw})".format(self=self)
+        # end if
+        return "GameHighScore(position={self.position!r}, user={self.user!r}, score={self.score!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in gamehighscore_instance`
         """
-        return key in ["position", "user", "score"]
+        return key in ["position", "user", "score"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class GameHighScore
 

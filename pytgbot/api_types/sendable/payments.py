@@ -8,6 +8,15 @@ class LabeledPrice(Sendable):
     This object represents a portion of the price for goods or services.
 
     https://core.telegram.org/bots/api#labeledprice
+    
+
+    Parameters:
+    
+    :param label: Portion label
+    :type  label: str
+    
+    :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
+    :type  amount: int
     """
     def __init__(self, label, amount):
         """
@@ -25,12 +34,12 @@ class LabeledPrice(Sendable):
         :type  amount: int
         """
         super(LabeledPrice, self).__init__()
-        assert(label is not None)
-        assert(isinstance(label, str))
+        assert (label is not None)
+        assert (isinstance(label, str))
         self.label = label
         
-        assert(amount is not None)
-        assert(isinstance(amount, int))
+        assert (amount is not None)
+        assert (isinstance(amount, int))
         self.amount = amount
     # end def __init__
 
@@ -38,7 +47,7 @@ class LabeledPrice(Sendable):
         """
         Serializes this LabeledPrice to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(LabeledPrice, self).to_array()
@@ -50,7 +59,7 @@ class LabeledPrice(Sendable):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new LabeledPrice from a given dictionary.
+        Deserialize a new LabeledPrice from a given dictionary.
 
         :return: new LabeledPrice instance.
         :rtype: LabeledPrice
@@ -63,7 +72,10 @@ class LabeledPrice(Sendable):
         data = {}
         data['label'] = str(array.get('label'))
         data['amount'] = int(array.get('amount'))
-        return LabeledPrice(**data)
+
+        instance = LabeledPrice(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -88,7 +100,20 @@ class ShippingOption(Sendable):
     This object represents one shipping option.
 
     https://core.telegram.org/bots/api#shippingoption
+    
+
+    Parameters:
+    
+    :param id: Shipping option identifier
+    :type  id: str
+    
+    :param title: Option title
+    :type  title: str
+    
+    :param prices: List of price portions
+    :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
     """
+
     def __init__(self, id, title, prices):
         """
         This object represents one shipping option.
@@ -109,16 +134,16 @@ class ShippingOption(Sendable):
         """
         super(ShippingOption, self).__init__()
 
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(prices is not None)
-        assert(isinstance(prices, list))
+        assert (prices is not None)
+        assert (isinstance(prices, list))
         self.prices = prices
     # end def __init__
 
@@ -126,7 +151,7 @@ class ShippingOption(Sendable):
         """
         Serializes this ShippingOption to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(ShippingOption, self).to_array()
@@ -139,7 +164,7 @@ class ShippingOption(Sendable):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new ShippingOption from a given dictionary.
+        Deserialize a new ShippingOption from a given dictionary.
 
         :return: new ShippingOption instance.
         :rtype: ShippingOption
@@ -154,7 +179,10 @@ class ShippingOption(Sendable):
         data['id'] = str(array.get('id'))
         data['title'] = str(array.get('title'))
         data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
-        return ShippingOption(**data)
+
+        instance = ShippingOption(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -164,11 +192,20 @@ class ShippingOption(Sendable):
         return "ShippingOption(id={self.id!r}, title={self.title!r}, prices={self.prices!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(shippingoption_instance)`
+        """
+        if self._raw:
+            return "ShippingOption.from_array({self._raw})".format(self=self)
+        # end if
+        return "ShippingOption(id={self.id!r}, title={self.title!r}, prices={self.prices!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in shippingoption_instance`
         """
-        return key in ["id", "title", "prices"]
+        return key in ["id", "title", "prices"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class ShippingOption
-

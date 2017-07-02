@@ -29,6 +29,24 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 
     https://core.telegram.org/bots/api#replykeyboardmarkup
+    
+
+    Parameters:
+    
+    :param keyboard: Array of button rows, each represented by an Array of KeyboardButton objects
+    :type  keyboard: list of list of pytgbot.api_types.sendable.reply_markup.KeyboardButton
+    
+
+    Optional keyword parameters:
+    
+    :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
+    :type  resize_keyboard: bool
+    
+    :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
+    :type  one_time_keyboard: bool
+    
+    :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot‘s language, bot replies to the request with a keyboard to select the new language. Other users in the group don’t see the keyboard.
+    :type  selective: bool
     """
     def __init__(self, keyboard, resize_keyboard=False, one_time_keyboard=False, selective=False):
         """
@@ -45,40 +63,40 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
         Optional keyword parameters:
 
-        :keyword resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g.,
-                                  make the keyboard smaller if there are just two rows of buttons).
-                                  Defaults to false, in which case the custom keyboard is always of the same height as
-                                  the app's standard keyboard.
-        :type    resize_keyboard: bool
+        :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g.,
+                                make the keyboard smaller if there are just two rows of buttons).
+                                Defaults to false, in which case the custom keyboard is always of the same height as
+                                the app's standard keyboard.
+        :type  resize_keyboard: bool
 
-        :keyword one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used.
-                                    The keyboard will still be available, but clients will automatically display the
-                                    usual letter-keyboard in the chat – the user can press a special button in the input
-                                    field to see the custom keyboard again. Defaults to false.
-        :type    one_time_keyboard: bool
+        :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used.
+                                  The keyboard will still be available, but clients will automatically display the
+                                  usual letter-keyboard in the chat – the user can press a special button in the input
+                                  field to see the custom keyboard again. Defaults to false.
+        :type  one_time_keyboard: bool
 
-        :keyword selective: Optional. Use this parameter if you want to show the keyboard to specific users only.
-                            Targets: 1) users that are @mentioned in the text of the Message object;
-                                     2) if the bot's message is a reply (has reply_to_message_id),
-                                     sender of the original message.
-                            Example: A user requests to change the bot‘s language,
-                                    bot replies to the request with a keyboard to select the new language.
-                                    Other users in the group don’t see the keyboard.
-        :type    selective: bool
+        :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only.
+                          Targets: 1) users that are @mentioned in the text of the Message object;
+                                   2) if the bot's message is a reply (has reply_to_message_id),
+                                   sender of the original message.
+                          Example: A user requests to change the bot‘s language,
+                                  bot replies to the request with a keyboard to select the new language.
+                                  Other users in the group don’t see the keyboard.
+        :type  selective: bool
         """
         super(ReplyKeyboardMarkup, self).__init__()
 
-        assert(keyboard is not None)
-        assert(isinstance(keyboard, list))
+        assert (keyboard is not None)
+        assert (isinstance(keyboard, list))
         self.keyboard = keyboard
 
-        assert(resize_keyboard is None or isinstance(resize_keyboard, bool))
+        assert (resize_keyboard is None or isinstance(resize_keyboard, bool))
         self.resize_keyboard = resize_keyboard
 
-        assert(one_time_keyboard is None or isinstance(one_time_keyboard, bool))
+        assert (one_time_keyboard is None or isinstance(one_time_keyboard, bool))
         self.one_time_keyboard = one_time_keyboard
 
-        assert(selective is None or isinstance(selective, bool))
+        assert (selective is None or isinstance(selective, bool))
         self.selective = selective
     # end def __init__
 
@@ -86,7 +104,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         """
         Serializes this ReplyKeyboardMarkup to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(ReplyKeyboardMarkup, self).to_array()
@@ -103,7 +121,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new ReplyKeyboardMarkup from a given dictionary.
+        Deserialize a new ReplyKeyboardMarkup from a given dictionary.
 
         :return: new ReplyKeyboardMarkup instance.
         :rtype: ReplyKeyboardMarkup
@@ -118,7 +136,10 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
         data['one_time_keyboard'] = bool(array.get('one_time_keyboard')) if array.get('one_time_keyboard') is not None else None
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        return ReplyKeyboardMarkup(**data)
+
+        instance = ReplyKeyboardMarkup(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -128,11 +149,21 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         return "ReplyKeyboardMarkup(keyboard={self.keyboard!r}, resize_keyboard={self.resize_keyboard!r}, one_time_keyboard={self.one_time_keyboard!r}, selective={self.selective!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(replykeyboardmarkup_instance)`
+        """
+        if self._raw:
+            return "ReplyKeyboardMarkup.from_array({self._raw})".format(self=self)
+        # end if
+        return "ReplyKeyboardMarkup(keyboard={self.keyboard!r}, resize_keyboard={self.resize_keyboard!r}, one_time_keyboard={self.one_time_keyboard!r}, selective={self.selective!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in replykeyboardmarkup_instance`
         """
-        return key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"]
+        return key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class ReplyKeyboardMarkup
 
@@ -146,7 +177,23 @@ class KeyboardButton(Button):
           Older clients will ignore them.
 
     https://core.telegram.org/bots/api#keyboardbutton
+    
+
+    Parameters:
+    
+    :param text: Text of the button. If none of the optional fields are used, it will be sent to the bot as a message when the button is pressed
+    :type  text: str
+    
+
+    Optional keyword parameters:
+    
+    :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
+    :type  request_contact: bool
+    
+    :param request_location: Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
+    :type  request_location: bool
     """
+
     def __init__(self, text, request_contact=None, request_location=None):
         """
         This object represents one button of the reply keyboard. For simple text buttons String can be used instead of
@@ -167,23 +214,23 @@ class KeyboardButton(Button):
 
         Optional keyword parameters:
 
-        :keyword request_contact: Optional. If True, the user's phone number will be sent as a contact when the button
-                                  is pressed. Available in private chats only
-        :type    request_contact: bool
+        :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button
+                                is pressed. Available in private chats only
+        :type  request_contact: bool
 
-        :keyword request_location: Optional. If True, the user's current location will be sent when the button is
-                                   pressed. Available in private chats only
-        :type    request_location: bool
+        :param request_location: Optional. If True, the user's current location will be sent when the button is
+                                 pressed. Available in private chats only
+        :type  request_location: bool
         """
         super(KeyboardButton, self).__init__()
-        assert(text is not None)
-        assert(isinstance(text, str))
+        assert (text is not None)
+        assert (isinstance(text, str))
         self.text = text
 
-        assert(request_contact is None or isinstance(request_contact, bool))
+        assert (request_contact is None or isinstance(request_contact, bool))
         self.request_contact = request_contact
 
-        assert(request_location is None or isinstance(request_location, bool))
+        assert (request_location is None or isinstance(request_location, bool))
         self.request_location = request_location
     # end def __init__
 
@@ -191,7 +238,7 @@ class KeyboardButton(Button):
         """
         Serializes this KeyboardButton to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(KeyboardButton, self).to_array()
@@ -206,7 +253,7 @@ class KeyboardButton(Button):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new KeyboardButton from a given dictionary.
+        Deserialize a new KeyboardButton from a given dictionary.
 
         :return: new KeyboardButton instance.
         :rtype: KeyboardButton
@@ -220,7 +267,10 @@ class KeyboardButton(Button):
         data['text'] = str(array.get('text'))
         data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
         data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
-        return KeyboardButton(**data)
+
+        instance = KeyboardButton(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -230,11 +280,21 @@ class KeyboardButton(Button):
         return "KeyboardButton(text={self.text!r}, request_contact={self.request_contact!r}, request_location={self.request_location!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(keyboardbutton_instance)`
+        """
+        if self._raw:
+            return "KeyboardButton.from_array({self._raw})".format(self=self)
+        # end if
+        return "KeyboardButton(text={self.text!r}, request_contact={self.request_contact!r}, request_location={self.request_location!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in keyboardbutton_instance`
         """
-        return key in ["text", "request_contact", "request_location"]
+        return key in ["text", "request_contact", "request_location"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class KeyboardButton
 
@@ -248,7 +308,14 @@ class ReplyKeyboardRemove(ReplyMarkup):
     (see ReplyKeyboardMarkup).
 
     https://core.telegram.org/bots/api#replykeyboardremove
+    
+
+    Optional keyword parameters:
+    
+    :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
+    :type  selective: bool
     """
+
     def __init__(self, selective=False):
         """
         Upon receiving a message with this object,
@@ -260,26 +327,24 @@ class ReplyKeyboardRemove(ReplyMarkup):
         https://core.telegram.org/bots/api#replykeyboardremove
 
 
-        Parameters:
-
         Optional keyword parameters:
 
-        :keyword selective: Optional. Use this parameter if you want to remove the keyboard for specific users only.
-                            Targets: 1) users that are @mentioned in the text of the Message object;
-                                     2) if the bot's message is a reply (has reply_to_message_id),
-                                        sender of the original message.
-                            Example: A user requests to change the bot‘s language,
-                                     bot replies to the request with a keyboard to select the new language.
-                                     Other users in the group don’t see the keyboard.
-                            Example: A user votes in a poll, bot returns confirmation message in reply to the vote and
-                                     removes keyboard for that user, while still showing the keyboard with poll options to
-                                     users who haven't voted yet.
-        :type    selective: bool
+        :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only.
+                          Targets: 1) users that are @mentioned in the text of the Message object;
+                                   2) if the bot's message is a reply (has reply_to_message_id),
+                                      sender of the original message.
+                          Example: A user requests to change the bot‘s language,
+                                   bot replies to the request with a keyboard to select the new language.
+                                   Other users in the group don’t see the keyboard.
+                          Example: A user votes in a poll, bot returns confirmation message in reply to the vote and
+                                   removes keyboard for that user, while still showing the keyboard with poll options to
+                                   users who haven't voted yet.
+        :type  selective: bool
         """
         super(ReplyKeyboardRemove, self).__init__()
         self.remove_keyboard = True
 
-        assert(selective is None or isinstance(selective, bool))
+        assert (selective is None or isinstance(selective, bool))
         self.selective = selective
     # end def __init__
 
@@ -287,7 +352,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         """
         Serializes this ReplyKeyboardRemove to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(ReplyKeyboardRemove, self).to_array()
@@ -300,7 +365,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new ReplyKeyboardRemove from a given dictionary.
+        Deserialize a new ReplyKeyboardRemove from a given dictionary.
 
         :return: new ReplyKeyboardRemove instance.
         :rtype: ReplyKeyboardRemove
@@ -313,7 +378,10 @@ class ReplyKeyboardRemove(ReplyMarkup):
         data = {}
         assert (bool(array.get('remove_keyboard')) == True)
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        return ReplyKeyboardRemove(**data)
+
+        instance = ReplyKeyboardRemove(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -323,11 +391,21 @@ class ReplyKeyboardRemove(ReplyMarkup):
         return "ReplyKeyboardRemove(remove_keyboard={self.remove_keyboard!r}, selective={self.selective!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(replykeyboardremove_instance)`
+        """
+        if self._raw:
+            return "ReplyKeyboardRemove.from_array({self._raw})".format(self=self)
+        # end if
+        return "ReplyKeyboardRemove(remove_keyboard={self.remove_keyboard!r}, selective={self.selective!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in replykeyboardremove_instance`
         """
-        return key in ["remove_keyboard", "selective"]
+        return key in ["remove_keyboard", "selective"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class ReplyKeyboardRemove
 
@@ -339,6 +417,12 @@ class InlineKeyboardMarkup(ReplyMarkup):
           Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#inlinekeyboardmarkup
+    
+
+    Parameters:
+    
+    :param inline_keyboard: Array of button rows, each represented by an Array of InlineKeyboardButton objects
+    :type  inline_keyboard: list of list of pytgbot.api_types.sendable.reply_markup.InlineKeyboardButton
     """
     def __init__(self, inline_keyboard):
         """
@@ -356,8 +440,8 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         super(InlineKeyboardMarkup, self).__init__()
 
-        assert(inline_keyboard is not None)
-        assert(isinstance(inline_keyboard, list))
+        assert (inline_keyboard is not None)
+        assert (isinstance(inline_keyboard, list))
         self.inline_keyboard = inline_keyboard
     # end def __init__
 
@@ -365,7 +449,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         Serializes this InlineKeyboardMarkup to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineKeyboardMarkup, self).to_array()
@@ -376,7 +460,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineKeyboardMarkup from a given dictionary.
+        Deserialize a new InlineKeyboardMarkup from a given dictionary.
 
         :return: new InlineKeyboardMarkup instance.
         :rtype: InlineKeyboardMarkup
@@ -388,7 +472,10 @@ class InlineKeyboardMarkup(ReplyMarkup):
 
         data = {}
         data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
-        return InlineKeyboardMarkup(**data)
+
+        instance = InlineKeyboardMarkup(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -398,11 +485,21 @@ class InlineKeyboardMarkup(ReplyMarkup):
         return "InlineKeyboardMarkup(inline_keyboard={self.inline_keyboard!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinekeyboardmarkup_instance)`
+        """
+        if self._raw:
+            return "InlineKeyboardMarkup.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineKeyboardMarkup(inline_keyboard={self.inline_keyboard!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinekeyboardmarkup_instance`
         """
-        return key in ["inline_keyboard"]
+        return key in ["inline_keyboard"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineKeyboardMarkup
 
@@ -415,7 +512,35 @@ class InlineKeyboardButton(Button):
           Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#inlinekeyboardbutton
+    
+
+    Parameters:
+    
+    :param text: Label text on the button
+    :type  text: str
+    
+
+    Optional keyword parameters:
+    
+    :param url: Optional. HTTP url to be opened when button is pressed
+    :type  url: str
+    
+    :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+    :type  callback_data: str
+    
+    :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot‘s username and the specified inline query in the input field. Can be empty, in which case just the bot’s username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it. Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
+    :type  switch_inline_query: str
+    
+    :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
+    :type  switch_inline_query_current_chat: str
+    
+    :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
+    :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
+    
+    :param pay: Optional. Specify True, to send a Pay button.NOTE: This type of button must always be the first button in the first row.
+    :type  pay: bool
     """
+
     def __init__(self, text, url=None, callback_data=None, switch_inline_query=None, switch_inline_query_current_chat=None, callback_game=None, pay=None):
         """
         This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
@@ -434,57 +559,56 @@ class InlineKeyboardButton(Button):
 
         Optional keyword parameters:
 
-        :keyword url: Optional. HTTP url to be opened when button is pressed
-        :type    url: str
+        :param url: Optional. HTTP url to be opened when button is pressed
+        :type  url: str
 
-        :keyword callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed,
-                                1-64 bytes
-        :type    callback_data: str
+        :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+        :type  callback_data: str
 
-        :keyword switch_inline_query: Optional. If set,
-                                      pressing the button will prompt the user to select one of their chats,
-                                      open that chat and insert the bot‘s username and the specified
-                                      inline query in the input field. Can be empty, in which case just the bot’s
-                                      username will be inserted.
-                                      Note:  This offers an easy way for users to start using your bot in inline mode
-                                             when they are currently in a private chat with it.
-                                             Especially useful when combined with switch_pm… actions – in this case the
-                                             user will be automatically returned to the chat they switched from,
-                                             skipping the chat selection screen.
-        :type    switch_inline_query: str
+        :param switch_inline_query: Optional. If set,
+                                    pressing the button will prompt the user to select one of their chats,
+                                    open that chat and insert the bot‘s username and the specified
+                                    inline query in the input field. Can be empty, in which case just the bot’s
+                                    username will be inserted.
+                                    Note:  This offers an easy way for users to start using your bot in inline mode
+                                           when they are currently in a private chat with it.
+                                           Especially useful when combined with switch_pm… actions – in this case the
+                                           user will be automatically returned to the chat they switched from,
+                                           skipping the chat selection screen.
+        :type  switch_inline_query: str
         
-        :keyword switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
-        :type    switch_inline_query_current_chat: str
+        :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
+        :type  switch_inline_query_current_chat: str
         
-        :keyword callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
-        :type    callback_game: pytgbot.api_types.receivable.updates.CallbackGame
+        :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
+        :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
         
-        :keyword pay: Optional. Specify True, to send a Pay button. NOTE: This type of button must always be the first button in the first row.
-        :type    pay: bool
+        :param pay: Optional. Specify True, to send a Pay button. NOTE: This type of button must always be the first button in the first row.
+        :type  pay: bool
         """
         super(InlineKeyboardButton, self).__init__()
         from pytgbot.api_types.receivable.updates import CallbackGame
 
-        assert(text is not None)
-        assert(isinstance(text, str))
+        assert (text is not None)
+        assert (isinstance(text, str))
         self.text = text
 
-        assert(url is None or isinstance(url, str))
+        assert (url is None or isinstance(url, str))
         self.url = url
 
-        assert(callback_data is None or isinstance(callback_data, str))
+        assert (callback_data is None or isinstance(callback_data, str))
         self.callback_data = callback_data
 
-        assert(switch_inline_query is None or isinstance(switch_inline_query, str))
+        assert (switch_inline_query is None or isinstance(switch_inline_query, str))
         self.switch_inline_query = switch_inline_query
         
-        assert(switch_inline_query_current_chat is None or isinstance(switch_inline_query_current_chat, str))
+        assert (switch_inline_query_current_chat is None or isinstance(switch_inline_query_current_chat, str))
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
         
-        assert(callback_game is None or isinstance(callback_game, CallbackGame))
+        assert (callback_game is None or isinstance(callback_game, CallbackGame))
         self.callback_game = callback_game
 
-        assert(pay is None or isinstance(pay, bool))
+        assert (pay is None or isinstance(pay, bool))
         self.pay = pay
     # end def __init__
 
@@ -492,7 +616,7 @@ class InlineKeyboardButton(Button):
         """
         Serializes this InlineKeyboardButton to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineKeyboardButton, self).to_array()
@@ -515,7 +639,7 @@ class InlineKeyboardButton(Button):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineKeyboardButton from a given dictionary.
+        Deserialize a new InlineKeyboardButton from a given dictionary.
 
         :return: new InlineKeyboardButton instance.
         :rtype: InlineKeyboardButton
@@ -535,7 +659,10 @@ class InlineKeyboardButton(Button):
         data['switch_inline_query_current_chat'] = str(array.get('switch_inline_query_current_chat')) if array.get('switch_inline_query_current_chat') is not None else None
         data['callback_game'] = CallbackGame.from_array(array.get('callback_game')) if array.get('callback_game') is not None else None
         data['pay'] = bool(array.get('pay')) if array.get('pay') is not None else None
-        return InlineKeyboardButton(**data)
+
+        instance = InlineKeyboardButton(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -545,11 +672,21 @@ class InlineKeyboardButton(Button):
         return "InlineKeyboardButton(text={self.text!r}, url={self.url!r}, callback_data={self.callback_data!r}, switch_inline_query={self.switch_inline_query!r}, switch_inline_query_current_chat={self.switch_inline_query_current_chat!r}, callback_game={self.callback_game!r}, pay={self.pay!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinekeyboardbutton_instance)`
+        """
+        if self._raw:
+            return "InlineKeyboardButton.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineKeyboardButton(text={self.text!r}, url={self.url!r}, callback_data={self.callback_data!r}, switch_inline_query={self.switch_inline_query!r}, switch_inline_query_current_chat={self.switch_inline_query_current_chat!r}, callback_game={self.callback_game!r}, pay={self.pay!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinekeyboardbutton_instance`
         """
-        return key in ["text", "url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"]
+        return key in ["text", "url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineKeyboardButton
 
@@ -573,6 +710,12 @@ class ForceReply(ReplyMarkup):
     — without any extra work for the user.
 
     https://core.telegram.org/bots/api#forcereply
+    
+    
+    Optional keyword parameters:
+    
+    :param selective: Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
+    :type  selective: bool
     """
     def __init__(self, selective=False):
         """
@@ -596,17 +739,15 @@ class ForceReply(ReplyMarkup):
         https://core.telegram.org/bots/api#forcereply
 
 
-        Parameters:
-
         Optional keyword parameters:
-        :keyword selective: Optional. Use this parameter if you want to show the keyboard to/force reply from specific users only.
-                            Targets: 1) users that are @mentioned in the text of the Message object;
-                                     2) if the bot's message is a reply (has reply_to_message_id),
-                                        sender of the original message.
-                            Example:
-                            A user requests to change the bot‘s language, bot replies to the request with a keyboard to
-                            select the new language. Other users in the group don’t see the keyboard.
-        :type    selective: bool
+        :param selective: Optional. Use this parameter if you want to show the keyboard to/force reply from specific users only.
+                          Targets: 1) users that are @mentioned in the text of the Message object;
+                                   2) if the bot's message is a reply (has reply_to_message_id),
+                                      sender of the original message.
+                          Example:
+                          A user requests to change the bot‘s language, bot replies to the request with a keyboard to
+                          select the new language. Other users in the group don’t see the keyboard.
+        :type  selective: bool
         """
         super(ForceReply, self).__init__()
         self.force_reply = True
@@ -617,7 +758,7 @@ class ForceReply(ReplyMarkup):
         """
         Serializes this ForceReply to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(ForceReply, self).to_array()
@@ -630,7 +771,7 @@ class ForceReply(ReplyMarkup):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new ForceReply from a given dictionary.
+        Deserialize a new ForceReply from a given dictionary.
 
         :return: new ForceReply instance.
         :rtype: ForceReply
@@ -643,7 +784,10 @@ class ForceReply(ReplyMarkup):
         data = {}
         assert(bool(array.get('force_reply')) == True)
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        return ForceReply(**data)
+
+        instance = ForceReply(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -653,10 +797,20 @@ class ForceReply(ReplyMarkup):
         return "ForceReply(force_reply={self.force_reply!r}, selective={self.selective!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(forcereply_instance)`
+        """
+        if self._raw:
+            return "ForceReply.from_array({self._raw})".format(self=self)
+        # end if
+        return "ForceReply(force_reply={self.force_reply!r}, selective={self.selective!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in forcereply_instance`
         """
-        return key in ["force_reply", "selective"]
+        return key in ["force_reply", "selective"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class ForceReply

@@ -10,6 +10,11 @@ logger = logging.getLogger(__name__)
 
 
 class TgBotApiObject(object):
+    def __init__(self):
+        self._raw = None
+        super(TgBotApiObject, self).__init__()
+    # end def __init__
+
     def to_array(self):
         array = dict()
         return array

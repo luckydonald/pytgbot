@@ -16,8 +16,8 @@
         {% if function.keywords -%}
         Optional keyword parameters:
         {% for keyword in function.keywords %}
-        :keyword {{ keyword.name }}: {{ keyword.description }}
-        :type    {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
+        :param {{ keyword.name }}: {{ keyword.description }}
+        :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
         {% endfor %}
         {% endif -%}
 
@@ -25,7 +25,7 @@
         Returns:
 
         :return: {{ function.returns.description }}
-        :rtype:  {{ for_type_list_of_full(function.returns) }}
+        :rtype: {{ for_type_list_of_full(function.returns) }}
         {% endblock -%}
         """
         {% block imports_block -%}

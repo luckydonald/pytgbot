@@ -1,4 +1,46 @@
 # Changelog
+## Version 3.1.0
+- Updated Official API changes of [`Bot API 3`.`1` (June 30, 2017)](https://core.telegram.org/bots/api-changelog#june-30-2017)
+    - Added new functions:
+        - `pytgbot.bot.Bot.restrict_chat_member`
+        - `pytgbot.bot.Bot.promote_chat_member`
+        - `pytgbot.bot.Bot.export_chat_invite_link`
+        - `pytgbot.bot.Bot.set_chat_photo`
+        - `pytgbot.bot.Bot.delete_chat_photo`
+        - `pytgbot.bot.Bot.set_chat_title`
+        - `pytgbot.bot.Bot.set_chat_description`
+        - `pytgbot.bot.Bot.pin_chat_message`
+        - `pytgbot.bot.Bot.unpin_chat_message`
+    - Updated `pytgbot.bot.Bot.kick_chat_member` function, added `until_date` parameter.
+    - Updated `pytgbot.bot.Bot.send_invoice` function, `description` parameter now _optional_.
+    - Updated parameter `chat_id` in game related methods to no longer allows string, so no more "@username".
+        - `pytgbot.bot.Bot.send_game`
+        - `pytgbot.bot.Bot.set_game_score`
+        - `pytgbot.bot.Bot.get_game_high_scores`
+    - Added `pytgbot.api_types.receivable.media.ChatPhoto`.
+    - Updated `pytgbot.api_types.receivable.peer.Chat` to include the new fields:
+        - `photo`
+        - `description`
+        - `invite_link`
+    - Updated `api_types.receivable.peer.ChatMember`:
+        - `status` field can now also be `"restricted"`
+        - Added fields:
+        - `until_date`
+        - `can_be_edited`
+        - `can_change_info`
+        - `can_post_messages`
+        - `can_edit_messages`
+        - `can_delete_messages`
+        - `can_invite_users`
+        - `can_restrict_members`
+        - `can_pin_messages`
+        - `can_promote_members`
+        - `can_send_messages`
+        - `can_send_media_messages`
+        - `can_send_other_messages`
+        - `can_add_web_page_previews`
+    - Removed documentation saying `pytgbot.api_types.sendable.inline.InlineQueryResultCachedDocument` was limited to sending only pdf-files and zip archives.
+
 
 ## Version 3.0.0
 - Updated Official API changes of [`Bot API 3`.`0` (May 18, 2017)](https://core.telegram.org/bots/api-changelog#may-18-2017)

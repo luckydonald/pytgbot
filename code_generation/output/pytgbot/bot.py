@@ -20,8 +20,8 @@ class Bot(object):
         :param api_key: The API key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
         :type  api_key: str
 
-        :keyword return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects.
-        :type    return_python_objects: bool
+        :param return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects. Default: `True`
+        :type  return_python_objects: bool
         """
         from datetime import datetime
 
@@ -44,22 +44,22 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword offset: Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.
-        :type    offset: int
+        :param offset: Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.
+        :type  offset: int
         
-        :keyword limit: Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100.
-        :type    limit: int
+        :param limit: Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100.
+        :type  limit: int
         
-        :keyword timeout: Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
-        :type    timeout: int
+        :param timeout: Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
+        :type  timeout: int
         
-        :keyword allowed_updates: List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
-        :type    allowed_updates: list of str
+        :param allowed_updates: List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
+        :type  allowed_updates: list of str
         
         Returns:
 
         :return: An Array of Update objects is returned
-        :rtype:  list of pytgbot.api_types.receivable.updates.Update
+        :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
         assert(offset is None or isinstance(offset, int))
         
@@ -103,19 +103,19 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword certificate: Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.
-        :type    certificate: pytgbot.api_types.sendable.files.InputFile
+        :param certificate: Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.
+        :type  certificate: pytgbot.api_types.sendable.files.InputFile
         
-        :keyword max_connections: Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s throughput.
-        :type    max_connections: int
+        :param max_connections: Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s throughput.
+        :type  max_connections: int
         
-        :keyword allowed_updates: List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
-        :type    allowed_updates: list of str
+        :param allowed_updates: List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
+        :type  allowed_updates: list of str
         
         Returns:
 
         :return: Returns true
-        :rtype:  
+        :rtype: 
         """
         from pytgbot.api_types.sendable.files import InputFile
         
@@ -136,6 +136,33 @@ class Bot(object):
         return result
     # end def set_webhook
     
+    def delete_webhook(self, ):
+        """
+        Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success. Requires no parameters.
+
+        https://core.telegram.org/bots/api#deletewebhook
+
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        
+        result = self.do("deleteWebhook", )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def delete_webhook
+    
     def get_webhook_info(self, ):
         """
         Use this method to get current webhook status. Requires no parameters. On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty.
@@ -145,24 +172,18 @@ class Bot(object):
         
         Returns:
 
-        :return: On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty
-        :rtype:  pytgbot.api_types.receivable.WebhookInfo | getUpdates | str
+        :return: On success, returns a WebhookInfo object
+        :rtype: pytgbot.api_types.receivable.updates.WebhookInfo
         """
         
         result = self.do("getWebhookInfo", )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable import WebhookInfo
+            from pytgbot.api_types.receivable.updates import WebhookInfo
             try:
                 return WebhookInfo.from_array(result)
             except TgApiParseException:
                 logger.debug("Failed parsing as api_type WebhookInfo", exc_info=True)
-            # end try
-        
-            try:
-                return from_array_list(str, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive str", exc_info=True)
             # end try
             # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
@@ -180,7 +201,7 @@ class Bot(object):
         Returns:
 
         :return: Returns basic information about the bot in form of a User object
-        :rtype:  pytgbot.api_types.receivable.peer.User
+        :rtype: pytgbot.api_types.receivable.peer.User
         """
         
         result = self.do("getMe", )
@@ -216,25 +237,25 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-        :type    parse_mode: str
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+        :type  parse_mode: str
         
-        :keyword disable_web_page_preview: Disables link previews for links in this message
-        :type    disable_web_page_preview: bool
+        :param disable_web_page_preview: Disables link previews for links in this message
+        :type  disable_web_page_preview: bool
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -293,13 +314,13 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -345,22 +366,22 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword caption: Photo caption (may also be used when resending photos by file_id), 0-200 characters
-        :type    caption: str
+        :param caption: Photo caption (may also be used when resending photos by file_id), 0-200 characters
+        :type  caption: str
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
@@ -416,31 +437,31 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword caption: Audio caption, 0-200 characters
-        :type    caption: str
+        :param caption: Audio caption, 0-200 characters
+        :type  caption: str
         
-        :keyword duration: Duration of the audio in seconds
-        :type    duration: int
+        :param duration: Duration of the audio in seconds
+        :type  duration: int
         
-        :keyword performer: Performer
-        :type    performer: str
+        :param performer: Performer
+        :type  performer: str
         
-        :keyword title: Track name
-        :type    title: str
+        :param title: Track name
+        :type  title: str
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
@@ -501,22 +522,22 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword caption: Document caption (may also be used when resending documents by file_id), 0-200 characters
-        :type    caption: str
+        :param caption: Document caption (may also be used when resending documents by file_id), 0-200 characters
+        :type  caption: str
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
@@ -571,19 +592,19 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
@@ -636,31 +657,31 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword duration: Duration of sent video in seconds
-        :type    duration: int
+        :param duration: Duration of sent video in seconds
+        :type  duration: int
         
-        :keyword width: Video width
-        :type    width: int
+        :param width: Video width
+        :type  width: int
         
-        :keyword height: Video height
-        :type    height: int
+        :param height: Video height
+        :type  height: int
         
-        :keyword caption: Video caption (may also be used when resending videos by file_id), 0-200 characters
-        :type    caption: str
+        :param caption: Video caption (may also be used when resending videos by file_id), 0-200 characters
+        :type  caption: str
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
@@ -721,25 +742,25 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword caption: Voice message caption, 0-200 characters
-        :type    caption: str
+        :param caption: Voice message caption, 0-200 characters
+        :type  caption: str
         
-        :keyword duration: Duration of the voice message in seconds
-        :type    duration: int
+        :param duration: Duration of the voice message in seconds
+        :type  duration: int
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
@@ -796,25 +817,25 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword duration: Duration of sent video in seconds
-        :type    duration: int
+        :param duration: Duration of sent video in seconds
+        :type  duration: int
         
-        :keyword length: Video width and height
-        :type    length: int
+        :param length: Video width and height
+        :type  length: int
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
@@ -874,19 +895,19 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -950,22 +971,22 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword foursquare_id: Foursquare identifier of the venue
-        :type    foursquare_id: str
+        :param foursquare_id: Foursquare identifier of the venue
+        :type  foursquare_id: str
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1031,22 +1052,22 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword last_name: Contact's last name
-        :type    last_name: str
+        :param last_name: Contact's last name
+        :type  last_name: str
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1101,14 +1122,21 @@ class Bot(object):
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str
         
-        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
+        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: 
+                       "typing" for text messages,
+                       "upload_photo" for photos,
+                       "record_video" or "upload_video" for videos,
+                       "record_audio" or "upload_audio" for audio files,
+                       "upload_document" for general files,
+                       "find_location" for location data,
+                       "record_video_note" or "upload_video_note" for video notes.
         :type  action: str
         
         
         Returns:
 
         :return: Returns True on success
-        :rtype:  bool
+        :rtype: bool
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1145,16 +1173,16 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword offset: Sequential number of the first photo to be returned. By default, all photos are returned.
-        :type    offset: int
+        :param offset: Sequential number of the first photo to be returned. By default, all photos are returned.
+        :type  offset: int
         
-        :keyword limit: Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.
-        :type    limit: int
+        :param limit: Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.
+        :type  limit: int
         
         Returns:
 
         :return: Returns a UserProfilePhotos object
-        :rtype:  pytgbot.api_types.receivable.media.UserProfilePhotos
+        :rtype: pytgbot.api_types.receivable.media.UserProfilePhotos
         """
         assert(user_id is not None)
         assert(isinstance(user_id, int))
@@ -1195,7 +1223,7 @@ class Bot(object):
         Returns:
 
         :return: On success, a File object is returned
-        :rtype:  pytgbot.api_types.receivable.media.File
+        :rtype: pytgbot.api_types.receivable.media.File
         """
         assert(file_id is not None)
         assert(isinstance(file_id, str))
@@ -1215,28 +1243,33 @@ class Bot(object):
         return result
     # end def get_file
     
-    def kick_chat_member(self, chat_id, user_id):
+    def kick_chat_member(self, chat_id, user_id, until_date=None):
         """
-        Use this method to kick a user from a group or a supergroup. In the case of supergroups, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the group for this to work. Returns True on success.
+        Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
         
-        Note: This will method only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group's creator or by the member that added them.
+        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group's creator or by the member that added them.
 
         https://core.telegram.org/bots/api#kickchatmember
 
         
         Parameters:
         
-        :param chat_id: Unique identifier for the target group or username of the target supergroup (in the format @supergroupusername)
+        :param chat_id: Unique identifier for the target group or username of the target supergroup or channel (in the format @channelusername)
         :type  chat_id: int | str
         
         :param user_id: Unique identifier of the target user
         :type  user_id: int
         
         
+        Optional keyword parameters:
+        
+        :param until_date: Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever
+        :type  until_date: int
+        
         Returns:
 
         :return: Returns True on success
-        :rtype:  bool
+        :rtype: bool
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1244,7 +1277,9 @@ class Bot(object):
         assert(user_id is not None)
         assert(isinstance(user_id, int))
         
-        result = self.do("kickChatMember", chat_id=chat_id, user_id=user_id)
+        assert(until_date is None or isinstance(until_date, int))
+        
+        result = self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1257,7 +1292,7 @@ class Bot(object):
         # end if return_python_objects
         return result
     # end def kick_chat_member
-
+    
     def unban_chat_member(self, chat_id, user_id):
         """
         Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns True on success.
@@ -1277,7 +1312,7 @@ class Bot(object):
         Returns:
 
         :return: Returns True on success
-        :rtype:  bool
+        :rtype: bool
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1299,6 +1334,442 @@ class Bot(object):
         return result
     # end def unban_chat_member
     
+    def restrict_chat_member(self, chat_id, user_id, until_date=None, can_send_messages=None, can_send_media_messages=None, can_send_other_messages=None, can_add_web_page_previews=None):
+        """
+        Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from a user. Returns True on success.
+
+        https://core.telegram.org/bots/api#restrictchatmember
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id: int | str
+        
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+        
+        
+        Optional keyword parameters:
+        
+        :param until_date: Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
+        :type  until_date: int
+        
+        :param can_send_messages: Pass True, if the user can send text messages, contacts, locations and venues
+        :type  can_send_messages: bool
+        
+        :param can_send_media_messages: Pass True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+        :type  can_send_media_messages: bool
+        
+        :param can_send_other_messages: Pass True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
+        :type  can_send_other_messages: bool
+        
+        :param can_add_web_page_previews: Pass True, if the user may add web page previews to their messages, implies can_send_media_messages
+        :type  can_add_web_page_previews: bool
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        
+        assert(until_date is None or isinstance(until_date, int))
+        
+        assert(can_send_messages is None or isinstance(can_send_messages, bool))
+        
+        assert(can_send_media_messages is None or isinstance(can_send_media_messages, bool))
+        
+        assert(can_send_other_messages is None or isinstance(can_send_other_messages, bool))
+        
+        assert(can_add_web_page_previews is None or isinstance(can_add_web_page_previews, bool))
+        
+        result = self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date, can_send_messages=can_send_messages, can_send_media_messages=can_send_media_messages, can_send_other_messages=can_send_other_messages, can_add_web_page_previews=can_add_web_page_previews)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def restrict_chat_member
+    
+    def promote_chat_member(self, chat_id, user_id, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None):
+        """
+        Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
+
+        https://core.telegram.org/bots/api#promotechatmember
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+        
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+        
+        
+        Optional keyword parameters:
+        
+        :param can_change_info: Pass True, if the administrator can change chat title, photo and other settings
+        :type  can_change_info: bool
+        
+        :param can_post_messages: Pass True, if the administrator can create channel posts, channels only
+        :type  can_post_messages: bool
+        
+        :param can_edit_messages: Pass True, if the administrator can edit messages of other users, channels only
+        :type  can_edit_messages: bool
+        
+        :param can_delete_messages: Pass True, if the administrator can delete messages of other users
+        :type  can_delete_messages: bool
+        
+        :param can_invite_users: Pass True, if the administrator can invite new users to the chat
+        :type  can_invite_users: bool
+        
+        :param can_restrict_members: Pass True, if the administrator can restrict, ban or unban chat members
+        :type  can_restrict_members: bool
+        
+        :param can_pin_messages: Pass True, if the administrator can pin messages, supergroups only
+        :type  can_pin_messages: bool
+        
+        :param can_promote_members: Pass True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
+        :type  can_promote_members: bool
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        
+        assert(can_change_info is None or isinstance(can_change_info, bool))
+        
+        assert(can_post_messages is None or isinstance(can_post_messages, bool))
+        
+        assert(can_edit_messages is None or isinstance(can_edit_messages, bool))
+        
+        assert(can_delete_messages is None or isinstance(can_delete_messages, bool))
+        
+        assert(can_invite_users is None or isinstance(can_invite_users, bool))
+        
+        assert(can_restrict_members is None or isinstance(can_restrict_members, bool))
+        
+        assert(can_pin_messages is None or isinstance(can_pin_messages, bool))
+        
+        assert(can_promote_members is None or isinstance(can_promote_members, bool))
+        
+        result = self.do("promoteChatMember", chat_id=chat_id, user_id=user_id, can_change_info=can_change_info, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_invite_users=can_invite_users, can_restrict_members=can_restrict_members, can_pin_messages=can_pin_messages, can_promote_members=can_promote_members)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def promote_chat_member
+    
+    def export_chat_invite_link(self, chat_id):
+        """
+        Use this method to export an invite link to a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns exported invite link as String on success.
+
+        https://core.telegram.org/bots/api#exportchatinvitelink
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+        
+        
+        Returns:
+
+        :return: Returns exported invite link as String on success
+        :rtype: str
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        result = self.do("exportChatInviteLink", chat_id=chat_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(str, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive str", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def export_chat_invite_link
+    
+    def set_chat_photo(self, chat_id, photo):
+        """
+        Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        
+        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
+
+        https://core.telegram.org/bots/api#setchatphoto
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+        
+        :param photo: New chat photo, uploaded using multipart/form-data
+        :type  photo: pytgbot.api_types.sendable.files.InputFile
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        from pytgbot.api_types.sendable.files import InputFile
+        
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(photo is not None)
+        assert(isinstance(photo, InputFile))
+        
+        result = self.do("setChatPhoto", chat_id=chat_id, photo=photo)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_chat_photo
+    
+    def delete_chat_photo(self, chat_id):
+        """
+        Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        
+        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
+
+        https://core.telegram.org/bots/api#deletechatphoto
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        result = self.do("deleteChatPhoto", chat_id=chat_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def delete_chat_photo
+    
+    def set_chat_title(self, chat_id, title):
+        """
+        Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        
+        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
+
+        https://core.telegram.org/bots/api#setchattitle
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+        
+        :param title: New chat title, 1-255 characters
+        :type  title: str
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(title is not None)
+        assert(isinstance(title, str))
+        
+        result = self.do("setChatTitle", chat_id=chat_id, title=title)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_chat_title
+    
+    def set_chat_description(self, chat_id, description=None):
+        """
+        Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+
+        https://core.telegram.org/bots/api#setchatdescription
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+        
+        
+        Optional keyword parameters:
+        
+        :param description: New chat description, 0-255 characters
+        :type  description: str
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(description is None or isinstance(description, str))
+        
+        result = self.do("setChatDescription", chat_id=chat_id, description=description)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_chat_description
+    
+    def pin_chat_message(self, chat_id, message_id, disable_notification=None):
+        """
+        Use this method to pin a message in a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+
+        https://core.telegram.org/bots/api#pinchatmessage
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id: int | str
+        
+        :param message_id: Identifier of a message to pin
+        :type  message_id: int
+        
+        
+        Optional keyword parameters:
+        
+        :param disable_notification: Pass True, if it is not necessary to send a notification to all group members about the new pinned message
+        :type  disable_notification: bool
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(message_id is not None)
+        assert(isinstance(message_id, int))
+        
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        
+        result = self.do("pinChatMessage", chat_id=chat_id, message_id=message_id, disable_notification=disable_notification)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def pin_chat_message
+    
+    def unpin_chat_message(self, chat_id):
+        """
+        Use this method to unpin a message in a supergroup chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+
+        https://core.telegram.org/bots/api#unpinchatmessage
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id: int | str
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        result = self.do("unpinChatMessage", chat_id=chat_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def unpin_chat_message
+    
     def leave_chat(self, chat_id):
         """
         Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
@@ -1315,7 +1786,7 @@ class Bot(object):
         Returns:
 
         :return: Returns True on success
-        :rtype:  bool
+        :rtype: bool
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1350,7 +1821,7 @@ class Bot(object):
         Returns:
 
         :return: Returns a Chat object on success
-        :rtype:  pytgbot.api_types.receivable.peer.Chat
+        :rtype: pytgbot.api_types.receivable.peer.Chat
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1385,8 +1856,8 @@ class Bot(object):
         
         Returns:
 
-        :return: On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned
-        :rtype:  list of pytgbot.api_types.receivable.peer.ChatMember
+        :return: On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots
+        :rtype: list of pytgbot.api_types.receivable.peer.ChatMember
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1422,7 +1893,7 @@ class Bot(object):
         Returns:
 
         :return: Returns Int on success
-        :rtype:  int
+        :rtype: int
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1460,7 +1931,7 @@ class Bot(object):
         Returns:
 
         :return: Returns a ChatMember object on success
-        :rtype:  pytgbot.api_types.receivable.peer.ChatMember
+        :rtype: pytgbot.api_types.receivable.peer.ChatMember
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1487,7 +1958,7 @@ class Bot(object):
         """
         Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
         
-        Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via BotFather and accept the terms. Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
+        Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via BotFather and accept the terms. Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
 
         https://core.telegram.org/bots/api#answercallbackquery
 
@@ -1500,22 +1971,22 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword text: Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
-        :type    text: str
+        :param text: Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
+        :type  text: str
         
-        :keyword show_alert: If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
-        :type    show_alert: bool
+        :param show_alert: If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
+        :type  show_alert: bool
         
-        :keyword url: URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game – note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
-        :type    url: str
+        :param url: URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game – note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
+        :type  url: str
         
-        :keyword cache_time: The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.
-        :type    cache_time: int
+        :param cache_time: The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.
+        :type  cache_time: int
         
         Returns:
 
         :return: On success, True is returned
-        :rtype:  bool
+        :rtype: bool
         """
         assert(callback_query_id is not None)
         assert(isinstance(callback_query_id, str))
@@ -1557,28 +2028,28 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-        :type    chat_id: int | str
+        :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
         
-        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
-        :type    message_id: int
+        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :type  message_id: int
         
-        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-        :type    inline_message_id: str
+        :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type  inline_message_id: str
         
-        :keyword parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-        :type    parse_mode: str
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+        :type  parse_mode: str
         
-        :keyword disable_web_page_preview: Disables link previews for links in this message
-        :type    disable_web_page_preview: bool
+        :param disable_web_page_preview: Disables link previews for links in this message
+        :type  disable_web_page_preview: bool
         
-        :keyword reply_markup: A JSON-serialized object for an inline keyboard.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: A JSON-serialized object for an inline keyboard.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
         Returns:
 
         :return: On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
+        :rtype: pytgbot.api_types.receivable.updates.Message | bool
         """
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1627,25 +2098,25 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-        :type    chat_id: int | str
+        :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
         
-        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
-        :type    message_id: int
+        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :type  message_id: int
         
-        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-        :type    inline_message_id: str
+        :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type  inline_message_id: str
         
-        :keyword caption: New caption of the message
-        :type    caption: str
+        :param caption: New caption of the message
+        :type  caption: str
         
-        :keyword reply_markup: A JSON-serialized object for an inline keyboard.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: A JSON-serialized object for an inline keyboard.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
         Returns:
 
         :return: On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
+        :rtype: pytgbot.api_types.receivable.updates.Message | bool
         """
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1689,22 +2160,22 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-        :type    chat_id: int | str
+        :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
         
-        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
-        :type    message_id: int
+        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :type  message_id: int
         
-        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-        :type    inline_message_id: str
+        :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type  inline_message_id: str
         
-        :keyword reply_markup: A JSON-serialized object for an inline keyboard.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: A JSON-serialized object for an inline keyboard.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
         Returns:
 
         :return: On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
+        :rtype: pytgbot.api_types.receivable.updates.Message | bool
         """
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1739,7 +2210,7 @@ class Bot(object):
     
     def delete_message(self, chat_id, message_id):
         """
-        Use this method to delete a message. A message can only be deleted if it was sent less than 48 hours ago. Any such recently sent outgoing message may be deleted. Additionally, if the bot is an administrator in a group chat, it can delete any message. If the bot is an administrator in a supergroup, it can delete messages from any other user and service messages about people joining or leaving the group (other types of service messages may only be removed by the group creator). In channels, bots can only remove their own messages. Returns True on success. 
+        Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- Bots can delete outgoing messages in groups and supergroups.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
 
         https://core.telegram.org/bots/api#deletemessage
 
@@ -1756,7 +2227,7 @@ class Bot(object):
         Returns:
 
         :return: Returns True on success
-        :rtype:  bool
+        :rtype: bool
         """
         assert(chat_id is not None)
         assert(isinstance(chat_id, (int, str)))
@@ -1796,25 +2267,25 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword cache_time: The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300.
-        :type    cache_time: int
+        :param cache_time: The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300.
+        :type  cache_time: int
         
-        :keyword is_personal: Pass True, if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query
-        :type    is_personal: bool
+        :param is_personal: Pass True, if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query
+        :type  is_personal: bool
         
-        :keyword next_offset: Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don‘t support pagination. Offset length can’t exceed 64 bytes.
-        :type    next_offset: str
+        :param next_offset: Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don‘t support pagination. Offset length can’t exceed 64 bytes.
+        :type  next_offset: str
         
-        :keyword switch_pm_text: If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
-        :type    switch_pm_text: str
+        :param switch_pm_text: If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
+        :type  switch_pm_text: str
         
-        :keyword switch_pm_parameter: Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
-        :type    switch_pm_parameter: str
+        :param switch_pm_parameter: Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
+        :type  switch_pm_parameter: str
         
         Returns:
 
         :return: On success, True is returned
-        :rtype:  bool
+        :rtype: bool
         """
         from pytgbot.api_types.sendable.inline import InlineQueryResult
         
@@ -1848,7 +2319,7 @@ class Bot(object):
         return result
     # end def answer_inline_query
     
-    def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_invoice(self, chat_id, title, payload, provider_token, start_parameter, currency, prices, photo_url=None, description=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send invoices. On success, the sent Message is returned.
 
@@ -1860,11 +2331,8 @@ class Bot(object):
         :param chat_id: Unique identifier for the target private chat
         :type  chat_id: int
         
-        :param title: Product name
+        :param title: Product name, 1-32 characters
         :type  title: str
-        
-        :param description: Product description
-        :type  description: str
         
         :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
         :type  payload: str
@@ -1884,46 +2352,49 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword photo_url: URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
-        :type    photo_url: str
+        :param photo_url: URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
+        :type  photo_url: str
         
-        :keyword photo_size: Photo size
-        :type    photo_size: int
+        :param description: Product description, 0-255 characters
+        :type  description: str
         
-        :keyword photo_width: Photo width
-        :type    photo_width: int
+        :param photo_size: Photo size
+        :type  photo_size: int
         
-        :keyword photo_height: Photo height
-        :type    photo_height: int
+        :param photo_width: Photo width
+        :type  photo_width: int
         
-        :keyword need_name: Pass True, if you require the user's full name to complete the order
-        :type    need_name: Bool
+        :param photo_height: Photo height
+        :type  photo_height: int
         
-        :keyword need_phone_number: Pass True, if you require the user's phone number to complete the order
-        :type    need_phone_number: bool
+        :param need_name: Pass True, if you require the user's full name to complete the order
+        :type  need_name: bool
         
-        :keyword need_email: Pass True, if you require the user's email to complete the order
-        :type    need_email: Bool
+        :param need_phone_number: Pass True, if you require the user's phone number to complete the order
+        :type  need_phone_number: bool
         
-        :keyword need_shipping_address: Pass True, if you require the user's shipping address to complete the order
-        :type    need_shipping_address: bool
+        :param need_email: Pass True, if you require the user's email to complete the order
+        :type  need_email: bool
         
-        :keyword is_flexible: Pass True, if the final price depends on the shipping method
-        :type    is_flexible: bool
+        :param need_shipping_address: Pass True, if you require the user's shipping address to complete the order
+        :type  need_shipping_address: bool
         
-        :keyword disable_notification: Sends the message silently. Users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param is_flexible: Pass True, if the final price depends on the shipping method
+        :type  is_flexible: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
+        
+        :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.payments import LabeledPrice
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1933,9 +2404,6 @@ class Bot(object):
         
         assert(title is not None)
         assert(isinstance(title, str))
-        
-        assert(description is not None)
-        assert(isinstance(description, str))
         
         assert(payload is not None)
         assert(isinstance(payload, str))
@@ -1954,17 +2422,19 @@ class Bot(object):
         
         assert(photo_url is None or isinstance(photo_url, str))
         
+        assert(description is None or isinstance(description, str))
+        
         assert(photo_size is None or isinstance(photo_size, int))
         
         assert(photo_width is None or isinstance(photo_width, int))
         
         assert(photo_height is None or isinstance(photo_height, int))
         
-        assert(need_name is None or isinstance(need_name, Bool))
+        assert(need_name is None or isinstance(need_name, bool))
         
         assert(need_phone_number is None or isinstance(need_phone_number, bool))
         
-        assert(need_email is None or isinstance(need_email, Bool))
+        assert(need_email is None or isinstance(need_email, bool))
         
         assert(need_shipping_address is None or isinstance(need_shipping_address, bool))
         
@@ -1976,7 +2446,7 @@ class Bot(object):
         
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         
-        result = self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendInvoice", chat_id=chat_id, title=title, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, photo_url=photo_url, description=description, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2009,16 +2479,16 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword shipping_options: Required if ok is True. A JSON-serialized array of available shipping options.
-        :type    shipping_options: list of pytgbot.api_types.sendable.payments.ShippingOption
+        :param shipping_options: Required if ok is True. A JSON-serialized array of available shipping options.
+        :type  shipping_options: list of pytgbot.api_types.sendable.payments.ShippingOption
         
-        :keyword error_message: Required if ok is False. Error message in human readable form that explains why it is impossible to complete the order (e.g. "Sorry, delivery to your desired address is unavailable'). Telegram will display this message to the user.
-        :type    error_message: str
+        :param error_message: Required if ok is False. Error message in human readable form that explains why it is impossible to complete the order (e.g. "Sorry, delivery to your desired address is unavailable'). Telegram will display this message to the user.
+        :type  error_message: str
         
         Returns:
 
         :return: On success, True is returned
-        :rtype:  
+        :rtype: 
         """
         from pytgbot.api_types.sendable.payments import ShippingOption
         
@@ -2058,13 +2528,13 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword error_message: Required if ok is False. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.
-        :type    error_message: str
+        :param error_message: Required if ok is False. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.
+        :type  error_message: str
         
         Returns:
 
         :return: On success, True is returned
-        :rtype:  
+        :rtype: 
         """
         assert(pre_checkout_query_id is not None)
         assert(isinstance(pre_checkout_query_id, str))
@@ -2100,19 +2570,19 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-        :type    disable_notification: bool
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
         
-        :keyword reply_to_message_id: If the message is a reply, ID of the original message
-        :type    reply_to_message_id: int
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
         
-        :keyword reply_markup: A JSON-serialized object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown. If not empty, the first button must launch the game.
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown. If not empty, the first button must launch the game.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
         Returns:
 
         :return: On success, the sent Message is returned
-        :rtype:  pytgbot.api_types.receivable.updates.Message
+        :rtype: pytgbot.api_types.receivable.updates.Message
         """
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -2161,25 +2631,25 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword force: Pass True, if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters
-        :type    force: bool
+        :param force: Pass True, if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters
+        :type  force: bool
         
-        :keyword disable_edit_message: Pass True, if the game message should not be automatically edited to include the current scoreboard
-        :type    disable_edit_message: bool
+        :param disable_edit_message: Pass True, if the game message should not be automatically edited to include the current scoreboard
+        :type  disable_edit_message: bool
         
-        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat
-        :type    chat_id: int
+        :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat
+        :type  chat_id: int
         
-        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
-        :type    message_id: int
+        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :type  message_id: int
         
-        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-        :type    inline_message_id: str
+        :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type  inline_message_id: str
         
         Returns:
 
-        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False
-        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
+        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True
+        :rtype: pytgbot.api_types.receivable.updates.Message | bool
         """
         assert(user_id is not None)
         assert(isinstance(user_id, int))
@@ -2235,19 +2705,19 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :keyword chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat
-        :type    chat_id: int
+        :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat
+        :type  chat_id: int
         
-        :keyword message_id: Required if inline_message_id is not specified. Identifier of the sent message
-        :type    message_id: int
+        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :type  message_id: int
         
-        :keyword inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-        :type    inline_message_id: str
+        :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type  inline_message_id: str
         
         Returns:
 
-        :return: Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
-        :rtype:  list of pytgbot.api_types.receivable.game.GameHighScore
+        :return: On success, returns an Array of GameHighScore objects
+        :rtype: list of pytgbot.api_types.receivable.game.GameHighScore
         """
         assert(user_id is not None)
         assert(isinstance(user_id, int))
@@ -2297,16 +2767,16 @@ class Bot(object):
         :param command: The Url command parameter
         :type  command: str
 
-        :keyword request_timeout: When the request should time out.
-        :type    request_timeout: int
+        :param request_timeout: When the request should time out. Default: `None`
+        :type  request_timeout: int
 
         :param files: if it needs to send files.
 
-        :keyword use_long_polling: if it should use long polling.
+        :param use_long_polling: if it should use long polling. Default: `False`
                                 (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
-        :type    use_long_polling: bool
+        :type  use_long_polling: bool
 
-        :param query: will get json encoded.
+        :param query: all the other `**kwargs` will get json encoded.
 
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable

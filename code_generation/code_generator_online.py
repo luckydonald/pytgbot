@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from code_generator import get_type_path
-from code_generator_template import clazz, func, get_template, Clazz, Function, ClassOrFunction, as_types, Type
+from code_generator_template import clazz, func, get_template, Clazz, Function, Import, as_types, Type, Variable
 from luckydonaldUtils.files.basics import mkdir_p  # luckydonaldUtils v0.49+
 from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
@@ -74,9 +74,7 @@ def parse_table(tag):
 # end def
 
 
-def main():
-    bot_template = get_template("bot.template")
-    folder = get_folder_path()
+def load_from_api(folder):
     filter = get_filter()
     document = requests.get(BASE_URL)
     bs = BeautifulSoup(document.content)
@@ -229,6 +227,33 @@ def main():
             results.append(result)
         # end if
     # end for
+
+    output(document, folder, results)
+# end def main
+
+def main():
+    folder = get_folder_path()
+    mode = confirm("Load from a dump instead of the API Docs?")
+    if not mode:  # API
+        load_from_api(folder)
+    else:  # Dump
+        load_from_dump(folder)
+    # end def
+# end def
+
+
+def load_from_dump(folder):
+    from luckydonaldUtils.interactions import safe_eval, NoBuiltins
+    safe_values = NoBuiltins([], {}, {"Function":Function, "Clazz":Clazz, "Import":Import, "Type":Type, "Variable":Variable})
+    file = ""
+    with open(path_join(folder, "api.py"), "r") as f:
+        file = "".join(f.readlines())
+    # end with
+    results = safe_eval(file, safe_values)
+    output(folder, results)
+# end def
+
+def output(folder, results, html_document=None):
     can_quit = False
     do_overwrite = confirm("Can the folder {path} be overwritten?".format(path=folder))
     print("vvvvvvvvv")
@@ -240,18 +265,20 @@ def main():
             except ImportError:
                 import shutil
                 shutil.rmtree(folder)
-            # end try
+                # end try
         # end if
         try:
             safe_to_file(folder, results)
             with open(path_join(folder, "api.py"), "w") as f:
-                f.write("results = [\n    ")
-                f.write(",\n    ".join([repr(result) in results]))
-                f.write("]")
+                f.write("[\n    ")
+                f.write(",\n    ".join([repr(result) for result in results]))
+                f.write("\n]")
                 # end for
             # end with
-            with open(path_join(folder, "api.html"), "wb") as f:
-                f.write(document.content)
+            if html_document:
+                with open(path_join(folder, "api.html"), "wb") as f:
+                    f.write(html_document.content)
+                # end with
             # end if
             print("Writen to file.")
         except TemplateError as e:
@@ -259,12 +286,12 @@ def main():
                 logger.exception("Template error at {file}:{line}".format(file=e.filename, line=e.lineno))
             else:
                 logger.exception("Template error.")
-            # end if
+                # end if
         # end try
         can_quit = not confirm("Write again after reloading templates?", default=True)
     print("#########")
     print("Exit.")
-# end def main
+# end def
 
 
 def get_filter():
@@ -344,9 +371,10 @@ def safe_to_file(folder, results):
         # end for
         clazz_imports = list(clazz_imports)
         clazz_imports.sort()
+        is_sendable = ("sendable" in path)
         try:
             with open(path, "w") as f:
-                result = clazzfile_template.render(clazzes=clazz_list, imports=clazz_imports)
+                result = clazzfile_template.render(clazzes=clazz_list, imports=clazz_imports, is_sendable=is_sendable)
                 result = result.replace("\t", "    ")
                 f.write(result)
                 # end with

@@ -11,14 +11,54 @@ class InlineQueryResultArticle(InlineQueryResult):
     Represents a link to an article or web page.
 
     https://core.telegram.org/bots/api#inlinequeryresultarticle
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be article
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 Bytes
+    :type  id: str
+    
+    :param title: Title of the result
+    :type  title: str
+    
+    :param input_message_content: Content of the message to be sent
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+    
+
+    Optional keyword parameters:
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param url: Optional. URL of the result
+    :type  url: str
+    
+    :param hide_url: Optional. Pass True, if you don't want the URL to be shown in the message
+    :type  hide_url: bool
+    
+    :param description: Optional. Short description of the result
+    :type  description: str
+    
+    :param thumb_url: Optional. Url of the thumbnail for the result
+    :type  thumb_url: str
+    
+    :param thumb_width: Optional. Thumbnail width
+    :type  thumb_width: int
+    
+    :param thumb_height: Optional. Thumbnail height
+    :type  thumb_height: int
     """
+
     def __init__(self, type, id, title, input_message_content, reply_markup=None, url=None, hide_url=None, description=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a link to an article or web page.
     
         https://core.telegram.org/bots/api#inlinequeryresultarticle
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be article
@@ -33,69 +73,69 @@ class InlineQueryResultArticle(InlineQueryResult):
         :param input_message_content: Content of the message to be sent
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
-
+    
         Optional keyword parameters:
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword url: Optional. URL of the result
-        :type    url: str
+        :param url: Optional. URL of the result
+        :type  url: str
         
-        :keyword hide_url: Optional. Pass True, if you don't want the URL to be shown in the message
-        :type    hide_url: bool
+        :param hide_url: Optional. Pass True, if you don't want the URL to be shown in the message
+        :type  hide_url: bool
         
-        :keyword description: Optional. Short description of the result
-        :type    description: str
+        :param description: Optional. Short description of the result
+        :type  description: str
         
-        :keyword thumb_url: Optional. Url of the thumbnail for the result
-        :type    thumb_url: str
+        :param thumb_url: Optional. Url of the thumbnail for the result
+        :type  thumb_url: str
         
-        :keyword thumb_width: Optional. Thumbnail width
-        :type    thumb_width: int
+        :param thumb_width: Optional. Thumbnail width
+        :type  thumb_width: int
         
-        :keyword thumb_height: Optional. Thumbnail height
-        :type    thumb_height: int
+        :param thumb_height: Optional. Thumbnail height
+        :type  thumb_height: int
         """
         super(InlineQueryResultArticle, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(input_message_content is not None)
-        assert(isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is not None)
+        assert (isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(url is None or isinstance(url, str))
+        assert (url is None or isinstance(url, str))
         self.url = url
         
-        assert(hide_url is None or isinstance(hide_url, bool))
+        assert (hide_url is None or isinstance(hide_url, bool))
         self.hide_url = hide_url
         
-        assert(description is None or isinstance(description, str))
+        assert (description is None or isinstance(description, str))
         self.description = description
         
-        assert(thumb_url is None or isinstance(thumb_url, str))
+        assert (thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
         
-        assert(thumb_width is None or isinstance(thumb_width, int))
+        assert (thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
         
-        assert(thumb_height is None or isinstance(thumb_height, int))
+        assert (thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -103,7 +143,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         Serializes this InlineQueryResultArticle to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultArticle, self).to_array()
@@ -131,7 +171,7 @@ class InlineQueryResultArticle(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultArticle from a given dictionary.
+        Deserialize a new InlineQueryResultArticle from a given dictionary.
 
         :return: new InlineQueryResultArticle instance.
         :rtype: InlineQueryResultArticle
@@ -140,10 +180,10 @@ class InlineQueryResultArticle(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -156,7 +196,10 @@ class InlineQueryResultArticle(InlineQueryResult):
         data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        return InlineQueryResultArticle(**data)
+        
+        instance = InlineQueryResultArticle(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -166,11 +209,21 @@ class InlineQueryResultArticle(InlineQueryResult):
         return "InlineQueryResultArticle(type={self.type!r}, id={self.id!r}, title={self.title!r}, input_message_content={self.input_message_content!r}, reply_markup={self.reply_markup!r}, url={self.url!r}, hide_url={self.hide_url!r}, description={self.description!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultarticle_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultArticle.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultArticle(type={self.type!r}, id={self.id!r}, title={self.title!r}, input_message_content={self.input_message_content!r}, reply_markup={self.reply_markup!r}, url={self.url!r}, hide_url={self.hide_url!r}, description={self.description!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultarticle_instance`
         """
-        return key in ["type", "id", "title", "input_message_content", "reply_markup", "url", "hide_url", "description", "thumb_url", "thumb_width", "thumb_height"]
+        return key in ["type", "id", "title", "input_message_content", "reply_markup", "url", "hide_url", "description", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultArticle
 
@@ -181,14 +234,54 @@ class InlineQueryResultPhoto(InlineQueryResult):
     Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
     https://core.telegram.org/bots/api#inlinequeryresultphoto
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be photo
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param photo_url: A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
+    :type  photo_url: str
+    
+    :param thumb_url: URL of the thumbnail for the photo
+    :type  thumb_url: str
+    
+
+    Optional keyword parameters:
+    
+    :param photo_width: Optional. Width of the photo
+    :type  photo_width: int
+    
+    :param photo_height: Optional. Height of the photo
+    :type  photo_height: int
+    
+    :param title: Optional. Title for the result
+    :type  title: str
+    
+    :param description: Optional. Short description of the result
+    :type  description: str
+    
+    :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the photo
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, photo_url, thumb_url, photo_width=None, photo_height=None, title=None, description=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
     
         https://core.telegram.org/bots/api#inlinequeryresultphoto
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be photo
@@ -203,69 +296,69 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :param thumb_url: URL of the thumbnail for the photo
         :type  thumb_url: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword photo_width: Optional. Width of the photo
-        :type    photo_width: int
+        :param photo_width: Optional. Width of the photo
+        :type  photo_width: int
         
-        :keyword photo_height: Optional. Height of the photo
-        :type    photo_height: int
+        :param photo_height: Optional. Height of the photo
+        :type  photo_height: int
         
-        :keyword title: Optional. Title for the result
-        :type    title: str
+        :param title: Optional. Title for the result
+        :type  title: str
         
-        :keyword description: Optional. Short description of the result
-        :type    description: str
+        :param description: Optional. Short description of the result
+        :type  description: str
         
-        :keyword caption: Optional. Caption of the photo to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the photo
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the photo
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultPhoto, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(photo_url is not None)
-        assert(isinstance(photo_url, str))
+        assert (photo_url is not None)
+        assert (isinstance(photo_url, str))
         self.photo_url = photo_url
         
-        assert(thumb_url is not None)
-        assert(isinstance(thumb_url, str))
+        assert (thumb_url is not None)
+        assert (isinstance(thumb_url, str))
         self.thumb_url = thumb_url
         
-        assert(photo_width is None or isinstance(photo_width, int))
+        assert (photo_width is None or isinstance(photo_width, int))
         self.photo_width = photo_width
         
-        assert(photo_height is None or isinstance(photo_height, int))
+        assert (photo_height is None or isinstance(photo_height, int))
         self.photo_height = photo_height
         
-        assert(title is None or isinstance(title, str))
+        assert (title is None or isinstance(title, str))
         self.title = title
         
-        assert(description is None or isinstance(description, str))
+        assert (description is None or isinstance(description, str))
         self.description = description
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -273,7 +366,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         Serializes this InlineQueryResultPhoto to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultPhoto, self).to_array()
@@ -301,7 +394,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultPhoto from a given dictionary.
+        Deserialize a new InlineQueryResultPhoto from a given dictionary.
 
         :return: new InlineQueryResultPhoto instance.
         :rtype: InlineQueryResultPhoto
@@ -310,10 +403,10 @@ class InlineQueryResultPhoto(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -326,7 +419,10 @@ class InlineQueryResultPhoto(InlineQueryResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultPhoto(**data)
+        
+        instance = InlineQueryResultPhoto(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -336,11 +432,21 @@ class InlineQueryResultPhoto(InlineQueryResult):
         return "InlineQueryResultPhoto(type={self.type!r}, id={self.id!r}, photo_url={self.photo_url!r}, thumb_url={self.thumb_url!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultphoto_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultPhoto.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultPhoto(type={self.type!r}, id={self.id!r}, photo_url={self.photo_url!r}, thumb_url={self.thumb_url!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultphoto_instance`
         """
-        return key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultPhoto
 
@@ -351,14 +457,54 @@ class InlineQueryResultGif(InlineQueryResult):
     Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
     https://core.telegram.org/bots/api#inlinequeryresultgif
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be gif
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param gif_url: A valid URL for the GIF file. File size must not exceed 1MB
+    :type  gif_url: str
+    
+    :param thumb_url: URL of the static thumbnail for the result (jpeg or gif)
+    :type  thumb_url: str
+    
+
+    Optional keyword parameters:
+    
+    :param gif_width: Optional. Width of the GIF
+    :type  gif_width: int
+    
+    :param gif_height: Optional. Height of the GIF
+    :type  gif_height: int
+    
+    :param gif_duration: Optional. Duration of the GIF
+    :type  gif_duration: int
+    
+    :param title: Optional. Title for the result
+    :type  title: str
+    
+    :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, gif_url, thumb_url, gif_width=None, gif_height=None, gif_duration=None, title=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
     
         https://core.telegram.org/bots/api#inlinequeryresultgif
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be gif
@@ -373,69 +519,69 @@ class InlineQueryResultGif(InlineQueryResult):
         :param thumb_url: URL of the static thumbnail for the result (jpeg or gif)
         :type  thumb_url: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword gif_width: Optional. Width of the GIF
-        :type    gif_width: int
+        :param gif_width: Optional. Width of the GIF
+        :type  gif_width: int
         
-        :keyword gif_height: Optional. Height of the GIF
-        :type    gif_height: int
+        :param gif_height: Optional. Height of the GIF
+        :type  gif_height: int
         
-        :keyword gif_duration: Optional. Duration of the GIF
-        :type    gif_duration: int
+        :param gif_duration: Optional. Duration of the GIF
+        :type  gif_duration: int
         
-        :keyword title: Optional. Title for the result
-        :type    title: str
+        :param title: Optional. Title for the result
+        :type  title: str
         
-        :keyword caption: Optional. Caption of the GIF file to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the GIF animation
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultGif, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(gif_url is not None)
-        assert(isinstance(gif_url, str))
+        assert (gif_url is not None)
+        assert (isinstance(gif_url, str))
         self.gif_url = gif_url
         
-        assert(thumb_url is not None)
-        assert(isinstance(thumb_url, str))
+        assert (thumb_url is not None)
+        assert (isinstance(thumb_url, str))
         self.thumb_url = thumb_url
         
-        assert(gif_width is None or isinstance(gif_width, int))
+        assert (gif_width is None or isinstance(gif_width, int))
         self.gif_width = gif_width
         
-        assert(gif_height is None or isinstance(gif_height, int))
+        assert (gif_height is None or isinstance(gif_height, int))
         self.gif_height = gif_height
         
-        assert(gif_duration is None or isinstance(gif_duration, int))
+        assert (gif_duration is None or isinstance(gif_duration, int))
         self.gif_duration = gif_duration
         
-        assert(title is None or isinstance(title, str))
+        assert (title is None or isinstance(title, str))
         self.title = title
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -443,7 +589,7 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         Serializes this InlineQueryResultGif to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultGif, self).to_array()
@@ -471,7 +617,7 @@ class InlineQueryResultGif(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultGif from a given dictionary.
+        Deserialize a new InlineQueryResultGif from a given dictionary.
 
         :return: new InlineQueryResultGif instance.
         :rtype: InlineQueryResultGif
@@ -480,10 +626,10 @@ class InlineQueryResultGif(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -496,7 +642,10 @@ class InlineQueryResultGif(InlineQueryResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultGif(**data)
+        
+        instance = InlineQueryResultGif(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -506,11 +655,21 @@ class InlineQueryResultGif(InlineQueryResult):
         return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultgif_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultGif.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultgif_instance`
         """
-        return key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultGif
 
@@ -521,14 +680,54 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
     https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be mpeg4_gif
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param mpeg4_url: A valid URL for the MP4 file. File size must not exceed 1MB
+    :type  mpeg4_url: str
+    
+    :param thumb_url: URL of the static thumbnail (jpeg or gif) for the result
+    :type  thumb_url: str
+    
+
+    Optional keyword parameters:
+    
+    :param mpeg4_width: Optional. Video width
+    :type  mpeg4_width: int
+    
+    :param mpeg4_height: Optional. Video height
+    :type  mpeg4_height: int
+    
+    :param mpeg4_duration: Optional. Video duration
+    :type  mpeg4_duration: int
+    
+    :param title: Optional. Title for the result
+    :type  title: str
+    
+    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, title=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
     
         https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be mpeg4_gif
@@ -543,69 +742,69 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :param thumb_url: URL of the static thumbnail (jpeg or gif) for the result
         :type  thumb_url: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword mpeg4_width: Optional. Video width
-        :type    mpeg4_width: int
+        :param mpeg4_width: Optional. Video width
+        :type  mpeg4_width: int
         
-        :keyword mpeg4_height: Optional. Video height
-        :type    mpeg4_height: int
+        :param mpeg4_height: Optional. Video height
+        :type  mpeg4_height: int
         
-        :keyword mpeg4_duration: Optional. Video duration
-        :type    mpeg4_duration: int
+        :param mpeg4_duration: Optional. Video duration
+        :type  mpeg4_duration: int
         
-        :keyword title: Optional. Title for the result
-        :type    title: str
+        :param title: Optional. Title for the result
+        :type  title: str
         
-        :keyword caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the video animation
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultMpeg4Gif, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(mpeg4_url is not None)
-        assert(isinstance(mpeg4_url, str))
+        assert (mpeg4_url is not None)
+        assert (isinstance(mpeg4_url, str))
         self.mpeg4_url = mpeg4_url
         
-        assert(thumb_url is not None)
-        assert(isinstance(thumb_url, str))
+        assert (thumb_url is not None)
+        assert (isinstance(thumb_url, str))
         self.thumb_url = thumb_url
         
-        assert(mpeg4_width is None or isinstance(mpeg4_width, int))
+        assert (mpeg4_width is None or isinstance(mpeg4_width, int))
         self.mpeg4_width = mpeg4_width
         
-        assert(mpeg4_height is None or isinstance(mpeg4_height, int))
+        assert (mpeg4_height is None or isinstance(mpeg4_height, int))
         self.mpeg4_height = mpeg4_height
         
-        assert(mpeg4_duration is None or isinstance(mpeg4_duration, int))
+        assert (mpeg4_duration is None or isinstance(mpeg4_duration, int))
         self.mpeg4_duration = mpeg4_duration
         
-        assert(title is None or isinstance(title, str))
+        assert (title is None or isinstance(title, str))
         self.title = title
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -613,7 +812,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         Serializes this InlineQueryResultMpeg4Gif to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultMpeg4Gif, self).to_array()
@@ -641,7 +840,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultMpeg4Gif from a given dictionary.
+        Deserialize a new InlineQueryResultMpeg4Gif from a given dictionary.
 
         :return: new InlineQueryResultMpeg4Gif instance.
         :rtype: InlineQueryResultMpeg4Gif
@@ -650,10 +849,10 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -666,7 +865,10 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultMpeg4Gif(**data)
+        
+        instance = InlineQueryResultMpeg4Gif(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -676,11 +878,21 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultmpeg4gif_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultMpeg4Gif.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultmpeg4gif_instance`
         """
-        return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultMpeg4Gif
 
@@ -691,14 +903,60 @@ class InlineQueryResultVideo(InlineQueryResult):
     Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
     https://core.telegram.org/bots/api#inlinequeryresultvideo
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be video
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param video_url: A valid URL for the embedded video player or video file
+    :type  video_url: str
+    
+    :param mime_type: Mime type of the content of video url, “text/html” or “video/mp4”
+    :type  mime_type: str
+    
+    :param thumb_url: URL of the thumbnail (jpeg only) for the video
+    :type  thumb_url: str
+    
+    :param title: Title for the result
+    :type  title: str
+    
+
+    Optional keyword parameters:
+    
+    :param caption: Optional. Caption of the video to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param video_width: Optional. Video width
+    :type  video_width: int
+    
+    :param video_height: Optional. Video height
+    :type  video_height: int
+    
+    :param video_duration: Optional. Video duration in seconds
+    :type  video_duration: int
+    
+    :param description: Optional. Short description of the result
+    :type  description: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the video
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, video_url, mime_type, thumb_url, title, caption=None, video_width=None, video_height=None, video_duration=None, description=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
     
         https://core.telegram.org/bots/api#inlinequeryresultvideo
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be video
@@ -719,77 +977,77 @@ class InlineQueryResultVideo(InlineQueryResult):
         :param title: Title for the result
         :type  title: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword caption: Optional. Caption of the video to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the video to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword video_width: Optional. Video width
-        :type    video_width: int
+        :param video_width: Optional. Video width
+        :type  video_width: int
         
-        :keyword video_height: Optional. Video height
-        :type    video_height: int
+        :param video_height: Optional. Video height
+        :type  video_height: int
         
-        :keyword video_duration: Optional. Video duration in seconds
-        :type    video_duration: int
+        :param video_duration: Optional. Video duration in seconds
+        :type  video_duration: int
         
-        :keyword description: Optional. Short description of the result
-        :type    description: str
+        :param description: Optional. Short description of the result
+        :type  description: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the video
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the video
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultVideo, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(video_url is not None)
-        assert(isinstance(video_url, str))
+        assert (video_url is not None)
+        assert (isinstance(video_url, str))
         self.video_url = video_url
         
-        assert(mime_type is not None)
-        assert(isinstance(mime_type, str))
+        assert (mime_type is not None)
+        assert (isinstance(mime_type, str))
         self.mime_type = mime_type
         
-        assert(thumb_url is not None)
-        assert(isinstance(thumb_url, str))
+        assert (thumb_url is not None)
+        assert (isinstance(thumb_url, str))
         self.thumb_url = thumb_url
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(video_width is None or isinstance(video_width, int))
+        assert (video_width is None or isinstance(video_width, int))
         self.video_width = video_width
         
-        assert(video_height is None or isinstance(video_height, int))
+        assert (video_height is None or isinstance(video_height, int))
         self.video_height = video_height
         
-        assert(video_duration is None or isinstance(video_duration, int))
+        assert (video_duration is None or isinstance(video_duration, int))
         self.video_duration = video_duration
         
-        assert(description is None or isinstance(description, str))
+        assert (description is None or isinstance(description, str))
         self.description = description
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -797,7 +1055,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         Serializes this InlineQueryResultVideo to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultVideo, self).to_array()
@@ -827,7 +1085,7 @@ class InlineQueryResultVideo(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultVideo from a given dictionary.
+        Deserialize a new InlineQueryResultVideo from a given dictionary.
 
         :return: new InlineQueryResultVideo instance.
         :rtype: InlineQueryResultVideo
@@ -836,10 +1094,10 @@ class InlineQueryResultVideo(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -854,7 +1112,10 @@ class InlineQueryResultVideo(InlineQueryResult):
         data['description'] = str(array.get('description')) if array.get('description') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultVideo(**data)
+        
+        instance = InlineQueryResultVideo(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -864,11 +1125,21 @@ class InlineQueryResultVideo(InlineQueryResult):
         return "InlineQueryResultVideo(type={self.type!r}, id={self.id!r}, video_url={self.video_url!r}, mime_type={self.mime_type!r}, thumb_url={self.thumb_url!r}, title={self.title!r}, caption={self.caption!r}, video_width={self.video_width!r}, video_height={self.video_height!r}, video_duration={self.video_duration!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultvideo_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultVideo.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultVideo(type={self.type!r}, id={self.id!r}, video_url={self.video_url!r}, mime_type={self.mime_type!r}, thumb_url={self.thumb_url!r}, title={self.title!r}, caption={self.caption!r}, video_width={self.video_width!r}, video_height={self.video_height!r}, video_duration={self.video_duration!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultvideo_instance`
         """
-        return key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultVideo
 
@@ -880,15 +1151,49 @@ class InlineQueryResultAudio(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultaudio
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be audio
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param audio_url: A valid URL for the audio file
+    :type  audio_url: str
+    
+    :param title: Title
+    :type  title: str
+    
+
+    Optional keyword parameters:
+    
+    :param caption: Optional. Caption, 0-200 characters
+    :type  caption: str
+    
+    :param performer: Optional. Performer
+    :type  performer: str
+    
+    :param audio_duration: Optional. Audio duration in seconds
+    :type  audio_duration: int
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the audio
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, audio_url, title, caption=None, performer=None, audio_duration=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an mp3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultaudio
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be audio
@@ -903,57 +1208,57 @@ class InlineQueryResultAudio(InlineQueryResult):
         :param title: Title
         :type  title: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword caption: Optional. Caption, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption, 0-200 characters
+        :type  caption: str
         
-        :keyword performer: Optional. Performer
-        :type    performer: str
+        :param performer: Optional. Performer
+        :type  performer: str
         
-        :keyword audio_duration: Optional. Audio duration in seconds
-        :type    audio_duration: int
+        :param audio_duration: Optional. Audio duration in seconds
+        :type  audio_duration: int
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the audio
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the audio
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultAudio, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(audio_url is not None)
-        assert(isinstance(audio_url, str))
+        assert (audio_url is not None)
+        assert (isinstance(audio_url, str))
         self.audio_url = audio_url
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(performer is None or isinstance(performer, str))
+        assert (performer is None or isinstance(performer, str))
         self.performer = performer
         
-        assert(audio_duration is None or isinstance(audio_duration, int))
+        assert (audio_duration is None or isinstance(audio_duration, int))
         self.audio_duration = audio_duration
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -961,7 +1266,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         Serializes this InlineQueryResultAudio to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultAudio, self).to_array()
@@ -985,7 +1290,7 @@ class InlineQueryResultAudio(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultAudio from a given dictionary.
+        Deserialize a new InlineQueryResultAudio from a given dictionary.
 
         :return: new InlineQueryResultAudio instance.
         :rtype: InlineQueryResultAudio
@@ -994,10 +1299,10 @@ class InlineQueryResultAudio(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -1008,7 +1313,10 @@ class InlineQueryResultAudio(InlineQueryResult):
         data['audio_duration'] = int(array.get('audio_duration')) if array.get('audio_duration') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultAudio(**data)
+        
+        instance = InlineQueryResultAudio(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -1018,11 +1326,21 @@ class InlineQueryResultAudio(InlineQueryResult):
         return "InlineQueryResultAudio(type={self.type!r}, id={self.id!r}, audio_url={self.audio_url!r}, title={self.title!r}, caption={self.caption!r}, performer={self.performer!r}, audio_duration={self.audio_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultaudio_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultAudio.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultAudio(type={self.type!r}, id={self.id!r}, audio_url={self.audio_url!r}, title={self.title!r}, caption={self.caption!r}, performer={self.performer!r}, audio_duration={self.audio_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultaudio_instance`
         """
-        return key in ["type", "id", "audio_url", "title", "caption", "performer", "audio_duration", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "audio_url", "title", "caption", "performer", "audio_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultAudio
 
@@ -1034,15 +1352,46 @@ class InlineQueryResultVoice(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultvoice
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be voice
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param voice_url: A valid URL for the voice recording
+    :type  voice_url: str
+    
+    :param title: Recording title
+    :type  title: str
+    
+
+    Optional keyword parameters:
+    
+    :param caption: Optional. Caption, 0-200 characters
+    :type  caption: str
+    
+    :param voice_duration: Optional. Recording duration in seconds
+    :type  voice_duration: int
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the voice recording
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, voice_url, title, caption=None, voice_duration=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a voice recording in an .ogg container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultvoice
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be voice
@@ -1057,51 +1406,51 @@ class InlineQueryResultVoice(InlineQueryResult):
         :param title: Recording title
         :type  title: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword caption: Optional. Caption, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption, 0-200 characters
+        :type  caption: str
         
-        :keyword voice_duration: Optional. Recording duration in seconds
-        :type    voice_duration: int
+        :param voice_duration: Optional. Recording duration in seconds
+        :type  voice_duration: int
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the voice recording
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the voice recording
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultVoice, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(voice_url is not None)
-        assert(isinstance(voice_url, str))
+        assert (voice_url is not None)
+        assert (isinstance(voice_url, str))
         self.voice_url = voice_url
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(voice_duration is None or isinstance(voice_duration, int))
+        assert (voice_duration is None or isinstance(voice_duration, int))
         self.voice_duration = voice_duration
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -1109,7 +1458,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         Serializes this InlineQueryResultVoice to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultVoice, self).to_array()
@@ -1131,7 +1480,7 @@ class InlineQueryResultVoice(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultVoice from a given dictionary.
+        Deserialize a new InlineQueryResultVoice from a given dictionary.
 
         :return: new InlineQueryResultVoice instance.
         :rtype: InlineQueryResultVoice
@@ -1140,10 +1489,10 @@ class InlineQueryResultVoice(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -1153,7 +1502,10 @@ class InlineQueryResultVoice(InlineQueryResult):
         data['voice_duration'] = int(array.get('voice_duration')) if array.get('voice_duration') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultVoice(**data)
+        
+        instance = InlineQueryResultVoice(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -1163,11 +1515,21 @@ class InlineQueryResultVoice(InlineQueryResult):
         return "InlineQueryResultVoice(type={self.type!r}, id={self.id!r}, voice_url={self.voice_url!r}, title={self.title!r}, caption={self.caption!r}, voice_duration={self.voice_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultvoice_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultVoice.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultVoice(type={self.type!r}, id={self.id!r}, voice_url={self.voice_url!r}, title={self.title!r}, caption={self.caption!r}, voice_duration={self.voice_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultvoice_instance`
         """
-        return key in ["type", "id", "voice_url", "title", "caption", "voice_duration", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "voice_url", "title", "caption", "voice_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultVoice
 
@@ -1179,15 +1541,58 @@ class InlineQueryResultDocument(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultdocument
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be document
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param title: Title for the result
+    :type  title: str
+    
+    :param document_url: A valid URL for the file
+    :type  document_url: str
+    
+    :param mime_type: Mime type of the content of the file, either “application/pdf” or “application/zip”
+    :type  mime_type: str
+    
+
+    Optional keyword parameters:
+    
+    :param caption: Optional. Caption of the document to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param description: Optional. Short description of the result
+    :type  description: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the file
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+    
+    :param thumb_url: Optional. URL of the thumbnail (jpeg only) for the file
+    :type  thumb_url: str
+    
+    :param thumb_width: Optional. Thumbnail width
+    :type  thumb_width: int
+    
+    :param thumb_height: Optional. Thumbnail height
+    :type  thumb_height: int
     """
+
     def __init__(self, type, id, title, document_url, mime_type, caption=None, description=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultdocument
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be document
@@ -1205,73 +1610,73 @@ class InlineQueryResultDocument(InlineQueryResult):
         :param mime_type: Mime type of the content of the file, either “application/pdf” or “application/zip”
         :type  mime_type: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword caption: Optional. Caption of the document to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the document to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword description: Optional. Short description of the result
-        :type    description: str
+        :param description: Optional. Short description of the result
+        :type  description: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the file
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the file
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
-        :keyword thumb_url: Optional. URL of the thumbnail (jpeg only) for the file
-        :type    thumb_url: str
+        :param thumb_url: Optional. URL of the thumbnail (jpeg only) for the file
+        :type  thumb_url: str
         
-        :keyword thumb_width: Optional. Thumbnail width
-        :type    thumb_width: int
+        :param thumb_width: Optional. Thumbnail width
+        :type  thumb_width: int
         
-        :keyword thumb_height: Optional. Thumbnail height
-        :type    thumb_height: int
+        :param thumb_height: Optional. Thumbnail height
+        :type  thumb_height: int
         """
         super(InlineQueryResultDocument, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(document_url is not None)
-        assert(isinstance(document_url, str))
+        assert (document_url is not None)
+        assert (isinstance(document_url, str))
         self.document_url = document_url
         
-        assert(mime_type is not None)
-        assert(isinstance(mime_type, str))
+        assert (mime_type is not None)
+        assert (isinstance(mime_type, str))
         self.mime_type = mime_type
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(description is None or isinstance(description, str))
+        assert (description is None or isinstance(description, str))
         self.description = description
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
         
-        assert(thumb_url is None or isinstance(thumb_url, str))
+        assert (thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
         
-        assert(thumb_width is None or isinstance(thumb_width, int))
+        assert (thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
         
-        assert(thumb_height is None or isinstance(thumb_height, int))
+        assert (thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -1279,7 +1684,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         Serializes this InlineQueryResultDocument to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultDocument, self).to_array()
@@ -1308,7 +1713,7 @@ class InlineQueryResultDocument(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultDocument from a given dictionary.
+        Deserialize a new InlineQueryResultDocument from a given dictionary.
 
         :return: new InlineQueryResultDocument instance.
         :rtype: InlineQueryResultDocument
@@ -1317,10 +1722,10 @@ class InlineQueryResultDocument(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -1334,7 +1739,10 @@ class InlineQueryResultDocument(InlineQueryResult):
         data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        return InlineQueryResultDocument(**data)
+        
+        instance = InlineQueryResultDocument(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -1344,11 +1752,21 @@ class InlineQueryResultDocument(InlineQueryResult):
         return "InlineQueryResultDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_url={self.document_url!r}, mime_type={self.mime_type!r}, caption={self.caption!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultdocument_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultDocument.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_url={self.document_url!r}, mime_type={self.mime_type!r}, caption={self.caption!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultdocument_instance`
         """
-        return key in ["type", "id", "title", "document_url", "mime_type", "caption", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+        return key in ["type", "id", "title", "document_url", "mime_type", "caption", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultDocument
 
@@ -1360,15 +1778,52 @@ class InlineQueryResultLocation(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultlocation
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be location
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 Bytes
+    :type  id: str
+    
+    :param latitude: Location latitude in degrees
+    :type  latitude: float
+    
+    :param longitude: Location longitude in degrees
+    :type  longitude: float
+    
+    :param title: Location title
+    :type  title: str
+    
+
+    Optional keyword parameters:
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the location
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+    
+    :param thumb_url: Optional. Url of the thumbnail for the result
+    :type  thumb_url: str
+    
+    :param thumb_width: Optional. Thumbnail width
+    :type  thumb_width: int
+    
+    :param thumb_height: Optional. Thumbnail height
+    :type  thumb_height: int
     """
+
     def __init__(self, type, id, latitude, longitude, title, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultlocation
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be location
@@ -1386,61 +1841,61 @@ class InlineQueryResultLocation(InlineQueryResult):
         :param title: Location title
         :type  title: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the location
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the location
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
-        :keyword thumb_url: Optional. Url of the thumbnail for the result
-        :type    thumb_url: str
+        :param thumb_url: Optional. Url of the thumbnail for the result
+        :type  thumb_url: str
         
-        :keyword thumb_width: Optional. Thumbnail width
-        :type    thumb_width: int
+        :param thumb_width: Optional. Thumbnail width
+        :type  thumb_width: int
         
-        :keyword thumb_height: Optional. Thumbnail height
-        :type    thumb_height: int
+        :param thumb_height: Optional. Thumbnail height
+        :type  thumb_height: int
         """
         super(InlineQueryResultLocation, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(latitude is not None)
-        assert(isinstance(latitude, float))
+        assert (latitude is not None)
+        assert (isinstance(latitude, float))
         self.latitude = latitude
         
-        assert(longitude is not None)
-        assert(isinstance(longitude, float))
+        assert (longitude is not None)
+        assert (isinstance(longitude, float))
         self.longitude = longitude
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
         
-        assert(thumb_url is None or isinstance(thumb_url, str))
+        assert (thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
         
-        assert(thumb_width is None or isinstance(thumb_width, int))
+        assert (thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
         
-        assert(thumb_height is None or isinstance(thumb_height, int))
+        assert (thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -1448,7 +1903,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         Serializes this InlineQueryResultLocation to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultLocation, self).to_array()
@@ -1473,7 +1928,7 @@ class InlineQueryResultLocation(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultLocation from a given dictionary.
+        Deserialize a new InlineQueryResultLocation from a given dictionary.
 
         :return: new InlineQueryResultLocation instance.
         :rtype: InlineQueryResultLocation
@@ -1482,10 +1937,10 @@ class InlineQueryResultLocation(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -1497,7 +1952,10 @@ class InlineQueryResultLocation(InlineQueryResult):
         data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        return InlineQueryResultLocation(**data)
+        
+        instance = InlineQueryResultLocation(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -1507,11 +1965,21 @@ class InlineQueryResultLocation(InlineQueryResult):
         return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultlocation_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultLocation.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultlocation_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+        return key in ["type", "id", "latitude", "longitude", "title", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultLocation
 
@@ -1523,15 +1991,58 @@ class InlineQueryResultVenue(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultvenue
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be venue
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 Bytes
+    :type  id: str
+    
+    :param latitude: Latitude of the venue location in degrees
+    :type  latitude: float
+    
+    :param longitude: Longitude of the venue location in degrees
+    :type  longitude: float
+    
+    :param title: Title of the venue
+    :type  title: str
+    
+    :param address: Address of the venue
+    :type  address: str
+    
+
+    Optional keyword parameters:
+    
+    :param foursquare_id: Optional. Foursquare identifier of the venue if known
+    :type  foursquare_id: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the venue
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+    
+    :param thumb_url: Optional. Url of the thumbnail for the result
+    :type  thumb_url: str
+    
+    :param thumb_width: Optional. Thumbnail width
+    :type  thumb_width: int
+    
+    :param thumb_height: Optional. Thumbnail height
+    :type  thumb_height: int
     """
+
     def __init__(self, type, id, latitude, longitude, title, address, foursquare_id=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultvenue
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be venue
@@ -1552,71 +2063,71 @@ class InlineQueryResultVenue(InlineQueryResult):
         :param address: Address of the venue
         :type  address: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword foursquare_id: Optional. Foursquare identifier of the venue if known
-        :type    foursquare_id: str
+        :param foursquare_id: Optional. Foursquare identifier of the venue if known
+        :type  foursquare_id: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the venue
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the venue
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
-        :keyword thumb_url: Optional. Url of the thumbnail for the result
-        :type    thumb_url: str
+        :param thumb_url: Optional. Url of the thumbnail for the result
+        :type  thumb_url: str
         
-        :keyword thumb_width: Optional. Thumbnail width
-        :type    thumb_width: int
+        :param thumb_width: Optional. Thumbnail width
+        :type  thumb_width: int
         
-        :keyword thumb_height: Optional. Thumbnail height
-        :type    thumb_height: int
+        :param thumb_height: Optional. Thumbnail height
+        :type  thumb_height: int
         """
         super(InlineQueryResultVenue, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(latitude is not None)
-        assert(isinstance(latitude, float))
+        assert (latitude is not None)
+        assert (isinstance(latitude, float))
         self.latitude = latitude
         
-        assert(longitude is not None)
-        assert(isinstance(longitude, float))
+        assert (longitude is not None)
+        assert (isinstance(longitude, float))
         self.longitude = longitude
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(address is not None)
-        assert(isinstance(address, str))
+        assert (address is not None)
+        assert (isinstance(address, str))
         self.address = address
         
-        assert(foursquare_id is None or isinstance(foursquare_id, str))
+        assert (foursquare_id is None or isinstance(foursquare_id, str))
         self.foursquare_id = foursquare_id
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
         
-        assert(thumb_url is None or isinstance(thumb_url, str))
+        assert (thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
         
-        assert(thumb_width is None or isinstance(thumb_width, int))
+        assert (thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
         
-        assert(thumb_height is None or isinstance(thumb_height, int))
+        assert (thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -1624,7 +2135,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         Serializes this InlineQueryResultVenue to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultVenue, self).to_array()
@@ -1652,7 +2163,7 @@ class InlineQueryResultVenue(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultVenue from a given dictionary.
+        Deserialize a new InlineQueryResultVenue from a given dictionary.
 
         :return: new InlineQueryResultVenue instance.
         :rtype: InlineQueryResultVenue
@@ -1661,10 +2172,10 @@ class InlineQueryResultVenue(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -1678,7 +2189,10 @@ class InlineQueryResultVenue(InlineQueryResult):
         data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        return InlineQueryResultVenue(**data)
+        
+        instance = InlineQueryResultVenue(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -1688,11 +2202,21 @@ class InlineQueryResultVenue(InlineQueryResult):
         return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultvenue_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultVenue.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultvenue_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+        return key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultVenue
 
@@ -1704,15 +2228,52 @@ class InlineQueryResultContact(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcontact
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be contact
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 Bytes
+    :type  id: str
+    
+    :param phone_number: Contact's phone number
+    :type  phone_number: str
+    
+    :param first_name: Contact's first name
+    :type  first_name: str
+    
+
+    Optional keyword parameters:
+    
+    :param last_name: Optional. Contact's last name
+    :type  last_name: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the contact
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+    
+    :param thumb_url: Optional. Url of the thumbnail for the result
+    :type  thumb_url: str
+    
+    :param thumb_width: Optional. Thumbnail width
+    :type  thumb_width: int
+    
+    :param thumb_height: Optional. Thumbnail height
+    :type  thumb_height: int
     """
+
     def __init__(self, type, id, phone_number, first_name, last_name=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultcontact
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be contact
@@ -1727,63 +2288,63 @@ class InlineQueryResultContact(InlineQueryResult):
         :param first_name: Contact's first name
         :type  first_name: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword last_name: Optional. Contact's last name
-        :type    last_name: str
+        :param last_name: Optional. Contact's last name
+        :type  last_name: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the contact
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the contact
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
-        :keyword thumb_url: Optional. Url of the thumbnail for the result
-        :type    thumb_url: str
+        :param thumb_url: Optional. Url of the thumbnail for the result
+        :type  thumb_url: str
         
-        :keyword thumb_width: Optional. Thumbnail width
-        :type    thumb_width: int
+        :param thumb_width: Optional. Thumbnail width
+        :type  thumb_width: int
         
-        :keyword thumb_height: Optional. Thumbnail height
-        :type    thumb_height: int
+        :param thumb_height: Optional. Thumbnail height
+        :type  thumb_height: int
         """
         super(InlineQueryResultContact, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(phone_number is not None)
-        assert(isinstance(phone_number, str))
+        assert (phone_number is not None)
+        assert (isinstance(phone_number, str))
         self.phone_number = phone_number
         
-        assert(first_name is not None)
-        assert(isinstance(first_name, str))
+        assert (first_name is not None)
+        assert (isinstance(first_name, str))
         self.first_name = first_name
         
-        assert(last_name is None or isinstance(last_name, str))
+        assert (last_name is None or isinstance(last_name, str))
         self.last_name = last_name
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
         
-        assert(thumb_url is None or isinstance(thumb_url, str))
+        assert (thumb_url is None or isinstance(thumb_url, str))
         self.thumb_url = thumb_url
         
-        assert(thumb_width is None or isinstance(thumb_width, int))
+        assert (thumb_width is None or isinstance(thumb_width, int))
         self.thumb_width = thumb_width
         
-        assert(thumb_height is None or isinstance(thumb_height, int))
+        assert (thumb_height is None or isinstance(thumb_height, int))
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -1791,7 +2352,7 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         Serializes this InlineQueryResultContact to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultContact, self).to_array()
@@ -1817,7 +2378,7 @@ class InlineQueryResultContact(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultContact from a given dictionary.
+        Deserialize a new InlineQueryResultContact from a given dictionary.
 
         :return: new InlineQueryResultContact instance.
         :rtype: InlineQueryResultContact
@@ -1826,10 +2387,10 @@ class InlineQueryResultContact(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -1841,7 +2402,10 @@ class InlineQueryResultContact(InlineQueryResult):
         data['thumb_url'] = str(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        return InlineQueryResultContact(**data)
+        
+        instance = InlineQueryResultContact(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -1851,11 +2415,21 @@ class InlineQueryResultContact(InlineQueryResult):
         return "InlineQueryResultContact(type={self.type!r}, id={self.id!r}, phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultcontact_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultContact.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultContact(type={self.type!r}, id={self.id!r}, phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcontact_instance`
         """
-        return key in ["type", "id", "phone_number", "first_name", "last_name", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+        return key in ["type", "id", "phone_number", "first_name", "last_name", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultContact
 
@@ -1867,15 +2441,34 @@ class InlineQueryResultGame(InlineQueryResult):
     Note: This will only work in Telegram versions released after October 1, 2016. Older clients will not display any inline results if a game result is among them.
 
     https://core.telegram.org/bots/api#inlinequeryresultgame
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be game
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param game_short_name: Short name of the game
+    :type  game_short_name: str
+    
+
+    Optional keyword parameters:
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     """
+
     def __init__(self, type, id, game_short_name, reply_markup=None):
         """
         Represents a Game.
         Note: This will only work in Telegram versions released after October 1, 2016. Older clients will not display any inline results if a game result is among them.
     
         https://core.telegram.org/bots/api#inlinequeryresultgame
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be game
@@ -1887,28 +2480,28 @@ class InlineQueryResultGame(InlineQueryResult):
         :param game_short_name: Short name of the game
         :type  game_short_name: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         """
         super(InlineQueryResultGame, self).__init__()
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(game_short_name is not None)
-        assert(isinstance(game_short_name, str))
+        assert (game_short_name is not None)
+        assert (isinstance(game_short_name, str))
         self.game_short_name = game_short_name
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
     # end def __init__
 
@@ -1916,7 +2509,7 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         Serializes this InlineQueryResultGame to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultGame, self).to_array()
@@ -1931,7 +2524,7 @@ class InlineQueryResultGame(InlineQueryResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultGame from a given dictionary.
+        Deserialize a new InlineQueryResultGame from a given dictionary.
 
         :return: new InlineQueryResultGame instance.
         :rtype: InlineQueryResultGame
@@ -1940,15 +2533,18 @@ class InlineQueryResultGame(InlineQueryResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
         data['game_short_name'] = str(array.get('game_short_name'))
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
-        return InlineQueryResultGame(**data)
+        
+        instance = InlineQueryResultGame(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -1958,11 +2554,21 @@ class InlineQueryResultGame(InlineQueryResult):
         return "InlineQueryResultGame(type={self.type!r}, id={self.id!r}, game_short_name={self.game_short_name!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultgame_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultGame.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultGame(type={self.type!r}, id={self.id!r}, game_short_name={self.game_short_name!r}, reply_markup={self.reply_markup!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultgame_instance`
         """
-        return key in ["type", "id", "game_short_name", "reply_markup"]
+        return key in ["type", "id", "game_short_name", "reply_markup"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultGame
 
@@ -1973,14 +2579,45 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedphoto
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be photo
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param photo_file_id: A valid file identifier of the photo
+    :type  photo_file_id: str
+    
+
+    Optional keyword parameters:
+    
+    :param title: Optional. Title for the result
+    :type  title: str
+    
+    :param description: Optional. Short description of the result
+    :type  description: str
+    
+    :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the photo
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, photo_file_id, title=None, description=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
     
         https://core.telegram.org/bots/api#inlinequeryresultcachedphoto
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be photo
@@ -1992,53 +2629,53 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :param photo_file_id: A valid file identifier of the photo
         :type  photo_file_id: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword title: Optional. Title for the result
-        :type    title: str
+        :param title: Optional. Title for the result
+        :type  title: str
         
-        :keyword description: Optional. Short description of the result
-        :type    description: str
+        :param description: Optional. Short description of the result
+        :type  description: str
         
-        :keyword caption: Optional. Caption of the photo to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the photo
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the photo
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedPhoto, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(photo_file_id is not None)
-        assert(isinstance(photo_file_id, str))
+        assert (photo_file_id is not None)
+        assert (isinstance(photo_file_id, str))
         self.photo_file_id = photo_file_id
         
-        assert(title is None or isinstance(title, str))
+        assert (title is None or isinstance(title, str))
         self.title = title
         
-        assert(description is None or isinstance(description, str))
+        assert (description is None or isinstance(description, str))
         self.description = description
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2046,7 +2683,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         Serializes this InlineQueryResultCachedPhoto to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultCachedPhoto, self).to_array()
@@ -2069,7 +2706,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultCachedPhoto from a given dictionary.
+        Deserialize a new InlineQueryResultCachedPhoto from a given dictionary.
 
         :return: new InlineQueryResultCachedPhoto instance.
         :rtype: InlineQueryResultCachedPhoto
@@ -2078,10 +2715,10 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -2091,7 +2728,10 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultCachedPhoto(**data)
+        
+        instance = InlineQueryResultCachedPhoto(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -2101,11 +2741,21 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         return "InlineQueryResultCachedPhoto(type={self.type!r}, id={self.id!r}, photo_file_id={self.photo_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultcachedphoto_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultCachedPhoto.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultCachedPhoto(type={self.type!r}, id={self.id!r}, photo_file_id={self.photo_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcachedphoto_instance`
         """
-        return key in ["type", "id", "photo_file_id", "title", "description", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "photo_file_id", "title", "description", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedPhoto
 
@@ -2116,14 +2766,42 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedgif
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be gif
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param gif_file_id: A valid file identifier for the GIF file
+    :type  gif_file_id: str
+    
+
+    Optional keyword parameters:
+    
+    :param title: Optional. Title for the result
+    :type  title: str
+    
+    :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, gif_file_id, title=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
     
         https://core.telegram.org/bots/api#inlinequeryresultcachedgif
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be gif
@@ -2135,47 +2813,47 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :param gif_file_id: A valid file identifier for the GIF file
         :type  gif_file_id: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword title: Optional. Title for the result
-        :type    title: str
+        :param title: Optional. Title for the result
+        :type  title: str
         
-        :keyword caption: Optional. Caption of the GIF file to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the GIF animation
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedGif, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(gif_file_id is not None)
-        assert(isinstance(gif_file_id, str))
+        assert (gif_file_id is not None)
+        assert (isinstance(gif_file_id, str))
         self.gif_file_id = gif_file_id
         
-        assert(title is None or isinstance(title, str))
+        assert (title is None or isinstance(title, str))
         self.title = title
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2183,7 +2861,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         Serializes this InlineQueryResultCachedGif to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultCachedGif, self).to_array()
@@ -2204,7 +2882,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultCachedGif from a given dictionary.
+        Deserialize a new InlineQueryResultCachedGif from a given dictionary.
 
         :return: new InlineQueryResultCachedGif instance.
         :rtype: InlineQueryResultCachedGif
@@ -2213,10 +2891,10 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -2225,7 +2903,10 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultCachedGif(**data)
+        
+        instance = InlineQueryResultCachedGif(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -2235,11 +2916,21 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         return "InlineQueryResultCachedGif(type={self.type!r}, id={self.id!r}, gif_file_id={self.gif_file_id!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultcachedgif_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultCachedGif.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultCachedGif(type={self.type!r}, id={self.id!r}, gif_file_id={self.gif_file_id!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcachedgif_instance`
         """
-        return key in ["type", "id", "gif_file_id", "title", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "gif_file_id", "title", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedGif
 
@@ -2250,14 +2941,42 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedmpeg4gif
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be mpeg4_gif
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param mpeg4_file_id: A valid file identifier for the MP4 file
+    :type  mpeg4_file_id: str
+    
+
+    Optional keyword parameters:
+    
+    :param title: Optional. Title for the result
+    :type  title: str
+    
+    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, mpeg4_file_id, title=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
     
         https://core.telegram.org/bots/api#inlinequeryresultcachedmpeg4gif
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be mpeg4_gif
@@ -2269,47 +2988,47 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :param mpeg4_file_id: A valid file identifier for the MP4 file
         :type  mpeg4_file_id: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword title: Optional. Title for the result
-        :type    title: str
+        :param title: Optional. Title for the result
+        :type  title: str
         
-        :keyword caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the video animation
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedMpeg4Gif, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(mpeg4_file_id is not None)
-        assert(isinstance(mpeg4_file_id, str))
+        assert (mpeg4_file_id is not None)
+        assert (isinstance(mpeg4_file_id, str))
         self.mpeg4_file_id = mpeg4_file_id
         
-        assert(title is None or isinstance(title, str))
+        assert (title is None or isinstance(title, str))
         self.title = title
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2317,7 +3036,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         """
         Serializes this InlineQueryResultCachedMpeg4Gif to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
@@ -2338,7 +3057,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultCachedMpeg4Gif from a given dictionary.
+        Deserialize a new InlineQueryResultCachedMpeg4Gif from a given dictionary.
 
         :return: new InlineQueryResultCachedMpeg4Gif instance.
         :rtype: InlineQueryResultCachedMpeg4Gif
@@ -2347,10 +3066,10 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -2359,7 +3078,10 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultCachedMpeg4Gif(**data)
+        
+        instance = InlineQueryResultCachedMpeg4Gif(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -2369,11 +3091,21 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         return "InlineQueryResultCachedMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_file_id={self.mpeg4_file_id!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultcachedmpeg4gif_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultCachedMpeg4Gif.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultCachedMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_file_id={self.mpeg4_file_id!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcachedmpeg4gif_instance`
         """
-        return key in ["type", "id", "mpeg4_file_id", "title", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "mpeg4_file_id", "title", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedMpeg4Gif
 
@@ -2385,15 +3117,37 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedsticker
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be sticker
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param sticker_file_id: A valid file identifier of the sticker
+    :type  sticker_file_id: str
+    
+
+    Optional keyword parameters:
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the sticker
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, sticker_file_id, reply_markup=None, input_message_content=None):
         """
         Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultcachedsticker
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be sticker
@@ -2405,35 +3159,35 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :param sticker_file_id: A valid file identifier of the sticker
         :type  sticker_file_id: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the sticker
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the sticker
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedSticker, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(sticker_file_id is not None)
-        assert(isinstance(sticker_file_id, str))
+        assert (sticker_file_id is not None)
+        assert (isinstance(sticker_file_id, str))
         self.sticker_file_id = sticker_file_id
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2441,7 +3195,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         Serializes this InlineQueryResultCachedSticker to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultCachedSticker, self).to_array()
@@ -2458,7 +3212,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultCachedSticker from a given dictionary.
+        Deserialize a new InlineQueryResultCachedSticker from a given dictionary.
 
         :return: new InlineQueryResultCachedSticker instance.
         :rtype: InlineQueryResultCachedSticker
@@ -2467,17 +3221,20 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
         data['sticker_file_id'] = str(array.get('sticker_file_id'))
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultCachedSticker(**data)
+        
+        instance = InlineQueryResultCachedSticker(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -2487,11 +3244,21 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         return "InlineQueryResultCachedSticker(type={self.type!r}, id={self.id!r}, sticker_file_id={self.sticker_file_id!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultcachedsticker_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultCachedSticker.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultCachedSticker(type={self.type!r}, id={self.id!r}, sticker_file_id={self.sticker_file_id!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcachedsticker_instance`
         """
-        return key in ["type", "id", "sticker_file_id", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "sticker_file_id", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedSticker
 
@@ -2503,15 +3270,46 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcacheddocument
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be document
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param title: Title for the result
+    :type  title: str
+    
+    :param document_file_id: A valid file identifier for the file
+    :type  document_file_id: str
+    
+
+    Optional keyword parameters:
+    
+    :param description: Optional. Short description of the result
+    :type  description: str
+    
+    :param caption: Optional. Caption of the document to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the file
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, title, document_file_id, description=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultcacheddocument
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be document
@@ -2526,51 +3324,51 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :param document_file_id: A valid file identifier for the file
         :type  document_file_id: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword description: Optional. Short description of the result
-        :type    description: str
+        :param description: Optional. Short description of the result
+        :type  description: str
         
-        :keyword caption: Optional. Caption of the document to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the document to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the file
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the file
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedDocument, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(document_file_id is not None)
-        assert(isinstance(document_file_id, str))
+        assert (document_file_id is not None)
+        assert (isinstance(document_file_id, str))
         self.document_file_id = document_file_id
         
-        assert(description is None or isinstance(description, str))
+        assert (description is None or isinstance(description, str))
         self.description = description
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2578,7 +3376,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         Serializes this InlineQueryResultCachedDocument to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultCachedDocument, self).to_array()
@@ -2600,7 +3398,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultCachedDocument from a given dictionary.
+        Deserialize a new InlineQueryResultCachedDocument from a given dictionary.
 
         :return: new InlineQueryResultCachedDocument instance.
         :rtype: InlineQueryResultCachedDocument
@@ -2609,10 +3407,10 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -2622,7 +3420,10 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultCachedDocument(**data)
+        
+        instance = InlineQueryResultCachedDocument(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -2632,11 +3433,21 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         return "InlineQueryResultCachedDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_file_id={self.document_file_id!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultcacheddocument_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultCachedDocument.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultCachedDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_file_id={self.document_file_id!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcacheddocument_instance`
         """
-        return key in ["type", "id", "title", "document_file_id", "description", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "title", "document_file_id", "description", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedDocument
 
@@ -2647,14 +3458,45 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedvideo
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be video
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param video_file_id: A valid file identifier for the video file
+    :type  video_file_id: str
+    
+    :param title: Title for the result
+    :type  title: str
+    
+
+    Optional keyword parameters:
+    
+    :param description: Optional. Short description of the result
+    :type  description: str
+    
+    :param caption: Optional. Caption of the video to be sent, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the video
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, video_file_id, title, description=None, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
     
         https://core.telegram.org/bots/api#inlinequeryresultcachedvideo
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be video
@@ -2669,51 +3511,51 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :param title: Title for the result
         :type  title: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword description: Optional. Short description of the result
-        :type    description: str
+        :param description: Optional. Short description of the result
+        :type  description: str
         
-        :keyword caption: Optional. Caption of the video to be sent, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption of the video to be sent, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the video
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the video
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedVideo, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(video_file_id is not None)
-        assert(isinstance(video_file_id, str))
+        assert (video_file_id is not None)
+        assert (isinstance(video_file_id, str))
         self.video_file_id = video_file_id
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(description is None or isinstance(description, str))
+        assert (description is None or isinstance(description, str))
         self.description = description
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2721,7 +3563,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         Serializes this InlineQueryResultCachedVideo to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultCachedVideo, self).to_array()
@@ -2743,7 +3585,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultCachedVideo from a given dictionary.
+        Deserialize a new InlineQueryResultCachedVideo from a given dictionary.
 
         :return: new InlineQueryResultCachedVideo instance.
         :rtype: InlineQueryResultCachedVideo
@@ -2752,10 +3594,10 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -2765,7 +3607,10 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultCachedVideo(**data)
+        
+        instance = InlineQueryResultCachedVideo(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -2775,11 +3620,21 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         return "InlineQueryResultCachedVideo(type={self.type!r}, id={self.id!r}, video_file_id={self.video_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultcachedvideo_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultCachedVideo.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultCachedVideo(type={self.type!r}, id={self.id!r}, video_file_id={self.video_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcachedvideo_instance`
         """
-        return key in ["type", "id", "video_file_id", "title", "description", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "video_file_id", "title", "description", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedVideo
 
@@ -2791,15 +3646,43 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedvoice
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be voice
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param voice_file_id: A valid file identifier for the voice message
+    :type  voice_file_id: str
+    
+    :param title: Voice message title
+    :type  title: str
+    
+
+    Optional keyword parameters:
+    
+    :param caption: Optional. Caption, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the voice message
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, voice_file_id, title, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultcachedvoice
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be voice
@@ -2814,45 +3697,45 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         :param title: Voice message title
         :type  title: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword caption: Optional. Caption, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the voice message
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the voice message
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedVoice, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(voice_file_id is not None)
-        assert(isinstance(voice_file_id, str))
+        assert (voice_file_id is not None)
+        assert (isinstance(voice_file_id, str))
         self.voice_file_id = voice_file_id
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2860,7 +3743,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         Serializes this InlineQueryResultCachedVoice to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultCachedVoice, self).to_array()
@@ -2880,7 +3763,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultCachedVoice from a given dictionary.
+        Deserialize a new InlineQueryResultCachedVoice from a given dictionary.
 
         :return: new InlineQueryResultCachedVoice instance.
         :rtype: InlineQueryResultCachedVoice
@@ -2889,10 +3772,10 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -2901,7 +3784,10 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultCachedVoice(**data)
+        
+        instance = InlineQueryResultCachedVoice(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -2911,11 +3797,21 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         return "InlineQueryResultCachedVoice(type={self.type!r}, id={self.id!r}, voice_file_id={self.voice_file_id!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultcachedvoice_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultCachedVoice.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultCachedVoice(type={self.type!r}, id={self.id!r}, voice_file_id={self.voice_file_id!r}, title={self.title!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcachedvoice_instance`
         """
-        return key in ["type", "id", "voice_file_id", "title", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "voice_file_id", "title", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedVoice
 
@@ -2927,15 +3823,40 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
+    
+
+    Parameters:
+    
+    :param type: Type of the result, must be audio
+    :type  type: str
+    
+    :param id: Unique identifier for this result, 1-64 bytes
+    :type  id: str
+    
+    :param audio_file_id: A valid file identifier for the audio file
+    :type  audio_file_id: str
+    
+
+    Optional keyword parameters:
+    
+    :param caption: Optional. Caption, 0-200 characters
+    :type  caption: str
+    
+    :param reply_markup: Optional. Inline keyboard attached to the message
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+    
+    :param input_message_content: Optional. Content of the message to be sent instead of the audio
+    :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, type, id, audio_file_id, caption=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
-
-
+        
+    
         Parameters:
         
         :param type: Type of the result, must be audio
@@ -2947,41 +3868,41 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :param audio_file_id: A valid file identifier for the audio file
         :type  audio_file_id: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword caption: Optional. Caption, 0-200 characters
-        :type    caption: str
+        :param caption: Optional. Caption, 0-200 characters
+        :type  caption: str
         
-        :keyword reply_markup: Optional. Inline keyboard attached to the message
-        :type    reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        :param reply_markup: Optional. Inline keyboard attached to the message
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
-        :keyword input_message_content: Optional. Content of the message to be sent instead of the audio
-        :type    input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+        :param input_message_content: Optional. Content of the message to be sent instead of the audio
+        :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedAudio, self).__init__()
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert(type is not None)
-        assert(isinstance(type, str))
+        assert (type is not None)
+        assert (isinstance(type, str))
         self.type = type
         
-        assert(id is not None)
-        assert(isinstance(id, str))
+        assert (id is not None)
+        assert (isinstance(id, str))
         self.id = id
         
-        assert(audio_file_id is not None)
-        assert(isinstance(audio_file_id, str))
+        assert (audio_file_id is not None)
+        assert (isinstance(audio_file_id, str))
         self.audio_file_id = audio_file_id
         
-        assert(caption is None or isinstance(caption, str))
+        assert (caption is None or isinstance(caption, str))
         self.caption = caption
         
-        assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
+        assert (reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         self.reply_markup = reply_markup
         
-        assert(input_message_content is None or isinstance(input_message_content, InputMessageContent))
+        assert (input_message_content is None or isinstance(input_message_content, InputMessageContent))
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2989,7 +3910,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         Serializes this InlineQueryResultCachedAudio to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InlineQueryResultCachedAudio, self).to_array()
@@ -3008,7 +3929,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InlineQueryResultCachedAudio from a given dictionary.
+        Deserialize a new InlineQueryResultCachedAudio from a given dictionary.
 
         :return: new InlineQueryResultCachedAudio instance.
         :rtype: InlineQueryResultCachedAudio
@@ -3017,10 +3938,10 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
             return None
         # end if
         assert(isinstance(array, dict))
-        
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
+
         data = {}
         data['type'] = str(array.get('type'))
         data['id'] = str(array.get('id'))
@@ -3028,7 +3949,10 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        return InlineQueryResultCachedAudio(**data)
+        
+        instance = InlineQueryResultCachedAudio(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -3038,11 +3962,21 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         return "InlineQueryResultCachedAudio(type={self.type!r}, id={self.id!r}, audio_file_id={self.audio_file_id!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresultcachedaudio_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResultCachedAudio.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResultCachedAudio(type={self.type!r}, id={self.id!r}, audio_file_id={self.audio_file_id!r}, caption={self.caption!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcachedaudio_instance`
         """
-        return key in ["type", "id", "audio_file_id", "caption", "reply_markup", "input_message_content"]
+        return key in ["type", "id", "audio_file_id", "caption", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedAudio
 
@@ -3053,37 +3987,53 @@ class InputTextMessageContent(InputMessageContent):
     Represents the content of a text message to be sent as the result of an inline query.
 
     https://core.telegram.org/bots/api#inputtextmessagecontent
+    
+
+    Parameters:
+    
+    :param message_text: Text of the message to be sent, 1-4096 characters
+    :type  message_text: str
+    
+
+    Optional keyword parameters:
+    
+    :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+    :type  parse_mode: str
+    
+    :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
+    :type  disable_web_page_preview: bool
     """
+
     def __init__(self, message_text, parse_mode=None, disable_web_page_preview=None):
         """
         Represents the content of a text message to be sent as the result of an inline query.
     
         https://core.telegram.org/bots/api#inputtextmessagecontent
-
-
+        
+    
         Parameters:
         
         :param message_text: Text of the message to be sent, 1-4096 characters
         :type  message_text: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-        :type    parse_mode: str
+        :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+        :type  parse_mode: str
         
-        :keyword disable_web_page_preview: Optional. Disables link previews for links in the sent message
-        :type    disable_web_page_preview: bool
+        :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
+        :type  disable_web_page_preview: bool
         """
         super(InputTextMessageContent, self).__init__()
-        assert(message_text is not None)
-        assert(isinstance(message_text, str))
+        assert (message_text is not None)
+        assert (isinstance(message_text, str))
         self.message_text = message_text
         
-        assert(parse_mode is None or isinstance(parse_mode, str))
+        assert (parse_mode is None or isinstance(parse_mode, str))
         self.parse_mode = parse_mode
         
-        assert(disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
+        assert (disable_web_page_preview is None or isinstance(disable_web_page_preview, bool))
         self.disable_web_page_preview = disable_web_page_preview
     # end def __init__
 
@@ -3091,7 +4041,7 @@ class InputTextMessageContent(InputMessageContent):
         """
         Serializes this InputTextMessageContent to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InputTextMessageContent, self).to_array()
@@ -3106,7 +4056,7 @@ class InputTextMessageContent(InputMessageContent):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InputTextMessageContent from a given dictionary.
+        Deserialize a new InputTextMessageContent from a given dictionary.
 
         :return: new InputTextMessageContent instance.
         :rtype: InputTextMessageContent
@@ -3115,12 +4065,15 @@ class InputTextMessageContent(InputMessageContent):
             return None
         # end if
         assert(isinstance(array, dict))
-        
+
         data = {}
         data['message_text'] = str(array.get('message_text'))
         data['parse_mode'] = str(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['disable_web_page_preview'] = bool(array.get('disable_web_page_preview')) if array.get('disable_web_page_preview') is not None else None
-        return InputTextMessageContent(**data)
+        
+        instance = InputTextMessageContent(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -3130,11 +4083,21 @@ class InputTextMessageContent(InputMessageContent):
         return "InputTextMessageContent(message_text={self.message_text!r}, parse_mode={self.parse_mode!r}, disable_web_page_preview={self.disable_web_page_preview!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inputtextmessagecontent_instance)`
+        """
+        if self._raw:
+            return "InputTextMessageContent.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputTextMessageContent(message_text={self.message_text!r}, parse_mode={self.parse_mode!r}, disable_web_page_preview={self.disable_web_page_preview!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inputtextmessagecontent_instance`
         """
-        return key in ["message_text", "parse_mode", "disable_web_page_preview"]
+        return key in ["message_text", "parse_mode", "disable_web_page_preview"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputTextMessageContent
 
@@ -3146,15 +4109,28 @@ class InputLocationMessageContent(InputMessageContent):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inputlocationmessagecontent
+    
+
+    Parameters:
+    
+    :param latitude: Latitude of the location in degrees
+    :type  latitude: float
+    
+    :param longitude: Longitude of the location in degrees
+    :type  longitude: float
+    
+
+    Optional keyword parameters:
     """
+
     def __init__(self, latitude, longitude):
         """
         Represents the content of a location message to be sent as the result of an inline query. 
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inputlocationmessagecontent
-
-
+        
+    
         Parameters:
         
         :param latitude: Latitude of the location in degrees
@@ -3162,14 +4138,17 @@ class InputLocationMessageContent(InputMessageContent):
         
         :param longitude: Longitude of the location in degrees
         :type  longitude: float
+        
+    
+        Optional keyword parameters:
         """
         super(InputLocationMessageContent, self).__init__()
-        assert(latitude is not None)
-        assert(isinstance(latitude, float))
+        assert (latitude is not None)
+        assert (isinstance(latitude, float))
         self.latitude = latitude
         
-        assert(longitude is not None)
-        assert(isinstance(longitude, float))
+        assert (longitude is not None)
+        assert (isinstance(longitude, float))
         self.longitude = longitude
     # end def __init__
 
@@ -3177,7 +4156,7 @@ class InputLocationMessageContent(InputMessageContent):
         """
         Serializes this InputLocationMessageContent to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InputLocationMessageContent, self).to_array()
@@ -3189,7 +4168,7 @@ class InputLocationMessageContent(InputMessageContent):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InputLocationMessageContent from a given dictionary.
+        Deserialize a new InputLocationMessageContent from a given dictionary.
 
         :return: new InputLocationMessageContent instance.
         :rtype: InputLocationMessageContent
@@ -3198,11 +4177,14 @@ class InputLocationMessageContent(InputMessageContent):
             return None
         # end if
         assert(isinstance(array, dict))
-        
+
         data = {}
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
-        return InputLocationMessageContent(**data)
+        
+        instance = InputLocationMessageContent(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -3212,11 +4194,21 @@ class InputLocationMessageContent(InputMessageContent):
         return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inputlocationmessagecontent_instance)`
+        """
+        if self._raw:
+            return "InputLocationMessageContent.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inputlocationmessagecontent_instance`
         """
-        return key in ["latitude", "longitude"]
+        return key in ["latitude", "longitude"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputLocationMessageContent
 
@@ -3228,15 +4220,37 @@ class InputVenueMessageContent(InputMessageContent):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inputvenuemessagecontent
+    
+
+    Parameters:
+    
+    :param latitude: Latitude of the venue in degrees
+    :type  latitude: float
+    
+    :param longitude: Longitude of the venue in degrees
+    :type  longitude: float
+    
+    :param title: Name of the venue
+    :type  title: str
+    
+    :param address: Address of the venue
+    :type  address: str
+    
+
+    Optional keyword parameters:
+    
+    :param foursquare_id: Optional. Foursquare identifier of the venue, if known
+    :type  foursquare_id: str
     """
+
     def __init__(self, latitude, longitude, title, address, foursquare_id=None):
         """
         Represents the content of a venue message to be sent as the result of an inline query. 
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inputvenuemessagecontent
-
-
+        
+    
         Parameters:
         
         :param latitude: Latitude of the venue in degrees
@@ -3251,30 +4265,30 @@ class InputVenueMessageContent(InputMessageContent):
         :param address: Address of the venue
         :type  address: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword foursquare_id: Optional. Foursquare identifier of the venue, if known
-        :type    foursquare_id: str
+        :param foursquare_id: Optional. Foursquare identifier of the venue, if known
+        :type  foursquare_id: str
         """
         super(InputVenueMessageContent, self).__init__()
-        assert(latitude is not None)
-        assert(isinstance(latitude, float))
+        assert (latitude is not None)
+        assert (isinstance(latitude, float))
         self.latitude = latitude
         
-        assert(longitude is not None)
-        assert(isinstance(longitude, float))
+        assert (longitude is not None)
+        assert (isinstance(longitude, float))
         self.longitude = longitude
         
-        assert(title is not None)
-        assert(isinstance(title, str))
+        assert (title is not None)
+        assert (isinstance(title, str))
         self.title = title
         
-        assert(address is not None)
-        assert(isinstance(address, str))
+        assert (address is not None)
+        assert (isinstance(address, str))
         self.address = address
         
-        assert(foursquare_id is None or isinstance(foursquare_id, str))
+        assert (foursquare_id is None or isinstance(foursquare_id, str))
         self.foursquare_id = foursquare_id
     # end def __init__
 
@@ -3282,7 +4296,7 @@ class InputVenueMessageContent(InputMessageContent):
         """
         Serializes this InputVenueMessageContent to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InputVenueMessageContent, self).to_array()
@@ -3298,7 +4312,7 @@ class InputVenueMessageContent(InputMessageContent):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InputVenueMessageContent from a given dictionary.
+        Deserialize a new InputVenueMessageContent from a given dictionary.
 
         :return: new InputVenueMessageContent instance.
         :rtype: InputVenueMessageContent
@@ -3307,14 +4321,17 @@ class InputVenueMessageContent(InputMessageContent):
             return None
         # end if
         assert(isinstance(array, dict))
-        
+
         data = {}
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
         data['title'] = str(array.get('title'))
         data['address'] = str(array.get('address'))
         data['foursquare_id'] = str(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
-        return InputVenueMessageContent(**data)
+        
+        instance = InputVenueMessageContent(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -3324,11 +4341,21 @@ class InputVenueMessageContent(InputMessageContent):
         return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inputvenuemessagecontent_instance)`
+        """
+        if self._raw:
+            return "InputVenueMessageContent.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inputvenuemessagecontent_instance`
         """
-        return key in ["latitude", "longitude", "title", "address", "foursquare_id"]
+        return key in ["latitude", "longitude", "title", "address", "foursquare_id"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputVenueMessageContent
 
@@ -3340,15 +4367,31 @@ class InputContactMessageContent(InputMessageContent):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inputcontactmessagecontent
+    
+
+    Parameters:
+    
+    :param phone_number: Contact's phone number
+    :type  phone_number: str
+    
+    :param first_name: Contact's first name
+    :type  first_name: str
+    
+
+    Optional keyword parameters:
+    
+    :param last_name: Optional. Contact's last name
+    :type  last_name: str
     """
+
     def __init__(self, phone_number, first_name, last_name=None):
         """
         Represents the content of a contact message to be sent as the result of an inline query. 
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     
         https://core.telegram.org/bots/api#inputcontactmessagecontent
-
-
+        
+    
         Parameters:
         
         :param phone_number: Contact's phone number
@@ -3357,22 +4400,22 @@ class InputContactMessageContent(InputMessageContent):
         :param first_name: Contact's first name
         :type  first_name: str
         
-
+    
         Optional keyword parameters:
         
-        :keyword last_name: Optional. Contact's last name
-        :type    last_name: str
+        :param last_name: Optional. Contact's last name
+        :type  last_name: str
         """
         super(InputContactMessageContent, self).__init__()
-        assert(phone_number is not None)
-        assert(isinstance(phone_number, str))
+        assert (phone_number is not None)
+        assert (isinstance(phone_number, str))
         self.phone_number = phone_number
         
-        assert(first_name is not None)
-        assert(isinstance(first_name, str))
+        assert (first_name is not None)
+        assert (isinstance(first_name, str))
         self.first_name = first_name
         
-        assert(last_name is None or isinstance(last_name, str))
+        assert (last_name is None or isinstance(last_name, str))
         self.last_name = last_name
     # end def __init__
 
@@ -3380,7 +4423,7 @@ class InputContactMessageContent(InputMessageContent):
         """
         Serializes this InputContactMessageContent to a dictionary.
 
-        :return: dictionary repesentation of this object.
+        :return: dictionary representation of this object.
         :rtype: dict
         """
         array = super(InputContactMessageContent, self).to_array()
@@ -3394,7 +4437,7 @@ class InputContactMessageContent(InputMessageContent):
     @staticmethod
     def from_array(array):
         """
-        Deserializes a new InputContactMessageContent from a given dictionary.
+        Deserialize a new InputContactMessageContent from a given dictionary.
 
         :return: new InputContactMessageContent instance.
         :rtype: InputContactMessageContent
@@ -3403,12 +4446,15 @@ class InputContactMessageContent(InputMessageContent):
             return None
         # end if
         assert(isinstance(array, dict))
-        
+
         data = {}
         data['phone_number'] = str(array.get('phone_number'))
         data['first_name'] = str(array.get('first_name'))
         data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
-        return InputContactMessageContent(**data)
+        
+        instance = InputContactMessageContent(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
@@ -3418,11 +4464,21 @@ class InputContactMessageContent(InputMessageContent):
         return "InputContactMessageContent(phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(inputcontactmessagecontent_instance)`
+        """
+        if self._raw:
+            return "InputContactMessageContent.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputContactMessageContent(phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in inputcontactmessagecontent_instance`
         """
-        return key in ["phone_number", "first_name", "last_name"]
+        return key in ["phone_number", "first_name", "last_name"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputContactMessageContent
 
