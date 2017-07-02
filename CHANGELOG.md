@@ -1,4 +1,7 @@
 # Changelog
+## Version 3.1.1 __Not yet released__
+- fixed `send_video_note`, `send_video`, `send_voice`, `set_chat_photo` of `pytgbot.bot.Bot`.
+
 ## Version 3.1.0
 - Updated Official API changes of [`Bot API 3`.`1` (June 30, 2017)](https://core.telegram.org/bots/api-changelog#june-30-2017)
     - Added new functions:
@@ -40,6 +43,7 @@
         - `can_send_other_messages`
         - `can_add_web_page_previews`
     - Removed documentation saying `pytgbot.api_types.sendable.inline.InlineQueryResultCachedDocument` was limited to sending only pdf-files and zip archives.
+- Also now storing the incoming (decoded json) data in the `_raw` field of the object.
 
 
 ## Version 3.0.0

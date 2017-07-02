@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
+import re
+
 import requests
 from time import sleep
 from datetime import timedelta
@@ -698,7 +700,7 @@ class Bot(object):
             InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
         )))
         result = self._do_fileupload(
-            "document", document, chat_id=chat_id, document=document, caption=caption,
+            "document", document, chat_id=chat_id, caption=caption,
             disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -874,7 +876,7 @@ class Bot(object):
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
          )))
         result = self._do_fileupload(
-            "video", video, chat_id=chat_id, video=video, duration=duration, width=width, height=height,
+            "video", video, chat_id=chat_id, duration=duration, width=width, height=height,
             caption=caption, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -968,7 +970,7 @@ class Bot(object):
              InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
          )))
         result = self._do_fileupload(
-            "voice", voice, chat_id=chat_id, voice=voice, caption=caption, duration=duration,
+            "voice", voice, chat_id=chat_id, caption=caption, duration=duration,
             disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -1046,7 +1048,11 @@ class Bot(object):
 
         assert(reply_markup is None or isinstance(reply_markup, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply)))
 
-        result = self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self._do_fileupload(
+            "video_note", video_note, chat_id=chat_id,
+            duration=duration, length=length, disable_notification=disable_notification,
+            reply_to_message_id=reply_to_message_id, reply_markup=reply_markup,
+        )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1782,7 +1788,7 @@ class Bot(object):
         assert(photo is not None)
         assert(isinstance(photo, InputFile))
 
-        result = self.do("setChatPhoto", chat_id=chat_id, photo=photo)
+        result = self._do_fileupload("photo", photo, _command="setChatPhoto", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3169,7 +3175,7 @@ class Bot(object):
         return res
     # end def _postprocess_request
 
-    def _do_fileupload(self, file_param_name, value, **kwargs):
+    def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
         """
         :param file_param_name: For what field the file should be uploaded.
         :type  file_param_name: str
@@ -3178,6 +3184,9 @@ class Bot(object):
                       file that is already on the Telegram servers, or upload a new file,
                       specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
         :type  value: pytgbot.api_types.sendable.files.InputFile | str
+        
+        :param _command: Overwrite the sended command.
+                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
 
         :param kwargs: will get json encoded.
 
@@ -3199,7 +3208,14 @@ class Bot(object):
         else:
             raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
-        return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
+        # end if
+        if not _command:
+            # command as camelCase  # "voice_note" -> "sendVoiceNote"  # https://stackoverflow.com/a/10984923/3423324
+            command = re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), "send_" + file_param_name)
+        else:
+            command = _command
+        # end def
+        return self.do(command, **kwargs)
     # end def _do_fileupload
 
     def get_download_url(self, file):
