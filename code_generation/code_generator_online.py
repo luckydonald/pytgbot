@@ -5,7 +5,7 @@ from luckydonaldUtils.files.basics import mkdir_p  # luckydonaldUtils v0.49+
 from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
 
-from code_generation.code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS
+from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS
 from jinja2.exceptions import TemplateError, TemplateSyntaxError
 
 FILE_HEADER = "# -*- coding: utf-8 -*-\n"
@@ -228,7 +228,7 @@ def load_from_api(folder):
         # end if
     # end for
 
-    output(document, folder, results)
+    output(folder, results, html_document=document)
 # end def main
 
 def main():
@@ -252,6 +252,7 @@ def load_from_dump(folder):
     results = safe_eval(file, safe_values)
     output(folder, results)
 # end def
+
 
 def output(folder, results, html_document=None):
     can_quit = False

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,8 +11,8 @@ To learn how to create..">
     <link rel="shortcut icon" href="/favicon.ico?3" type="image/x-icon" />
 
     <link href="/css/bootstrap.min.css?2" rel="stylesheet">
-
-    <link href="/css/telegram.css?120" rel="stylesheet" media="screen">
+    
+    <link href="/css/telegram.css?123" rel="stylesheet" media="screen">
     <style>
     </style>
   </head>
@@ -39,13 +38,19 @@ To learn how to create..">
           <div id="dev_page_content_wrap" class=" ">
   <div class="dev_page_bread_crumbs"><ul class="breadcrumb clearfix"><li><a  href="/bots" >Telegram Bots</a></li><i class="icon icon-breadcrumb-divider"></i><li><a  href="/bots/api" >Telegram Bot API</a></li></ul></div>
   <h1 id="dev_page_title" dir="auto">Telegram Bot API</h1>
-
+  
   <div id="dev_page_content" dir="auto"><!-- scroll_nav -->
 
 <blockquote>
 <p>The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.<br>To learn how to create and set up a bot, please consult our <a href="https://core.telegram.org/bots"><strong>Introduction to Bots</strong></a> and <a href="/bots/faq"><strong>Bot FAQ</strong></a>.</p>
 </blockquote>
 <h3><a class="anchor" name="recent-changes" href="#recent-changes"><i class="anchor-icon"></i></a>Recent changes</h3>
+<h4><a class="anchor" name="july-21-2017" href="#july-21-2017"><i class="anchor-icon"></i></a>July 21, 2017</h4>
+<p><strong>Bot API 3.2</strong>. Teach your bot to handle <a href="#stickers">stickers and sticker sets</a>.</p>
+<ul>
+<li>Added new methods for working with stickers: <a href="#getstickerset">getStickerSet</a>, <a href="#uploadstickerfile">uploadStickerFile</a>, <a href="#createnewstickerset">createNewStickerSet</a>, <a href="#addstickertoset">addStickerToSet</a>, <a href="#setstickerpositioninset">setStickerPositionInSet</a>, and <a href="#deletestickerfromset">deleteStickerFromSet</a>.</li>
+<li>Added the fields <em>set_name</em> and <em>mask_position</em> to the <a href="#sticker">Sticker</a> object, plus two new objects, <a href="#stickerset">StickerSet</a>, and <a href="#maskposition">MaskPosition</a>.</li>
+</ul>
 <h4><a class="anchor" name="june-30-2017" href="#june-30-2017"><i class="anchor-icon"></i></a>June 30, 2017</h4>
 <p><strong>Bot API 3.1</strong>. Build your own robotic police force for supergoups with these new methods for admin bots:</p>
 <ul>
@@ -750,47 +755,6 @@ To learn how to create..">
 </tr>
 </tbody>
 </table>
-<h4><a class="anchor" name="sticker" href="#sticker"><i class="anchor-icon"></i></a>Sticker</h4>
-<p>This object represents a sticker.</p>
-<table class="table">
-<tbody>
-<tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
-</tr>
-<tr>
-<td>file_id</td>
-<td>String</td>
-<td>Unique identifier for this file</td>
-</tr>
-<tr>
-<td>width</td>
-<td>Integer</td>
-<td>Sticker width</td>
-</tr>
-<tr>
-<td>height</td>
-<td>Integer</td>
-<td>Sticker height</td>
-</tr>
-<tr>
-<td>thumb</td>
-<td><a href="#photosize">PhotoSize</a></td>
-<td><em>Optional</em>. Sticker thumbnail in .webp or .jpg format</td>
-</tr>
-<tr>
-<td>emoji</td>
-<td>String</td>
-<td><em>Optional</em>. Emoji associated with the sticker</td>
-</tr>
-<tr>
-<td>file_size</td>
-<td>Integer</td>
-<td><em>Optional</em>. File size</td>
-</tr>
-</tbody>
-</table>
 <h4><a class="anchor" name="video" href="#video"><i class="anchor-icon"></i></a>Video</h4>
 <p>This object represents a video file.</p>
 <table class="table">
@@ -1226,7 +1190,7 @@ To learn how to create..">
 </tbody>
 </table>
 <blockquote>
-<p><strong>NOTE:</strong> After the user presses an inline button, Telegram clients will display a progress bar until you call <a href="#answercallbackquery">answerCallbackQuery</a>. It is, therefore, necessary to react by calling <a href="#answercallbackquery">answerCallbackQuery</a> even if no notification to the user is needed (e.g., without specifying any of the optional parameters).</p>
+<p><strong>NOTE:</strong> After the user presses a callback button, Telegram clients will display a progress bar until you call <a href="#answercallbackquery">answerCallbackQuery</a>. It is, therefore, necessary to react by calling <a href="#answercallbackquery">answerCallbackQuery</a> even if no notification to the user is needed (e.g., without specifying any of the optional parameters).</p>
 </blockquote>
 <h4><a class="anchor" name="forcereply" href="#forcereply"><i class="anchor-icon"></i></a>ForceReply</h4>
 <p>Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot‘s message and tapped ’Reply&#39;). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice <a href="/bots#privacy-mode">privacy mode</a>.</p>
@@ -1680,48 +1644,6 @@ pre-formatted fixed-width code block
 <td>String</td>
 <td>Optional</td>
 <td>Document caption (may also be used when resending documents by <em>file_id</em>), 0-200 characters</td>
-</tr>
-<tr>
-<td>disable_notification</td>
-<td>Boolean</td>
-<td>Optional</td>
-<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
-</tr>
-<tr>
-<td>reply_to_message_id</td>
-<td>Integer</td>
-<td>Optional</td>
-<td>If the message is a reply, ID of the original message</td>
-</tr>
-<tr>
-<td>reply_markup</td>
-<td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a> or <a href="#replykeyboardmarkup">ReplyKeyboardMarkup</a> or <a href="#replykeyboardremove">ReplyKeyboardRemove</a> or <a href="#forcereply">ForceReply</a></td>
-<td>Optional</td>
-<td>Additional interface options. A JSON-serialized object for an <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>, <a href="https://core.telegram.org/bots#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard or to force a reply from the user.</td>
-</tr>
-</tbody>
-</table>
-<h4><a class="anchor" name="sendsticker" href="#sendsticker"><i class="anchor-icon"></i></a>sendSticker</h4>
-<p>Use this method to send .webp stickers. On success, the sent <a href="#message">Message</a> is returned.</p>
-<table class="table">
-<tbody>
-<tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
-</tr>
-<tr>
-<td>chat_id</td>
-<td>Integer or String</td>
-<td>Yes</td>
-<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
-</tr>
-<tr>
-<td>sticker</td>
-<td><a href="#inputfile">InputFile</a> or String</td>
-<td>Yes</td>
-<td>Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>disable_notification</td>
@@ -2812,6 +2734,343 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
+<h3><a class="anchor" name="stickers" href="#stickers"><i class="anchor-icon"></i></a>Stickers</h3>
+<p>The following methods and objects allow your bot to handle stickers and sticker sets.</p>
+<h4><a class="anchor" name="sticker" href="#sticker"><i class="anchor-icon"></i></a>Sticker</h4>
+<p>This object represents a sticker.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>file_id</td>
+<td>String</td>
+<td>Unique identifier for this file</td>
+</tr>
+<tr>
+<td>width</td>
+<td>Integer</td>
+<td>Sticker width</td>
+</tr>
+<tr>
+<td>height</td>
+<td>Integer</td>
+<td>Sticker height</td>
+</tr>
+<tr>
+<td>thumb</td>
+<td><a href="#photosize">PhotoSize</a></td>
+<td><em>Optional</em>. Sticker thumbnail in the .webp or .jpg format</td>
+</tr>
+<tr>
+<td>emoji</td>
+<td>String</td>
+<td><em>Optional</em>. Emoji associated with the sticker</td>
+</tr>
+<tr>
+<td>set_name</td>
+<td>String</td>
+<td><em>Optional</em>. Name of the sticker set to which the sticker belongs</td>
+</tr>
+<tr>
+<td>mask_position</td>
+<td><a href="#maskposition">MaskPosition</a></td>
+<td><em>Optional</em>. For mask stickers, the position where the mask should be placed</td>
+</tr>
+<tr>
+<td>file_size</td>
+<td>Integer</td>
+<td><em>Optional</em>. File size</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="stickerset" href="#stickerset"><i class="anchor-icon"></i></a>StickerSet</h4>
+<p>This object represents a sticker set.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Sticker set name</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>Sticker set title</td>
+</tr>
+<tr>
+<td>contains_masks</td>
+<td>Boolean</td>
+<td><em>True</em>, if the sticker set contains masks</td>
+</tr>
+<tr>
+<td>stickers</td>
+<td>Array of <a href="#sticker">Sticker</a></td>
+<td>List of all set stickers</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="maskposition" href="#maskposition"><i class="anchor-icon"></i></a>MaskPosition</h4>
+<p>This object describes the position on faces where a mask should be placed by default.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>point</td>
+<td>String</td>
+<td>The part of the face relative to which the mask should be placed. One of “forehead”, “eyes”, “mouth”, or “chin”.</td>
+</tr>
+<tr>
+<td>x_shift</td>
+<td>Float number</td>
+<td>Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.</td>
+</tr>
+<tr>
+<td>y_shift</td>
+<td>Float number</td>
+<td>Shift by Y-axis measured in heights of the mask scaled to the face size, from top to bottom. For example, 1.0 will place the mask just below the default mask position.</td>
+</tr>
+<tr>
+<td>scale</td>
+<td>Float number</td>
+<td>Mask scaling coefficient. For example, 2.0 means double size.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="sendsticker" href="#sendsticker"><i class="anchor-icon"></i></a>sendSticker</h4>
+<p>Use this method to send .webp stickers. On success, the sent <a href="#message">Message</a> is returned.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>sticker</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Yes</td>
+<td>Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>disable_notification</td>
+<td>Boolean</td>
+<td>Optional</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
+</tr>
+<tr>
+<td>reply_to_message_id</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>If the message is a reply, ID of the original message</td>
+</tr>
+<tr>
+<td>reply_markup</td>
+<td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a> or <a href="#replykeyboardmarkup">ReplyKeyboardMarkup</a> or <a href="#replykeyboardremove">ReplyKeyboardRemove</a> or <a href="#forcereply">ForceReply</a></td>
+<td>Optional</td>
+<td>Additional interface options. A JSON-serialized object for an <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>, <a href="https://core.telegram.org/bots#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard or to force a reply from the user.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="getstickerset" href="#getstickerset"><i class="anchor-icon"></i></a>getStickerSet</h4>
+<p>Use this method to get a sticker set. On success, a <a href="#stickerset">StickerSet</a> object is returned.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Yes</td>
+<td>Name of the sticker set</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="uploadstickerfile" href="#uploadstickerfile"><i class="anchor-icon"></i></a>uploadStickerFile</h4>
+<p>Use this method to upload a .png file with a sticker for later use in <em>createNewStickerSet</em> and <em>addStickerToSet</em> methods (can be used multiple times). Returns the uploaded <a href="#file">File</a> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>User identifier of sticker file owner</td>
+</tr>
+<tr>
+<td>png_sticker</td>
+<td><a href="#inputfile">InputFile</a></td>
+<td>Yes</td>
+<td><strong>Png</strong> image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="createnewstickerset" href="#createnewstickerset"><i class="anchor-icon"></i></a>createNewStickerSet</h4>
+<p>Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns <em>True</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>User identifier of created sticker set owner</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Yes</td>
+<td>Short name of sticker set, to be used in <code>t.me/addstickers/</code> URLs (e.g., <em>animals</em>). Can contain only english letters, digits and underscores. Must begin with a letter, can&#39;t contain consecutive underscores and must end in <em>“_by_&lt;bot username&gt;”</em>. <em>&lt;bot_username&gt;</em> is case insensitive. 1-64 characters.</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td>Yes</td>
+<td>Sticker set title, 1-64 characters</td>
+</tr>
+<tr>
+<td>png_sticker</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Yes</td>
+<td><strong>Png</strong> image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a <em>file_id</em> as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>emojis</td>
+<td>String</td>
+<td>Yes</td>
+<td>One or more emoji corresponding to the sticker</td>
+</tr>
+<tr>
+<td>contains_masks</td>
+<td>Boolean</td>
+<td>Optional</td>
+<td>Pass <em>True</em>, if a set of mask stickers should be created</td>
+</tr>
+<tr>
+<td>mask_position</td>
+<td><a href="#maskposition">MaskPosition</a></td>
+<td>Optional</td>
+<td>A JSON-serialized object for position where the mask should be placed on faces</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="addstickertoset" href="#addstickertoset"><i class="anchor-icon"></i></a>addStickerToSet</h4>
+<p>Use this method to add a new sticker to a set created by the bot. Returns <em>True</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>User identifier of sticker set owner</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Yes</td>
+<td>Sticker set name</td>
+</tr>
+<tr>
+<td>png_sticker</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Yes</td>
+<td><strong>Png</strong> image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a <em>file_id</em> as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>emojis</td>
+<td>String</td>
+<td>Yes</td>
+<td>One or more emoji corresponding to the sticker</td>
+</tr>
+<tr>
+<td>mask_position</td>
+<td><a href="#maskposition">MaskPosition</a></td>
+<td>Optional</td>
+<td>A JSON-serialized object for position where the mask should be placed on faces</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="setstickerpositioninset" href="#setstickerpositioninset"><i class="anchor-icon"></i></a>setStickerPositionInSet</h4>
+<p>Use this method to move a sticker in a set created by the bot to a specific position . Returns <em>True</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>sticker</td>
+<td>String</td>
+<td>Yes</td>
+<td>File identifier of the sticker</td>
+</tr>
+<tr>
+<td>position</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>New sticker position in the set, zero-based</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="deletestickerfromset" href="#deletestickerfromset"><i class="anchor-icon"></i></a>deleteStickerFromSet</h4>
+<p>Use this method to delete a sticker from a set created by the bot. Returns <em>True</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>sticker</td>
+<td>String</td>
+<td>Yes</td>
+<td>File identifier of the sticker</td>
+</tr>
+</tbody>
+</table>
 <h3><a class="anchor" name="inline-mode" href="#inline-mode"><i class="anchor-icon"></i></a>Inline mode</h3>
 <p>The following methods and objects allow your bot to work in <a href="/bots/inline">inline mode</a>.<br>Please see our <a href="/bots/inline">Introduction to Inline bots</a> for more details.</p>
 <p>To enable this option, send the <code>/setinline</code> command to <a href="https://t.me/botfather">@BotFather</a> and provide the placeholder text that the user will see in the input field after typing your bot’s name.</p>
@@ -3195,6 +3454,9 @@ pre-formatted fixed-width code block
 </table>
 <h4><a class="anchor" name="inlinequeryresultvideo" href="#inlinequeryresultvideo"><i class="anchor-icon"></i></a>InlineQueryResultVideo</h4>
 <p>Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the video.</p>
+<blockquote>
+<p>If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you <strong>must</strong> replace its content using <em>input_message_content</em>.</p>
+</blockquote>
 <table class="table">
 <tbody>
 <tr>
@@ -3265,7 +3527,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>input_message_content</td>
 <td><a href="#inputmessagecontent">InputMessageContent</a></td>
-<td><em>Optional</em>. Content of the message to be sent instead of the video</td>
+<td><em>Optional</em>. Content of the message to be sent instead of the video. This field is <strong>required</strong> if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).</td>
 </tr>
 </tbody>
 </table>
@@ -4231,6 +4493,12 @@ pre-formatted fixed-width code block
 <td>Product name, 1-32 characters</td>
 </tr>
 <tr>
+<td>description</td>
+<td>String</td>
+<td>Yes</td>
+<td>Product description, 1-255 characters</td>
+</tr>
+<tr>
 <td>payload</td>
 <td>String</td>
 <td>Yes</td>
@@ -4265,12 +4533,6 @@ pre-formatted fixed-width code block
 <td>String</td>
 <td>Optional</td>
 <td>URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.</td>
-</tr>
-<tr>
-<td>description</td>
-<td>String</td>
-<td>Optional</td>
-<td>Product description, 0-255 characters</td>
 </tr>
 <tr>
 <td>photo_size</td>
@@ -4940,9 +5202,9 @@ pre-formatted fixed-width code block
 <hr>
 <p>And that‘s about all we’ve got for now.<br>If you&#39;ve got any questions, please check out our <a href="/bots/faq"><strong>Bot FAQ »</strong></a></p>
 </div>
-
+  
 </div>
-
+          
         </div>
       </div>
       <div class="footer_wrap">
@@ -4972,8 +5234,8 @@ pre-formatted fixed-width code block
     <div class="footer_column">
       <h5><a href="//telegram.org/apps#desktop-apps">Desktop Apps</a></h5>
       <ul>
-        <li><a href="https://desktop.telegram.org/">PC/Mac/Linux</a></li>
-        <li><a href="https://macos.telegram.org/">macOS</a></li>
+        <li><a href="//desktop.telegram.org/">PC/Mac/Linux</a></li>
+        <li><a href="//macos.telegram.org/">macOS</a></li>
         <li><a href="//telegram.org/dl/web">Web-browser</a></li>
       </ul>
     </div>
@@ -5019,4 +5281,4 @@ backToTopInit();
 </script>
   </body>
 </html>
-<!-- page generated in 20.68ms -->
+<!-- page generated in 23.79ms -->

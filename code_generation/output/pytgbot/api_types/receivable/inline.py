@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import updates
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.updates import UpdateType
 
@@ -70,23 +72,24 @@ class InlineQuery(Result):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.peer import User
         
-        assert (id is not None)
-        assert (isinstance(id, str))
+        assert_type_or_raise(id, str, parameter_name="id")
+        
         self.id = id
         
-        assert (from_peer is not None)
-        assert (isinstance(from_peer, User))
+        assert_type_or_raise(from_peer, User, parameter_name="from_peer")
+        
         self.from_peer = from_peer
         
-        assert (query is not None)
-        assert (isinstance(query, str))
+        assert_type_or_raise(query, str, parameter_name="query")
+        
         self.query = query
         
-        assert (offset is not None)
-        assert (isinstance(offset, str))
+        assert_type_or_raise(offset, str, parameter_name="offset")
+        
         self.offset = offset
         
-        assert (location is None or isinstance(location, Location))
+        assert_type_or_raise(location, None, Location, parameter_name="location")
+        
         self.location = location
 
         self._raw = _raw
@@ -126,10 +129,10 @@ class InlineQuery(Result):
         
 
         data = {}
-        data['id'] = str(array.get('id'))
+        data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
-        data['query'] = str(array.get('query'))
-        data['offset'] = str(array.get('offset'))
+        data['query'] = u(array.get('query'))
+        data['offset'] = u(array.get('offset'))
         data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
         data['_raw'] = array
         return InlineQuery(**data)
@@ -227,22 +230,24 @@ class ChosenInlineResult(UpdateType):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.peer import User
         
-        assert (result_id is not None)
-        assert (isinstance(result_id, str))
+        assert_type_or_raise(result_id, str, parameter_name="result_id")
+        
         self.result_id = result_id
         
-        assert (from_peer is not None)
-        assert (isinstance(from_peer, User))
+        assert_type_or_raise(from_peer, User, parameter_name="from_peer")
+        
         self.from_peer = from_peer
         
-        assert (query is not None)
-        assert (isinstance(query, str))
+        assert_type_or_raise(query, str, parameter_name="query")
+        
         self.query = query
         
-        assert (location is None or isinstance(location, Location))
+        assert_type_or_raise(location, None, Location, parameter_name="location")
+        
         self.location = location
         
-        assert (inline_message_id is None or isinstance(inline_message_id, str))
+        assert_type_or_raise(inline_message_id, None, str, parameter_name="inline_message_id")
+        
         self.inline_message_id = inline_message_id
 
         self._raw = _raw
@@ -283,11 +288,11 @@ class ChosenInlineResult(UpdateType):
         
 
         data = {}
-        data['result_id'] = str(array.get('result_id'))
+        data['result_id'] = u(array.get('result_id'))
         data['from_peer'] = User.from_array(array.get('from'))
-        data['query'] = str(array.get('query'))
+        data['query'] = u(array.get('query'))
         data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
-        data['inline_message_id'] = str(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
+        data['inline_message_id'] = u(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
         data['_raw'] = array
         return ChosenInlineResult(**data)
     # end def from_array

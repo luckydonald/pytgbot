@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import updates
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.sendable.reply_markup import Button
 from pytgbot.api_types.sendable.reply_markup import ReplyMarkup
 
@@ -57,17 +59,20 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         super(ReplyKeyboardMarkup, self).__init__()
         from pytgbot.api_types.sendable.reply_markup import KeyboardButton
         
-        assert (keyboard is not None)
-        assert (isinstance(keyboard, list))
+        assert_type_or_raise(keyboard, list, parameter_name="keyboard")
+        
         self.keyboard = keyboard
         
-        assert (resize_keyboard is None or isinstance(resize_keyboard, bool))
+        assert_type_or_raise(resize_keyboard, None, bool, parameter_name="resize_keyboard")
+        
         self.resize_keyboard = resize_keyboard
         
-        assert (one_time_keyboard is None or isinstance(one_time_keyboard, bool))
+        assert_type_or_raise(one_time_keyboard, None, bool, parameter_name="one_time_keyboard")
+        
         self.one_time_keyboard = one_time_keyboard
         
-        assert (selective is None or isinstance(selective, bool))
+        assert_type_or_raise(selective, None, bool, parameter_name="selective")
+        
         self.selective = selective
     # end def __init__
 
@@ -188,14 +193,16 @@ class KeyboardButton(Button):
         :type  request_location: bool
         """
         super(KeyboardButton, self).__init__()
-        assert (text is not None)
-        assert (isinstance(text, str))
+        assert_type_or_raise(text, str, parameter_name="text")
+        
         self.text = text
         
-        assert (request_contact is None or isinstance(request_contact, bool))
+        assert_type_or_raise(request_contact, None, bool, parameter_name="request_contact")
+        
         self.request_contact = request_contact
         
-        assert (request_location is None or isinstance(request_location, bool))
+        assert_type_or_raise(request_location, None, bool, parameter_name="request_location")
+        
         self.request_location = request_location
     # end def __init__
 
@@ -229,7 +236,7 @@ class KeyboardButton(Button):
         assert(isinstance(array, dict))
 
         data = {}
-        data['text'] = str(array.get('text'))
+        data['text'] = u(array.get('text'))
         data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
         data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
         
@@ -303,11 +310,12 @@ class ReplyKeyboardRemove(ReplyMarkup):
         :type  selective: bool
         """
         super(ReplyKeyboardRemove, self).__init__()
-        assert (remove_keyboard is not None)
-        assert (isinstance(remove_keyboard, bool))
+        assert_type_or_raise(remove_keyboard, bool, parameter_name="remove_keyboard")
+        
         self.remove_keyboard = remove_keyboard
         
-        assert (selective is None or isinstance(selective, bool))
+        assert_type_or_raise(selective, None, bool, parameter_name="selective")
+        
         self.selective = selective
     # end def __init__
 
@@ -410,8 +418,8 @@ class InlineKeyboardMarkup(ReplyMarkup):
         super(InlineKeyboardMarkup, self).__init__()
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardButton
         
-        assert (inline_keyboard is not None)
-        assert (isinstance(inline_keyboard, list))
+        assert_type_or_raise(inline_keyboard, list, parameter_name="inline_keyboard")
+        
         self.inline_keyboard = inline_keyboard
     # end def __init__
 
@@ -547,26 +555,32 @@ class InlineKeyboardButton(Button):
         super(InlineKeyboardButton, self).__init__()
         from pytgbot.api_types.receivable.updates import CallbackGame
         
-        assert (text is not None)
-        assert (isinstance(text, str))
+        assert_type_or_raise(text, str, parameter_name="text")
+        
         self.text = text
         
-        assert (url is None or isinstance(url, str))
+        assert_type_or_raise(url, None, str, parameter_name="url")
+        
         self.url = url
         
-        assert (callback_data is None or isinstance(callback_data, str))
+        assert_type_or_raise(callback_data, None, str, parameter_name="callback_data")
+        
         self.callback_data = callback_data
         
-        assert (switch_inline_query is None or isinstance(switch_inline_query, str))
+        assert_type_or_raise(switch_inline_query, None, str, parameter_name="switch_inline_query")
+        
         self.switch_inline_query = switch_inline_query
         
-        assert (switch_inline_query_current_chat is None or isinstance(switch_inline_query_current_chat, str))
+        assert_type_or_raise(switch_inline_query_current_chat, None, str, parameter_name="switch_inline_query_current_chat")
+        
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
         
-        assert (callback_game is None or isinstance(callback_game, CallbackGame))
+        assert_type_or_raise(callback_game, None, CallbackGame, parameter_name="callback_game")
+        
         self.callback_game = callback_game
         
-        assert (pay is None or isinstance(pay, bool))
+        assert_type_or_raise(pay, None, bool, parameter_name="pay")
+        
         self.pay = pay
     # end def __init__
 
@@ -610,11 +624,11 @@ class InlineKeyboardButton(Button):
         
 
         data = {}
-        data['text'] = str(array.get('text'))
-        data['url'] = str(array.get('url')) if array.get('url') is not None else None
-        data['callback_data'] = str(array.get('callback_data')) if array.get('callback_data') is not None else None
-        data['switch_inline_query'] = str(array.get('switch_inline_query')) if array.get('switch_inline_query') is not None else None
-        data['switch_inline_query_current_chat'] = str(array.get('switch_inline_query_current_chat')) if array.get('switch_inline_query_current_chat') is not None else None
+        data['text'] = u(array.get('text'))
+        data['url'] = u(array.get('url')) if array.get('url') is not None else None
+        data['callback_data'] = u(array.get('callback_data')) if array.get('callback_data') is not None else None
+        data['switch_inline_query'] = u(array.get('switch_inline_query')) if array.get('switch_inline_query') is not None else None
+        data['switch_inline_query_current_chat'] = u(array.get('switch_inline_query_current_chat')) if array.get('switch_inline_query_current_chat') is not None else None
         data['callback_game'] = CallbackGame.from_array(array.get('callback_game')) if array.get('callback_game') is not None else None
         data['pay'] = bool(array.get('pay')) if array.get('pay') is not None else None
         
@@ -696,11 +710,12 @@ class ForceReply(ReplyMarkup):
         :type  selective: bool
         """
         super(ForceReply, self).__init__()
-        assert (force_reply is not None)
-        assert (isinstance(force_reply, bool))
+        assert_type_or_raise(force_reply, bool, parameter_name="force_reply")
+        
         self.force_reply = force_reply
         
-        assert (selective is None or isinstance(selective, bool))
+        assert_type_or_raise(selective, None, bool, parameter_name="selective")
+        
         self.selective = selective
     # end def __init__
 

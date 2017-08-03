@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import updates
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.media import Media
@@ -70,22 +72,24 @@ class MessageEntity(Result):
         super(MessageEntity, self).__init__()
         from pytgbot.api_types.receivable.peer import User
         
-        assert (type is not None)
-        assert (isinstance(type, str))
+        assert_type_or_raise(type, str, parameter_name="type")
+        
         self.type = type
         
-        assert (offset is not None)
-        assert (isinstance(offset, int))
+        assert_type_or_raise(offset, int, parameter_name="offset")
+        
         self.offset = offset
         
-        assert (length is not None)
-        assert (isinstance(length, int))
+        assert_type_or_raise(length, int, parameter_name="length")
+        
         self.length = length
         
-        assert (url is None or isinstance(url, str))
+        assert_type_or_raise(url, None, str, parameter_name="url")
+        
         self.url = url
         
-        assert (user is None or isinstance(user, User))
+        assert_type_or_raise(user, None, User, parameter_name="user")
+        
         self.user = user
 
         self._raw = _raw
@@ -125,10 +129,10 @@ class MessageEntity(Result):
         
 
         data = {}
-        data['type'] = str(array.get('type'))
+        data['type'] = u(array.get('type'))
         data['offset'] = int(array.get('offset'))
         data['length'] = int(array.get('length'))
-        data['url'] = str(array.get('url')) if array.get('url') is not None else None
+        data['url'] = u(array.get('url')) if array.get('url') is not None else None
         data['user'] = User.from_array(array.get('user')) if array.get('user') is not None else None
         data['_raw'] = array
         return MessageEntity(**data)
@@ -217,19 +221,20 @@ class PhotoSize(Result):
         :type  _raw: None | dict
         """
         super(PhotoSize, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, str, parameter_name="file_id")
+        
         self.file_id = file_id
         
-        assert (width is not None)
-        assert (isinstance(width, int))
+        assert_type_or_raise(width, int, parameter_name="width")
+        
         self.width = width
         
-        assert (height is not None)
-        assert (isinstance(height, int))
+        assert_type_or_raise(height, int, parameter_name="height")
+        
         self.height = height
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        
         self.file_size = file_size
 
         self._raw = _raw
@@ -265,7 +270,7 @@ class PhotoSize(Result):
         assert(isinstance(array, dict))
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
@@ -368,24 +373,28 @@ class Audio(Media):
         :type  _raw: None | dict
         """
         super(Audio, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, str, parameter_name="file_id")
+        
         self.file_id = file_id
         
-        assert (duration is not None)
-        assert (isinstance(duration, int))
+        assert_type_or_raise(duration, int, parameter_name="duration")
+        
         self.duration = duration
         
-        assert (performer is None or isinstance(performer, str))
+        assert_type_or_raise(performer, None, str, parameter_name="performer")
+        
         self.performer = performer
         
-        assert (title is None or isinstance(title, str))
+        assert_type_or_raise(title, None, str, parameter_name="title")
+        
         self.title = title
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, str, parameter_name="mime_type")
+        
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        
         self.file_size = file_size
 
         self._raw = _raw
@@ -426,11 +435,11 @@ class Audio(Media):
         assert(isinstance(array, dict))
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['duration'] = int(array.get('duration'))
-        data['performer'] = str(array.get('performer')) if array.get('performer') is not None else None
-        data['title'] = str(array.get('title')) if array.get('title') is not None else None
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
+        data['title'] = u(array.get('title')) if array.get('title') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Audio(**data)
@@ -527,20 +536,24 @@ class Document(Media):
         super(Document, self).__init__()
         from pytgbot.api_types.receivable.media import PhotoSize
         
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, str, parameter_name="file_id")
+        
         self.file_id = file_id
         
-        assert (thumb is None or isinstance(thumb, PhotoSize))
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
+        
         self.thumb = thumb
         
-        assert (file_name is None or isinstance(file_name, str))
+        assert_type_or_raise(file_name, None, str, parameter_name="file_name")
+        
         self.file_name = file_name
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, str, parameter_name="mime_type")
+        
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        
         self.file_size = file_size
 
         self._raw = _raw
@@ -582,10 +595,10 @@ class Document(Media):
         
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['file_name'] = str(array.get('file_name')) if array.get('file_name') is not None else None
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Document(**data)
@@ -615,173 +628,6 @@ class Document(Media):
         return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Document
-
-
-
-class Sticker(Media):
-    """
-    This object represents a sticker.
-
-    https://core.telegram.org/bots/api#sticker
-    
-
-    Parameters:
-    
-    :param file_id: Unique identifier for this file
-    :type  file_id: str
-    
-    :param width: Sticker width
-    :type  width: int
-    
-    :param height: Sticker height
-    :type  height: int
-    
-
-    Optional keyword parameters:
-    
-    :param thumb: Optional. Sticker thumbnail in .webp or .jpg format
-    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-    
-    :param emoji: Optional. Emoji associated with the sticker
-    :type  emoji: str
-    
-    :param file_size: Optional. File size
-    :type  file_size: int
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, file_id, width, height, thumb=None, emoji=None, file_size=None, _raw=None):
-        """
-        This object represents a sticker.
-    
-        https://core.telegram.org/bots/api#sticker
-        
-    
-        Parameters:
-        
-        :param file_id: Unique identifier for this file
-        :type  file_id: str
-        
-        :param width: Sticker width
-        :type  width: int
-        
-        :param height: Sticker height
-        :type  height: int
-        
-    
-        Optional keyword parameters:
-        
-        :param thumb: Optional. Sticker thumbnail in .webp or .jpg format
-        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-        
-        :param emoji: Optional. Emoji associated with the sticker
-        :type  emoji: str
-        
-        :param file_size: Optional. File size
-        :type  file_size: int
-        
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(Sticker, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
-        
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
-        self.file_id = file_id
-        
-        assert (width is not None)
-        assert (isinstance(width, int))
-        self.width = width
-        
-        assert (height is not None)
-        assert (isinstance(height, int))
-        self.height = height
-        
-        assert (thumb is None or isinstance(thumb, PhotoSize))
-        self.thumb = thumb
-        
-        assert (emoji is None or isinstance(emoji, str))
-        self.emoji = emoji
-        
-        assert (file_size is None or isinstance(file_size, int))
-        self.file_size = file_size
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this Sticker to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Sticker, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
-        array['width'] = int(self.width)  # type int
-        array['height'] = int(self.height)  # type int
-        if self.thumb is not None:
-            array['thumb'] = self.thumb.to_array()  # type PhotoSize
-        if self.emoji is not None:
-            array['emoji'] = str(self.emoji)  # type str
-        if self.file_size is not None:
-            array['file_size'] = int(self.file_size)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new Sticker from a given dictionary.
-
-        :return: new Sticker instance.
-        :rtype: Sticker
-        """
-        if array is None or not array:
-            return None
-        # end if
-        assert(isinstance(array, dict))
-        from pytgbot.api_types.receivable.media import PhotoSize
-        
-
-        data = {}
-        data['file_id'] = str(array.get('file_id'))
-        data['width'] = int(array.get('width'))
-        data['height'] = int(array.get('height'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['emoji'] = str(array.get('emoji')) if array.get('emoji') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['_raw'] = array
-        return Sticker(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(sticker_instance)`
-        """
-        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(sticker_instance)`
-        """
-        if self._raw:
-            return "Sticker.from_array({self._raw})".format(self=self)
-        # end if
-        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in sticker_instance`
-        """
-        return key in ["file_id", "width", "height", "thumb", "emoji", "file_size"] and hasattr(self, key) and getattr(self, key)
-    # end def __contains__
-# end class Sticker
 
 
 
@@ -861,29 +707,32 @@ class Video(Media):
         super(Video, self).__init__()
         from pytgbot.api_types.receivable.media import PhotoSize
         
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, str, parameter_name="file_id")
+        
         self.file_id = file_id
         
-        assert (width is not None)
-        assert (isinstance(width, int))
+        assert_type_or_raise(width, int, parameter_name="width")
+        
         self.width = width
         
-        assert (height is not None)
-        assert (isinstance(height, int))
+        assert_type_or_raise(height, int, parameter_name="height")
+        
         self.height = height
         
-        assert (duration is not None)
-        assert (isinstance(duration, int))
+        assert_type_or_raise(duration, int, parameter_name="duration")
+        
         self.duration = duration
         
-        assert (thumb is None or isinstance(thumb, PhotoSize))
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
+        
         self.thumb = thumb
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, str, parameter_name="mime_type")
+        
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        
         self.file_size = file_size
 
         self._raw = _raw
@@ -926,12 +775,12 @@ class Video(Media):
         
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['duration'] = int(array.get('duration'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Video(**data)
@@ -1020,18 +869,20 @@ class Voice(Media):
         :type  _raw: None | dict
         """
         super(Voice, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, str, parameter_name="file_id")
+        
         self.file_id = file_id
         
-        assert (duration is not None)
-        assert (isinstance(duration, int))
+        assert_type_or_raise(duration, int, parameter_name="duration")
+        
         self.duration = duration
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, str, parameter_name="mime_type")
+        
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        
         self.file_size = file_size
 
         self._raw = _raw
@@ -1068,9 +919,9 @@ class Voice(Media):
         assert(isinstance(array, dict))
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['duration'] = int(array.get('duration'))
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Voice(**data)
@@ -1167,22 +1018,24 @@ class VideoNote(Media):
         super(VideoNote, self).__init__()
         from pytgbot.api_types.receivable.media import PhotoSize
         
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, str, parameter_name="file_id")
+        
         self.file_id = file_id
         
-        assert (length is not None)
-        assert (isinstance(length, int))
+        assert_type_or_raise(length, int, parameter_name="length")
+        
         self.length = length
         
-        assert (duration is not None)
-        assert (isinstance(duration, int))
+        assert_type_or_raise(duration, int, parameter_name="duration")
+        
         self.duration = duration
         
-        assert (thumb is None or isinstance(thumb, PhotoSize))
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
+        
         self.thumb = thumb
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        
         self.file_size = file_size
 
         self._raw = _raw
@@ -1222,7 +1075,7 @@ class VideoNote(Media):
         
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['length'] = int(array.get('length'))
         data['duration'] = int(array.get('duration'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
@@ -1314,18 +1167,20 @@ class Contact(Media):
         :type  _raw: None | dict
         """
         super(Contact, self).__init__()
-        assert (phone_number is not None)
-        assert (isinstance(phone_number, str))
+        assert_type_or_raise(phone_number, str, parameter_name="phone_number")
+        
         self.phone_number = phone_number
         
-        assert (first_name is not None)
-        assert (isinstance(first_name, str))
+        assert_type_or_raise(first_name, str, parameter_name="first_name")
+        
         self.first_name = first_name
         
-        assert (last_name is None or isinstance(last_name, str))
+        assert_type_or_raise(last_name, None, str, parameter_name="last_name")
+        
         self.last_name = last_name
         
-        assert (user_id is None or isinstance(user_id, int))
+        assert_type_or_raise(user_id, None, int, parameter_name="user_id")
+        
         self.user_id = user_id
 
         self._raw = _raw
@@ -1362,9 +1217,9 @@ class Contact(Media):
         assert(isinstance(array, dict))
 
         data = {}
-        data['phone_number'] = str(array.get('phone_number'))
-        data['first_name'] = str(array.get('first_name'))
-        data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
+        data['phone_number'] = u(array.get('phone_number'))
+        data['first_name'] = u(array.get('first_name'))
+        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['user_id'] = int(array.get('user_id')) if array.get('user_id') is not None else None
         data['_raw'] = array
         return Contact(**data)
@@ -1441,12 +1296,12 @@ class Location(Media):
         :type  _raw: None | dict
         """
         super(Location, self).__init__()
-        assert (longitude is not None)
-        assert (isinstance(longitude, float))
+        assert_type_or_raise(longitude, float, parameter_name="longitude")
+        
         self.longitude = longitude
         
-        assert (latitude is not None)
-        assert (isinstance(latitude, float))
+        assert_type_or_raise(latitude, float, parameter_name="latitude")
+        
         self.latitude = latitude
 
         self._raw = _raw
@@ -1570,19 +1425,20 @@ class Venue(Media):
         super(Venue, self).__init__()
         from pytgbot.api_types.receivable.media import Location
         
-        assert (location is not None)
-        assert (isinstance(location, Location))
+        assert_type_or_raise(location, Location, parameter_name="location")
+        
         self.location = location
         
-        assert (title is not None)
-        assert (isinstance(title, str))
+        assert_type_or_raise(title, str, parameter_name="title")
+        
         self.title = title
         
-        assert (address is not None)
-        assert (isinstance(address, str))
+        assert_type_or_raise(address, str, parameter_name="address")
+        
         self.address = address
         
-        assert (foursquare_id is None or isinstance(foursquare_id, str))
+        assert_type_or_raise(foursquare_id, None, str, parameter_name="foursquare_id")
+        
         self.foursquare_id = foursquare_id
 
         self._raw = _raw
@@ -1621,9 +1477,9 @@ class Venue(Media):
 
         data = {}
         data['location'] = Location.from_array(array.get('location'))
-        data['title'] = str(array.get('title'))
-        data['address'] = str(array.get('address'))
-        data['foursquare_id'] = str(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
+        data['title'] = u(array.get('title'))
+        data['address'] = u(array.get('address'))
+        data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['_raw'] = array
         return Venue(**data)
     # end def from_array
@@ -1701,12 +1557,12 @@ class UserProfilePhotos(Result):
         super(UserProfilePhotos, self).__init__()
         from pytgbot.api_types.receivable.media import PhotoSize
         
-        assert (total_count is not None)
-        assert (isinstance(total_count, int))
+        assert_type_or_raise(total_count, int, parameter_name="total_count")
+        
         self.total_count = total_count
         
-        assert (photos is not None)
-        assert (isinstance(photos, list))
+        assert_type_or_raise(photos, list, parameter_name="photos")
+        
         self.photos = photos
 
         self._raw = _raw
@@ -1828,14 +1684,16 @@ class File(Receivable):
         :type  _raw: None | dict
         """
         super(File, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, str, parameter_name="file_id")
+        
         self.file_id = file_id
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        
         self.file_size = file_size
         
-        assert (file_path is None or isinstance(file_path, str))
+        assert_type_or_raise(file_path, None, str, parameter_name="file_path")
+        
         self.file_path = file_path
 
         self._raw = _raw
@@ -1871,9 +1729,9 @@ class File(Receivable):
         assert(isinstance(array, dict))
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['file_path'] = str(array.get('file_path')) if array.get('file_path') is not None else None
+        data['file_path'] = u(array.get('file_path')) if array.get('file_path') is not None else None
         data['_raw'] = array
         return File(**data)
     # end def from_array
@@ -1949,12 +1807,12 @@ class ChatPhoto(Result):
         :type  _raw: None | dict
         """
         super(ChatPhoto, self).__init__()
-        assert (small_file_id is not None)
-        assert (isinstance(small_file_id, str))
+        assert_type_or_raise(small_file_id, str, parameter_name="small_file_id")
+        
         self.small_file_id = small_file_id
         
-        assert (big_file_id is not None)
-        assert (isinstance(big_file_id, str))
+        assert_type_or_raise(big_file_id, str, parameter_name="big_file_id")
+        
         self.big_file_id = big_file_id
 
         self._raw = _raw
@@ -1987,8 +1845,8 @@ class ChatPhoto(Result):
         assert(isinstance(array, dict))
 
         data = {}
-        data['small_file_id'] = str(array.get('small_file_id'))
-        data['big_file_id'] = str(array.get('big_file_id'))
+        data['small_file_id'] = u(array.get('small_file_id'))
+        data['big_file_id'] = u(array.get('big_file_id'))
         data['_raw'] = array
         return ChatPhoto(**data)
     # end def from_array
@@ -2092,25 +1950,28 @@ class Game(Media):
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PhotoSize
         
-        assert (title is not None)
-        assert (isinstance(title, str))
+        assert_type_or_raise(title, str, parameter_name="title")
+        
         self.title = title
         
-        assert (description is not None)
-        assert (isinstance(description, str))
+        assert_type_or_raise(description, str, parameter_name="description")
+        
         self.description = description
         
-        assert (photo is not None)
-        assert (isinstance(photo, list))
+        assert_type_or_raise(photo, list, parameter_name="photo")
+        
         self.photo = photo
         
-        assert (text is None or isinstance(text, str))
+        assert_type_or_raise(text, None, str, parameter_name="text")
+        
         self.text = text
         
-        assert (text_entities is None or isinstance(text_entities, list))
+        assert_type_or_raise(text_entities, None, list, parameter_name="text_entities")
+        
         self.text_entities = text_entities
         
-        assert (animation is None or isinstance(animation, Animation))
+        assert_type_or_raise(animation, None, Animation, parameter_name="animation")
+        
         self.animation = animation
 
         self._raw = _raw
@@ -2154,10 +2015,10 @@ class Game(Media):
         
 
         data = {}
-        data['title'] = str(array.get('title'))
-        data['description'] = str(array.get('description'))
+        data['title'] = u(array.get('title'))
+        data['description'] = u(array.get('description'))
         data['photo'] = PhotoSize.from_array_list(array.get('photo'), list_level=1)
-        data['text'] = str(array.get('text')) if array.get('text') is not None else None
+        data['text'] = u(array.get('text')) if array.get('text') is not None else None
         data['text_entities'] = MessageEntity.from_array_list(array.get('text_entities'), list_level=1) if array.get('text_entities') is not None else None
         data['animation'] = Animation.from_array(array.get('animation')) if array.get('animation') is not None else None
         data['_raw'] = array
@@ -2255,20 +2116,24 @@ class Animation(Media):
         super(Animation, self).__init__()
         from pytgbot.api_types.receivable.media import PhotoSize
         
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, str, parameter_name="file_id")
+        
         self.file_id = file_id
         
-        assert (thumb is None or isinstance(thumb, PhotoSize))
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
+        
         self.thumb = thumb
         
-        assert (file_name is None or isinstance(file_name, str))
+        assert_type_or_raise(file_name, None, str, parameter_name="file_name")
+        
         self.file_name = file_name
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, str, parameter_name="mime_type")
+        
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        
         self.file_size = file_size
 
         self._raw = _raw
@@ -2310,10 +2175,10 @@ class Animation(Media):
         
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['file_name'] = str(array.get('file_name')) if array.get('file_name') is not None else None
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Animation(**data)

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import updates
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.sendable import Sendable
 
 
@@ -42,12 +44,12 @@ class LabeledPrice(Sendable):
         Optional keyword parameters:
         """
         super(LabeledPrice, self).__init__()
-        assert (label is not None)
-        assert (isinstance(label, str))
+        assert_type_or_raise(label, str, parameter_name="label")
+        
         self.label = label
         
-        assert (amount is not None)
-        assert (isinstance(amount, int))
+        assert_type_or_raise(amount, int, parameter_name="amount")
+        
         self.amount = amount
     # end def __init__
 
@@ -78,7 +80,7 @@ class LabeledPrice(Sendable):
         assert(isinstance(array, dict))
 
         data = {}
-        data['label'] = str(array.get('label'))
+        data['label'] = u(array.get('label'))
         data['amount'] = int(array.get('amount'))
         
         instance = LabeledPrice(**data)
@@ -159,16 +161,16 @@ class ShippingOption(Sendable):
         super(ShippingOption, self).__init__()
         from pytgbot.api_types.sendable.payments import LabeledPrice
         
-        assert (id is not None)
-        assert (isinstance(id, str))
+        assert_type_or_raise(id, str, parameter_name="id")
+        
         self.id = id
         
-        assert (title is not None)
-        assert (isinstance(title, str))
+        assert_type_or_raise(title, str, parameter_name="title")
+        
         self.title = title
         
-        assert (prices is not None)
-        assert (isinstance(prices, list))
+        assert_type_or_raise(prices, list, parameter_name="prices")
+        
         self.prices = prices
     # end def __init__
 
@@ -202,8 +204,8 @@ class ShippingOption(Sendable):
         
 
         data = {}
-        data['id'] = str(array.get('id'))
-        data['title'] = str(array.get('title'))
+        data['id'] = u(array.get('id'))
+        data['title'] = u(array.get('title'))
         data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
         
         instance = ShippingOption(**data)

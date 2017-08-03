@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from json import dumps as _json_dumps
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 # NOTE: `from . import receivable` import at the bottom of this file
 
 __author__ = 'luckydonald'
@@ -108,9 +109,11 @@ def from_array_list(required_type, result, list_level, is_builtin):
         if isinstance(result, required_type):
             logger.debug("Already is correct type.")
             return required_type(result)
+        elif isinstance(required_type, unicode_type):  # handle str, so emojis work for py2.
+            return u(result)
         else:
             import ast
-            logger.debug("Trying parsing with ast.literal_eval()...")
+            logger.warn("Trying parsing with ast.literal_eval()...")
             return ast.literal_eval(str(result))  # raises ValueError if it could not parse
         # end if
     else:

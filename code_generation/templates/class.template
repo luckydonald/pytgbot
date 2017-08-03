@@ -58,14 +58,20 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {%- endblock -%}
         {% for variable in clazz.variables -%}
         {% if variable.optional %}
-        assert ({{ variable.name }} is None or isinstance({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}))
-        {%- else %}
-        assert ({{ variable.name }} is not None)
-        assert (isinstance({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}))
-        {%- endif %}
-        {% if variable.always_is_value %}
-        assert ({{ variable.name }} == {{ variable.always_is_value }})
+        assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
+        {% if variable.always_is_value -%}
+        if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
+            raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
+        # end if
         {% endif -%}
+        {%- else %}
+        assert_type_or_raise({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
+        {% if variable.always_is_value -%}
+        if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
+            raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
+        # end if
+        {% endif -%}
+        {%- endif %}
         self.{{ variable.name }} = {{ variable.name }}
         {%- if not loop.last %}
         {% endif -%}
@@ -115,10 +121,18 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% if variable.types|length == 1 -%}
         {% set type = variable.types[0] -%}
         {% if type.is_builtin -%}
+        {% if type.string == 'str' -%}
+        {% if type.is_list > 0 -%}
+        data['{{ variable.name }}'] = {{ clazz.clazz }}._builtin_from_array_list(required_type=unicode_type, value=array.get('{{ variable.api_name }}'), list_level={{ type.is_list }}){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% else -%}
+        data['{{ variable.name }}'] = u(array.get('{{ variable.api_name }}')){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% endif -%}
+        {% else -%}
         {% if type.is_list > 0 -%}
         data['{{ variable.name }}'] = {{ clazz.clazz }}._builtin_from_array_list(required_type={{ type.string }}, value=array.get('{{ variable.api_name }}'), list_level={{ type.is_list }}){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
         {% else -%}
         data['{{ variable.name }}'] = {{ type.string }}(array.get('{{ variable.api_name }}')){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% endif -%}
         {% endif -%}
         {% else -%}
         {% if type.is_list > 0 -%}

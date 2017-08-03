@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import updates
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.updates import UpdateType
 
@@ -67,24 +69,24 @@ class Invoice(Result):
         :type  _raw: None | dict
         """
         super(Invoice, self).__init__()
-        assert (title is not None)
-        assert (isinstance(title, str))
+        assert_type_or_raise(title, str, parameter_name="title")
+        
         self.title = title
         
-        assert (description is not None)
-        assert (isinstance(description, str))
+        assert_type_or_raise(description, str, parameter_name="description")
+        
         self.description = description
         
-        assert (start_parameter is not None)
-        assert (isinstance(start_parameter, str))
+        assert_type_or_raise(start_parameter, str, parameter_name="start_parameter")
+        
         self.start_parameter = start_parameter
         
-        assert (currency is not None)
-        assert (isinstance(currency, str))
+        assert_type_or_raise(currency, str, parameter_name="currency")
+        
         self.currency = currency
         
-        assert (total_amount is not None)
-        assert (isinstance(total_amount, int))
+        assert_type_or_raise(total_amount, int, parameter_name="total_amount")
+        
         self.total_amount = total_amount
 
         self._raw = _raw
@@ -120,10 +122,10 @@ class Invoice(Result):
         assert(isinstance(array, dict))
 
         data = {}
-        data['title'] = str(array.get('title'))
-        data['description'] = str(array.get('description'))
-        data['start_parameter'] = str(array.get('start_parameter'))
-        data['currency'] = str(array.get('currency'))
+        data['title'] = u(array.get('title'))
+        data['description'] = u(array.get('description'))
+        data['start_parameter'] = u(array.get('start_parameter'))
+        data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
         data['_raw'] = array
         return Invoice(**data)
@@ -224,28 +226,28 @@ class ShippingAddress(Result):
         :type  _raw: None | dict
         """
         super(ShippingAddress, self).__init__()
-        assert (country_code is not None)
-        assert (isinstance(country_code, str))
+        assert_type_or_raise(country_code, str, parameter_name="country_code")
+        
         self.country_code = country_code
         
-        assert (state is not None)
-        assert (isinstance(state, str))
+        assert_type_or_raise(state, str, parameter_name="state")
+        
         self.state = state
         
-        assert (city is not None)
-        assert (isinstance(city, str))
+        assert_type_or_raise(city, str, parameter_name="city")
+        
         self.city = city
         
-        assert (street_line1 is not None)
-        assert (isinstance(street_line1, str))
+        assert_type_or_raise(street_line1, str, parameter_name="street_line1")
+        
         self.street_line1 = street_line1
         
-        assert (street_line2 is not None)
-        assert (isinstance(street_line2, str))
+        assert_type_or_raise(street_line2, str, parameter_name="street_line2")
+        
         self.street_line2 = street_line2
         
-        assert (post_code is not None)
-        assert (isinstance(post_code, str))
+        assert_type_or_raise(post_code, str, parameter_name="post_code")
+        
         self.post_code = post_code
 
         self._raw = _raw
@@ -282,12 +284,12 @@ class ShippingAddress(Result):
         assert(isinstance(array, dict))
 
         data = {}
-        data['country_code'] = str(array.get('country_code'))
-        data['state'] = str(array.get('state'))
-        data['city'] = str(array.get('city'))
-        data['street_line1'] = str(array.get('street_line1'))
-        data['street_line2'] = str(array.get('street_line2'))
-        data['post_code'] = str(array.get('post_code'))
+        data['country_code'] = u(array.get('country_code'))
+        data['state'] = u(array.get('state'))
+        data['city'] = u(array.get('city'))
+        data['street_line1'] = u(array.get('street_line1'))
+        data['street_line2'] = u(array.get('street_line2'))
+        data['post_code'] = u(array.get('post_code'))
         data['_raw'] = array
         return ShippingAddress(**data)
     # end def from_array
@@ -371,16 +373,20 @@ class OrderInfo(Result):
         super(OrderInfo, self).__init__()
         from pytgbot.api_types.receivable.payments import ShippingAddress
         
-        assert (name is None or isinstance(name, str))
+        assert_type_or_raise(name, None, str, parameter_name="name")
+        
         self.name = name
         
-        assert (phone_number is None or isinstance(phone_number, str))
+        assert_type_or_raise(phone_number, None, str, parameter_name="phone_number")
+        
         self.phone_number = phone_number
         
-        assert (email is None or isinstance(email, str))
+        assert_type_or_raise(email, None, str, parameter_name="email")
+        
         self.email = email
         
-        assert (shipping_address is None or isinstance(shipping_address, ShippingAddress))
+        assert_type_or_raise(shipping_address, None, ShippingAddress, parameter_name="shipping_address")
+        
         self.shipping_address = shipping_address
 
         self._raw = _raw
@@ -421,9 +427,9 @@ class OrderInfo(Result):
         
 
         data = {}
-        data['name'] = str(array.get('name')) if array.get('name') is not None else None
-        data['phone_number'] = str(array.get('phone_number')) if array.get('phone_number') is not None else None
-        data['email'] = str(array.get('email')) if array.get('email') is not None else None
+        data['name'] = u(array.get('name')) if array.get('name') is not None else None
+        data['phone_number'] = u(array.get('phone_number')) if array.get('phone_number') is not None else None
+        data['email'] = u(array.get('email')) if array.get('email') is not None else None
         data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address')) if array.get('shipping_address') is not None else None
         data['_raw'] = array
         return OrderInfo(**data)
@@ -532,30 +538,32 @@ class SuccessfulPayment(Result):
         super(SuccessfulPayment, self).__init__()
         from pytgbot.api_types.receivable.payments import OrderInfo
         
-        assert (currency is not None)
-        assert (isinstance(currency, str))
+        assert_type_or_raise(currency, str, parameter_name="currency")
+        
         self.currency = currency
         
-        assert (total_amount is not None)
-        assert (isinstance(total_amount, int))
+        assert_type_or_raise(total_amount, int, parameter_name="total_amount")
+        
         self.total_amount = total_amount
         
-        assert (invoice_payload is not None)
-        assert (isinstance(invoice_payload, str))
+        assert_type_or_raise(invoice_payload, str, parameter_name="invoice_payload")
+        
         self.invoice_payload = invoice_payload
         
-        assert (telegram_payment_charge_id is not None)
-        assert (isinstance(telegram_payment_charge_id, str))
+        assert_type_or_raise(telegram_payment_charge_id, str, parameter_name="telegram_payment_charge_id")
+        
         self.telegram_payment_charge_id = telegram_payment_charge_id
         
-        assert (provider_payment_charge_id is not None)
-        assert (isinstance(provider_payment_charge_id, str))
+        assert_type_or_raise(provider_payment_charge_id, str, parameter_name="provider_payment_charge_id")
+        
         self.provider_payment_charge_id = provider_payment_charge_id
         
-        assert (shipping_option_id is None or isinstance(shipping_option_id, str))
+        assert_type_or_raise(shipping_option_id, None, str, parameter_name="shipping_option_id")
+        
         self.shipping_option_id = shipping_option_id
         
-        assert (order_info is None or isinstance(order_info, OrderInfo))
+        assert_type_or_raise(order_info, None, OrderInfo, parameter_name="order_info")
+        
         self.order_info = order_info
 
         self._raw = _raw
@@ -597,12 +605,12 @@ class SuccessfulPayment(Result):
         
 
         data = {}
-        data['currency'] = str(array.get('currency'))
+        data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
-        data['invoice_payload'] = str(array.get('invoice_payload'))
-        data['telegram_payment_charge_id'] = str(array.get('telegram_payment_charge_id'))
-        data['provider_payment_charge_id'] = str(array.get('provider_payment_charge_id'))
-        data['shipping_option_id'] = str(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
+        data['invoice_payload'] = u(array.get('invoice_payload'))
+        data['telegram_payment_charge_id'] = u(array.get('telegram_payment_charge_id'))
+        data['provider_payment_charge_id'] = u(array.get('provider_payment_charge_id'))
+        data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
         data['_raw'] = array
         return SuccessfulPayment(**data)
@@ -694,20 +702,20 @@ class ShippingQuery(UpdateType):
         from pytgbot.api_types.receivable.payments import ShippingAddress
         from pytgbot.api_types.receivable.peer import User
         
-        assert (id is not None)
-        assert (isinstance(id, str))
+        assert_type_or_raise(id, str, parameter_name="id")
+        
         self.id = id
         
-        assert (from_peer is not None)
-        assert (isinstance(from_peer, User))
+        assert_type_or_raise(from_peer, User, parameter_name="from_peer")
+        
         self.from_peer = from_peer
         
-        assert (invoice_payload is not None)
-        assert (isinstance(invoice_payload, str))
+        assert_type_or_raise(invoice_payload, str, parameter_name="invoice_payload")
+        
         self.invoice_payload = invoice_payload
         
-        assert (shipping_address is not None)
-        assert (isinstance(shipping_address, ShippingAddress))
+        assert_type_or_raise(shipping_address, ShippingAddress, parameter_name="shipping_address")
+        
         self.shipping_address = shipping_address
 
         self._raw = _raw
@@ -745,9 +753,9 @@ class ShippingQuery(UpdateType):
         
 
         data = {}
-        data['id'] = str(array.get('id'))
+        data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
-        data['invoice_payload'] = str(array.get('invoice_payload'))
+        data['invoice_payload'] = u(array.get('invoice_payload'))
         data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address'))
         data['_raw'] = array
         return ShippingQuery(**data)
@@ -857,30 +865,32 @@ class PreCheckoutQuery(UpdateType):
         from pytgbot.api_types.receivable.payments import OrderInfo
         from pytgbot.api_types.receivable.peer import User
         
-        assert (id is not None)
-        assert (isinstance(id, str))
+        assert_type_or_raise(id, str, parameter_name="id")
+        
         self.id = id
         
-        assert (from_peer is not None)
-        assert (isinstance(from_peer, User))
+        assert_type_or_raise(from_peer, User, parameter_name="from_peer")
+        
         self.from_peer = from_peer
         
-        assert (currency is not None)
-        assert (isinstance(currency, str))
+        assert_type_or_raise(currency, str, parameter_name="currency")
+        
         self.currency = currency
         
-        assert (total_amount is not None)
-        assert (isinstance(total_amount, int))
+        assert_type_or_raise(total_amount, int, parameter_name="total_amount")
+        
         self.total_amount = total_amount
         
-        assert (invoice_payload is not None)
-        assert (isinstance(invoice_payload, str))
+        assert_type_or_raise(invoice_payload, str, parameter_name="invoice_payload")
+        
         self.invoice_payload = invoice_payload
         
-        assert (shipping_option_id is None or isinstance(shipping_option_id, str))
+        assert_type_or_raise(shipping_option_id, None, str, parameter_name="shipping_option_id")
+        
         self.shipping_option_id = shipping_option_id
         
-        assert (order_info is None or isinstance(order_info, OrderInfo))
+        assert_type_or_raise(order_info, None, OrderInfo, parameter_name="order_info")
+        
         self.order_info = order_info
 
         self._raw = _raw
@@ -923,12 +933,12 @@ class PreCheckoutQuery(UpdateType):
         
 
         data = {}
-        data['id'] = str(array.get('id'))
+        data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
-        data['currency'] = str(array.get('currency'))
+        data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
-        data['invoice_payload'] = str(array.get('invoice_payload'))
-        data['shipping_option_id'] = str(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
+        data['invoice_payload'] = u(array.get('invoice_payload'))
+        data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
         data['_raw'] = array
         return PreCheckoutQuery(**data)

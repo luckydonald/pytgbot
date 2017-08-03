@@ -2,6 +2,7 @@ CLASS_TYPE_PATHS__IMPORT = 0
 CLASS_TYPE_PATHS__PARENT = 1
 CLASS_TYPE_PATHS__DESCRIPTION = 2
 CLASS_TYPE_PATHS = {  # class: import, master_class, descr
+    # "to_unicode": ("luckydonaldUtils.encoding.", "object", None), # https://github.com/luckydonald/pytgbot/issues/5
     "TgBotApiObject": ("pytgbot.api_types.", "object", None),
 
     # pytgbot.api_types.receivable.__init__.*
@@ -22,7 +23,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Venue":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Audio":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Document":             ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Sticker":              ("pytgbot.api_types.receivable.media.", "Media", None),
+    # "Sticker":              ("pytgbot.api_types.receivable.media.", "Media", None), # Moved July 21, 2017
     "Video":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Game":                 ("pytgbot.api_types.receivable.media.", "Media", None),
     "Animation":            ("pytgbot.api_types.receivable.media.", "Media", None),
@@ -58,6 +59,11 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "SuccessfulPayment":    ("pytgbot.api_types.receivable.payments.", "Result", None),  # May 18, 2017
     "ShippingQuery":        ("pytgbot.api_types.receivable.payments.", "UpdateType", None),  # May 18, 2017
     "PreCheckoutQuery":     ("pytgbot.api_types.receivable.payments.", "UpdateType", None),  # May 18, 2017
+
+    # pytgbot.api_types.receivable.payments.*
+    "Sticker":      ("pytgbot.api_types.receivable.stickers.", "Media", None),  # July 21, 2017
+    "StickerSet":   ("pytgbot.api_types.receivable.stickers.", "Result", None),  # July 21, 2017
+    "MaskPosition": ("pytgbot.api_types.receivable.stickers.", "Result", None),  # July 21, 2017
 
     # pytgbot.api_types.sendable.*
     "Sendable":                     ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
@@ -128,5 +134,8 @@ You can either pass a file_id as String to resend a photo
                       pass an HTTP URL as a String for Telegram to get a photo from the Internet,
                       or upload a new photo, by specifying the file path as
                       :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
+                      
 
 """
+
+#list of GameHighScore

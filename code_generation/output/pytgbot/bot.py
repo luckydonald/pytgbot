@@ -574,71 +574,6 @@ class Bot(object):
         return result
     # end def send_document
     
-    def send_sticker(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, reply_markup=None):
-        """
-        Use this method to send .webp stickers. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendsticker
-
-        
-        Parameters:
-        
-        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-        :type  chat_id: int | str
-        
-        :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
-        :type  sticker: pytgbot.api_types.sendable.files.InputFile | str
-        
-        
-        Optional keyword parameters:
-        
-        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
-        :type  disable_notification: bool
-        
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type  reply_to_message_id: int
-        
-        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
-        Returns:
-
-        :return: On success, the sent Message is returned
-        :rtype: pytgbot.api_types.receivable.updates.Message
-        """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert(chat_id is not None)
-        assert(isinstance(chat_id, (int, str)))
-        
-        assert(sticker is not None)
-        assert(isinstance(sticker, (InputFile, str)))
-        
-        assert(disable_notification is None or isinstance(disable_notification, bool))
-        
-        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
-        
-        assert(reply_markup is None or isinstance(reply_markup, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply)))
-        
-        result = self.do("sendSticker", chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
-    # end def send_sticker
-    
     def send_video(self, chat_id, video, duration=None, width=None, height=None, caption=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
@@ -1122,14 +1057,7 @@ class Bot(object):
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str
         
-        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: 
-                       "typing" for text messages,
-                       "upload_photo" for photos,
-                       "record_video" or "upload_video" for videos,
-                       "record_audio" or "upload_audio" for audio files,
-                       "upload_document" for general files,
-                       "find_location" for location data,
-                       "record_video_note" or "upload_video_note" for video notes.
+        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
         :type  action: str
         
         
@@ -2249,6 +2177,364 @@ class Bot(object):
         return result
     # end def delete_message
     
+    def send_sticker(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+        """
+        Use this method to send .webp stickers. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendsticker
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str
+        
+        :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :type  sticker: pytgbot.api_types.sendable.files.InputFile | str
+        
+        
+        Optional keyword parameters:
+        
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
+        
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
+        
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        
+        Returns:
+
+        :return: On success, the sent Message is returned
+        :rtype: pytgbot.api_types.receivable.updates.Message
+        """
+        from pytgbot.api_types.sendable.files import InputFile
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        
+        assert(chat_id is not None)
+        assert(isinstance(chat_id, (int, str)))
+        
+        assert(sticker is not None)
+        assert(isinstance(sticker, (InputFile, str)))
+        
+        assert(disable_notification is None or isinstance(disable_notification, bool))
+        
+        assert(reply_to_message_id is None or isinstance(reply_to_message_id, int))
+        
+        assert(reply_markup is None or isinstance(reply_markup, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply)))
+        
+        result = self.do("sendSticker", chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def send_sticker
+    
+    def get_sticker_set(self, name):
+        """
+        Use this method to get a sticker set. On success, a StickerSet object is returned.
+
+        https://core.telegram.org/bots/api#getstickerset
+
+        
+        Parameters:
+        
+        :param name: Name of the sticker set
+        :type  name: str
+        
+        
+        Returns:
+
+        :return: On success, a StickerSet object is returned
+        :rtype: pytgbot.api_types.receivable.stickers.StickerSet
+        """
+        assert(name is not None)
+        assert(isinstance(name, str))
+        
+        result = self.do("getStickerSet", name=name)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.stickers import StickerSet
+            try:
+                return StickerSet.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type StickerSet", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def get_sticker_set
+    
+    def upload_sticker_file(self, user_id, png_sticker):
+        """
+        Use this method to upload a .png file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+
+        https://core.telegram.org/bots/api#uploadstickerfile
+
+        
+        Parameters:
+        
+        :param user_id: User identifier of sticker file owner
+        :type  user_id: int
+        
+        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. More info on Sending Files »
+        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile
+        
+        
+        Returns:
+
+        :return: Returns the uploaded File on success
+        :rtype: pytgbot.api_types.receivable.media.File
+        """
+        from pytgbot.api_types.sendable.files import InputFile
+        
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        
+        assert(png_sticker is not None)
+        assert(isinstance(png_sticker, InputFile))
+        
+        result = self.do("uploadStickerFile", user_id=user_id, png_sticker=png_sticker)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.media import File
+            try:
+                return File.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type File", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def upload_sticker_file
+    
+    def create_new_sticker_set(self, user_id, name, title, png_sticker, emojis, contains_masks=None, mask_position=None):
+        """
+        Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns True on success.
+
+        https://core.telegram.org/bots/api#createnewstickerset
+
+        
+        Parameters:
+        
+        :param user_id: User identifier of created sticker set owner
+        :type  user_id: int
+        
+        :param name: Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can contain only english letters, digits and underscores. Must begin with a letter, can't contain consecutive underscores and must end in “_by_<bot username>”. <bot_username> is case insensitive. 1-64 characters.
+        :type  name: str
+        
+        :param title: Sticker set title, 1-64 characters
+        :type  title: str
+        
+        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str
+        
+        :param emojis: One or more emoji corresponding to the sticker
+        :type  emojis: str
+        
+        
+        Optional keyword parameters:
+        
+        :param contains_masks: Pass True, if a set of mask stickers should be created
+        :type  contains_masks: bool
+        
+        :param mask_position: A JSON-serialized object for position where the mask should be placed on faces
+        :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        from pytgbot.api_types.receivable.stickers import MaskPosition
+        from pytgbot.api_types.sendable.files import InputFile
+        
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        
+        assert(name is not None)
+        assert(isinstance(name, str))
+        
+        assert(title is not None)
+        assert(isinstance(title, str))
+        
+        assert(png_sticker is not None)
+        assert(isinstance(png_sticker, (InputFile, str)))
+        
+        assert(emojis is not None)
+        assert(isinstance(emojis, str))
+        
+        assert(contains_masks is None or isinstance(contains_masks, bool))
+        
+        assert(mask_position is None or isinstance(mask_position, MaskPosition))
+        
+        result = self.do("createNewStickerSet", user_id=user_id, name=name, title=title, png_sticker=png_sticker, emojis=emojis, contains_masks=contains_masks, mask_position=mask_position)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def create_new_sticker_set
+    
+    def add_sticker_to_set(self, user_id, name, png_sticker, emojis, mask_position=None):
+        """
+        Use this method to add a new sticker to a set created by the bot. Returns True on success.
+
+        https://core.telegram.org/bots/api#addstickertoset
+
+        
+        Parameters:
+        
+        :param user_id: User identifier of sticker set owner
+        :type  user_id: int
+        
+        :param name: Sticker set name
+        :type  name: str
+        
+        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str
+        
+        :param emojis: One or more emoji corresponding to the sticker
+        :type  emojis: str
+        
+        
+        Optional keyword parameters:
+        
+        :param mask_position: A JSON-serialized object for position where the mask should be placed on faces
+        :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        from pytgbot.api_types.receivable.stickers import MaskPosition
+        from pytgbot.api_types.sendable.files import InputFile
+        
+        assert(user_id is not None)
+        assert(isinstance(user_id, int))
+        
+        assert(name is not None)
+        assert(isinstance(name, str))
+        
+        assert(png_sticker is not None)
+        assert(isinstance(png_sticker, (InputFile, str)))
+        
+        assert(emojis is not None)
+        assert(isinstance(emojis, str))
+        
+        assert(mask_position is None or isinstance(mask_position, MaskPosition))
+        
+        result = self.do("addStickerToSet", user_id=user_id, name=name, png_sticker=png_sticker, emojis=emojis, mask_position=mask_position)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def add_sticker_to_set
+    
+    def set_sticker_position_in_set(self, sticker, position):
+        """
+        Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
+
+        https://core.telegram.org/bots/api#setstickerpositioninset
+
+        
+        Parameters:
+        
+        :param sticker: File identifier of the sticker
+        :type  sticker: str
+        
+        :param position: New sticker position in the set, zero-based
+        :type  position: int
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(sticker is not None)
+        assert(isinstance(sticker, str))
+        
+        assert(position is not None)
+        assert(isinstance(position, int))
+        
+        result = self.do("setStickerPositionInSet", sticker=sticker, position=position)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_sticker_position_in_set
+    
+    def delete_sticker_from_set(self, sticker):
+        """
+        Use this method to delete a sticker from a set created by the bot. Returns True on success.
+
+        https://core.telegram.org/bots/api#deletestickerfromset
+
+        
+        Parameters:
+        
+        :param sticker: File identifier of the sticker
+        :type  sticker: str
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype: bool
+        """
+        assert(sticker is not None)
+        assert(isinstance(sticker, str))
+        
+        result = self.do("deleteStickerFromSet", sticker=sticker)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def delete_sticker_from_set
+    
     def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
         """
         Use this method to send answers to an inline query. On success, True is returned.No more than 50 results per query are allowed.
@@ -2319,7 +2605,7 @@ class Bot(object):
         return result
     # end def answer_inline_query
     
-    def send_invoice(self, chat_id, title, payload, provider_token, start_parameter, currency, prices, photo_url=None, description=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send invoices. On success, the sent Message is returned.
 
@@ -2333,6 +2619,9 @@ class Bot(object):
         
         :param title: Product name, 1-32 characters
         :type  title: str
+        
+        :param description: Product description, 1-255 characters
+        :type  description: str
         
         :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
         :type  payload: str
@@ -2354,9 +2643,6 @@ class Bot(object):
         
         :param photo_url: URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
         :type  photo_url: str
-        
-        :param description: Product description, 0-255 characters
-        :type  description: str
         
         :param photo_size: Photo size
         :type  photo_size: int
@@ -2405,6 +2691,9 @@ class Bot(object):
         assert(title is not None)
         assert(isinstance(title, str))
         
+        assert(description is not None)
+        assert(isinstance(description, str))
+        
         assert(payload is not None)
         assert(isinstance(payload, str))
         
@@ -2421,8 +2710,6 @@ class Bot(object):
         assert(isinstance(prices, list))
         
         assert(photo_url is None or isinstance(photo_url, str))
-        
-        assert(description is None or isinstance(description, str))
         
         assert(photo_size is None or isinstance(photo_size, int))
         
@@ -2446,7 +2733,7 @@ class Bot(object):
         
         assert(reply_markup is None or isinstance(reply_markup, InlineKeyboardMarkup))
         
-        result = self.do("sendInvoice", chat_id=chat_id, title=title, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, photo_url=photo_url, description=description, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message

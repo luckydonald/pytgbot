@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import updates
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable import Result
 
 
@@ -56,16 +58,16 @@ class GameHighScore(Result):
         super(GameHighScore, self).__init__()
         from pytgbot.api_types.receivable.peer import User
         
-        assert (position is not None)
-        assert (isinstance(position, int))
+        assert_type_or_raise(position, int, parameter_name="position")
+        
         self.position = position
         
-        assert (user is not None)
-        assert (isinstance(user, User))
+        assert_type_or_raise(user, User, parameter_name="user")
+        
         self.user = user
         
-        assert (score is not None)
-        assert (isinstance(score, int))
+        assert_type_or_raise(score, int, parameter_name="score")
+        
         self.score = score
 
         self._raw = _raw
