@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.logger import logging
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from .exceptions import TgApiServerException, TgApiParseException, TgApiTypeError
 from .api_types import from_array_list
 
@@ -72,7 +74,7 @@ class Bot(object):
         :param query: all the other `**kwargs` will get json encoded.
 
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
         import requests
 
@@ -116,8 +118,9 @@ class Bot(object):
 
         :param r: the request response
         :type  r: requests.Response
+
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
         from DictObject import DictObject
         import requests
@@ -163,7 +166,7 @@ class Bot(object):
         :param kwargs: will get json encoded.
 
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
 
         :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
         """

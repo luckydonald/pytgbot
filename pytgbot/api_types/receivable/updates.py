@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.logger import logging
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 
 from . import Receivable
 
@@ -107,35 +109,34 @@ class Update(Receivable):
         from ..receivable.inline import InlineQuery, ChosenInlineResult
         from ..receivable.payments import ShippingQuery, PreCheckoutQuery
 
-        assert (update_id is not None)
-        assert (isinstance(update_id, int))
+        assert_type_or_raise(update_id, int, parameter_name="update_id")
         self.update_id = update_id
 
-        assert (message is None or isinstance(message, Message))
+        assert_type_or_raise(message, None, Message, parameter_name="message")
         self.message = message
 
-        assert (edited_message is None or isinstance(edited_message, Message))
+        assert_type_or_raise(edited_message, None, Message, parameter_name="edited_message")
         self.edited_message = edited_message
 
-        assert (channel_post is None or isinstance(channel_post, Message))
+        assert_type_or_raise(channel_post, None, Message, parameter_name="channel_post")
         self.channel_post = channel_post
 
-        assert (edited_channel_post is None or isinstance(edited_channel_post, Message))
+        assert_type_or_raise(edited_channel_post, None, Message, parameter_name="edited_channel_post")
         self.edited_channel_post = edited_channel_post
 
-        assert (inline_query is None or isinstance(inline_query, InlineQuery))
+        assert_type_or_raise(inline_query, None, InlineQuery, parameter_name="inline_query")
         self.inline_query = inline_query
 
-        assert (chosen_inline_result is None or isinstance(chosen_inline_result, ChosenInlineResult))
+        assert_type_or_raise(chosen_inline_result, None, ChosenInlineResult, parameter_name="chosen_inline_result")
         self.chosen_inline_result = chosen_inline_result
 
-        assert (callback_query is None or isinstance(callback_query, CallbackQuery))
+        assert_type_or_raise(callback_query, None, CallbackQuery, parameter_name="callback_query")
         self.callback_query = callback_query
 
-        assert (shipping_query is None or isinstance(shipping_query, ShippingQuery))
+        assert_type_or_raise(shipping_query, None, ShippingQuery, parameter_name="shipping_query")
         self.shipping_query = shipping_query
 
-        assert (pre_checkout_query is None or isinstance(pre_checkout_query, PreCheckoutQuery))
+        assert_type_or_raise(pre_checkout_query, None, PreCheckoutQuery, parameter_name="pre_checkout_query")
         self.pre_checkout_query = pre_checkout_query
 
         self._raw = _raw
@@ -182,7 +183,7 @@ class Update(Receivable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         from ..receivable.inline import InlineQuery, ChosenInlineResult
         from ..receivable.payments import ShippingQuery, PreCheckoutQuery
@@ -238,7 +239,7 @@ class WebhookInfo(Receivable):
     Parameters:
     
     :param url: Webhook URL, may be empty if webhook is not set up
-    :type  url: str
+    :type  url: str|unicode
     
     :param has_custom_certificate: True, if a custom certificate was provided for webhook certificate checks
     :type  has_custom_certificate: bool
@@ -253,13 +254,13 @@ class WebhookInfo(Receivable):
     :type  last_error_date: int
     
     :param last_error_message: Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
-    :type  last_error_message: str
+    :type  last_error_message: str|unicode
     
     :param max_connections: Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
     :type  max_connections: int
     
     :param allowed_updates: Optional. A list of update types the bot is subscribed to. Defaults to all update types
-    :type  allowed_updates: list of str
+    :type  allowed_updates: list of str|unicode
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -275,7 +276,7 @@ class WebhookInfo(Receivable):
         Parameters:
         
         :param url: Webhook URL, may be empty if webhook is not set up
-        :type  url: str
+        :type  url: str|unicode
         
         :param has_custom_certificate: True, if a custom certificate was provided for webhook certificate checks
         :type  has_custom_certificate: bool
@@ -290,40 +291,37 @@ class WebhookInfo(Receivable):
         :type  last_error_date: int
         
         :param last_error_message: Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
-        :type  last_error_message: str
+        :type  last_error_message: str|unicode
         
         :param max_connections: Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
         :type  max_connections: int
         
         :param allowed_updates: Optional. A list of update types the bot is subscribed to. Defaults to all update types
-        :type  allowed_updates: list of str
+        :type  allowed_updates: list of str|unicode
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(WebhookInfo, self).__init__()
-        assert (url is not None)
-        assert (isinstance(url, str))
+        assert_type_or_raise(url, unicode_type, parameter_name="url")
         self.url = url
 
-        assert (has_custom_certificate is not None)
-        assert (isinstance(has_custom_certificate, bool))
+        assert_type_or_raise(has_custom_certificate, bool, parameter_name="has_custom_certificate")
         self.has_custom_certificate = has_custom_certificate
 
-        assert (pending_update_count is not None)
-        assert (isinstance(pending_update_count, int))
+        assert_type_or_raise(pending_update_count, int, parameter_name="pending_update_count")
         self.pending_update_count = pending_update_count
 
-        assert (last_error_date is None or isinstance(last_error_date, int))
+        assert_type_or_raise(last_error_date, None, int, parameter_name="last_error_date")
         self.last_error_date = last_error_date
 
-        assert (last_error_message is None or isinstance(last_error_message, str))
+        assert_type_or_raise(last_error_message, None, unicode_type, parameter_name="last_error_message")
         self.last_error_message = last_error_message
 
-        assert (max_connections is None or isinstance(max_connections, int))
+        assert_type_or_raise(max_connections, None, int, parameter_name="max_connections")
         self.max_connections = max_connections
 
-        assert (allowed_updates is None or isinstance(allowed_updates, list))
+        assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
         self.allowed_updates = allowed_updates
 
         self._raw = _raw
@@ -337,13 +335,13 @@ class WebhookInfo(Receivable):
         :rtype: dict
         """
         array = super(WebhookInfo, self).to_array()
-        array['url'] = str(self.url)  # type str
+        array['url'] = u(self.url)  # py2: type unicode, py3: type str
         array['has_custom_certificate'] = bool(self.has_custom_certificate)  # type bool
         array['pending_update_count'] = int(self.pending_update_count)  # type int
         if self.last_error_date is not None:
             array['last_error_date'] = int(self.last_error_date)  # type int
         if self.last_error_message is not None:
-            array['last_error_message'] = str(self.last_error_message)  # type str
+            array['last_error_message'] = u(self.last_error_message)  # py2: type unicode, py3: type str
         if self.max_connections is not None:
             array['max_connections'] = int(self.max_connections)  # type int
         if self.allowed_updates is not None:
@@ -362,16 +360,16 @@ class WebhookInfo(Receivable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
-        data['url'] = str(array.get('url'))
+        data['url'] = u(array.get('url'))
         data['has_custom_certificate'] = bool(array.get('has_custom_certificate'))
         data['pending_update_count'] = int(array.get('pending_update_count'))
         data['last_error_date'] = int(array.get('last_error_date')) if array.get('last_error_date') is not None else None
-        data['last_error_message'] = str(array.get('last_error_message')) if array.get('last_error_message') is not None else None
+        data['last_error_message'] = u(array.get('last_error_message')) if array.get('last_error_message') is not None else None
         data['max_connections'] = int(array.get('max_connections')) if array.get('max_connections') is not None else None
-        data['allowed_updates'] = WebhookInfo._builtin_from_array_list(required_type=str, value=array.get('allowed_updates'), list_level=1) if array.get('allowed_updates') is not None else None
+        data['allowed_updates'] = WebhookInfo._builtin_from_array_list(required_type=unicode_type, value=array.get('allowed_updates'), list_level=1) if array.get('allowed_updates') is not None else None
         data['_raw'] = array
         return WebhookInfo(**data)
     # end def from_array
@@ -463,7 +461,7 @@ class Message(UpdateType):
     :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
     
     :param sticker: Optional. Message is a sticker, information about the sticker
-    :type  sticker: pytgbot.api_types.receivable.media.Sticker
+    :type  sticker: pytgbot.api_types.receivable.stickers.Sticker
     
     :param video: Optional. Message is a video, information about the video
     :type  video: pytgbot.api_types.receivable.media.Video
@@ -478,7 +476,7 @@ class Message(UpdateType):
     :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
     
     :param caption: Optional. Caption for the document, photo or video, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param contact: Optional. Message is a shared contact, information about the contact
     :type  contact: pytgbot.api_types.receivable.media.Contact
@@ -496,7 +494,7 @@ class Message(UpdateType):
     :type  left_chat_member: pytgbot.api_types.receivable.peer.User
     
     :param new_chat_title: Optional. A chat title was changed to this value
-    :type  new_chat_title: str
+    :type  new_chat_title: str|unicode
     
     :param new_chat_photo: Optional. A chat photo was change to this value
     :type  new_chat_photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -593,7 +591,7 @@ class Message(UpdateType):
         :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
         
         :param sticker: Optional. Message is a sticker, information about the sticker
-        :type  sticker: pytgbot.api_types.receivable.media.Sticker
+        :type  sticker: pytgbot.api_types.receivable.stickers.Sticker
         
         :param video: Optional. Message is a video, information about the video
         :type  video: pytgbot.api_types.receivable.media.Video
@@ -608,7 +606,7 @@ class Message(UpdateType):
         :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
         
         :param caption: Optional. Caption for the document, photo or video, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param contact: Optional. Message is a shared contact, information about the contact
         :type  contact: pytgbot.api_types.receivable.media.Contact
@@ -626,7 +624,7 @@ class Message(UpdateType):
         :type  left_chat_member: pytgbot.api_types.receivable.peer.User
         
         :param new_chat_title: Optional. A chat title was changed to this value
-        :type  new_chat_title: str
+        :type  new_chat_title: str|unicode
         
         :param new_chat_photo: Optional. A chat photo was change to this value
         :type  new_chat_photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -663,125 +661,118 @@ class Message(UpdateType):
         """
         super(Message, self).__init__()
 
-        from ..receivable.peer import User, Chat
-        from ..receivable.media import Audio, Contact, Document, Game, Location, Sticker, Venue, Video, Voice, VideoNote
-        from ..receivable.payments import Invoice, SuccessfulPayment
-
-        assert (message_id is not None)
-        assert (isinstance(message_id, int))
+        assert_type_or_raise(message_id, int, parameter_name="message_id")
         self.message_id = message_id
 
-        assert (date is not None)
-        assert (isinstance(date, int))
+        assert_type_or_raise(date, int, parameter_name="date")
         self.date = date
 
-        assert (chat is not None)
-        assert (isinstance(chat, Chat))
+        assert_type_or_raise(chat, Chat, parameter_name="chat")
         self.chat = chat
 
-        assert (from_peer is None or isinstance(from_peer, User))
+        assert_type_or_raise(from_peer, None, User, parameter_name="from_peer")
         self.from_peer = from_peer
 
-        assert (forward_from is None or isinstance(forward_from, User))
+        assert_type_or_raise(forward_from, None, User, parameter_name="forward_from")
         self.forward_from = forward_from
 
-        assert (forward_from_chat is None or isinstance(forward_from_chat, Chat))
+        assert_type_or_raise(forward_from_chat, None, Chat, parameter_name="forward_from_chat")
         self.forward_from_chat = forward_from_chat
 
-        assert (forward_from_message_id is None or isinstance(forward_from_message_id, int))
+        assert_type_or_raise(forward_from_message_id, None, int, parameter_name="forward_from_message_id")
         self.forward_from_message_id = forward_from_message_id
 
-        assert (forward_date is None or isinstance(forward_date, int))
+        assert_type_or_raise(forward_date, None, int, parameter_name="forward_date")
         self.forward_date = forward_date
 
-        assert (reply_to_message is None or isinstance(reply_to_message, Message))
+        assert_type_or_raise(reply_to_message, None, Message, parameter_name="reply_to_message")
         self.reply_to_message = reply_to_message
 
-        assert (edit_date is None or isinstance(edit_date, int))
+        assert_type_or_raise(edit_date, None, int, parameter_name="edit_date")
         self.edit_date = edit_date
 
-        assert (text is None or isinstance(text, str))
+        assert_type_or_raise(text, None, unicode_type, parameter_name="text")
         self.text = text
 
-        assert (entities is None or isinstance(entities, (list, tuple)))  # list of MessageEntity
+        assert_type_or_raise(entities, None, list, parameter_name="entities")
         self.entities = entities
 
-        assert (audio is None or isinstance(audio, Audio))
+        assert_type_or_raise(audio, None, Audio, parameter_name="audio")
         self.audio = audio
 
-        assert (document is None or isinstance(document, Document))
+        assert_type_or_raise(document, None, Document, parameter_name="document")
         self.document = document
 
-        assert (game is None or isinstance(game, Game))
+        assert_type_or_raise(game, None, Game, parameter_name="game")
         self.game = game
 
-        assert (photo is None or isinstance(photo, (list, tuple)))  # list of PhotoSize
+        assert_type_or_raise(photo, None, list, parameter_name="photo")
         self.photo = photo
 
-        assert (sticker is None or isinstance(sticker, Sticker))
+        assert_type_or_raise(sticker, None, Sticker, parameter_name="sticker")
         self.sticker = sticker
 
-        assert (video is None or isinstance(video, Video))
+        assert_type_or_raise(video, None, Video, parameter_name="video")
         self.video = video
 
-        assert (voice is None or isinstance(voice, Voice))
+        assert_type_or_raise(voice, None, Voice, parameter_name="voice")
         self.voice = voice
 
-        assert (video_note is None or isinstance(video_note, VideoNote))
+        assert_type_or_raise(video_note, None, VideoNote, parameter_name="video_note")
         self.video_note = video_note
 
-        assert (new_chat_members is None or isinstance(new_chat_members, list))
+        assert_type_or_raise(new_chat_members, None, list, parameter_name="new_chat_members")
         self.new_chat_members = new_chat_members
 
-        assert (caption is None or isinstance(caption, str))
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
 
-        assert (contact is None or isinstance(contact, Contact))
+        assert_type_or_raise(contact, None, Contact, parameter_name="contact")
         self.contact = contact
 
-        assert (location is None or isinstance(location, Location))
+        assert_type_or_raise(location, None, Location, parameter_name="location")
         self.location = location
 
-        assert (venue is None or isinstance(venue, Venue))
+        assert_type_or_raise(venue, None, Venue, parameter_name="venue")
         self.venue = venue
 
-        assert (new_chat_member is None or isinstance(new_chat_member, User))
+        assert_type_or_raise(new_chat_member, None, User, parameter_name="new_chat_member")
         self.new_chat_member = new_chat_member
 
-        assert (left_chat_member is None or isinstance(left_chat_member, User))
+        assert_type_or_raise(left_chat_member, None, User, parameter_name="left_chat_member")
         self.left_chat_member = left_chat_member
 
-        assert (new_chat_title is None or isinstance(new_chat_title, str))
+        assert_type_or_raise(new_chat_title, None, unicode_type, parameter_name="new_chat_title")
         self.new_chat_title = new_chat_title
 
-        assert (new_chat_photo is None or isinstance(new_chat_photo, (list, tuple)))  # list of PhotoSize
+        assert_type_or_raise(new_chat_photo, None, list, parameter_name="new_chat_photo")
         self.new_chat_photo = new_chat_photo
 
-        assert (delete_chat_photo is None or delete_chat_photo == True)
+        assert_type_or_raise(delete_chat_photo, None, bool, parameter_name="delete_chat_photo")
         self.delete_chat_photo = delete_chat_photo
 
-        assert (group_chat_created is None or group_chat_created == True)
+        assert_type_or_raise(group_chat_created, None, bool, parameter_name="group_chat_created")
         self.group_chat_created = group_chat_created
 
-        assert (supergroup_chat_created is None or supergroup_chat_created == True)
+        assert_type_or_raise(supergroup_chat_created, None, bool, parameter_name="supergroup_chat_created")
         self.supergroup_chat_created = supergroup_chat_created
 
-        assert (channel_chat_created is None or channel_chat_created == True)
+        assert_type_or_raise(channel_chat_created, None, bool, parameter_name="channel_chat_created")
         self.channel_chat_created = channel_chat_created
 
-        assert (migrate_to_chat_id is None or isinstance(migrate_to_chat_id, int))
+        assert_type_or_raise(migrate_to_chat_id, None, int, parameter_name="migrate_to_chat_id")
         self.migrate_to_chat_id = migrate_to_chat_id
 
-        assert (migrate_from_chat_id is None or isinstance(migrate_from_chat_id, int))
+        assert_type_or_raise(migrate_from_chat_id, None, int, parameter_name="migrate_from_chat_id")
         self.migrate_from_chat_id = migrate_from_chat_id
 
-        assert (pinned_message is None or isinstance(pinned_message, Message))
+        assert_type_or_raise(pinned_message, None, Message, parameter_name="pinned_message")
         self.pinned_message = pinned_message
 
-        assert (invoice is None or isinstance(invoice, Invoice))
+        assert_type_or_raise(invoice, None, Invoice, parameter_name="invoice")
         self.invoice = invoice
 
-        assert (successful_payment is None or isinstance(successful_payment, SuccessfulPayment))
+        assert_type_or_raise(successful_payment, None, SuccessfulPayment, parameter_name="successful_payment")
         self.successful_payment = successful_payment
 
         self._raw = _raw
@@ -813,7 +804,7 @@ class Message(UpdateType):
         if self.edit_date is not None:
             array['edit_date'] = int(self.edit_date)  # type int
         if self.text is not None:
-            array['text'] = str(self.text)  # type str
+            array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.entities is not None:
             array['entities'] = self._as_array(self.entities)  # type list of MessageEntity
         if self.audio is not None:
@@ -835,7 +826,7 @@ class Message(UpdateType):
         if self.new_chat_members is not None:
             array['new_chat_members'] = self._as_array(self.new_chat_members)  # type list of User
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.contact is not None:
             array['contact'] = self.contact.to_array()  # type Contact
         if self.location is not None:
@@ -847,7 +838,7 @@ class Message(UpdateType):
         if self.left_chat_member is not None:
             array['left_chat_member'] = self.left_chat_member.to_array()  # type User
         if self.new_chat_title is not None:
-            array['new_chat_title'] = str(self.new_chat_title)  # type str
+            array['new_chat_title'] = u(self.new_chat_title)  # py2: type unicode, py3: type str
         if self.new_chat_photo is not None:
             array['new_chat_photo'] = self._as_array(self.new_chat_photo)  # type list of PhotoSize
         if self.delete_chat_photo is not None:
@@ -882,7 +873,7 @@ class Message(UpdateType):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         from ..receivable.peer import User, Chat
         from ..receivable.media import Audio, Sticker, Video, Voice, Contact, Location, Venue, Document, MessageEntity
@@ -900,7 +891,7 @@ class Message(UpdateType):
         data['forward_date'] = int(array.get('forward_date')) if array.get('forward_date') is not None else None
         data['reply_to_message'] = Message.from_array(array.get('reply_to_message')) if array.get('reply_to_message') is not None else None
         data['edit_date'] = int(array.get('edit_date')) if array.get('edit_date') is not None else None
-        data['text'] = str(array.get('text')) if array.get('text') is not None else None
+        data['text'] = u(array.get('text')) if array.get('text') is not None else None
         data['entities'] = MessageEntity.from_array_list(array.get('entities'), list_level=1) if array.get('entities') is not None else None
         data['audio'] = Audio.from_array(array.get('audio')) if array.get('audio') is not None else None
         data['document'] = Document.from_array(array.get('document')) if array.get('document') is not None else None
@@ -911,13 +902,13 @@ class Message(UpdateType):
         data['voice'] = Voice.from_array(array.get('voice')) if array.get('voice') is not None else None
         data['video_note'] = VideoNote.from_array(array.get('video_note')) if array.get('video_note') is not None else None
         data['new_chat_members'] = User.from_array_list(array.get('new_chat_members'), list_level=1) if array.get('new_chat_members') is not None else None
-        data['caption'] = str(array.get('caption')) if array.get('caption') is not None else None
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['contact'] = Contact.from_array(array.get('contact')) if array.get('contact') is not None else None
         data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
         data['venue'] = Venue.from_array(array.get('venue')) if array.get('venue') is not None else None
         data['new_chat_member'] = User.from_array(array.get('new_chat_member')) if array.get('new_chat_member') is not None else None
         data['left_chat_member'] = User.from_array(array.get('left_chat_member')) if array.get('left_chat_member') is not None else None
-        data['new_chat_title'] = str(array.get('new_chat_title')) if array.get('new_chat_title') is not None else None
+        data['new_chat_title'] = u(array.get('new_chat_title')) if array.get('new_chat_title') is not None else None
         data['new_chat_photo'] = PhotoSize.from_array_list(array.get('new_chat_photo'), list_level=1) if array.get('new_chat_photo') is not None else None
         data['delete_chat_photo'] = bool(array.get('delete_chat_photo')) if array.get('delete_chat_photo') is not None else None
         data['group_chat_created'] = bool(array.get('group_chat_created')) if array.get('group_chat_created') is not None else None
@@ -962,7 +953,7 @@ class CallbackQuery(UpdateType):
     """
     This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
 
-    NOTE: After the user presses an inline button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
+    NOTE: After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
 
     https://core.telegram.org/bots/api#callbackquery
     
@@ -970,13 +961,13 @@ class CallbackQuery(UpdateType):
     Parameters:
     
     :param id: Unique identifier for this query
-    :type  id: str
+    :type  id: str|unicode
     
     :param from_peer: Sender
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
     :param chat_instance: Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
-    :type  chat_instance: str
+    :type  chat_instance: str|unicode
     
 
     Optional keyword parameters:
@@ -985,13 +976,13 @@ class CallbackQuery(UpdateType):
     :type  message: pytgbot.api_types.receivable.updates.Message
     
     :param inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query.
-    :type  inline_message_id: str
+    :type  inline_message_id: str|unicode
     
     :param data: Optional. Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field.
-    :type  data: str
+    :type  data: str|unicode
     
     :param game_short_name: Optional. Short name of a Game to be returned, serves as the unique identifier for the game
-    :type  game_short_name: str
+    :type  game_short_name: str|unicode
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -1001,7 +992,7 @@ class CallbackQuery(UpdateType):
         """
         This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
 
-        NOTE: After the user presses an inline button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
+        NOTE: After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
     
         https://core.telegram.org/bots/api#callbackquery
 
@@ -1009,13 +1000,13 @@ class CallbackQuery(UpdateType):
         Parameters:
 
         :param id: Unique identifier for this query
-        :type  id: str
+        :type  id: str|unicode
 
         :param from_peer: Sender
         :type  from_peer: pytgbot.api_types.receivable.peer.User
 
         :param chat_instance: Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
-        :type  chat_instance: str
+        :type  chat_instance: str|unicode
 
 
         Optional keyword parameters:
@@ -1024,13 +1015,13 @@ class CallbackQuery(UpdateType):
         :type  message: pytgbot.api_types.receivable.updates.Message
 
         :param inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query.
-        :type  inline_message_id: str
+        :type  inline_message_id: str|unicode
         
         :param data: Optional. Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field.
-        :type  data: str
+        :type  data: str|unicode
         
         :param game_short_name: Optional. Short name of a Game to be returned, serves as the unique identifier for the game
-        :type  game_short_name: str
+        :type  game_short_name: str|unicode
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
@@ -1039,28 +1030,25 @@ class CallbackQuery(UpdateType):
 
         from ..receivable.peer import User
 
-        assert (id is not None)
-        assert (isinstance(id, str))
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
 
-        assert (from_peer is not None)
-        assert (isinstance(from_peer, User))
+        assert_type_or_raise(from_peer, User, parameter_name="from_peer")
         self.from_peer = from_peer
 
-        assert (chat_instance is not None)
-        assert (isinstance(chat_instance, str))
+        assert_type_or_raise(chat_instance, unicode_type, parameter_name="chat_instance")
         self.chat_instance = chat_instance
 
-        assert (message is None or isinstance(message, Message))
+        assert_type_or_raise(message, None, Message, parameter_name="message")
         self.message = message
 
-        assert (inline_message_id is None or isinstance(inline_message_id, str))
+        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
         self.inline_message_id = inline_message_id
         
-        assert (data is None or isinstance(data, str))
+        assert_type_or_raise(data, None, unicode_type, parameter_name="data")
         self.data = data
         
-        assert (game_short_name is None or isinstance(game_short_name, str))
+        assert_type_or_raise(game_short_name, None, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
 
         self._raw = _raw
@@ -1074,17 +1062,17 @@ class CallbackQuery(UpdateType):
         :rtype: dict
         """
         array = super(CallbackQuery, self).to_array()
-        array['id'] = str(self.id)  # type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
-        array['chat_instance'] = str(self.chat_instance)  # type str
+        array['chat_instance'] = u(self.chat_instance)  # py2: type unicode, py3: type str
         if self.message is not None:
             array['message'] = self.message.to_array()  # type Message
         if self.inline_message_id is not None:
-            array['inline_message_id'] = str(self.inline_message_id)  # type str
+            array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
         if self.data is not None:
-            array['data'] = str(self.data)  # type str
+            array['data'] = u(self.data)  # py2: type unicode, py3: type str
         if self.game_short_name is not None:
-            array['game_short_name'] = str(self.game_short_name)  # type str
+            array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -1099,18 +1087,18 @@ class CallbackQuery(UpdateType):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         from ..receivable.peer import User
 
         data = {}
-        data['id'] = str(array.get('id'))
+        data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
-        data['chat_instance'] = str(array.get('chat_instance'))
+        data['chat_instance'] = u(array.get('chat_instance'))
         data['message'] = Message.from_array(array.get('message')) if array.get('message') is not None else None
-        data['inline_message_id'] = str(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
-        data['data'] = str(array.get('data')) if array.get('data') is not None else None
-        data['game_short_name'] = str(array.get('game_short_name')) if array.get('game_short_name') is not None else None
+        data['inline_message_id'] = u(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
+        data['data'] = u(array.get('data')) if array.get('data') is not None else None
+        data['game_short_name'] = u(array.get('game_short_name')) if array.get('game_short_name') is not None else None
         data['_raw'] = array
         return CallbackQuery(**data)
     # end def from_array
@@ -1144,6 +1132,8 @@ class CallbackQuery(UpdateType):
 class CallbackGame(UpdateType):
     """
     A placeholder, currently holds no information. Use BotFather to set up your game.
+    
+    https://core.telegram.org/bots/api#callbackgame
     """
     def to_array(self):
         return {}
@@ -1194,10 +1184,10 @@ class ResponseParameters(Receivable):
         :type  _raw: None | dict
         """
         super(ResponseParameters, self).__init__()
-        assert (migrate_to_chat_id is None or isinstance(migrate_to_chat_id, int))
+        assert_type_or_raise(migrate_to_chat_id, None, int, parameter_name="migrate_to_chat_id")
         self.migrate_to_chat_id = migrate_to_chat_id
         
-        assert (retry_after is None or isinstance(retry_after, int))
+        assert_type_or_raise(retry_after, None, int, parameter_name="retry_after")
         self.retry_after = retry_after
 
         self._raw = _raw
@@ -1229,7 +1219,7 @@ class ResponseParameters(Receivable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         
         data = {}
         data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id')) if array.get('migrate_to_chat_id') is not None else None

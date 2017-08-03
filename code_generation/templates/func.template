@@ -25,7 +25,7 @@
         Returns:
 
         :return: {{ function.returns.description }}
-        :rtype: {{ for_type_list_of_full(function.returns) }}
+        :rtype:  {{ for_type_list_of_full(function.returns) }}
         {% endblock -%}
         """
         {% block imports_block -%}
@@ -38,13 +38,14 @@
 
         {%- for variable in function.variables -%}
         {% if variable.optional -%}
-        assert({{ variable.name }} is None or isinstance({{ variable.name }}, {{ types_as_assert_tuple(variable) }}))
+        assert_type_or_raise({{ variable.name }}, None, {{ types_as_assert_tuple(variable) }}, parameter_name="{{ variable.name }}")
         {% else -%}
-        assert({{ variable.name }} is not None)
-        assert(isinstance({{ variable.name }}, {{ types_as_assert_tuple(variable) }}))
+        assert_type_or_raise({{ variable.name }}, {{ types_as_assert_tuple(variable) }}, parameter_name="{{ variable.name }}")
         {% endif -%}
         {%- if variable.always_is_value -%}
-        assert({{ variable.name }} == {{ variable.always_is_value }})
+        if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
+            raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
+        # end if
         {%- endif -%}
         {%- if not loop.last %}
         {% endif %}

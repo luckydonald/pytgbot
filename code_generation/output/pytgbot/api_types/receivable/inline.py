@@ -17,16 +17,16 @@ class InlineQuery(Result):
     Parameters:
     
     :param id: Unique identifier for this query
-    :type  id: str
+    :type  id: str|unicode
     
     :param from_peer: Sender
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
     :param query: Text of the query (up to 512 characters)
-    :type  query: str
+    :type  query: str|unicode
     
     :param offset: Offset of the results to be returned, can be controlled by the bot
-    :type  offset: str
+    :type  offset: str|unicode
     
 
     Optional keyword parameters:
@@ -48,16 +48,16 @@ class InlineQuery(Result):
         Parameters:
         
         :param id: Unique identifier for this query
-        :type  id: str
+        :type  id: str|unicode
         
         :param from_peer: Sender
         :type  from_peer: pytgbot.api_types.receivable.peer.User
         
         :param query: Text of the query (up to 512 characters)
-        :type  query: str
+        :type  query: str|unicode
         
         :param offset: Offset of the results to be returned, can be controlled by the bot
-        :type  offset: str
+        :type  offset: str|unicode
         
     
         Optional keyword parameters:
@@ -72,24 +72,19 @@ class InlineQuery(Result):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.peer import User
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
-        
         self.from_peer = from_peer
         
-        assert_type_or_raise(query, str, parameter_name="query")
-        
+        assert_type_or_raise(query, unicode_type, parameter_name="query")
         self.query = query
         
-        assert_type_or_raise(offset, str, parameter_name="offset")
-        
+        assert_type_or_raise(offset, unicode_type, parameter_name="offset")
         self.offset = offset
         
         assert_type_or_raise(location, None, Location, parameter_name="location")
-        
         self.location = location
 
         self._raw = _raw
@@ -103,10 +98,10 @@ class InlineQuery(Result):
         :rtype: dict
         """
         array = super(InlineQuery, self).to_array()
-        array['id'] = str(self.id)  # type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
-        array['query'] = str(self.query)  # type str
-        array['offset'] = str(self.offset)  # type str
+        array['query'] = u(self.query)  # py2: type unicode, py3: type str
+        array['offset'] = u(self.offset)  # py2: type unicode, py3: type str
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
         return array
@@ -123,7 +118,7 @@ class InlineQuery(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.peer import User
         
@@ -175,13 +170,13 @@ class ChosenInlineResult(UpdateType):
     Parameters:
     
     :param result_id: The unique identifier for the result that was chosen
-    :type  result_id: str
+    :type  result_id: str|unicode
     
     :param from_peer: The user that chose the result
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
     :param query: The query that was used to obtain the result
-    :type  query: str
+    :type  query: str|unicode
     
 
     Optional keyword parameters:
@@ -190,7 +185,7 @@ class ChosenInlineResult(UpdateType):
     :type  location: pytgbot.api_types.receivable.media.Location
     
     :param inline_message_id: Optional. Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message.
-    :type  inline_message_id: str
+    :type  inline_message_id: str|unicode
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -206,13 +201,13 @@ class ChosenInlineResult(UpdateType):
         Parameters:
         
         :param result_id: The unique identifier for the result that was chosen
-        :type  result_id: str
+        :type  result_id: str|unicode
         
         :param from_peer: The user that chose the result
         :type  from_peer: pytgbot.api_types.receivable.peer.User
         
         :param query: The query that was used to obtain the result
-        :type  query: str
+        :type  query: str|unicode
         
     
         Optional keyword parameters:
@@ -221,7 +216,7 @@ class ChosenInlineResult(UpdateType):
         :type  location: pytgbot.api_types.receivable.media.Location
         
         :param inline_message_id: Optional. Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message.
-        :type  inline_message_id: str
+        :type  inline_message_id: str|unicode
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
@@ -230,24 +225,19 @@ class ChosenInlineResult(UpdateType):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.peer import User
         
-        assert_type_or_raise(result_id, str, parameter_name="result_id")
-        
+        assert_type_or_raise(result_id, unicode_type, parameter_name="result_id")
         self.result_id = result_id
         
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
-        
         self.from_peer = from_peer
         
-        assert_type_or_raise(query, str, parameter_name="query")
-        
+        assert_type_or_raise(query, unicode_type, parameter_name="query")
         self.query = query
         
         assert_type_or_raise(location, None, Location, parameter_name="location")
-        
         self.location = location
         
-        assert_type_or_raise(inline_message_id, None, str, parameter_name="inline_message_id")
-        
+        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
         self.inline_message_id = inline_message_id
 
         self._raw = _raw
@@ -261,13 +251,13 @@ class ChosenInlineResult(UpdateType):
         :rtype: dict
         """
         array = super(ChosenInlineResult, self).to_array()
-        array['result_id'] = str(self.result_id)  # type str
+        array['result_id'] = u(self.result_id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
-        array['query'] = str(self.query)  # type str
+        array['query'] = u(self.query)  # py2: type unicode, py3: type str
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
         if self.inline_message_id is not None:
-            array['inline_message_id'] = str(self.inline_message_id)  # type str
+            array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -282,7 +272,7 @@ class ChosenInlineResult(UpdateType):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.peer import User
         

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.logger import logging
-from luckydonaldUtils.encoding import unicode_type
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 
-from pytgbot.api_types.receivable import Result
+from . import Result
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
@@ -26,19 +27,19 @@ class User(Peer):
     :type  id: int
     
     :param first_name: User‘s or bot’s first name
-    :type  first_name: str
+    :type  first_name: str|unicode
     
 
     Optional keyword parameters:
     
     :param last_name: Optional. User‘s or bot’s last name
-    :type  last_name: str
+    :type  last_name: str|unicode
     
     :param username: Optional. User‘s or bot’s username
-    :type  username: str
+    :type  username: str|unicode
     
     :param language_code: Optional. IETF language tag of the user's language
-    :type  language_code: str
+    :type  language_code: str|unicode
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -57,39 +58,37 @@ class User(Peer):
         :type  id: int
 
         :param first_name: User‘s or bot’s first name
-        :type  first_name: str
+        :type  first_name: str|unicode
 
 
         Optional keyword parameters:
 
         :param last_name: Optional. User‘s or bot’s last name
-        :type  last_name: str
+        :type  last_name: str|unicode
 
         :param username: Optional. User‘s or bot’s username
-        :type  username: str
+        :type  username: str|unicode
         
         :param language_code: Optional. IETF language tag of the user's language
-        :type  language_code: str
+        :type  language_code: str|unicode
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(User, self).__init__()
-        assert (id is not None)
-        assert (isinstance(id, int))
+        assert_type_or_raise(id, int, parameter_name="id")
         self.id = id
 
-        assert (first_name is not None)
-        assert (isinstance(first_name, str))
+        assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
 
-        assert (last_name is None or isinstance(last_name, str))
+        assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
 
-        assert (username is None or isinstance(username, str))
+        assert_type_or_raise(username, None, unicode_type, parameter_name="username")
         self.username = username
 
-        assert (language_code is None or isinstance(language_code, str))
+        assert_type_or_raise(language_code, None, unicode_type, parameter_name="language_code")
         self.language_code = language_code
 
         self._raw = _raw
@@ -104,13 +103,13 @@ class User(Peer):
         """
         array = super(User, self).to_array()
         array['id'] = int(self.id)  # type int
-        array['first_name'] = str(self.first_name)  # type str
+        array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
-            array['last_name'] = str(self.last_name)  # type str
+            array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
         if self.username is not None:
-            array['username'] = str(self.username)  # type str
+            array['username'] = u(self.username)  # py2: type unicode, py3: type str
         if self.language_code is not None:
-            array['language_code'] = str(self.language_code)  # type str
+            array['language_code'] = u(self.language_code)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -125,14 +124,14 @@ class User(Peer):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['id'] = int(array.get('id'))
-        data['first_name'] = str(array.get('first_name'))
-        data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
-        data['username'] = str(array.get('username')) if array.get('username') is not None else None
-        data['language_code'] = str(array.get('language_code')) if array.get('language_code') is not None else None
+        data['first_name'] = u(array.get('first_name'))
+        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
+        data['username'] = u(array.get('username')) if array.get('username') is not None else None
+        data['language_code'] = u(array.get('language_code')) if array.get('language_code') is not None else None
         data['_raw'] = array
         return User(**data)
     # end def from_array
@@ -172,26 +171,26 @@ class Chat(Peer):
 
     Parameters:
     
-    :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier
+    :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
     :type  id: int
     
     :param type: Type of chat, can be either “private”, “group”, “supergroup” or “channel”
-    :type  type: str
+    :type  type: str|unicode
     
 
     Optional keyword parameters:
     
     :param title: Optional. Title, for supergroups, channels and group chats
-    :type  title: str
+    :type  title: str|unicode
     
     :param username: Optional. Username, for private chats, supergroups and channels if available
-    :type  username: str
+    :type  username: str|unicode
     
     :param first_name: Optional. First name of the other party in a private chat
-    :type  first_name: str
+    :type  first_name: str|unicode
     
     :param last_name: Optional. Last name of the other party in a private chat
-    :type  last_name: str
+    :type  last_name: str|unicode
     
     :param all_members_are_administrators: Optional. True if a group has ‘All Members Are Admins’ enabled.
     :type  all_members_are_administrators: bool
@@ -200,10 +199,10 @@ class Chat(Peer):
     :type  photo: pytgbot.api_types.receivable.media.ChatPhoto
     
     :param description: Optional. Description, for supergroups and channel chats. Returned only in getChat.
-    :type  description: str
+    :type  description: str|unicode
     
     :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
-    :type  invite_link: str
+    :type  invite_link: str|unicode
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -218,26 +217,26 @@ class Chat(Peer):
 
         Parameters:
 
-        :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier
+        :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
         :type  id: int
 
         :param type: Type of chat, can be either “private”, “group”, “supergroup” or “channel”
-        :type  type: str
+        :type  type: str|unicode
 
 
         Optional keyword parameters:
 
         :param title: Optional. Title, for supergroups, channels and group chats
-        :type  title: str
+        :type  title: str|unicode
 
         :param username: Optional. Username, for private chats, supergroups and channels if available
-        :type  username: str
+        :type  username: str|unicode
 
         :param first_name: Optional. First name of the other party in a private chat
-        :type  first_name: str
+        :type  first_name: str|unicode
 
         :param last_name: Optional. Last name of the other party in a private chat
-        :type  last_name: str
+        :type  last_name: str|unicode
         
         :param all_members_are_administrators: Optional. True if a group has ‘All Members Are Admins’ enabled.
         :type  all_members_are_administrators: bool
@@ -246,10 +245,10 @@ class Chat(Peer):
         :type  photo: pytgbot.api_types.receivable.media.ChatPhoto
         
         :param description: Optional. Description, for supergroups and channel chats. Returned only in getChat.
-        :type  description: str
+        :type  description: str|unicode
         
         :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
-        :type  invite_link: str
+        :type  invite_link: str|unicode
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
@@ -257,36 +256,34 @@ class Chat(Peer):
         super(Chat, self).__init__()
         from pytgbot.api_types.receivable.media import ChatPhoto
 
-        assert (id is not None)
-        assert (isinstance(id, int))
+        assert_type_or_raise(id, int, parameter_name="id")
         self.id = id
 
-        assert (type is not None)
-        assert (isinstance(type, str))
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
 
-        assert (title is None or isinstance(title, str))
+        assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
 
-        assert (username is None or isinstance(username, str))
+        assert_type_or_raise(username, None, unicode_type, parameter_name="username")
         self.username = username
 
-        assert (first_name is None or isinstance(first_name, str))
+        assert_type_or_raise(first_name, None, unicode_type, parameter_name="first_name")
         self.first_name = first_name
 
-        assert (last_name is None or isinstance(last_name, str))
+        assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
         
-        assert (all_members_are_administrators is None or isinstance(all_members_are_administrators, bool))
+        assert_type_or_raise(all_members_are_administrators, None, bool, parameter_name="all_members_are_administrators")
         self.all_members_are_administrators = all_members_are_administrators
 
-        assert (photo is None or isinstance(photo, ChatPhoto))
+        assert_type_or_raise(photo, None, ChatPhoto, parameter_name="photo")
         self.photo = photo
 
-        assert (description is None or isinstance(description, str))
+        assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
 
-        assert (invite_link is None or isinstance(invite_link, str))
+        assert_type_or_raise(invite_link, None, unicode_type, parameter_name="invite_link")
         self.invite_link = invite_link
 
         self._raw = _raw
@@ -301,23 +298,23 @@ class Chat(Peer):
         """
         array = super(Chat, self).to_array()
         array['id'] = int(self.id)  # type int
-        array['type'] = str(self.type)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
         if self.title is not None:
-            array['title'] = str(self.title)  # type str
+            array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.username is not None:
-            array['username'] = str(self.username)  # type str
+            array['username'] = u(self.username)  # py2: type unicode, py3: type str
         if self.first_name is not None:
-            array['first_name'] = str(self.first_name)  # type str
+            array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
-            array['last_name'] = str(self.last_name)  # type str
+            array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
         if self.all_members_are_administrators is not None:
             array['all_members_are_administrators'] = bool(self.all_members_are_administrators)  # type bool
         if self.photo is not None:
             array['photo'] = self.photo.to_array()  # type ChatPhoto
         if self.description is not None:
-            array['description'] = str(self.description)  # type str
+            array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.invite_link is not None:
-            array['invite_link'] = str(self.invite_link)  # type str
+            array['invite_link'] = u(self.invite_link)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -332,20 +329,20 @@ class Chat(Peer):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import ChatPhoto
 
         data = {}
         data['id'] = int(array.get('id'))
-        data['type'] = str(array.get('type'))
-        data['title'] = str(array.get('title')) if array.get('title') is not None else None
-        data['username'] = str(array.get('username')) if array.get('username') is not None else None
-        data['first_name'] = str(array.get('first_name')) if array.get('first_name') is not None else None
-        data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
+        data['type'] = u(array.get('type'))
+        data['title'] = u(array.get('title')) if array.get('title') is not None else None
+        data['username'] = u(array.get('username')) if array.get('username') is not None else None
+        data['first_name'] = u(array.get('first_name')) if array.get('first_name') is not None else None
+        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['all_members_are_administrators'] = bool(array.get('all_members_are_administrators')) if array.get('all_members_are_administrators') is not None else None
         data['photo'] = ChatPhoto.from_array(array.get('photo')) if array.get('photo') is not None else None
-        data['description'] = str(array.get('description')) if array.get('description') is not None else None
-        data['invite_link'] = str(array.get('invite_link')) if array.get('invite_link') is not None else None
+        data['description'] = u(array.get('description')) if array.get('description') is not None else None
+        data['invite_link'] = u(array.get('invite_link')) if array.get('invite_link') is not None else None
         data['_raw'] = array
         return Chat(**data)
     # end def from_array
@@ -389,7 +386,7 @@ class ChatMember(Result):
     :type  user: pytgbot.api_types.receivable.peer.User
     
     :param status: The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
-    :type  status: str
+    :type  status: str|unicode
     
 
     Optional keyword parameters:
@@ -453,7 +450,7 @@ class ChatMember(Result):
         :type  user: pytgbot.api_types.receivable.peer.User
 
         :param status: The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
-        :type  status: str
+        :type  status: str|unicode
         
     
         Optional keyword parameters:
@@ -505,54 +502,52 @@ class ChatMember(Result):
         """
         super(ChatMember, self).__init__()
 
-        assert (user is not None)
-        assert (isinstance(user, User))
+        assert_type_or_raise(user, User, parameter_name="user")
         self.user = user
 
-        assert (status is not None)
-        assert (isinstance(status, str))
+        assert_type_or_raise(status, unicode_type, parameter_name="status")
         self.status = status
 
-        assert (until_date is None or isinstance(until_date, int))
+        assert_type_or_raise(until_date, None, int, parameter_name="until_date")
         self.until_date = until_date
 
-        assert (can_be_edited is None or isinstance(can_be_edited, bool))
+        assert_type_or_raise(can_be_edited, None, bool, parameter_name="can_be_edited")
         self.can_be_edited = can_be_edited
 
-        assert (can_change_info is None or isinstance(can_change_info, bool))
+        assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
         self.can_change_info = can_change_info
 
-        assert (can_post_messages is None or isinstance(can_post_messages, bool))
+        assert_type_or_raise(can_post_messages, None, bool, parameter_name="can_post_messages")
         self.can_post_messages = can_post_messages
 
-        assert (can_edit_messages is None or isinstance(can_edit_messages, bool))
+        assert_type_or_raise(can_edit_messages, None, bool, parameter_name="can_edit_messages")
         self.can_edit_messages = can_edit_messages
 
-        assert (can_delete_messages is None or isinstance(can_delete_messages, bool))
+        assert_type_or_raise(can_delete_messages, None, bool, parameter_name="can_delete_messages")
         self.can_delete_messages = can_delete_messages
 
-        assert (can_invite_users is None or isinstance(can_invite_users, bool))
+        assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
         self.can_invite_users = can_invite_users
 
-        assert (can_restrict_members is None or isinstance(can_restrict_members, bool))
+        assert_type_or_raise(can_restrict_members, None, bool, parameter_name="can_restrict_members")
         self.can_restrict_members = can_restrict_members
 
-        assert (can_pin_messages is None or isinstance(can_pin_messages, bool))
+        assert_type_or_raise(can_pin_messages, None, bool, parameter_name="can_pin_messages")
         self.can_pin_messages = can_pin_messages
 
-        assert (can_promote_members is None or isinstance(can_promote_members, bool))
+        assert_type_or_raise(can_promote_members, None, bool, parameter_name="can_promote_members")
         self.can_promote_members = can_promote_members
 
-        assert (can_send_messages is None or isinstance(can_send_messages, bool))
+        assert_type_or_raise(can_send_messages, None, bool, parameter_name="can_send_messages")
         self.can_send_messages = can_send_messages
 
-        assert (can_send_media_messages is None or isinstance(can_send_media_messages, bool))
+        assert_type_or_raise(can_send_media_messages, None, bool, parameter_name="can_send_media_messages")
         self.can_send_media_messages = can_send_media_messages
 
-        assert (can_send_other_messages is None or isinstance(can_send_other_messages, bool))
+        assert_type_or_raise(can_send_other_messages, None, bool, parameter_name="can_send_other_messages")
         self.can_send_other_messages = can_send_other_messages
 
-        assert (can_add_web_page_previews is None or isinstance(can_add_web_page_previews, bool))
+        assert_type_or_raise(can_add_web_page_previews, None, bool, parameter_name="can_add_web_page_previews")
         self.can_add_web_page_previews = can_add_web_page_previews
 
         self._raw = _raw
@@ -567,7 +562,7 @@ class ChatMember(Result):
         """
         array = super(ChatMember, self).to_array()
         array['user'] = self.user.to_array()  # type User
-        array['status'] = str(self.status)  # type str
+        array['status'] = u(self.status)  # py2: type unicode, py3: type str
         if self.until_date is not None:
             array['until_date'] = int(self.until_date)  # type int
         if self.can_be_edited is not None:
@@ -610,11 +605,11 @@ class ChatMember(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['user'] = User.from_array(array.get('user'))
-        data['status'] = str(array.get('status'))
+        data['status'] = u(array.get('status'))
         data['until_date'] = int(array.get('until_date')) if array.get('until_date') is not None else None
         data['can_be_edited'] = bool(array.get('can_be_edited')) if array.get('can_be_edited') is not None else None
         data['can_change_info'] = bool(array.get('can_change_info')) if array.get('can_change_info') is not None else None

@@ -18,13 +18,13 @@ class InlineQueryResultArticle(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be article
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 Bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param title: Title of the result
-    :type  title: str
+    :type  title: str|unicode
     
     :param input_message_content: Content of the message to be sent
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
@@ -36,16 +36,16 @@ class InlineQueryResultArticle(InlineQueryResult):
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
     :param url: Optional. URL of the result
-    :type  url: str
+    :type  url: str|unicode
     
     :param hide_url: Optional. Pass True, if you don't want the URL to be shown in the message
     :type  hide_url: bool
     
     :param description: Optional. Short description of the result
-    :type  description: str
+    :type  description: str|unicode
     
     :param thumb_url: Optional. Url of the thumbnail for the result
-    :type  thumb_url: str
+    :type  thumb_url: str|unicode
     
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
@@ -64,13 +64,13 @@ class InlineQueryResultArticle(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be article
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 Bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param title: Title of the result
-        :type  title: str
+        :type  title: str|unicode
         
         :param input_message_content: Content of the message to be sent
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
@@ -82,16 +82,16 @@ class InlineQueryResultArticle(InlineQueryResult):
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
         :param url: Optional. URL of the result
-        :type  url: str
+        :type  url: str|unicode
         
         :param hide_url: Optional. Pass True, if you don't want the URL to be shown in the message
         :type  hide_url: bool
         
         :param description: Optional. Short description of the result
-        :type  description: str
+        :type  description: str|unicode
         
         :param thumb_url: Optional. Url of the thumbnail for the result
-        :type  thumb_url: str
+        :type  thumb_url: str|unicode
         
         :param thumb_width: Optional. Thumbnail width
         :type  thumb_width: int
@@ -103,48 +103,37 @@ class InlineQueryResultArticle(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
         assert_type_or_raise(input_message_content, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
-        assert_type_or_raise(url, None, str, parameter_name="url")
-        
+        assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
         
         assert_type_or_raise(hide_url, None, bool, parameter_name="hide_url")
-        
         self.hide_url = hide_url
         
-        assert_type_or_raise(description, None, str, parameter_name="description")
-        
+        assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
         
-        assert_type_or_raise(thumb_url, None, str, parameter_name="thumb_url")
-        
+        assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
         
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
-        
         self.thumb_width = thumb_width
         
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
-        
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -156,20 +145,20 @@ class InlineQueryResultArticle(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultArticle, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['title'] = str(self.title)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.url is not None:
-            array['url'] = str(self.url)  # type str
+            array['url'] = u(self.url)  # py2: type unicode, py3: type str
         if self.hide_url is not None:
             array['hide_url'] = bool(self.hide_url)  # type bool
         if self.description is not None:
-            array['description'] = str(self.description)  # type str
+            array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.thumb_url is not None:
-            array['thumb_url'] = str(self.thumb_url)  # type str
+            array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -188,7 +177,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -248,16 +237,16 @@ class InlineQueryResultPhoto(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be photo
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param photo_url: A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
-    :type  photo_url: str
+    :type  photo_url: str|unicode
     
     :param thumb_url: URL of the thumbnail for the photo
-    :type  thumb_url: str
+    :type  thumb_url: str|unicode
     
 
     Optional keyword parameters:
@@ -269,13 +258,13 @@ class InlineQueryResultPhoto(InlineQueryResult):
     :type  photo_height: int
     
     :param title: Optional. Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
     :param description: Optional. Short description of the result
-    :type  description: str
+    :type  description: str|unicode
     
     :param caption: Optional. Caption of the photo to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -294,16 +283,16 @@ class InlineQueryResultPhoto(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be photo
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param photo_url: A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
-        :type  photo_url: str
+        :type  photo_url: str|unicode
         
         :param thumb_url: URL of the thumbnail for the photo
-        :type  thumb_url: str
+        :type  thumb_url: str|unicode
         
     
         Optional keyword parameters:
@@ -315,13 +304,13 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :type  photo_height: int
         
         :param title: Optional. Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
         :param description: Optional. Short description of the result
-        :type  description: str
+        :type  description: str|unicode
         
         :param caption: Optional. Caption of the photo to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -333,48 +322,37 @@ class InlineQueryResultPhoto(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(photo_url, str, parameter_name="photo_url")
-        
+        assert_type_or_raise(photo_url, unicode_type, parameter_name="photo_url")
         self.photo_url = photo_url
         
-        assert_type_or_raise(thumb_url, str, parameter_name="thumb_url")
-        
+        assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
         
         assert_type_or_raise(photo_width, None, int, parameter_name="photo_width")
-        
         self.photo_width = photo_width
         
         assert_type_or_raise(photo_height, None, int, parameter_name="photo_height")
-        
         self.photo_height = photo_height
         
-        assert_type_or_raise(title, None, str, parameter_name="title")
-        
+        assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(description, None, str, parameter_name="description")
-        
+        assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -386,20 +364,20 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultPhoto, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['photo_url'] = str(self.photo_url)  # type str
-        array['thumb_url'] = str(self.thumb_url)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['photo_url'] = u(self.photo_url)  # py2: type unicode, py3: type str
+        array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.photo_width is not None:
             array['photo_width'] = int(self.photo_width)  # type int
         if self.photo_height is not None:
             array['photo_height'] = int(self.photo_height)  # type int
         if self.title is not None:
-            array['title'] = str(self.title)  # type str
+            array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.description is not None:
-            array['description'] = str(self.description)  # type str
+            array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -418,7 +396,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -478,16 +456,16 @@ class InlineQueryResultGif(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be gif
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param gif_url: A valid URL for the GIF file. File size must not exceed 1MB
-    :type  gif_url: str
+    :type  gif_url: str|unicode
     
     :param thumb_url: URL of the static thumbnail for the result (jpeg or gif)
-    :type  thumb_url: str
+    :type  thumb_url: str|unicode
     
 
     Optional keyword parameters:
@@ -502,10 +480,10 @@ class InlineQueryResultGif(InlineQueryResult):
     :type  gif_duration: int
     
     :param title: Optional. Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
     :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -524,16 +502,16 @@ class InlineQueryResultGif(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be gif
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param gif_url: A valid URL for the GIF file. File size must not exceed 1MB
-        :type  gif_url: str
+        :type  gif_url: str|unicode
         
         :param thumb_url: URL of the static thumbnail for the result (jpeg or gif)
-        :type  thumb_url: str
+        :type  thumb_url: str|unicode
         
     
         Optional keyword parameters:
@@ -548,10 +526,10 @@ class InlineQueryResultGif(InlineQueryResult):
         :type  gif_duration: int
         
         :param title: Optional. Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
         :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -563,48 +541,37 @@ class InlineQueryResultGif(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(gif_url, str, parameter_name="gif_url")
-        
+        assert_type_or_raise(gif_url, unicode_type, parameter_name="gif_url")
         self.gif_url = gif_url
         
-        assert_type_or_raise(thumb_url, str, parameter_name="thumb_url")
-        
+        assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
         
         assert_type_or_raise(gif_width, None, int, parameter_name="gif_width")
-        
         self.gif_width = gif_width
         
         assert_type_or_raise(gif_height, None, int, parameter_name="gif_height")
-        
         self.gif_height = gif_height
         
         assert_type_or_raise(gif_duration, None, int, parameter_name="gif_duration")
-        
         self.gif_duration = gif_duration
         
-        assert_type_or_raise(title, None, str, parameter_name="title")
-        
+        assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -616,10 +583,10 @@ class InlineQueryResultGif(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultGif, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['gif_url'] = str(self.gif_url)  # type str
-        array['thumb_url'] = str(self.thumb_url)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['gif_url'] = u(self.gif_url)  # py2: type unicode, py3: type str
+        array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.gif_width is not None:
             array['gif_width'] = int(self.gif_width)  # type int
         if self.gif_height is not None:
@@ -627,9 +594,9 @@ class InlineQueryResultGif(InlineQueryResult):
         if self.gif_duration is not None:
             array['gif_duration'] = int(self.gif_duration)  # type int
         if self.title is not None:
-            array['title'] = str(self.title)  # type str
+            array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -648,7 +615,7 @@ class InlineQueryResultGif(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -708,16 +675,16 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be mpeg4_gif
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param mpeg4_url: A valid URL for the MP4 file. File size must not exceed 1MB
-    :type  mpeg4_url: str
+    :type  mpeg4_url: str|unicode
     
     :param thumb_url: URL of the static thumbnail (jpeg or gif) for the result
-    :type  thumb_url: str
+    :type  thumb_url: str|unicode
     
 
     Optional keyword parameters:
@@ -732,10 +699,10 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :type  mpeg4_duration: int
     
     :param title: Optional. Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
     :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -754,16 +721,16 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be mpeg4_gif
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param mpeg4_url: A valid URL for the MP4 file. File size must not exceed 1MB
-        :type  mpeg4_url: str
+        :type  mpeg4_url: str|unicode
         
         :param thumb_url: URL of the static thumbnail (jpeg or gif) for the result
-        :type  thumb_url: str
+        :type  thumb_url: str|unicode
         
     
         Optional keyword parameters:
@@ -778,10 +745,10 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :type  mpeg4_duration: int
         
         :param title: Optional. Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
         :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -793,48 +760,37 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(mpeg4_url, str, parameter_name="mpeg4_url")
-        
+        assert_type_or_raise(mpeg4_url, unicode_type, parameter_name="mpeg4_url")
         self.mpeg4_url = mpeg4_url
         
-        assert_type_or_raise(thumb_url, str, parameter_name="thumb_url")
-        
+        assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
         
         assert_type_or_raise(mpeg4_width, None, int, parameter_name="mpeg4_width")
-        
         self.mpeg4_width = mpeg4_width
         
         assert_type_or_raise(mpeg4_height, None, int, parameter_name="mpeg4_height")
-        
         self.mpeg4_height = mpeg4_height
         
         assert_type_or_raise(mpeg4_duration, None, int, parameter_name="mpeg4_duration")
-        
         self.mpeg4_duration = mpeg4_duration
         
-        assert_type_or_raise(title, None, str, parameter_name="title")
-        
+        assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -846,10 +802,10 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultMpeg4Gif, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['mpeg4_url'] = str(self.mpeg4_url)  # type str
-        array['thumb_url'] = str(self.thumb_url)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['mpeg4_url'] = u(self.mpeg4_url)  # py2: type unicode, py3: type str
+        array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.mpeg4_width is not None:
             array['mpeg4_width'] = int(self.mpeg4_width)  # type int
         if self.mpeg4_height is not None:
@@ -857,9 +813,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         if self.mpeg4_duration is not None:
             array['mpeg4_duration'] = int(self.mpeg4_duration)  # type int
         if self.title is not None:
-            array['title'] = str(self.title)  # type str
+            array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -878,7 +834,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -940,28 +896,28 @@ class InlineQueryResultVideo(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be video
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param video_url: A valid URL for the embedded video player or video file
-    :type  video_url: str
+    :type  video_url: str|unicode
     
     :param mime_type: Mime type of the content of video url, “text/html” or “video/mp4”
-    :type  mime_type: str
+    :type  mime_type: str|unicode
     
     :param thumb_url: URL of the thumbnail (jpeg only) for the video
-    :type  thumb_url: str
+    :type  thumb_url: str|unicode
     
     :param title: Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
 
     Optional keyword parameters:
     
     :param caption: Optional. Caption of the video to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param video_width: Optional. Video width
     :type  video_width: int
@@ -973,7 +929,7 @@ class InlineQueryResultVideo(InlineQueryResult):
     :type  video_duration: int
     
     :param description: Optional. Short description of the result
-    :type  description: str
+    :type  description: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -994,28 +950,28 @@ class InlineQueryResultVideo(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be video
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param video_url: A valid URL for the embedded video player or video file
-        :type  video_url: str
+        :type  video_url: str|unicode
         
         :param mime_type: Mime type of the content of video url, “text/html” or “video/mp4”
-        :type  mime_type: str
+        :type  mime_type: str|unicode
         
         :param thumb_url: URL of the thumbnail (jpeg only) for the video
-        :type  thumb_url: str
+        :type  thumb_url: str|unicode
         
         :param title: Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
     
         Optional keyword parameters:
         
         :param caption: Optional. Caption of the video to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param video_width: Optional. Video width
         :type  video_width: int
@@ -1027,7 +983,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         :type  video_duration: int
         
         :param description: Optional. Short description of the result
-        :type  description: str
+        :type  description: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -1039,56 +995,43 @@ class InlineQueryResultVideo(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(video_url, str, parameter_name="video_url")
-        
+        assert_type_or_raise(video_url, unicode_type, parameter_name="video_url")
         self.video_url = video_url
         
-        assert_type_or_raise(mime_type, str, parameter_name="mime_type")
-        
+        assert_type_or_raise(mime_type, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
         
-        assert_type_or_raise(thumb_url, str, parameter_name="thumb_url")
-        
+        assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(video_width, None, int, parameter_name="video_width")
-        
         self.video_width = video_width
         
         assert_type_or_raise(video_height, None, int, parameter_name="video_height")
-        
         self.video_height = video_height
         
         assert_type_or_raise(video_duration, None, int, parameter_name="video_duration")
-        
         self.video_duration = video_duration
         
-        assert_type_or_raise(description, None, str, parameter_name="description")
-        
+        assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -1100,14 +1043,14 @@ class InlineQueryResultVideo(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultVideo, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['video_url'] = str(self.video_url)  # type str
-        array['mime_type'] = str(self.mime_type)  # type str
-        array['thumb_url'] = str(self.thumb_url)  # type str
-        array['title'] = str(self.title)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['video_url'] = u(self.video_url)  # py2: type unicode, py3: type str
+        array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.video_width is not None:
             array['video_width'] = int(self.video_width)  # type int
         if self.video_height is not None:
@@ -1115,7 +1058,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         if self.video_duration is not None:
             array['video_duration'] = int(self.video_duration)  # type int
         if self.description is not None:
-            array['description'] = str(self.description)  # type str
+            array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -1134,7 +1077,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1197,25 +1140,25 @@ class InlineQueryResultAudio(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be audio
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param audio_url: A valid URL for the audio file
-    :type  audio_url: str
+    :type  audio_url: str|unicode
     
     :param title: Title
-    :type  title: str
+    :type  title: str|unicode
     
 
     Optional keyword parameters:
     
     :param caption: Optional. Caption, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param performer: Optional. Performer
-    :type  performer: str
+    :type  performer: str|unicode
     
     :param audio_duration: Optional. Audio duration in seconds
     :type  audio_duration: int
@@ -1238,25 +1181,25 @@ class InlineQueryResultAudio(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be audio
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param audio_url: A valid URL for the audio file
-        :type  audio_url: str
+        :type  audio_url: str|unicode
         
         :param title: Title
-        :type  title: str
+        :type  title: str|unicode
         
     
         Optional keyword parameters:
         
         :param caption: Optional. Caption, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param performer: Optional. Performer
-        :type  performer: str
+        :type  performer: str|unicode
         
         :param audio_duration: Optional. Audio duration in seconds
         :type  audio_duration: int
@@ -1271,40 +1214,31 @@ class InlineQueryResultAudio(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(audio_url, str, parameter_name="audio_url")
-        
+        assert_type_or_raise(audio_url, unicode_type, parameter_name="audio_url")
         self.audio_url = audio_url
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
-        assert_type_or_raise(performer, None, str, parameter_name="performer")
-        
+        assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
         
         assert_type_or_raise(audio_duration, None, int, parameter_name="audio_duration")
-        
         self.audio_duration = audio_duration
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -1316,14 +1250,14 @@ class InlineQueryResultAudio(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultAudio, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['audio_url'] = str(self.audio_url)  # type str
-        array['title'] = str(self.title)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['audio_url'] = u(self.audio_url)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.performer is not None:
-            array['performer'] = str(self.performer)  # type str
+            array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
         if self.audio_duration is not None:
             array['audio_duration'] = int(self.audio_duration)  # type int
         if self.reply_markup is not None:
@@ -1344,7 +1278,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1403,22 +1337,22 @@ class InlineQueryResultVoice(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be voice
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param voice_url: A valid URL for the voice recording
-    :type  voice_url: str
+    :type  voice_url: str|unicode
     
     :param title: Recording title
-    :type  title: str
+    :type  title: str|unicode
     
 
     Optional keyword parameters:
     
     :param caption: Optional. Caption, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param voice_duration: Optional. Recording duration in seconds
     :type  voice_duration: int
@@ -1441,22 +1375,22 @@ class InlineQueryResultVoice(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be voice
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param voice_url: A valid URL for the voice recording
-        :type  voice_url: str
+        :type  voice_url: str|unicode
         
         :param title: Recording title
-        :type  title: str
+        :type  title: str|unicode
         
     
         Optional keyword parameters:
         
         :param caption: Optional. Caption, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param voice_duration: Optional. Recording duration in seconds
         :type  voice_duration: int
@@ -1471,36 +1405,28 @@ class InlineQueryResultVoice(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(voice_url, str, parameter_name="voice_url")
-        
+        assert_type_or_raise(voice_url, unicode_type, parameter_name="voice_url")
         self.voice_url = voice_url
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(voice_duration, None, int, parameter_name="voice_duration")
-        
         self.voice_duration = voice_duration
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -1512,12 +1438,12 @@ class InlineQueryResultVoice(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultVoice, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['voice_url'] = str(self.voice_url)  # type str
-        array['title'] = str(self.title)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['voice_url'] = u(self.voice_url)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.voice_duration is not None:
             array['voice_duration'] = int(self.voice_duration)  # type int
         if self.reply_markup is not None:
@@ -1538,7 +1464,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1596,28 +1522,28 @@ class InlineQueryResultDocument(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be document
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param title: Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
     :param document_url: A valid URL for the file
-    :type  document_url: str
+    :type  document_url: str|unicode
     
     :param mime_type: Mime type of the content of the file, either “application/pdf” or “application/zip”
-    :type  mime_type: str
+    :type  mime_type: str|unicode
     
 
     Optional keyword parameters:
     
     :param caption: Optional. Caption of the document to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param description: Optional. Short description of the result
-    :type  description: str
+    :type  description: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -1626,7 +1552,7 @@ class InlineQueryResultDocument(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     
     :param thumb_url: Optional. URL of the thumbnail (jpeg only) for the file
-    :type  thumb_url: str
+    :type  thumb_url: str|unicode
     
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
@@ -1646,28 +1572,28 @@ class InlineQueryResultDocument(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be document
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param title: Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
         :param document_url: A valid URL for the file
-        :type  document_url: str
+        :type  document_url: str|unicode
         
         :param mime_type: Mime type of the content of the file, either “application/pdf” or “application/zip”
-        :type  mime_type: str
+        :type  mime_type: str|unicode
         
     
         Optional keyword parameters:
         
         :param caption: Optional. Caption of the document to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param description: Optional. Short description of the result
-        :type  description: str
+        :type  description: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -1676,7 +1602,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
         :param thumb_url: Optional. URL of the thumbnail (jpeg only) for the file
-        :type  thumb_url: str
+        :type  thumb_url: str|unicode
         
         :param thumb_width: Optional. Thumbnail width
         :type  thumb_width: int
@@ -1688,52 +1614,40 @@ class InlineQueryResultDocument(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(document_url, str, parameter_name="document_url")
-        
+        assert_type_or_raise(document_url, unicode_type, parameter_name="document_url")
         self.document_url = document_url
         
-        assert_type_or_raise(mime_type, str, parameter_name="mime_type")
-        
+        assert_type_or_raise(mime_type, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
-        assert_type_or_raise(description, None, str, parameter_name="description")
-        
+        assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
         
-        assert_type_or_raise(thumb_url, None, str, parameter_name="thumb_url")
-        
+        assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
         
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
-        
         self.thumb_width = thumb_width
         
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
-        
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -1745,21 +1659,21 @@ class InlineQueryResultDocument(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultDocument, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['title'] = str(self.title)  # type str
-        array['document_url'] = str(self.document_url)  # type str
-        array['mime_type'] = str(self.mime_type)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        array['document_url'] = u(self.document_url)  # py2: type unicode, py3: type str
+        array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.description is not None:
-            array['description'] = str(self.description)  # type str
+            array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         if self.thumb_url is not None:
-            array['thumb_url'] = str(self.thumb_url)  # type str
+            array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -1778,7 +1692,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1840,10 +1754,10 @@ class InlineQueryResultLocation(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be location
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 Bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param latitude: Location latitude in degrees
     :type  latitude: float
@@ -1852,7 +1766,7 @@ class InlineQueryResultLocation(InlineQueryResult):
     :type  longitude: float
     
     :param title: Location title
-    :type  title: str
+    :type  title: str|unicode
     
 
     Optional keyword parameters:
@@ -1864,7 +1778,7 @@ class InlineQueryResultLocation(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     
     :param thumb_url: Optional. Url of the thumbnail for the result
-    :type  thumb_url: str
+    :type  thumb_url: str|unicode
     
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
@@ -1884,10 +1798,10 @@ class InlineQueryResultLocation(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be location
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 Bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param latitude: Location latitude in degrees
         :type  latitude: float
@@ -1896,7 +1810,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         :type  longitude: float
         
         :param title: Location title
-        :type  title: str
+        :type  title: str|unicode
         
     
         Optional keyword parameters:
@@ -1908,7 +1822,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
         :param thumb_url: Optional. Url of the thumbnail for the result
-        :type  thumb_url: str
+        :type  thumb_url: str|unicode
         
         :param thumb_width: Optional. Thumbnail width
         :type  thumb_width: int
@@ -1920,44 +1834,34 @@ class InlineQueryResultLocation(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
         assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
         self.latitude = latitude
         
         assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
         self.longitude = longitude
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
         
-        assert_type_or_raise(thumb_url, None, str, parameter_name="thumb_url")
-        
+        assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
         
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
-        
         self.thumb_width = thumb_width
         
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
-        
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -1969,17 +1873,17 @@ class InlineQueryResultLocation(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultLocation, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
-        array['title'] = str(self.title)  # type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         if self.thumb_url is not None:
-            array['thumb_url'] = str(self.thumb_url)  # type str
+            array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -1998,7 +1902,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -2058,10 +1962,10 @@ class InlineQueryResultVenue(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be venue
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 Bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param latitude: Latitude of the venue location in degrees
     :type  latitude: float
@@ -2070,16 +1974,16 @@ class InlineQueryResultVenue(InlineQueryResult):
     :type  longitude: float
     
     :param title: Title of the venue
-    :type  title: str
+    :type  title: str|unicode
     
     :param address: Address of the venue
-    :type  address: str
+    :type  address: str|unicode
     
 
     Optional keyword parameters:
     
     :param foursquare_id: Optional. Foursquare identifier of the venue if known
-    :type  foursquare_id: str
+    :type  foursquare_id: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2088,7 +1992,7 @@ class InlineQueryResultVenue(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     
     :param thumb_url: Optional. Url of the thumbnail for the result
-    :type  thumb_url: str
+    :type  thumb_url: str|unicode
     
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
@@ -2108,10 +2012,10 @@ class InlineQueryResultVenue(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be venue
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 Bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param latitude: Latitude of the venue location in degrees
         :type  latitude: float
@@ -2120,16 +2024,16 @@ class InlineQueryResultVenue(InlineQueryResult):
         :type  longitude: float
         
         :param title: Title of the venue
-        :type  title: str
+        :type  title: str|unicode
         
         :param address: Address of the venue
-        :type  address: str
+        :type  address: str|unicode
         
     
         Optional keyword parameters:
         
         :param foursquare_id: Optional. Foursquare identifier of the venue if known
-        :type  foursquare_id: str
+        :type  foursquare_id: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2138,7 +2042,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
         :param thumb_url: Optional. Url of the thumbnail for the result
-        :type  thumb_url: str
+        :type  thumb_url: str|unicode
         
         :param thumb_width: Optional. Thumbnail width
         :type  thumb_width: int
@@ -2150,52 +2054,40 @@ class InlineQueryResultVenue(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
         assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
         self.latitude = latitude
         
         assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
         self.longitude = longitude
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(address, str, parameter_name="address")
-        
+        assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
         
-        assert_type_or_raise(foursquare_id, None, str, parameter_name="foursquare_id")
-        
+        assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
         
-        assert_type_or_raise(thumb_url, None, str, parameter_name="thumb_url")
-        
+        assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
         
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
-        
         self.thumb_width = thumb_width
         
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
-        
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -2207,20 +2099,20 @@ class InlineQueryResultVenue(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultVenue, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
-        array['title'] = str(self.title)  # type str
-        array['address'] = str(self.address)  # type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        array['address'] = u(self.address)  # py2: type unicode, py3: type str
         if self.foursquare_id is not None:
-            array['foursquare_id'] = str(self.foursquare_id)  # type str
+            array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         if self.thumb_url is not None:
-            array['thumb_url'] = str(self.thumb_url)  # type str
+            array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -2239,7 +2131,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -2301,22 +2193,22 @@ class InlineQueryResultContact(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be contact
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 Bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param phone_number: Contact's phone number
-    :type  phone_number: str
+    :type  phone_number: str|unicode
     
     :param first_name: Contact's first name
-    :type  first_name: str
+    :type  first_name: str|unicode
     
 
     Optional keyword parameters:
     
     :param last_name: Optional. Contact's last name
-    :type  last_name: str
+    :type  last_name: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2325,7 +2217,7 @@ class InlineQueryResultContact(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     
     :param thumb_url: Optional. Url of the thumbnail for the result
-    :type  thumb_url: str
+    :type  thumb_url: str|unicode
     
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
@@ -2345,22 +2237,22 @@ class InlineQueryResultContact(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be contact
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 Bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param phone_number: Contact's phone number
-        :type  phone_number: str
+        :type  phone_number: str|unicode
         
         :param first_name: Contact's first name
-        :type  first_name: str
+        :type  first_name: str|unicode
         
     
         Optional keyword parameters:
         
         :param last_name: Optional. Contact's last name
-        :type  last_name: str
+        :type  last_name: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2369,7 +2261,7 @@ class InlineQueryResultContact(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
         :param thumb_url: Optional. Url of the thumbnail for the result
-        :type  thumb_url: str
+        :type  thumb_url: str|unicode
         
         :param thumb_width: Optional. Thumbnail width
         :type  thumb_width: int
@@ -2381,44 +2273,34 @@ class InlineQueryResultContact(InlineQueryResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(phone_number, str, parameter_name="phone_number")
-        
+        assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
         
-        assert_type_or_raise(first_name, str, parameter_name="first_name")
-        
+        assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
         
-        assert_type_or_raise(last_name, None, str, parameter_name="last_name")
-        
+        assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
         
-        assert_type_or_raise(thumb_url, None, str, parameter_name="thumb_url")
-        
+        assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
         
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
-        
         self.thumb_width = thumb_width
         
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
-        
         self.thumb_height = thumb_height
     # end def __init__
 
@@ -2430,18 +2312,18 @@ class InlineQueryResultContact(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultContact, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['phone_number'] = str(self.phone_number)  # type str
-        array['first_name'] = str(self.first_name)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+        array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
-            array['last_name'] = str(self.last_name)  # type str
+            array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         if self.thumb_url is not None:
-            array['thumb_url'] = str(self.thumb_url)  # type str
+            array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -2460,7 +2342,7 @@ class InlineQueryResultContact(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -2520,13 +2402,13 @@ class InlineQueryResultGame(InlineQueryResult):
     Parameters:
     
     :param type: Type of the result, must be game
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param game_short_name: Short name of the game
-    :type  game_short_name: str
+    :type  game_short_name: str|unicode
     
 
     Optional keyword parameters:
@@ -2546,13 +2428,13 @@ class InlineQueryResultGame(InlineQueryResult):
         Parameters:
         
         :param type: Type of the result, must be game
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param game_short_name: Short name of the game
-        :type  game_short_name: str
+        :type  game_short_name: str|unicode
         
     
         Optional keyword parameters:
@@ -2563,20 +2445,16 @@ class InlineQueryResultGame(InlineQueryResult):
         super(InlineQueryResultGame, self).__init__()
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(game_short_name, str, parameter_name="game_short_name")
-        
+        assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
     # end def __init__
 
@@ -2588,9 +2466,9 @@ class InlineQueryResultGame(InlineQueryResult):
         :rtype: dict
         """
         array = super(InlineQueryResultGame, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['game_short_name'] = str(self.game_short_name)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         return array
@@ -2607,7 +2485,7 @@ class InlineQueryResultGame(InlineQueryResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
 
@@ -2659,25 +2537,25 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     Parameters:
     
     :param type: Type of the result, must be photo
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param photo_file_id: A valid file identifier of the photo
-    :type  photo_file_id: str
+    :type  photo_file_id: str|unicode
     
 
     Optional keyword parameters:
     
     :param title: Optional. Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
     :param description: Optional. Short description of the result
-    :type  description: str
+    :type  description: str|unicode
     
     :param caption: Optional. Caption of the photo to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2696,25 +2574,25 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         Parameters:
         
         :param type: Type of the result, must be photo
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param photo_file_id: A valid file identifier of the photo
-        :type  photo_file_id: str
+        :type  photo_file_id: str|unicode
         
     
         Optional keyword parameters:
         
         :param title: Optional. Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
         :param description: Optional. Short description of the result
-        :type  description: str
+        :type  description: str|unicode
         
         :param caption: Optional. Caption of the photo to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2726,36 +2604,28 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(photo_file_id, str, parameter_name="photo_file_id")
-        
+        assert_type_or_raise(photo_file_id, unicode_type, parameter_name="photo_file_id")
         self.photo_file_id = photo_file_id
         
-        assert_type_or_raise(title, None, str, parameter_name="title")
-        
+        assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(description, None, str, parameter_name="description")
-        
+        assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2767,15 +2637,15 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedPhoto, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['photo_file_id'] = str(self.photo_file_id)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['photo_file_id'] = u(self.photo_file_id)  # py2: type unicode, py3: type str
         if self.title is not None:
-            array['title'] = str(self.title)  # type str
+            array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.description is not None:
-            array['description'] = str(self.description)  # type str
+            array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -2794,7 +2664,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -2851,22 +2721,22 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     Parameters:
     
     :param type: Type of the result, must be gif
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param gif_file_id: A valid file identifier for the GIF file
-    :type  gif_file_id: str
+    :type  gif_file_id: str|unicode
     
 
     Optional keyword parameters:
     
     :param title: Optional. Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
     :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2885,22 +2755,22 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         Parameters:
         
         :param type: Type of the result, must be gif
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param gif_file_id: A valid file identifier for the GIF file
-        :type  gif_file_id: str
+        :type  gif_file_id: str|unicode
         
     
         Optional keyword parameters:
         
         :param title: Optional. Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
         :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2912,32 +2782,25 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(gif_file_id, str, parameter_name="gif_file_id")
-        
+        assert_type_or_raise(gif_file_id, unicode_type, parameter_name="gif_file_id")
         self.gif_file_id = gif_file_id
         
-        assert_type_or_raise(title, None, str, parameter_name="title")
-        
+        assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -2949,13 +2812,13 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedGif, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['gif_file_id'] = str(self.gif_file_id)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['gif_file_id'] = u(self.gif_file_id)  # py2: type unicode, py3: type str
         if self.title is not None:
-            array['title'] = str(self.title)  # type str
+            array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -2974,7 +2837,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3030,22 +2893,22 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     Parameters:
     
     :param type: Type of the result, must be mpeg4_gif
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param mpeg4_file_id: A valid file identifier for the MP4 file
-    :type  mpeg4_file_id: str
+    :type  mpeg4_file_id: str|unicode
     
 
     Optional keyword parameters:
     
     :param title: Optional. Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
     :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3064,22 +2927,22 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         Parameters:
         
         :param type: Type of the result, must be mpeg4_gif
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param mpeg4_file_id: A valid file identifier for the MP4 file
-        :type  mpeg4_file_id: str
+        :type  mpeg4_file_id: str|unicode
         
     
         Optional keyword parameters:
         
         :param title: Optional. Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
         :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3091,32 +2954,25 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(mpeg4_file_id, str, parameter_name="mpeg4_file_id")
-        
+        assert_type_or_raise(mpeg4_file_id, unicode_type, parameter_name="mpeg4_file_id")
         self.mpeg4_file_id = mpeg4_file_id
         
-        assert_type_or_raise(title, None, str, parameter_name="title")
-        
+        assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -3128,13 +2984,13 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['mpeg4_file_id'] = str(self.mpeg4_file_id)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['mpeg4_file_id'] = u(self.mpeg4_file_id)  # py2: type unicode, py3: type str
         if self.title is not None:
-            array['title'] = str(self.title)  # type str
+            array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -3153,7 +3009,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3210,13 +3066,13 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     Parameters:
     
     :param type: Type of the result, must be sticker
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param sticker_file_id: A valid file identifier of the sticker
-    :type  sticker_file_id: str
+    :type  sticker_file_id: str|unicode
     
 
     Optional keyword parameters:
@@ -3239,13 +3095,13 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         Parameters:
         
         :param type: Type of the result, must be sticker
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param sticker_file_id: A valid file identifier of the sticker
-        :type  sticker_file_id: str
+        :type  sticker_file_id: str|unicode
         
     
         Optional keyword parameters:
@@ -3260,24 +3116,19 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(sticker_file_id, str, parameter_name="sticker_file_id")
-        
+        assert_type_or_raise(sticker_file_id, unicode_type, parameter_name="sticker_file_id")
         self.sticker_file_id = sticker_file_id
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -3289,9 +3140,9 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedSticker, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['sticker_file_id'] = str(self.sticker_file_id)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['sticker_file_id'] = u(self.sticker_file_id)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -3310,7 +3161,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3365,25 +3216,25 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     Parameters:
     
     :param type: Type of the result, must be document
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param title: Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
     :param document_file_id: A valid file identifier for the file
-    :type  document_file_id: str
+    :type  document_file_id: str|unicode
     
 
     Optional keyword parameters:
     
     :param description: Optional. Short description of the result
-    :type  description: str
+    :type  description: str|unicode
     
     :param caption: Optional. Caption of the document to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3403,25 +3254,25 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         Parameters:
         
         :param type: Type of the result, must be document
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param title: Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
         :param document_file_id: A valid file identifier for the file
-        :type  document_file_id: str
+        :type  document_file_id: str|unicode
         
     
         Optional keyword parameters:
         
         :param description: Optional. Short description of the result
-        :type  description: str
+        :type  description: str|unicode
         
         :param caption: Optional. Caption of the document to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3433,36 +3284,28 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(document_file_id, str, parameter_name="document_file_id")
-        
+        assert_type_or_raise(document_file_id, unicode_type, parameter_name="document_file_id")
         self.document_file_id = document_file_id
         
-        assert_type_or_raise(description, None, str, parameter_name="description")
-        
+        assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -3474,14 +3317,14 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedDocument, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['title'] = str(self.title)  # type str
-        array['document_file_id'] = str(self.document_file_id)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        array['document_file_id'] = u(self.document_file_id)  # py2: type unicode, py3: type str
         if self.description is not None:
-            array['description'] = str(self.description)  # type str
+            array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -3500,7 +3343,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3557,25 +3400,25 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     Parameters:
     
     :param type: Type of the result, must be video
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param video_file_id: A valid file identifier for the video file
-    :type  video_file_id: str
+    :type  video_file_id: str|unicode
     
     :param title: Title for the result
-    :type  title: str
+    :type  title: str|unicode
     
 
     Optional keyword parameters:
     
     :param description: Optional. Short description of the result
-    :type  description: str
+    :type  description: str|unicode
     
     :param caption: Optional. Caption of the video to be sent, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3594,25 +3437,25 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         Parameters:
         
         :param type: Type of the result, must be video
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param video_file_id: A valid file identifier for the video file
-        :type  video_file_id: str
+        :type  video_file_id: str|unicode
         
         :param title: Title for the result
-        :type  title: str
+        :type  title: str|unicode
         
     
         Optional keyword parameters:
         
         :param description: Optional. Short description of the result
-        :type  description: str
+        :type  description: str|unicode
         
         :param caption: Optional. Caption of the video to be sent, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3624,36 +3467,28 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(video_file_id, str, parameter_name="video_file_id")
-        
+        assert_type_or_raise(video_file_id, unicode_type, parameter_name="video_file_id")
         self.video_file_id = video_file_id
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(description, None, str, parameter_name="description")
-        
+        assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -3665,14 +3500,14 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedVideo, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['video_file_id'] = str(self.video_file_id)  # type str
-        array['title'] = str(self.title)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['video_file_id'] = u(self.video_file_id)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.description is not None:
-            array['description'] = str(self.description)  # type str
+            array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -3691,7 +3526,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3749,22 +3584,22 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     Parameters:
     
     :param type: Type of the result, must be voice
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param voice_file_id: A valid file identifier for the voice message
-    :type  voice_file_id: str
+    :type  voice_file_id: str|unicode
     
     :param title: Voice message title
-    :type  title: str
+    :type  title: str|unicode
     
 
     Optional keyword parameters:
     
     :param caption: Optional. Caption, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3784,22 +3619,22 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         Parameters:
         
         :param type: Type of the result, must be voice
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param voice_file_id: A valid file identifier for the voice message
-        :type  voice_file_id: str
+        :type  voice_file_id: str|unicode
         
         :param title: Voice message title
-        :type  title: str
+        :type  title: str|unicode
         
     
         Optional keyword parameters:
         
         :param caption: Optional. Caption, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3811,32 +3646,25 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(voice_file_id, str, parameter_name="voice_file_id")
-        
+        assert_type_or_raise(voice_file_id, unicode_type, parameter_name="voice_file_id")
         self.voice_file_id = voice_file_id
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -3848,12 +3676,12 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedVoice, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['voice_file_id'] = str(self.voice_file_id)  # type str
-        array['title'] = str(self.title)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['voice_file_id'] = u(self.voice_file_id)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -3872,7 +3700,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3929,19 +3757,19 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     Parameters:
     
     :param type: Type of the result, must be audio
-    :type  type: str
+    :type  type: str|unicode
     
     :param id: Unique identifier for this result, 1-64 bytes
-    :type  id: str
+    :type  id: str|unicode
     
     :param audio_file_id: A valid file identifier for the audio file
-    :type  audio_file_id: str
+    :type  audio_file_id: str|unicode
     
 
     Optional keyword parameters:
     
     :param caption: Optional. Caption, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3961,19 +3789,19 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         Parameters:
         
         :param type: Type of the result, must be audio
-        :type  type: str
+        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
-        :type  id: str
+        :type  id: str|unicode
         
         :param audio_file_id: A valid file identifier for the audio file
-        :type  audio_file_id: str
+        :type  audio_file_id: str|unicode
         
     
         Optional keyword parameters:
         
         :param caption: Optional. Caption, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -3985,28 +3813,22 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, str, parameter_name="type")
-        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(audio_file_id, str, parameter_name="audio_file_id")
-        
+        assert_type_or_raise(audio_file_id, unicode_type, parameter_name="audio_file_id")
         self.audio_file_id = audio_file_id
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         self.reply_markup = reply_markup
         
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
-        
         self.input_message_content = input_message_content
     # end def __init__
 
@@ -4018,11 +3840,11 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :rtype: dict
         """
         array = super(InlineQueryResultCachedAudio, self).to_array()
-        array['type'] = str(self.type)  # type str
-        array['id'] = str(self.id)  # type str
-        array['audio_file_id'] = str(self.audio_file_id)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['audio_file_id'] = u(self.audio_file_id)  # py2: type unicode, py3: type str
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -4041,7 +3863,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -4096,13 +3918,13 @@ class InputTextMessageContent(InputMessageContent):
     Parameters:
     
     :param message_text: Text of the message to be sent, 1-4096 characters
-    :type  message_text: str
+    :type  message_text: str|unicode
     
 
     Optional keyword parameters:
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-    :type  parse_mode: str
+    :type  parse_mode: str|unicode
     
     :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
     :type  disable_web_page_preview: bool
@@ -4118,28 +3940,25 @@ class InputTextMessageContent(InputMessageContent):
         Parameters:
         
         :param message_text: Text of the message to be sent, 1-4096 characters
-        :type  message_text: str
+        :type  message_text: str|unicode
         
     
         Optional keyword parameters:
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-        :type  parse_mode: str
+        :type  parse_mode: str|unicode
         
         :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
         :type  disable_web_page_preview: bool
         """
         super(InputTextMessageContent, self).__init__()
-        assert_type_or_raise(message_text, str, parameter_name="message_text")
-        
+        assert_type_or_raise(message_text, unicode_type, parameter_name="message_text")
         self.message_text = message_text
         
-        assert_type_or_raise(parse_mode, None, str, parameter_name="parse_mode")
-        
+        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
         assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
-        
         self.disable_web_page_preview = disable_web_page_preview
     # end def __init__
 
@@ -4151,9 +3970,9 @@ class InputTextMessageContent(InputMessageContent):
         :rtype: dict
         """
         array = super(InputTextMessageContent, self).to_array()
-        array['message_text'] = str(self.message_text)  # type str
+        array['message_text'] = u(self.message_text)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
-            array['parse_mode'] = str(self.parse_mode)  # type str
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
         if self.disable_web_page_preview is not None:
             array['disable_web_page_preview'] = bool(self.disable_web_page_preview)  # type bool
         return array
@@ -4170,7 +3989,7 @@ class InputTextMessageContent(InputMessageContent):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['message_text'] = u(array.get('message_text'))
@@ -4250,11 +4069,9 @@ class InputLocationMessageContent(InputMessageContent):
         """
         super(InputLocationMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
         self.latitude = latitude
         
         assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
         self.longitude = longitude
     # end def __init__
 
@@ -4282,7 +4099,7 @@ class InputLocationMessageContent(InputMessageContent):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['latitude'] = float(array.get('latitude'))
@@ -4337,16 +4154,16 @@ class InputVenueMessageContent(InputMessageContent):
     :type  longitude: float
     
     :param title: Name of the venue
-    :type  title: str
+    :type  title: str|unicode
     
     :param address: Address of the venue
-    :type  address: str
+    :type  address: str|unicode
     
 
     Optional keyword parameters:
     
     :param foursquare_id: Optional. Foursquare identifier of the venue, if known
-    :type  foursquare_id: str
+    :type  foursquare_id: str|unicode
     """
 
     def __init__(self, latitude, longitude, title, address, foursquare_id=None):
@@ -4366,36 +4183,31 @@ class InputVenueMessageContent(InputMessageContent):
         :type  longitude: float
         
         :param title: Name of the venue
-        :type  title: str
+        :type  title: str|unicode
         
         :param address: Address of the venue
-        :type  address: str
+        :type  address: str|unicode
         
     
         Optional keyword parameters:
         
         :param foursquare_id: Optional. Foursquare identifier of the venue, if known
-        :type  foursquare_id: str
+        :type  foursquare_id: str|unicode
         """
         super(InputVenueMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
         self.latitude = latitude
         
         assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
         self.longitude = longitude
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(address, str, parameter_name="address")
-        
+        assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
         
-        assert_type_or_raise(foursquare_id, None, str, parameter_name="foursquare_id")
-        
+        assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
     # end def __init__
 
@@ -4409,10 +4221,10 @@ class InputVenueMessageContent(InputMessageContent):
         array = super(InputVenueMessageContent, self).to_array()
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
-        array['title'] = str(self.title)  # type str
-        array['address'] = str(self.address)  # type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        array['address'] = u(self.address)  # py2: type unicode, py3: type str
         if self.foursquare_id is not None:
-            array['foursquare_id'] = str(self.foursquare_id)  # type str
+            array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -4427,7 +4239,7 @@ class InputVenueMessageContent(InputMessageContent):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['latitude'] = float(array.get('latitude'))
@@ -4479,16 +4291,16 @@ class InputContactMessageContent(InputMessageContent):
     Parameters:
     
     :param phone_number: Contact's phone number
-    :type  phone_number: str
+    :type  phone_number: str|unicode
     
     :param first_name: Contact's first name
-    :type  first_name: str
+    :type  first_name: str|unicode
     
 
     Optional keyword parameters:
     
     :param last_name: Optional. Contact's last name
-    :type  last_name: str
+    :type  last_name: str|unicode
     """
 
     def __init__(self, phone_number, first_name, last_name=None):
@@ -4502,28 +4314,25 @@ class InputContactMessageContent(InputMessageContent):
         Parameters:
         
         :param phone_number: Contact's phone number
-        :type  phone_number: str
+        :type  phone_number: str|unicode
         
         :param first_name: Contact's first name
-        :type  first_name: str
+        :type  first_name: str|unicode
         
     
         Optional keyword parameters:
         
         :param last_name: Optional. Contact's last name
-        :type  last_name: str
+        :type  last_name: str|unicode
         """
         super(InputContactMessageContent, self).__init__()
-        assert_type_or_raise(phone_number, str, parameter_name="phone_number")
-        
+        assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
         
-        assert_type_or_raise(first_name, str, parameter_name="first_name")
-        
+        assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
         
-        assert_type_or_raise(last_name, None, str, parameter_name="last_name")
-        
+        assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
     # end def __init__
 
@@ -4535,10 +4344,10 @@ class InputContactMessageContent(InputMessageContent):
         :rtype: dict
         """
         array = super(InputContactMessageContent, self).to_array()
-        array['phone_number'] = str(self.phone_number)  # type str
-        array['first_name'] = str(self.first_name)  # type str
+        array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+        array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
-            array['last_name'] = str(self.last_name)  # type str
+            array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -4553,7 +4362,7 @@ class InputContactMessageContent(InputMessageContent):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['phone_number'] = u(array.get('phone_number'))

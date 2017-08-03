@@ -107,43 +107,33 @@ class Update(Receivable):
         from pytgbot.api_types.receivable.updates import Message
         
         assert_type_or_raise(update_id, int, parameter_name="update_id")
-        
         self.update_id = update_id
         
         assert_type_or_raise(message, None, Message, parameter_name="message")
-        
         self.message = message
         
         assert_type_or_raise(edited_message, None, Message, parameter_name="edited_message")
-        
         self.edited_message = edited_message
         
         assert_type_or_raise(channel_post, None, Message, parameter_name="channel_post")
-        
         self.channel_post = channel_post
         
         assert_type_or_raise(edited_channel_post, None, Message, parameter_name="edited_channel_post")
-        
         self.edited_channel_post = edited_channel_post
         
         assert_type_or_raise(inline_query, None, InlineQuery, parameter_name="inline_query")
-        
         self.inline_query = inline_query
         
         assert_type_or_raise(chosen_inline_result, None, ChosenInlineResult, parameter_name="chosen_inline_result")
-        
         self.chosen_inline_result = chosen_inline_result
         
         assert_type_or_raise(callback_query, None, CallbackQuery, parameter_name="callback_query")
-        
         self.callback_query = callback_query
         
         assert_type_or_raise(shipping_query, None, ShippingQuery, parameter_name="shipping_query")
-        
         self.shipping_query = shipping_query
         
         assert_type_or_raise(pre_checkout_query, None, PreCheckoutQuery, parameter_name="pre_checkout_query")
-        
         self.pre_checkout_query = pre_checkout_query
 
         self._raw = _raw
@@ -190,7 +180,7 @@ class Update(Receivable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.inline import ChosenInlineResult
         from pytgbot.api_types.receivable.inline import InlineQuery
         from pytgbot.api_types.receivable.payments import PreCheckoutQuery
@@ -251,7 +241,7 @@ class WebhookInfo(Receivable):
     Parameters:
     
     :param url: Webhook URL, may be empty if webhook is not set up
-    :type  url: str
+    :type  url: str|unicode
     
     :param has_custom_certificate: True, if a custom certificate was provided for webhook certificate checks
     :type  has_custom_certificate: bool
@@ -266,13 +256,13 @@ class WebhookInfo(Receivable):
     :type  last_error_date: int
     
     :param last_error_message: Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
-    :type  last_error_message: str
+    :type  last_error_message: str|unicode
     
     :param max_connections: Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
     :type  max_connections: int
     
     :param allowed_updates: Optional. A list of update types the bot is subscribed to. Defaults to all update types
-    :type  allowed_updates: list of str
+    :type  allowed_updates: list of str|unicode
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -288,7 +278,7 @@ class WebhookInfo(Receivable):
         Parameters:
         
         :param url: Webhook URL, may be empty if webhook is not set up
-        :type  url: str
+        :type  url: str|unicode
         
         :param has_custom_certificate: True, if a custom certificate was provided for webhook certificate checks
         :type  has_custom_certificate: bool
@@ -303,44 +293,37 @@ class WebhookInfo(Receivable):
         :type  last_error_date: int
         
         :param last_error_message: Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
-        :type  last_error_message: str
+        :type  last_error_message: str|unicode
         
         :param max_connections: Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
         :type  max_connections: int
         
         :param allowed_updates: Optional. A list of update types the bot is subscribed to. Defaults to all update types
-        :type  allowed_updates: list of str
+        :type  allowed_updates: list of str|unicode
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(WebhookInfo, self).__init__()
-        assert_type_or_raise(url, str, parameter_name="url")
-        
+        assert_type_or_raise(url, unicode_type, parameter_name="url")
         self.url = url
         
         assert_type_or_raise(has_custom_certificate, bool, parameter_name="has_custom_certificate")
-        
         self.has_custom_certificate = has_custom_certificate
         
         assert_type_or_raise(pending_update_count, int, parameter_name="pending_update_count")
-        
         self.pending_update_count = pending_update_count
         
         assert_type_or_raise(last_error_date, None, int, parameter_name="last_error_date")
-        
         self.last_error_date = last_error_date
         
-        assert_type_or_raise(last_error_message, None, str, parameter_name="last_error_message")
-        
+        assert_type_or_raise(last_error_message, None, unicode_type, parameter_name="last_error_message")
         self.last_error_message = last_error_message
         
         assert_type_or_raise(max_connections, None, int, parameter_name="max_connections")
-        
         self.max_connections = max_connections
         
         assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
-        
         self.allowed_updates = allowed_updates
 
         self._raw = _raw
@@ -354,13 +337,13 @@ class WebhookInfo(Receivable):
         :rtype: dict
         """
         array = super(WebhookInfo, self).to_array()
-        array['url'] = str(self.url)  # type str
+        array['url'] = u(self.url)  # py2: type unicode, py3: type str
         array['has_custom_certificate'] = bool(self.has_custom_certificate)  # type bool
         array['pending_update_count'] = int(self.pending_update_count)  # type int
         if self.last_error_date is not None:
             array['last_error_date'] = int(self.last_error_date)  # type int
         if self.last_error_message is not None:
-            array['last_error_message'] = str(self.last_error_message)  # type str
+            array['last_error_message'] = u(self.last_error_message)  # py2: type unicode, py3: type str
         if self.max_connections is not None:
             array['max_connections'] = int(self.max_connections)  # type int
         if self.allowed_updates is not None:
@@ -379,7 +362,7 @@ class WebhookInfo(Receivable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['url'] = u(array.get('url'))
@@ -463,7 +446,7 @@ class Message(UpdateType):
     :type  edit_date: int
     
     :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
-    :type  text: str
+    :type  text: str|unicode
     
     :param entities: Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
     :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
@@ -496,7 +479,7 @@ class Message(UpdateType):
     :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
     
     :param caption: Optional. Caption for the document, photo or video, 0-200 characters
-    :type  caption: str
+    :type  caption: str|unicode
     
     :param contact: Optional. Message is a shared contact, information about the contact
     :type  contact: pytgbot.api_types.receivable.media.Contact
@@ -514,7 +497,7 @@ class Message(UpdateType):
     :type  left_chat_member: pytgbot.api_types.receivable.peer.User
     
     :param new_chat_title: Optional. A chat title was changed to this value
-    :type  new_chat_title: str
+    :type  new_chat_title: str|unicode
     
     :param new_chat_photo: Optional. A chat photo was change to this value
     :type  new_chat_photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -593,7 +576,7 @@ class Message(UpdateType):
         :type  edit_date: int
         
         :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
-        :type  text: str
+        :type  text: str|unicode
         
         :param entities: Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
@@ -626,7 +609,7 @@ class Message(UpdateType):
         :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
         
         :param caption: Optional. Caption for the document, photo or video, 0-200 characters
-        :type  caption: str
+        :type  caption: str|unicode
         
         :param contact: Optional. Message is a shared contact, information about the contact
         :type  contact: pytgbot.api_types.receivable.media.Contact
@@ -644,7 +627,7 @@ class Message(UpdateType):
         :type  left_chat_member: pytgbot.api_types.receivable.peer.User
         
         :param new_chat_title: Optional. A chat title was changed to this value
-        :type  new_chat_title: str
+        :type  new_chat_title: str|unicode
         
         :param new_chat_photo: Optional. A chat photo was change to this value
         :type  new_chat_photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -699,155 +682,117 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.updates import Message
         
         assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
         self.message_id = message_id
         
         assert_type_or_raise(date, int, parameter_name="date")
-        
         self.date = date
         
         assert_type_or_raise(chat, Chat, parameter_name="chat")
-        
         self.chat = chat
         
         assert_type_or_raise(from_peer, None, User, parameter_name="from_peer")
-        
         self.from_peer = from_peer
         
         assert_type_or_raise(forward_from, None, User, parameter_name="forward_from")
-        
         self.forward_from = forward_from
         
         assert_type_or_raise(forward_from_chat, None, Chat, parameter_name="forward_from_chat")
-        
         self.forward_from_chat = forward_from_chat
         
         assert_type_or_raise(forward_from_message_id, None, int, parameter_name="forward_from_message_id")
-        
         self.forward_from_message_id = forward_from_message_id
         
         assert_type_or_raise(forward_date, None, int, parameter_name="forward_date")
-        
         self.forward_date = forward_date
         
         assert_type_or_raise(reply_to_message, None, Message, parameter_name="reply_to_message")
-        
         self.reply_to_message = reply_to_message
         
         assert_type_or_raise(edit_date, None, int, parameter_name="edit_date")
-        
         self.edit_date = edit_date
         
-        assert_type_or_raise(text, None, str, parameter_name="text")
-        
+        assert_type_or_raise(text, None, unicode_type, parameter_name="text")
         self.text = text
         
         assert_type_or_raise(entities, None, list, parameter_name="entities")
-        
         self.entities = entities
         
         assert_type_or_raise(audio, None, Audio, parameter_name="audio")
-        
         self.audio = audio
         
         assert_type_or_raise(document, None, Document, parameter_name="document")
-        
         self.document = document
         
         assert_type_or_raise(game, None, Game, parameter_name="game")
-        
         self.game = game
         
         assert_type_or_raise(photo, None, list, parameter_name="photo")
-        
         self.photo = photo
         
         assert_type_or_raise(sticker, None, Sticker, parameter_name="sticker")
-        
         self.sticker = sticker
         
         assert_type_or_raise(video, None, Video, parameter_name="video")
-        
         self.video = video
         
         assert_type_or_raise(voice, None, Voice, parameter_name="voice")
-        
         self.voice = voice
         
         assert_type_or_raise(video_note, None, VideoNote, parameter_name="video_note")
-        
         self.video_note = video_note
         
         assert_type_or_raise(new_chat_members, None, list, parameter_name="new_chat_members")
-        
         self.new_chat_members = new_chat_members
         
-        assert_type_or_raise(caption, None, str, parameter_name="caption")
-        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
         assert_type_or_raise(contact, None, Contact, parameter_name="contact")
-        
         self.contact = contact
         
         assert_type_or_raise(location, None, Location, parameter_name="location")
-        
         self.location = location
         
         assert_type_or_raise(venue, None, Venue, parameter_name="venue")
-        
         self.venue = venue
         
         assert_type_or_raise(new_chat_member, None, User, parameter_name="new_chat_member")
-        
         self.new_chat_member = new_chat_member
         
         assert_type_or_raise(left_chat_member, None, User, parameter_name="left_chat_member")
-        
         self.left_chat_member = left_chat_member
         
-        assert_type_or_raise(new_chat_title, None, str, parameter_name="new_chat_title")
-        
+        assert_type_or_raise(new_chat_title, None, unicode_type, parameter_name="new_chat_title")
         self.new_chat_title = new_chat_title
         
         assert_type_or_raise(new_chat_photo, None, list, parameter_name="new_chat_photo")
-        
         self.new_chat_photo = new_chat_photo
         
         assert_type_or_raise(delete_chat_photo, None, bool, parameter_name="delete_chat_photo")
-        
         self.delete_chat_photo = delete_chat_photo
         
         assert_type_or_raise(group_chat_created, None, bool, parameter_name="group_chat_created")
-        
         self.group_chat_created = group_chat_created
         
         assert_type_or_raise(supergroup_chat_created, None, bool, parameter_name="supergroup_chat_created")
-        
         self.supergroup_chat_created = supergroup_chat_created
         
         assert_type_or_raise(channel_chat_created, None, bool, parameter_name="channel_chat_created")
-        
         self.channel_chat_created = channel_chat_created
         
         assert_type_or_raise(migrate_to_chat_id, None, int, parameter_name="migrate_to_chat_id")
-        
         self.migrate_to_chat_id = migrate_to_chat_id
         
         assert_type_or_raise(migrate_from_chat_id, None, int, parameter_name="migrate_from_chat_id")
-        
         self.migrate_from_chat_id = migrate_from_chat_id
         
         assert_type_or_raise(pinned_message, None, Message, parameter_name="pinned_message")
-        
         self.pinned_message = pinned_message
         
         assert_type_or_raise(invoice, None, Invoice, parameter_name="invoice")
-        
         self.invoice = invoice
         
         assert_type_or_raise(successful_payment, None, SuccessfulPayment, parameter_name="successful_payment")
-        
         self.successful_payment = successful_payment
 
         self._raw = _raw
@@ -879,7 +824,7 @@ class Message(UpdateType):
         if self.edit_date is not None:
             array['edit_date'] = int(self.edit_date)  # type int
         if self.text is not None:
-            array['text'] = str(self.text)  # type str
+            array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.entities is not None:
             array['entities'] = self._as_array(self.entities)  # type list of MessageEntity
         if self.audio is not None:
@@ -901,7 +846,7 @@ class Message(UpdateType):
         if self.new_chat_members is not None:
             array['new_chat_members'] = self._as_array(self.new_chat_members)  # type list of User
         if self.caption is not None:
-            array['caption'] = str(self.caption)  # type str
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.contact is not None:
             array['contact'] = self.contact.to_array()  # type Contact
         if self.location is not None:
@@ -913,7 +858,7 @@ class Message(UpdateType):
         if self.left_chat_member is not None:
             array['left_chat_member'] = self.left_chat_member.to_array()  # type User
         if self.new_chat_title is not None:
-            array['new_chat_title'] = str(self.new_chat_title)  # type str
+            array['new_chat_title'] = u(self.new_chat_title)  # py2: type unicode, py3: type str
         if self.new_chat_photo is not None:
             array['new_chat_photo'] = self._as_array(self.new_chat_photo)  # type list of PhotoSize
         if self.delete_chat_photo is not None:
@@ -948,7 +893,7 @@ class Message(UpdateType):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import Audio
         from pytgbot.api_types.receivable.media import Contact
         from pytgbot.api_types.receivable.media import Document
@@ -1050,13 +995,13 @@ class CallbackQuery(UpdateType):
     Parameters:
     
     :param id: Unique identifier for this query
-    :type  id: str
+    :type  id: str|unicode
     
     :param from_peer: Sender
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
     :param chat_instance: Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
-    :type  chat_instance: str
+    :type  chat_instance: str|unicode
     
 
     Optional keyword parameters:
@@ -1065,13 +1010,13 @@ class CallbackQuery(UpdateType):
     :type  message: pytgbot.api_types.receivable.updates.Message
     
     :param inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query.
-    :type  inline_message_id: str
+    :type  inline_message_id: str|unicode
     
     :param data: Optional. Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field.
-    :type  data: str
+    :type  data: str|unicode
     
     :param game_short_name: Optional. Short name of a Game to be returned, serves as the unique identifier for the game
-    :type  game_short_name: str
+    :type  game_short_name: str|unicode
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -1089,13 +1034,13 @@ class CallbackQuery(UpdateType):
         Parameters:
         
         :param id: Unique identifier for this query
-        :type  id: str
+        :type  id: str|unicode
         
         :param from_peer: Sender
         :type  from_peer: pytgbot.api_types.receivable.peer.User
         
         :param chat_instance: Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
-        :type  chat_instance: str
+        :type  chat_instance: str|unicode
         
     
         Optional keyword parameters:
@@ -1104,13 +1049,13 @@ class CallbackQuery(UpdateType):
         :type  message: pytgbot.api_types.receivable.updates.Message
         
         :param inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query.
-        :type  inline_message_id: str
+        :type  inline_message_id: str|unicode
         
         :param data: Optional. Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field.
-        :type  data: str
+        :type  data: str|unicode
         
         :param game_short_name: Optional. Short name of a Game to be returned, serves as the unique identifier for the game
-        :type  game_short_name: str
+        :type  game_short_name: str|unicode
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
@@ -1119,32 +1064,25 @@ class CallbackQuery(UpdateType):
         from pytgbot.api_types.receivable.peer import User
         from pytgbot.api_types.receivable.updates import Message
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
-        
         self.from_peer = from_peer
         
-        assert_type_or_raise(chat_instance, str, parameter_name="chat_instance")
-        
+        assert_type_or_raise(chat_instance, unicode_type, parameter_name="chat_instance")
         self.chat_instance = chat_instance
         
         assert_type_or_raise(message, None, Message, parameter_name="message")
-        
         self.message = message
         
-        assert_type_or_raise(inline_message_id, None, str, parameter_name="inline_message_id")
-        
+        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
         self.inline_message_id = inline_message_id
         
-        assert_type_or_raise(data, None, str, parameter_name="data")
-        
+        assert_type_or_raise(data, None, unicode_type, parameter_name="data")
         self.data = data
         
-        assert_type_or_raise(game_short_name, None, str, parameter_name="game_short_name")
-        
+        assert_type_or_raise(game_short_name, None, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
 
         self._raw = _raw
@@ -1158,17 +1096,17 @@ class CallbackQuery(UpdateType):
         :rtype: dict
         """
         array = super(CallbackQuery, self).to_array()
-        array['id'] = str(self.id)  # type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
-        array['chat_instance'] = str(self.chat_instance)  # type str
+        array['chat_instance'] = u(self.chat_instance)  # py2: type unicode, py3: type str
         if self.message is not None:
             array['message'] = self.message.to_array()  # type Message
         if self.inline_message_id is not None:
-            array['inline_message_id'] = str(self.inline_message_id)  # type str
+            array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
         if self.data is not None:
-            array['data'] = str(self.data)  # type str
+            array['data'] = u(self.data)  # py2: type unicode, py3: type str
         if self.game_short_name is not None:
-            array['game_short_name'] = str(self.game_short_name)  # type str
+            array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -1183,7 +1121,7 @@ class CallbackQuery(UpdateType):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.peer import User
         from pytgbot.api_types.receivable.updates import Message
         
@@ -1266,11 +1204,9 @@ class ResponseParameters(Receivable):
         """
         super(ResponseParameters, self).__init__()
         assert_type_or_raise(migrate_to_chat_id, None, int, parameter_name="migrate_to_chat_id")
-        
         self.migrate_to_chat_id = migrate_to_chat_id
         
         assert_type_or_raise(retry_after, None, int, parameter_name="retry_after")
-        
         self.retry_after = retry_after
 
         self._raw = _raw
@@ -1302,7 +1238,7 @@ class ResponseParameters(Receivable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id')) if array.get('migrate_to_chat_id') is not None else None

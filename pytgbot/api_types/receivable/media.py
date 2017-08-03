@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 __all__ = ["Media", "PhotoSize", "Audio", "MessageEntity"]
 
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Receivable, Result
 
 
@@ -18,7 +20,7 @@ class MessageEntity(Result):
     Parameters:
     
     :param type: Type of the entity. Can be mention (@username), hashtag, bot_command, url, email, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
-    :type  type: str
+    :type  type: str|unicode
     
     :param offset: Offset in UTF-16 code units to the start of the entity
     :type  offset: int
@@ -30,12 +32,12 @@ class MessageEntity(Result):
     Optional keyword parameters:
     
     :param url: Optional. For “text_link” only, url that will be opened after user taps on the text
-    :type  url: str
+    :type  url: str|unicode
     
     :param user: Optional. For “text_mention” only, the mentioned user
     :type  user: pytgbot.api_types.receivable.peer.User
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -49,7 +51,7 @@ class MessageEntity(Result):
         Parameters:
 
         :param type: Type of the entity. Can be mention (@username), hashtag, bot_command, url, email, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
-        :type  type: str
+        :type  type: str|unicode
 
         :param offset: Offset in UTF-16 code units to the start of the entity
         :type  offset: int
@@ -61,33 +63,30 @@ class MessageEntity(Result):
         Optional keyword parameters:
 
         :param url: Optional. For “text_link” only, url that will be opened after user taps on the text
-        :type  url: str
+        :type  url: str|unicode
 
         :param user: Optional. For “text_mention” only, the mentioned user
         :type  user: pytgbot.api_types.receivable.peer.User
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(MessageEntity, self).__init__()
         from pytgbot.api_types.receivable.peer import User
 
-        assert (type is not None)
-        assert (isinstance(type, str))
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
 
-        assert (offset is not None)
-        assert (isinstance(offset, int))
+        assert_type_or_raise(offset, int, parameter_name="offset")
         self.offset = offset
 
-        assert (length is not None)
-        assert (isinstance(length, int))
+        assert_type_or_raise(length, int, parameter_name="length")
         self.length = length
 
-        assert (url is None or isinstance(url, str))
+        assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
 
-        assert (user is None or isinstance(user, User))
+        assert_type_or_raise(user, None, User, parameter_name="user")
         self.user = user
         self._raw = _raw
     # end def __init__
@@ -100,11 +99,11 @@ class MessageEntity(Result):
         :rtype: dict
         """
         array = super(MessageEntity, self).to_array()
-        array['type'] = str(self.type)  # type str
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['offset'] = int(self.offset)  # type int
         array['length'] = int(self.length)  # type int
         if self.url is not None:
-            array['url'] = str(self.url)  # type str
+            array['url'] = u(self.url)  # py2: type unicode, py3: type str
         if self.user is not None:
             array['user'] = self.user.to_array()  # type User
         return array
@@ -121,15 +120,14 @@ class MessageEntity(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
-
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.peer import User
 
         data = {}
-        data['type'] = str(array.get('type'))
+        data['type'] = u(array.get('type'))
         data['offset'] = int(array.get('offset'))
         data['length'] = int(array.get('length'))
-        data['url'] = str(array.get('url')) if array.get('url') is not None else None
+        data['url'] = u(array.get('url')) if array.get('url') is not None else None
         data['user'] = User.from_array(array.get('user')) if array.get('user') is not None else None
         data['_raw'] = array
         return MessageEntity(**data)
@@ -156,7 +154,7 @@ class MessageEntity(Result):
         """
         Implements `"key" in messageentity_instance`
         """
-        return key in ["type", "offset", "length", "url", "user"]
+        return key in ["type", "offset", "length", "url", "user"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class MessageEntity
 
@@ -165,7 +163,7 @@ class DownloadableMedia(Media):
     @staticmethod
     def from_array(array):
         """
-        Subclass for all :class:`Media` which has a :py:attr:`file_id` and optionally a :def:`file_size`
+        Subclass for all :class:`Media` which has a :py:attr:`file_id` and optionally a :py:attr:`file_size`
         :param array: a array to parse
         :type  array: dict
         :return: a dict with file_id and file_size extracted from the array
@@ -188,7 +186,7 @@ class PhotoSize(Result):
     Parameters:
     
     :param file_id: Unique identifier for this file
-    :type  file_id: str
+    :type  file_id: str|unicode
     
     :param width: Photo width
     :type  width: int
@@ -202,7 +200,7 @@ class PhotoSize(Result):
     :param file_size: Optional. File size
     :type  file_size: int
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -216,7 +214,7 @@ class PhotoSize(Result):
         Parameters:
 
         :param file_id: Unique identifier for this file
-        :type  file_id: str
+        :type  file_id: str|unicode
 
         :param width: Photo width
         :type  width: int
@@ -230,23 +228,20 @@ class PhotoSize(Result):
         :param file_size: Optional. File size
         :type  file_size: int
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(PhotoSize, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         
-        assert (width is not None)
-        assert (isinstance(width, int))
+        assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
         
-        assert (height is not None)
-        assert (isinstance(height, int))
+        assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
         self._raw = _raw
     # end def __init__
@@ -259,7 +254,7 @@ class PhotoSize(Result):
         :rtype: dict
         """
         array = super(PhotoSize, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         if self.file_size is not None:
@@ -278,9 +273,10 @@ class PhotoSize(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
+
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
@@ -324,7 +320,7 @@ class Audio(Media):
     Parameters:
     
     :param file_id: Unique identifier for this file
-    :type  file_id: str
+    :type  file_id: str|unicode
     
     :param duration: Duration of the audio in seconds as defined by sender
     :type  duration: int
@@ -333,18 +329,18 @@ class Audio(Media):
     Optional keyword parameters:
     
     :param performer: Optional. Performer of the audio as defined by sender or by audio tags
-    :type  performer: str
+    :type  performer: str|unicode
     
     :param title: Optional. Title of the audio as defined by sender or by audio tags
-    :type  title: str
+    :type  title: str|unicode
     
     :param mime_type: Optional. MIME type of the file as defined by sender
-    :type  mime_type: str
+    :type  mime_type: str|unicode
     
     :param file_size: Optional. File size
     :type  file_size: int
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -358,7 +354,7 @@ class Audio(Media):
         Parameters:
 
         :param file_id: Unique identifier for this file
-        :type  file_id: str
+        :type  file_id: str|unicode
 
         :param duration: Duration of the audio in seconds as defined by sender
         :type  duration: int
@@ -367,39 +363,37 @@ class Audio(Media):
         Optional keyword parameters:
 
         :param performer: Optional. Performer of the audio as defined by sender or by audio tags
-        :type  performer: str
+        :type  performer: str|unicode
 
         :param title: Optional. Title of the audio as defined by sender or by audio tags
-        :type  title: str
+        :type  title: str|unicode
 
         :param mime_type: Optional. MIME type of the file as defined by sender
-        :type  mime_type: str
+        :type  mime_type: str|unicode
 
         :param file_size: Optional. File size
         :type  file_size: int
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Audio, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         
-        assert (duration is not None)
-        assert (isinstance(duration, int))
+        assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
         
-        assert (performer is None or isinstance(performer, str))
+        assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
         
-        assert (title is None or isinstance(title, str))
+        assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
         self._raw = _raw
     # end def __init__
@@ -412,14 +406,14 @@ class Audio(Media):
         :rtype: dict
         """
         array = super(Audio, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
-            array['performer'] = str(self.performer)  # type str
+            array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
         if self.title is not None:
-            array['title'] = str(self.title)  # type str
+            array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.mime_type is not None:
-            array['mime_type'] = str(self.mime_type)  # type str
+            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -436,13 +430,14 @@ class Audio(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
+
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['duration'] = int(array.get('duration'))
-        data['performer'] = str(array.get('performer')) if array.get('performer') is not None else None
-        data['title'] = str(array.get('title')) if array.get('title') is not None else None
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
+        data['title'] = u(array.get('title')) if array.get('title') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Audio(**data)
@@ -484,7 +479,7 @@ class Document(Media):
     Parameters:
     
     :param file_id: Unique file identifier
-    :type  file_id: str
+    :type  file_id: str|unicode
     
 
     Optional keyword parameters:
@@ -493,15 +488,15 @@ class Document(Media):
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
     
     :param file_name: Optional. Original filename as defined by sender
-    :type  file_name: str
+    :type  file_name: str|unicode
     
     :param mime_type: Optional. MIME type of the file as defined by sender
-    :type  mime_type: str
+    :type  mime_type: str|unicode
     
     :param file_size: Optional. File size
     :type  file_size: int
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -515,7 +510,7 @@ class Document(Media):
         Parameters:
 
         :param file_id: Unique file identifier
-        :type  file_id: str
+        :type  file_id: str|unicode
 
 
         Optional keyword parameters:
@@ -524,32 +519,32 @@ class Document(Media):
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
         :param file_name: Optional. Original filename as defined by sender
-        :type  file_name: str
+        :type  file_name: str|unicode
 
         :param mime_type: Optional. MIME type of the file as defined by sender
-        :type  mime_type: str
+        :type  mime_type: str|unicode
 
         :param file_size: Optional. File size
         :type  file_size: int
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Document, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         
-        assert (thumb is None or isinstance(thumb, PhotoSize))
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
         
-        assert (file_name is None or isinstance(file_name, str))
+        assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
         self._raw = _raw
     # end def __init__
@@ -562,13 +557,13 @@ class Document(Media):
         :rtype: dict
         """
         array = super(Document, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
         if self.file_name is not None:
-            array['file_name'] = str(self.file_name)  # type str
+            array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
         if self.mime_type is not None:
-            array['mime_type'] = str(self.mime_type)  # type str
+            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -585,13 +580,14 @@ class Document(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import PhotoSize
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['file_name'] = str(array.get('file_name')) if array.get('file_name') is not None else None
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Document(**data)
@@ -623,166 +619,7 @@ class Document(Media):
 # end class Document
 
 
-class Sticker(Media):
-    """
-    This object represents a sticker.
-
-    https://core.telegram.org/bots/api#sticker
-    
-
-    Parameters:
-    
-    :param file_id: Unique identifier for this file
-    :type  file_id: str
-    
-    :param width: Sticker width
-    :type  width: int
-    
-    :param height: Sticker height
-    :type  height: int
-    
-
-    Optional keyword parameters:
-    
-    :param thumb: Optional. Sticker thumbnail in .webp or .jpg format
-    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-    
-    :param emoji: Optional. Emoji associated with the sticker
-    :type  emoji: str
-    
-    :param file_size: Optional. File size
-    :type  file_size: int
-    
-    :param _raw: Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, file_id, width, height, thumb=None, emoji=None, file_size=None, _raw=None):
-        """
-        This object represents a sticker.
-
-        https://core.telegram.org/bots/api#sticker
-
-
-        Parameters:
-
-        :param file_id: Unique identifier for this file
-        :type  file_id: str
-
-        :param width: Sticker width
-        :type  width: int
-
-        :param height: Sticker height
-        :type  height: int
-
-
-        Optional keyword parameters:
-
-        :param thumb: Optional. Sticker thumbnail in .webp or .jpg format
-        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
-        :param emoji: Optional. Emoji associated with the sticker
-        :type  emoji: str
-
-        :param file_size: Optional. File size
-        :type  file_size: int
-        
-        :param _raw: Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(Sticker, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
-        self.file_id = file_id
-        
-        assert (width is not None)
-        assert (isinstance(width, int))
-        self.width = width
-        
-        assert (height is not None)
-        assert (isinstance(height, int))
-        self.height = height
-        
-        assert (thumb is None or isinstance(thumb, PhotoSize))
-        self.thumb = thumb
-        
-        assert (emoji is None or isinstance(emoji, str))
-        self.emoji = emoji
-
-        assert (file_size is None or isinstance(file_size, int))
-        self.file_size = file_size
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this Sticker to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Sticker, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
-        array['width'] = int(self.width)  # type int
-        array['height'] = int(self.height)  # type int
-        if self.thumb is not None:
-            array['thumb'] = self.thumb.to_array()  # type PhotoSize
-        if self.emoji is not None:
-            array['emoji'] = str(self.emoji)  # type str
-        if self.file_size is not None:
-            array['file_size'] = int(self.file_size)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new Sticker from a given dictionary.
-
-        :return: new Sticker instance.
-        :rtype: Sticker
-        """
-        if array is None or not array:
-            return None
-        # end if
-        assert(isinstance(array, dict))
-
-        data = {}
-        data['file_id'] = str(array.get('file_id'))
-        data['width'] = int(array.get('width'))
-        data['height'] = int(array.get('height'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['emoji'] = str(array.get('emoji')) if array.get('emoji') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['_raw'] = array
-        return Sticker(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(sticker_instance)`
-        """
-        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(sticker_instance)`
-        """
-        if self._raw:
-            return "Sticker.from_array({self._raw})".format(self=self)
-        # end if
-        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in sticker_instance`
-        """
-        return key in ["file_id", "width", "height", "thumb", "emoji", "file_size"] and hasattr(self, key) and getattr(self, key)
-    # end def __contains__
-# end class Sticker
-
+from .stickers import Sticker  # moved there in July 21, 2017 update
 
 class Video(Media):
     """
@@ -794,7 +631,7 @@ class Video(Media):
     Parameters:
     
     :param file_id: Unique identifier for this file
-    :type  file_id: str
+    :type  file_id: str|unicode
     
     :param width: Video width as defined by sender
     :type  width: int
@@ -812,12 +649,12 @@ class Video(Media):
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
     
     :param mime_type: Optional. Mime type of a file as defined by sender
-    :type  mime_type: str
+    :type  mime_type: str|unicode
     
     :param file_size: Optional. File size
     :type  file_size: int
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -831,7 +668,7 @@ class Video(Media):
         Parameters:
 
         :param file_id: Unique identifier for this file
-        :type  file_id: str
+        :type  file_id: str|unicode
 
         :param width: Video width as defined by sender
         :type  width: int
@@ -849,38 +686,35 @@ class Video(Media):
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
         :param mime_type: Optional. Mime type of a file as defined by sender
-        :type  mime_type: str
+        :type  mime_type: str|unicode
 
         :param file_size: Optional. File size
         :type  file_size: int
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Video, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         
-        assert (width is not None)
-        assert (isinstance(width, int))
+        assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
         
-        assert (height is not None)
-        assert (isinstance(height, int))
+        assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
         
-        assert (duration is not None)
-        assert (isinstance(duration, int))
+        assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
         
-        assert (thumb is None or isinstance(thumb, PhotoSize))
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
         self._raw = _raw
     # end def __init__
@@ -893,14 +727,14 @@ class Video(Media):
         :rtype: dict
         """
         array = super(Video, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
         if self.mime_type is not None:
-            array['mime_type'] = str(self.mime_type)  # type str
+            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -917,15 +751,15 @@ class Video(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['duration'] = int(array.get('duration'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Video(**data)
@@ -967,7 +801,7 @@ class Voice(Media):
     Parameters:
     
     :param file_id: Unique identifier for this file
-    :type  file_id: str
+    :type  file_id: str|unicode
     
     :param duration: Duration of the audio in seconds as defined by sender
     :type  duration: int
@@ -976,12 +810,12 @@ class Voice(Media):
     Optional keyword parameters:
     
     :param mime_type: Optional. MIME type of the file as defined by sender
-    :type  mime_type: str
+    :type  mime_type: str|unicode
     
     :param file_size: Optional. File size
     :type  file_size: int
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -995,7 +829,7 @@ class Voice(Media):
         Parameters:
 
         :param file_id: Unique identifier for this file
-        :type  file_id: str
+        :type  file_id: str|unicode
 
         :param duration: Duration of the audio in seconds as defined by sender
         :type  duration: int
@@ -1004,27 +838,25 @@ class Voice(Media):
         Optional keyword parameters:
 
         :param mime_type: Optional. MIME type of the file as defined by sender
-        :type  mime_type: str
+        :type  mime_type: str|unicode
 
         :param file_size: Optional. File size
         :type  file_size: int
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Voice, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         
-        assert (duration is not None)
-        assert (isinstance(duration, int))
+        assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
@@ -1038,10 +870,10 @@ class Voice(Media):
         :rtype: dict
         """
         array = super(Voice, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['duration'] = int(self.duration)  # type int
         if self.mime_type is not None:
-            array['mime_type'] = str(self.mime_type)  # type str
+            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -1058,12 +890,12 @@ class Voice(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['duration'] = int(array.get('duration'))
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Voice(**data)
@@ -1106,7 +938,7 @@ class VideoNote(Media):
     Parameters:
     
     :param file_id: Unique identifier for this file
-    :type  file_id: str
+    :type  file_id: str|unicode
     
     :param length: Video width and height as defined by sender
     :type  length: int
@@ -1123,7 +955,7 @@ class VideoNote(Media):
     :param file_size: Optional. File size
     :type  file_size: int
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -1137,7 +969,7 @@ class VideoNote(Media):
         Parameters:
         
         :param file_id: Unique identifier for this file
-        :type  file_id: str
+        :type  file_id: str|unicode
         
         :param length: Video width and height as defined by sender
         :type  length: int
@@ -1154,27 +986,24 @@ class VideoNote(Media):
         :param file_size: Optional. File size
         :type  file_size: int
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(VideoNote, self).__init__()
 
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
 
-        assert (length is not None)
-        assert (isinstance(length, int))
+        assert_type_or_raise(length, int, parameter_name="length")
         self.length = length
 
-        assert (duration is not None)
-        assert (isinstance(duration, int))
+        assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
 
-        assert (thumb is None or isinstance(thumb, PhotoSize))
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
 
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
@@ -1188,7 +1017,7 @@ class VideoNote(Media):
         :rtype: dict
         """
         array = super(VideoNote, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['length'] = int(self.length)  # type int
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
@@ -1209,10 +1038,10 @@ class VideoNote(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['length'] = int(array.get('length'))
         data['duration'] = int(array.get('duration'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
@@ -1258,21 +1087,21 @@ class Contact(Media):
     Parameters:
     
     :param phone_number: Contact's phone number
-    :type  phone_number: str
+    :type  phone_number: str|unicode
     
     :param first_name: Contact's first name
-    :type  first_name: str
+    :type  first_name: str|unicode
     
 
     Optional keyword parameters:
     
     :param last_name: Optional. Contact's last name
-    :type  last_name: str
+    :type  last_name: str|unicode
     
     :param user_id: Optional. Contact's user identifier in Telegram
     :type  user_id: int
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -1286,36 +1115,34 @@ class Contact(Media):
         Parameters:
 
         :param phone_number: Contact's phone number
-        :type  phone_number: str
+        :type  phone_number: str|unicode
 
         :param first_name: Contact's first name
-        :type  first_name: str
+        :type  first_name: str|unicode
 
 
         Optional keyword parameters:
 
         :param last_name: Optional. Contact's last name
-        :type  last_name: str
+        :type  last_name: str|unicode
 
         :param user_id: Optional. Contact's user identifier in Telegram
         :type  user_id: int
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Contact, self).__init__()
-        assert (phone_number is not None)
-        assert (isinstance(phone_number, str))
+        assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
         
-        assert (first_name is not None)
-        assert (isinstance(first_name, str))
+        assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
         
-        assert (last_name is None or isinstance(last_name, str))
+        assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
         
-        assert (user_id is None or isinstance(user_id, int))
+        assert_type_or_raise(user_id, None, int, parameter_name="user_id")
         self.user_id = user_id
 
         self._raw = _raw
@@ -1329,10 +1156,10 @@ class Contact(Media):
         :rtype: dict
         """
         array = super(Contact, self).to_array()
-        array['phone_number'] = str(self.phone_number)  # type str
-        array['first_name'] = str(self.first_name)  # type str
+        array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+        array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
-            array['last_name'] = str(self.last_name)  # type str
+            array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
         if self.user_id is not None:
             array['user_id'] = int(self.user_id)  # type int
         return array
@@ -1349,12 +1176,12 @@ class Contact(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
-        data['phone_number'] = str(array.get('phone_number'))
-        data['first_name'] = str(array.get('first_name'))
-        data['last_name'] = str(array.get('last_name')) if array.get('last_name') is not None else None
+        data['phone_number'] = u(array.get('phone_number'))
+        data['first_name'] = u(array.get('first_name'))
+        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['user_id'] = int(array.get('user_id')) if array.get('user_id') is not None else None
         data['_raw'] = array
         return Contact(**data)
@@ -1404,7 +1231,7 @@ class Location(Media):
 
     Optional keyword parameters:
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -1426,16 +1253,14 @@ class Location(Media):
     
         Optional keyword parameters:
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Location, self).__init__()
-        assert (longitude is not None)
-        assert (isinstance(longitude, float))
+        assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
         
-        assert (latitude is not None)
-        assert (isinstance(latitude, float))
+        assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
 
         self._raw = _raw
@@ -1465,7 +1290,7 @@ class Location(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['longitude'] = float(array.get('longitude'))
@@ -1513,18 +1338,18 @@ class Venue(Media):
     :type  location: pytgbot.api_types.receivable.media.Location
     
     :param title: Name of the venue
-    :type  title: str
+    :type  title: str|unicode
     
     :param address: Address of the venue
-    :type  address: str
+    :type  address: str|unicode
     
 
     Optional keyword parameters:
     
     :param foursquare_id: Optional. Foursquare identifier of the venue
-    :type  foursquare_id: str
+    :type  foursquare_id: str|unicode
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -1541,35 +1366,32 @@ class Venue(Media):
         :type  location: pytgbot.api_types.receivable.media.Location
 
         :param title: Name of the venue
-        :type  title: str
+        :type  title: str|unicode
 
         :param address: Address of the venue
-        :type  address: str
+        :type  address: str|unicode
 
 
         Optional keyword parameters:
 
         :param foursquare_id: Optional. Foursquare identifier of the venue
-        :type  foursquare_id: str
+        :type  foursquare_id: str|unicode
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Venue, self).__init__()
 
-        assert (location is not None)
-        assert (isinstance(location, Location))
+        assert_type_or_raise(location, Location, parameter_name="location")
         self.location = location
         
-        assert (title is not None)
-        assert (isinstance(title, str))
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert (address is not None)
-        assert (isinstance(address, str))
+        assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
         
-        assert (foursquare_id is None or isinstance(foursquare_id, str))
+        assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
 
         self._raw = _raw
@@ -1584,10 +1406,10 @@ class Venue(Media):
         """
         array = super(Venue, self).to_array()
         array['location'] = self.location.to_array()  # type Location
-        array['title'] = str(self.title)  # type str
-        array['address'] = str(self.address)  # type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        array['address'] = u(self.address)  # py2: type unicode, py3: type str
         if self.foursquare_id is not None:
-            array['foursquare_id'] = str(self.foursquare_id)  # type str
+            array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -1602,13 +1424,13 @@ class Venue(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['location'] = Location.from_array(array.get('location'))
-        data['title'] = str(array.get('title'))
-        data['address'] = str(array.get('address'))
-        data['foursquare_id'] = str(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
+        data['title'] = u(array.get('title'))
+        data['address'] = u(array.get('address'))
+        data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['_raw'] = array
         return Venue(**data)
     # end def from_array
@@ -1657,7 +1479,7 @@ class UserProfilePhotos(Result):
 
     Optional keyword parameters:
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -1679,16 +1501,15 @@ class UserProfilePhotos(Result):
     
         Optional keyword parameters:
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(UserProfilePhotos, self).__init__()
-        assert (total_count is not None)
-        assert (isinstance(total_count, int))
+
+        assert_type_or_raise(total_count, int, parameter_name="total_count")
         self.total_count = total_count
         
-        assert (photos is not None)
-        assert (isinstance(photos, list))
+        assert_type_or_raise(photos, list, parameter_name="photos")
         self.photos = photos
 
         self._raw = _raw
@@ -1718,7 +1539,7 @@ class UserProfilePhotos(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['total_count'] = int(array.get('total_count'))
@@ -1768,7 +1589,7 @@ class File(Receivable):
     Parameters:
     
     :param file_id: Unique identifier for this file
-    :type  file_id: str
+    :type  file_id: str|unicode
     
 
     Optional keyword parameters:
@@ -1777,9 +1598,9 @@ class File(Receivable):
     :type  file_size: int
     
     :param file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
-    :type  file_path: str
+    :type  file_path: str|unicode
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -1798,7 +1619,7 @@ class File(Receivable):
         Parameters:
 
         :param file_id: Unique identifier for this file
-        :type  file_id: str
+        :type  file_id: str|unicode
 
 
         Optional keyword parameters:
@@ -1807,20 +1628,19 @@ class File(Receivable):
         :type  file_size: int
 
         :param file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
-        :type  file_path: str
+        :type  file_path: str|unicode
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(File, self).__init__()
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
         
-        assert (file_path is None or isinstance(file_path, str))
+        assert_type_or_raise(file_path, None, unicode_type, parameter_name="file_path")
         self.file_path = file_path
 
         self._raw = _raw
@@ -1849,11 +1669,11 @@ class File(Receivable):
         :rtype: dict
         """
         array = super(File, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         if self.file_path is not None:
-            array['file_path'] = str(self.file_path)  # type str
+            array['file_path'] = u(self.file_path)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -1868,12 +1688,12 @@ class File(Receivable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['file_path'] = str(array.get('file_path')) if array.get('file_path') is not None else None
+        data['file_path'] = u(array.get('file_path')) if array.get('file_path') is not None else None
         data['_raw'] = array
         return File(**data)
     # end def from_array
@@ -1914,15 +1734,15 @@ class ChatPhoto(Result):
     Parameters:
     
     :param small_file_id: Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
-    :type  small_file_id: str
+    :type  small_file_id: str|unicode
     
     :param big_file_id: Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.
-    :type  big_file_id: str
+    :type  big_file_id: str|unicode
     
 
     Optional keyword parameters:
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -1936,24 +1756,22 @@ class ChatPhoto(Result):
         Parameters:
         
         :param small_file_id: Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
-        :type  small_file_id: str
+        :type  small_file_id: str|unicode
         
         :param big_file_id: Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.
-        :type  big_file_id: str
+        :type  big_file_id: str|unicode
         
     
         Optional keyword parameters:
         
-        :param _raw: Original data this object was generated from. Could be `None`.
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(ChatPhoto, self).__init__()
-        assert (small_file_id is not None)
-        assert (isinstance(small_file_id, str))
+        assert_type_or_raise(small_file_id, unicode_type, parameter_name="small_file_id")
         self.small_file_id = small_file_id
 
-        assert (big_file_id is not None)
-        assert (isinstance(big_file_id, str))
+        assert_type_or_raise(big_file_id, unicode_type, parameter_name="big_file_id")
         self.big_file_id = big_file_id
 
         self._raw = _raw
@@ -1967,8 +1785,8 @@ class ChatPhoto(Result):
         :rtype: dict
         """
         array = super(ChatPhoto, self).to_array()
-        array['small_file_id'] = str(self.small_file_id)  # type str
-        array['big_file_id'] = str(self.big_file_id)  # type str
+        array['small_file_id'] = u(self.small_file_id)  # py2: type unicode, py3: type str
+        array['big_file_id'] = u(self.big_file_id)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -1983,11 +1801,11 @@ class ChatPhoto(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
-        data['small_file_id'] = str(array.get('small_file_id'))
-        data['big_file_id'] = str(array.get('big_file_id'))
+        data['small_file_id'] = u(array.get('small_file_id'))
+        data['big_file_id'] = u(array.get('big_file_id'))
         data['_raw'] = array
         return ChatPhoto(**data)
     # end def from_array
@@ -2028,10 +1846,10 @@ class Game(Media):
     Parameters:
     
     :param title: Title of the game
-    :type  title: str
+    :type  title: str|unicode
     
     :param description: Description of the game
-    :type  description: str
+    :type  description: str|unicode
     
     :param photo: Photo that will be displayed in the game message in chats.
     :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -2040,7 +1858,7 @@ class Game(Media):
     Optional keyword parameters:
     
     :param text: Optional. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters.
-    :type  text: str
+    :type  text: str|unicode
     
     :param text_entities: Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
     :type  text_entities: list of pytgbot.api_types.receivable.media.MessageEntity
@@ -2048,7 +1866,7 @@ class Game(Media):
     :param animation: Optional. Animation that will be displayed in the game message in chats. Upload via BotFather
     :type  animation: pytgbot.api_types.receivable.media.Animation
     
-    :param _raw: Original data this object was generated from. Could be `None`.
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
@@ -2062,10 +1880,10 @@ class Game(Media):
         Parameters:
         
         :param title: Title of the game
-        :type  title: str
+        :type  title: str|unicode
         
         :param description: Description of the game
-        :type  description: str
+        :type  description: str|unicode
         
         :param photo: Photo that will be displayed in the game message in chats.
         :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -2074,7 +1892,7 @@ class Game(Media):
         Optional keyword parameters:
         
         :param text: Optional. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters.
-        :type  text: str
+        :type  text: str|unicode
         
         :param text_entities: Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
         :type  text_entities: list of pytgbot.api_types.receivable.media.MessageEntity
@@ -2086,25 +1904,23 @@ class Game(Media):
         :type  _raw: None | dict
         """
         super(Game, self).__init__()
-        assert (title is not None)
-        assert (isinstance(title, str))
+
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert (description is not None)
-        assert (isinstance(description, str))
+        assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
         
-        assert (photo is not None)
-        assert (isinstance(photo, list))
+        assert_type_or_raise(photo, list, parameter_name="photo")
         self.photo = photo
         
-        assert (text is None or isinstance(text, str))
+        assert_type_or_raise(text, None, unicode_type, parameter_name="text")
         self.text = text
         
-        assert (text_entities is None or isinstance(text_entities, list))
+        assert_type_or_raise(text_entities, None, list, parameter_name="text_entities")
         self.text_entities = text_entities
         
-        assert (animation is None or isinstance(animation, Animation))
+        assert_type_or_raise(animation, None, Animation, parameter_name="animation")
         self.animation = animation
 
         self._raw = _raw
@@ -2118,11 +1934,11 @@ class Game(Media):
         :rtype: dict
         """
         array = super(Game, self).to_array()
-        array['title'] = str(self.title)  # type str
-        array['description'] = str(self.description)  # type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        array['description'] = u(self.description)  # py2: type unicode, py3: type str
         array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
         if self.text is not None:
-            array['text'] = str(self.text)  # type str
+            array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.text_entities is not None:
             array['text_entities'] = self._as_array(self.text_entities)  # type list of MessageEntity
         if self.animation is not None:
@@ -2141,13 +1957,13 @@ class Game(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         
         data = {}
-        data['title'] = str(array.get('title'))
-        data['description'] = str(array.get('description'))
+        data['title'] = u(array.get('title'))
+        data['description'] = u(array.get('description'))
         data['photo'] = PhotoSize.from_array_list(array.get('photo'), list_level=1)
-        data['text'] = str(array.get('text')) if array.get('text') is not None else None
+        data['text'] = u(array.get('text')) if array.get('text') is not None else None
         data['text_entities'] = MessageEntity.from_array_list(array.get('text_entities'), list_level=1) if array.get('text_entities') is not None else None
         data['animation'] = Animation.from_array(array.get('animation')) if array.get('animation') is not None else None
         data['_raw'] = array
@@ -2190,7 +2006,7 @@ class Animation(Media):
     Parameters:
     
     :param file_id: Unique file identifier
-    :type  file_id: str
+    :type  file_id: str|unicode
     
 
     Optional keyword parameters:
@@ -2199,10 +2015,10 @@ class Animation(Media):
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
     
     :param file_name: Optional. Original animation filename as defined by sender
-    :type  file_name: str
+    :type  file_name: str|unicode
     
     :param mime_type: Optional. MIME type of the file as defined by sender
-    :type  mime_type: str
+    :type  mime_type: str|unicode
     
     :param file_size: Optional. File size
     :type  file_size: int
@@ -2221,7 +2037,7 @@ class Animation(Media):
         Parameters:
         
         :param file_id: Unique file identifier
-        :type  file_id: str
+        :type  file_id: str|unicode
         
 
         Optional keyword parameters:
@@ -2230,10 +2046,10 @@ class Animation(Media):
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
         
         :param file_name: Optional. Original animation filename as defined by sender
-        :type  file_name: str
+        :type  file_name: str|unicode
         
         :param mime_type: Optional. MIME type of the file as defined by sender
-        :type  mime_type: str
+        :type  mime_type: str|unicode
         
         :param file_size: Optional. File size
         :type  file_size: int
@@ -2243,20 +2059,19 @@ class Animation(Media):
         """
         super(Animation, self).__init__()
 
-        assert (file_id is not None)
-        assert (isinstance(file_id, str))
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         
-        assert (thumb is None or isinstance(thumb, PhotoSize))
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
         
-        assert (file_name is None or isinstance(file_name, str))
+        assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
         
-        assert (mime_type is None or isinstance(mime_type, str))
+        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
         
-        assert (file_size is None or isinstance(file_size, int))
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
@@ -2270,13 +2085,13 @@ class Animation(Media):
         :rtype: dict
         """
         array = super(Animation, self).to_array()
-        array['file_id'] = str(self.file_id)  # type str
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
         if self.file_name is not None:
-            array['file_name'] = str(self.file_name)  # type str
+            array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
         if self.mime_type is not None:
-            array['mime_type'] = str(self.mime_type)  # type str
+            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -2293,13 +2108,13 @@ class Animation(Media):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
-        
+        assert_type_or_raise(array, dict, parameter_name="array")
+
         data = {}
-        data['file_id'] = str(array.get('file_id'))
+        data['file_id'] = u(array.get('file_id'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['file_name'] = str(array.get('file_name')) if array.get('file_name') is not None else None
-        data['mime_type'] = str(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['_raw'] = array
         return Animation(**data)

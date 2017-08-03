@@ -5,7 +5,11 @@
 array['{{ variable.api_name }}'] = self._as_array(self.{{ variable.name }})  # type {{ for_type_list_of(variable) }}
 {% else -%}
 {% if variable.types[0].is_builtin -%}
+{%- if variable.types[0].string == 'str' -%}
+array['{{ variable.api_name }}'] = u(self.{{ variable.name }})  # py2: type unicode, py3: type str
+{% else -%}
 array['{{ variable.api_name }}'] = {{ variable.types[0].string }}(self.{{ variable.name }})  # type {{ variable.types[0].string }}
+{%- endif -%}
 {% else -%}
 array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {{ variable.types[0].string }}
 {% endif -%}
@@ -63,15 +67,15 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
             raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
         # end if
-        {% endif -%}
+        {%- endif -%}
         {%- else %}
         assert_type_or_raise({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
         {% if variable.always_is_value -%}
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
             raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
         # end if
-        {% endif -%}
         {%- endif %}
+        {%- endif -%}
         self.{{ variable.name }} = {{ variable.name }}
         {%- if not loop.last %}
         {% endif -%}
@@ -111,7 +115,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         {#- strip linebreak after #}
         {{- self.imports_block() -}}
         {#- does strip before #}

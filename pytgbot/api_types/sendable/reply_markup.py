@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type
 
-from pytgbot.api_types import as_array
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Sendable
 import logging
 
@@ -58,7 +59,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         Parameters:
 
         :param keyboard: Array of button rows, each represented by an Array of KeyboardButton objects
-        :type  keyboard: list of list of KeyboardButton
+        :type  keyboard: list of list of pytgbot.api_types.sendable.reply_markup.KeyboardButton
 
 
         Optional keyword parameters:
@@ -86,17 +87,16 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         """
         super(ReplyKeyboardMarkup, self).__init__()
 
-        assert (keyboard is not None)
-        assert (isinstance(keyboard, list))
+        assert_type_or_raise(keyboard, list, parameter_name="keyboard")
         self.keyboard = keyboard
 
-        assert (resize_keyboard is None or isinstance(resize_keyboard, bool))
+        assert_type_or_raise(resize_keyboard, None, bool, parameter_name="resize_keyboard")
         self.resize_keyboard = resize_keyboard
 
-        assert (one_time_keyboard is None or isinstance(one_time_keyboard, bool))
+        assert_type_or_raise(one_time_keyboard, None, bool, parameter_name="one_time_keyboard")
         self.one_time_keyboard = one_time_keyboard
 
-        assert (selective is None or isinstance(selective, bool))
+        assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
 
@@ -129,7 +129,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['keyboard'] = KeyboardButton.from_array_list(array.get('keyboard'), list_level=2)
@@ -182,7 +182,7 @@ class KeyboardButton(Button):
     Parameters:
     
     :param text: Text of the button. If none of the optional fields are used, it will be sent to the bot as a message when the button is pressed
-    :type  text: str
+    :type  text: str|unicode
     
 
     Optional keyword parameters:
@@ -209,7 +209,7 @@ class KeyboardButton(Button):
 
         :param text: Text of the button. If none of the optional fields are used,
                      it will be sent to the bot as a message when the button is pressed
-        :type  text: str
+        :type  text: str|unicode
 
 
         Optional keyword parameters:
@@ -223,14 +223,13 @@ class KeyboardButton(Button):
         :type  request_location: bool
         """
         super(KeyboardButton, self).__init__()
-        assert (text is not None)
-        assert (isinstance(text, str))
+        assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
 
-        assert (request_contact is None or isinstance(request_contact, bool))
+        assert_type_or_raise(request_contact, None, bool, parameter_name="request_contact")
         self.request_contact = request_contact
 
-        assert (request_location is None or isinstance(request_location, bool))
+        assert_type_or_raise(request_location, None, bool, parameter_name="request_location")
         self.request_location = request_location
     # end def __init__
 
@@ -242,7 +241,7 @@ class KeyboardButton(Button):
         :rtype: dict
         """
         array = super(KeyboardButton, self).to_array()
-        array['text'] = str(self.text)  # type str
+        array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.request_contact is not None:
             array['request_contact'] = bool(self.request_contact)  # type bool
         if self.request_location is not None:
@@ -261,10 +260,10 @@ class KeyboardButton(Button):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
-        data['text'] = str(array.get('text'))
+        data['text'] = u(array.get('text'))
         data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
         data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
 
@@ -344,7 +343,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         super(ReplyKeyboardRemove, self).__init__()
         self.remove_keyboard = True
 
-        assert (selective is None or isinstance(selective, bool))
+        assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
 
@@ -373,7 +372,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         assert (bool(array.get('remove_keyboard')) == True)
@@ -436,12 +435,11 @@ class InlineKeyboardMarkup(ReplyMarkup):
         Parameters:
 
         :param inline_keyboard: Array of button rows, each represented by an Array of InlineKeyboardButton objects
-        :type  inline_keyboard: list of list of InlineKeyboardButton
+        :type  inline_keyboard: list of list of pytgbot.api_types.sendable.reply_markup.InlineKeyboardButton
         """
         super(InlineKeyboardMarkup, self).__init__()
 
-        assert (inline_keyboard is not None)
-        assert (isinstance(inline_keyboard, list))
+        assert_type_or_raise(inline_keyboard, list, parameter_name="inline_keyboard")
         self.inline_keyboard = inline_keyboard
     # end def __init__
 
@@ -468,7 +466,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
@@ -517,22 +515,22 @@ class InlineKeyboardButton(Button):
     Parameters:
     
     :param text: Label text on the button
-    :type  text: str
+    :type  text: str|unicode
     
 
     Optional keyword parameters:
     
     :param url: Optional. HTTP url to be opened when button is pressed
-    :type  url: str
+    :type  url: str|unicode
     
     :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
-    :type  callback_data: str
+    :type  callback_data: str|unicode
     
     :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot‘s username and the specified inline query in the input field. Can be empty, in which case just the bot’s username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it. Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
-    :type  switch_inline_query: str
+    :type  switch_inline_query: str|unicode
     
     :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
-    :type  switch_inline_query_current_chat: str
+    :type  switch_inline_query_current_chat: str|unicode
     
     :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
     :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
@@ -554,16 +552,16 @@ class InlineKeyboardButton(Button):
         Parameters:
 
         :param text: Label text on the button
-        :type  text: str
+        :type  text: str|unicode
 
 
         Optional keyword parameters:
 
         :param url: Optional. HTTP url to be opened when button is pressed
-        :type  url: str
+        :type  url: str|unicode
 
         :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
-        :type  callback_data: str
+        :type  callback_data: str|unicode
 
         :param switch_inline_query: Optional. If set,
                                     pressing the button will prompt the user to select one of their chats,
@@ -575,10 +573,10 @@ class InlineKeyboardButton(Button):
                                            Especially useful when combined with switch_pm… actions – in this case the
                                            user will be automatically returned to the chat they switched from,
                                            skipping the chat selection screen.
-        :type  switch_inline_query: str
+        :type  switch_inline_query: str|unicode
         
         :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
-        :type  switch_inline_query_current_chat: str
+        :type  switch_inline_query_current_chat: str|unicode
         
         :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
         :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
@@ -589,26 +587,25 @@ class InlineKeyboardButton(Button):
         super(InlineKeyboardButton, self).__init__()
         from pytgbot.api_types.receivable.updates import CallbackGame
 
-        assert (text is not None)
-        assert (isinstance(text, str))
+        assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
 
-        assert (url is None or isinstance(url, str))
+        assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
 
-        assert (callback_data is None or isinstance(callback_data, str))
+        assert_type_or_raise(callback_data, None, unicode_type, parameter_name="callback_data")
         self.callback_data = callback_data
 
-        assert (switch_inline_query is None or isinstance(switch_inline_query, str))
+        assert_type_or_raise(switch_inline_query, None, unicode_type, parameter_name="switch_inline_query")
         self.switch_inline_query = switch_inline_query
         
-        assert (switch_inline_query_current_chat is None or isinstance(switch_inline_query_current_chat, str))
+        assert_type_or_raise(switch_inline_query_current_chat, None, unicode_type, parameter_name="switch_inline_query_current_chat")
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
         
-        assert (callback_game is None or isinstance(callback_game, CallbackGame))
+        assert_type_or_raise(callback_game, None, CallbackGame, parameter_name="callback_game")
         self.callback_game = callback_game
 
-        assert (pay is None or isinstance(pay, bool))
+        assert_type_or_raise(pay, None, bool, parameter_name="pay")
         self.pay = pay
     # end def __init__
 
@@ -620,15 +617,15 @@ class InlineKeyboardButton(Button):
         :rtype: dict
         """
         array = super(InlineKeyboardButton, self).to_array()
-        array['text'] = str(self.text)  # type str
+        array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.url is not None:
-            array['url'] = str(self.url)  # type str
+            array['url'] = u(self.url)  # py2: type unicode, py3: type str
         if self.callback_data is not None:
-            array['callback_data'] = str(self.callback_data)  # type str
+            array['callback_data'] = u(self.callback_data)  # py2: type unicode, py3: type str
         if self.switch_inline_query is not None:
-            array['switch_inline_query'] = str(self.switch_inline_query)  # type str
+            array['switch_inline_query'] = u(self.switch_inline_query)  # py2: type unicode, py3: type str
         if self.switch_inline_query_current_chat is not None:
-            array['switch_inline_query_current_chat'] = str(self.switch_inline_query_current_chat)  # type str
+            array['switch_inline_query_current_chat'] = u(self.switch_inline_query_current_chat)  # py2: type unicode, py3: type str
         if self.callback_game is not None:
             array['callback_game'] = self.callback_game.to_array()  # type CallbackGame
         if self.pay is not None:
@@ -647,16 +644,15 @@ class InlineKeyboardButton(Button):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
-        
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.updates import CallbackGame
 
         data = {}
-        data['text'] = str(array.get('text'))
-        data['url'] = str(array.get('url')) if array.get('url') is not None else None
-        data['callback_data'] = str(array.get('callback_data')) if array.get('callback_data') is not None else None
-        data['switch_inline_query'] = str(array.get('switch_inline_query')) if array.get('switch_inline_query') is not None else None
-        data['switch_inline_query_current_chat'] = str(array.get('switch_inline_query_current_chat')) if array.get('switch_inline_query_current_chat') is not None else None
+        data['text'] = u(array.get('text'))
+        data['url'] = u(array.get('url')) if array.get('url') is not None else None
+        data['callback_data'] = u(array.get('callback_data')) if array.get('callback_data') is not None else None
+        data['switch_inline_query'] = u(array.get('switch_inline_query')) if array.get('switch_inline_query') is not None else None
+        data['switch_inline_query_current_chat'] = u(array.get('switch_inline_query_current_chat')) if array.get('switch_inline_query_current_chat') is not None else None
         data['callback_game'] = CallbackGame.from_array(array.get('callback_game')) if array.get('callback_game') is not None else None
         data['pay'] = bool(array.get('pay')) if array.get('pay') is not None else None
 
@@ -751,6 +747,8 @@ class ForceReply(ReplyMarkup):
         """
         super(ForceReply, self).__init__()
         self.force_reply = True
+
+        assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
 
@@ -779,7 +777,7 @@ class ForceReply(ReplyMarkup):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         assert(bool(array.get('force_reply')) == True)

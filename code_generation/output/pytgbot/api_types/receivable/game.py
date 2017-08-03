@@ -59,15 +59,12 @@ class GameHighScore(Result):
         from pytgbot.api_types.receivable.peer import User
         
         assert_type_or_raise(position, int, parameter_name="position")
-        
         self.position = position
         
         assert_type_or_raise(user, User, parameter_name="user")
-        
         self.user = user
         
         assert_type_or_raise(score, int, parameter_name="score")
-        
         self.score = score
 
         self._raw = _raw
@@ -98,7 +95,7 @@ class GameHighScore(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.peer import User
         
 

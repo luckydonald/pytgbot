@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Sendable
 
 
@@ -13,7 +15,7 @@ class LabeledPrice(Sendable):
     Parameters:
     
     :param label: Portion label
-    :type  label: str
+    :type  label: str|unicode
     
     :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  amount: int
@@ -28,18 +30,16 @@ class LabeledPrice(Sendable):
         Parameters:
         
         :param label: Portion label
-        :type  label: str
+        :type  label: str|unicode
         
         :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  amount: int
         """
         super(LabeledPrice, self).__init__()
-        assert (label is not None)
-        assert (isinstance(label, str))
+        assert_type_or_raise(label, unicode_type, parameter_name="label")
         self.label = label
         
-        assert (amount is not None)
-        assert (isinstance(amount, int))
+        assert_type_or_raise(amount, int, parameter_name="amount")
         self.amount = amount
     # end def __init__
 
@@ -51,7 +51,7 @@ class LabeledPrice(Sendable):
         :rtype: dict
         """
         array = super(LabeledPrice, self).to_array()
-        array['label'] = str(self.label)  # type str
+        array['label'] = u(self.label)  # py2: type unicode, py3: type str
         array['amount'] = int(self.amount)  # type int
         return array
     # end def to_array
@@ -67,10 +67,10 @@ class LabeledPrice(Sendable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         
         data = {}
-        data['label'] = str(array.get('label'))
+        data['label'] = u(array.get('label'))
         data['amount'] = int(array.get('amount'))
 
         instance = LabeledPrice(**data)
@@ -85,11 +85,21 @@ class LabeledPrice(Sendable):
         return "LabeledPrice(label={self.label!r}, amount={self.amount!r})".format(self=self)
     # end def __str__
 
+    def __repr__(self):
+        """
+        Implements `repr(labeledprice_instance)`
+        """
+        if self._raw:
+            return "LabeledPrice.from_array({self._raw})".format(self=self)
+        # end if
+        return "LabeledPrice(label={self.label!r}, amount={self.amount!r})".format(self=self)
+    # end def __repr__
+
     def __contains__(self, key):
         """
         Implements `"key" in labeledprice_instance`
         """
-        return key in ["label", "amount"]
+        return key in ["label", "amount"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class LabeledPrice
 
@@ -105,10 +115,10 @@ class ShippingOption(Sendable):
     Parameters:
     
     :param id: Shipping option identifier
-    :type  id: str
+    :type  id: str|unicode
     
     :param title: Option title
-    :type  title: str
+    :type  title: str|unicode
     
     :param prices: List of price portions
     :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
@@ -124,26 +134,23 @@ class ShippingOption(Sendable):
         Parameters:
         
         :param id: Shipping option identifier
-        :type  id: str
+        :type  id: str|unicode
         
         :param title: Option title
-        :type  title: str
+        :type  title: str|unicode
         
         :param prices: List of price portions
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
         """
         super(ShippingOption, self).__init__()
 
-        assert (id is not None)
-        assert (isinstance(id, str))
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert (title is not None)
-        assert (isinstance(title, str))
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert (prices is not None)
-        assert (isinstance(prices, list))
+        assert_type_or_raise(prices, list, parameter_name="prices")
         self.prices = prices
     # end def __init__
 
@@ -155,8 +162,8 @@ class ShippingOption(Sendable):
         :rtype: dict
         """
         array = super(ShippingOption, self).to_array()
-        array['id'] = str(self.id)  # type str
-        array['title'] = str(self.title)  # type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['prices'] = self._as_array(self.prices)  # type list of LabeledPrice
         return array
     # end def to_array
@@ -172,12 +179,12 @@ class ShippingOption(Sendable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
 
         data = {}
-        data['id'] = str(array.get('id'))
-        data['title'] = str(array.get('title'))
+        data['id'] = u(array.get('id'))
+        data['title'] = u(array.get('title'))
         data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
 
         instance = ShippingOption(**data)

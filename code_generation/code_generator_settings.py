@@ -127,6 +127,10 @@ WHITELISTED_FUNCS = [  # Array with names of functions which have no parameters 
     "getWebhookInfo",
     "deleteWebhook",
 ]
+WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters table and thus wouldn't be detected.
+    "CallbackGame",
+    "InlineQueryResult",
+]
 
 """
 You can either pass a file_id as String to resend a photo

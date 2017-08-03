@@ -17,16 +17,16 @@ class Invoice(Result):
     Parameters:
     
     :param title: Product name
-    :type  title: str
+    :type  title: str|unicode
     
     :param description: Product description
-    :type  description: str
+    :type  description: str|unicode
     
     :param start_parameter: Unique bot deep-linking parameter that can be used to generate this invoice
-    :type  start_parameter: str
+    :type  start_parameter: str|unicode
     
     :param currency: Three-letter ISO 4217 currency code
-    :type  currency: str
+    :type  currency: str|unicode
     
     :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  total_amount: int
@@ -48,16 +48,16 @@ class Invoice(Result):
         Parameters:
         
         :param title: Product name
-        :type  title: str
+        :type  title: str|unicode
         
         :param description: Product description
-        :type  description: str
+        :type  description: str|unicode
         
         :param start_parameter: Unique bot deep-linking parameter that can be used to generate this invoice
-        :type  start_parameter: str
+        :type  start_parameter: str|unicode
         
         :param currency: Three-letter ISO 4217 currency code
-        :type  currency: str
+        :type  currency: str|unicode
         
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
@@ -69,24 +69,19 @@ class Invoice(Result):
         :type  _raw: None | dict
         """
         super(Invoice, self).__init__()
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
-        assert_type_or_raise(description, str, parameter_name="description")
-        
+        assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
         
-        assert_type_or_raise(start_parameter, str, parameter_name="start_parameter")
-        
+        assert_type_or_raise(start_parameter, unicode_type, parameter_name="start_parameter")
         self.start_parameter = start_parameter
         
-        assert_type_or_raise(currency, str, parameter_name="currency")
-        
+        assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
         
         assert_type_or_raise(total_amount, int, parameter_name="total_amount")
-        
         self.total_amount = total_amount
 
         self._raw = _raw
@@ -100,10 +95,10 @@ class Invoice(Result):
         :rtype: dict
         """
         array = super(Invoice, self).to_array()
-        array['title'] = str(self.title)  # type str
-        array['description'] = str(self.description)  # type str
-        array['start_parameter'] = str(self.start_parameter)  # type str
-        array['currency'] = str(self.currency)  # type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        array['start_parameter'] = u(self.start_parameter)  # py2: type unicode, py3: type str
+        array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
         array['total_amount'] = int(self.total_amount)  # type int
         return array
     # end def to_array
@@ -119,7 +114,7 @@ class Invoice(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['title'] = u(array.get('title'))
@@ -168,22 +163,22 @@ class ShippingAddress(Result):
     Parameters:
     
     :param country_code: ISO 3166-1 alpha-2 country code
-    :type  country_code: str
+    :type  country_code: str|unicode
     
     :param state: State, if applicable
-    :type  state: str
+    :type  state: str|unicode
     
     :param city: City
-    :type  city: str
+    :type  city: str|unicode
     
     :param street_line1: First line for the address
-    :type  street_line1: str
+    :type  street_line1: str|unicode
     
     :param street_line2: Second line for the address
-    :type  street_line2: str
+    :type  street_line2: str|unicode
     
     :param post_code: Address post code
-    :type  post_code: str
+    :type  post_code: str|unicode
     
 
     Optional keyword parameters:
@@ -202,22 +197,22 @@ class ShippingAddress(Result):
         Parameters:
         
         :param country_code: ISO 3166-1 alpha-2 country code
-        :type  country_code: str
+        :type  country_code: str|unicode
         
         :param state: State, if applicable
-        :type  state: str
+        :type  state: str|unicode
         
         :param city: City
-        :type  city: str
+        :type  city: str|unicode
         
         :param street_line1: First line for the address
-        :type  street_line1: str
+        :type  street_line1: str|unicode
         
         :param street_line2: Second line for the address
-        :type  street_line2: str
+        :type  street_line2: str|unicode
         
         :param post_code: Address post code
-        :type  post_code: str
+        :type  post_code: str|unicode
         
     
         Optional keyword parameters:
@@ -226,28 +221,22 @@ class ShippingAddress(Result):
         :type  _raw: None | dict
         """
         super(ShippingAddress, self).__init__()
-        assert_type_or_raise(country_code, str, parameter_name="country_code")
-        
+        assert_type_or_raise(country_code, unicode_type, parameter_name="country_code")
         self.country_code = country_code
         
-        assert_type_or_raise(state, str, parameter_name="state")
-        
+        assert_type_or_raise(state, unicode_type, parameter_name="state")
         self.state = state
         
-        assert_type_or_raise(city, str, parameter_name="city")
-        
+        assert_type_or_raise(city, unicode_type, parameter_name="city")
         self.city = city
         
-        assert_type_or_raise(street_line1, str, parameter_name="street_line1")
-        
+        assert_type_or_raise(street_line1, unicode_type, parameter_name="street_line1")
         self.street_line1 = street_line1
         
-        assert_type_or_raise(street_line2, str, parameter_name="street_line2")
-        
+        assert_type_or_raise(street_line2, unicode_type, parameter_name="street_line2")
         self.street_line2 = street_line2
         
-        assert_type_or_raise(post_code, str, parameter_name="post_code")
-        
+        assert_type_or_raise(post_code, unicode_type, parameter_name="post_code")
         self.post_code = post_code
 
         self._raw = _raw
@@ -261,12 +250,12 @@ class ShippingAddress(Result):
         :rtype: dict
         """
         array = super(ShippingAddress, self).to_array()
-        array['country_code'] = str(self.country_code)  # type str
-        array['state'] = str(self.state)  # type str
-        array['city'] = str(self.city)  # type str
-        array['street_line1'] = str(self.street_line1)  # type str
-        array['street_line2'] = str(self.street_line2)  # type str
-        array['post_code'] = str(self.post_code)  # type str
+        array['country_code'] = u(self.country_code)  # py2: type unicode, py3: type str
+        array['state'] = u(self.state)  # py2: type unicode, py3: type str
+        array['city'] = u(self.city)  # py2: type unicode, py3: type str
+        array['street_line1'] = u(self.street_line1)  # py2: type unicode, py3: type str
+        array['street_line2'] = u(self.street_line2)  # py2: type unicode, py3: type str
+        array['post_code'] = u(self.post_code)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -281,7 +270,7 @@ class ShippingAddress(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['country_code'] = u(array.get('country_code'))
@@ -331,13 +320,13 @@ class OrderInfo(Result):
     Optional keyword parameters:
     
     :param name: Optional. User name
-    :type  name: str
+    :type  name: str|unicode
     
     :param phone_number: Optional. User's phone number
-    :type  phone_number: str
+    :type  phone_number: str|unicode
     
     :param email: Optional. User email
-    :type  email: str
+    :type  email: str|unicode
     
     :param shipping_address: Optional. User shipping address
     :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
@@ -356,13 +345,13 @@ class OrderInfo(Result):
         Optional keyword parameters:
         
         :param name: Optional. User name
-        :type  name: str
+        :type  name: str|unicode
         
         :param phone_number: Optional. User's phone number
-        :type  phone_number: str
+        :type  phone_number: str|unicode
         
         :param email: Optional. User email
-        :type  email: str
+        :type  email: str|unicode
         
         :param shipping_address: Optional. User shipping address
         :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
@@ -373,20 +362,16 @@ class OrderInfo(Result):
         super(OrderInfo, self).__init__()
         from pytgbot.api_types.receivable.payments import ShippingAddress
         
-        assert_type_or_raise(name, None, str, parameter_name="name")
-        
+        assert_type_or_raise(name, None, unicode_type, parameter_name="name")
         self.name = name
         
-        assert_type_or_raise(phone_number, None, str, parameter_name="phone_number")
-        
+        assert_type_or_raise(phone_number, None, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
         
-        assert_type_or_raise(email, None, str, parameter_name="email")
-        
+        assert_type_or_raise(email, None, unicode_type, parameter_name="email")
         self.email = email
         
         assert_type_or_raise(shipping_address, None, ShippingAddress, parameter_name="shipping_address")
-        
         self.shipping_address = shipping_address
 
         self._raw = _raw
@@ -401,11 +386,11 @@ class OrderInfo(Result):
         """
         array = super(OrderInfo, self).to_array()
         if self.name is not None:
-            array['name'] = str(self.name)  # type str
+            array['name'] = u(self.name)  # py2: type unicode, py3: type str
         if self.phone_number is not None:
-            array['phone_number'] = str(self.phone_number)  # type str
+            array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
         if self.email is not None:
-            array['email'] = str(self.email)  # type str
+            array['email'] = u(self.email)  # py2: type unicode, py3: type str
         if self.shipping_address is not None:
             array['shipping_address'] = self.shipping_address.to_array()  # type ShippingAddress
         return array
@@ -422,7 +407,7 @@ class OrderInfo(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.payments import ShippingAddress
         
 
@@ -472,25 +457,25 @@ class SuccessfulPayment(Result):
     Parameters:
     
     :param currency: Three-letter ISO 4217 currency code
-    :type  currency: str
+    :type  currency: str|unicode
     
     :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  total_amount: int
     
     :param invoice_payload: Bot specified invoice payload
-    :type  invoice_payload: str
+    :type  invoice_payload: str|unicode
     
     :param telegram_payment_charge_id: Telegram payment identifier
-    :type  telegram_payment_charge_id: str
+    :type  telegram_payment_charge_id: str|unicode
     
     :param provider_payment_charge_id: Provider payment identifier
-    :type  provider_payment_charge_id: str
+    :type  provider_payment_charge_id: str|unicode
     
 
     Optional keyword parameters:
     
     :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
-    :type  shipping_option_id: str
+    :type  shipping_option_id: str|unicode
     
     :param order_info: Optional. Order info provided by the user
     :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
@@ -509,25 +494,25 @@ class SuccessfulPayment(Result):
         Parameters:
         
         :param currency: Three-letter ISO 4217 currency code
-        :type  currency: str
+        :type  currency: str|unicode
         
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
         
         :param invoice_payload: Bot specified invoice payload
-        :type  invoice_payload: str
+        :type  invoice_payload: str|unicode
         
         :param telegram_payment_charge_id: Telegram payment identifier
-        :type  telegram_payment_charge_id: str
+        :type  telegram_payment_charge_id: str|unicode
         
         :param provider_payment_charge_id: Provider payment identifier
-        :type  provider_payment_charge_id: str
+        :type  provider_payment_charge_id: str|unicode
         
     
         Optional keyword parameters:
         
         :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
-        :type  shipping_option_id: str
+        :type  shipping_option_id: str|unicode
         
         :param order_info: Optional. Order info provided by the user
         :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
@@ -538,32 +523,25 @@ class SuccessfulPayment(Result):
         super(SuccessfulPayment, self).__init__()
         from pytgbot.api_types.receivable.payments import OrderInfo
         
-        assert_type_or_raise(currency, str, parameter_name="currency")
-        
+        assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
         
         assert_type_or_raise(total_amount, int, parameter_name="total_amount")
-        
         self.total_amount = total_amount
         
-        assert_type_or_raise(invoice_payload, str, parameter_name="invoice_payload")
-        
+        assert_type_or_raise(invoice_payload, unicode_type, parameter_name="invoice_payload")
         self.invoice_payload = invoice_payload
         
-        assert_type_or_raise(telegram_payment_charge_id, str, parameter_name="telegram_payment_charge_id")
-        
+        assert_type_or_raise(telegram_payment_charge_id, unicode_type, parameter_name="telegram_payment_charge_id")
         self.telegram_payment_charge_id = telegram_payment_charge_id
         
-        assert_type_or_raise(provider_payment_charge_id, str, parameter_name="provider_payment_charge_id")
-        
+        assert_type_or_raise(provider_payment_charge_id, unicode_type, parameter_name="provider_payment_charge_id")
         self.provider_payment_charge_id = provider_payment_charge_id
         
-        assert_type_or_raise(shipping_option_id, None, str, parameter_name="shipping_option_id")
-        
+        assert_type_or_raise(shipping_option_id, None, unicode_type, parameter_name="shipping_option_id")
         self.shipping_option_id = shipping_option_id
         
         assert_type_or_raise(order_info, None, OrderInfo, parameter_name="order_info")
-        
         self.order_info = order_info
 
         self._raw = _raw
@@ -577,13 +555,13 @@ class SuccessfulPayment(Result):
         :rtype: dict
         """
         array = super(SuccessfulPayment, self).to_array()
-        array['currency'] = str(self.currency)  # type str
+        array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
         array['total_amount'] = int(self.total_amount)  # type int
-        array['invoice_payload'] = str(self.invoice_payload)  # type str
-        array['telegram_payment_charge_id'] = str(self.telegram_payment_charge_id)  # type str
-        array['provider_payment_charge_id'] = str(self.provider_payment_charge_id)  # type str
+        array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
+        array['telegram_payment_charge_id'] = u(self.telegram_payment_charge_id)  # py2: type unicode, py3: type str
+        array['provider_payment_charge_id'] = u(self.provider_payment_charge_id)  # py2: type unicode, py3: type str
         if self.shipping_option_id is not None:
-            array['shipping_option_id'] = str(self.shipping_option_id)  # type str
+            array['shipping_option_id'] = u(self.shipping_option_id)  # py2: type unicode, py3: type str
         if self.order_info is not None:
             array['order_info'] = self.order_info.to_array()  # type OrderInfo
         return array
@@ -600,7 +578,7 @@ class SuccessfulPayment(Result):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.payments import OrderInfo
         
 
@@ -653,13 +631,13 @@ class ShippingQuery(UpdateType):
     Parameters:
     
     :param id: Unique query identifier
-    :type  id: str
+    :type  id: str|unicode
     
     :param from_peer: User who sent the query
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
     :param invoice_payload: Bot specified invoice payload
-    :type  invoice_payload: str
+    :type  invoice_payload: str|unicode
     
     :param shipping_address: User specified shipping address
     :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
@@ -681,13 +659,13 @@ class ShippingQuery(UpdateType):
         Parameters:
         
         :param id: Unique query identifier
-        :type  id: str
+        :type  id: str|unicode
         
         :param from_peer: User who sent the query
         :type  from_peer: pytgbot.api_types.receivable.peer.User
         
         :param invoice_payload: Bot specified invoice payload
-        :type  invoice_payload: str
+        :type  invoice_payload: str|unicode
         
         :param shipping_address: User specified shipping address
         :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
@@ -702,20 +680,16 @@ class ShippingQuery(UpdateType):
         from pytgbot.api_types.receivable.payments import ShippingAddress
         from pytgbot.api_types.receivable.peer import User
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
-        
         self.from_peer = from_peer
         
-        assert_type_or_raise(invoice_payload, str, parameter_name="invoice_payload")
-        
+        assert_type_or_raise(invoice_payload, unicode_type, parameter_name="invoice_payload")
         self.invoice_payload = invoice_payload
         
         assert_type_or_raise(shipping_address, ShippingAddress, parameter_name="shipping_address")
-        
         self.shipping_address = shipping_address
 
         self._raw = _raw
@@ -729,9 +703,9 @@ class ShippingQuery(UpdateType):
         :rtype: dict
         """
         array = super(ShippingQuery, self).to_array()
-        array['id'] = str(self.id)  # type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
-        array['invoice_payload'] = str(self.invoice_payload)  # type str
+        array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
         array['shipping_address'] = self.shipping_address.to_array()  # type ShippingAddress
         return array
     # end def to_array
@@ -747,7 +721,7 @@ class ShippingQuery(UpdateType):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.payments import ShippingAddress
         from pytgbot.api_types.receivable.peer import User
         
@@ -798,25 +772,25 @@ class PreCheckoutQuery(UpdateType):
     Parameters:
     
     :param id: Unique query identifier
-    :type  id: str
+    :type  id: str|unicode
     
     :param from_peer: User who sent the query
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
     :param currency: Three-letter ISO 4217 currency code
-    :type  currency: str
+    :type  currency: str|unicode
     
     :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  total_amount: int
     
     :param invoice_payload: Bot specified invoice payload
-    :type  invoice_payload: str
+    :type  invoice_payload: str|unicode
     
 
     Optional keyword parameters:
     
     :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
-    :type  shipping_option_id: str
+    :type  shipping_option_id: str|unicode
     
     :param order_info: Optional. Order info provided by the user
     :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
@@ -835,25 +809,25 @@ class PreCheckoutQuery(UpdateType):
         Parameters:
         
         :param id: Unique query identifier
-        :type  id: str
+        :type  id: str|unicode
         
         :param from_peer: User who sent the query
         :type  from_peer: pytgbot.api_types.receivable.peer.User
         
         :param currency: Three-letter ISO 4217 currency code
-        :type  currency: str
+        :type  currency: str|unicode
         
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
         
         :param invoice_payload: Bot specified invoice payload
-        :type  invoice_payload: str
+        :type  invoice_payload: str|unicode
         
     
         Optional keyword parameters:
         
         :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
-        :type  shipping_option_id: str
+        :type  shipping_option_id: str|unicode
         
         :param order_info: Optional. Order info provided by the user
         :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
@@ -865,32 +839,25 @@ class PreCheckoutQuery(UpdateType):
         from pytgbot.api_types.receivable.payments import OrderInfo
         from pytgbot.api_types.receivable.peer import User
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
-        
         self.from_peer = from_peer
         
-        assert_type_or_raise(currency, str, parameter_name="currency")
-        
+        assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
         
         assert_type_or_raise(total_amount, int, parameter_name="total_amount")
-        
         self.total_amount = total_amount
         
-        assert_type_or_raise(invoice_payload, str, parameter_name="invoice_payload")
-        
+        assert_type_or_raise(invoice_payload, unicode_type, parameter_name="invoice_payload")
         self.invoice_payload = invoice_payload
         
-        assert_type_or_raise(shipping_option_id, None, str, parameter_name="shipping_option_id")
-        
+        assert_type_or_raise(shipping_option_id, None, unicode_type, parameter_name="shipping_option_id")
         self.shipping_option_id = shipping_option_id
         
         assert_type_or_raise(order_info, None, OrderInfo, parameter_name="order_info")
-        
         self.order_info = order_info
 
         self._raw = _raw
@@ -904,13 +871,13 @@ class PreCheckoutQuery(UpdateType):
         :rtype: dict
         """
         array = super(PreCheckoutQuery, self).to_array()
-        array['id'] = str(self.id)  # type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
-        array['currency'] = str(self.currency)  # type str
+        array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
         array['total_amount'] = int(self.total_amount)  # type int
-        array['invoice_payload'] = str(self.invoice_payload)  # type str
+        array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
         if self.shipping_option_id is not None:
-            array['shipping_option_id'] = str(self.shipping_option_id)  # type str
+            array['shipping_option_id'] = u(self.shipping_option_id)  # py2: type unicode, py3: type str
         if self.order_info is not None:
             array['order_info'] = self.order_info.to_array()  # type OrderInfo
         return array
@@ -927,7 +894,7 @@ class PreCheckoutQuery(UpdateType):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.payments import OrderInfo
         from pytgbot.api_types.receivable.peer import User
         

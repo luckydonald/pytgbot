@@ -16,7 +16,7 @@ class LabeledPrice(Sendable):
     Parameters:
     
     :param label: Portion label
-    :type  label: str
+    :type  label: str|unicode
     
     :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  amount: int
@@ -35,7 +35,7 @@ class LabeledPrice(Sendable):
         Parameters:
         
         :param label: Portion label
-        :type  label: str
+        :type  label: str|unicode
         
         :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  amount: int
@@ -44,12 +44,10 @@ class LabeledPrice(Sendable):
         Optional keyword parameters:
         """
         super(LabeledPrice, self).__init__()
-        assert_type_or_raise(label, str, parameter_name="label")
-        
+        assert_type_or_raise(label, unicode_type, parameter_name="label")
         self.label = label
         
         assert_type_or_raise(amount, int, parameter_name="amount")
-        
         self.amount = amount
     # end def __init__
 
@@ -61,7 +59,7 @@ class LabeledPrice(Sendable):
         :rtype: dict
         """
         array = super(LabeledPrice, self).to_array()
-        array['label'] = str(self.label)  # type str
+        array['label'] = u(self.label)  # py2: type unicode, py3: type str
         array['amount'] = int(self.amount)  # type int
         return array
     # end def to_array
@@ -77,7 +75,7 @@ class LabeledPrice(Sendable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
         data['label'] = u(array.get('label'))
@@ -125,10 +123,10 @@ class ShippingOption(Sendable):
     Parameters:
     
     :param id: Shipping option identifier
-    :type  id: str
+    :type  id: str|unicode
     
     :param title: Option title
-    :type  title: str
+    :type  title: str|unicode
     
     :param prices: List of price portions
     :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
@@ -147,10 +145,10 @@ class ShippingOption(Sendable):
         Parameters:
         
         :param id: Shipping option identifier
-        :type  id: str
+        :type  id: str|unicode
         
         :param title: Option title
-        :type  title: str
+        :type  title: str|unicode
         
         :param prices: List of price portions
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
@@ -161,16 +159,13 @@ class ShippingOption(Sendable):
         super(ShippingOption, self).__init__()
         from pytgbot.api_types.sendable.payments import LabeledPrice
         
-        assert_type_or_raise(id, str, parameter_name="id")
-        
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         
-        assert_type_or_raise(title, str, parameter_name="title")
-        
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
         assert_type_or_raise(prices, list, parameter_name="prices")
-        
         self.prices = prices
     # end def __init__
 
@@ -182,8 +177,8 @@ class ShippingOption(Sendable):
         :rtype: dict
         """
         array = super(ShippingOption, self).to_array()
-        array['id'] = str(self.id)  # type str
-        array['title'] = str(self.title)  # type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['prices'] = self._as_array(self.prices)  # type list of LabeledPrice
         return array
     # end def to_array
@@ -199,7 +194,7 @@ class ShippingOption(Sendable):
         if array is None or not array:
             return None
         # end if
-        assert(isinstance(array, dict))
+        assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.payments import LabeledPrice
         
 
