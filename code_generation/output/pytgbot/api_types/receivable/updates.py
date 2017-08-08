@@ -678,7 +678,7 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.payments import SuccessfulPayment
         from pytgbot.api_types.receivable.peer import Chat
         from pytgbot.api_types.receivable.peer import User
-        from pytgbot.api_types.receivable.stickers import Sticker
+        from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.updates import Message
         
         assert_type_or_raise(message_id, int, parameter_name="message_id")
@@ -909,7 +909,7 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.payments import SuccessfulPayment
         from pytgbot.api_types.receivable.peer import Chat
         from pytgbot.api_types.receivable.peer import User
-        from pytgbot.api_types.receivable.stickers import Sticker
+        from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.updates import Message
         
 

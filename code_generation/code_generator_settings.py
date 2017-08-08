@@ -23,7 +23,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Venue":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Audio":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Document":             ("pytgbot.api_types.receivable.media.", "Media", None),
-    # "Sticker":              ("pytgbot.api_types.receivable.media.", "Media", None), # Moved July 21, 2017
+    "Sticker":              ("pytgbot.api_types.receivable.media.", "Media", None), # Moved July 21, 2017
     "Video":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Game":                 ("pytgbot.api_types.receivable.media.", "Media", None),
     "Animation":            ("pytgbot.api_types.receivable.media.", "Media", None),
@@ -61,7 +61,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "PreCheckoutQuery":     ("pytgbot.api_types.receivable.payments.", "UpdateType", None),  # May 18, 2017
 
     # pytgbot.api_types.receivable.payments.*
-    "Sticker":      ("pytgbot.api_types.receivable.stickers.", "Media", None),  # July 21, 2017
+    # "Sticker":      ("pytgbot.api_types.receivable.stickers.", "Media", None),  # July 21, 2017
     "StickerSet":   ("pytgbot.api_types.receivable.stickers.", "Result", None),  # July 21, 2017
     "MaskPosition": ("pytgbot.api_types.receivable.stickers.", "Result", None),  # July 21, 2017
 
