@@ -7,19 +7,78 @@ For the command
 Custom commands to make stuff easier:
 `msg <peer> <text>`
 """
+import requests
 
 from pytgbot.api_types.receivable.inline import InlineQuery
-from pytgbot.api_types.receivable.updates import Message
+from pytgbot.api_types.receivable.updates import Message, Update
 from pytgbot.api_types.receivable.peer import Peer, Chat, User
 from pytgbot.exceptions import TgApiException
 from pytgbot import Bot
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.interactions import input, answer
+from luckydonaldUtils.encoding import to_binary as b, to_native as n
 from inspect import getmembers, ismethod, getargspec, formatargspec
 from threading import Thread
 
 # cool input
 import readline
+
+# cool output
+# see iterm2_image module source,
+# at https://github.com/zakx/iterm2_image/blob/f1134a720c37a515c5b15c438ae7bca92d4d4c55/iterm2_image.py
+from io import BytesIO
+from base64 import b64encode
+import sys
+
+
+def read_file_to_buffer(filename):
+    """
+    Reads a file to string buffer
+    :param filename: 
+    :return: 
+    """
+    f = open(filename, "r")
+    buf = BytesIO(f.read())
+    f.close()
+    return buf
+# end def
+
+
+def iterm_show_file(filename, data=None, inline=True, width="auto", height="auto", preserve_aspect_ratio=True):
+    """
+
+    https://iterm2.com/documentation-images.html
+    
+    :param filename: 
+    :param data: 
+    :param inline: 
+    :param width:  
+    :param height: 
+    :param preserve_aspect_ratio: 
+    
+    Size:
+        - N   (Number only): N character cells.
+        - Npx (Number + px): N pixels.
+        - N%  (Number + %):  N percent of the session's width or height.
+        - auto:              The image's inherent size will be used to determine an appropriate dimension.
+    :return: 
+    """
+    width = str(width) if width is not None else "auto"
+    height = str(height) if height is not None else "auto"
+    if data is None:
+        data = read_file_to_buffer(filename)
+    # end if
+    data_bytes = data.getvalue()
+    output = "\033]1337;File=" \
+             "name={filename};size={size};inline={inline};" \
+             "preserveAspectRatio={preserve};width={width};height={height}:{data}\a\n".format(
+        filename=n(b64encode(b(filename))), size=len(data_bytes), inline=1 if inline else 0,
+        width=width, height=height, preserve=1 if preserve_aspect_ratio else 0,
+        data=n(b64encode(data_bytes)),
+    )
+    #sys.stdout.write(output)
+    return output
+# end if
 
 
 try:
@@ -31,46 +90,155 @@ except ImportError:
 __author__ = 'luckydonald'
 
 logger = logging.getLogger(__name__)#
-logging.add_colored_handler(level=logging.DEBUG)
+logging.add_colored_handler(level=logging.INFO)
 
 METHOD_EXCLUDES = ("do",)
 
 cached_chats = {}
 
+class CLI(object):
+    def __init__(self, API_KEY):
+        if API_KEY is None:
+            API_KEY = self.ask_for_apikey()
+        self._api_key = API_KEY
 
-def main(API_KEY):
-    if API_KEY is None:
-        API_KEY = answer("Input API key")
-    # get your bot instance.
-    bot = Bot(API_KEY, return_python_objects=True)
+        self.bot = Bot(API_KEY, return_python_objects=True)
 
-    my_info=bot.get_me()
-    print("Information about myself: {info}".format(info=my_info))
+        self.me = self.bot.get_me()
+        logger.info("Information about myself: {info}".format(info=self.me))
 
-    # Register our completer function
-    completer = FunctionCompleter(bot)
-    readline.parse_and_bind('tab: complete')
-    readline.set_completer(completer.complete)
-    # Use the tab key for completion
+        self.completer = self.register_tab_completion()
 
-    tg_update_thread = Thread(target=get_updates, name="telegram update thread", args=(bot,))
-    tg_update_thread.daemon = True
-    tg_update_thread.start()
-    print("You can enter commands now.")
-    while True:
-        cmd = input("pytgbot> ")
-        notice = ""  # never display again.
-        try:
-            result_str = parse_input(bot, cmd)
-            if result_str:
-                print(result_str)
-        except Exception as e:
-            logger.exception("Error.")
-            print("Error: " + str(e))
-        # end try
-    # end while
+        self.update_thread = self.create_update_thread()
+
+    # end def
+
+    def ask_for_apikey(self):
+        return answer("Input your bot API key.")
+    # end def
+
+    def register_tab_completion(self):
+        # Register our completer function
+        completer = FunctionCompleter(self)
+        readline.parse_and_bind('tab: complete')
+        readline.set_completer(completer.complete)
+        # Use the tab key for completion
+        return completer
+    # end def
+
+    def create_update_thread(self):
+        tg_update_thread = Thread(target=get_updates, name="telegram update thread", args=(self.bot,), kwargs={"callback": self.print_update})
+        tg_update_thread.daemon = True
+        tg_update_thread.start()
+        return tg_update_thread
+    # end def
+
+    def run(self):
+        print("You can enter commands now.")
+        while True:
+            cmd = input("pytgbot> ")
+            try:
+                result_str = parse_input(self.bot, cmd)
+                if result_str:
+                    print(result_str)
+            except Exception as e:
+                logger.exception("Error.")
+                print("Error: " + str(e))
+            # end try
+        # end while
+    # end def
+
+    def print_update(self, update):
+        print(self.process_update(update))
+    # end def
+
+    def process_update(self, update):
+        assert isinstance(update, Update)  # is message
+        if update.message:
+            return self.process_message(update.message)
+        elif update.inline_query:
+            qry = update.inline_query
+            assert isinstance(qry, InlineQuery)
+            qry_from_print = peer_to_string_and_cache(qry.from_peer)
+            return "[query {id}] {from_print}: {text}".format(from_print=qry_from_print, id=qry.id, text=qry.query)
+        else:
+            return str(update)
+        # end if
+    # end def
+
+    def process_message(self, msg):
+        # prepare prefix with chat infos:
+        assert isinstance(msg, Message)
+        user_print = peer_to_string_and_cache(msg.from_peer, id_prefix="user")
+        if msg.chat.type == 'private':
+            prefix = "[msg {message_id}] {user}: ".format(
+                message_id=msg.message_id, user=user_print
+            )
+        elif msg.chat.type in ('group', 'supergroup', 'channel'):
+            group_print = peer_to_string_and_cache(msg.chat, id_prefix=True)
+            prefix = "[msg {message_id}] {user} in {title}: ".format(
+                message_id=msg.message_id, user=user_print, title=group_print
+            )
+        else:
+            prefix = "[msg {message_id}] UNKNOWN ORIGIN: ".format(
+                message_id=msg.message_id
+            )
+        # end if
+
+        # now the message types
+        if "text" in msg:
+            return prefix + msg.text
+        if "photo" in msg:
+            photo = msg.photo[0]
+            for p in msg.photo[1:]:
+                if p.file_size > photo.file_size:
+                    photo = p
+                # end if
+            # end for
+            return prefix + self.process_file(photo, msg.caption, file_type="photo", height="100px")
+        if "sticker" in msg:
+            return prefix + self.process_file(msg.sticker, msg.caption, file_type="sticker", as_png=True, height="100px")
+        # end if
+    # end def
+
+    def process_file(self, file, caption, file_type="file", as_png=False, inline=True, height=None):
+        file_object = self.bot.get_file(file.file_id)
+        file_url = self.bot.get_download_url(file_object)
+        file_content = get_file(file_url, as_png=as_png)
+        file_name = file_url.split("/")[-1]
+        if as_png:
+            file_name = file_name + ".png"
+        # end if
+        save_file_name = str(file.file_id) + "__" + file_name
+        return "[{type} {file_id}]{caption}\n{image}\n{file_name}".format(
+            file_id=file.file_id, caption=(" " + caption if caption else ""),
+            image=iterm_show_file(save_file_name, data=file_content, inline=inline, height=height),
+            type=file_type, file_name=save_file_name,
+        )
+    # end def
+
+# end class
+
+
+def get_file(file_url, as_png=True):
+    r = requests.get(file_url)
+    if r.status_code != 200:
+        logger.error("Download returned: {}".format(r.content))
+        return None
+    # end if
+    fake_input = BytesIO(r.content)
+    if not as_png:
+        return fake_input
+    # end if
+    from PIL import Image  # pip install Pillow
+    im = Image.open(fake_input)
+    del fake_input
+    fake_output = BytesIO()
+    im.save(fake_output, "PNG")
+    del im
+    fake_output.seek(0)
+    return fake_output
 # end def
-
 
 def parse_input(bot, cmd):
     print(">{cmd}".format(cmd=cmd))
@@ -152,23 +320,29 @@ def get_help(bot, search="", return_string=True):
     return "\n".join(strings)
 # end def
 
+
 def get_func_str(func):
     spec = func.__name__ + formatargspec(*getargspec(func))
     return spec
 
 
-def get_updates(bot):
+def get_updates(bot, callback=None):
+    if callback is None:
+        def callback(data):
+            try:
+                print(update_to_string(data))
+            except AttributeError:
+                print(update)
+                raise
+            # end try
+        # end def
+    # end if
     last_update_id = 0
     while True:  # loop forever.
         for update in bot.get_updates(limit=100, offset=last_update_id+1, poll_timeout=60, error_as_empty=True):  # for every new update
             last_update_id = update.update_id
             print(repr(last_update_id))
-            try:
-                print(update_to_string(update))
-            except AttributeError:
-                print(update)
-                raise
-            # end try
+            callback(update)
         # end for
     # end while
 # end def
@@ -194,31 +368,32 @@ def format_array(array, prefix="", prefix_count=1):
 # end def
 
 
-def update_to_string(data):
-    if data.message:
-        msg = data.message
-        assert isinstance(msg, Message)
-        msg_from_print = peer_to_string_and_cache(msg.from_peer)
-        if msg.chat.type == 'private':
-            if "text" in msg:
-                return "[msg {message_id}] {from_print}: {text}".format(message_id=msg.message_id, from_print=msg_from_print, text=msg.text)
-        elif msg.chat.type == 'group':
-            if "text" in msg:
-                group_print = peer_to_string_and_cache(msg.chat)
-                return "[msg {message_id}] {from_print} ({title}): {text}".format(message_id=msg.message_id, from_print=msg_from_print, title=group_print, text=msg.text)
-    elif data.inline_query:
-        qry = data.inline_query
-        assert isinstance(qry, InlineQuery)
-        qry_from_print = peer_to_string_and_cache(qry.from_peer)
-        return "[query {id}] {from_print}: {text}".format(from_print=qry_from_print, id=qry.id, text=qry.query)
-    else:
-        print(data)
-    # end if message
-    return str(data)
-# end def
 
 
-def peer_to_string_and_cache(peer, show_id=True, reply=True):
+
+def peer_to_string_and_cache(peer, show_id=True, id_prefix="", reply=True):
+    """
+
+    :param peer: 
+    :param show_id: 
+    :param id_prefix: Prefix of the #id thing. Set a string, or true to have it generated.
+    :type  id_prefix: str|bool
+    :param reply: 
+    :return: 
+    """
+    if isinstance(id_prefix, bool):
+        if id_prefix:  # True
+            if isinstance(peer, User):
+                id_prefix = "user"
+            elif isinstance(peer, Chat):
+                id_prefix = peer.type
+            else:
+                id_prefix = "unknown"
+            # end if
+        else:  # False
+            id_prefix = ""
+        # end if
+    # end if
     peer_string = peer_to_string(peer)
     cached_chats[peer_string.strip()] = peer.id
     cached_chats[str(peer.id).strip()] = peer.id
@@ -226,7 +401,7 @@ def peer_to_string_and_cache(peer, show_id=True, reply=True):
         cached_chats["!"] = peer.id
     # end if
     if show_id and "id" in peer:
-        peer_string += " (#{id})".format(id=peer.id)
+        peer_string += " ({id_prefix}#{id})".format(id_prefix=id_prefix, id=peer.id)
     return peer_string
 
 def peer_to_string(peer):
@@ -297,9 +472,10 @@ def parse_args(string):
 
 
 class FunctionCompleter(object):
-    def __init__(self, bot):
+    def __init__(self, cli):
         logger.debug("Started completion!")
-        self.bot = bot
+        self.cli = cli
+        self.bot = cli.bot
         self.functions = {k:v for k,v in self.get_functions()}
         self.functions["help"] = self.cmd_help
         self.current_candidates = []
@@ -385,7 +561,8 @@ class FunctionCompleter(object):
 
 
 if __name__ == '__main__':
-    main(API_KEY)
+    cli = CLI(API_KEY)
+    cli.run()
 # end if
 
 # end file
