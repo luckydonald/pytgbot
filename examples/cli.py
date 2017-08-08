@@ -18,6 +18,10 @@ from luckydonaldUtils.interactions import input, answer
 from inspect import getmembers, ismethod, getargspec, formatargspec
 from threading import Thread
 
+# cool input
+import readline
+
+
 try:
     from somewhere import API_KEY  # so I don't upload them to github :D
 except ImportError:
@@ -26,25 +30,35 @@ except ImportError:
 
 __author__ = 'luckydonald'
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)#
+logging.add_colored_handler(level=logging.DEBUG)
 
 METHOD_EXCLUDES = ("do",)
 
 cached_chats = {}
+
 
 def main(API_KEY):
     if API_KEY is None:
         API_KEY = answer("Input API key")
     # get your bot instance.
     bot = Bot(API_KEY, return_python_objects=True)
+
     my_info=bot.get_me()
     print("Information about myself: {info}".format(info=my_info))
-    in_tread = Thread(target=get_updates, name="cli input thread", args=(bot,))
-    in_tread.daemon = True
-    in_tread.start()
-    notice = "You can enter commands now.\n"
+
+    # Register our completer function
+    completer = FunctionCompleter(bot)
+    readline.parse_and_bind('tab: complete')
+    readline.set_completer(completer.complete)
+    # Use the tab key for completion
+
+    tg_update_thread = Thread(target=get_updates, name="telegram update thread", args=(bot,))
+    tg_update_thread.daemon = True
+    tg_update_thread.start()
+    print("You can enter commands now.")
     while True:
-        cmd = input(notice)
+        cmd = input("pytgbot> ")
         notice = ""  # never display again.
         try:
             result_str = parse_input(bot, cmd)
@@ -117,7 +131,7 @@ def parse_call_result(call_result):
 # end def
 
 
-def get_help(bot, search=""):
+def get_help(bot, search="", return_string=True):
     strings = []
     for name, func in getmembers(bot):
         if name.startswith("_"):
@@ -280,6 +294,94 @@ def parse_args(string):
     # end for
     return result_parts
 # end def parse_args
+
+
+class FunctionCompleter(object):
+    def __init__(self, bot):
+        logger.debug("Started completion!")
+        self.bot = bot
+        self.functions = {k:v for k,v in self.get_functions()}
+        self.functions["help"] = self.cmd_help
+        self.current_candidates = []
+    # end def
+
+    def cmd_help(self, *args, **kwargs):
+        return help(*args, **kwargs)
+
+    def get_functions(self):
+        for name, func in getmembers(self.bot):
+            if name.startswith("_"):
+                continue
+            # end if
+            if name in METHOD_EXCLUDES:
+                continue
+            # end if
+            elif not ismethod(func):
+                continue
+            # end if
+            yield name, func
+        # end for
+    # end def
+
+    def complete(self, text, state):
+        if state == 0:  # first of list, prepare the list
+            self.current_candidates = [cmd for cmd in list(self.functions.keys()) if cmd.startswith(text)]
+        # end if
+        try:
+            return self.current_candidates[state]
+        except IndexError:
+            return None
+        # end try
+        if True:
+            pass
+        else:
+            return None
+            # This is the first time for this text, so build a match list.
+            origline = readline.get_line_buffer()
+            begin = readline.get_begidx()
+            end = readline.get_endidx()
+            being_completed = origline[begin:end]
+            words = origline.split()
+
+            logger.debug('origline=%s', repr(origline))
+            logger.debug('begin=%s', begin)
+            logger.debug('end=%s', end)
+            logger.debug('being_completed=%s', being_completed)
+            logger.debug('words=%s', words)
+
+            if not words:
+                self.current_candidates = sorted(self.functions.keys())
+            else:
+                try:
+                    if begin == 0:
+                        # first word
+                        candidates = self.functions.keys()
+                    else:
+                        # later word
+                        first = words[0]
+                        candidates = self.functions[first]
+
+                    if being_completed:
+                        # match options with portion of input
+                        # being completed
+                        self.current_candidates = [w for w in candidates
+                                                   if w.startswith(being_completed)]
+                    else:
+                        # matching empty string so use all candidates
+                        self.current_candidates = candidates
+
+                    logging.debug('candidates=%s', self.current_candidates)
+
+                except (KeyError, IndexError) as err:
+                    logging.error('completion error: %s', err)
+                    self.current_candidates = []
+
+        try:
+            response = self.current_candidates[state]
+        except IndexError:
+            response = None
+        logging.debug('complete(%s, %s) => %s', repr(text), state, response)
+        return response
 
 
 if __name__ == '__main__':
