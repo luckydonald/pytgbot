@@ -1,0 +1,3 @@
+# online docs
+bs4
+jinja2
