@@ -660,6 +660,9 @@ class Message(UpdateType):
         :type  _raw: None | dict
         """
         super(Message, self).__init__()
+        from ..receivable.peer import User, Chat
+        from ..receivable.media import Audio, Contact, Document, Game, Location, Sticker, Venue, Video, Voice, VideoNote
+        from ..receivable.payments import Invoice, SuccessfulPayment
 
         assert_type_or_raise(message_id, int, parameter_name="message_id")
         self.message_id = message_id

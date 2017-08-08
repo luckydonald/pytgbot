@@ -8,7 +8,7 @@ from datetime import timedelta
 from DictObject import DictObject
 
 from luckydonaldUtils.logger import logging
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from .exceptions import TgApiServerException, TgApiParseException, TgApiTypeError, TgApiException
 from .api_types.sendable.inline import InlineQueryResult
@@ -2836,7 +2836,7 @@ class Bot(object):
 
         assert_type_or_raise(is_personal, None, bool, parameter_name="is_personal")
 
-        assert_type_or_raise(next_offset, None, unicode_type, str, int parameter_name="next_offset")
+        assert_type_or_raise(next_offset, None, unicode_type, str, int, parameter_name="next_offset")
         if next_offset is not None:
             assert(isinstance(next_offset, (str, unicode_type, int)))
             next_offset = u(next_offset)
