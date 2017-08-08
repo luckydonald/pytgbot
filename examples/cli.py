@@ -225,15 +225,10 @@ class CLI(object):
 
         # remove the input:
         sys.stdout.flush()
-        from time import sleep
         for i in range(delete_chars):
             sys.stdout.write("\b \b")
-            #sys.stdout.flush()
-            #sleep(0.1)
         # end for
         sys.stdout.write("\033[K")
-        #sleep(1)
-        # sys.stdout.write("\r")  # beginning of this line
         sys.stdout.flush()
 
         # actual output

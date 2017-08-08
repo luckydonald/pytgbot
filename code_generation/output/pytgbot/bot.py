@@ -173,7 +173,7 @@ class Bot(object):
         
         Returns:
 
-        :return: On success, returns a :class:`pytgbot.api_types.receivable.updates.WebhookInfo` object
+        :return: On success, returns a WebhookInfo object
         :rtype:  pytgbot.api_types.receivable.updates.WebhookInfo
         """
         

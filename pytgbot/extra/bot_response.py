@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class ResponseBot(Bot):
     """
     A :class:`Bot` subclass, not instantly sending responses, but instead returning them.
-    Usefull for replying responses to an open Webhook connection.
+    Useful for replying responses to an open Webhook connection.
     """
     def __init__(self, api_key):
         super(ResponseBot, self).__init__(api_key, return_python_objects=True)

@@ -123,16 +123,17 @@ def from_array_list(required_type, result, list_level, is_builtin):
 
 
 def as_array(obj):
+    """
+    Creates an json-like representation of a variable, supporting types with a `.to_array()` function.
+
+    :rtype: dict|list|str|int|float|bool|None
+    """
     if hasattr(obj, "to_array"):
         return obj.to_array()
     elif isinstance(obj, (list, tuple)):
         return [as_array(x) for x in obj]
     elif isinstance(obj, dict):
-        array = {}
-        for key in obj.keys():
-            array[key] = as_array(obj[key])
-        # end for
-        return array
+        return {key:as_array(obj[key]) for key in obj.keys()}
     else:
         _json_dumps(obj)  # raises error if is wrong json
         return obj
