@@ -7,12 +7,12 @@
     <meta property="og:title" content="Telegram Bot API">
     <meta property="og:image" content="">
     <meta property="og:description" content="The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.
-To learn how to create..">
+To learn how to create…">
     <link rel="shortcut icon" href="/favicon.ico?3" type="image/x-icon" />
 
     <link href="/css/bootstrap.min.css?2" rel="stylesheet">
     
-    <link href="/css/telegram.css?123" rel="stylesheet" media="screen">
+    <link href="/css/telegram.css?125" rel="stylesheet" media="screen">
     <style>
     </style>
   </head>
@@ -45,6 +45,14 @@ To learn how to create..">
 <p>The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.<br>To learn how to create and set up a bot, please consult our <a href="https://core.telegram.org/bots"><strong>Introduction to Bots</strong></a> and <a href="/bots/faq"><strong>Bot FAQ</strong></a>.</p>
 </blockquote>
 <h3><a class="anchor" name="recent-changes" href="#recent-changes"><i class="anchor-icon"></i></a>Recent changes</h3>
+<h4><a class="anchor" name="august-23-2017" href="#august-23-2017"><i class="anchor-icon"></i></a>August 23, 2017</h4>
+<p><strong>Bot API 3.3</strong>.</p>
+<ul>
+<li>Bots can now mention users via <a href="#formatting-options">inline mentions</a>, without using usernames.</li>
+<li><a href="#getchat">getChat</a> now also returns pinned messages in supergroups, if present. Added the new field <em>pinned_message</em> to the <a href="#chat">Chat</a> object.</li>
+<li>Added the new fields <em>author_signature</em> and <em>forward_signature</em> to the <a href="#message">Message</a> object.</li>
+<li>Added the new field <em>is_bot</em> to the <a href="#user">User</a> object.</li>
+</ul>
 <h4><a class="anchor" name="july-21-2017" href="#july-21-2017"><i class="anchor-icon"></i></a>July 21, 2017</h4>
 <p><strong>Bot API 3.2</strong>. Teach your bot to handle <a href="#stickers">stickers and sticker sets</a>.</p>
 <ul>
@@ -58,37 +66,6 @@ To learn how to create..">
 <li>Added new methods <a href="#exportchatinvitelink">exportChatInviteLink</a>, <a href="#setchatphoto">setChatPhoto</a>, <a href="#deletechatphoto">deleteChatPhoto</a>, <a href="#setchattitle">setChatTitle</a>, <a href="#setchatdescription">setChatDescription</a>, <a href="#pinchatmessage">pinChatMessage</a> and <a href="#unpinchatmessage">unpinChatMessage</a> to manage groups and channels.</li>
 <li>Added the new fields <em>photo</em>, <em>description</em> and <em>invite_link</em> to the <a href="#chat">Chat</a> object.</li>
 <li>Added the new fields <em>until_date</em>, <em>can_be_edited</em>, <em>can_change_info</em>, <em>can_post_messages</em>, <em>can_edit_messages</em>, <em>can_delete_messages</em>, <em>can_invite_users</em>, <em>can_restrict_members</em>, <em>can_pin_messages</em>, <em>can_promote_members</em>, <em>can_send_messages</em>, <em>can_send_media_messages</em>, <em>can_send_other_messages</em> and <em>can_add_web_page_previews</em> to the <a href="#chatmember">ChatMember</a> object.</li>
-</ul>
-<h4><a class="anchor" name="may-18-2017" href="#may-18-2017"><i class="anchor-icon"></i></a>May 18, 2017</h4>
-<p>Introducing <strong>Bot API 3.0</strong>.</p>
-<p><strong>NEW Payment Platform</strong></p>
-<p>See <a href="/bots/payments">Introduction to Bot Payments</a> for a brief overview. If you&#39;re not a developer, you may like <a href="https://telegram.org/blog/payments">this user-friendly blog post</a> better.</p>
-<ul>
-<li>Your bot can now accept <a href="#payments">payments</a> for goods and services via Telegram. </li>
-<li>Added new kinds of <a href="/bots/api#update">updates</a>, <em>shipping_query</em> and <em>pre_checkout_query</em>, and new types of <a href="/bots/api#message">message</a> content, <em>invoice</em> and <em>successful_payment</em>.</li>
-<li>Added new methods for payments: <a href="#sendinvoice">sendInvoice</a>, <a href="#answershippingquery">answerShippingQuery</a>, and <a href="#answerprecheckoutquery">answerPreCheckoutQuery</a>.</li>
-<li>Added a new type of button, the <strong>pay</strong> button to <a href="#inlinekeyboardbutton">InlineKeyboardButton</a>.</li>
-</ul>
-<p><strong>NEW Video Messages</strong></p>
-<ul>
-<li>As of Telegram v.4.0, users can send short rounded <a href="https://telegram.org/blog/video-messages-and-telescope">video messages</a>, using an interface similar to that of voice notes.</li>
-<li>Added the <a href="#sendvideonote">sendVideoNote</a> method, the new field <em>video_note</em> to <a href="#message">Message</a>, the fields <em>record_video_note</em> or <em>upload_video_note</em> to <a href="#sendchataction">sendChatAction</a>.</li>
-</ul>
-<p><strong>NEW Multilingual Bots</strong></p>
-<ul>
-<li>The <a href="/bots/api#user">User</a> object now may have a <em>language_code</em> field that contains the <a href="https://en.wikipedia.org/wiki/IETF_language_tag">IETF language tag</a> of the user&#39;s language.</li>
-<li>Thanks to this, your bot can now offer localized responses to users that speak different languages.</li>
-</ul>
-<p><strong>More power to admin bots</strong></p>
-<ul>
-<li><a href="#unbanchatmember">unbanChatMember</a> now also works in channels!</li>
-<li>New method <a href="#deletemessage">deleteMessage</a> that allows the bot to delete its own messages, as well as messages posted by other in groups and channels where the bot is an administrator.</li>
-</ul>
-<p><strong>Minor Changes</strong></p>
-<ul>
-<li>Replaced the field <em>new_chat_member</em> in <a href="#message">Message</a> with <em>new_chat_members</em> (the old field will still be available for a while for compatibility purposes).</li>
-<li><a href="https://core.telegram.org/bots/api#inlinekeyboardbutton">Inline keyboards</a> with <em>switch_inline_query</em> and <em>switch_inline_query_current_chat</em> can no longer be sent to channels because they are useless there.</li>
-<li>New fields <em>gif_duration</em> in <a href="#inlinequeryresultgif">InlineQueryResultGif</a> and <em>mpeg4_duration</em> in <a href="#inlinequeryresultmpeg4gif">InlineQueryResultMpeg4Gif</a>.</li>
 </ul>
 <p><strong><a href="/bots/api-changelog">See earlier changes »</a></strong></p>
 <h3><a class="anchor" name="authorizing-your-bot" href="#authorizing-your-bot"><i class="anchor-icon"></i></a>Authorizing your bot</h3>
@@ -158,7 +135,7 @@ To learn how to create..">
 <tr>
 <td>chosen_inline_result</td>
 <td><a href="#choseninlineresult">ChosenInlineResult</a></td>
-<td><em>Optional</em>. The result of an <a href="#inline-mode">inline</a> query that was chosen by a user and sent to their chat partner.</td>
+<td><em>Optional</em>. The result of an <a href="#inline-mode">inline</a> query that was chosen by a user and sent to their chat partner. Please see our documentation on the <a href="/bots/inline#collecting-feedback">feedback collecting</a> for details on how to enable these updates for your bot.</td>
 </tr>
 <tr>
 <td>callback_query</td>
@@ -328,6 +305,11 @@ To learn how to create..">
 <td>Unique identifier for this user or bot</td>
 </tr>
 <tr>
+<td>is_bot</td>
+<td>Boolean</td>
+<td>True, if this user is a bot</td>
+</tr>
+<tr>
 <td>first_name</td>
 <td>String</td>
 <td>User‘s or bot’s first name</td>
@@ -395,7 +377,7 @@ To learn how to create..">
 </tr>
 <tr>
 <td>photo</td>
-<td>ChatPhoto</td>
+<td><a href="#chatphoto">ChatPhoto</a></td>
 <td><em>Optional</em>. Chat photo. Returned only in getChat.</td>
 </tr>
 <tr>
@@ -407,6 +389,11 @@ To learn how to create..">
 <td>invite_link</td>
 <td>String</td>
 <td><em>Optional</em>. Chat invite link, for supergroups and channel chats. Returned only in getChat.</td>
+</tr>
+<tr>
+<td>pinned_message</td>
+<td><a href="Message">Message</a></td>
+<td><em>Optional</em>. Pinned message, for supergroups. Returned only in getChat.</td>
 </tr>
 </tbody>
 </table>
@@ -427,7 +414,7 @@ To learn how to create..">
 <tr>
 <td>from</td>
 <td><a href="#user">User</a></td>
-<td><em>Optional</em>. Sender, can be empty for messages sent to channels</td>
+<td><em>Optional</em>. Sender, empty for messages sent to channels</td>
 </tr>
 <tr>
 <td>date</td>
@@ -447,12 +434,17 @@ To learn how to create..">
 <tr>
 <td>forward_from_chat</td>
 <td><a href="#chat">Chat</a></td>
-<td><em>Optional</em>. For messages forwarded from a channel, information about the original channel</td>
+<td><em>Optional</em>. For messages forwarded from channels, information about the original channel</td>
 </tr>
 <tr>
 <td>forward_from_message_id</td>
 <td>Integer</td>
-<td><em>Optional</em>. For forwarded channel posts, identifier of the original message in the channel</td>
+<td><em>Optional</em>. For messages forwarded from channels, identifier of the original message in the channel</td>
+</tr>
+<tr>
+<td>forward_signature</td>
+<td>String</td>
+<td><em>Optional</em>. For messages forwarded from channels, signature of the post author if present</td>
 </tr>
 <tr>
 <td>forward_date</td>
@@ -468,6 +460,11 @@ To learn how to create..">
 <td>edit_date</td>
 <td>Integer</td>
 <td><em>Optional</em>. Date the message was last edited in Unix time</td>
+</tr>
+<tr>
+<td>author_signature</td>
+<td>String</td>
+<td><em>Optional</em>. Signature of the post author for messages in channels</td>
 </tr>
 <tr>
 <td>text</td>
@@ -520,11 +517,6 @@ To learn how to create..">
 <td><em>Optional</em>. Message is a <a href="https://telegram.org/blog/video-messages-and-telescope">video note</a>, information about the video message</td>
 </tr>
 <tr>
-<td>new_chat_members</td>
-<td>Array of <a href="#user">User</a></td>
-<td><em>Optional</em>. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)</td>
-</tr>
-<tr>
 <td>caption</td>
 <td>String</td>
 <td><em>Optional</em>. Caption for the document, photo or video, 0-200 characters</td>
@@ -545,9 +537,9 @@ To learn how to create..">
 <td><em>Optional</em>. Message is a venue, information about the venue</td>
 </tr>
 <tr>
-<td>new_chat_member</td>
-<td><a href="#user">User</a></td>
-<td><em>Optional</em>. A new member was added to the group, information about them (this member may be the bot itself)</td>
+<td>new_chat_members</td>
+<td>Array of <a href="#user">User</a></td>
+<td><em>Optional</em>. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)</td>
 </tr>
 <tr>
 <td>left_chat_member</td>
@@ -1442,13 +1434,19 @@ To learn how to create..">
 <h4><a class="anchor" name="formatting-options" href="#formatting-options"><i class="anchor-icon"></i></a>Formatting options</h4>
 <p>The Bot API supports basic formatting for messages. You can use bold and italic text, as well as inline links and pre-formatted code in your bots&#39; messages. Telegram clients will render them accordingly. You can use either markdown-style or HTML-style formatting.</p>
 <p>Note that Telegram clients will display an <strong>alert</strong> to the user before opening an inline link (‘Open this link?’ together with the full URL).</p>
+<p>Links &#39;tg://user?id=&lt;user_id&gt;&#39; can be used to mention a user by their id without using a username. Please note:</p>
+<ul>
+<li>These links will work only if they are used inside an inline link.</li>
+<li>These mentions are only guaranteed to work if the user has contacted the bot in the past or is a member in the group where he was mentioned.</li>
+</ul>
 <h6><a class="anchor" name="markdown-style" href="#markdown-style"><i class="anchor-icon"></i></a>Markdown style</h6>
 <p>To use this mode, pass <em>Markdown</em> in the <em>parse_mode</em> field when using <a href="#sendmessage">sendMessage</a>. Use the following syntax in your message:</p>
 <pre><code>*bold text*
 _italic text_
-[text](http://www.example.com/)
+[inline URL](http://www.example.com/)
+[inline mention of a user](tg://user?id=123456789)
 `inline fixed-width code`
-```text
+```block_language
 pre-formatted fixed-width code block
 ```</code></pre>
 <h6><a class="anchor" name="html-style" href="#html-style"><i class="anchor-icon"></i></a>HTML style</h6>
@@ -1456,6 +1454,7 @@ pre-formatted fixed-width code block
 <pre><code>&lt;b&gt;bold&lt;/b&gt;, &lt;strong&gt;bold&lt;/strong&gt;
 &lt;i&gt;italic&lt;/i&gt;, &lt;em&gt;italic&lt;/em&gt;
 &lt;a href=&quot;http://www.example.com/&quot;&gt;inline URL&lt;/a&gt;
+&lt;a href=&quot;tg://user?id=123456789&quot;&gt;inline mention of a user&lt;/a&gt;
 &lt;code&gt;inline fixed-width code&lt;/code&gt;
 &lt;pre&gt;pre-formatted fixed-width code block&lt;/pre&gt;</code></pre>
 <p>Please note:</p>
@@ -2531,7 +2530,7 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="answercallbackquery" href="#answercallbackquery"><i class="anchor-icon"></i></a>answerCallbackQuery</h4>
 <p>Use this method to send answers to callback queries sent from <a href="/bots#inline-keyboards-and-on-the-fly-updating">inline keyboards</a>. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, <em>True</em> is returned.</p>
 <blockquote>
-<p>Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via BotFather and accept the terms. Otherwise, you may use links like <code>t.me/your_bot?start=XXXX</code> that open your bot with a parameter.</p>
+<p>Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via <a href="https://t.me/botfather">@Botfather</a> and accept the terms. Otherwise, you may use links like <code>t.me/your_bot?start=XXXX</code> that open your bot with a parameter.</p>
 </blockquote>
 <table class="table">
 <tbody>
@@ -4468,6 +4467,7 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
+<p><strong>Note:</strong> It is necessary to enable <a href="/bots/inline#collecting-feedback">inline feednack</a> via <a href="https://t.me/botfather">@Botfather</a> in order to receive these objects in updates.</p>
 <h3><a class="anchor" name="payments" href="#payments"><i class="anchor-icon"></i></a>Payments</h3>
 <p>Your bot can accept payments from Telegram users. Please see the <a href="/bots/payments">introduction to payments</a> for more details on the process and how to set up payments for your bot. Please note that users will need Telegram v.4.0 or higher to use payments (released on May 18, 2017).</p>
 <h4><a class="anchor" name="sendinvoice" href="#sendinvoice"><i class="anchor-icon"></i></a>sendInvoice</h4>
@@ -5281,4 +5281,4 @@ backToTopInit();
 </script>
   </body>
 </html>
-<!-- page generated in 23.79ms -->
+<!-- page generated in 22.85ms -->
