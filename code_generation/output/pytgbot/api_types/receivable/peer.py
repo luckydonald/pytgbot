@@ -19,6 +19,9 @@ class User(Peer):
     :param id: Unique identifier for this user or bot
     :type  id: int
     
+    :param is_bot: True, if this user is a bot
+    :type  is_bot: bool
+    
     :param first_name: User‘s or bot’s first name
     :type  first_name: str|unicode
     
@@ -38,7 +41,7 @@ class User(Peer):
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, first_name, last_name=None, username=None, language_code=None, _raw=None):
+    def __init__(self, id, is_bot, first_name, last_name=None, username=None, language_code=None, _raw=None):
         """
         This object represents a Telegram user or bot.
     
@@ -49,6 +52,9 @@ class User(Peer):
         
         :param id: Unique identifier for this user or bot
         :type  id: int
+        
+        :param is_bot: True, if this user is a bot
+        :type  is_bot: bool
         
         :param first_name: User‘s or bot’s first name
         :type  first_name: str|unicode
@@ -71,6 +77,9 @@ class User(Peer):
         super(User, self).__init__()
         assert_type_or_raise(id, int, parameter_name="id")
         self.id = id
+        
+        assert_type_or_raise(is_bot, bool, parameter_name="is_bot")
+        self.is_bot = is_bot
         
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
@@ -96,6 +105,7 @@ class User(Peer):
         """
         array = super(User, self).to_array()
         array['id'] = int(self.id)  # type int
+        array['is_bot'] = bool(self.is_bot)  # type bool
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
@@ -121,6 +131,7 @@ class User(Peer):
 
         data = {}
         data['id'] = int(array.get('id'))
+        data['is_bot'] = bool(array.get('is_bot'))
         data['first_name'] = u(array.get('first_name'))
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['username'] = u(array.get('username')) if array.get('username') is not None else None
@@ -133,7 +144,7 @@ class User(Peer):
         """
         Implements `str(user_instance)`
         """
-        return "User(id={self.id!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r}, language_code={self.language_code!r})".format(self=self)
+        return "User(id={self.id!r}, is_bot={self.is_bot!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r}, language_code={self.language_code!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -143,14 +154,14 @@ class User(Peer):
         if self._raw:
             return "User.from_array({self._raw})".format(self=self)
         # end if
-        return "User(id={self.id!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r}, language_code={self.language_code!r})".format(self=self)
+        return "User(id={self.id!r}, is_bot={self.is_bot!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r}, language_code={self.language_code!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in user_instance`
         """
-        return key in ["id", "first_name", "last_name", "username", "language_code"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "is_bot", "first_name", "last_name", "username", "language_code"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class User
 
@@ -198,11 +209,14 @@ class Chat(Peer):
     :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
     :type  invite_link: str|unicode
     
+    :param pinned_message: Optional. Pinned message, for supergroups. Returned only in getChat.
+    :type  pinned_message: pytgbot.api_types.receivable.updates.Message
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, all_members_are_administrators=None, photo=None, description=None, invite_link=None, _raw=None):
+    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, all_members_are_administrators=None, photo=None, description=None, invite_link=None, pinned_message=None, _raw=None):
         """
         This object represents a chat.
     
@@ -244,11 +258,15 @@ class Chat(Peer):
         :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
         :type  invite_link: str|unicode
         
+        :param pinned_message: Optional. Pinned message, for supergroups. Returned only in getChat.
+        :type  pinned_message: pytgbot.api_types.receivable.updates.Message
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Chat, self).__init__()
         from pytgbot.api_types.receivable.media import ChatPhoto
+        from pytgbot.api_types.receivable.updates import Message
         
         assert_type_or_raise(id, int, parameter_name="id")
         self.id = id
@@ -279,6 +297,9 @@ class Chat(Peer):
         
         assert_type_or_raise(invite_link, None, unicode_type, parameter_name="invite_link")
         self.invite_link = invite_link
+        
+        assert_type_or_raise(pinned_message, None, Message, parameter_name="pinned_message")
+        self.pinned_message = pinned_message
 
         self._raw = _raw
     # end def __init__
@@ -309,6 +330,8 @@ class Chat(Peer):
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.invite_link is not None:
             array['invite_link'] = u(self.invite_link)  # py2: type unicode, py3: type str
+        if self.pinned_message is not None:
+            array['pinned_message'] = self.pinned_message.to_array()  # type Message
         return array
     # end def to_array
 
@@ -325,6 +348,7 @@ class Chat(Peer):
         # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import ChatPhoto
+        from pytgbot.api_types.receivable.updates import Message
         
 
         data = {}
@@ -338,6 +362,7 @@ class Chat(Peer):
         data['photo'] = ChatPhoto.from_array(array.get('photo')) if array.get('photo') is not None else None
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['invite_link'] = u(array.get('invite_link')) if array.get('invite_link') is not None else None
+        data['pinned_message'] = Message.from_array(array.get('pinned_message')) if array.get('pinned_message') is not None else None
         data['_raw'] = array
         return Chat(**data)
     # end def from_array
@@ -346,7 +371,7 @@ class Chat(Peer):
         """
         Implements `str(chat_instance)`
         """
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -356,14 +381,14 @@ class Chat(Peer):
         if self._raw:
             return "Chat.from_array({self._raw})".format(self=self)
         # end if
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in chat_instance`
         """
-        return key in ["id", "type", "title", "username", "first_name", "last_name", "all_members_are_administrators", "photo", "description", "invite_link"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "type", "title", "username", "first_name", "last_name", "all_members_are_administrators", "photo", "description", "invite_link", "pinned_message"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Chat
 

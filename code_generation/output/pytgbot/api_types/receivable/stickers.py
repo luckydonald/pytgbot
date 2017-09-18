@@ -25,7 +25,7 @@ class StickerSet(Result):
     :type  contains_masks: bool
     
     :param stickers: List of all set stickers
-    :type  stickers: list of pytgbot.api_types.receivable.stickers.Sticker
+    :type  stickers: list of pytgbot.api_types.receivable.media.Sticker
     
 
     Optional keyword parameters:
@@ -53,7 +53,7 @@ class StickerSet(Result):
         :type  contains_masks: bool
         
         :param stickers: List of all set stickers
-        :type  stickers: list of pytgbot.api_types.receivable.stickers.Sticker
+        :type  stickers: list of pytgbot.api_types.receivable.media.Sticker
         
     
         Optional keyword parameters:
@@ -62,7 +62,7 @@ class StickerSet(Result):
         :type  _raw: None | dict
         """
         super(StickerSet, self).__init__()
-        from pytgbot.api_types.receivable.stickers import Sticker
+        from pytgbot.api_types.receivable.media import Sticker
         
         assert_type_or_raise(name, unicode_type, parameter_name="name")
         self.name = name
@@ -106,7 +106,7 @@ class StickerSet(Result):
             return None
         # end if
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.stickers import Sticker
+        from pytgbot.api_types.receivable.media import Sticker
         
 
         data = {}

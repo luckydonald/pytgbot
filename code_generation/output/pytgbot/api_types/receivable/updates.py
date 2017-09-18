@@ -37,7 +37,7 @@ class Update(Receivable):
     :param inline_query: Optional. New incoming inline query
     :type  inline_query: pytgbot.api_types.receivable.inline.InlineQuery
     
-    :param chosen_inline_result: Optional. The result of an inline query that was chosen by a user and sent to their chat partner.
+    :param chosen_inline_result: Optional. The result of an inline query that was chosen by a user and sent to their chat partner. Please see our documentation on the feedback collecting for details on how to enable these updates for your bot.
     :type  chosen_inline_result: pytgbot.api_types.receivable.inline.ChosenInlineResult
     
     :param callback_query: Optional. New incoming callback query
@@ -83,7 +83,7 @@ class Update(Receivable):
         :param inline_query: Optional. New incoming inline query
         :type  inline_query: pytgbot.api_types.receivable.inline.InlineQuery
         
-        :param chosen_inline_result: Optional. The result of an inline query that was chosen by a user and sent to their chat partner.
+        :param chosen_inline_result: Optional. The result of an inline query that was chosen by a user and sent to their chat partner. Please see our documentation on the feedback collecting for details on how to enable these updates for your bot.
         :type  chosen_inline_result: pytgbot.api_types.receivable.inline.ChosenInlineResult
         
         :param callback_query: Optional. New incoming callback query
@@ -424,17 +424,20 @@ class Message(UpdateType):
 
     Optional keyword parameters:
     
-    :param from_peer: Optional. Sender, can be empty for messages sent to channels
+    :param from_peer: Optional. Sender, empty for messages sent to channels
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
     :param forward_from: Optional. For forwarded messages, sender of the original message
     :type  forward_from: pytgbot.api_types.receivable.peer.User
     
-    :param forward_from_chat: Optional. For messages forwarded from a channel, information about the original channel
+    :param forward_from_chat: Optional. For messages forwarded from channels, information about the original channel
     :type  forward_from_chat: pytgbot.api_types.receivable.peer.Chat
     
-    :param forward_from_message_id: Optional. For forwarded channel posts, identifier of the original message in the channel
+    :param forward_from_message_id: Optional. For messages forwarded from channels, identifier of the original message in the channel
     :type  forward_from_message_id: int
+    
+    :param forward_signature: Optional. For messages forwarded from channels, signature of the post author if present
+    :type  forward_signature: str|unicode
     
     :param forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
     :type  forward_date: int
@@ -444,6 +447,9 @@ class Message(UpdateType):
     
     :param edit_date: Optional. Date the message was last edited in Unix time
     :type  edit_date: int
+    
+    :param author_signature: Optional. Signature of the post author for messages in channels
+    :type  author_signature: str|unicode
     
     :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
     :type  text: str|unicode
@@ -464,7 +470,7 @@ class Message(UpdateType):
     :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
     
     :param sticker: Optional. Message is a sticker, information about the sticker
-    :type  sticker: pytgbot.api_types.receivable.stickers.Sticker
+    :type  sticker: pytgbot.api_types.receivable.media.Sticker
     
     :param video: Optional. Message is a video, information about the video
     :type  video: pytgbot.api_types.receivable.media.Video
@@ -474,9 +480,6 @@ class Message(UpdateType):
     
     :param video_note: Optional. Message is a video note, information about the video message
     :type  video_note: pytgbot.api_types.receivable.media.VideoNote
-    
-    :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
-    :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
     
     :param caption: Optional. Caption for the document, photo or video, 0-200 characters
     :type  caption: str|unicode
@@ -490,8 +493,8 @@ class Message(UpdateType):
     :param venue: Optional. Message is a venue, information about the venue
     :type  venue: pytgbot.api_types.receivable.media.Venue
     
-    :param new_chat_member: Optional. A new member was added to the group, information about them (this member may be the bot itself)
-    :type  new_chat_member: pytgbot.api_types.receivable.peer.User
+    :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
+    :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
     
     :param left_chat_member: Optional. A member was removed from the group, information about them (this member may be the bot itself)
     :type  left_chat_member: pytgbot.api_types.receivable.peer.User
@@ -533,7 +536,7 @@ class Message(UpdateType):
     :type  _raw: None | dict
     """
 
-    def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_date=None, reply_to_message=None, edit_date=None, text=None, entities=None, audio=None, document=None, game=None, photo=None, sticker=None, video=None, voice=None, video_note=None, new_chat_members=None, caption=None, contact=None, location=None, venue=None, new_chat_member=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, _raw=None):
+    def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_date=None, reply_to_message=None, edit_date=None, author_signature=None, text=None, entities=None, audio=None, document=None, game=None, photo=None, sticker=None, video=None, voice=None, video_note=None, caption=None, contact=None, location=None, venue=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, _raw=None):
         """
         This object represents a message.
     
@@ -554,17 +557,20 @@ class Message(UpdateType):
     
         Optional keyword parameters:
         
-        :param from_peer: Optional. Sender, can be empty for messages sent to channels
+        :param from_peer: Optional. Sender, empty for messages sent to channels
         :type  from_peer: pytgbot.api_types.receivable.peer.User
         
         :param forward_from: Optional. For forwarded messages, sender of the original message
         :type  forward_from: pytgbot.api_types.receivable.peer.User
         
-        :param forward_from_chat: Optional. For messages forwarded from a channel, information about the original channel
+        :param forward_from_chat: Optional. For messages forwarded from channels, information about the original channel
         :type  forward_from_chat: pytgbot.api_types.receivable.peer.Chat
         
-        :param forward_from_message_id: Optional. For forwarded channel posts, identifier of the original message in the channel
+        :param forward_from_message_id: Optional. For messages forwarded from channels, identifier of the original message in the channel
         :type  forward_from_message_id: int
+        
+        :param forward_signature: Optional. For messages forwarded from channels, signature of the post author if present
+        :type  forward_signature: str|unicode
         
         :param forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
         :type  forward_date: int
@@ -574,6 +580,9 @@ class Message(UpdateType):
         
         :param edit_date: Optional. Date the message was last edited in Unix time
         :type  edit_date: int
+        
+        :param author_signature: Optional. Signature of the post author for messages in channels
+        :type  author_signature: str|unicode
         
         :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
         :type  text: str|unicode
@@ -594,7 +603,7 @@ class Message(UpdateType):
         :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
         
         :param sticker: Optional. Message is a sticker, information about the sticker
-        :type  sticker: pytgbot.api_types.receivable.stickers.Sticker
+        :type  sticker: pytgbot.api_types.receivable.media.Sticker
         
         :param video: Optional. Message is a video, information about the video
         :type  video: pytgbot.api_types.receivable.media.Video
@@ -604,9 +613,6 @@ class Message(UpdateType):
         
         :param video_note: Optional. Message is a video note, information about the video message
         :type  video_note: pytgbot.api_types.receivable.media.VideoNote
-        
-        :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
-        :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
         
         :param caption: Optional. Caption for the document, photo or video, 0-200 characters
         :type  caption: str|unicode
@@ -620,8 +626,8 @@ class Message(UpdateType):
         :param venue: Optional. Message is a venue, information about the venue
         :type  venue: pytgbot.api_types.receivable.media.Venue
         
-        :param new_chat_member: Optional. A new member was added to the group, information about them (this member may be the bot itself)
-        :type  new_chat_member: pytgbot.api_types.receivable.peer.User
+        :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
+        :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
         
         :param left_chat_member: Optional. A member was removed from the group, information about them (this member may be the bot itself)
         :type  left_chat_member: pytgbot.api_types.receivable.peer.User
@@ -670,6 +676,7 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PhotoSize
+        from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.media import Venue
         from pytgbot.api_types.receivable.media import Video
         from pytgbot.api_types.receivable.media import VideoNote
@@ -678,7 +685,6 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.payments import SuccessfulPayment
         from pytgbot.api_types.receivable.peer import Chat
         from pytgbot.api_types.receivable.peer import User
-        from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.updates import Message
         
         assert_type_or_raise(message_id, int, parameter_name="message_id")
@@ -702,6 +708,9 @@ class Message(UpdateType):
         assert_type_or_raise(forward_from_message_id, None, int, parameter_name="forward_from_message_id")
         self.forward_from_message_id = forward_from_message_id
         
+        assert_type_or_raise(forward_signature, None, unicode_type, parameter_name="forward_signature")
+        self.forward_signature = forward_signature
+        
         assert_type_or_raise(forward_date, None, int, parameter_name="forward_date")
         self.forward_date = forward_date
         
@@ -710,6 +719,9 @@ class Message(UpdateType):
         
         assert_type_or_raise(edit_date, None, int, parameter_name="edit_date")
         self.edit_date = edit_date
+        
+        assert_type_or_raise(author_signature, None, unicode_type, parameter_name="author_signature")
+        self.author_signature = author_signature
         
         assert_type_or_raise(text, None, unicode_type, parameter_name="text")
         self.text = text
@@ -741,9 +753,6 @@ class Message(UpdateType):
         assert_type_or_raise(video_note, None, VideoNote, parameter_name="video_note")
         self.video_note = video_note
         
-        assert_type_or_raise(new_chat_members, None, list, parameter_name="new_chat_members")
-        self.new_chat_members = new_chat_members
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
@@ -756,8 +765,8 @@ class Message(UpdateType):
         assert_type_or_raise(venue, None, Venue, parameter_name="venue")
         self.venue = venue
         
-        assert_type_or_raise(new_chat_member, None, User, parameter_name="new_chat_member")
-        self.new_chat_member = new_chat_member
+        assert_type_or_raise(new_chat_members, None, list, parameter_name="new_chat_members")
+        self.new_chat_members = new_chat_members
         
         assert_type_or_raise(left_chat_member, None, User, parameter_name="left_chat_member")
         self.left_chat_member = left_chat_member
@@ -817,12 +826,16 @@ class Message(UpdateType):
             array['forward_from_chat'] = self.forward_from_chat.to_array()  # type Chat
         if self.forward_from_message_id is not None:
             array['forward_from_message_id'] = int(self.forward_from_message_id)  # type int
+        if self.forward_signature is not None:
+            array['forward_signature'] = u(self.forward_signature)  # py2: type unicode, py3: type str
         if self.forward_date is not None:
             array['forward_date'] = int(self.forward_date)  # type int
         if self.reply_to_message is not None:
             array['reply_to_message'] = self.reply_to_message.to_array()  # type Message
         if self.edit_date is not None:
             array['edit_date'] = int(self.edit_date)  # type int
+        if self.author_signature is not None:
+            array['author_signature'] = u(self.author_signature)  # py2: type unicode, py3: type str
         if self.text is not None:
             array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.entities is not None:
@@ -843,8 +856,6 @@ class Message(UpdateType):
             array['voice'] = self.voice.to_array()  # type Voice
         if self.video_note is not None:
             array['video_note'] = self.video_note.to_array()  # type VideoNote
-        if self.new_chat_members is not None:
-            array['new_chat_members'] = self._as_array(self.new_chat_members)  # type list of User
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.contact is not None:
@@ -853,8 +864,8 @@ class Message(UpdateType):
             array['location'] = self.location.to_array()  # type Location
         if self.venue is not None:
             array['venue'] = self.venue.to_array()  # type Venue
-        if self.new_chat_member is not None:
-            array['new_chat_member'] = self.new_chat_member.to_array()  # type User
+        if self.new_chat_members is not None:
+            array['new_chat_members'] = self._as_array(self.new_chat_members)  # type list of User
         if self.left_chat_member is not None:
             array['left_chat_member'] = self.left_chat_member.to_array()  # type User
         if self.new_chat_title is not None:
@@ -901,6 +912,7 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PhotoSize
+        from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.media import Venue
         from pytgbot.api_types.receivable.media import Video
         from pytgbot.api_types.receivable.media import VideoNote
@@ -909,7 +921,6 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.payments import SuccessfulPayment
         from pytgbot.api_types.receivable.peer import Chat
         from pytgbot.api_types.receivable.peer import User
-        from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.updates import Message
         
 
@@ -921,9 +932,11 @@ class Message(UpdateType):
         data['forward_from'] = User.from_array(array.get('forward_from')) if array.get('forward_from') is not None else None
         data['forward_from_chat'] = Chat.from_array(array.get('forward_from_chat')) if array.get('forward_from_chat') is not None else None
         data['forward_from_message_id'] = int(array.get('forward_from_message_id')) if array.get('forward_from_message_id') is not None else None
+        data['forward_signature'] = u(array.get('forward_signature')) if array.get('forward_signature') is not None else None
         data['forward_date'] = int(array.get('forward_date')) if array.get('forward_date') is not None else None
         data['reply_to_message'] = Message.from_array(array.get('reply_to_message')) if array.get('reply_to_message') is not None else None
         data['edit_date'] = int(array.get('edit_date')) if array.get('edit_date') is not None else None
+        data['author_signature'] = u(array.get('author_signature')) if array.get('author_signature') is not None else None
         data['text'] = u(array.get('text')) if array.get('text') is not None else None
         data['entities'] = MessageEntity.from_array_list(array.get('entities'), list_level=1) if array.get('entities') is not None else None
         data['audio'] = Audio.from_array(array.get('audio')) if array.get('audio') is not None else None
@@ -934,12 +947,11 @@ class Message(UpdateType):
         data['video'] = Video.from_array(array.get('video')) if array.get('video') is not None else None
         data['voice'] = Voice.from_array(array.get('voice')) if array.get('voice') is not None else None
         data['video_note'] = VideoNote.from_array(array.get('video_note')) if array.get('video_note') is not None else None
-        data['new_chat_members'] = User.from_array_list(array.get('new_chat_members'), list_level=1) if array.get('new_chat_members') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['contact'] = Contact.from_array(array.get('contact')) if array.get('contact') is not None else None
         data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
         data['venue'] = Venue.from_array(array.get('venue')) if array.get('venue') is not None else None
-        data['new_chat_member'] = User.from_array(array.get('new_chat_member')) if array.get('new_chat_member') is not None else None
+        data['new_chat_members'] = User.from_array_list(array.get('new_chat_members'), list_level=1) if array.get('new_chat_members') is not None else None
         data['left_chat_member'] = User.from_array(array.get('left_chat_member')) if array.get('left_chat_member') is not None else None
         data['new_chat_title'] = u(array.get('new_chat_title')) if array.get('new_chat_title') is not None else None
         data['new_chat_photo'] = PhotoSize.from_array_list(array.get('new_chat_photo'), list_level=1) if array.get('new_chat_photo') is not None else None
@@ -960,7 +972,7 @@ class Message(UpdateType):
         """
         Implements `str(message_instance)`
         """
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, text={self.text!r}, entities={self.entities!r}, audio={self.audio!r}, document={self.document!r}, game={self.game!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, video_note={self.video_note!r}, new_chat_members={self.new_chat_members!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, new_chat_member={self.new_chat_member!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, audio={self.audio!r}, document={self.document!r}, game={self.game!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, video_note={self.video_note!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -970,14 +982,14 @@ class Message(UpdateType):
         if self._raw:
             return "Message.from_array({self._raw})".format(self=self)
         # end if
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, text={self.text!r}, entities={self.entities!r}, audio={self.audio!r}, document={self.document!r}, game={self.game!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, video_note={self.video_note!r}, new_chat_members={self.new_chat_members!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, new_chat_member={self.new_chat_member!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, audio={self.audio!r}, document={self.document!r}, game={self.game!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, video_note={self.video_note!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in message_instance`
         """
-        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_date", "reply_to_message", "edit_date", "text", "entities", "audio", "document", "game", "photo", "sticker", "video", "voice", "video_note", "new_chat_members", "caption", "contact", "location", "venue", "new_chat_member", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment"] and hasattr(self, key) and getattr(self, key)
+        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_date", "reply_to_message", "edit_date", "author_signature", "text", "entities", "audio", "document", "game", "photo", "sticker", "video", "voice", "video_note", "caption", "contact", "location", "venue", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Message
 
