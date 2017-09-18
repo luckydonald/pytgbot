@@ -395,7 +395,7 @@ class CLI(object):
             file_name = file_name + ".png"
         # end if
         save_file_name = str(file.file_id) + "__" + file_name
-        return "[{type} {file_id}]{color_red}{caption}{color_off}\n{image}\n{file_name}".format(
+        return "[{type} {file_id}]\n{image}{color_red}{caption}{color_off}".format(
             file_id=file.file_id, caption=(" " + caption if caption else ""),
             image=iterm_show_file(save_file_name, data=file_content, inline=inline, height=height),
             type=file_type, file_name=save_file_name, **self.color.formatter
