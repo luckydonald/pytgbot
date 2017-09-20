@@ -1,6 +1,7 @@
 # Changelog
 ## Version 3.3.1 __Not released yet__
 - Removed doubled `WebhookInfo` classes at two different places. They are now the same.
+- Fixed importing `Message` in `pytgbot.api_types.receivable.peer.Chat`.
 
 ## Version 3.3.0
 - Updated Official API changes of [`Bot API 3`.`3` (August 23, 2017)](https://core.telegram.org/bots/api-changelog#august-23-2017)

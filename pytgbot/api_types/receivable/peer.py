@@ -271,7 +271,8 @@ class Chat(Peer):
         :type  _raw: None | dict
         """
         super(Chat, self).__init__()
-        from pytgbot.api_types.receivable.media import ChatPhoto
+        from .media import ChatPhoto
+        from .updates import Message
 
         assert_type_or_raise(id, int, parameter_name="id")
         self.id = id
@@ -352,7 +353,8 @@ class Chat(Peer):
             return None
         # end if
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import ChatPhoto
+        from .media import ChatPhoto
+        from .updates import Message
 
         data = {}
         data['id'] = int(array.get('id'))
