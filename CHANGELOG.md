@@ -1,4 +1,7 @@
 # Changelog
+## Version 3.3.1 __Not released yet__
+- Removed doubled `WebhookInfo` classes at two different places. They are now the same.
+
 ## Version 3.3.0
 - Updated Official API changes of [`Bot API 3`.`3` (August 23, 2017)](https://core.telegram.org/bots/api-changelog#august-23-2017)
     - Added new fields:
@@ -13,6 +16,7 @@
 ## Version 3.2.0 __Not released__ `8eb2ff860af4ce6e44d3fcf5c012d8a070e046ee`
 - Updated Official API changes of [`Bot API 3`.`2` (July 21, 2017)](https://core.telegram.org/bots/api-changelog#july-21-2017)
     - Stickers'n'stuff
+
 ## Version 3.1.1 __Not released__ `6654e962ce42e305be138efa90f9262098bf2b7d`
 - fixed `send_video_note`, `send_video`, `send_voice`, `set_chat_photo` of `pytgbot.bot.Bot`.
 
