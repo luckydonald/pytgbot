@@ -1,5 +1,5 @@
 # Changelog
-## Version 3.3.1 __Not released yet__
+## Version 3.3.1
 - Removed doubled `WebhookInfo` classes at two different places. They are now the same.
 - Fixed importing `Message` in `pytgbot.api_types.receivable.peer.Chat`.
 
