@@ -346,7 +346,9 @@ class Import(dict):
     # end def
 
     def __hash__(self):
-        return hash(self.path + self.name)
+        path = self.path if self.path else "%$none"
+        name = self.name if self.name else "%$none"
+        return hash(path + name)
     # end def __hash__
 
     """

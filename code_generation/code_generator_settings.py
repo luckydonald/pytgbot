@@ -67,6 +67,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
 
     # pytgbot.api_types.sendable.*
     "Sendable":                     ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
+
     # pytgbot.api_types.sendable.files.*
     "InputFile":                    ("pytgbot.api_types.sendable.files.", "TgBotApiObject", None),
     "InputFileFromDisk":            ("pytgbot.api_types.sendable.files.", "InputFile", None),
@@ -106,6 +107,11 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InlineQueryResultCachedVenue":       ("pytgbot.api_types.sendable.inline.", "InlineQueryCachedResult", None),
     "InlineQueryResultCachedContact":     ("pytgbot.api_types.sendable.inline.", "InlineQueryCachedResult", None),
 
+    # pytgbot.api_types.sendable.input_media.*
+    "InputMedia":                   ("pytgbot.api_types.sendable.input_media.", "TgBotApiObject", None),
+    "InputMediaPhoto":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
+    "InputMediaVideo":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
+
     # pytgbot.api_types.sendable.reply_markup.*
     "Button":               ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
     "ReplyMarkup":          ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
@@ -122,14 +128,23 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
 
 }
 
-WHITELISTED_FUNCS = [  # Array with names of functions which have no parameters table and thus wouldn't be detected.
-    "getMe",
-    "getWebhookInfo",
-    "deleteWebhook",
-]
+WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters table and thus wouldn't be detected.
+    # "func": {'return': {'expected': '', 'replace': ''}, 'r_type': {'expected': '', 'replace': ''}},
+    "getMe":                 {'return': {'expected': '', 'replace': 'Returns basic information about the bot in form of a User object'}, 'r_type': {'expected': '', 'replace': 'User'}},
+    "deleteWebhook":         {'return': {'expected': '', 'replace': 'Returns True on success'}, 'r_type': {'expected': '', 'replace': 'True'}},
+    "getWebhookInfo":        {'return': {'expected': 'On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty', 'replace': 'On success, returns a WebhookInfo object'}, 'r_type': {'expected': 'WebhookInfo or getUpdates or url', 'replace': 'WebhookInfo'}},
+    "kickChatMember":        {'return': {'expected': 'In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
+    "unbanChatMember":       {'return': {'expected': 'The user will not return to the group or channel automatically, but will be able to join via link, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
+    "getChatAdministrators": {'return': {'expected': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned', 'replace': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots'}, 'r_type': {'expected': 'list of ChatMember', 'replace': 'list of ChatMember'}},
+    "setChatStickerSet":     {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
+    "deleteChatStickerSet":  {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
+    "setGameScore":          {'return': {'expected': "On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False", 'replace': 'On success, if the message was sent by the bot, returns the edited Message, otherwise returns True'}, 'r_type': {'expected': 'Message or True or force or False', 'replace': 'Message or True'}},
+    "getGameHighScores":     {'return': {'expected': 'This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.', 'replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
+}
 WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters table and thus wouldn't be detected.
     "CallbackGame",
     "InlineQueryResult",
+    "InputMedia",
 ]
 
 """

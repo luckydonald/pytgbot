@@ -157,7 +157,7 @@ def load_from_api(folder):
                         # end if
                     # end for
                     if return_text__ or returns__:  # finally set it.
-                        default_returns = (". ".join(return_text__).strip(), " or ".join(returns__).strip())
+                        default_returns = [". ".join(return_text__).strip(), " or ".join(returns__).strip()]
                     # end if
                 # end if
                 descr.append(sibling.text)
@@ -198,14 +198,34 @@ def load_from_api(folder):
                     default_returns[1] = " or ".join(type_strings) if type_strings else "Message"
                     default_returns[1] = as_types(default_returns[1], "returns")
                 else:
-                    default_returns = ("On success, True is returned", "True")
+                    default_returns = ["On success, True is returned", "True"]
                 # end if "return" in description
             else:
                 seems_valid = len(default_returns[0].split(".")) == 1
             # end if default set
-            if not seems_valid:
-                returns       = answer("Textual description what the function returns", default_returns[0])
-                return_type   = answer("Return type", default_returns[1])
+            replaced_valid = None  # load replacements from WHITELISTED_FUNCS.
+            if title in WHITELISTED_FUNCS:
+                # "func": {'return': {'expected': '', 'replace': ''}, 'rtype': {'expected': '', 'replace': ''}},
+                wlist_func = WHITELISTED_FUNCS[title]
+                wlist_func_return = wlist_func['return'] if 'return' in wlist_func else None
+                wlist_func_r_type = wlist_func['r_type'] if 'r_type' in wlist_func else None
+                if wlist_func_return and default_returns[0] != wlist_func_return['expected']:
+                    print("whitelist: Mismatch in return. Expected " + repr(wlist_func_return['expected']) + '.')
+                    replaced_valid = False
+                if wlist_func_r_type and default_returns[1] != wlist_func_r_type['expected']:
+                    print("whitelist: Mismatch in r_type. Expected " + repr(wlist_func_r_type['expected']) + '.')
+                    replaced_valid = False
+                if replaced_valid is None:  # whitelist didn't fail
+                    replaced_valid = True
+                    print("the found return: " + repr(default_returns[0]) + '.')
+                    print("the found r_type: " + repr(default_returns[1]) + '.')
+                    print("whitelist return: " + repr(wlist_func_return['replace']) + '.')
+                    print("whitelist r_type: " + repr(wlist_func_r_type['replace']) + '.')
+                    default_returns[0] = wlist_func_return['replace']
+                    default_returns[1] = wlist_func_r_type['replace']
+            if not seems_valid and not replaced_valid:
+                returns     = answer("Textual description what the function returns", default_returns[0])
+                return_type = answer("Return type", default_returns[1])
                 if isinstance(return_type, str):
                     return_type = as_types(return_type, "return type")
                 # end if
