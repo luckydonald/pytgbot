@@ -1,12 +1,12 @@
-# pytgbot - Telegram Bot API [`3`.`3`](https://core.telegram.org/bots/api)
-### Version [3.3.1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
+# pytgbot - Telegram Bot API [`3`.`5`](https://core.telegram.org/bots/api)
+### Version [3.5.0 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
 ###### Python module to access the telegram bot api.
 
 Native python package witch pure Python interface for the [Telegram Bot API](https://core.telegram.org/bots).
 > The code is generated directly from the API documentation, meaning up-to-date code is a matter of minutes.
 
 #### Recent changes:
- - Updated Official API changes of [`Bot API 3`.`3` (August 23, 2017)](https://core.telegram.org/bots/api-changelog#august-23-2017
+ - Updated official API changes of [`Bot API 3`.`5` (November 17, 2017)](https://core.telegram.org/bots/api-changelog#november-17-2017) and [`Bot API 3`.`4` (October 11, 2017)](https://core.telegram.org/bots/api-changelog#october-11-2017)
  - [Older changes...](CHANGELOG.md)
 
 #### Installation  ####
