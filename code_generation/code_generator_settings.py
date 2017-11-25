@@ -108,7 +108,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InlineQueryResultCachedContact":     ("pytgbot.api_types.sendable.inline.", "InlineQueryCachedResult", None),
 
     # pytgbot.api_types.sendable.input_media.*
-    "InputMedia":                   ("pytgbot.api_types.sendable.input_media.", "TgBotApiObject", None),
+    "InputMedia":                   ("pytgbot.api_types.sendable.input_media.", "Sendable", None),
     "InputMediaPhoto":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
     "InputMediaVideo":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
 
