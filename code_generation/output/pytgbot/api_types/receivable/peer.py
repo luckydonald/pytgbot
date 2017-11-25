@@ -212,11 +212,17 @@ class Chat(Peer):
     :param pinned_message: Optional. Pinned message, for supergroups. Returned only in getChat.
     :type  pinned_message: pytgbot.api_types.receivable.updates.Message
     
+    :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
+    :type  sticker_set_name: str|unicode
+    
+    :param can_set_sticker_set: Optional. True, if the bot can change the group sticker set. Returned only in getChat.
+    :type  can_set_sticker_set: bool
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, all_members_are_administrators=None, photo=None, description=None, invite_link=None, pinned_message=None, _raw=None):
+    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, all_members_are_administrators=None, photo=None, description=None, invite_link=None, pinned_message=None, sticker_set_name=None, can_set_sticker_set=None, _raw=None):
         """
         This object represents a chat.
     
@@ -261,6 +267,12 @@ class Chat(Peer):
         :param pinned_message: Optional. Pinned message, for supergroups. Returned only in getChat.
         :type  pinned_message: pytgbot.api_types.receivable.updates.Message
         
+        :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
+        :type  sticker_set_name: str|unicode
+        
+        :param can_set_sticker_set: Optional. True, if the bot can change the group sticker set. Returned only in getChat.
+        :type  can_set_sticker_set: bool
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -300,6 +312,12 @@ class Chat(Peer):
         
         assert_type_or_raise(pinned_message, None, Message, parameter_name="pinned_message")
         self.pinned_message = pinned_message
+        
+        assert_type_or_raise(sticker_set_name, None, unicode_type, parameter_name="sticker_set_name")
+        self.sticker_set_name = sticker_set_name
+        
+        assert_type_or_raise(can_set_sticker_set, None, bool, parameter_name="can_set_sticker_set")
+        self.can_set_sticker_set = can_set_sticker_set
 
         self._raw = _raw
     # end def __init__
@@ -332,6 +350,10 @@ class Chat(Peer):
             array['invite_link'] = u(self.invite_link)  # py2: type unicode, py3: type str
         if self.pinned_message is not None:
             array['pinned_message'] = self.pinned_message.to_array()  # type Message
+        if self.sticker_set_name is not None:
+            array['sticker_set_name'] = u(self.sticker_set_name)  # py2: type unicode, py3: type str
+        if self.can_set_sticker_set is not None:
+            array['can_set_sticker_set'] = bool(self.can_set_sticker_set)  # type bool
         return array
     # end def to_array
 
@@ -363,6 +385,8 @@ class Chat(Peer):
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['invite_link'] = u(array.get('invite_link')) if array.get('invite_link') is not None else None
         data['pinned_message'] = Message.from_array(array.get('pinned_message')) if array.get('pinned_message') is not None else None
+        data['sticker_set_name'] = u(array.get('sticker_set_name')) if array.get('sticker_set_name') is not None else None
+        data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
         data['_raw'] = array
         return Chat(**data)
     # end def from_array
@@ -371,7 +395,7 @@ class Chat(Peer):
         """
         Implements `str(chat_instance)`
         """
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -381,14 +405,14 @@ class Chat(Peer):
         if self._raw:
             return "Chat.from_array({self._raw})".format(self=self)
         # end if
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in chat_instance`
         """
-        return key in ["id", "type", "title", "username", "first_name", "last_name", "all_members_are_administrators", "photo", "description", "invite_link", "pinned_message"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "type", "title", "username", "first_name", "last_name", "all_members_are_administrators", "photo", "description", "invite_link", "pinned_message", "sticker_set_name", "can_set_sticker_set"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Chat
 
@@ -424,7 +448,7 @@ class ChatMember(Result):
     :param can_post_messages: Optional. Administrators only. True, if the administrator can post in the channel, channels only
     :type  can_post_messages: bool
     
-    :param can_edit_messages: Optional. Administrators only. True, if the administrator can edit messages of other users, channels only
+    :param can_edit_messages: Optional. Administrators only. True, if the administrator can edit messages of other users and can pin messages, channels only
     :type  can_edit_messages: bool
     
     :param can_delete_messages: Optional. Administrators only. True, if the administrator can delete messages of other users
@@ -488,7 +512,7 @@ class ChatMember(Result):
         :param can_post_messages: Optional. Administrators only. True, if the administrator can post in the channel, channels only
         :type  can_post_messages: bool
         
-        :param can_edit_messages: Optional. Administrators only. True, if the administrator can edit messages of other users, channels only
+        :param can_edit_messages: Optional. Administrators only. True, if the administrator can edit messages of other users and can pin messages, channels only
         :type  can_edit_messages: bool
         
         :param can_delete_messages: Optional. Administrators only. True, if the administrator can delete messages of other users

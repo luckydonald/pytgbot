@@ -986,8 +986,55 @@ class Bot(object):
         return result
     # end def send_video_note
 
-    def send_location(self, chat_id, latitude, longitude, disable_notification=False, reply_to_message_id=None,
-                      reply_markup=None):
+    def send_media_group(self, chat_id, media, disable_notification=None, reply_to_message_id=None):
+        """
+        Use this method to send a group of photos or videos as an album. On success, an array of the sent Messages is returned.
+
+        https://core.telegram.org/bots/api#sendmediagroup
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param media: A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
+        :type  media: list of pytgbot.api_types.sendable.input_media.InputMedia
+
+
+        Optional keyword parameters:
+
+        :param disable_notification: Sends the messages silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
+
+        :param reply_to_message_id: If the messages are a reply, ID of the original message
+        :type  reply_to_message_id: int
+
+        Returns:
+
+        :return: On success, an array of the sent Messages is returned
+        :rtype:  Messages
+        """
+        from .api_types.sendable.input_media import InputMedia
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+
+        assert_type_or_raise(media, list, parameter_name="media")
+
+        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+
+        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
+
+        result = self.do("sendMediaGroup", chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def send_media_group
+
+    def send_location(self, chat_id, latitude, longitude,  live_period=None, disable_notification=False,
+                      reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send point on the map. On success, the sent Message is returned.
 
@@ -1000,14 +1047,17 @@ class Bot(object):
                          @channelusername)
         :type  chat_id: int | str|unicode
 
-        :param latitude: Latitude of location
+        :param latitude: Latitude of the location
         :type  latitude: float
 
-        :param longitude: Longitude of location
+        :param longitude: Longitude of the location
         :type  longitude: float
 
 
         Optional keyword parameters:
+
+        :param live_period: Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
+        :type  live_period: int
 
         :param disable_notification: Sends the message silently. iOS users will not receive a notification,
                                        Android users will receive a notification with no sound
@@ -1037,6 +1087,8 @@ class Bot(object):
 
         assert_type_or_raise(longitude, float, parameter_name="longitude")
 
+        assert_type_or_raise(live_period, None, int, parameter_name="live_period")
+
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
 
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
@@ -1044,8 +1096,8 @@ class Bot(object):
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
 
         result = self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude,
-                       disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
-                       reply_markup=reply_markup)
+                         live_period=live_period, disable_notification=disable_notification,
+                         reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1059,6 +1111,132 @@ class Bot(object):
         # end if return_python_objects
         return result
     # end def send_location
+
+    def edit_message_live_location(self, latitude, longitude, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+        """
+        Use this method to edit live location messages sent by the bot or via the bot (for inline bots). A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#editmessagelivelocation
+
+
+        Parameters:
+
+        :param latitude: Latitude of new location
+        :type  latitude: float
+
+        :param longitude: Longitude of new location
+        :type  longitude: float
+
+
+        Optional keyword parameters:
+
+        :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :type  message_id: int
+
+        :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type  inline_message_id: str|unicode
+
+        :param reply_markup: A JSON-serialized object for a new inline keyboard.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+
+        Returns:
+
+        :return: On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        assert_type_or_raise(latitude, float, parameter_name="latitude")
+
+        assert_type_or_raise(longitude, float, parameter_name="longitude")
+
+        assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
+
+        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
+
+        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
+
+        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
+
+        result = self.do("editMessageLiveLocation", latitude=latitude, longitude=longitude, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def edit_message_live_location
+
+    def stop_message_live_location(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+        """
+        Use this method to stop updating a live location message sent by the bot or via the bot (for inline bots) before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#stopmessagelivelocation
+
+
+        Optional keyword parameters:
+
+        :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :type  message_id: int
+
+        :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type  inline_message_id: str|unicode
+
+        :param reply_markup: A JSON-serialized object for a new inline keyboard.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+
+        Returns:
+
+        :return: On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
+
+        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
+
+        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
+
+        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
+
+        result = self.do("stopMessageLiveLocation", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def stop_message_live_location
 
     def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, disable_notification=False,
                    reply_to_message_id=None, reply_markup=None):
@@ -1561,7 +1739,7 @@ class Bot(object):
         :param can_post_messages: Pass True, if the administrator can create channel posts, channels only
         :type  can_post_messages: bool
         
-        :param can_edit_messages: Pass True, if the administrator can edit messages of other users, channels only
+        :param can_edit_messages: Pass True, if the administrator can edit messages of other users and can pin messages, channels only
         :type  can_edit_messages: bool
         
         :param can_delete_messages: Pass True, if the administrator can delete messages of other users
@@ -1815,14 +1993,17 @@ class Bot(object):
 
     def pin_chat_message(self, chat_id, message_id, disable_notification=None):
         """
-        Use this method to pin a message in a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        Use this method to pin a message in a supergroup or a channel.
+        The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right
+        in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
+
 
         https://core.telegram.org/bots/api#pinchatmessage
 
         
         Parameters:
         
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup/cannel (in the format @username)
         :type  chat_id: int | str|unicode
         
         :param message_id: Identifier of a message to pin
@@ -1831,7 +2012,7 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :param disable_notification: Pass True, if it is not necessary to send a notification to all group members about the new pinned message
+        :param disable_notification: Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels.
         :type  disable_notification: bool
         
         Returns:
@@ -1861,14 +2042,16 @@ class Bot(object):
 
     def unpin_chat_message(self, chat_id):
         """
-        Use this method to unpin a message in a supergroup chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        Use this method to unpin a message in a supergroup or a channel.
+        The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right
+        in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
 
         https://core.telegram.org/bots/api#unpinchatmessage
 
         
         Parameters:
         
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup/channel (in the format @username)
         :type  chat_id: int | str|unicode
         
         
@@ -2083,6 +2266,79 @@ class Bot(object):
         # end if return_python_objects
         return result
     # end def get_chat_member
+
+    def set_chat_sticker_set(self, chat_id, sticker_set_name):
+        """
+        Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatstickerset
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id: int | str|unicode
+
+        :param sticker_set_name: Name of the sticker set to be set as the group sticker set
+        :type  sticker_set_name: str|unicode
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+
+        assert_type_or_raise(sticker_set_name, unicode_type, parameter_name="sticker_set_name")
+
+        result = self.do("setChatStickerSet", chat_id=chat_id, sticker_set_name=sticker_set_name)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_chat_sticker_set
+
+    def delete_chat_sticker_set(self, chat_id):
+        """
+        Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
+
+        https://core.telegram.org/bots/api#deletechatstickerset
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id: int | str|unicode
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+
+        result = self.do("deleteChatStickerSet", chat_id=chat_id)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def delete_chat_sticker_set
 
     def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
         """
@@ -2864,7 +3120,10 @@ class Bot(object):
         return result
     # end def answer_inline_query
 
-    def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices,
+                     provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None,
+                     need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None,
+                     is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send invoices. On success, the sent Message is returned.
 
@@ -2899,6 +3158,9 @@ class Bot(object):
         
         
         Optional keyword parameters:
+
+        :param provider_data: JSON-encoded data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
+        :type  provider_data: str|unicode
         
         :param photo_url: URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
         :type  photo_url: str|unicode
@@ -2960,6 +3222,8 @@ class Bot(object):
 
         assert_type_or_raise(prices, list, parameter_name="prices")
 
+        assert_type_or_raise(provider_data, None, unicode_type, parameter_name="provider_data")
+
         assert_type_or_raise(photo_url, None, unicode_type, parameter_name="photo_url")
 
         assert_type_or_raise(photo_size, None, int, parameter_name="photo_size")
@@ -2984,7 +3248,14 @@ class Bot(object):
 
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
 
-        result = self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload,
+                         provider_token=provider_token, start_parameter=start_parameter, currency=currency,
+                         prices=prices, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size,
+                         photo_width=photo_width, photo_height=photo_height, need_name=need_name,
+                         need_phone_number=need_phone_number, need_email=need_email,
+                         need_shipping_address=need_shipping_address, is_flexible=is_flexible,
+                         disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+                         reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message

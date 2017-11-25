@@ -1700,6 +1700,9 @@ class InlineQueryResultLocation(InlineQueryResult):
     
 
     Optional keyword parameters:
+
+    :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
+    :type  live_period: int
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -1716,7 +1719,7 @@ class InlineQueryResultLocation(InlineQueryResult):
     :param thumb_height: Optional. Thumbnail height
     :type  thumb_height: int
     """
-    def __init__(self, id, latitude, longitude, title, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, id, latitude, longitude, title, live_period=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -1740,6 +1743,9 @@ class InlineQueryResultLocation(InlineQueryResult):
 
 
         Optional keyword parameters:
+
+        :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
+        :type  live_period: int
 
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -1772,6 +1778,9 @@ class InlineQueryResultLocation(InlineQueryResult):
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
 
+        assert_type_or_raise(live_period, None, int, parameter_name="live_period")
+        self.live_period = live_period
+
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
 
@@ -1800,6 +1809,8 @@ class InlineQueryResultLocation(InlineQueryResult):
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        if self.live_period is not None:
+            array['live_period'] = int(self.live_period)  # type int
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -1834,6 +1845,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
         data['title'] = u(array.get('title'))
+        data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
@@ -1849,7 +1861,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         Implements `str(inlinequeryresultlocation_instance)`
         """
-        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, live_period={self.live_period!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1859,14 +1871,14 @@ class InlineQueryResultLocation(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultLocation.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, live_period={self.live_period!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultlocation_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "latitude", "longitude", "title", "reply_markup", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultLocation
 
@@ -3833,9 +3845,14 @@ class InputLocationMessageContent(InputMessageContent):
     
     :param longitude: Longitude of the location in degrees
     :type  longitude: float
+
+    Optional keyword parameters:
+
+    :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
+    :type  live_period: int
     """
 
-    def __init__(self, latitude, longitude):
+    def __init__(self, latitude, longitude, live_period=None):
         """
         Represents the content of a location message to be sent as the result of an inline query.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -3850,6 +3867,11 @@ class InputLocationMessageContent(InputMessageContent):
 
         :param longitude: Longitude of the location in degrees
         :type  longitude: float
+
+        Optional keyword parameters:
+
+        :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
+        :type  live_period: int
         """
         super(InputLocationMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
@@ -3857,6 +3879,9 @@ class InputLocationMessageContent(InputMessageContent):
 
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
+
+        assert_type_or_raise(live_period, None, int, parameter_name="live_period")
+        self.live_period = live_period
     # end def __init__
 
     def to_array(self):
@@ -3869,6 +3894,8 @@ class InputLocationMessageContent(InputMessageContent):
         array = super(InputLocationMessageContent, self).to_array()
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
+        if self.live_period is not None:
+            array['live_period'] = int(self.live_period)  # type int
         return array
     # end def to_array
 
@@ -3888,6 +3915,7 @@ class InputLocationMessageContent(InputMessageContent):
         data = {}
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
+        data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
 
         instance = InputLocationMessageContent(**data)
         instance._raw = array
@@ -3898,7 +3926,7 @@ class InputLocationMessageContent(InputMessageContent):
         """
         Implements `str(inputlocationmessagecontent_instance)`
         """
-        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r})".format(self=self)
+        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, live_period={self.live_period!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -3908,14 +3936,14 @@ class InputLocationMessageContent(InputMessageContent):
         if self._raw:
             return "InputLocationMessageContent.from_array({self._raw})".format(self=self)
         # end if
-        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r})".format(self=self)
+        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, live_period={self.live_period!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in inputlocationmessagecontent_instance`
         """
-        return key in ["latitude", "longitude"] and hasattr(self, key) and getattr(self, key)
+        return key in ["latitude", "longitude", "live_period"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputLocationMessageContent
 

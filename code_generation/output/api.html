@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Telegram Bot API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="description" content="The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.
+To learn how to create…">
     <meta property="og:title" content="Telegram Bot API">
     <meta property="og:image" content="">
     <meta property="og:description" content="The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.
@@ -12,7 +14,7 @@ To learn how to create…">
 
     <link href="/css/bootstrap.min.css?2" rel="stylesheet">
     
-    <link href="/css/telegram.css?125" rel="stylesheet" media="screen">
+    <link href="/css/telegram.css?127" rel="stylesheet" media="screen">
     <style>
     </style>
   </head>
@@ -45,6 +47,21 @@ To learn how to create…">
 <p>The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.<br>To learn how to create and set up a bot, please consult our <a href="https://core.telegram.org/bots"><strong>Introduction to Bots</strong></a> and <a href="/bots/faq"><strong>Bot FAQ</strong></a>.</p>
 </blockquote>
 <h3><a class="anchor" name="recent-changes" href="#recent-changes"><i class="anchor-icon"></i></a>Recent changes</h3>
+<h4><a class="anchor" name="november-17-2017" href="#november-17-2017"><i class="anchor-icon"></i></a>November 17, 2017</h4>
+<p><strong>Bot API 3.5</strong>.</p>
+<ul>
+<li>Added the new method <a href="#sendmediagroup">sendMediaGroup</a> and two kinds of <a href="#inputmedia">InputMedia</a> objects to support the new <a href="https://telegram.org/blog/albums-saved-messages">albums feature</a>.</li>
+<li>Added support for pinning messages in channels. <a href="#pinchatmessage">pinChatMessage</a> and <a href="#unpinchatmessage">unpinChatMessage</a> accept channels.</li>
+<li>Added the new field <em>provider_data</em> to <a href="#sendinvoice">sendInvoice</a> for sharing information about the invoice with the payment provider.</li>
+</ul>
+<h4><a class="anchor" name="october-11-2017" href="#october-11-2017"><i class="anchor-icon"></i></a>October 11, 2017</h4>
+<p><strong>Bot API 3.4</strong>.</p>
+<ul>
+<li>Bots can now send and receive <a href="https://telegram.org/blog/live-locations">Live Locations</a>. Added new field <em>live_period</em> to the <a href="#sendlocation">sendLocation</a> method and the <a href="#editmessagelivelocation">editMessageLiveLocation</a> and <a href="#stopmessagelivelocation">stopMessageLiveLocation</a> methods as well as the necessary objects for inline bots.</li>
+<li>Bots can use the new <a href="#setchatstickerset">setChatStickerSet</a> and <a href="#deletechatstickerset">deleteChatStickerSet</a> methods to manage <a href="https://telegram.org/blog#stickers-of-the-group">group sticker sets</a>.</li>
+<li>The <a href="#getchat">getChat</a> request now returns the group&#39;s sticker set for supergroups if available.</li>
+<li>Bots now receive entities from media captions in the new field <em>caption_entities</em> in <a href="#message">Message</a>.</li>
+</ul>
 <h4><a class="anchor" name="august-23-2017" href="#august-23-2017"><i class="anchor-icon"></i></a>August 23, 2017</h4>
 <p><strong>Bot API 3.3</strong>.</p>
 <ul>
@@ -378,22 +395,32 @@ To learn how to create…">
 <tr>
 <td>photo</td>
 <td><a href="#chatphoto">ChatPhoto</a></td>
-<td><em>Optional</em>. Chat photo. Returned only in getChat.</td>
+<td><em>Optional</em>. Chat photo. Returned only in <a href="#getchat">getChat</a>.</td>
 </tr>
 <tr>
 <td>description</td>
 <td>String</td>
-<td><em>Optional</em>. Description, for supergroups and channel chats. Returned only in getChat.</td>
+<td><em>Optional</em>. Description, for supergroups and channel chats. Returned only in <a href="#getchat">getChat</a>.</td>
 </tr>
 <tr>
 <td>invite_link</td>
 <td>String</td>
-<td><em>Optional</em>. Chat invite link, for supergroups and channel chats. Returned only in getChat.</td>
+<td><em>Optional</em>. Chat invite link, for supergroups and channel chats. Returned only in <a href="#getchat">getChat</a>.</td>
 </tr>
 <tr>
 <td>pinned_message</td>
-<td><a href="Message">Message</a></td>
-<td><em>Optional</em>. Pinned message, for supergroups. Returned only in getChat.</td>
+<td><a href="#message">Message</a></td>
+<td><em>Optional</em>. Pinned message, for supergroups. Returned only in <a href="#getchat">getChat</a>.</td>
+</tr>
+<tr>
+<td>sticker_set_name</td>
+<td>String</td>
+<td><em>Optional</em>. For supergroups, name of group sticker set. Returned only in <a href="#getchat">getChat</a>.</td>
+</tr>
+<tr>
+<td>can_set_sticker_set</td>
+<td>Boolean</td>
+<td><em>Optional</em>. True, if the bot can change the group sticker set. Returned only in <a href="#getchat">getChat</a>.</td>
 </tr>
 </tbody>
 </table>
@@ -462,6 +489,11 @@ To learn how to create…">
 <td><em>Optional</em>. Date the message was last edited in Unix time</td>
 </tr>
 <tr>
+<td>media_group_id</td>
+<td>String</td>
+<td><em>Optional</em>. The unique identifier of a media message group this message belongs to</td>
+</tr>
+<tr>
 <td>author_signature</td>
 <td>String</td>
 <td><em>Optional</em>. Signature of the post author for messages in channels</td>
@@ -475,6 +507,11 @@ To learn how to create…">
 <td>entities</td>
 <td>Array of <a href="#messageentity">MessageEntity</a></td>
 <td><em>Optional</em>. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text</td>
+</tr>
+<tr>
+<td>caption_entities</td>
+<td>Array of <a href="#messageentity">MessageEntity</a></td>
+<td><em>Optional</em>. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption</td>
 </tr>
 <tr>
 <td>audio</td>
@@ -519,7 +556,7 @@ To learn how to create…">
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption for the document, photo or video, 0-200 characters</td>
+<td><em>Optional</em>. Caption for the audio, document, photo, video or voice, 0-200 characters</td>
 </tr>
 <tr>
 <td>contact</td>
@@ -1036,7 +1073,7 @@ To learn how to create…">
 <tr>
 <td>text</td>
 <td>String</td>
-<td>Text of the button. If none of the optional fields are used, it will be sent to the bot as a message when the button is pressed</td>
+<td>Text of the button. If none of the optional fields are used, it will be sent as a message when the button is pressed</td>
 </tr>
 <tr>
 <td>request_contact</td>
@@ -1276,7 +1313,7 @@ To learn how to create…">
 <tr>
 <td>can_edit_messages</td>
 <td>Boolean</td>
-<td><em>Optional</em>. Administrators only. True, if the administrator can edit messages of other users, channels only</td>
+<td><em>Optional</em>. Administrators only. True, if the administrator can edit messages of other users and can pin messages, channels only</td>
 </tr>
 <tr>
 <td>can_delete_messages</td>
@@ -1326,7 +1363,7 @@ To learn how to create…">
 </tbody>
 </table>
 <h4><a class="anchor" name="responseparameters" href="#responseparameters"><i class="anchor-icon"></i></a>ResponseParameters</h4>
-<p>Contains information about why a request was unsuccessfull.</p>
+<p>Contains information about why a request was unsuccessful.</p>
 <table class="table">
 <tbody>
 <tr>
@@ -1343,6 +1380,79 @@ To learn how to create…">
 <td>retry_after</td>
 <td>Integer</td>
 <td><em>Optional</em>. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="inputmedia" href="#inputmedia"><i class="anchor-icon"></i></a>InputMedia</h4>
+<p>This object represents the content of a media message to be sent. It should be one of</p>
+<ul>
+<li><a href="#inputmediaphoto">InputMediaPhoto</a></li>
+<li><a href="#inputmediavideo">InputMediaVideo</a></li>
+</ul>
+<h4><a class="anchor" name="inputmediaphoto" href="#inputmediaphoto"><i class="anchor-icon"></i></a>InputMediaPhoto</h4>
+<p>Represents a photo to be sent.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Type of the result, must be <em>photo</em></td>
+</tr>
+<tr>
+<td>media</td>
+<td>String</td>
+<td>File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass &quot;attach://&lt;file_attach_name&gt;&quot; to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>caption</td>
+<td>String</td>
+<td><em>Optional</em>. Caption of the photo to be sent, 0-200 characters</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="inputmediavideo" href="#inputmediavideo"><i class="anchor-icon"></i></a>InputMediaVideo</h4>
+<p>Represents a video to be sent.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Type of the result, must be <em>video</em></td>
+</tr>
+<tr>
+<td>media</td>
+<td>String</td>
+<td>File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass &quot;attach://&lt;file_attach_name&gt;&quot; to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>caption</td>
+<td>String</td>
+<td><em>Optional</em>. Caption of the video to be sent, 0-200 characters</td>
+</tr>
+<tr>
+<td>width</td>
+<td>Integer</td>
+<td><em>Optional</em>. Video width</td>
+</tr>
+<tr>
+<td>height</td>
+<td>Integer</td>
+<td><em>Optional</em>. Video height</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>Integer</td>
+<td><em>Optional</em>. Video duration</td>
 </tr>
 </tbody>
 </table>
@@ -1838,6 +1948,42 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
+<h4><a class="anchor" name="sendmediagroup" href="#sendmediagroup"><i class="anchor-icon"></i></a>sendMediaGroup</h4>
+<p>Use this method to send a group of photos or videos as an album. On success, an array of the sent <a href="#message">Messages</a> is returned.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>media</td>
+<td>Array of <a href="#inputmedia">InputMedia</a></td>
+<td>Yes</td>
+<td>A JSON-serialized array describing photos and videos to be sent, must include 2–10 items</td>
+</tr>
+<tr>
+<td>disable_notification</td>
+<td>Boolean</td>
+<td>Optional</td>
+<td>Sends the messages <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
+</tr>
+<tr>
+<td>reply_to_message_id</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>If the messages are a reply, ID of the original message</td>
+</tr>
+</tbody>
+</table>
 <h4><a class="anchor" name="sendlocation" href="#sendlocation"><i class="anchor-icon"></i></a>sendLocation</h4>
 <p>Use this method to send point on the map. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
@@ -1858,13 +2004,19 @@ pre-formatted fixed-width code block
 <td>latitude</td>
 <td>Float number</td>
 <td>Yes</td>
-<td>Latitude of location</td>
+<td>Latitude of the location</td>
 </tr>
 <tr>
 <td>longitude</td>
 <td>Float number</td>
 <td>Yes</td>
-<td>Longitude of location</td>
+<td>Longitude of the location</td>
+</tr>
+<tr>
+<td>live_period</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Period in seconds for which the location will be updated (see <a href="https://telegram.org/blog/live-locations">Live Locations</a>, should be between 60 and 86400.</td>
 </tr>
 <tr>
 <td>disable_notification</td>
@@ -1883,6 +2035,90 @@ pre-formatted fixed-width code block
 <td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a> or <a href="#replykeyboardmarkup">ReplyKeyboardMarkup</a> or <a href="#replykeyboardremove">ReplyKeyboardRemove</a> or <a href="#forcereply">ForceReply</a></td>
 <td>Optional</td>
 <td>Additional interface options. A JSON-serialized object for an <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>, <a href="https://core.telegram.org/bots#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard or to force a reply from the user.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="editmessagelivelocation" href="#editmessagelivelocation"><i class="anchor-icon"></i></a>editMessageLiveLocation</h4>
+<p>Use this method to edit live location messages sent by the bot or via the bot (for <a href="#inline-mode">inline bots</a>). A location can be edited until its <em>live_period</em> expires or editing is explicitly disabled by a call to <a href="#stopmessagelivelocation">stopMessageLiveLocation</a>. On success, if the edited message was sent by the bot, the edited <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Optional</td>
+<td>Required if <em>inline_message_id</em> is not specified. Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>message_id</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Required if <em>inline_message_id</em> is not specified. Identifier of the sent message</td>
+</tr>
+<tr>
+<td>inline_message_id</td>
+<td>String</td>
+<td>Optional</td>
+<td>Required if <em>chat_id</em> and <em>message_id</em> are not specified. Identifier of the inline message</td>
+</tr>
+<tr>
+<td>latitude</td>
+<td>Float number</td>
+<td>Yes</td>
+<td>Latitude of new location</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td>Float number</td>
+<td>Yes</td>
+<td>Longitude of new location</td>
+</tr>
+<tr>
+<td>reply_markup</td>
+<td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a></td>
+<td>Optional</td>
+<td>A JSON-serialized object for a new <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="stopmessagelivelocation" href="#stopmessagelivelocation"><i class="anchor-icon"></i></a>stopMessageLiveLocation</h4>
+<p>Use this method to stop updating a live location message sent by the bot or via the bot (for <a href="#inline-mode">inline bots</a>) before <em>live_period</em> expires. On success, if the message was sent by the bot, the sent <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Optional</td>
+<td>Required if <em>inline_message_id</em> is not specified. Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>message_id</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Required if <em>inline_message_id</em> is not specified. Identifier of the sent message</td>
+</tr>
+<tr>
+<td>inline_message_id</td>
+<td>String</td>
+<td>Optional</td>
+<td>Required if <em>chat_id</em> and <em>message_id</em> are not specified. Identifier of the inline message</td>
+</tr>
+<tr>
+<td>reply_markup</td>
+<td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a></td>
+<td>Optional</td>
+<td>A JSON-serialized object for a new <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>.</td>
 </tr>
 </tbody>
 </table>
@@ -2111,7 +2347,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>until_date</td>
 <td>Integer</td>
-<td>No</td>
+<td>Optional</td>
 <td>Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever</td>
 </tr>
 </tbody>
@@ -2165,31 +2401,31 @@ pre-formatted fixed-width code block
 <tr>
 <td>until_date</td>
 <td>Integer</td>
-<td>No</td>
+<td>Optional</td>
 <td>Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever</td>
 </tr>
 <tr>
 <td>can_send_messages</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the user can send text messages, contacts, locations and venues</td>
 </tr>
 <tr>
 <td>can_send_media_messages</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages</td>
 </tr>
 <tr>
 <td>can_send_other_messages</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages</td>
 </tr>
 <tr>
 <td>can_add_web_page_previews</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the user may add web page previews to their messages, implies can_send_media_messages</td>
 </tr>
 </tbody>
@@ -2219,49 +2455,49 @@ pre-formatted fixed-width code block
 <tr>
 <td>can_change_info</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the administrator can change chat title, photo and other settings</td>
 </tr>
 <tr>
 <td>can_post_messages</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the administrator can create channel posts, channels only</td>
 </tr>
 <tr>
 <td>can_edit_messages</td>
 <td>Boolean</td>
-<td>No</td>
-<td>Pass True, if the administrator can edit messages of other users, channels only</td>
+<td>Optional</td>
+<td>Pass True, if the administrator can edit messages of other users and can pin messages, channels only</td>
 </tr>
 <tr>
 <td>can_delete_messages</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the administrator can delete messages of other users</td>
 </tr>
 <tr>
 <td>can_invite_users</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the administrator can invite new users to the chat</td>
 </tr>
 <tr>
 <td>can_restrict_members</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the administrator can restrict, ban or unban chat members</td>
 </tr>
 <tr>
 <td>can_pin_messages</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the administrator can pin messages, supergroups only</td>
 </tr>
 <tr>
 <td>can_promote_members</td>
 <td>Boolean</td>
-<td>No</td>
+<td>Optional</td>
 <td>Pass True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)</td>
 </tr>
 </tbody>
@@ -2378,13 +2614,13 @@ pre-formatted fixed-width code block
 <tr>
 <td>description</td>
 <td>String</td>
-<td>No</td>
+<td>Optional</td>
 <td>New chat description, 0-255 characters</td>
 </tr>
 </tbody>
 </table>
 <h4><a class="anchor" name="pinchatmessage" href="#pinchatmessage"><i class="anchor-icon"></i></a>pinChatMessage</h4>
-<p>Use this method to pin a message in a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
+<p>Use this method to pin a message in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns <em>True</em> on success.</p>
 <table class="table">
 <tbody>
 <tr>
@@ -2397,7 +2633,7 @@ pre-formatted fixed-width code block
 <td>chat_id</td>
 <td>Integer or String</td>
 <td>Yes</td>
-<td>Unique identifier for the target chat or username of the target supergroup (in the format <code>@supergroupusername</code>)</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
 </tr>
 <tr>
 <td>message_id</td>
@@ -2408,13 +2644,13 @@ pre-formatted fixed-width code block
 <tr>
 <td>disable_notification</td>
 <td>Boolean</td>
-<td>No</td>
-<td>Pass <em>True</em>, if it is not necessary to send a notification to all group members about the new pinned message</td>
+<td>Optional</td>
+<td>Pass <em>True</em>, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels.</td>
 </tr>
 </tbody>
 </table>
 <h4><a class="anchor" name="unpinchatmessage" href="#unpinchatmessage"><i class="anchor-icon"></i></a>unpinChatMessage</h4>
-<p>Use this method to unpin a message in a supergroup chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
+<p>Use this method to unpin a message in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns <em>True</em> on success. </p>
 <table class="table">
 <tbody>
 <tr>
@@ -2427,7 +2663,7 @@ pre-formatted fixed-width code block
 <td>chat_id</td>
 <td>Integer or String</td>
 <td>Yes</td>
-<td>Unique identifier for the target chat or username of the target supergroup (in the format <code>@supergroupusername</code>)</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -2524,6 +2760,48 @@ pre-formatted fixed-width code block
 <td>Integer</td>
 <td>Yes</td>
 <td>Unique identifier of the target user</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="setchatstickerset" href="#setchatstickerset"><i class="anchor-icon"></i></a>setChatStickerSet</h4>
+<p>Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field <em>can_set_sticker_set</em> optionally returned in <a href="#getchat">getChat</a> requests to check if the bot can use this method. Returns <em>True</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target supergroup (in the format <code>@supergroupusername</code>)</td>
+</tr>
+<tr>
+<td>sticker_set_name</td>
+<td>String</td>
+<td>Yes</td>
+<td>Name of the sticker set to be set as the group sticker set</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="deletechatstickerset" href="#deletechatstickerset"><i class="anchor-icon"></i></a>deleteChatStickerSet</h4>
+<p>Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field <em>can_set_sticker_set</em> optionally returned in <a href="#getchat">getChat</a> requests to check if the bot can use this method. Returns <em>True</em> on success.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target supergroup (in the format <code>@supergroupusername</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -3746,6 +4024,11 @@ pre-formatted fixed-width code block
 <td>Location title</td>
 </tr>
 <tr>
+<td>live_period</td>
+<td>Integer</td>
+<td><em>Optional</em>. Period in seconds for which the location can be updated, should be between 60 and 86400.</td>
+</tr>
+<tr>
 <td>reply_markup</td>
 <td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a></td>
 <td><em>Optional</em>. <a href="/bots#inline-keyboards-and-on-the-fly-updating">Inline keyboard</a> attached to the message</td>
@@ -4364,6 +4647,11 @@ pre-formatted fixed-width code block
 <td>Float</td>
 <td>Longitude of the location in degrees</td>
 </tr>
+<tr>
+<td>live_period</td>
+<td>Integer</td>
+<td><em>Optional</em>. Period in seconds for which the location can be updated, should be between 60 and 86400.</td>
+</tr>
 </tbody>
 </table>
 <p><strong>Note:</strong> This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.</p>
@@ -4527,6 +4815,12 @@ pre-formatted fixed-width code block
 <td>Array of <a href="#labeledprice">LabeledPrice</a></td>
 <td>Yes</td>
 <td>Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)</td>
+</tr>
+<tr>
+<td>provider_data</td>
+<td>String</td>
+<td>Optional</td>
+<td>JSON-encoded data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.</td>
 </tr>
 <tr>
 <td>photo_url</td>
@@ -5243,8 +5537,8 @@ pre-formatted fixed-width code block
       <h5><a href="/">Platform</a></h5>
       <ul>
         <li><a href="/api">API</a></li>
-        <li><a href="/mtproto">Protocol</a></li>
-        <li><a href="/schema">Schema</a></li>
+        <li><a href="//translations.telegram.org/">Translations</a></li>
+        <li><a href="//instantview.telegram.org/">Instant View</a></li>
       </ul>
     </div>
   </div>
@@ -5281,4 +5575,4 @@ backToTopInit();
 </script>
   </body>
 </html>
-<!-- page generated in 22.85ms -->
+<!-- page generated in 24.49ms -->
