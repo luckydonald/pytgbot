@@ -1,14 +1,54 @@
 # -*- coding: utf-8 -*-
-import requests
+from luckydonaldUtils.logger import logging
 from os import path
-from luckydonaldUtils.encoding import to_binary as b
+import requests
 
 __author__ = 'luckydonald'
 __all__ = ["InputFile", "InputFileFromURL", "InputFileFromDisk"]
+logger = logging.getLogger(__name__)
 
-EMPTY_BYTE = b('')
 
 class InputFile(object):
+    def __init__(self, file_blob=None, file_name="file.unknown", file_mime=None):
+        super(InputFile, self).__init__()
+        if file_blob:
+            logger.warning("Deprecated! Use a InputFileFromBlob from pytgbot.api_types.sendable.files instead!")
+        # end if
+        if not file_name:
+            raise ValueError("Cannot have empty name (file_name argument).")
+        # end
+
+        self.file_blob = file_blob
+        self.file_name = file_name
+        if file_mime:
+            self.file_mime = file_mime
+        elif self.file_blob:
+            self.file_mime = None
+            self.update_mime_from_blob()
+        # end if
+    # end def
+
+    def update_mime_from_blob(self):
+        """
+        Calculates the mime type from self.file_blob
+        :return:
+        """
+        if not self.file_mime:
+            import magic  # pip install python-magic
+            self.file_mime = magic.from_buffer(self.file_blob, mime=True)
+        # end if
+    # end def
+
+    def get_request_files(self, var_name):
+        if not self.file_blob:
+            logger.warning("Deprecated! Use a InputFileFromBlob from pytgbot.api_types.sendable.files instead!")
+            raise DeprecationWarning("Deprecated! Use a InputFileFromBlob from pytgbot.api_types.sendable.files instead! I cannot work without file blob. Please use one of the classes overriding this funcion.")
+        return {var_name: (self.file_name, self.file_blob, self.file_mime)}
+    # end def get_request_files
+# end class InputFile
+
+
+class InputFileFromBlob(InputFile):
     def __init__(self, file_blob, file_name="file.unknown", file_mime=None):
         super(InputFile, self).__init__()
         if not file_blob:
@@ -28,21 +68,11 @@ class InputFile(object):
         # end if
     # end def
 
-    def update_mime_from_blob(self):
-        """
-        Calculates the mime type from self.file_blob
-        :return:
-        """
-        if not self.file_mime:
-            import magic  # pip install python-magic
-            self.file_mime = magic.from_buffer(self.file_blob, mime=True)
-        # end if
-    # end def
-
     def get_request_files(self, var_name):
         return {var_name: (self.file_name, self.file_blob, self.file_mime)}
     # end def get_request_files
 # end class InputFile
+
 
 
 class InputFileFromDisk(InputFile):
