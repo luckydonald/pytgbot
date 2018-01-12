@@ -1,4 +1,7 @@
 # Changelog
+## Version 3.5.1 (unreleased)
+- Fixed `InputFileFromDisk`.
+
 ## Version 3.5.0
 Updated official API changes of
 - [`Bot API 3`.`4` (October 11, 2017)](https://core.telegram.org/bots/api-changelog#october-11-2017)

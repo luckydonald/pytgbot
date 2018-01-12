@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import requests
 from os import path
+from luckydonaldUtils.encoding import to_binary as b
 
 __author__ = 'luckydonald'
 __all__ = ["InputFile", "InputFileFromURL", "InputFileFromDisk"]
 
+EMPTY_BYTE = b('')
 
 class InputFile(object):
     def __init__(self, file_blob, file_name="file.unknown", file_mime=None):
@@ -51,9 +53,9 @@ class InputFileFromDisk(InputFile):
             self.file_mime = file_mime
         else:  # can't use super.update_mime_from_blob() because we have no blob.
             import magic  # pip install python-magic
-            self.file_mime = magic.from_buffer(requests.get(self.file_url).content, mime=True)
+            self.file_mime = magic.from_file(self.file_path, mime=True)
         # end if file_mime
-        super(InputFileFromDisk, self).__init__(self.file_blob, self.file_name, self.file_mime)
+        super(InputFileFromDisk, self).__init__(EMPTY_BYTE, self.file_name, self.file_mime)
     # end def __init__
 
     def get_request_files(self, var_name):
