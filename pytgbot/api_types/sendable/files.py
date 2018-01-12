@@ -33,6 +33,7 @@ class InputFile(object):
         Calculates the mime type from self.file_blob
         :return:
         """
+        logger.warning("Deprecated! Use a InputFileFromBlob from pytgbot.api_types.sendable.files instead!")
         if not self.file_mime:
             import magic  # pip install python-magic
             self.file_mime = magic.from_buffer(self.file_blob, mime=True)
@@ -50,7 +51,6 @@ class InputFile(object):
 
 class InputFileFromBlob(InputFile):
     def __init__(self, file_blob, file_name="file.unknown", file_mime=None):
-        super(InputFile, self).__init__()
         if not file_blob:
             raise ValueError("The file content (file_blob argument) is required to be non-empty.")
         # end if
@@ -66,13 +66,24 @@ class InputFileFromBlob(InputFile):
             self.file_mime = None
             self.update_mime_from_blob()
         # end if
+        super(InputFileFromBlob, self).__init__(file_name=self.file_name, file_mime=self.file_mime)
+    # end def
+
+    def update_mime_from_blob(self):
+        """
+        Calculates the mime type from self.file_blob
+        :return:
+        """
+        if not self.file_mime:
+            import magic  # pip install python-magic
+            self.file_mime = magic.from_buffer(self.file_blob, mime=True)
+        # end if
     # end def
 
     def get_request_files(self, var_name):
         return {var_name: (self.file_name, self.file_blob, self.file_mime)}
     # end def get_request_files
 # end class InputFile
-
 
 
 class InputFileFromDisk(InputFile):
@@ -85,7 +96,7 @@ class InputFileFromDisk(InputFile):
             import magic  # pip install python-magic
             self.file_mime = magic.from_file(self.file_path, mime=True)
         # end if file_mime
-        super(InputFileFromDisk, self).__init__(EMPTY_BYTE, self.file_name, self.file_mime)
+        super(InputFileFromDisk, self).__init__(file_name=self.file_name, file_mime=self.file_mime)
     # end def __init__
 
     def get_request_files(self, var_name):
@@ -154,8 +165,6 @@ class InputFileFromURL(InputFile):
             self.file_name = os.path.basename(path_part)
         # end if
     # end def
-
-
 
     def get_request_files(self, var_name):
         return {var_name: (self.file_name, self.file_blob, self.file_mime)}
