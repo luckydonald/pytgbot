@@ -1,5 +1,5 @@
 # Changelog
-## Version 3.5.1 (unreleased)
+## Version 3.5.1
 - Fixed `InputFileFromDisk`.
 - Usage of `InputFile` with `file_blob` is now **deprecated**.
   Use `InputFileFromBlob` instead.
