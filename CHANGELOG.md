@@ -1,4 +1,9 @@
 # Changelog
+## Version 3.5.2 (not released)
+- Added `username` and `id` property to the `Bot` class.
+   This is basically the implementation used in [Teleflask](https://github.com/luckydonald/Teleflask) already, but calling it `id` and not `user_id` as it is a bot, not a user.
+- Added `__str__` class, so that `str(bot)` displays as `Bot(username="luckybot", id=108721382)`
+
 ## Version 3.5.1
 - Fixed `InputFileFromDisk`.
 - Usage of `InputFile` with `file_blob` is now **deprecated**.

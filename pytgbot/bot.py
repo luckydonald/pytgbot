@@ -42,6 +42,8 @@ class Bot(object):
         self.api_key = api_key
         self.return_python_objects = return_python_objects
         self._last_update = datetime.now()
+        self._id = None  # will be filled when using the property .id or .username, or when calling ._load_info()
+        self._username = None  # will be filled when using the property .id or .username, or when calling ._load_info()
     # end def __init__
 
     def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
@@ -3721,18 +3723,18 @@ class Bot(object):
         return file.get_download_url(self.api_key)
     # end def get_download_url
 
-    def _load_me(self):
+    def _load_info(self):
         """
-        This functions stores the user_id and the username of the bot.
-        Called by `.username` and `.user_id` properties.
+        This functions stores the id and the username of the bot.
+        Called by `.username` and `.id` properties.
         :return:
         """
         myself = self.get_me()
         if self.return_python_objects:
-            self._user_id = myself.id
+            self._id = myself.id
             self._username = myself.username
         else:
-            self._user_id = myself["result"]["id"]
+            self._id = myself["result"]["id"]
             self._username = myself["result"]["username"]
         # end if
     # end def
@@ -3740,20 +3742,20 @@ class Bot(object):
     @property
     def username(self):
         if not self._username:
-            self._load_me()
+            self._load_info()
         # end if
         return self._username
     # end def
 
     @property
-    def user_id(self):
-        if not self._user_id:
-            self._load_me()
+    def id(self):
+        if not self._id:
+            self._load_info()
         # end if
-        return self._user_id
+        return self._id
     # end def
 
     def __str__(self):
-        return "pytgbot.Bot(username={s.username!r}, id={s.user_id!r})".format(s=self)
+        return "pytgbot.Bot(username={s.username!r}, id={s.id!r})".format(s=self)
     # end def
 # end class Bot
