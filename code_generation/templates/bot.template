@@ -185,5 +185,58 @@ class Bot(object):
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
         return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
     # end def _do_fileupload
+
+    def get_download_url(self, file):
+        """
+        Creates a url to download the file.
+
+        Note: Contains the secret API key, so you should not share this url!
+
+        :param file: The File you want to get the url to download.
+        :type  file: pytgbot.api_types.receivable.media.File
+
+        :return: url
+        :rtype: str
+        """
+        from .api_types.receivable.media import File
+        assert isinstance(file, File)
+        return file.get_download_url(self.api_key)
+    # end def get_download_url
+
+    def _load_me(self):
+        """
+        This functions stores the user_id and the username of the bot.
+        Called by `.username` and `.user_id` properties.
+        :return:
+        """
+        myself = self.get_me()
+        if self.return_python_objects:
+            self._user_id = myself.id
+            self._username = myself.username
+        else:
+            self._user_id = myself["result"]["id"]
+            self._username = myself["result"]["username"]
+        # end if
+    # end def
+
+    @property
+    def username(self):
+        if not self._username:
+            self._load_me()
+        # end if
+        return self._username
+    # end def
+
+    @property
+    def user_id(self):
+        if not self._user_id:
+            self._load_me()
+        # end if
+        return self._user_id
+    # end def
+
+    def __str__(self):
+        return "pytgbot.Bot(username={s.username!r}, id={s.user_id!r})".format(s=self)
+    # end def
 # end class Bot
 

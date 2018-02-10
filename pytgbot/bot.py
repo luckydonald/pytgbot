@@ -265,7 +265,7 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#getwebhookinfo
 
-        
+
         Returns:
 
         :return: On success, returns a :class:`pytgbot.api_types.receivable.updates.WebhookInfo` object
@@ -915,33 +915,33 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#sendvideonote
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
-        
+
         :param video_note: Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More info on Sending Files ». Sending video notes by a URL is currently unsupported
         :type  video_note: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
-        
+
+
         Optional keyword parameters:
-        
+
         :param duration: Duration of sent video in seconds
         :type  duration: int
-        
+
         :param length: Video width and height
         :type  length: int
-        
+
         :param disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         Returns:
 
         :return: On success, the sent Message is returned
@@ -1557,7 +1557,7 @@ class Bot(object):
         the user will not be able to return to the group on their own using invite links, etc., unless unbanned first.
 
         The bot must be an administrator in the group for this to work.
-        
+
         Returns True on success.
 
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
@@ -1577,10 +1577,10 @@ class Bot(object):
 
 
         Optional keyword parameters:
-        
+
         :param until_date: Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever
         :type  until_date: int
-        
+
         Returns:
 
         :return: Returns True on success
@@ -1655,33 +1655,33 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#restrictchatmember
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
         :type  chat_id: int | str|unicode
-        
+
         :param user_id: Unique identifier of the target user
         :type  user_id: int
-        
-        
+
+
         Optional keyword parameters:
-        
+
         :param until_date: Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
         :type  until_date: int
-        
+
         :param can_send_messages: Pass True, if the user can send text messages, contacts, locations and venues
         :type  can_send_messages: bool
-        
+
         :param can_send_media_messages: Pass True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
         :type  can_send_media_messages: bool
-        
+
         :param can_send_other_messages: Pass True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
         :type  can_send_other_messages: bool
-        
+
         :param can_add_web_page_previews: Pass True, if the user may add web page previews to their messages, implies can_send_media_messages
         :type  can_add_web_page_previews: bool
-        
+
         Returns:
 
         :return: Returns True on success
@@ -1721,42 +1721,42 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#promotechatmember
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
-        
+
         :param user_id: Unique identifier of the target user
         :type  user_id: int
-        
-        
+
+
         Optional keyword parameters:
-        
+
         :param can_change_info: Pass True, if the administrator can change chat title, photo and other settings
         :type  can_change_info: bool
-        
+
         :param can_post_messages: Pass True, if the administrator can create channel posts, channels only
         :type  can_post_messages: bool
-        
+
         :param can_edit_messages: Pass True, if the administrator can edit messages of other users and can pin messages, channels only
         :type  can_edit_messages: bool
-        
+
         :param can_delete_messages: Pass True, if the administrator can delete messages of other users
         :type  can_delete_messages: bool
-        
+
         :param can_invite_users: Pass True, if the administrator can invite new users to the chat
         :type  can_invite_users: bool
-        
+
         :param can_restrict_members: Pass True, if the administrator can restrict, ban or unban chat members
         :type  can_restrict_members: bool
-        
+
         :param can_pin_messages: Pass True, if the administrator can pin messages, supergroups only
         :type  can_pin_messages: bool
-        
+
         :param can_promote_members: Pass True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
         :type  can_promote_members: bool
-        
+
         Returns:
 
         :return: Returns True on success
@@ -1802,13 +1802,13 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#exportchatinvitelink
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
-        
-        
+
+
         Returns:
 
         :return: Returns exported invite link as String on success
@@ -1832,22 +1832,22 @@ class Bot(object):
 
     def set_chat_photo(self, chat_id, photo):
         """
-        Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
-        
+        Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
 
         https://core.telegram.org/bots/api#setchatphoto
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
-        
+
         :param photo: New chat photo, uploaded using multipart/form-data
         :type  photo: pytgbot.api_types.sendable.files.InputFile
-        
-        
+
+
         Returns:
 
         :return: Returns True on success
@@ -1875,19 +1875,19 @@ class Bot(object):
 
     def delete_chat_photo(self, chat_id):
         """
-        Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
-        
+        Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
 
         https://core.telegram.org/bots/api#deletechatphoto
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
-        
-        
+
+
         Returns:
 
         :return: Returns True on success
@@ -1911,22 +1911,22 @@ class Bot(object):
 
     def set_chat_title(self, chat_id, title):
         """
-        Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
-        
+        Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
 
         https://core.telegram.org/bots/api#setchattitle
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
-        
+
         :param title: New chat title, 1-255 characters
         :type  title: str|unicode
-        
-        
+
+
         Returns:
 
         :return: Returns True on success
@@ -1952,22 +1952,22 @@ class Bot(object):
 
     def set_chat_description(self, chat_id, description=None):
         """
-        Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
         https://core.telegram.org/bots/api#setchatdescription
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
-        
-        
+
+
         Optional keyword parameters:
-        
+
         :param description: New chat description, 0-255 characters
         :type  description: str|unicode
-        
+
         Returns:
 
         :return: Returns True on success
@@ -2000,21 +2000,21 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#pinchatmessage
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target supergroup/cannel (in the format @username)
         :type  chat_id: int | str|unicode
-        
+
         :param message_id: Identifier of a message to pin
         :type  message_id: int
-        
-        
+
+
         Optional keyword parameters:
-        
+
         :param disable_notification: Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels.
         :type  disable_notification: bool
-        
+
         Returns:
 
         :return: Returns True on success
@@ -2048,13 +2048,13 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#unpinchatmessage
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target supergroup/channel (in the format @username)
         :type  chat_id: int | str|unicode
-        
-        
+
+
         Returns:
 
         :return: Returns True on success
@@ -2616,7 +2616,7 @@ class Bot(object):
 
     def delete_message(self, chat_id, message_id):
         """
-        Use this method to delete a message, including service messages, with the following limitations: 
+        Use this method to delete a message, including service messages, with the following limitations:
         - A message can only be deleted if it was sent less than 48 hours ago.
         - Bots can delete outgoing messages in groups and supergroups.
         - Bots granted `can_post_messages` permissions can delete outgoing messages in channels.
@@ -2626,16 +2626,16 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#deletemessage
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
-        
+
         :param message_id: Identifier of the message to delete
         :type  message_id: int
-        
-        
+
+
         Returns:
 
         :return: Returns True on success
@@ -2739,13 +2739,13 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#getstickerset
 
-        
+
         Parameters:
-        
+
         :param name: Name of the sticker set
         :type  name: str|unicode
-        
-        
+
+
         Returns:
 
         :return: On success, a StickerSet object is returned
@@ -2774,16 +2774,16 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#uploadstickerfile
 
-        
+
         Parameters:
-        
+
         :param user_id: User identifier of sticker file owner
         :type  user_id: int
-        
+
         :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. More info on Sending Files »
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile
-        
-        
+
+
         Returns:
 
         :return: Returns the uploaded File on success
@@ -2816,33 +2816,33 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#createnewstickerset
 
-        
+
         Parameters:
-        
+
         :param user_id: User identifier of created sticker set owner
         :type  user_id: int
-        
+
         :param name: Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can contain only english letters, digits and underscores. Must begin with a letter, can't contain consecutive underscores and must end in “_by_<bot username>”. <bot_username> is case insensitive. 1-64 characters.
         :type  name: str|unicode
-        
+
         :param title: Sticker set title, 1-64 characters
         :type  title: str|unicode
-        
+
         :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param emojis: One or more emoji corresponding to the sticker
         :type  emojis: str|unicode
-        
-        
+
+
         Optional keyword parameters:
-        
+
         :param contains_masks: Pass True, if a set of mask stickers should be created
         :type  contains_masks: bool
-        
+
         :param mask_position: A JSON-serialized object for position where the mask should be placed on faces
         :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
-        
+
         Returns:
 
         :return: Returns True on success
@@ -2885,27 +2885,27 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#addstickertoset
 
-        
+
         Parameters:
-        
+
         :param user_id: User identifier of sticker set owner
         :type  user_id: int
-        
+
         :param name: Sticker set name
         :type  name: str|unicode
-        
+
         :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param emojis: One or more emoji corresponding to the sticker
         :type  emojis: str|unicode
-        
-        
+
+
         Optional keyword parameters:
-        
+
         :param mask_position: A JSON-serialized object for position where the mask should be placed on faces
         :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
-        
+
         Returns:
 
         :return: Returns True on success
@@ -2944,16 +2944,16 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#setstickerpositioninset
 
-        
+
         Parameters:
-        
+
         :param sticker: File identifier of the sticker
         :type  sticker: str|unicode
-        
+
         :param position: New sticker position in the set, zero-based
         :type  position: int
-        
-        
+
+
         Returns:
 
         :return: Returns True on success
@@ -2983,13 +2983,13 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#deletestickerfromset
 
-        
+
         Parameters:
-        
+
         :param sticker: File identifier of the sticker
         :type  sticker: str|unicode
-        
-        
+
+
         Returns:
 
         :return: Returns True on success
@@ -3129,75 +3129,75 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#sendinvoice
 
-        
+
         Parameters:
-        
+
         :param chat_id: Unique identifier for the target private chat
         :type  chat_id: int
-        
+
         :param title: Product name, 1-32 characters
         :type  title: str|unicode
-        
+
         :param description: Product description, 1-255 characters
         :type  description: str|unicode
-        
+
         :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
         :type  payload: str|unicode
-        
+
         :param provider_token: Payments provider token, obtained via Botfather
         :type  provider_token: str|unicode
-        
+
         :param start_parameter: Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
         :type  start_parameter: str|unicode
-        
+
         :param currency: Three-letter ISO 4217 currency code, see more on currencies
         :type  currency: str|unicode
-        
+
         :param prices: Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
-        
-        
+
+
         Optional keyword parameters:
 
         :param provider_data: JSON-encoded data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
         :type  provider_data: str|unicode
-        
+
         :param photo_url: URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
         :type  photo_url: str|unicode
-        
+
         :param photo_size: Photo size
         :type  photo_size: int
-        
+
         :param photo_width: Photo width
         :type  photo_width: int
-        
+
         :param photo_height: Photo height
         :type  photo_height: int
-        
+
         :param need_name: Pass True, if you require the user's full name to complete the order
         :type  need_name: bool
-        
+
         :param need_phone_number: Pass True, if you require the user's phone number to complete the order
         :type  need_phone_number: bool
-        
+
         :param need_email: Pass True, if you require the user's email to complete the order
         :type  need_email: bool
-        
+
         :param need_shipping_address: Pass True, if you require the user's shipping address to complete the order
         :type  need_shipping_address: bool
-        
+
         :param is_flexible: Pass True, if the final price depends on the shipping method
         :type  is_flexible: bool
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
-        
+
         :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-        
+
         Returns:
 
         :return: On success, the sent Message is returned
@@ -3276,28 +3276,28 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#answershippingquery
 
-        
+
         Parameters:
-        
+
         :param shipping_query_id: Unique identifier for the query to be answered
         :type  shipping_query_id: str|unicode
-        
+
         :param ok: Specify True if delivery to the specified address is possible and False if there are any problems (for example, if delivery to the specified address is not possible)
         :type  ok: bool
-        
-        
+
+
         Optional keyword parameters:
-        
+
         :param shipping_options: Required if ok is True. A JSON-serialized array of available shipping options.
         :type  shipping_options: list of pytgbot.api_types.sendable.payments.ShippingOption
-        
+
         :param error_message: Required if ok is False. Error message in human readable form that explains why it is impossible to complete the order (e.g. "Sorry, delivery to your desired address is unavailable'). Telegram will display this message to the user.
         :type  error_message: str|unicode
-        
+
         Returns:
 
         :return: On success, True is returned
-        :rtype:  
+        :rtype:
         """
         from pytgbot.api_types.sendable.payments import ShippingOption
 
@@ -3323,25 +3323,25 @@ class Bot(object):
 
         https://core.telegram.org/bots/api#answerprecheckoutquery
 
-        
+
         Parameters:
-        
+
         :param pre_checkout_query_id: Unique identifier for the query to be answered
         :type  pre_checkout_query_id: str|unicode
-        
+
         :param ok: Specify True if everything is alright (goods are available, etc.) and the bot is ready to proceed with the order. Use False if there are any problems.
         :type  ok: bool
-        
-        
+
+
         Optional keyword parameters:
-        
+
         :param error_message: Required if ok is False. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.
         :type  error_message: str|unicode
-        
+
         Returns:
 
         :return: On success, True is returned
-        :rtype:  
+        :rtype:
         """
         assert_type_or_raise(pre_checkout_query_id, unicode_type, parameter_name="pre_checkout_query_id")
 
@@ -3670,7 +3670,7 @@ class Bot(object):
                       file that is already on the Telegram servers, or upload a new file,
                       specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
         :type  value: pytgbot.api_types.sendable.files.InputFile | str
-        
+
         :param _command: Overwrite the sended command.
                          Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
 
@@ -3720,4 +3720,40 @@ class Bot(object):
         assert isinstance(file, File)
         return file.get_download_url(self.api_key)
     # end def get_download_url
+
+    def _load_me(self):
+        """
+        This functions stores the user_id and the username of the bot.
+        Called by `.username` and `.user_id` properties.
+        :return:
+        """
+        myself = self.get_me()
+        if self.return_python_objects:
+            self._user_id = myself.id
+            self._username = myself.username
+        else:
+            self._user_id = myself["result"]["id"]
+            self._username = myself["result"]["username"]
+        # end if
+    # end def
+
+    @property
+    def username(self):
+        if not self._username:
+            self._load_me()
+        # end if
+        return self._username
+    # end def
+
+    @property
+    def user_id(self):
+        if not self._user_id:
+            self._load_me()
+        # end if
+        return self._user_id
+    # end def
+
+    def __str__(self):
+        return "pytgbot.Bot(username={s.username!r}, id={s.user_id!r})".format(s=self)
+    # end def
 # end class Bot
