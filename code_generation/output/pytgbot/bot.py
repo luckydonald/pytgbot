@@ -3404,10 +3404,10 @@ class Bot(object):
         return file.get_download_url(self.api_key)
     # end def get_download_url
 
-        def _load_info(self):
+    def _load_info(self):
         """
         This functions stores the id and the username of the bot.
-        Called by `.username` and `._id` properties.
+        Called by `.username` and `.id` properties.
         :return:
         """
         myself = self.get_me()
