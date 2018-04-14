@@ -1,5 +1,5 @@
 # Changelog
-## Version 3.6.0 (not released)
+## Version 3.6.0
 - [`Bot API 3`.`6` (February 13, 2018)](https://core.telegram.org/bots/api-changelog#february-13-2018)
     - Added `connected_website` attribute to the `Update` class.
 - Added `parse_mode` attribute all stuff that has captions, in the bot functions and the sendable inline objects.
