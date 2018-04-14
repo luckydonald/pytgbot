@@ -155,15 +155,18 @@ class Bot(object):
         return res
     # end def _postprocess_request
 
-    def _do_fileupload(self, file_param_name, value, **kwargs):
+        def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
         """
         :param file_param_name: For what field the file should be uploaded.
         :type  file_param_name: str
 
         :param value: File to send. You can either pass a file_id as String to resend a file
                       file that is already on the Telegram servers, or upload a new file,
-                      specifying the file path as :class:`pytgbot.api_types.files.InputFile`.
-        :type  value: pytgbot.api_types.sendable.InputFile | str
+                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
+        :type  value: pytgbot.api_types.sendable.files.InputFile | str
+
+        :param _command: Overwrite the sended command.
+                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
 
         :param kwargs: will get json encoded.
 
@@ -172,7 +175,7 @@ class Bot(object):
 
         :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
         from luckydonaldUtils.encoding import unicode_type
         from luckydonaldUtils.encoding import to_native as n
 
@@ -185,7 +188,14 @@ class Bot(object):
         else:
             raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
-        return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
+        # end if
+        if not _command:
+            # command as camelCase  # "voice_note" -> "sendVoiceNote"  # https://stackoverflow.com/a/10984923/3423324
+            command = re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), "send_" + file_param_name)
+        else:
+            command = _command
+        # end def
+        return self.do(command, **kwargs)
     # end def _do_fileupload
 
     def get_download_url(self, file):
