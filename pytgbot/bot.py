@@ -457,7 +457,7 @@ class Bot(object):
         return result
     # end def forward_message
 
-    def send_photo(self, chat_id, photo, caption=None, disable_notification=False, reply_to_message_id=None,
+    def send_photo(self, chat_id, photo, caption=None, parse_mode=None, disable_notification=False, reply_to_message_id=None,
                    reply_markup=None):
         """
         Use this method to send photos. On success, the sent Message is returned.
@@ -484,8 +484,10 @@ class Bot(object):
         :param caption: Photo caption (may also be used when resending photos by file_id), 0-200 characters
         :type  caption: str|unicode
 
-        :param disable_notification: Sends the message silently. iOS users will not receive a notification,
-                                        Android users will receive a notification with no sound.
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
+
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
         :param reply_to_message_id: If the message is a reply, ID of the original message
@@ -516,6 +518,8 @@ class Bot(object):
 
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
 
+        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
+
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
 
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
@@ -523,8 +527,9 @@ class Bot(object):
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
 
         result = self._do_fileupload(
-            "photo", photo, chat_id=chat_id, caption=caption, disable_notification=disable_notification,
-            reply_to_message_id=reply_to_message_id, reply_markup=reply_markup
+            "photo", photo, chat_id=chat_id, caption=caption, parse_mode=parse_mode,
+            disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+            reply_markup=reply_markup
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
@@ -540,7 +545,7 @@ class Bot(object):
         return result
     # end def send_photo
 
-    def send_audio(self, chat_id, audio, caption=None, duration=None, performer=None, title=None, disable_notification=False,
+    def send_audio(self, chat_id, audio, caption=None, parse_mode=None, duration=None, performer=None, title=None, disable_notification=False,
                    reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player.
@@ -568,8 +573,11 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :param caption: Audio caption, 0-200 characters
+        :param caption: Audio caption (may also be used when resending audio by file_id), 0-200 characters
         :type  caption: str|unicode
+
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
 
         :param duration: Duration of the audio in seconds
         :type  duration: int
@@ -580,8 +588,7 @@ class Bot(object):
         :param title: Track name
         :type  title: str|unicode
 
-        :param disable_notification: Sends the message silently. iOS users will not receive a notification,
-                                        Android users will receive a notification with no sound.
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
         :param reply_to_message_id: If the message is a reply, ID of the original message
@@ -609,6 +616,8 @@ class Bot(object):
 
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
 
+        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
+
         assert_type_or_raise(duration, None, int, parameter_name="duration")
 
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
@@ -622,8 +631,9 @@ class Bot(object):
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
 
         result = self._do_fileupload(
-            "audio", audio, caption=caption, chat_id=chat_id, reply_to_message_id=reply_to_message_id, duration=duration,
-            performer=performer, title=title, disable_notification=disable_notification, reply_markup=reply_markup
+            "audio", audio, caption=caption, parse_mode=parse_mode, chat_id=chat_id,
+            reply_to_message_id=reply_to_message_id, duration=duration, performer=performer, title=title,
+            disable_notification=disable_notification, reply_markup=reply_markup
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
@@ -639,7 +649,7 @@ class Bot(object):
         return result
     # end def send_audio
 
-    def send_document(self, chat_id, document, caption=None, disable_notification=False, reply_to_message_id=None,
+    def send_document(self, chat_id, document, caption=None, parse_mode=None, disable_notification=False, reply_to_message_id=None,
                       reply_markup=None):
         """
         Use this method to send general files. On success, the sent Message is returned.
@@ -664,11 +674,13 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :param caption: Document caption (may also be used when resending documents by file_id), 0-200 characters
+        :param caption: Document caption (may also be used when resending photos by file_id), 0-200 characters
         :type  caption: str|unicode
 
-        :param disable_notification: Sends the message silently. iOS users will not receive a notification,
-                                     Android users will receive a notification with no sound.
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
+
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
         :param reply_to_message_id: If the message is a reply, ID of the original message
@@ -696,6 +708,8 @@ class Bot(object):
 
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
 
+        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
+
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
 
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
@@ -703,7 +717,7 @@ class Bot(object):
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
 
         result = self._do_fileupload(
-            "document", document, chat_id=chat_id, caption=caption,
+            "document", document, chat_id=chat_id, caption=caption, parse_mode=parse_mode,
             disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -721,8 +735,8 @@ class Bot(object):
         return result
     # end def send_document
 
-    def send_video(self, chat_id, video, duration=None, width=None, height=None, caption=None,
-                   disable_notification=False, reply_to_message_id=None, reply_markup=None):
+    def send_video(self, chat_id, video, duration=None, width=None, height=None, caption=None, parse_mode=None,
+                   supports_streaming=None, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send video files. On success, the sent Message is returned.
         Telegram clients support mp4 videos (other formats may be sent as Document).
@@ -759,8 +773,13 @@ class Bot(object):
         :param caption: Video caption (may also be used when resending videos by file_id), 0-200 characters
         :type  caption: str|unicode
 
-        :param disable_notification: Sends the message silently. iOS users will not receive a notification,
-                                        Android users will receive a notification with no sound.
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
+
+        :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
+        :type  supports_streaming: bool
+
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
         :param reply_to_message_id: If the message is a reply, ID of the original message
@@ -794,6 +813,10 @@ class Bot(object):
 
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
 
+        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
+
+        assert_type_or_raise(supports_streaming, None, bool, parameter_name="supports_streaming")
+
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
 
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
@@ -802,7 +825,8 @@ class Bot(object):
 
         result = self._do_fileupload(
             "video", video, chat_id=chat_id, duration=duration, width=width, height=height,
-            caption=caption, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+            caption=caption, parse_mode=parse_mode, supports_streaming=supports_streaming,
+            disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
         if self.return_python_objects:
@@ -819,7 +843,7 @@ class Bot(object):
         return result
     # end def send_video
 
-    def send_voice(self, chat_id, voice, caption=None, duration=None, disable_notification=False,
+    def send_voice(self, chat_id, voice, caption=None, parse_mode=None, duration=None, disable_notification=False,
                    reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send audio files,
@@ -851,6 +875,9 @@ class Bot(object):
 
         :param caption: Voice message caption, 0-200 characters
         :type  caption: str|unicode
+
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
 
         :param duration: Duration of the voice message in seconds
         :type  duration: int
@@ -884,6 +911,8 @@ class Bot(object):
 
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
 
+        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
+
         assert_type_or_raise(duration, None, int, parameter_name="duration")
 
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
@@ -893,7 +922,7 @@ class Bot(object):
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
 
         result = self._do_fileupload(
-            "voice", voice, chat_id=chat_id, caption=caption, duration=duration,
+            "voice", voice, chat_id=chat_id, caption=caption, parse_mode=parse_mode, duration=duration,
             disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -935,7 +964,7 @@ class Bot(object):
         :param length: Video width and height
         :type  length: int
 
-        :param disable_notification: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
         :param reply_to_message_id: If the message is a reply, ID of the original message
@@ -2486,7 +2515,7 @@ class Bot(object):
         return result
     # end def edit_message_text
 
-    def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None,
+    def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None, parse_mode=None,
                              reply_markup=None):
         """
         Use this method to edit captions of messages sent by the bot or via the bot (for inline bots).
@@ -2512,6 +2541,9 @@ class Bot(object):
         :param caption: New caption of the message
         :type  caption: str|unicode
 
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
+
         :param reply_markup: A JSON-serialized object for an inline keyboard.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
@@ -2531,10 +2563,13 @@ class Bot(object):
 
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
 
+        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
+
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
 
         result = self.do("editMessageCaption", chat_id=chat_id, message_id=message_id,
-                       inline_message_id=inline_message_id, caption=caption, reply_markup=reply_markup)
+                         inline_message_id=inline_message_id, caption=caption, parse_mode=parse_mode,
+                         reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2684,8 +2719,7 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :param disable_notification: Sends the message silently. iOS users will not receive a notification,
-                                        Android users will receive a notification with no sound.
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
         :param reply_to_message_id: If the message is a reply, ID of the original message
@@ -3125,7 +3159,8 @@ class Bot(object):
     def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices,
                      provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None,
                      need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None,
-                     is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+                     send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None,
+                     disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send invoices. On success, the sent Message is returned.
 
@@ -3188,6 +3223,12 @@ class Bot(object):
         :param need_shipping_address: Pass True, if you require the user's shipping address to complete the order
         :type  need_shipping_address: bool
 
+        :param send_phone_number_to_provider: Pass True, if user's phone number should be sent to provider
+        :type  send_phone_number_to_provider: bool
+
+        :param send_email_to_provider: Pass True, if user's email address should be sent to provider
+        :type  send_email_to_provider: bool
+
         :param is_flexible: Pass True, if the final price depends on the shipping method
         :type  is_flexible: bool
 
@@ -3242,6 +3283,10 @@ class Bot(object):
 
         assert_type_or_raise(need_shipping_address, None, bool, parameter_name="need_shipping_address")
 
+        assert_type_or_raise(send_phone_number_to_provider, None, bool, parameter_name="send_phone_number_to_provider")
+
+        assert_type_or_raise(send_email_to_provider, None, bool, parameter_name="send_email_to_provider")
+
         assert_type_or_raise(is_flexible, None, bool, parameter_name="is_flexible")
 
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
@@ -3255,7 +3300,9 @@ class Bot(object):
                          prices=prices, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size,
                          photo_width=photo_width, photo_height=photo_height, need_name=need_name,
                          need_phone_number=need_phone_number, need_email=need_email,
-                         need_shipping_address=need_shipping_address, is_flexible=is_flexible,
+                         need_shipping_address=need_shipping_address,
+                         send_phone_number_to_provider=send_phone_number_to_provider,
+                         send_email_to_provider=send_email_to_provider, is_flexible=is_flexible,
                          disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
                          reply_markup=reply_markup)
         if self.return_python_objects:
