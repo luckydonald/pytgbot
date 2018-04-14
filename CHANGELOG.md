@@ -1,4 +1,8 @@
 # Changelog
+## Version 3.6.0 (not released)
+- [`Bot API 3`.`6` (February 13, 2018)](https://core.telegram.org/bots/api-changelog#february-13-2018)
+    - Added `connected_website` attribute to the `Update` class.
+
 ## Version 3.5.2
 - Added `username` and `id` property to the `Bot` class.
    This is basically the implementation used in [Teleflask](https://github.com/luckydonald/Teleflask) already, but calling it `id` and not `user_id` as it is a bot, not a user.
