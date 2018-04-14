@@ -215,7 +215,7 @@ class Chat(Peer):
     :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
     :type  invite_link: str|unicode
     
-    :param pinned_message: Optional. Pinned message, for supergroups. Returned only in getChat.
+    :param pinned_message: Optional. Pinned message, for supergroups and channel chats. Returned only in getChat.
     :type  pinned_message: pytgbot.api_types.receivable.updates.Message
 
     :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
@@ -270,7 +270,7 @@ class Chat(Peer):
         :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
         :type  invite_link: str|unicode
         
-        :param pinned_message: Optional. Pinned message, for supergroups. Returned only in getChat.
+        :param pinned_message: Optional. Pinned message, for supergroups and channel chats. Returned only in getChat.
         :type  pinned_message: pytgbot.api_types.receivable.updates.Message
 
         :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
@@ -440,7 +440,7 @@ class ChatMember(Result):
 
     Optional keyword parameters:
     
-    :param until_date: Optional. Restictred and kicked only. Date when restrictions will be lifted for this user, unix time
+    :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user, unix time
     :type  until_date: int
     
     :param can_be_edited: Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
@@ -504,7 +504,7 @@ class ChatMember(Result):
     
         Optional keyword parameters:
         
-        :param until_date: Optional. Restictred and kicked only. Date when restrictions will be lifted for this user, unix time
+        :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user, unix time
         :type  until_date: int
         
         :param can_be_edited: Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user

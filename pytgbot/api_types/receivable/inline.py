@@ -163,7 +163,7 @@ class InlineQuery(Result):
 class ChosenInlineResult(UpdateType):
     """
     Represents a result of an inline query that was chosen by the user and sent to their chat partner.
-    Note: It is necessary to enable inline feednack via @Botfather in order to receive these objects in updates.
+    Note: It is necessary to enable inline feedback via @Botfather in order to receive these objects in updates.
 
     https://core.telegram.org/bots/api#choseninlineresult
     
@@ -195,7 +195,7 @@ class ChosenInlineResult(UpdateType):
     def __init__(self, result_id, from_peer, query, location=None, inline_message_id=None, _raw=None):
         """
         Represents a result of an inline query that was chosen by the user and sent to their chat partner.
-        Note: It is necessary to enable inline feednack via @Botfather in order to receive these objects in updates.
+        Note: It is necessary to enable inline feedback via @Botfather in order to receive these objects in updates.
     
         https://core.telegram.org/bots/api#choseninlineresult
 

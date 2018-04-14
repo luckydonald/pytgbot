@@ -132,7 +132,7 @@ class Bot(object):
                 logger.debug("Trying to parse {data}".format(data=repr(result)))
                 from pytgbot.api_types.receivable.updates import Update
                 try:
-                    return Update.from_array_list(result, 1)
+                    return Update.from_array_list(result, list_level=1)
                 except TgApiParseException:
                     logger.debug("Failed parsing as api_type Update", exc_info=True)
                 # end try
@@ -171,6 +171,9 @@ class Bot(object):
            Please upload as pytg.api_types.sendable.files.InputFile, sending a String will not work.
         3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
 
+        NEW! If you're having any trouble setting up webhooks, please check out this amazing guide to Webhooks.
+
+
         All types used in the Bot API responses are represented as JSON-objects.
         It is safe to use 32-bit signed integers for storing all Integer fields unless otherwise noted.
 
@@ -182,7 +185,7 @@ class Bot(object):
         Parameters:
 
         :param url: HTTPS url to send updates to. Use an empty string to remove webhook integration
-        :type  url: str
+        :type  url: str|unicode
 
 
         Optional keyword parameters:
@@ -203,7 +206,7 @@ class Bot(object):
                                   the previous setting will be used. Please note that this parameter doesn't affect
                                   updates created before the call to the setWebhook, so unwanted updates may be received
                                   for a short period of time.
-        :type  allowed_updates: list of str
+        :type  allowed_updates: list of str|list of unicode
 
         Returns:
 
@@ -328,10 +331,10 @@ class Bot(object):
 
         :param chat_id: Unique identifier for the target chat or username of the target channel
                         (in the format @channelusername)
-        :type  chat_id: int | str
+        :type  chat_id: int | str|unicode
 
         :param text: Text of the message to be sent
-        :type  text: str
+        :type  text: str|unicode
 
 
         Optional keyword parameters:
@@ -339,13 +342,12 @@ class Bot(object):
         :param parse_mode: Send "Markdown" or "HTML", if you want Telegram apps to show bold, italic,
                              fixed-width text or inline URLs in your bot's message.
                              It seems this value is case insensitive.
-        :type  parse_mode: str
+        :type  parse_mode: str|unicode
 
         :param disable_web_page_preview: Disables link previews for links in this message
         :type  disable_web_page_preview: bool
 
-        :param disable_notification: Sends the message silently. iOS users will not receive a notification,
-                                        Android users will receive a notification with no sound.
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
         :param reply_to_message_id: If the message is a reply, ID of the original message
@@ -409,11 +411,11 @@ class Bot(object):
 
         :param chat_id: Unique identifier for the target chat (chat id of user chat or group chat) or username of the
                         target channel (in the format @channelusername)
-        :type  chat_id: int | str
+        :type  chat_id: int | str|unicode
 
         :param from_chat_id: Unique identifier for the chat where the original message was sent
                              (id for chats or the channel's username in the format @channelusername)
-        :type  from_chat_id: int | str
+        :type  from_chat_id: int | str|unicode
 
         :param message_id: Message identifier in the chat specified in from_chat_id
         :type  message_id: int
@@ -421,8 +423,7 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :param disable_notification: Sends the message silently. iOS users will not receive a notification,
-                                        Android users will receive a notification with no sound.
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
 
@@ -568,7 +569,7 @@ class Bot(object):
                       pass an HTTP URL as a String for Telegram to get an audio from the Internet,
                       or upload a new audio, by specifying the file path as
                       :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
-        :type  audio: pytgbot.api_types.sendable.files.InputFile | str
+        :type  audio: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
         Optional keyword parameters:
@@ -1829,7 +1830,7 @@ class Bot(object):
 
     def export_chat_invite_link(self, chat_id):
         """
-        Use this method to export an invite link to a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns exported invite link as String on success.
+        Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
 
         https://core.telegram.org/bots/api#exportchatinvitelink
 
@@ -1842,7 +1843,7 @@ class Bot(object):
 
         Returns:
 
-        :return: Returns exported invite link as String on success
+        :return: Returns the new invite link as String on success
         :rtype:  str|unicode
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
@@ -3217,7 +3218,7 @@ class Bot(object):
         :param need_phone_number: Pass True, if you require the user's phone number to complete the order
         :type  need_phone_number: bool
 
-        :param need_email: Pass True, if you require the user's email to complete the order
+        :param need_email: Pass True, if you require the user's email address to complete the order
         :type  need_email: bool
 
         :param need_shipping_address: Pass True, if you require the user's shipping address to complete the order
