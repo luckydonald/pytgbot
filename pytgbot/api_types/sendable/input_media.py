@@ -18,9 +18,14 @@ class InputMedia(Sendable):
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
+
+    Optional keyword parameters:
+
+    :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :type  parse_mode: str|unicode
     """
 
-    def __init__(self, type, media):
+    def __init__(self, type, media, parse_mode=None):
         """
         This object represents the content of a media message to be sent.
 
@@ -42,13 +47,20 @@ class InputMedia(Sendable):
 
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
+
+        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
+        self.parse_mode = parse_mode
     # end def __init__
 
     def to_array(self):
-        return {
+        array = {
             "type": u(self.type),
             "media": u(self.media),
         }
+        if self.parse_mode is not None:
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
+        return array
     # end def to_array
 # end class InputMedia
 
@@ -60,31 +72,51 @@ class InputMediaPhoto(InputMedia):
     https://core.telegram.org/bots/api#inputmediaphoto
 
 
+    Parameters:
+
+    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+    :type  media: str|unicode
+
+
     Optional keyword parameters:
     
     :param caption: Optional. Caption of the photo to be sent, 0-200 characters
     :type  caption: str|unicode
+
+    :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :type  parse_mode: str|unicode
     """
 
-    def __init__(self, media, caption=None):
+    def __init__(self, media, caption=None, parse_mode=None):
         """
         Represents a photo to be sent.
     
         https://core.telegram.org/bots/api#inputmediaphoto
 
 
+        Parameters:
+
+        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+        :type  media: str|unicode
+
+
         Optional keyword parameters:
         
         :param caption: Optional. Caption of the photo to be sent, 0-200 characters
         :type  caption: str|unicode
+
+        :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
         """
-        super(InputMediaPhoto, self).__init__("photo", media)
+        super(InputMediaPhoto, self).__init__("photo", media, parse_mode=parse_mode)
 
         # type is set by InputMedia base class
         # media is set by InputMedia base class
 
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
+
+        # parse_mode is set by InputMedia base class
     # end def __init__
 
     def to_array(self):
@@ -98,6 +130,7 @@ class InputMediaPhoto(InputMedia):
         # 'type' and 'media' given by superclass
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # 'parse_mode' given by superclass
         return array
     # end def to_array
 
@@ -118,7 +151,8 @@ class InputMediaPhoto(InputMedia):
         # 'type' is given by class type
         data['media'] = u(array.get('media'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        
+        # 'parse_mode' is given by class type
+
         instance = InputMediaPhoto(**data)
         instance._raw = array
         return instance
@@ -128,7 +162,7 @@ class InputMediaPhoto(InputMedia):
         """
         Implements `str(inputmediaphoto_instance)`
         """
-        return "InputMediaPhoto(type={self.type!r}, media={self.media!r}, caption={self.caption!r})".format(self=self)
+        return "InputMediaPhoto(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -138,14 +172,14 @@ class InputMediaPhoto(InputMedia):
         if self._raw:
             return "InputMediaPhoto.from_array({self._raw})".format(self=self)
         # end if
-        return "InputMediaPhoto(type={self.type!r}, media={self.media!r}, caption={self.caption!r})".format(self=self)
+        return "InputMediaPhoto(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in inputmediaphoto_instance`
         """
-        return key in ["type", "media", "caption"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "caption", "parse_mode"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputMediaPhoto
 
@@ -169,6 +203,9 @@ class InputMediaVideo(InputMedia):
     :param caption: Optional. Caption of the video to be sent, 0-200 characters
     :type  caption: str|unicode
     
+    :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :type  parse_mode: str|unicode
+
     :param width: Optional. Video width
     :type  width: int
     
@@ -177,9 +214,12 @@ class InputMediaVideo(InputMedia):
     
     :param duration: Optional. Video duration
     :type  duration: int
+
+    :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
+    :type  supports_streaming: bool
     """
 
-    def __init__(self, media, caption=None, width=None, height=None, duration=None):
+    def __init__(self, type, media, caption=None, parse_mode=None, width=None, height=None, duration=None, supports_streaming=None):
         """
         Represents a video to be sent.
     
@@ -197,6 +237,9 @@ class InputMediaVideo(InputMedia):
         :param caption: Optional. Caption of the video to be sent, 0-200 characters
         :type  caption: str|unicode
         
+        :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
+
         :param width: Optional. Video width
         :type  width: int
         
@@ -205,15 +248,20 @@ class InputMediaVideo(InputMedia):
         
         :param duration: Optional. Video duration
         :type  duration: int
+
+        :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
+        :type  supports_streaming: bool
         """
-        super(InputMediaVideo, self).__init__("video", media)
+        super(InputMediaVideo, self).__init__("video", media, parse_mode=parse_mode)
 
         # type is set by InputMedia base class
         # media is set by InputMedia base class
         
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
+
+        # parse_mode is set by base class
+
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
         
@@ -222,6 +270,9 @@ class InputMediaVideo(InputMedia):
         
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
+
+        assert_type_or_raise(supports_streaming, None, bool, parameter_name="supports_streaming")
+        self.supports_streaming = supports_streaming
     # end def __init__
 
     def to_array(self):
@@ -235,12 +286,15 @@ class InputMediaVideo(InputMedia):
         # 'type' and 'media' given by superclass
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # 'parse_mode' is given by class type
         if self.width is not None:
             array['width'] = int(self.width)  # type int
         if self.height is not None:
             array['height'] = int(self.height)  # type int
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
+        if self.supports_streaming is not None:
+            array['supports_streaming'] = bool(self.supports_streaming)  # type bool
         return array
     # end def to_array
 
@@ -261,10 +315,12 @@ class InputMediaVideo(InputMedia):
         # 'type' is given by class type
         data['media'] = u(array.get('media'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # 'parse_mode' is given by class type
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
-        
+        data['supports_streaming'] = bool(array.get('supports_streaming')) if array.get('supports_streaming') is not None else None
+
         instance = InputMediaVideo(**data)
         instance._raw = array
         return instance
@@ -274,7 +330,7 @@ class InputMediaVideo(InputMedia):
         """
         Implements `str(inputmediavideo_instance)`
         """
-        return "InputMediaVideo(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r})".format(self=self)
+        return "InputMediaVideo(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, supports_streaming={self.supports_streaming!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -284,14 +340,14 @@ class InputMediaVideo(InputMedia):
         if self._raw:
             return "InputMediaVideo.from_array({self._raw})".format(self=self)
         # end if
-        return "InputMediaVideo(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r})".format(self=self)
+        return "InputMediaVideo(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, supports_streaming={self.supports_streaming!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in inputmediavideo_instance`
         """
-        return key in ["type", "media", "caption", "width", "height", "duration"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputMediaVideo
 

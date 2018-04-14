@@ -3,7 +3,7 @@
 - [`Bot API 3`.`6` (February 13, 2018)](https://core.telegram.org/bots/api-changelog#february-13-2018)
     - Added `connected_website` attribute to the `Update` class.
 - Added `parse_mode` attribute all stuff that has captions, in the bot functions and the sendable inline objects.
-- Also added `supports_streaming` to `Bot.send_video(...)`.
+- Also added `supports_streaming` to `Bot.send_video(...)` and  `sendable.inputmedia.InputMediaVideo`.
 
 ## Version 3.5.2
 - Added `username` and `id` property to the `Bot` class.
