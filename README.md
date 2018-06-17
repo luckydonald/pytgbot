@@ -10,7 +10,14 @@ Native python package witch pure Python interface for the [Telegram Bot API](htt
  - [Older changes...](CHANGELOG.md)
 
 #### Installation  ####
+Via pip:
 ```sh
+pip install pytgbot
+```
+Or manually:
+```sh
+git clone https://github.com/luckydonald/pytgbot.git
+cd pytgbot
 python setup.py install
 ```
 
