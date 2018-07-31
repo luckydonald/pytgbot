@@ -14,7 +14,7 @@ Native python package with a pure Python interface for the [Telegram Bot API](ht
 If you're using this library to build your Telegram Bots, We'd love to know and share the bot with the world.
 Tell us about it - **[here](https://github.com/luckydonald/pytgbot/wiki/Who's-using-pytgbot%3F)**
 
-Check out the [Who's using pytg] wiki page to know more about what people have been building with this library.
+Check out the [Who's using pytg](https://github.com/luckydonald/pytgbot/wiki/Who's-using-pytgbot%3F) wiki page to know more about what people have been building with this library.
 
 #### Installation  ####
 Via pip:
