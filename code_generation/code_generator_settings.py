@@ -60,10 +60,16 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "ShippingQuery":        ("pytgbot.api_types.receivable.payments.", "UpdateType", None),  # May 18, 2017
     "PreCheckoutQuery":     ("pytgbot.api_types.receivable.payments.", "UpdateType", None),  # May 18, 2017
 
-    # pytgbot.api_types.receivable.payments.*
+    # pytgbot.api_types.receivable.stickers.*
     # "Sticker":      ("pytgbot.api_types.receivable.stickers.", "Media", None),  # July 21, 2017
     "StickerSet":   ("pytgbot.api_types.receivable.stickers.", "Result", None),  # July 21, 2017
     "MaskPosition": ("pytgbot.api_types.receivable.stickers.", "Result", None),  # July 21, 2017
+
+    # pytgbot.api_types.receivable.passport.*
+    "PassportData":               ("pytgbot.api_types.receivable.passport.", "Result", None),  # July 26, 2018
+    "EncryptedPassportElement":   ("pytgbot.api_types.receivable.passport.", "Result", None),  # July 26, 2018
+    "EncryptedCredentials":       ("pytgbot.api_types.receivable.passport.", "Result", None),  # July 26, 2018
+    "PassportFile":               ("pytgbot.api_types.receivable.passport.", "Result", None),  # July 26, 2018
 
     # pytgbot.api_types.sendable.*
     "Sendable":                     ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
@@ -111,6 +117,9 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InputMedia":                   ("pytgbot.api_types.sendable.input_media.", "Sendable", None),
     "InputMediaPhoto":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
     "InputMediaVideo":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
+    "InputMediaAnimation":          ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
+    "InputMediaAudio":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
+    "InputMediaDocument":           ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
 
     # pytgbot.api_types.sendable.reply_markup.*
     "Button":               ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
@@ -126,9 +135,18 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "LabeledPrice":     ("pytgbot.api_types.sendable.payments.", "Sendable", None),  # May 18, 2017
     "ShippingOption":   ("pytgbot.api_types.sendable.payments.", "Sendable", None),  # May 18, 2017
 
+
+    # pytgbot.api_types.sendable.passport.*
+    "PassportElementError":            ("pytgbot.api_types.sendable.passport.", "Sendable", None),  # July 26, 2018
+    "PassportElementErrorDataField":   ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorFrontSide":   ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorReverseSide": ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorSelfie":      ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorFile":        ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorFiles":       ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
 }
 
-WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters table and thus wouldn't be detected.
+WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
     # "func": {'return': {'expected': '', 'replace': ''}, 'r_type': {'expected': '', 'replace': ''}},
     "getMe":                 {'return': {'expected': '', 'replace': 'Returns basic information about the bot in form of a User object'}, 'r_type': {'expected': '', 'replace': 'User'}},
     "deleteWebhook":         {'return': {'expected': '', 'replace': 'Returns True on success'}, 'r_type': {'expected': '', 'replace': 'True'}},
@@ -140,6 +158,7 @@ WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters 
     "deleteChatStickerSet":  {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
     "setGameScore":          {'return': {'expected': "On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False", 'replace': 'On success, if the message was sent by the bot, returns the edited Message, otherwise returns True'}, 'r_type': {'expected': 'Message or True or force or False', 'replace': 'Message or True'}},
     "getGameHighScores":     {'return': {'expected': 'This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.', 'replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
+    "setPassportDataErrors": {'return': {'expected': 'The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
 }
 WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters table and thus wouldn't be detected.
     "CallbackGame",

@@ -25,8 +25,13 @@ def lol1(tag):
     return tag.has_attr("class") and "anchor" in tag["class"]
 
 
-class_fields = ["Field", "Type", "Description"]
-func_fields = ["Parameters", "Type", "Required", "Description"]
+class_fields = [
+    ["Field", "Type", "Description"],
+    ["Parameters", "Type", "Description"],
+]
+func_fields = [
+    ["Parameters", "Type", "Required", "Description"],
+]
 
 
 def parse_table(tag):
@@ -37,40 +42,52 @@ def parse_table(tag):
     """
     first = True
     table_header = None
+    table_type = 'unknown'
     param_strings = []
     for row in tag.find_all("tr"):
-        i = 0
-        if first:
+        if first:  # row
+            first = False
+            # TABLE HEADER
+            found_columns = []
             for column in row.find_all("td"):
-                try:
-                    col_text = column.find("strong").text
-                    if i == 0:
-                        if col_text == func_fields[0]:
-                            table_header = func_fields
-                        elif col_text == class_fields[0]:
-                            table_header = class_fields
-                        else:
-                            raise AssertionError("Unknown table, starting with {}".format(col_text))
-                    else:
-                        assert col_text == table_header[i] , "Failed in column {i}, {text_is} != {text_should}.".format(
-                            text_is=col_text, i=i, text_should=table_header[i]
-                        )
-                    # end if
-                    i += 1
-                except Exception:
-                    raise
-                # end try
-            # end for column
-        else: # is not first
+                col_text = column.find("strong").text
+                found_columns.append(col_text)
+            # end def
+
+            # if is func
+            for test_columns in func_fields:
+                if found_columns == test_columns:
+                    table_header = test_columns
+                    table_type = 'func'
+                    break
+                # end if
+            # end for
+            if table_header:
+                continue  # don't need to process the header any longer.
+            # end if
+            # search class now
+            for test_columns in class_fields:
+                if found_columns == test_columns:
+                    if table_header is not None:
+                        raise AssertionError("Table detected as func and class: {!r}".format(found_columns))
+                    table_header = test_columns
+                    table_type = 'class'
+                    break
+                # end if
+            # end for
+            if table_header:
+                continue  # don't need to process the header any longer.
+            # end if
+            raise AssertionError("Unknown table, {!r}".format(found_columns))
+        else:  # is not first row
+            # TABLE BODY
             string = "\t".join([col.text for col in row.find_all("td")])
             logger.debug("t: " + string)
             param_strings.append(string)
             pass
         # end if first - else
-        first = False
     # end for row
-    type = "func" if table_header == func_fields else "class"
-    return type, param_strings
+    return table_type, param_strings
 # end def
 
 
