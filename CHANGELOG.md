@@ -52,7 +52,7 @@
   - Fixed `InputFileFromBlob` and `InputFileFromURL`: Reworked that whole `InputFile` piece, which should fix [#6](https://github.com/luckydonald/pytgbot/issues/6).
   - Fixed `certificate` argument in `Bot.set_webhook(...)` not working.
         - Therefore in `_do_fileupload(...)`, the file can be set to be optional (`_file_is_optional=True`).
-
+  - Added `get_request_media(...)` method to `InputMedia`, to allow sending easier. Is very similar to `InputFile.get_request_files(...)`.
 ## Version 3.6.0
 - [`Bot API 3`.`6` (February 13, 2018)](https://core.telegram.org/bots/api-changelog#february-13-2018)
     - Added `connected_website` attribute to the `Update` class.

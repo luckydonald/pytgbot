@@ -73,6 +73,23 @@ class InputMedia(Sendable):
         # end if
         return array
     # end def to_array
+
+    def get_request_media(self, var_name):
+        """
+        :param var_name:
+        :return: A tuple of `media` name and the files (:py:func:`InputFile.get_request_files()`).
+                 Files can be None, if no file was given, but an url or existing `file_id`.
+                 If `media` is :py:class:`InputFile` however, the first tuple element,
+                 media, will be set to `attach://{var_name}` automatically.
+        """
+        if isinstance(self.media, InputFile):
+            # is file to be uploaded
+            return 'attach://{var_name}'.format(var_name=var_name), self.media.get_request_files(var_name)
+        else:
+            # is no upload
+            return self.media, None
+        # end if
+    # end def get_request_files
 # end class InputMedia
 
 
