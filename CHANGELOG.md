@@ -33,10 +33,11 @@
 
     - Documentation changes:
         - `Bot.set_webhook`: Returns True, only on success.
-- Also, while at it, fixed
-  - `'live_period' in inlinequeryresultlocation_instance` wrongly returning `False`
-  - `InputFileFromBlob` and `InputFileFromURL`: Reworked that whole `InputFile` piece, which should fix [#6](https://github.com/luckydonald/pytgbot/issues/6).
-  - `
+- Also, while at it
+  - Fixed `'live_period' in inlinequeryresultlocation_instance` wrongly returning `False`
+  - Fixed `InputFileFromBlob` and `InputFileFromURL`: Reworked that whole `InputFile` piece, which should fix [#6](https://github.com/luckydonald/pytgbot/issues/6).
+  - Fixed `certificate` argument in `Bot.set_webhook(...)` not working.
+        - Therefore in `_do_fileupload(...)`, the file can be set to be optional (`_file_is_optional=True`).
 
 ## Version 3.6.0
 - [`Bot API 3`.`6` (February 13, 2018)](https://core.telegram.org/bots/api-changelog#february-13-2018)

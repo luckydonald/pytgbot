@@ -192,7 +192,7 @@ class Bot(object):
 
         :param certificate: Upload your public key certificate so that the root certificate in use can be checked.
                               See our self-signed guide for details.
-        :type  certificate: pytgbot.api_types.sendable.files.InputFile
+        :type  certificate: pytgbot.api_types.sendable.files.InputFile | None
 
         :param max_connections: Maximum allowed number of simultaneous HTTPS connections to the webhook for update
                                   delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's
@@ -223,7 +223,7 @@ class Bot(object):
 
         assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
 
-        result = self.do("setWebhook", url=url, certificate=certificate, max_connections=max_connections, allowed_updates=allowed_updates)
+        result = self._do_fileupload('certificate', certificate, _command='setWebhook', _file_is_optional=True, url=url, max_connections=max_connections, allowed_updates=allowed_updates)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3962,7 +3962,7 @@ class Bot(object):
         return res
     # end def _postprocess_request
 
-    def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
+    def _do_fileupload(self, file_param_name, value, _command=None, _file_is_optional=False, **kwargs):
         """
         :param file_param_name: For what field the file should be uploaded.
         :type  file_param_name: str
@@ -3970,10 +3970,15 @@ class Bot(object):
         :param value: File to send. You can either pass a file_id as String to resend a file
                       file that is already on the Telegram servers, or upload a new file,
                       specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
-        :type  value: pytgbot.api_types.sendable.files.InputFile | str
+                      If `_file_is_optional` is set to `True`, it can also be set to `None`.
+        :type  value: pytgbot.api_types.sendable.files.InputFile | str | None
 
-        :param _command: Overwrite the sended command.
+        :param _command: Overwrite the command to be send.
                          Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
+        :type  _command: str|None
+
+        :param _file_is_optional: If the file (`value`) is allowed to be None.
+        :type  _file_is_optional: bool
 
         :param kwargs: will get json encoded.
 
@@ -3982,16 +3987,31 @@ class Bot(object):
 
         :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
         """
-        from pytgbot.api_types.sendable.files import InputFile
+        from .api_types.sendable.files import InputFile
         from luckydonaldUtils.encoding import unicode_type
         from luckydonaldUtils.encoding import to_native as n
 
-        if isinstance(value, str):
+        if value is None and _file_is_optional:
+            # Is None but set optional, so do nothing.
+            pass
+        elif isinstance(value, str):
             kwargs[file_param_name] = str(value)
         elif isinstance(value, unicode_type):
             kwargs[file_param_name] = n(value)
         elif isinstance(value, InputFile):
-            kwargs["files"] = value.get_request_files(file_param_name)
+            files = value.get_request_files(file_param_name)
+            if "files" in kwargs and kwargs["files"]:
+                # already are some files there, merge them.
+                assert isinstance(kwargs["files"], dict), \
+                    'The files should be of type dict, but are of type {}.'.format(type(kwargs["files"]))
+                for key in files.keys():
+                    assert key not in kwargs["files"], '{key} would be overwritten!'
+                    kwargs["files"][key] = files[key]
+                # end for
+            else:
+                # no files so far
+                kwargs["files"] = files
+            # end if
         else:
             raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
