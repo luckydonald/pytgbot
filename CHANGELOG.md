@@ -18,7 +18,7 @@
         - `api_types.receivable.passport`:
             - Added, see above.
         - `api_types.receivable.updates`:
-                      - ########TODO########
+            - Added parameters `animation` and `passport_data` to `Message`.
         - `api_types.sendable.inline`:
             - Added `foursquare_type` parameter to `InlineQueryResultVenue` and `InputVenueMessageContent`.
             - Added `vcard` parameter to `InlineQueryResultContact` and `InputContactMessageContent`.
@@ -26,13 +26,17 @@
                         - ########TODO########
         - `api_types.receivable.passport`:
             - Added, see above.
-        - `api_types.sendable.reply_markup`:
-                        - ########TODO########
         - `bot.Bot`:
-                        - ########TODO########
-
+            - Added `thumb` parameter to `send_audio(...)`, `send_video(...)`, `send_video_note(...)` and `send_video_note(...)`.
+            - Added `foursquare_type` parameter to `send_venue(...)`.
+            - Added `vcard` parameter to `send_contact(...)`.
+            - Added new `send_animation(...)` function.
+            - Added new `edit_message_media(...)` function.
+            - Added new `set_passport_data_errors(...)` function.
     - Documentation changes:
-        - `Bot.set_webhook`: Returns True, only on success.
+        - `bot.Bot.set_webhook`: Returns True, only on success.
+        - `bot.Bot.send_media_group`: Instead of generic `InputMedia`, now only accepts `InputMediaPhoto` or `InputMediaVideo`
+        - `api_types.sendable.reply_markup.InlineKeyboardButton` can now use `tg://` urls, too.
 - Also, while at it
   - Fixed `'live_period' in inlinequeryresultlocation_instance` wrongly returning `False`
   - Fixed `InputFileFromBlob` and `InputFileFromURL`: Reworked that whole `InputFile` piece, which should fix [#6](https://github.com/luckydonald/pytgbot/issues/6).
