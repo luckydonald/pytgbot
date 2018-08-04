@@ -296,9 +296,15 @@ class InputMediaVideo(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        // ERROR: Multiple types (InputFile, str) for
-        // data['thumb'] = thumb
-        // not sure what to do...
+        if isinstance(array.get('thumb'), InputFile):
+            data['thumb'] = InputFile.from_array(array.get('thumb'))
+        elif isinstance(array.get('thumb'), str):
+            data['thumb'] = u(array.get('thumb'))
+        elif array.get('thumb') is None:
+            data['thumb'] = None
+        else:
+            raise TypeError('Unknown type, must be one of InputFile, str or None.')
+        # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
@@ -487,9 +493,15 @@ class InputMediaAnimation(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        // ERROR: Multiple types (InputFile, str) for
-        // data['thumb'] = thumb
-        // not sure what to do...
+        if isinstance(array.get('thumb'), InputFile):
+            data['thumb'] = InputFile.from_array(array.get('thumb'))
+        elif isinstance(array.get('thumb'), str):
+            data['thumb'] = u(array.get('thumb'))
+        elif array.get('thumb') is None:
+            data['thumb'] = None
+        else:
+            raise TypeError('Unknown type, must be one of InputFile, str or None.')
+        # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
@@ -677,9 +689,15 @@ class InputMediaAudio(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        // ERROR: Multiple types (InputFile, str) for
-        // data['thumb'] = thumb
-        // not sure what to do...
+        if isinstance(array.get('thumb'), InputFile):
+            data['thumb'] = InputFile.from_array(array.get('thumb'))
+        elif isinstance(array.get('thumb'), str):
+            data['thumb'] = u(array.get('thumb'))
+        elif array.get('thumb') is None:
+            data['thumb'] = None
+        else:
+            raise TypeError('Unknown type, must be one of InputFile, str or None.')
+        # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
@@ -834,9 +852,15 @@ class InputMediaDocument(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        // ERROR: Multiple types (InputFile, str) for
-        // data['thumb'] = thumb
-        // not sure what to do...
+        if isinstance(array.get('thumb'), InputFile):
+            data['thumb'] = InputFile.from_array(array.get('thumb'))
+        elif isinstance(array.get('thumb'), str):
+            data['thumb'] = u(array.get('thumb'))
+        elif array.get('thumb') is None:
+            data['thumb'] = None
+        else:
+            raise TypeError('Unknown type, must be one of InputFile, str or None.')
+        # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         

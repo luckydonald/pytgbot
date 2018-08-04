@@ -54,6 +54,30 @@ else:
 # end if
 {% endif -%}
 {%- endmacro %}
+
+{%- macro set_data_array_element(variable, var_type, clazz, optional) -%}
+{% if var_type.is_builtin -%}
+        {% if var_type.string == 'str' -%}
+        {% if var_type.is_list > 0 -%}
+        data['{{ variable.name }}'] = {{ clazz.clazz }}._builtin_from_array_list(required_type=unicode_type, value=array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% else -%}
+        data['{{ variable.name }}'] = u(array.get('{{ variable.api_name }}')){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% endif -%}
+        {% else -%}
+        {% if var_type.is_list > 0 -%}
+        data['{{ variable.name }}'] = {{ clazz.clazz }}._builtin_from_array_list(required_type={{ var_type.string }}, value=array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% else -%}
+        data['{{ variable.name }}'] = {{ var_type.string }}(array.get('{{ variable.api_name }}')){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% endif -%}
+        {% endif -%}
+        {% else -%}
+        {% if var_type.is_list > 0 -%}
+        data['{{ variable.name }}'] = {{ var_type.string }}.from_array_list(array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% else -%}
+        data['{{ variable.name }}'] = {{ var_type.string }}.from_array(array.get('{{ variable.api_name }}')){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% endif -%}
+        {% endif -%}
+{%- endmacro -%}
 {#- macros -#}
 class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     """
@@ -158,32 +182,19 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         data = {}
         {% for variable in clazz.variables -%}
         {% if variable.types|length == 1 -%}
-        {% set type = variable.types[0] -%}
-        {% if type.is_builtin -%}
-        {% if type.string == 'str' -%}
-        {% if type.is_list > 0 -%}
-        data['{{ variable.name }}'] = {{ clazz.clazz }}._builtin_from_array_list(required_type=unicode_type, value=array.get('{{ variable.api_name }}'), list_level={{ type.is_list }}){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {{- set_data_array_element(variable, variable.types[0], clazz, variable.optional) -}}
         {% else -%}
-        data['{{ variable.name }}'] = u(array.get('{{ variable.api_name }}')){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {%- for var_type in variable.types -%}
+        {%- if not loop.first %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
+            {{ set_data_array_element(variable, var_type, clazz, False) -}}
+        {%- endfor -%}
+        {%- if variable.optional -%}
+        elif array.get('{{ variable.api_name }}') is None:
+            data['{{ variable.name }}'] = None
         {% endif -%}
-        {% else -%}
-        {% if type.is_list > 0 -%}
-        data['{{ variable.name }}'] = {{ clazz.clazz }}._builtin_from_array_list(required_type={{ type.string }}, value=array.get('{{ variable.api_name }}'), list_level={{ type.is_list }}){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
-        {% else -%}
-        data['{{ variable.name }}'] = {{ type.string }}(array.get('{{ variable.api_name }}')){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
-        {% endif -%}
-        {% endif -%}
-        {% else -%}
-        {% if type.is_list > 0 -%}
-        data['{{ variable.name }}'] = {{ type.string }}.from_array_list(array.get('{{ variable.api_name }}'), list_level={{ type.is_list }}){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
-        {% else -%}
-        data['{{ variable.name }}'] = {{ type.string }}.from_array(array.get('{{ variable.api_name }}')){%- if variable.optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
-        {% endif -%}
-        {% endif -%}
-        {% else -%}
-        // ERROR: Multiple types ({{ for_type(variable) }}) for
-        // data['{{ variable.api_name }}'] = {{ variable.name }}
-        // not sure what to do...
+        else:
+            raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
+        # end if
         {% endif -%}
         {%- endfor -%}{%- if not is_sendable -%}
         data['_raw'] = array
