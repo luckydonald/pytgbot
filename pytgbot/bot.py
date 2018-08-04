@@ -2787,6 +2787,7 @@ class Bot(object):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(media, InputMedia, parameter_name="media")
+        new_media, files = media.get_request_media('littlepip')
 
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
 
@@ -2797,8 +2798,8 @@ class Bot(object):
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
 
         result = self.do(
-            "editMessageMedia", media=media, chat_id=chat_id, message_id=message_id,
-            inline_message_id=inline_message_id, reply_markup=reply_markup
+            "editMessageMedia", media=new_media, files=files,
+            chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))

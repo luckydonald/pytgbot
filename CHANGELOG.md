@@ -54,6 +54,7 @@
         - Therefore in `_do_fileupload(...)`, the file can be set to be optional (`_file_is_optional=True`).
   - Added `get_request_media(...)` method to `InputMedia`, to allow sending easier. Is very similar to `InputFile.get_request_files(...)`.
   - Fixed `Bot.send_media_group(...)` now supporting `InputMediaPhoto` and `InputMediaVideo` elements, so sending files is actually possible.
+  - Fixed `Bot.edit_message_media(...)` now supporting `InputMedia` elements, so sending files is actually possible.
 
 ## Version 3.6.0
 - [`Bot API 3`.`6` (February 13, 2018)](https://core.telegram.org/bots/api-changelog#february-13-2018)
