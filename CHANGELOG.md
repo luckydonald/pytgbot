@@ -23,7 +23,17 @@
             - Added `foursquare_type` parameter to `InlineQueryResultVenue` and `InputVenueMessageContent`.
             - Added `vcard` parameter to `InlineQueryResultContact` and `InputContactMessageContent`.
         - `api_types.sendable.input_media`:
-                        - ########TODO########
+            - `InputMedia`: Created `caption` field, this is contained in all subclasses.
+            - `InputMediaPhoto`:
+                - moved the `caption` into the superclass.
+                - fixed `parse_mode` not working in `from_array(...)`
+            - `InputMediaVideo`:
+                - moved the `caption` into the superclass.
+                - fixed `parse_mode` not working in `from_array(...)`
+                - added `thumb` parameter.
+             - Added new `InputMediaAnimation`.
+             - Added new `InputMediaAudio`.
+             - Added new `InputMediaDocument`.
         - `api_types.receivable.passport`:
             - Added, see above.
         - `bot.Bot`:
