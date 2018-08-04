@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
-from os.path import abspath, dirname, join as path_join, sep as folder_seperator, isfile
+from os.path import abspath, dirname, join as path_join, sep as folder_seperator, isfile, exists
 
 BASE_URL = "https://core.telegram.org/bots/api"
 
@@ -265,7 +265,7 @@ def load_from_api(folder):
         # end if
     # end for
 
-    output(folder, results, html_document=document)
+    output(folder, results, html_content=document.content)
 # end def main
 
 def main():
@@ -282,16 +282,26 @@ def main():
 def load_from_dump(folder):
     from luckydonaldUtils.interactions import safe_eval, NoBuiltins
     safe_values = NoBuiltins([], {}, {"Function":Function, "Clazz":Clazz, "Import":Import, "Type":Type, "Variable":Variable})
-    file = ""
+
+    # read dump
+    dump = ""
     with open(path_join(folder, "api.py"), "r") as f:
-        file = "".join(f.readlines())
+        dump = "".join(f.readlines())
     # end with
-    results = safe_eval(file, safe_values)
-    output(folder, results)
+
+    # existing old api.html
+    html_document = None
+    if exists(path_join(folder, "api.html")):
+        with open(path_join(folder, "api.html"), "rb") as f:
+            html_document = f.read()
+        # end with
+    # end if
+    results = safe_eval(dump, safe_values)
+    output(folder, results, html_content=html_document)
 # end def
 
 
-def output(folder, results, html_document=None):
+def output(folder, results, html_content=None):
     can_quit = False
     do_overwrite = confirm("Can the folder {path} be overwritten?".format(path=folder))
     print("vvvvvvvvv")
@@ -313,9 +323,9 @@ def output(folder, results, html_document=None):
                 f.write("\n]")
                 # end for
             # end with
-            if html_document:
+            if html_content:
                 with open(path_join(folder, "api.html"), "wb") as f:
-                    f.write(html_document.content)
+                    f.write(html_content)
                 # end with
             # end if
             print("Writen to file.")
