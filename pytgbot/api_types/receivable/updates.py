@@ -698,6 +698,7 @@ class Message(UpdateType):
         super(Message, self).__init__()
         from ..receivable.peer import User, Chat
         from ..receivable.media import Audio, Contact, Document, Game, Location, Sticker, Venue, Video, Voice, VideoNote
+        from ..receivable.media import Animation
         from ..receivable.payments import Invoice, SuccessfulPayment
         from ..receivable.passport import PassportData
 

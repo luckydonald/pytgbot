@@ -42,7 +42,7 @@ class InputMedia(Sendable):
         :type  caption: str|unicode
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode
+        :type  media: InputFile|str|unicode
 
         """
         super(InputMedia, self).__init__()
@@ -50,7 +50,7 @@ class InputMedia(Sendable):
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
 
-        assert_type_or_raise(media, unicode_type, parameter_name="media")
+        assert_type_or_raise(media, unicode_type, InputFile, parameter_name="media")
         self.media = media
 
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
@@ -63,7 +63,7 @@ class InputMedia(Sendable):
     def to_array(self):
         array = {
             "type": u(self.type),
-            "media": u(self.media),
+            #"media": u(self.media),
         }
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
@@ -74,17 +74,24 @@ class InputMedia(Sendable):
         return array
     # end def to_array
 
-    def get_request_media(self, var_name):
+    def get_request_data(self, var_name, full_data=False):
         """
         :param var_name:
-        :return: A tuple of `media` name and the files (:py:func:`InputFile.get_request_files()`).
+        :param full_data: If you want `.to_array()` with this data, ready to be sent.
+        :return: A tuple of `to_array()` dict and the files (:py:func:`InputFile.get_request_files()`).
                  Files can be None, if no file was given, but an url or existing `file_id`.
                  If `media` is :py:class:`InputFile` however, the first tuple element,
-                 media, will be set to `attach://{var_name}` automatically.
+                 media, will have ['media'] set to `attach://{var_name}` automatically.
         """
+        if full_data:
+            data = self.to_array()
+            data['media'], file = self.get_request_data(var_name, full_data=False)
+            return data, file
+        # end if
         if isinstance(self.media, InputFile):
             # is file to be uploaded
-            return 'attach://{var_name}'.format(var_name=var_name), self.media.get_request_files(var_name)
+            string = 'attach://{var_name}'.format(var_name=var_name)
+            return string, self.media.get_request_files(var_name)
         else:
             # is no upload
             return self.media, None

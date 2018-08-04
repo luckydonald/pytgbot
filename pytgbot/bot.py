@@ -1184,7 +1184,7 @@ class Bot(object):
         for i, medium in enumerate(media):
             assert_type_or_raise(media, InputMediaPhoto, InputMediaVideo, parameter_name="media[{i}]".format(i=i))
             assert isinstance(medium, (InputMediaPhoto, InputMediaVideo))
-            new_medium, file = medium.get_request_media('pytgbot{i}'.format(i=i))
+            new_medium, file = medium.get_request_data('pytgbot{i}'.format(i=i), full_data=True)
             logger.debug('InputMedia {} found.'.format(new_medium))
             new_media.append(new_medium)
             if file:
@@ -2787,7 +2787,8 @@ class Bot(object):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(media, InputMedia, parameter_name="media")
-        new_media, files = media.get_request_media('littlepip')
+        new_media, files = media.get_request_data('littlepip', full_data=True)
+        new_media = json.dumps(new_media)
 
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
 
