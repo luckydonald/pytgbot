@@ -1176,16 +1176,37 @@ class Bot(object):
         :rtype:  Messages
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        from .api_types.sendable.input_media import InputMediaPhoto, InputMediaVideo
 
+        files = {}
+        new_media = []
         assert_type_or_raise(media, list, parameter_name="media")
+        for i, medium in enumerate(media):
+            assert_type_or_raise(media, InputMediaPhoto, InputMediaVideo, parameter_name="media[{i}]".format(i=i))
+            assert isinstance(medium, (InputMediaPhoto, InputMediaVideo))
+            new_medium, file = medium.get_request_media('pytgbot{i}'.format(i=i))
+            logger.debug('InputMedia {} found.'.format(new_medium))
+            new_media.append(new_medium)
+            if file:
+                files.update(file)
+            # end if
+        # end for
 
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
 
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
 
-        result = self.do("sendMediaGroup", chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id)
+        result = self.do(
+            "sendMediaGroup", chat_id=chat_id, media=new_media, files=files,
+            disable_notification=disable_notification, reply_to_message_id=reply_to_message_id,
+        )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            if not isinstance(result, list):
+                raise TgApiParseException("Could not parse result als list.")  # See debug log for details!
+            # end if
+            from .api_types.receivable.updates import Message
+            return [Message.from_array(msg) for msg in result]  # parse them all as Message.
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
