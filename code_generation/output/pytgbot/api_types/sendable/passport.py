@@ -5,7 +5,6 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.sendable.passport import PassportElementError
 
 
-
 class PassportElementErrorDataField(PassportElementError):
     """
     Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
@@ -145,7 +144,6 @@ class PassportElementErrorDataField(PassportElementError):
 # end class PassportElementErrorDataField
 
 
-
 class PassportElementErrorFrontSide(PassportElementError):
     """
     Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
@@ -272,7 +270,6 @@ class PassportElementErrorFrontSide(PassportElementError):
         return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class PassportElementErrorFrontSide
-
 
 
 class PassportElementErrorReverseSide(PassportElementError):
@@ -403,7 +400,6 @@ class PassportElementErrorReverseSide(PassportElementError):
 # end class PassportElementErrorReverseSide
 
 
-
 class PassportElementErrorSelfie(PassportElementError):
     """
     Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
@@ -532,7 +528,6 @@ class PassportElementErrorSelfie(PassportElementError):
 # end class PassportElementErrorSelfie
 
 
-
 class PassportElementErrorFile(PassportElementError):
     """
     Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
@@ -659,7 +654,6 @@ class PassportElementErrorFile(PassportElementError):
         return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class PassportElementErrorFile
-
 
 
 class PassportElementErrorFiles(PassportElementError):

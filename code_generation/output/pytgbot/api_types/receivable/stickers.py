@@ -5,7 +5,6 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable import Result
 
 
-
 class StickerSet(Result):
     """
     This object represents a sticker set.
@@ -142,7 +141,6 @@ class StickerSet(Result):
         return key in ["name", "title", "contains_masks", "stickers"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class StickerSet
-
 
 
 class MaskPosition(Result):

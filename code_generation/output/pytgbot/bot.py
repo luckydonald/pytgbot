@@ -773,7 +773,7 @@ class Bot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("animation", chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendAnimation", chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -786,7 +786,7 @@ class Bot(object):
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
-    # end def send_video
+    # end def send_animation
     
     def send_voice(self, chat_id, voice, caption=None, parse_mode=None, duration=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
@@ -957,7 +957,7 @@ class Bot(object):
         :type  chat_id: int | str|unicode
         
         :param media: A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
-        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto|pytgbot.api_types.sendable.input_media.InputMediaVideo
+        :type  media: list of InputMediaPhoto and InputMediaVideo
         
         
         Optional keyword parameters:
@@ -3589,7 +3589,7 @@ class Bot(object):
         return res
     # end def _postprocess_request
 
-    def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
+        def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
         """
         :param file_param_name: For what field the file should be uploaded.
         :type  file_param_name: str

@@ -6,7 +6,6 @@ from pytgbot.api_types.sendable.reply_markup import Button
 from pytgbot.api_types.sendable.reply_markup import ReplyMarkup
 
 
-
 class ReplyKeyboardMarkup(ReplyMarkup):
     """
     This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
@@ -142,7 +141,6 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 # end class ReplyKeyboardMarkup
 
 
-
 class KeyboardButton(Button):
     """
     This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields are mutually exclusive.
@@ -264,7 +262,6 @@ class KeyboardButton(Button):
 # end class KeyboardButton
 
 
-
 class ReplyKeyboardRemove(ReplyMarkup):
     """
     Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
@@ -372,7 +369,6 @@ class ReplyKeyboardRemove(ReplyMarkup):
 # end class ReplyKeyboardRemove
 
 
-
 class InlineKeyboardMarkup(ReplyMarkup):
     """
     This object represents an inline keyboard that appears right next to the message it belongs to.
@@ -472,7 +468,6 @@ class InlineKeyboardMarkup(ReplyMarkup):
         return key in ["inline_keyboard"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineKeyboardMarkup
-
 
 
 class InlineKeyboardButton(Button):
@@ -644,7 +639,6 @@ class InlineKeyboardButton(Button):
         return key in ["text", "url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineKeyboardButton
-
 
 
 class ForceReply(ReplyMarkup):

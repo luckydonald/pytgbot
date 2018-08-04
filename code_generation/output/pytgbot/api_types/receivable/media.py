@@ -7,7 +7,6 @@ from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.media import Media
 
 
-
 class MessageEntity(Result):
     """
     This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
@@ -159,7 +158,6 @@ class MessageEntity(Result):
 # end class MessageEntity
 
 
-
 class PhotoSize(Result):
     """
     This object represents one size of a photo or a file / sticker thumbnail.
@@ -293,7 +291,6 @@ class PhotoSize(Result):
         return key in ["file_id", "width", "height", "file_size"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class PhotoSize
-
 
 
 class Audio(Media):
@@ -472,7 +469,6 @@ class Audio(Media):
 # end class Audio
 
 
-
 class Document(Media):
     """
     This object represents a general file (as opposed to photos, voice messages and audio files).
@@ -624,7 +620,6 @@ class Document(Media):
         return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Document
-
 
 
 class Video(Media):
@@ -799,7 +794,6 @@ class Video(Media):
         return key in ["file_id", "width", "height", "duration", "thumb", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Video
-
 
 
 class Animation(Media):
@@ -988,7 +982,6 @@ class Animation(Media):
 # end class Animation
 
 
-
 class Voice(Media):
     """
     This object represents a voice note.
@@ -1123,7 +1116,6 @@ class Voice(Media):
         return key in ["file_id", "duration", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Voice
-
 
 
 class VideoNote(Media):
@@ -1277,7 +1269,6 @@ class VideoNote(Media):
 # end class VideoNote
 
 
-
 class Contact(Media):
     """
     This object represents a phone contact.
@@ -1426,7 +1417,6 @@ class Contact(Media):
 # end class Contact
 
 
-
 class Location(Media):
     """
     This object represents a point on the map.
@@ -1537,7 +1527,6 @@ class Location(Media):
         return key in ["longitude", "latitude"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Location
-
 
 
 class Venue(Media):
@@ -1691,7 +1680,6 @@ class Venue(Media):
 # end class Venue
 
 
-
 class UserProfilePhotos(Result):
     """
     This object represent a user's profile pictures.
@@ -1806,7 +1794,6 @@ class UserProfilePhotos(Result):
         return key in ["total_count", "photos"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class UserProfilePhotos
-
 
 
 class File(Receivable):
@@ -1938,7 +1925,6 @@ class File(Receivable):
 # end class File
 
 
-
 class ChatPhoto(Result):
     """
     This object represents a chat photo.
@@ -2049,7 +2035,6 @@ class ChatPhoto(Result):
         return key in ["small_file_id", "big_file_id"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class ChatPhoto
-
 
 
 class Sticker(Media):
@@ -2239,7 +2224,6 @@ class Sticker(Media):
         return key in ["file_id", "width", "height", "thumb", "emoji", "set_name", "mask_position", "file_size"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Sticker
-
 
 
 class Game(Media):

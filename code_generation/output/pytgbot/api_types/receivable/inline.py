@@ -6,7 +6,6 @@ from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.updates import UpdateType
 
 
-
 class InlineQuery(Result):
     """
     This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
@@ -157,7 +156,6 @@ class InlineQuery(Result):
         return key in ["id", "from_peer", "query", "offset", "location"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQuery
-
 
 
 class ChosenInlineResult(UpdateType):

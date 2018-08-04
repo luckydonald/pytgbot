@@ -6,7 +6,6 @@ from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable.updates import UpdateType
 
 
-
 class Update(Receivable):
     """
     This object represents an incoming update.At most one of the optional parameters can be present in any given update.
@@ -230,7 +229,6 @@ class Update(Receivable):
 # end class Update
 
 
-
 class WebhookInfo(Receivable):
     """
     Contains information about the current status of a webhook.
@@ -400,7 +398,6 @@ class WebhookInfo(Receivable):
         return key in ["url", "has_custom_certificate", "pending_update_count", "last_error_date", "last_error_message", "max_connections", "allowed_updates"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class WebhookInfo
-
 
 
 class Message(UpdateType):
@@ -1058,7 +1055,6 @@ class Message(UpdateType):
 # end class Message
 
 
-
 class CallbackQuery(UpdateType):
     """
     This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
@@ -1238,7 +1234,6 @@ class CallbackQuery(UpdateType):
         return key in ["id", "from_peer", "chat_instance", "message", "inline_message_id", "data", "game_short_name"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class CallbackQuery
-
 
 
 class ResponseParameters(Receivable):

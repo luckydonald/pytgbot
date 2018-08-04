@@ -7,7 +7,6 @@ from pytgbot.api_types.sendable.inline import InlineQueryResult
 from pytgbot.api_types.sendable.inline import InputMessageContent
 
 
-
 class InlineQueryResultArticle(InlineQueryResult):
     """
     Represents a link to an article or web page.
@@ -224,7 +223,6 @@ class InlineQueryResultArticle(InlineQueryResult):
         return key in ["type", "id", "title", "input_message_content", "reply_markup", "url", "hide_url", "description", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultArticle
-
 
 
 class InlineQueryResultPhoto(InlineQueryResult):
@@ -457,7 +455,6 @@ class InlineQueryResultPhoto(InlineQueryResult):
 # end class InlineQueryResultPhoto
 
 
-
 class InlineQueryResultGif(InlineQueryResult):
     """
     Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
@@ -688,7 +685,6 @@ class InlineQueryResultGif(InlineQueryResult):
 # end class InlineQueryResultGif
 
 
-
 class InlineQueryResultMpeg4Gif(InlineQueryResult):
     """
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
@@ -917,7 +913,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultMpeg4Gif
-
 
 
 class InlineQueryResultVideo(InlineQueryResult):
@@ -1176,7 +1171,6 @@ class InlineQueryResultVideo(InlineQueryResult):
 # end class InlineQueryResultVideo
 
 
-
 class InlineQueryResultAudio(InlineQueryResult):
     """
     Represents a link to an mp3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
@@ -1385,7 +1379,6 @@ class InlineQueryResultAudio(InlineQueryResult):
 # end class InlineQueryResultAudio
 
 
-
 class InlineQueryResultVoice(InlineQueryResult):
     """
     Represents a link to a voice recording in an .ogg container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
@@ -1580,7 +1573,6 @@ class InlineQueryResultVoice(InlineQueryResult):
         return key in ["type", "id", "voice_url", "title", "caption", "parse_mode", "voice_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultVoice
-
 
 
 class InlineQueryResultDocument(InlineQueryResult):
@@ -1826,7 +1818,6 @@ class InlineQueryResultDocument(InlineQueryResult):
 # end class InlineQueryResultDocument
 
 
-
 class InlineQueryResultLocation(InlineQueryResult):
     """
     Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
@@ -2044,7 +2035,6 @@ class InlineQueryResultLocation(InlineQueryResult):
         return key in ["type", "id", "latitude", "longitude", "title", "live_period", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultLocation
-
 
 
 class InlineQueryResultVenue(InlineQueryResult):
@@ -2289,7 +2279,6 @@ class InlineQueryResultVenue(InlineQueryResult):
 # end class InlineQueryResultVenue
 
 
-
 class InlineQueryResultContact(InlineQueryResult):
     """
     Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
@@ -2510,7 +2499,6 @@ class InlineQueryResultContact(InlineQueryResult):
 # end class InlineQueryResultContact
 
 
-
 class InlineQueryResultGame(InlineQueryResult):
     """
     Represents a Game.
@@ -2644,7 +2632,6 @@ class InlineQueryResultGame(InlineQueryResult):
         return key in ["type", "id", "game_short_name", "reply_markup"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultGame
-
 
 
 class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
@@ -2842,7 +2829,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
 # end class InlineQueryResultCachedPhoto
 
 
-
 class InlineQueryResultCachedGif(InlineQueryCachedResult):
     """
     Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
@@ -3024,7 +3010,6 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         return key in ["type", "id", "gif_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedGif
-
 
 
 class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
@@ -3210,7 +3195,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
 # end class InlineQueryResultCachedMpeg4Gif
 
 
-
 class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     """
     Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
@@ -3358,7 +3342,6 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         return key in ["type", "id", "sticker_file_id", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultCachedSticker
-
 
 
 class InlineQueryResultCachedDocument(InlineQueryCachedResult):
@@ -3557,7 +3540,6 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
 # end class InlineQueryResultCachedDocument
 
 
-
 class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     """
     Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
@@ -3752,7 +3734,6 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
 # end class InlineQueryResultCachedVideo
 
 
-
 class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     """
     Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
@@ -3937,7 +3918,6 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 # end class InlineQueryResultCachedVoice
 
 
-
 class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     """
     Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
@@ -4111,7 +4091,6 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 # end class InlineQueryResultCachedAudio
 
 
-
 class InputTextMessageContent(InputMessageContent):
     """
     Represents the content of a text message to be sent as the result of an inline query.
@@ -4231,7 +4210,6 @@ class InputTextMessageContent(InputMessageContent):
 # end class InputTextMessageContent
 
 
-
 class InputLocationMessageContent(InputMessageContent):
     """
     Represents the content of a location message to be sent as the result of an inline query.
@@ -4348,7 +4326,6 @@ class InputLocationMessageContent(InputMessageContent):
         return key in ["latitude", "longitude", "live_period"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputLocationMessageContent
-
 
 
 class InputVenueMessageContent(InputMessageContent):
@@ -4501,7 +4478,6 @@ class InputVenueMessageContent(InputMessageContent):
         return key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputVenueMessageContent
-
 
 
 class InputContactMessageContent(InputMessageContent):

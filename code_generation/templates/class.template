@@ -1,22 +1,57 @@
-{% from "macros.template" import for_args_none, for_type_list_of_full, for_type_list_of, types_as_tuple, for_args_format_repr, for_args_keys, for_type %}
-{% macro set_array(variable, class_name) -%}
-{% if variable.types|length == 1 -%}
-{% if variable.types[0].is_list > 0 -%}
+{% from "macros.template" import for_args_none, for_type_list_of_full, for_type_list_of, types_as_tuple, for_args_format_repr, for_args_keys, for_type -%}
+
+
+{%- macro set_array_element(variable, var_type) -%}
+{#-
+    generates those
+
+        array['xxx'] = u(self.xxx) | self.xxx.to_array() | self._as_array(self.xxx)
+
+    for a single type only
+-#}
+{%- if var_type.is_list > 0 -%}
 array['{{ variable.api_name }}'] = self._as_array(self.{{ variable.name }})  # type {{ for_type_list_of(variable) }}
 {% else -%}
-{% if variable.types[0].is_builtin -%}
-{%- if variable.types[0].string == 'str' -%}
+{% if var_type.is_builtin -%}
+{%- if var_type.string == 'str' -%}
 array['{{ variable.api_name }}'] = u(self.{{ variable.name }})  # py2: type unicode, py3: type str
 {% else -%}
-array['{{ variable.api_name }}'] = {{ variable.types[0].string }}(self.{{ variable.name }})  # type {{ variable.types[0].string }}
+array['{{ variable.api_name }}'] = {{ var_type.string }}(self.{{ variable.name }})  # type {{ var_type.string }}
 {%- endif -%}
 {% else -%}
-array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {{ variable.types[0].string }}
+array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {{ var_type.string }}
 {% endif -%}
 {% endif -%}
-{% else -%}
-// ERROR: Multiple types ({{ for_type(variable) }}) for
-// array['{{ variable.api_name }}'] = self.{{ variable.name }}
+{%- endmacro %}
+
+
+{%- macro set_array(variable, class_name) -%}
+{#
+    Does the full
+
+        array['xxx'] = u(self.xxx) | self.xxx.to_array() | self._as_array(self.xxx)
+
+    including having multiple types:
+
+       if isinstance(self.xxx, type1):
+            array['xxx'] = u(self.xxx) | self.xxx.to_array() | self._as_array(self.xxx)
+       elif isinstance(self.xxx, type2):
+            array['xxx'] = u(self.xxx) | self.xxx.to_array() | self._as_array(self.xxx)
+       else:
+            raise TypeError('Unknown type, must be one of type1, type2.')
+       # end if
+
+-#}
+{%- if variable.types|length == 1 -%}
+{{- set_array_element(variable, variable.types[0]) -}}{#
+ #}{%- else -%}
+{%- for var_type in variable.types -%}
+{%- if not loop.first %}el{% endif %}if isinstance(self.{{ variable.name }}, {{ var_type.string }}):
+    {{ set_array_element(variable, var_type) -}}
+{%- endfor -%}
+else:
+    raise TypeError('Unknown type, must be one of {{ for_type(variable) }}.')
+# end if
 {% endif -%}
 {%- endmacro %}
 {#- macros -#}

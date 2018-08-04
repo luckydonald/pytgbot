@@ -5,7 +5,6 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.sendable.input_media import InputMedia
 
 
-
 class InputMediaPhoto(InputMedia):
     """
     Represents a photo to be sent.
@@ -136,7 +135,6 @@ class InputMediaPhoto(InputMedia):
 # end class InputMediaPhoto
 
 
-
 class InputMediaVideo(InputMedia):
     """
     Represents a video to be sent.
@@ -258,9 +256,13 @@ class InputMediaVideo(InputMedia):
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.thumb is not None:
-            if not isinstance() # py2: type unicode, py3: type str
-            // ERROR: Multible types (InputFile, str) for
-            // array['thumb'] = self.thumb
+            if isinstance(self.thumb, InputFile):
+                array['thumb'] = self.thumb.to_array()  # type InputFile
+            elif isinstance(self.thumb, str):
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
+            else:
+                raise TypeError('Unknown type, must be one of InputFile, str.')
+            # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
@@ -294,7 +296,7 @@ class InputMediaVideo(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        // ERROR: Multible types (InputFile, str) for
+        // ERROR: Multiple types (InputFile, str) for
         // data['thumb'] = thumb
         // not sure what to do...
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
@@ -333,7 +335,6 @@ class InputMediaVideo(InputMedia):
         return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputMediaVideo
-
 
 
 class InputMediaAnimation(InputMedia):
@@ -448,8 +449,13 @@ class InputMediaAnimation(InputMedia):
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.thumb is not None:
-            // ERROR: Multible types (InputFile, str) for
-            // array['thumb'] = self.thumb
+            if isinstance(self.thumb, InputFile):
+                array['thumb'] = self.thumb.to_array()  # type InputFile
+            elif isinstance(self.thumb, str):
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
+            else:
+                raise TypeError('Unknown type, must be one of InputFile, str.')
+            # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
@@ -481,7 +487,7 @@ class InputMediaAnimation(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        // ERROR: Multible types (InputFile, str) for
+        // ERROR: Multiple types (InputFile, str) for
         // data['thumb'] = thumb
         // not sure what to do...
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
@@ -519,7 +525,6 @@ class InputMediaAnimation(InputMedia):
         return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputMediaAnimation
-
 
 
 class InputMediaAudio(InputMedia):
@@ -634,8 +639,13 @@ class InputMediaAudio(InputMedia):
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.thumb is not None:
-            // ERROR: Multible types (InputFile, str) for
-            // array['thumb'] = self.thumb
+            if isinstance(self.thumb, InputFile):
+                array['thumb'] = self.thumb.to_array()  # type InputFile
+            elif isinstance(self.thumb, str):
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
+            else:
+                raise TypeError('Unknown type, must be one of InputFile, str.')
+            # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
@@ -667,7 +677,7 @@ class InputMediaAudio(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        // ERROR: Multible types (InputFile, str) for
+        // ERROR: Multiple types (InputFile, str) for
         // data['thumb'] = thumb
         // not sure what to do...
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
@@ -705,7 +715,6 @@ class InputMediaAudio(InputMedia):
         return key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputMediaAudio
-
 
 
 class InputMediaDocument(InputMedia):
@@ -793,8 +802,13 @@ class InputMediaDocument(InputMedia):
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.thumb is not None:
-            // ERROR: Multible types (InputFile, str) for
-            // array['thumb'] = self.thumb
+            if isinstance(self.thumb, InputFile):
+                array['thumb'] = self.thumb.to_array()  # type InputFile
+            elif isinstance(self.thumb, str):
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
+            else:
+                raise TypeError('Unknown type, must be one of InputFile, str.')
+            # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
@@ -820,7 +834,7 @@ class InputMediaDocument(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        // ERROR: Multible types (InputFile, str) for
+        // ERROR: Multiple types (InputFile, str) for
         // data['thumb'] = thumb
         // not sure what to do...
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None

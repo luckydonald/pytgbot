@@ -5,7 +5,6 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable import Result
 
 
-
 class GameHighScore(Result):
     """
     This object represents one row of the high scores table for a game.

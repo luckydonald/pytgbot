@@ -5,7 +5,6 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.sendable import Sendable
 
 
-
 class LabeledPrice(Sendable):
     """
     This object represents a portion of the price for goods or services.
@@ -110,7 +109,6 @@ class LabeledPrice(Sendable):
         return key in ["label", "amount"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class LabeledPrice
-
 
 
 class ShippingOption(Sendable):

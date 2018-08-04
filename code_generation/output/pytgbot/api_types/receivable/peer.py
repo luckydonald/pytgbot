@@ -6,7 +6,6 @@ from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.peer import Peer
 
 
-
 class User(Peer):
     """
     This object represents a Telegram user or bot.
@@ -164,7 +163,6 @@ class User(Peer):
         return key in ["id", "is_bot", "first_name", "last_name", "username", "language_code"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class User
-
 
 
 class Chat(Peer):
@@ -415,7 +413,6 @@ class Chat(Peer):
         return key in ["id", "type", "title", "username", "first_name", "last_name", "all_members_are_administrators", "photo", "description", "invite_link", "pinned_message", "sticker_set_name", "can_set_sticker_set"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Chat
-
 
 
 class ChatMember(Result):

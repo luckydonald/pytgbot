@@ -5,7 +5,6 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable import Result
 
 
-
 class PassportData(Result):
     """
     Contains information about Telegram Passport data shared with the bot by the user.
@@ -122,7 +121,6 @@ class PassportData(Result):
         return key in ["data", "credentials"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class PassportData
-
 
 
 class PassportFile(Result):
@@ -246,7 +244,6 @@ class PassportFile(Result):
         return key in ["file_id", "file_size", "file_date"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class PassportFile
-
 
 
 class EncryptedPassportElement(Result):
@@ -436,7 +433,6 @@ class EncryptedPassportElement(Result):
         return key in ["type", "data", "phone_number", "email", "files", "front_side", "reverse_side", "selfie"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class EncryptedPassportElement
-
 
 
 class EncryptedCredentials(Result):

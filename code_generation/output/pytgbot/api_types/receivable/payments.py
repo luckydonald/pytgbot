@@ -6,7 +6,6 @@ from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.updates import UpdateType
 
 
-
 class Invoice(Result):
     """
     This object contains basic information about an invoice.
@@ -150,7 +149,6 @@ class Invoice(Result):
         return key in ["title", "description", "start_parameter", "currency", "total_amount"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class Invoice
-
 
 
 class ShippingAddress(Result):
@@ -309,7 +307,6 @@ class ShippingAddress(Result):
 # end class ShippingAddress
 
 
-
 class OrderInfo(Result):
     """
     This object represents information about an order.
@@ -444,7 +441,6 @@ class OrderInfo(Result):
         return key in ["name", "phone_number", "email", "shipping_address"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class OrderInfo
-
 
 
 class SuccessfulPayment(Result):
@@ -620,7 +616,6 @@ class SuccessfulPayment(Result):
 # end class SuccessfulPayment
 
 
-
 class ShippingQuery(UpdateType):
     """
     This object contains information about an incoming shipping query.
@@ -759,7 +754,6 @@ class ShippingQuery(UpdateType):
         return key in ["id", "from_peer", "invoice_payload", "shipping_address"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class ShippingQuery
-
 
 
 class PreCheckoutQuery(UpdateType):
