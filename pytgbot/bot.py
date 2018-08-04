@@ -1159,7 +1159,7 @@ class Bot(object):
         :type  chat_id: int | str|unicode
 
         :param media: A array describing photos and videos to be sent, must include 2–10 items
-        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto|pytgbot.api_types.sendable.input_media.InputMediaVideo
+        :type  media: list of (pytgbot.api_types.sendable.input_media.InputMediaPhoto|pytgbot.api_types.sendable.input_media.InputMediaVideo)
 
 
         Optional keyword parameters:
@@ -1182,7 +1182,7 @@ class Bot(object):
         new_media = []
         assert_type_or_raise(media, list, parameter_name="media")
         for i, medium in enumerate(media):
-            assert_type_or_raise(media, InputMediaPhoto, InputMediaVideo, parameter_name="media[{i}]".format(i=i))
+            assert_type_or_raise(medium, InputMediaPhoto, InputMediaVideo, parameter_name="media[{i}]".format(i=i))
             assert isinstance(medium, (InputMediaPhoto, InputMediaVideo))
             new_medium, file = medium.get_request_data('pytgbot{i}'.format(i=i), full_data=True)
             logger.debug('InputMedia {} found.'.format(new_medium))
@@ -1191,6 +1191,7 @@ class Bot(object):
                 files.update(file)
             # end if
         # end for
+        new_media = json.dumps(new_media)
 
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
 

@@ -7,7 +7,7 @@ from pytgbot.bot import Bot
 from pytgbot.api_types.receivable.media import PhotoSize
 from pytgbot.api_types.receivable.updates import Message
 from pytgbot.api_types.sendable.files import InputFileFromURL
-from pytgbot.api_types.sendable.input_media import InputMediaPhoto
+from pytgbot.api_types.sendable.input_media import InputMediaPhoto, InputMediaVideo
 logging.add_colored_handler(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -18,15 +18,12 @@ class BotTest(unittest.TestCase):
         self.messages = []
     # end def
 
-
     def test_edit_message_media(self):
         # upload by url
         url1 = 'https://derpicdn.net/img/view/2012/1/22/1382.jpg'
         url2 = 'https://derpicdn.net/img/view/2016/2/3/1079240.png'
-        #self.bot.send_photo(TEST_CHAT, url1, caption="url1")
-        #self.bot.send_photo(TEST_CHAT, url2, caption="url2")
 
-        msg = self.bot.send_photo(TEST_CHAT, url1, caption="unittest")
+        msg = self.bot.send_photo(TEST_CHAT, url1, caption="unittest", disable_notification=True)
         self.messages.append(msg)
         print("msg 1: {!r}".format(msg))
         self.assertIsInstance(msg, Message)
@@ -71,6 +68,25 @@ class BotTest(unittest.TestCase):
         self.messages.append(self.bot.send_message(TEST_CHAT, 'done.'))
     # end def
 
+    def test_send_media_group(self):
+        url1 = 'https://derpicdn.net/img/view/2012/1/22/1382.jpg'
+        url2 = 'https://derpicdn.net/img/view/2016/2/3/1079240.png'
+        vid1 = 'https://derpicdn.net/img/view/2016/12/21/1322277.mp4'
+        pic1 = 'https://derpicdn.net/img/2017/7/21/1491832/thumb.jpeg'
+
+        stuff = [
+            InputMediaPhoto(url1, caption='1'),
+            InputMediaPhoto(InputFileFromURL(url1), caption='2'),
+            InputMediaVideo(vid1, caption='3'),
+            InputMediaVideo(InputFileFromURL(vid1), thumb=pic1, caption='4'),
+            InputMediaVideo(InputFileFromURL(vid1), thumb=InputFileFromURL(pic1), caption='5'),
+        ]
+        msgs = self.bot.send_media_group(TEST_CHAT, stuff, disable_notification=True, )
+        self.messages.extend(msgs)
+
+        self.messages.append(self.bot.send_message(TEST_CHAT, 'done.'))
+    # end def
+
     #
     # utils:
     #
@@ -91,11 +107,8 @@ class BotTest(unittest.TestCase):
             for msg in reversed(self.messages):
                 try:
                     self.bot.delete_message(TEST_CHAT, msg.message_id)
-                except Exception as e:
-                    if (
-                        isinstance(e, TgApiServerException) and e.error_code == 400 and
-                        e.description == 'Bad Request: message to delete not found'
-                    ):
+                except TgApiServerException as e:
+                    if e.error_code == 400 and e.description == 'Bad Request: message to delete not found':
                         logger.info('delete message fail, not found.')
                         continue
                     # end if
@@ -103,6 +116,7 @@ class BotTest(unittest.TestCase):
                 # end try
             # end for
         # end if
+        self.messages = []
     # end def
 # end class
 
