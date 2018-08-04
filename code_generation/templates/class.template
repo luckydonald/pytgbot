@@ -184,14 +184,14 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% if variable.types|length == 1 -%}
         {{- set_data_array_element(variable, variable.types[0], clazz, variable.optional) -}}
         {% else -%}
-        {%- for var_type in variable.types -%}
-        {%- if not loop.first %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
-            {{ set_data_array_element(variable, var_type, clazz, False) -}}
-        {%- endfor -%}
         {%- if variable.optional -%}
-        elif array.get('{{ variable.api_name }}') is None:
+        if array.get('{{ variable.api_name }}') is None:
             data['{{ variable.name }}'] = None
         {% endif -%}
+        {%- for var_type in variable.types -%}
+        {%- if not loop.first or variable.optional %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
+            {{ set_data_array_element(variable, var_type, clazz, False) -}}
+        {%- endfor -%}
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
         # end if

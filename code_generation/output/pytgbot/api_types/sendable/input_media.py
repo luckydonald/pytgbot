@@ -296,12 +296,12 @@ class InputMediaVideo(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        if isinstance(array.get('thumb'), InputFile):
+        if array.get('thumb') is None:
+            data['thumb'] = None
+        elif isinstance(array.get('thumb'), InputFile):
             data['thumb'] = InputFile.from_array(array.get('thumb'))
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
-        elif array.get('thumb') is None:
-            data['thumb'] = None
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end if
@@ -493,12 +493,12 @@ class InputMediaAnimation(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        if isinstance(array.get('thumb'), InputFile):
+        if array.get('thumb') is None:
+            data['thumb'] = None
+        elif isinstance(array.get('thumb'), InputFile):
             data['thumb'] = InputFile.from_array(array.get('thumb'))
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
-        elif array.get('thumb') is None:
-            data['thumb'] = None
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end if
@@ -689,12 +689,12 @@ class InputMediaAudio(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        if isinstance(array.get('thumb'), InputFile):
+        if array.get('thumb') is None:
+            data['thumb'] = None
+        elif isinstance(array.get('thumb'), InputFile):
             data['thumb'] = InputFile.from_array(array.get('thumb'))
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
-        elif array.get('thumb') is None:
-            data['thumb'] = None
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end if
@@ -852,12 +852,12 @@ class InputMediaDocument(InputMedia):
         data = {}
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
-        if isinstance(array.get('thumb'), InputFile):
+        if array.get('thumb') is None:
+            data['thumb'] = None
+        elif isinstance(array.get('thumb'), InputFile):
             data['thumb'] = InputFile.from_array(array.get('thumb'))
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
-        elif array.get('thumb') is None:
-            data['thumb'] = None
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end if
