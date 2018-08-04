@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import Sendable
+from .files import InputFile
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 
@@ -200,6 +201,9 @@ class InputMediaVideo(InputMedia):
 
     Optional keyword parameters:
     
+    :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
+
     :param caption: Optional. Caption of the video to be sent, 0-200 characters
     :type  caption: str|unicode
     
@@ -219,7 +223,7 @@ class InputMediaVideo(InputMedia):
     :type  supports_streaming: bool
     """
 
-    def __init__(self, type, media, caption=None, parse_mode=None, width=None, height=None, duration=None, supports_streaming=None):
+    def __init__(self, media, thumb=None, caption=None, parse_mode=None, width=None, height=None, duration=None, supports_streaming=None):
         """
         Represents a video to be sent.
     
@@ -234,6 +238,9 @@ class InputMediaVideo(InputMedia):
     
         Optional keyword parameters:
         
+        :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
+
         :param caption: Optional. Caption of the video to be sent, 0-200 characters
         :type  caption: str|unicode
         
@@ -256,7 +263,10 @@ class InputMediaVideo(InputMedia):
 
         # type is set by InputMedia base class
         # media is set by InputMedia base class
-        
+
+        assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")
+        self.thumb = thumb
+
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
 
@@ -282,8 +292,13 @@ class InputMediaVideo(InputMedia):
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        from .files import InputFile
         array = super(InputMediaVideo, self).to_array()
         # 'type' and 'media' given by superclass
+        if self.thumb is not None:
+            if isinstance(self.thumb, InputFile):
+                array['thumb'] = self.thumb
+        # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         # 'parse_mode' is given by class type

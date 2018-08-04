@@ -1,14 +1,40 @@
 # -*- coding: utf-8 -*-
+from abc import abstractmethod
 from luckydonaldUtils.logger import logging
 from os import path
 import requests
 
+
 __author__ = 'luckydonald'
-__all__ = ["InputFile", "InputFileFromURL", "InputFileFromDisk"]
+__all__ = ["InputFile", "InputFileFromURL", "InputFileFromDisk", "InputFileFromBlob"]
 logger = logging.getLogger(__name__)
 
 
 class InputFile(object):
+    """
+    This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.
+
+    https://core.telegram.org/bots/api#inputfile
+
+
+    Sending Files:
+
+    There are three ways to send files (photos, stickers, audio, media, etc.):
+
+        1. If the file is already stored somewhere on the Telegram servers, you don't need to reupload it:
+           Each file object has a `file_id` field, simply pass this `file_id` as a `str` parameter
+           instead of uploading as :class:`InputFile`. There are no size limits for files resend this way.
+
+        2. Provide Telegram with an HTTP URL (:class:`str`) for the file to be sent, instead of any :class:`InputFile`.
+           Telegram will download and send the file. 5 MB max size for photos and 20 MB max for other types of content.
+
+        3. Post the file using multipart/form-data in the usual way that files are uploaded via the browser.
+           This is what any :class:`InputFile` (subclass) does automatically,
+           when send by the bot via the :py:func:`~pytgbot.bot.Bot._do_fileupload` method.
+           10 MB max size for photos, 50 MB for other files.
+
+    https://core.telegram.org/bots/api#sending-files
+    """
     def __init__(self, file_blob=None, file_name="file.unknown", file_mime=None):
         super(InputFile, self).__init__()
         if file_blob:
@@ -40,7 +66,14 @@ class InputFile(object):
         # end if
     # end def
 
+    @abstractmethod
     def get_request_files(self, var_name):
+        """
+        Used by :py:func:`~pytgbot.bot.Bot._do_fileupload`.
+        :param var_name: The variable name we want to send the file as.
+        :return:
+        """
+        raise NotImplementedError('Your subclass should implement this.')
         if not self.file_blob:
             logger.warning("Deprecated! Use a InputFileFromBlob from pytgbot.api_types.sendable.files instead!")
             raise DeprecationWarning("Deprecated! Use a InputFileFromBlob from pytgbot.api_types.sendable.files instead! I cannot work without file blob. Please use one of the classes overriding this funcion.")
@@ -66,7 +99,8 @@ class InputFileFromBlob(InputFile):
             self.file_mime = None
             self.update_mime_from_blob()
         # end if
-        super(InputFileFromBlob, self).__init__(file_name=self.file_name, file_mime=self.file_mime)
+
+        super(InputFileFromBlob, self).__init__(file_name=file_name, file_mime=file_mime)
     # end def
 
     def update_mime_from_blob(self):

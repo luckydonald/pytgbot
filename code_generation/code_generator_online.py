@@ -177,7 +177,7 @@ def load_from_api(folder):
                         default_returns = [". ".join(return_text__).strip(), " or ".join(returns__).strip()]
                     # end if
                 # end if
-                descr.append(sibling.text)
+                descr.append(sibling.text.replace('“', '"').replace('”', '"'))
             elif sibling.name == "table":
                 assert sibling.has_attr("class") and "table" in sibling["class"]
                 table_type, param_strings = parse_table(sibling)

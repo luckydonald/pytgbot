@@ -1,4 +1,4 @@
-{% from "macros.template" import for_args_none, for_type_list_of_full, for_type_list_of, types_as_tuple, for_args_format_repr, for_args_keys %}
+{% from "macros.template" import for_args_none, for_type_list_of_full, for_type_list_of, types_as_tuple, for_args_format_repr, for_args_keys, for_type %}
 {% macro set_array(variable, class_name) -%}
 {% if variable.types|length == 1 -%}
 {% if variable.types[0].is_list > 0 -%}
@@ -15,7 +15,7 @@ array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {
 {% endif -%}
 {% endif -%}
 {% else -%}
-// ERROR: Multible types ({{ for_type(variable) }}) for
+// ERROR: Multiple types ({{ for_type(variable) }}) for
 // array['{{ variable.api_name }}'] = self.{{ variable.name }}
 {% endif -%}
 {%- endmacro %}
@@ -146,7 +146,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% endif -%}
         {% endif -%}
         {% else -%}
-        // ERROR: Multible types ({{ for_type(variable) }}) for
+        // ERROR: Multiple types ({{ for_type(variable) }}) for
         // data['{{ variable.api_name }}'] = {{ variable.name }}
         // not sure what to do...
         {% endif -%}

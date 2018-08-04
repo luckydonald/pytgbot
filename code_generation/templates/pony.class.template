@@ -11,7 +11,7 @@ array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {
 {% endif -%}
 {% endif -%}
 {% else -%}
-// ERROR: Multible types ({{ for_type(variable) }}) for
+// ERROR: Multiple types ({{ for_type(variable) }}) for
 // array['{{ variable.api_name }}'] = self.{{ variable.name }}
 {% endif -%}
 {%- endmacro %}

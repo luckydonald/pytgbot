@@ -2081,6 +2081,9 @@ class InlineQueryResultVenue(InlineQueryResult):
     :param foursquare_id: Optional. Foursquare identifier of the venue if known
     :type  foursquare_id: str|unicode
     
+    :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+    :type  foursquare_type: str|unicode
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -2097,7 +2100,7 @@ class InlineQueryResultVenue(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, latitude, longitude, title, address, foursquare_id=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, type, id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -2130,6 +2133,9 @@ class InlineQueryResultVenue(InlineQueryResult):
         
         :param foursquare_id: Optional. Foursquare identifier of the venue if known
         :type  foursquare_id: str|unicode
+        
+        :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+        :type  foursquare_type: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2171,6 +2177,9 @@ class InlineQueryResultVenue(InlineQueryResult):
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
         
+        assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
+        self.foursquare_type = foursquare_type
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         
@@ -2203,6 +2212,8 @@ class InlineQueryResultVenue(InlineQueryResult):
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
+        if self.foursquare_type is not None:
+            array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -2240,6 +2251,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         data['title'] = u(array.get('title'))
         data['address'] = u(array.get('address'))
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
+        data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
@@ -2255,7 +2267,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         Implements `str(inlinequeryresultvenue_instance)`
         """
-        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2265,14 +2277,14 @@ class InlineQueryResultVenue(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultVenue.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultvenue_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultVenue
 
@@ -2306,6 +2318,9 @@ class InlineQueryResultContact(InlineQueryResult):
     :param last_name: Optional. Contact's last name
     :type  last_name: str|unicode
     
+    :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+    :type  vcard: str|unicode
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -2322,7 +2337,7 @@ class InlineQueryResultContact(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, phone_number, first_name, last_name=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, type, id, phone_number, first_name, last_name=None, vcard=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -2349,6 +2364,9 @@ class InlineQueryResultContact(InlineQueryResult):
         
         :param last_name: Optional. Contact's last name
         :type  last_name: str|unicode
+        
+        :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+        :type  vcard: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2384,6 +2402,9 @@ class InlineQueryResultContact(InlineQueryResult):
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
         
+        assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
+        self.vcard = vcard
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         
@@ -2414,6 +2435,8 @@ class InlineQueryResultContact(InlineQueryResult):
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+        if self.vcard is not None:
+            array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         if self.input_message_content is not None:
@@ -2449,6 +2472,7 @@ class InlineQueryResultContact(InlineQueryResult):
         data['phone_number'] = u(array.get('phone_number'))
         data['first_name'] = u(array.get('first_name'))
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
+        data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
@@ -2464,7 +2488,7 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         Implements `str(inlinequeryresultcontact_instance)`
         """
-        return "InlineQueryResultContact(type={self.type!r}, id={self.id!r}, phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultContact(type={self.type!r}, id={self.id!r}, phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, vcard={self.vcard!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2474,14 +2498,14 @@ class InlineQueryResultContact(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultContact.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultContact(type={self.type!r}, id={self.id!r}, phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultContact(type={self.type!r}, id={self.id!r}, phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, vcard={self.vcard!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinequeryresultcontact_instance`
         """
-        return key in ["type", "id", "phone_number", "first_name", "last_name", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "phone_number", "first_name", "last_name", "vcard", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InlineQueryResultContact
 
@@ -4210,8 +4234,7 @@ class InputTextMessageContent(InputMessageContent):
 
 class InputLocationMessageContent(InputMessageContent):
     """
-    Represents the content of a location message to be sent as the result of an inline query. 
-    Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+    Represents the content of a location message to be sent as the result of an inline query.
 
     https://core.telegram.org/bots/api#inputlocationmessagecontent
     
@@ -4233,8 +4256,7 @@ class InputLocationMessageContent(InputMessageContent):
 
     def __init__(self, latitude, longitude, live_period=None):
         """
-        Represents the content of a location message to be sent as the result of an inline query. 
-        Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+        Represents the content of a location message to be sent as the result of an inline query.
     
         https://core.telegram.org/bots/api#inputlocationmessagecontent
         
@@ -4331,8 +4353,7 @@ class InputLocationMessageContent(InputMessageContent):
 
 class InputVenueMessageContent(InputMessageContent):
     """
-    Represents the content of a venue message to be sent as the result of an inline query. 
-    Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+    Represents the content of a venue message to be sent as the result of an inline query.
 
     https://core.telegram.org/bots/api#inputvenuemessagecontent
     
@@ -4356,12 +4377,14 @@ class InputVenueMessageContent(InputMessageContent):
     
     :param foursquare_id: Optional. Foursquare identifier of the venue, if known
     :type  foursquare_id: str|unicode
+    
+    :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+    :type  foursquare_type: str|unicode
     """
 
-    def __init__(self, latitude, longitude, title, address, foursquare_id=None):
+    def __init__(self, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None):
         """
-        Represents the content of a venue message to be sent as the result of an inline query. 
-        Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+        Represents the content of a venue message to be sent as the result of an inline query.
     
         https://core.telegram.org/bots/api#inputvenuemessagecontent
         
@@ -4385,6 +4408,9 @@ class InputVenueMessageContent(InputMessageContent):
         
         :param foursquare_id: Optional. Foursquare identifier of the venue, if known
         :type  foursquare_id: str|unicode
+        
+        :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+        :type  foursquare_type: str|unicode
         """
         super(InputVenueMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
@@ -4401,6 +4427,9 @@ class InputVenueMessageContent(InputMessageContent):
         
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
+        
+        assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
+        self.foursquare_type = foursquare_type
     # end def __init__
 
     def to_array(self):
@@ -4417,6 +4446,8 @@ class InputVenueMessageContent(InputMessageContent):
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
+        if self.foursquare_type is not None:
+            array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -4439,6 +4470,7 @@ class InputVenueMessageContent(InputMessageContent):
         data['title'] = u(array.get('title'))
         data['address'] = u(array.get('address'))
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
+        data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
         
         instance = InputVenueMessageContent(**data)
         instance._raw = array
@@ -4449,7 +4481,7 @@ class InputVenueMessageContent(InputMessageContent):
         """
         Implements `str(inputvenuemessagecontent_instance)`
         """
-        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r})".format(self=self)
+        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -4459,14 +4491,14 @@ class InputVenueMessageContent(InputMessageContent):
         if self._raw:
             return "InputVenueMessageContent.from_array({self._raw})".format(self=self)
         # end if
-        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r})".format(self=self)
+        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in inputvenuemessagecontent_instance`
         """
-        return key in ["latitude", "longitude", "title", "address", "foursquare_id"] and hasattr(self, key) and getattr(self, key)
+        return key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputVenueMessageContent
 
@@ -4474,8 +4506,7 @@ class InputVenueMessageContent(InputMessageContent):
 
 class InputContactMessageContent(InputMessageContent):
     """
-    Represents the content of a contact message to be sent as the result of an inline query. 
-    Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+    Represents the content of a contact message to be sent as the result of an inline query.
 
     https://core.telegram.org/bots/api#inputcontactmessagecontent
     
@@ -4493,12 +4524,14 @@ class InputContactMessageContent(InputMessageContent):
     
     :param last_name: Optional. Contact's last name
     :type  last_name: str|unicode
+    
+    :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+    :type  vcard: str|unicode
     """
 
-    def __init__(self, phone_number, first_name, last_name=None):
+    def __init__(self, phone_number, first_name, last_name=None, vcard=None):
         """
-        Represents the content of a contact message to be sent as the result of an inline query. 
-        Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+        Represents the content of a contact message to be sent as the result of an inline query.
     
         https://core.telegram.org/bots/api#inputcontactmessagecontent
         
@@ -4516,6 +4549,9 @@ class InputContactMessageContent(InputMessageContent):
         
         :param last_name: Optional. Contact's last name
         :type  last_name: str|unicode
+        
+        :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+        :type  vcard: str|unicode
         """
         super(InputContactMessageContent, self).__init__()
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
@@ -4526,6 +4562,9 @@ class InputContactMessageContent(InputMessageContent):
         
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
+        
+        assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
+        self.vcard = vcard
     # end def __init__
 
     def to_array(self):
@@ -4540,6 +4579,8 @@ class InputContactMessageContent(InputMessageContent):
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+        if self.vcard is not None:
+            array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -4560,6 +4601,7 @@ class InputContactMessageContent(InputMessageContent):
         data['phone_number'] = u(array.get('phone_number'))
         data['first_name'] = u(array.get('first_name'))
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
+        data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
         
         instance = InputContactMessageContent(**data)
         instance._raw = array
@@ -4570,7 +4612,7 @@ class InputContactMessageContent(InputMessageContent):
         """
         Implements `str(inputcontactmessagecontent_instance)`
         """
-        return "InputContactMessageContent(phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r})".format(self=self)
+        return "InputContactMessageContent(phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, vcard={self.vcard!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -4580,14 +4622,14 @@ class InputContactMessageContent(InputMessageContent):
         if self._raw:
             return "InputContactMessageContent.from_array({self._raw})".format(self=self)
         # end if
-        return "InputContactMessageContent(phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r})".format(self=self)
+        return "InputContactMessageContent(phone_number={self.phone_number!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, vcard={self.vcard!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in inputcontactmessagecontent_instance`
         """
-        return key in ["phone_number", "first_name", "last_name"] and hasattr(self, key) and getattr(self, key)
+        return key in ["phone_number", "first_name", "last_name", "vcard"] and hasattr(self, key) and getattr(self, key)
     # end def __contains__
 # end class InputContactMessageContent
 

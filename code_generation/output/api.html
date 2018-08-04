@@ -14,7 +14,7 @@ To learn how to create…">
 
     <link href="/css/bootstrap.min.css?2" rel="stylesheet">
     
-    <link href="/css/telegram.css?146" rel="stylesheet" media="screen">
+    <link href="/css/telegram.css?148" rel="stylesheet" media="screen">
     <style>
     </style>
   </head>
@@ -47,50 +47,30 @@ To learn how to create…">
 <p>The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.<br>To learn how to create and set up a bot, please consult our <a href="https://core.telegram.org/bots"><strong>Introduction to Bots</strong></a> and <a href="/bots/faq"><strong>Bot FAQ</strong></a>.</p>
 </blockquote>
 <h3><a class="anchor" name="recent-changes" href="#recent-changes"><i class="anchor-icon"></i></a>Recent changes</h3>
+<h4><a class="anchor" name="july-26-2018" href="#july-26-2018"><i class="anchor-icon"></i></a>July 26, 2018</h4>
+<p><strong>Bot API 4.0</strong>.</p>
+<ul>
+<li>Added support for <a href="https://telegram.org/blog/passport"><strong>Telegram Passport</strong></a>. See the official announcement on the <a href="https://telegram.org/blog">blog</a> and the <a href="https://core.telegram.org/passport">manual</a> for details.</li>
+<li>Added support for <strong>editing the media content of messages</strong>: added the method <a href="#editmessagemedia">editMessageMedia</a> and new types <a href="#inputmediaanimation">InputMediaAnimation</a>, <a href="#inputmediaaudio">InputMediaAudio</a>, and <a href="#inputmediadocument">InputMediaDocument</a>.</li>
+<li>Added the field <em>thumb</em> to the <a href="#audio">Audio</a> object to contain the thumbnail of the album cover to which the music file belongs.</li>
+<li>Added support for attaching custom thumbnails to uploaded files. For animations, audios, videos and video notes, which are less than 10 MB in size, thumbnails are generated automatically.</li>
+<li><code>tg://</code> URLs now can be used in inline keyboard url buttons and <code>text_link</code> message entities. </li>
+<li>Added the method <a href="#sendanimation">sendAnimation</a>, which can be used instead of <a href="#senddocument">sendDocument</a> to send animations, specifying their duration, width and height.</li>
+<li>Added the field <a href="#animation">animation</a> to the <a href="#message">Message</a> object. For backward compatibility, when this field is set, the <em>document</em> field will be also set.</li>
+<li>Added two new <a href="#messageentity">MessageEntity</a> types: <em>cashtag</em> and <em>phone_number</em>.</li>
+<li>Added support for Foursquare venues: added the new field <em>foursquare_type</em> to the objects <a href="#venue">Venue</a>, <a href="#inlinequeryresultvenue">InlineQueryResultVenue</a> and <a href="#inputvenuemessagecontent">InputVenueMessageContent</a>, and the parameter <em>foursquare_type</em> to the <a href="#sendvenue">sendVenue</a> method.</li>
+<li>You can now create inline mentions of users, who have pressed your bot&#39;s callback buttons.</li>
+<li>You can now use the <code>Retry-After</code> response header to configure the delay after which the Bot API will retry the request after an unsuccessful response from a webhook.</li>
+<li>If a webhook returns the HTTP error <code>410 Gone</code> for all requests for more than 23 hours successively, it can be automatically removed.</li>
+<li>Added <a href="https://en.wikipedia.org/wiki/VCard">vCard</a> support when sharing contacts: added the field <em>vcard</em> to the objects <a href="#contact">Contact</a>, <a href="#inlinequeryresultcontact">InlineQueryResultContact</a>, <a href="#inputcontactmessagecontent">InputContactMessageContent</a> and the method <a href="#sendcontact">sendContact</a>.</li>
+</ul>
 <h4><a class="anchor" name="february-13-2018" href="#february-13-2018"><i class="anchor-icon"></i></a>February 13, 2018</h4>
 <p><strong>Bot API 3.6</strong>.</p>
 <ul>
 <li>Supported <a href="https://core.telegram.org/bots/api#formatting-options">text formatting</a> in media captions. Specify the desired <em>parse_mode</em> (<a href="https://core.telegram.org/bots/api#markdown-style">Markdown</a> or <a href="https://core.telegram.org/bots/api#html-style">HTML</a>) when you provide a caption.</li>
 <li>In supergroups, if the bot receives a message that is a reply, it will also receive the message to which that message is replying – even if the original message is inaccessible due to the bot&#39;s privacy settings. (In other words, replying to any message in a supergroup with a message that mentions the bot or features a command for it acts as forwarding the original message to the bot). </li>
 <li>Added the new field <em>connected_website</em> to <a href="#message">Message</a>. The bot will receive a message with this field in a private chat when a user logs in on the bot&#39;s connected website using the <a href="https://core.telegram.org/widgets/login">Login Widget</a> and allows sending messages from your bot.</li>
-<li>Added the new parameter <em>supports_streaming</em> to the <a href="#sendvideo">sendVideo</a> method and a field with the same name to the <a href="#inputmediavideo">inputMediaVideo</a> object.</li>
-</ul>
-<h4><a class="anchor" name="november-17-2017" href="#november-17-2017"><i class="anchor-icon"></i></a>November 17, 2017</h4>
-<p><strong>Bot API 3.5</strong>.</p>
-<ul>
-<li>Added the new method <a href="#sendmediagroup">sendMediaGroup</a> and two kinds of <a href="#inputmedia">InputMedia</a> objects to support the new <a href="https://telegram.org/blog/albums-saved-messages">albums feature</a>.</li>
-<li>Added support for pinning messages in channels. <a href="#pinchatmessage">pinChatMessage</a> and <a href="#unpinchatmessage">unpinChatMessage</a> accept channels.</li>
-<li>Added the new fields <em>provider_data</em>, <em>send_phone_number_to_provider</em>, <em>send_email_to_provider</em> to <a href="#sendinvoice">sendInvoice</a> for sharing information about the invoice with the payment provider.</li>
-</ul>
-<h4><a class="anchor" name="october-11-2017" href="#october-11-2017"><i class="anchor-icon"></i></a>October 11, 2017</h4>
-<p><strong>Bot API 3.4</strong>.</p>
-<ul>
-<li>Bots can now send and receive <a href="https://telegram.org/blog/live-locations">Live Locations</a>. Added new field <em>live_period</em> to the <a href="#sendlocation">sendLocation</a> method and the <a href="#editmessagelivelocation">editMessageLiveLocation</a> and <a href="#stopmessagelivelocation">stopMessageLiveLocation</a> methods as well as the necessary objects for inline bots.</li>
-<li>Bots can use the new <a href="#setchatstickerset">setChatStickerSet</a> and <a href="#deletechatstickerset">deleteChatStickerSet</a> methods to manage <a href="https://telegram.org/blog#stickers-of-the-group">group sticker sets</a>.</li>
-<li>The <a href="#getchat">getChat</a> request now returns the group&#39;s sticker set for supergroups if available.</li>
-<li>Bots now receive entities from media captions in the new field <em>caption_entities</em> in <a href="#message">Message</a>.</li>
-</ul>
-<h4><a class="anchor" name="august-23-2017" href="#august-23-2017"><i class="anchor-icon"></i></a>August 23, 2017</h4>
-<p><strong>Bot API 3.3</strong>.</p>
-<ul>
-<li>Bots can now mention users via <a href="#formatting-options">inline mentions</a>, without using usernames.</li>
-<li><a href="#getchat">getChat</a> now also returns pinned messages in supergroups, if present. Added the new field <em>pinned_message</em> to the <a href="#chat">Chat</a> object.</li>
-<li>Added the new fields <em>author_signature</em> and <em>forward_signature</em> to the <a href="#message">Message</a> object.</li>
-<li>Added the new field <em>is_bot</em> to the <a href="#user">User</a> object.</li>
-</ul>
-<h4><a class="anchor" name="july-21-2017" href="#july-21-2017"><i class="anchor-icon"></i></a>July 21, 2017</h4>
-<p><strong>Bot API 3.2</strong>. Teach your bot to handle <a href="#stickers">stickers and sticker sets</a>.</p>
-<ul>
-<li>Added new methods for working with stickers: <a href="#getstickerset">getStickerSet</a>, <a href="#uploadstickerfile">uploadStickerFile</a>, <a href="#createnewstickerset">createNewStickerSet</a>, <a href="#addstickertoset">addStickerToSet</a>, <a href="#setstickerpositioninset">setStickerPositionInSet</a>, and <a href="#deletestickerfromset">deleteStickerFromSet</a>.</li>
-<li>Added the fields <em>set_name</em> and <em>mask_position</em> to the <a href="#sticker">Sticker</a> object, plus two new objects, <a href="#stickerset">StickerSet</a>, and <a href="#maskposition">MaskPosition</a>.</li>
-</ul>
-<h4><a class="anchor" name="june-30-2017" href="#june-30-2017"><i class="anchor-icon"></i></a>June 30, 2017</h4>
-<p><strong>Bot API 3.1</strong>. Build your own robotic police force for supergoups with these new methods for admin bots:</p>
-<ul>
-<li>Added new methods <a href="#restrictchatmember">restrictChatMember</a> and <a href="#promotechatmember">promoteChatMember</a> to manage users and admins, added new parameter <em>until_date</em> to <a href="#kickchatmember">kickChatMember</a> for temporary bans.</li>
-<li>Added new methods <a href="#exportchatinvitelink">exportChatInviteLink</a>, <a href="#setchatphoto">setChatPhoto</a>, <a href="#deletechatphoto">deleteChatPhoto</a>, <a href="#setchattitle">setChatTitle</a>, <a href="#setchatdescription">setChatDescription</a>, <a href="#pinchatmessage">pinChatMessage</a> and <a href="#unpinchatmessage">unpinChatMessage</a> to manage groups and channels.</li>
-<li>Added the new fields <em>photo</em>, <em>description</em> and <em>invite_link</em> to the <a href="#chat">Chat</a> object.</li>
-<li>Added the new fields <em>until_date</em>, <em>can_be_edited</em>, <em>can_change_info</em>, <em>can_post_messages</em>, <em>can_edit_messages</em>, <em>can_delete_messages</em>, <em>can_invite_users</em>, <em>can_restrict_members</em>, <em>can_pin_messages</em>, <em>can_promote_members</em>, <em>can_send_messages</em>, <em>can_send_media_messages</em>, <em>can_send_other_messages</em> and <em>can_add_web_page_previews</em> to the <a href="#chatmember">ChatMember</a> object.</li>
+<li>Added the new parameter <em>supports_streaming</em> to the <a href="#sendvideo">sendVideo</a> method and a field with the same name to the <a href="#inputmediavideo">InputMediaVideo</a> object.</li>
 </ul>
 <p><strong><a href="/bots/api-changelog">See earlier changes »</a></strong></p>
 <h3><a class="anchor" name="authorizing-your-bot" href="#authorizing-your-bot"><i class="anchor-icon"></i></a>Authorizing your bot</h3>
@@ -219,7 +199,7 @@ To learn how to create…">
 <p><strong>Notes</strong><br><strong>1.</strong> This method will not work if an outgoing webhook is set up.<br><strong>2.</strong> In order to avoid getting duplicate updates, recalculate <em>offset</em> after each server response.</p>
 </blockquote>
 <h4><a class="anchor" name="setwebhook" href="#setwebhook"><i class="anchor-icon"></i></a>setWebhook</h4>
-<p>Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized <a href="#update">Update</a>. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns true.</p>
+<p>Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized <a href="#update">Update</a>. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns <em>True</em> on success.</p>
 <p>If you&#39;d like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. <code>https://www.example.com/&lt;token&gt;</code>. Since nobody else knows your bot‘s token, you can be pretty sure it’s us.</p>
 <table class="table">
 <tbody>
@@ -532,6 +512,11 @@ To learn how to create…">
 <td><em>Optional</em>. Message is a general file, information about the file</td>
 </tr>
 <tr>
+<td>animation</td>
+<td><a href="#animation">Animation</a></td>
+<td><em>Optional</em>. Message is an animation, information about the animation. For backward compatibility, when this field is set, the <em>document</em> field will also be set</td>
+</tr>
+<tr>
 <td>game</td>
 <td><a href="#game">Game</a></td>
 <td><em>Optional</em>. Message is a game, information about the game. <a href="#games">More about games »</a></td>
@@ -651,6 +636,11 @@ To learn how to create…">
 <td>String</td>
 <td><em>Optional</em>. The domain name of the website on which the user has logged in. <a href="/widgets/login">More about Telegram Login »</a></td>
 </tr>
+<tr>
+<td>passport_data</td>
+<td><a href="#passportdata">PassportData</a></td>
+<td><em>Optional</em>. Telegram Passport data</td>
+</tr>
 </tbody>
 </table>
 <h4><a class="anchor" name="messageentity" href="#messageentity"><i class="anchor-icon"></i></a>MessageEntity</h4>
@@ -665,7 +655,7 @@ To learn how to create…">
 <tr>
 <td>type</td>
 <td>String</td>
-<td>Type of the entity. Can be <em>mention</em> (<code>@username</code>), <em>hashtag</em>, <em>bot_command</em>, <em>url</em>, <em>email</em>, <em>bold</em> (bold text), <em>italic</em> (italic text), <em>code</em> (monowidth string), <em>pre</em> (monowidth block), <em>text_link</em> (for clickable text URLs), <em>text_mention</em> (for users <a href="https://telegram.org/blog/edit#new-mentions">without usernames</a>)</td>
+<td>Type of the entity. Can be <em>mention</em> (<code>@username</code>), <em>hashtag</em>, <em>cashtag</em>, <em>bot_command</em>, <em>url</em>, <em>email</em>, <em>phone_number</em>, <em>bold</em> (bold text), <em>italic</em> (italic text), <em>code</em> (monowidth string), <em>pre</em> (monowidth block), <em>text_link</em> (for clickable text URLs), <em>text_mention</em> (for users <a href="https://telegram.org/blog/edit#new-mentions">without usernames</a>)</td>
 </tr>
 <tr>
 <td>offset</td>
@@ -759,6 +749,11 @@ To learn how to create…">
 <td>Integer</td>
 <td><em>Optional</em>. File size</td>
 </tr>
+<tr>
+<td>thumb</td>
+<td><a href="#photosize">PhotoSize</a></td>
+<td><em>Optional</em>. Thumbnail of the album cover to which the music file belongs</td>
+</tr>
 </tbody>
 </table>
 <h4><a class="anchor" name="document" href="#document"><i class="anchor-icon"></i></a>Document</h4>
@@ -835,6 +830,57 @@ To learn how to create…">
 <td>mime_type</td>
 <td>String</td>
 <td><em>Optional</em>. Mime type of a file as defined by sender</td>
+</tr>
+<tr>
+<td>file_size</td>
+<td>Integer</td>
+<td><em>Optional</em>. File size</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="animation" href="#animation"><i class="anchor-icon"></i></a>Animation</h4>
+<p>This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>file_id</td>
+<td>String</td>
+<td>Unique file identifier</td>
+</tr>
+<tr>
+<td>width</td>
+<td>Integer</td>
+<td>Video width as defined by sender</td>
+</tr>
+<tr>
+<td>height</td>
+<td>Integer</td>
+<td>Video height as defined by sender</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>Integer</td>
+<td>Duration of the video in seconds as defined by sender</td>
+</tr>
+<tr>
+<td>thumb</td>
+<td><a href="#photosize">PhotoSize</a></td>
+<td><em>Optional</em>. Animation thumbnail as defined by sender</td>
+</tr>
+<tr>
+<td>file_name</td>
+<td>String</td>
+<td><em>Optional</em>. Original animation filename as defined by sender</td>
+</tr>
+<tr>
+<td>mime_type</td>
+<td>String</td>
+<td><em>Optional</em>. MIME type of the file as defined by sender</td>
 </tr>
 <tr>
 <td>file_size</td>
@@ -939,6 +985,11 @@ To learn how to create…">
 <td>Integer</td>
 <td><em>Optional</em>. Contact&#39;s user identifier in Telegram</td>
 </tr>
+<tr>
+<td>vcard</td>
+<td>String</td>
+<td><em>Optional</em>. Additional data about the contact in the form of a <a href="https://en.wikipedia.org/wiki/VCard">vCard</a></td>
+</tr>
 </tbody>
 </table>
 <h4><a class="anchor" name="location" href="#location"><i class="anchor-icon"></i></a>Location</h4>
@@ -990,6 +1041,11 @@ To learn how to create…">
 <td>foursquare_id</td>
 <td>String</td>
 <td><em>Optional</em>. Foursquare identifier of the venue</td>
+</tr>
+<tr>
+<td>foursquare_type</td>
+<td>String</td>
+<td><em>Optional</em>. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)</td>
 </tr>
 </tbody>
 </table>
@@ -1156,7 +1212,7 @@ To learn how to create…">
 <tr>
 <td>url</td>
 <td>String</td>
-<td><em>Optional</em>. HTTP url to be opened when button is pressed</td>
+<td><em>Optional</em>. HTTP or tg:// url to be opened when button is pressed</td>
 </tr>
 <tr>
 <td>callback_data</td>
@@ -1399,6 +1455,9 @@ To learn how to create…">
 <h4><a class="anchor" name="inputmedia" href="#inputmedia"><i class="anchor-icon"></i></a>InputMedia</h4>
 <p>This object represents the content of a media message to be sent. It should be one of</p>
 <ul>
+<li><a href="#inputmediaanimation">InputMediaAnimation</a></li>
+<li><a href="#inputmediadocument">InputMediaDocument</a></li>
+<li><a href="#inputmediaaudio">InputMediaAudio</a></li>
 <li><a href="#inputmediaphoto">InputMediaPhoto</a></li>
 <li><a href="#inputmediavideo">InputMediaVideo</a></li>
 </ul>
@@ -1419,7 +1478,7 @@ To learn how to create…">
 <tr>
 <td>media</td>
 <td>String</td>
-<td>File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass &quot;attach://&lt;file_attach_name&gt;&quot; to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. <a href="#sending-files">More info on Sending Files »</a></td>
+<td>File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://&lt;file_attach_name&gt;” to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
@@ -1450,7 +1509,12 @@ To learn how to create…">
 <tr>
 <td>media</td>
 <td>String</td>
-<td>File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass &quot;attach://&lt;file_attach_name&gt;&quot; to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. <a href="#sending-files">More info on Sending Files »</a></td>
+<td>File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://&lt;file_attach_name&gt;” to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>thumb</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td><em>Optional</em>. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
@@ -1481,6 +1545,144 @@ To learn how to create…">
 <td>supports_streaming</td>
 <td>Boolean</td>
 <td><em>Optional</em>. Pass <em>True</em>, if the uploaded video is suitable for streaming</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="inputmediaanimation" href="#inputmediaanimation"><i class="anchor-icon"></i></a>InputMediaAnimation</h4>
+<p>Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Type of the result, must be <em>animation</em></td>
+</tr>
+<tr>
+<td>media</td>
+<td>String</td>
+<td>File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://&lt;file_attach_name&gt;” to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>thumb</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td><em>Optional</em>. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>caption</td>
+<td>String</td>
+<td><em>Optional</em>. Caption of the animation to be sent, 0-200 characters</td>
+</tr>
+<tr>
+<td>parse_mode</td>
+<td>String</td>
+<td><em>Optional</em>. Send <a href="#markdown-style"><em>Markdown</em></a> or <a href="#html-style"><em>HTML</em></a>, if you want Telegram apps to show <a href="#formatting-options">bold, italic, fixed-width text or inline URLs</a> in the media caption.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>Integer</td>
+<td><em>Optional</em>. Animation width</td>
+</tr>
+<tr>
+<td>height</td>
+<td>Integer</td>
+<td><em>Optional</em>. Animation height</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>Integer</td>
+<td><em>Optional</em>. Animation duration</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="inputmediaaudio" href="#inputmediaaudio"><i class="anchor-icon"></i></a>InputMediaAudio</h4>
+<p>Represents an audio file to be treated as music to be sent.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Type of the result, must be <em>audio</em></td>
+</tr>
+<tr>
+<td>media</td>
+<td>String</td>
+<td>File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://&lt;file_attach_name&gt;” to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>thumb</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td><em>Optional</em>. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>caption</td>
+<td>String</td>
+<td><em>Optional</em>. Caption of the audio to be sent, 0-200 characters</td>
+</tr>
+<tr>
+<td>parse_mode</td>
+<td>String</td>
+<td><em>Optional</em>. Send <a href="#markdown-style"><em>Markdown</em></a> or <a href="#html-style"><em>HTML</em></a>, if you want Telegram apps to show <a href="#formatting-options">bold, italic, fixed-width text or inline URLs</a> in the media caption.</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>Integer</td>
+<td><em>Optional</em>. Duration of the audio in seconds</td>
+</tr>
+<tr>
+<td>performer</td>
+<td>String</td>
+<td><em>Optional</em>. Performer of the audio</td>
+</tr>
+<tr>
+<td>title</td>
+<td>String</td>
+<td><em>Optional</em>. Title of the audio</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="inputmediadocument" href="#inputmediadocument"><i class="anchor-icon"></i></a>InputMediaDocument</h4>
+<p>Represents a general file to be sent.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Type of the result, must be <em>document</em></td>
+</tr>
+<tr>
+<td>media</td>
+<td>String</td>
+<td>File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://&lt;file_attach_name&gt;” to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>thumb</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td><em>Optional</em>. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>caption</td>
+<td>String</td>
+<td><em>Optional</em>. Caption of the document to be sent, 0-200 characters</td>
+</tr>
+<tr>
+<td>parse_mode</td>
+<td>String</td>
+<td><em>Optional</em>. Send <a href="#markdown-style"><em>Markdown</em></a> or <a href="#html-style"><em>HTML</em></a>, if you want Telegram apps to show <a href="#formatting-options">bold, italic, fixed-width text or inline URLs</a> in the media caption.</td>
 </tr>
 </tbody>
 </table>
@@ -1572,10 +1774,10 @@ To learn how to create…">
 <h4><a class="anchor" name="formatting-options" href="#formatting-options"><i class="anchor-icon"></i></a>Formatting options</h4>
 <p>The Bot API supports basic formatting for messages. You can use bold and italic text, as well as inline links and pre-formatted code in your bots&#39; messages. Telegram clients will render them accordingly. You can use either markdown-style or HTML-style formatting.</p>
 <p>Note that Telegram clients will display an <strong>alert</strong> to the user before opening an inline link (‘Open this link?’ together with the full URL).</p>
-<p>Links &#39;tg://user?id=&lt;user_id&gt;&#39; can be used to mention a user by their id without using a username. Please note:</p>
+<p>Links <code>tg://user?id=&lt;user_id&gt;</code> can be used to mention a user by their id without using a username. Please note:</p>
 <ul>
-<li>These links will work only if they are used inside an inline link.</li>
-<li>These mentions are only guaranteed to work if the user has contacted the bot in the past or is a member in the group where he was mentioned.</li>
+<li>These links will work only if they are used inside an inline link. For example, they will not work, when used in an inline keyboard button.</li>
+<li>These mentions are only guaranteed to work if the user has contacted the bot in the past, has sent a callback query to the bot via inline button or is a member in the group where he was mentioned.</li>
 </ul>
 <h6><a class="anchor" name="markdown-style" href="#markdown-style"><i class="anchor-icon"></i></a>Markdown style</h6>
 <p>To use this mode, pass <em>Markdown</em> in the <em>parse_mode</em> field when using <a href="#sendmessage">sendMessage</a>. Use the following syntax in your message:</p>
@@ -1747,6 +1949,12 @@ pre-formatted fixed-width code block
 <td>Track name</td>
 </tr>
 <tr>
+<td>thumb</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Optional</td>
+<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
@@ -1787,6 +1995,12 @@ pre-formatted fixed-width code block
 <td><a href="#inputfile">InputFile</a> or String</td>
 <td>Yes</td>
 <td>File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>thumb</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Optional</td>
+<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
@@ -1861,6 +2075,12 @@ pre-formatted fixed-width code block
 <td>Video height</td>
 </tr>
 <tr>
+<td>thumb</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Optional</td>
+<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
 <td>caption</td>
 <td>String</td>
 <td>Optional</td>
@@ -1877,6 +2097,84 @@ pre-formatted fixed-width code block
 <td>Boolean</td>
 <td>Optional</td>
 <td>Pass <em>True</em>, if the uploaded video is suitable for streaming</td>
+</tr>
+<tr>
+<td>disable_notification</td>
+<td>Boolean</td>
+<td>Optional</td>
+<td>Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>. Users will receive a notification with no sound.</td>
+</tr>
+<tr>
+<td>reply_to_message_id</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>If the message is a reply, ID of the original message</td>
+</tr>
+<tr>
+<td>reply_markup</td>
+<td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a> or <a href="#replykeyboardmarkup">ReplyKeyboardMarkup</a> or <a href="#replykeyboardremove">ReplyKeyboardRemove</a> or <a href="#forcereply">ForceReply</a></td>
+<td>Optional</td>
+<td>Additional interface options. A JSON-serialized object for an <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>, <a href="https://core.telegram.org/bots#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard or to force a reply from the user.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="sendanimation" href="#sendanimation"><i class="anchor-icon"></i></a>sendAnimation</h4>
+<p>Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent <a href="#message">Message</a> is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Yes</td>
+<td>Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>animation</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Yes</td>
+<td>Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>duration</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Duration of sent animation in seconds</td>
+</tr>
+<tr>
+<td>width</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Animation width</td>
+</tr>
+<tr>
+<td>height</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Animation height</td>
+</tr>
+<tr>
+<td>thumb</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Optional</td>
+<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
+<td>caption</td>
+<td>String</td>
+<td>Optional</td>
+<td>Animation caption (may also be used when resending animation by <em>file_id</em>), 0-200 characters</td>
+</tr>
+<tr>
+<td>parse_mode</td>
+<td>String</td>
+<td>Optional</td>
+<td>Send <a href="#markdown-style"><em>Markdown</em></a> or <a href="#html-style"><em>HTML</em></a>, if you want Telegram apps to show <a href="#formatting-options">bold, italic, fixed-width text or inline URLs</a> in the media caption.</td>
 </tr>
 <tr>
 <td>disable_notification</td>
@@ -1993,6 +2291,12 @@ pre-formatted fixed-width code block
 <td>Video width and height</td>
 </tr>
 <tr>
+<td>thumb</td>
+<td><a href="#inputfile">InputFile</a> or String</td>
+<td>Optional</td>
+<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+</tr>
+<tr>
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
@@ -2030,7 +2334,7 @@ pre-formatted fixed-width code block
 </tr>
 <tr>
 <td>media</td>
-<td>Array of <a href="#inputmedia">InputMedia</a></td>
+<td>Array of <a href="#inputmediaphoto">InputMediaPhoto</a> and <a href="#inputmediavideo">InputMediaVideo</a></td>
 <td>Yes</td>
 <td>A JSON-serialized array describing photos and videos to be sent, must include 2–10 items</td>
 </tr>
@@ -2233,6 +2537,12 @@ pre-formatted fixed-width code block
 <td>Foursquare identifier of the venue</td>
 </tr>
 <tr>
+<td>foursquare_type</td>
+<td>String</td>
+<td>Optional</td>
+<td>Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)</td>
+</tr>
+<tr>
 <td>disable_notification</td>
 <td>Boolean</td>
 <td>Optional</td>
@@ -2285,6 +2595,12 @@ pre-formatted fixed-width code block
 <td>String</td>
 <td>Optional</td>
 <td>Contact&#39;s last name</td>
+</tr>
+<tr>
+<td>vcard</td>
+<td>String</td>
+<td>Optional</td>
+<td>Additional data about the contact in the form of a <a href="https://en.wikipedia.org/wiki/VCard">vCard</a>, 0-2048 bytes</td>
 </tr>
 <tr>
 <td>disable_notification</td>
@@ -3018,6 +3334,48 @@ pre-formatted fixed-width code block
 <td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a></td>
 <td>Optional</td>
 <td>A JSON-serialized object for an <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="editmessagemedia" href="#editmessagemedia"><i class="anchor-icon"></i></a>editMessageMedia</h4>
+<p>Use this method to edit audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can&#39;t be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>chat_id</td>
+<td>Integer or String</td>
+<td>Optional</td>
+<td>Required if <em>inline_message_id</em> is not specified. Unique identifier for the target chat or username of the target channel (in the format <code>@channelusername</code>)</td>
+</tr>
+<tr>
+<td>message_id</td>
+<td>Integer</td>
+<td>Optional</td>
+<td>Required if <em>inline_message_id</em> is not specified. Identifier of the sent message</td>
+</tr>
+<tr>
+<td>inline_message_id</td>
+<td>String</td>
+<td>Optional</td>
+<td>Required if <em>chat_id</em> and <em>message_id</em> are not specified. Identifier of the inline message</td>
+</tr>
+<tr>
+<td>media</td>
+<td><a href="#inputmedia">InputMedia</a></td>
+<td>Yes</td>
+<td>A JSON-serialized object for a new media content of the message</td>
+</tr>
+<tr>
+<td>reply_markup</td>
+<td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a></td>
+<td>Optional</td>
+<td>A JSON-serialized object for a new <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>.</td>
 </tr>
 </tbody>
 </table>
@@ -4206,6 +4564,11 @@ pre-formatted fixed-width code block
 <td><em>Optional</em>. Foursquare identifier of the venue if known</td>
 </tr>
 <tr>
+<td>foursquare_type</td>
+<td>String</td>
+<td><em>Optional</em>. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)</td>
+</tr>
+<tr>
 <td>reply_markup</td>
 <td><a href="#inlinekeyboardmarkup">InlineKeyboardMarkup</a></td>
 <td><em>Optional</em>. <a href="/bots#inline-keyboards-and-on-the-fly-updating">Inline keyboard</a> attached to the message</td>
@@ -4266,6 +4629,11 @@ pre-formatted fixed-width code block
 <td>last_name</td>
 <td>String</td>
 <td><em>Optional</em>. Contact&#39;s last name</td>
+</tr>
+<tr>
+<td>vcard</td>
+<td>String</td>
+<td><em>Optional</em>. Additional data about the contact in the form of a <a href="https://en.wikipedia.org/wiki/VCard">vCard</a>, 0-2048 bytes</td>
 </tr>
 <tr>
 <td>reply_markup</td>
@@ -4794,7 +5162,6 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.</p>
 <h4><a class="anchor" name="inputvenuemessagecontent" href="#inputvenuemessagecontent"><i class="anchor-icon"></i></a>InputVenueMessageContent</h4>
 <p>Represents the <a href="#inputmessagecontent">content</a> of a venue message to be sent as the result of an inline query. </p>
 <table class="table">
@@ -4829,9 +5196,13 @@ pre-formatted fixed-width code block
 <td>String</td>
 <td><em>Optional</em>. Foursquare identifier of the venue, if known</td>
 </tr>
+<tr>
+<td>foursquare_type</td>
+<td>String</td>
+<td><em>Optional</em>. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)</td>
+</tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.</p>
 <h4><a class="anchor" name="inputcontactmessagecontent" href="#inputcontactmessagecontent"><i class="anchor-icon"></i></a>InputContactMessageContent</h4>
 <p>Represents the <a href="#inputmessagecontent">content</a> of a contact message to be sent as the result of an inline query. </p>
 <table class="table">
@@ -4856,9 +5227,13 @@ pre-formatted fixed-width code block
 <td>String</td>
 <td><em>Optional</em>. Contact&#39;s last name</td>
 </tr>
+<tr>
+<td>vcard</td>
+<td>String</td>
+<td><em>Optional</em>. Additional data about the contact in the form of a <a href="https://en.wikipedia.org/wiki/VCard">vCard</a>, 0-2048 bytes</td>
+</tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.</p>
 <h4><a class="anchor" name="choseninlineresult" href="#choseninlineresult"><i class="anchor-icon"></i></a>ChosenInlineResult</h4>
 <p>Represents a <a href="#inlinequeryresult">result</a> of an inline query that was chosen by the user and sent to their chat partner. </p>
 <table class="table">
@@ -5392,6 +5767,358 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
+<h3><a class="anchor" name="telegram-passport" href="#telegram-passport"><i class="anchor-icon"></i></a>Telegram Passport</h3>
+<p><strong>Telegram Passport</strong> is a unified authorization method for services that require personal identification. Users can upload their documents once, then instantly share their data with services that require real-world ID (finance, ICOs, etc.). Please see the <a href="/passport">manual</a> for details.</p>
+<h4><a class="anchor" name="passportdata" href="#passportdata"><i class="anchor-icon"></i></a>PassportData</h4>
+<p>Contains information about Telegram Passport data shared with the bot by the user.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>data</td>
+<td>Array of <a href="#encryptedpassportelement">EncryptedPassportElement</a></td>
+<td>Array with information about documents and other Telegram Passport elements that was shared with the bot</td>
+</tr>
+<tr>
+<td>credentials</td>
+<td><a href="#encryptedcredentials">EncryptedCredentials</a></td>
+<td>Encrypted credentials required to decrypt the data</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportfile" href="#passportfile"><i class="anchor-icon"></i></a>PassportFile</h4>
+<p>This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don&#39;t exceed 10MB.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>file_id</td>
+<td>String</td>
+<td>Unique identifier for this file</td>
+</tr>
+<tr>
+<td>file_size</td>
+<td>Integer</td>
+<td>File size</td>
+</tr>
+<tr>
+<td>file_date</td>
+<td>Integer</td>
+<td>Unix time when the file was uploaded</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="encryptedpassportelement" href="#encryptedpassportelement"><i class="anchor-icon"></i></a>EncryptedPassportElement</h4>
+<p>Contains information about documents or other Telegram Passport elements shared with the bot by the user.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Element type. One of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”, “phone_number”, “email”.</td>
+</tr>
+<tr>
+<td>data</td>
+<td>String</td>
+<td><em>Optional</em>. Base64-encoded encrypted Telegram Passport element data provided by the user, available for “personal_details”, “passport”, “driver_license”, “identity_card”, “identity_passport” and “address” types. Can be decrypted and verified using the accompanying <a href="#encryptedcredentials">EncryptedCredentials</a>.</td>
+</tr>
+<tr>
+<td>phone_number</td>
+<td>String</td>
+<td><em>Optional</em>. User&#39;s verified phone number, available only for “phone_number” type</td>
+</tr>
+<tr>
+<td>email</td>
+<td>String</td>
+<td><em>Optional</em>. User&#39;s verified email address, available only for “email” type</td>
+</tr>
+<tr>
+<td>files</td>
+<td>Array of <a href="#passportfile">PassportFile</a></td>
+<td><em>Optional</em>. Array of encrypted files with documents provided by the user, available for “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration” and “temporary_registration” types. Files can be decrypted and verified using the accompanying <a href="#encryptedcredentials">EncryptedCredentials</a>.</td>
+</tr>
+<tr>
+<td>front_side</td>
+<td><a href="#passportfile">PassportFile</a></td>
+<td><em>Optional</em>. Encrypted file with the front side of the document, provided by the user. Available for “passport”, “driver_license”, “identity_card” and “internal_passport”. The file can be decrypted and verified using the accompanying <a href="#encryptedcredentials">EncryptedCredentials</a>.</td>
+</tr>
+<tr>
+<td>reverse_side</td>
+<td><a href="#passportfile">PassportFile</a></td>
+<td><em>Optional</em>. Encrypted file with the reverse side of the document, provided by the user. Available for “driver_license” and “identity_card”. The file can be decrypted and verified using the accompanying <a href="#encryptedcredentials">EncryptedCredentials</a>.</td>
+</tr>
+<tr>
+<td>selfie</td>
+<td><a href="#passportfile">PassportFile</a></td>
+<td><em>Optional</em>. Encrypted file with the selfie of the user holding a document, provided by the user; available for “passport”, “driver_license”, “identity_card” and “internal_passport”. The file can be decrypted and verified using the accompanying <a href="#encryptedcredentials">EncryptedCredentials</a>.</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="encryptedcredentials" href="#encryptedcredentials"><i class="anchor-icon"></i></a>EncryptedCredentials</h4>
+<p>Contains data required for decrypting and authenticating <a href="#encryptedpassportelement">EncryptedPassportElement</a>. See the <a href="https://core.telegram.org/telegram-passport#receiving-information">Telegram Passport Documentation</a> for a complete description of the data decryption and authentication processes.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>data</td>
+<td>String</td>
+<td>Base64-encoded encrypted JSON-serialized data with unique user&#39;s payload, data hashes and secrets required for <a href="#encryptedpassportelement">EncryptedPassportElement</a> decryption and authentication</td>
+</tr>
+<tr>
+<td>hash</td>
+<td>String</td>
+<td>Base64-encoded data hash for data authentication</td>
+</tr>
+<tr>
+<td>secret</td>
+<td>String</td>
+<td>Base64-encoded secret, encrypted with the bot&#39;s public RSA key, required for data decryption</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="setpassportdataerrors" href="#setpassportdataerrors"><i class="anchor-icon"></i></a>setPassportDataErrors</h4>
+<p>Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns <em>True</em> on success.</p>
+<p>Use this if the data submitted by the user doesn&#39;t satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Parameters</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Required</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>User identifier</td>
+</tr>
+<tr>
+<td>errors</td>
+<td>Array of <a href="#passportelementerror">PassportElementError</a></td>
+<td>Yes</td>
+<td>A JSON-serialized array describing the errors</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportelementerror" href="#passportelementerror"><i class="anchor-icon"></i></a>PassportElementError</h4>
+<p>This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user. It should be one of:</p>
+<ul>
+<li><a href="#passportelementerrordatafield">PassportElementErrorDataField</a></li>
+<li><a href="#passportelementerrorfrontside">PassportElementErrorFrontSide</a></li>
+<li><a href="#passportelementerrorreverseside">PassportElementErrorReverseSide</a></li>
+<li><a href="#passportelementerrorselfie">PassportElementErrorSelfie</a></li>
+<li><a href="#passportelementerrorfile">PassportElementErrorFile</a></li>
+<li><a href="#passportelementerrorfiles">PassportElementErrorFiles</a></li>
+</ul>
+<h4><a class="anchor" name="passportelementerrordatafield" href="#passportelementerrordatafield"><i class="anchor-icon"></i></a>PassportElementErrorDataField</h4>
+<p>Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field&#39;s value changes.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>Error source, must be <em>data</em></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>The section of the user&#39;s Telegram Passport which has the error, one of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”</td>
+</tr>
+<tr>
+<td>field_name</td>
+<td>String</td>
+<td>Name of the data field which has the error</td>
+</tr>
+<tr>
+<td>data_hash</td>
+<td>String</td>
+<td>Base64-encoded data hash</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportelementerrorfrontside" href="#passportelementerrorfrontside"><i class="anchor-icon"></i></a>PassportElementErrorFrontSide</h4>
+<p>Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>Error source, must be <em>front_side</em></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>The section of the user&#39;s Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”</td>
+</tr>
+<tr>
+<td>file_hash</td>
+<td>String</td>
+<td>Base64-encoded hash of the file with the front side of the document</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportelementerrorreverseside" href="#passportelementerrorreverseside"><i class="anchor-icon"></i></a>PassportElementErrorReverseSide</h4>
+<p>Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>Error source, must be <em>reverse_side</em></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>The section of the user&#39;s Telegram Passport which has the issue, one of “driver_license”, “identity_card”</td>
+</tr>
+<tr>
+<td>file_hash</td>
+<td>String</td>
+<td>Base64-encoded hash of the file with the reverse side of the document</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportelementerrorselfie" href="#passportelementerrorselfie"><i class="anchor-icon"></i></a>PassportElementErrorSelfie</h4>
+<p>Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>Error source, must be <em>selfie</em></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>The section of the user&#39;s Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”</td>
+</tr>
+<tr>
+<td>file_hash</td>
+<td>String</td>
+<td>Base64-encoded hash of the file with the selfie</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportelementerrorfile" href="#passportelementerrorfile"><i class="anchor-icon"></i></a>PassportElementErrorFile</h4>
+<p>Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>Error source, must be <em>file</em></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>The section of the user&#39;s Telegram Passport which has the issue, one of “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”</td>
+</tr>
+<tr>
+<td>file_hash</td>
+<td>String</td>
+<td>Base64-encoded file hash</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportelementerrorfiles" href="#passportelementerrorfiles"><i class="anchor-icon"></i></a>PassportElementErrorFiles</h4>
+<p>Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.</p>
+<table class="table">
+<tbody>
+<tr>
+<td><strong>Field</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>Error source, must be <em>files</em></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>The section of the user&#39;s Telegram Passport which has the issue, one of “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”</td>
+</tr>
+<tr>
+<td>file_hashes</td>
+<td>Array of String</td>
+<td>List of base64-encoded file hashes</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
 <h3><a class="anchor" name="games" href="#games"><i class="anchor-icon"></i></a>Games</h3>
 <p>Your bot can offer users <strong>HTML5 games</strong> to play solo or to compete against each other in groups and one-on-one chats. Create games via <a href="https://tme/botfather">@BotFather</a> using the <em>/newgame</em> command. Please note that this kind of power requires responsibility: you will need to accept the terms for each game that your bots will be offering.</p>
 <ul>
@@ -5485,42 +6212,6 @@ pre-formatted fixed-width code block
 <td>animation</td>
 <td><a href="#animation">Animation</a></td>
 <td><em>Optional</em>. Animation that will be displayed in the game message in chats. Upload via <a href="https://t.me/botfather">BotFather</a></td>
-</tr>
-</tbody>
-</table>
-<h4><a class="anchor" name="animation" href="#animation"><i class="anchor-icon"></i></a>Animation</h4>
-<p>You can provide an animation for your <a href="#game">game</a> so that it looks stylish in chats (check out <a href="https://t.me/gamebot">Lumberjack</a> for an example). This object represents an animation file to be displayed in the message containing a <a href="#games">game</a>.</p>
-<table class="table">
-<tbody>
-<tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
-</tr>
-<tr>
-<td>file_id</td>
-<td>String</td>
-<td>Unique file identifier</td>
-</tr>
-<tr>
-<td>thumb</td>
-<td><a href="#photosize">PhotoSize</a></td>
-<td><em>Optional</em>. Animation thumbnail as defined by sender</td>
-</tr>
-<tr>
-<td>file_name</td>
-<td>String</td>
-<td><em>Optional</em>. Original animation filename as defined by sender</td>
-</tr>
-<tr>
-<td>mime_type</td>
-<td>String</td>
-<td><em>Optional</em>. MIME type of the file as defined by sender</td>
-</tr>
-<tr>
-<td>file_size</td>
-<td>Integer</td>
-<td><em>Optional</em>. File size</td>
 </tr>
 </tbody>
 </table>
@@ -5713,7 +6404,7 @@ pre-formatted fixed-width code block
   </div>
 </div>
     </div>
-    <script src="/js/main.js?22"></script>
+    <script src="/js/main.js?23"></script>
     <script src="/js/jquery.min.js?1"></script>
 <script src="/js/bootstrap.min.js"></script>
 
@@ -5729,4 +6420,4 @@ backToTopInit();
 </script>
   </body>
 </html>
-<!-- page generated in 28.62ms -->
+<!-- page generated in 28.37ms -->

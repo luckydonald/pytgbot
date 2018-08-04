@@ -1,4 +1,41 @@
 # Changelog
+
+## Version 3.6.0
+- [`Bot API 4`.`0` (July 26, 2018)](https://core.telegram.org/bots/api-changelog#july-26-2018)
+    - Added [Telegram Passport](https://telegram.org/blog/passport)
+        - Added bot methods:
+        - New `pytgbot.api_types.receivable.passport` containing:
+        `PassportData`, `PassportFile`, `EncryptedPassportElement` and `EncryptedCredentials`
+        - New `pytgbot.api_types.sendable.passport` containing:
+        `PassportElementError`, `PassportElementErrorDataField`, `PassportElementErrorFrontSide`, `PassportElementErrorReverseSide`, `PassportElementErrorSelfie`, `PassportElementErrorFile` and `PassportElementErrorFiles`
+    - More Changes:
+        - `api_types.receivable.media`:
+            - `MessageEntity` added `"cashtag"` as possible entity type.
+            - Added `thumb` parameter to `Audio`.
+            - Added `vcard` parameter to `Contact`.
+            - Added `foursquare_type` parameter to `Venue`.
+            - Added `Animation` class.
+        - `api_types.receivable.passport`:
+            - Added, see above.
+        - `api_types.receivable.updates`:
+                      - ########TODO########
+        - `api_types.sendable.inline`:
+            - Added `foursquare_type` parameter to `InlineQueryResultVenue` and `InputVenueMessageContent`.
+            - Added `vcard` parameter to `InlineQueryResultContact` and `InputContactMessageContent`.
+        - `api_types.sendable.input_media`:
+                        - ########TODO########
+        - `api_types.receivable.passport`:
+            - Added, see above.
+        - `api_types.sendable.reply_markup`:
+                        - ########TODO########
+        - `bot.Bot`:
+                        - ########TODO########
+
+    - Documentation changes:
+        - `Bot.set_webhook`: Returns True, only on success.
+- Also, while at it, fixed
+  - `'live_period' in inlinequeryresultlocation_instance` wrongly returning `False`
+
 ## Version 3.6.0
 - [`Bot API 3`.`6` (February 13, 2018)](https://core.telegram.org/bots/api-changelog#february-13-2018)
     - Added `connected_website` attribute to the `Update` class.
@@ -184,7 +221,7 @@ Changes I observed:
 - Renamed `pytgbot.api_types.receivable.media.File.download_url(token)` to `get_download_url(token)`
 - Added a `pytgbot.bot.Bot.get_download_url(file)` method.
 
-## Version 2.0.1 ## 
+## Version 2.0.1 ##
 - Renamed `InputFileURL` to `InputFileFromURL`
 - Added `InputFileFromDisk`
 - `InputFile` is for buffers (strings) now
@@ -198,8 +235,8 @@ Big overhaul:
 
 ## Version 1.0.1 ##
 - Added ability to ignore network errors in `get_updates(...)` without raising a exception by setting `error_as_empty=True`.
-  Useful in `for update in bot.get_updates(error_as_empty=True)` constructs. 
- 
+  Useful in `for update in bot.get_updates(error_as_empty=True)` constructs.
+
 ## Version 1.0.0 ##
 - Added [Inline mode](https://telegram.org/blog/inline-bots) including [inlinefeedback](https://core.telegram.org/bots/inline#collecting-feedback).
   This should be [`Bot API 2.0` (April 9, 2016)](https://core.telegram.org/bots/api-changelog#april-9-2016).

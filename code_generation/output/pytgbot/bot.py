@@ -90,7 +90,7 @@ class Bot(object):
     
     def set_webhook(self, url, certificate=None, max_connections=None, allowed_updates=None):
         """
-        Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns true.
+        Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
         If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot‘s token, you can be pretty sure it’s us.
         
         Notes1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter. Please upload as InputFile, sending a String will not work.3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
@@ -118,8 +118,8 @@ class Bot(object):
         
         Returns:
 
-        :return: Returns true
-        :rtype:  
+        :return: Returns True on success
+        :rtype:  bool
         """
         from pytgbot.api_types.sendable.files import InputFile
         
@@ -133,7 +133,13 @@ class Bot(object):
         
         result = self.do("setWebhook", url=url, certificate=certificate, max_connections=max_connections, allowed_updates=allowed_updates)
         if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
@@ -419,7 +425,7 @@ class Bot(object):
         return result
     # end def send_photo
     
-    def send_audio(self, chat_id, audio, caption=None, parse_mode=None, duration=None, performer=None, title=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_audio(self, chat_id, audio, caption=None, parse_mode=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
         For sending voice messages, use the sendVoice method instead.
@@ -452,6 +458,9 @@ class Bot(object):
         
         :param title: Track name
         :type  title: str|unicode
+        
+        :param thumb: Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
@@ -487,13 +496,15 @@ class Bot(object):
         
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         
+        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendAudio", chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, duration=duration, performer=performer, title=title, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendAudio", chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -508,7 +519,7 @@ class Bot(object):
         return result
     # end def send_audio
     
-    def send_document(self, chat_id, document, caption=None, parse_mode=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_document(self, chat_id, document, thumb=None, caption=None, parse_mode=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 
@@ -525,6 +536,9 @@ class Bot(object):
         
         
         Optional keyword parameters:
+        
+        :param thumb: Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Document caption (may also be used when resending documents by file_id), 0-200 characters
         :type  caption: str|unicode
@@ -556,6 +570,8 @@ class Bot(object):
         
         assert_type_or_raise(document, (InputFile, unicode_type), parameter_name="document")
         
+        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
+        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
@@ -566,7 +582,7 @@ class Bot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendDocument", chat_id=chat_id, document=document, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendDocument", chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -581,7 +597,7 @@ class Bot(object):
         return result
     # end def send_document
     
-    def send_video(self, chat_id, video, duration=None, width=None, height=None, caption=None, parse_mode=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_video(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 
@@ -607,6 +623,9 @@ class Bot(object):
         
         :param height: Video height
         :type  height: int
+        
+        :param thumb: Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Video caption (may also be used when resending videos by file_id), 0-200 characters
         :type  caption: str|unicode
@@ -647,6 +666,8 @@ class Bot(object):
         
         assert_type_or_raise(height, None, int, parameter_name="height")
         
+        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
+        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
@@ -659,7 +680,100 @@ class Bot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendVideo", chat_id=chat_id, video=video, duration=duration, width=width, height=height, caption=caption, parse_mode=parse_mode, supports_streaming=supports_streaming, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendVideo", chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, supports_streaming=supports_streaming, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def send_video
+    
+    def send_animation(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+        """
+        Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
+
+        https://core.telegram.org/bots/api#sendanimation
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+        
+        :param animation: Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data. More info on Sending Files »
+        :type  animation: pytgbot.api_types.sendable.files.InputFile | str|unicode
+        
+        
+        Optional keyword parameters:
+        
+        :param duration: Duration of sent animation in seconds
+        :type  duration: int
+        
+        :param width: Animation width
+        :type  width: int
+        
+        :param height: Animation height
+        :type  height: int
+        
+        :param thumb: Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
+        
+        :param caption: Animation caption (may also be used when resending animation by file_id), 0-200 characters
+        :type  caption: str|unicode
+        
+        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
+        
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
+        
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
+        
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        
+        Returns:
+
+        :return: On success, the sent Message is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message
+        """
+        from pytgbot.api_types.sendable.files import InputFile
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        
+        assert_type_or_raise(animation, (InputFile, unicode_type), parameter_name="animation")
+        
+        assert_type_or_raise(duration, None, int, parameter_name="duration")
+        
+        assert_type_or_raise(width, None, int, parameter_name="width")
+        
+        assert_type_or_raise(height, None, int, parameter_name="height")
+        
+        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
+        
+        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
+        
+        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
+        
+        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        
+        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
+        
+        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
+        
+        result = self.do("animation", chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -752,7 +866,7 @@ class Bot(object):
         return result
     # end def send_voice
     
-    def send_video_note(self, chat_id, video_note, duration=None, length=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_video_note(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
 
@@ -775,6 +889,9 @@ class Bot(object):
         
         :param length: Video width and height
         :type  length: int
+        
+        :param thumb: Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
@@ -804,13 +921,15 @@ class Bot(object):
         
         assert_type_or_raise(length, None, int, parameter_name="length")
         
+        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -838,7 +957,7 @@ class Bot(object):
         :type  chat_id: int | str|unicode
         
         :param media: A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
-        :type  media: list of pytgbot.api_types.sendable.input_media.InputMedia
+        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto|pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
         Optional keyword parameters:
@@ -854,8 +973,6 @@ class Bot(object):
         :return: On success, an array of the sent Messages is returned
         :rtype:  Messages
         """
-        from pytgbot.api_types.sendable.input_media import InputMedia
-        
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
         assert_type_or_raise(media, list, parameter_name="media")
@@ -1071,7 +1188,7 @@ class Bot(object):
         return result
     # end def stop_message_live_location
     
-    def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send information about a venue. On success, the sent Message is returned.
 
@@ -1100,6 +1217,9 @@ class Bot(object):
         
         :param foursquare_id: Foursquare identifier of the venue
         :type  foursquare_id: str|unicode
+        
+        :param foursquare_type: Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+        :type  foursquare_type: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
@@ -1132,13 +1252,15 @@ class Bot(object):
         
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         
+        assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1153,7 +1275,7 @@ class Bot(object):
         return result
     # end def send_venue
     
-    def send_contact(self, chat_id, phone_number, first_name, last_name=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_contact(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send phone contacts. On success, the sent Message is returned.
 
@@ -1176,6 +1298,9 @@ class Bot(object):
         
         :param last_name: Contact's last name
         :type  last_name: str|unicode
+        
+        :param vcard: Additional data about the contact in the form of a vCard, 0-2048 bytes
+        :type  vcard: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
@@ -1204,13 +1329,15 @@ class Bot(object):
         
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         
+        assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendContact", chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendContact", chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2311,6 +2438,72 @@ class Bot(object):
         return result
     # end def edit_message_caption
     
+    def edit_message_media(self, media, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+        """
+        Use this method to edit audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#editmessagemedia
+
+        
+        Parameters:
+        
+        :param media: A JSON-serialized object for a new media content of the message
+        :type  media: pytgbot.api_types.sendable.input_media.InputMedia
+        
+        
+        Optional keyword parameters:
+        
+        :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+        
+        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :type  message_id: int
+        
+        :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
+        :type  inline_message_id: str|unicode
+        
+        :param reply_markup: A JSON-serialized object for a new inline keyboard.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        
+        Returns:
+
+        :return: On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message | bool
+        """
+        from pytgbot.api_types.sendable.input_media import InputMedia
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        
+        assert_type_or_raise(media, InputMedia, parameter_name="media")
+        
+        assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
+        
+        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
+        
+        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
+        
+        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
+        
+        result = self.do("editMessageMedia", media=media, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+        
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def edit_message_media
+    
     def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots).  On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
@@ -3053,6 +3246,48 @@ class Bot(object):
         return result
     # end def answer_pre_checkout_query
     
+    def set_passport_data_errors(self, user_id, errors):
+        """
+        Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success.
+        Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
+
+        https://core.telegram.org/bots/api#setpassportdataerrors
+
+        
+        Parameters:
+        
+        :param user_id: User identifier
+        :type  user_id: int
+        
+        :param errors: A JSON-serialized array describing the errors
+        :type  errors: list of pytgbot.api_types.sendable.passport.PassportElementError
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        from pytgbot.api_types.sendable.passport import PassportElementError
+        
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
+        
+        assert_type_or_raise(errors, list, parameter_name="errors")
+        
+        result = self.do("setPassportDataErrors", user_id=user_id, errors=errors)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_passport_data_errors
+    
     def send_game(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send a game. On success, the sent Message is returned.
@@ -3354,15 +3589,18 @@ class Bot(object):
         return res
     # end def _postprocess_request
 
-    def _do_fileupload(self, file_param_name, value, **kwargs):
+    def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
         """
         :param file_param_name: For what field the file should be uploaded.
         :type  file_param_name: str
 
         :param value: File to send. You can either pass a file_id as String to resend a file
                       file that is already on the Telegram servers, or upload a new file,
-                      specifying the file path as :class:`pytgbot.api_types.files.InputFile`.
-        :type  value: pytgbot.api_types.sendable.InputFile | str
+                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
+        :type  value: pytgbot.api_types.sendable.files.InputFile | str
+
+        :param _command: Overwrite the sended command.
+                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
 
         :param kwargs: will get json encoded.
 
@@ -3371,7 +3609,7 @@ class Bot(object):
 
         :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
         """
-        from pytgbot.api_types.sendable import InputFile
+        from pytgbot.api_types.sendable.files import InputFile
         from luckydonaldUtils.encoding import unicode_type
         from luckydonaldUtils.encoding import to_native as n
 
@@ -3384,7 +3622,14 @@ class Bot(object):
         else:
             raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
                 key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
-        return self.do("send{cmd}".format(cmd=file_param_name.capitalize()), **kwargs)
+        # end if
+        if not _command:
+            # command as camelCase  # "voice_note" -> "sendVoiceNote"  # https://stackoverflow.com/a/10984923/3423324
+            command = re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), "send_" + file_param_name)
+        else:
+            command = _command
+        # end def
+        return self.do(command, **kwargs)
     # end def _do_fileupload
 
     def get_download_url(self, file):

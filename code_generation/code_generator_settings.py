@@ -164,6 +164,7 @@ WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters 
     "CallbackGame",
     "InlineQueryResult",
     "InputMedia",
+    "PassportElementError",
 ]
 
 """

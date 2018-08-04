@@ -490,7 +490,7 @@ class InlineKeyboardButton(Button):
 
     Optional keyword parameters:
     
-    :param url: Optional. HTTP url to be opened when button is pressed
+    :param url: Optional. HTTP or tg:// url to be opened when button is pressed
     :type  url: str|unicode
     
     :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
@@ -524,7 +524,7 @@ class InlineKeyboardButton(Button):
     
         Optional keyword parameters:
         
-        :param url: Optional. HTTP url to be opened when button is pressed
+        :param url: Optional. HTTP or tg:// url to be opened when button is pressed
         :type  url: str|unicode
         
         :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
