@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 3.6.0
+## Version 4.0.0
 - [`Bot API 4`.`0` (July 26, 2018)](https://core.telegram.org/bots/api-changelog#july-26-2018)
     - Added [Telegram Passport](https://telegram.org/blog/passport)
         - Added bot methods:
