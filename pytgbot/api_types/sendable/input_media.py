@@ -412,7 +412,7 @@ class InputMediaVideo(InputMediaWithThumb):
         if array.get('thumb') is None:
             data['thumb'] = None
         elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = array.get('thumb')
+            data['thumb'] = None  # will be filled later by get_request_data()
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
         else:
@@ -525,8 +525,6 @@ class InputMediaAnimation(InputMediaWithThumb):
         """
         super(InputMediaAnimation, self).__init__('animation', media, thumb, caption=caption, parse_mode=parse_mode)
 
-        from pytgbot.api_types.sendable.files import InputFile
-
         # type is set by InputMedia base class
         # media is set by InputMedia base class
         # thumb is set by InputMediaWithThumb base class
@@ -593,7 +591,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         if array.get('thumb') is None:
             data['thumb'] = None
         elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = InputFile.from_array(array.get('thumb'))
+            data['thumb'] = None  # will be filled later by get_request_data()
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
         else:
@@ -772,7 +770,7 @@ class InputMediaAudio(InputMediaWithThumb):
         if array.get('thumb') is None:
             data['thumb'] = None
         elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = None
+            data['thumb'] = None  # will be filled later by get_request_data()
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
         else:
@@ -916,7 +914,7 @@ class InputMediaDocument(InputMediaWithThumb):
         if array.get('thumb') is None:
             data['thumb'] = None
         elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = None
+            data['thumb'] = None  # will be filled later by get_request_data()
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
         else:
