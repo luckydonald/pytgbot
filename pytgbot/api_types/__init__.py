@@ -73,6 +73,16 @@ class TgBotApiObject(object):
         """
         return as_array(obj)
     # end def
+
+    def __setattr__(self, key, value):
+        """
+        Remove `self._raw` if any other value is set.
+        """
+        super(TgBotApiObject, self).__setattr__(key, value)
+        if not key.startswith('_') and hasattr(self, '_raw') and self._raw is not None:
+            self._raw = None
+        # end if
+    # end def
 # end class
 
 
