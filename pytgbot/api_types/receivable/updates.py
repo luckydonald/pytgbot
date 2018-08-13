@@ -10,6 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 class UpdateType(Receivable):
+    """
+    All extending classes are an property of the Update type.
+    Like Message: Update.message
+    """
     pass
 # end class UpdateType
 
