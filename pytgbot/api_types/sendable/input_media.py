@@ -159,7 +159,7 @@ class InputMediaPhoto(InputMedia):
     Parameters:
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode
+    :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
 
     Optional keyword parameters:
@@ -181,7 +181,7 @@ class InputMediaPhoto(InputMedia):
         Parameters:
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode
+        :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
 
         Optional keyword parameters:
@@ -276,7 +276,7 @@ class InputMediaVideo(InputMediaWithThumb):
     Parameters:
     
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode
+    :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
     
 
     Optional keyword parameters:
@@ -313,7 +313,7 @@ class InputMediaVideo(InputMediaWithThumb):
         Parameters:
         
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode|InputFile
+        :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
         
     
         Optional keyword parameters:
