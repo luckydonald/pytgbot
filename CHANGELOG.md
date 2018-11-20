@@ -2,6 +2,24 @@
 
 ## Version 4.0.1 (not yet released)
 - the `.raw` value will now be reset if you set any value of an `TgBotApiObject` object.
+- Handle Responses with aren't valid json,
+    e.g. `413 Request Entity Too Large` when uploading too large files
+
+    Because the API responded with status `413`, as `text/html`:
+    ```html
+    <html>\r\n<head><title>413 Request Entity Too Large</title></head>\r\n<body bgcolor="white">\r\n<center><h1>413 Request Entity Too Large</h1></center>\r\n<hr><center>nginx/1.12.2</center>\r\n</body>\r\n</html>\r\n
+    ```
+
+    The code would fail with generic json decode exception:
+    ```py
+    json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+    ```
+
+    Now we wrap that in a new exception type, which also subclasses from `TgApiException`:
+    ```py
+    TgApiResponseException(message:str, response: requests.Response, exception: Exception)
+    ```
+
 
 ## Version 4.0.0
 - [`Bot API 4`.`0` (July 26, 2018)](https://core.telegram.org/bots/api-changelog#july-26-2018)

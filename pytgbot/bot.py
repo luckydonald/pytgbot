@@ -10,7 +10,9 @@ from DictObject import DictObject
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from .exceptions import TgApiServerException, TgApiParseException, TgApiTypeError, TgApiException
+
+from .exceptions import TgApiServerException, TgApiParseException
+from .exceptions import TgApiTypeError, TgApiResponseException
 from .api_types.sendable.inline import InlineQueryResult
 from .api_types import from_array_list
 
@@ -3963,14 +3965,13 @@ class Bot(object):
         try:
             logger.debug(r.json())
             res = DictObject.objectify(r.json())
-        except Exception:
-            logger.exception("Parsing answer failed.\nRequest: {r!s}\nContent: {r.content}".format(r=r))
-            raise
+        except Exception as e:
+            raise TgApiResponseException('Parsing answer as json failed.', r, e)
         # end if
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
         if self.return_python_objects:
-            if res.ok != True:
+            if res.ok is True:
                 raise TgApiServerException(
                     error_code=res.error_code if "error_code" in res else None,
                     response=res.response if "response" in res else None,
