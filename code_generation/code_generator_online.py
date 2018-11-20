@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
-from os.path import abspath, dirname, join as path_join, sep as folder_seperator, isfile, exists
+from os.path import abspath, dirname, join as path_join, sep as folder_seperator, isfile, exists, isdir
 
 BASE_URL = "https://core.telegram.org/bots/api"
 
@@ -91,7 +91,7 @@ def parse_table(tag):
 # end def
 
 
-def load_from_api(folder):
+def load_from_html(folder):
     filter = get_filter()
     document = requests.get(BASE_URL)
     bs = BeautifulSoup(document.content)
@@ -265,17 +265,26 @@ def load_from_api(folder):
         # end if
     # end for
 
-    output(folder, results, html_content=document.content)
+    return results, document.content
 # end def main
 
+
 def main():
+    folder, html_document, results = load_api_definitions()
+    output(folder, results, html_content=html_document)
+
+
+def load_api_definitions():
     folder = get_folder_path()
     mode = confirm("Load from a dump instead of the API Docs?")
     if not mode:  # API
-        load_from_api(folder)
+        results, html_document = load_from_html(folder)
     else:  # Dump
-        load_from_dump(folder)
+        results, html_document = load_from_dump(folder)
     # end def
+    return folder, html_document, results
+
+
 # end def
 
 
@@ -297,7 +306,7 @@ def load_from_dump(folder):
         # end with
     # end if
     results = safe_eval(dump, safe_values)
-    output(folder, results, html_content=html_document)
+    return results, html_document
 # end def
 
 
@@ -358,7 +367,13 @@ def get_filter():
 
 
 def get_folder_path():
-    file = answer("Folder path to store the results.", default="/tmp/pytgbotapi/")
+    default = "/tmp/pytgbotapi/"
+    candidate = abspath(path_join(dirname(abspath(__file__)),  'output'))
+    print(candidate)
+    if exists(candidate) and isdir(candidate):
+        default = candidate
+    # end if
+    file = answer("Folder path to store the results.", default=default)
     if file:
         try:
             file = abspath(file)
