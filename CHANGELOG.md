@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 4.0.1 (not yet released)
+## Version 4.0.1
 - the `.raw` value will now be reset if you set any value of an `TgBotApiObject` object.
 - Handle Responses with aren't valid json,
     e.g. `413 Request Entity Too Large` when uploading too large files
