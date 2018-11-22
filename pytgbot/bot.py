@@ -3971,7 +3971,7 @@ class Bot(object):
         res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
         if self.return_python_objects:
-            if res.ok is True:
+            if res.ok is not True:
                 raise TgApiServerException(
                     error_code=res.error_code if "error_code" in res else None,
                     response=res.response if "response" in res else None,
