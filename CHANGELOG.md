@@ -1,4 +1,6 @@
 # Changelog
+## Version 4.0.2
+- Bugfix release fixing request logic: when checking for api success, the condition for success was corrupted in 4.0.1.
 
 ## Version 4.0.1
 - the `.raw` value will now be reset if you set any value of an `TgBotApiObject` object.
