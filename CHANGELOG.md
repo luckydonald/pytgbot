@@ -1,4 +1,7 @@
 # Changelog
+## Version 4.0.3 (not released yet)
+- Added `.size` property for all `InputFile` subclasses.
+
 ## Version 4.0.2
 - Bugfix release fixing request logic: when checking for api success, the condition for success was corrupted in 4.0.1.
 

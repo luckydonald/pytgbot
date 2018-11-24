@@ -56,7 +56,27 @@ class InputFile(object):
         :return:
         """
         raise NotImplementedError('Your sub-class should implement this.')
-    # end def get_request_files
+    # end def
+
+    @abstractmethod
+    def _calculate_size(self):
+        """
+        Calculates the filesize in bytes.
+        Used by :py:func:`~pytgbot.api_types.sendable.files.InputFile.size`.
+
+        :return: Filesize in bytes
+        :rtype: int
+        """
+        raise NotImplementedError('Your sub-class should implement this.')
+    # end def
+
+    @property
+    def size(self):
+        if not self._size:
+            self._size = self._calculate_size()
+        # end def
+        return self._size
+    # end def
 # end class InputFile
 
 
@@ -90,6 +110,11 @@ class InputFileFromBlob(InputFile):
     def get_request_files(self, var_name):
         return {var_name: (self.file_name, self.file_blob, self.file_mime)}
     # end def get_request_files
+
+    def _calculate_size(self):
+        return len(self.file_blob)
+    # end def
+
 # end class InputFile
 
 
@@ -122,6 +147,11 @@ class InputFileFromDisk(InputFile):
     def get_request_files(self, var_name):
         return {var_name: (self.file_name, open(self.file_path, 'rb'), self.file_mime)}
     # end def get_request_files
+
+    def _calculate_size(self):
+        from os import stat
+        return stat(self.file_path).st_size
+    # end def
 # end class InputFileFromDisk
 
 
@@ -187,4 +217,8 @@ class InputFileFromURL(InputFile):
     def get_request_files(self, var_name):
         return {var_name: (self.file_name, self.file_blob, self.file_mime)}
     # end def get_request_files
+
+    def _calculate_size(self):
+        return len(self.file_blob)
+    # end def
 # end class InputFileFromURL
