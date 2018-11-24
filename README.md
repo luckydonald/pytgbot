@@ -5,33 +5,81 @@
 Native python package with a pure Python interface for the [Telegram Bot API](https://core.telegram.org/bots).
 > The code is generated directly from the API documentation, meaning up-to-date code is a matter of minutes.
 
-#### Recent changes
+# Recent changes
  - Updated official API changes of [`Bot API 4`.`0` (July 26, 2018)](https://core.telegram.org/bots/api-changelog#july-26-2018)
- - Fixed some bugs related to `InputFile` and `InputMedia`.
+ - Handle the API returning HTML text for `413 Request Entity Too Large` when uploading too large files.
+ - Added `.size` property for all `InputFile` subclasses.
  - [And more...](CHANGELOG.md)
 
  [Older changes...](CHANGELOG.md)
 
-#### Are you using pytgbot? ####
+# Are you using pytgbot?
 
 If you're using this library to build your Telegram Bots, We'd love to know and share the bot with the world.
 Tell us about it - **[here](https://github.com/luckydonald/pytgbot/wiki/Who's-using-pytgbot%3F)**
 
 Check out the [Who's using pytgbot](https://github.com/luckydonald/pytgbot/wiki/Who's-using-pytgbot%3F) wiki page to know more about what people have been building with this library.
 
-#### Installation  ####
-Via pip:
+# Installation
+### Releases
+Released versions can be found at several locations:
+- The [python package index](https://pypi.org/project/pytgbot/#history) (`pip install`),
+- on GitHub in the [release section](https://github.com/luckydonald/pytgbot/releases)
+- and in the git files as regular tags.
+
+#### Latest Stable
+The [latest version](#releases) seems to be version `4.0.2`. For other releases you must adapt the examples below.
+
+##### Python package index (recommended)
 ```sh
-pip install pytgbot
+pip install pytgbot==4.0.2
 ```
-Or manually:
+
+##### Manually
 ```sh
+git clone -b v4.0.2 https://github.com/luckydonald/pytgbot.git
+cd pytgbot
+python setup.py install
+```
+
+#### Bleeding edge
+To get the most current code manually
+```
 git clone https://github.com/luckydonald/pytgbot.git
 cd pytgbot
 python setup.py install
 ```
 
-#### Usage ####
+# Updating
+
+#### Latest Stable
+The [latest version](#releases) seems to be version `4.0.2`. For other releases you must adapt the examples below.
+
+##### Python package index (recommended)
+```sh
+pip install -U pytgbot==4.0.2
+```
+
+##### Manually
+```sh
+cd pytgbot
+git fetch
+git checkout v4.0.2
+python setup.py install
+```
+
+#### Bleeding edge
+To get the most current code manually
+```
+cd pytgbot
+git fetch
+git checkout master
+git pull
+python setup.py install
+```
+
+
+# Usage
 
 ```python
 from pytgbot import Bot
@@ -48,17 +96,28 @@ for x in bot.get_updates():
 ```
 
 All the functions can be found in the `Bot` class in the [pytgbot/bot.py](https://github.com/luckydonald/pytgbot/blob/master/pytgbot/bot.py) file.
-They are pythonic in small letters with underscores instead of camel case, for example [getUpdates](https://core.telegram.org/bots/api#getupdates) is `bot.get_updates`
+They are pythonic in small letters with underscores instead of camel case, for example [getUpdates](https://core.telegram.org/bots/api#getupdates) is `bot.get_updates()`.
+## Documentation
+You can always inspect the documentation inside the code.
+You can also use the python `help()` command in the interactive interpreter:
+```py
+>>> from pytgbot import Bot
+>>> help(Bot)
+>>> # or
+>>> help(Bot.get_updates)
+```
 
-## Examples ##
+
+## Examples
 Have a look into the [examples](https://github.com/luckydonald/pytgbot/tree/master/examples) folder.
 
-## In case of errors ##
+# In case of errors
 First you should set logging to level `DEBUG` to see what's going on.
 ```python
 # add this to the first lines in your file
 import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
+
 If you are about to open a new issue, search the existing ones (open and closed) first.
 Sometimes they are already reported or even solved.
