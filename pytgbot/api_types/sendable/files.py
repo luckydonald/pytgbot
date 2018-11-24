@@ -46,6 +46,7 @@ class InputFile(object):
 
         self.file_name = file_name
         self.file_mime = file_mime
+        self._size = None
     # end def
 
     @abstractmethod
