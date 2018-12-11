@@ -1,6 +1,5 @@
 # Changelog
-## Version 4.0.3 (not released yet)
-- Added `.size` property for all file based `InputFile` subclasses.
+## Version 4.1.0  (not released yet)
 - Renamed `InputFile`'s `file_name` to simply `name`. (`InputFileFromDisk`, `InputFileFromURL`, `InputFileFromBlob`)
 - Renamed `InputFile`'s `file_mime` to simply `mime`. (`InputFileFromDisk`, `InputFileFromURL`, `InputFileFromBlob`)
 - Renamed `InputFile`'s `file_blob` to simply `blob`. (`InputFileFromDisk`, `InputFileFromURL`, `InputFileFromBlob`)
@@ -10,6 +9,9 @@
 - Added `InputFileUseUrl` and `InputFileUseFileID` as an abstract way for url/file_id instead of the plain string.
 - Now `InputFile(...)` wrappes the new `InputFile.factory(...)`, which can be used to create a instance of a matching subclass by parameter.
     - e.g. `InputFile(url="https://example.com")` results in the same as `InputFileFromURL("https://example.com")` which is in long form `InputFileFromURL(url="https://example.com")`.   
+
+## Version 4.0.3
+- Added `.size` property for all file based `InputFile` subclasses.
 
 ## Version 4.0.2
 - Bugfix release fixing request logic: when checking for api success, the condition for success was corrupted in 4.0.1.
