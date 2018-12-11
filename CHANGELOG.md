@@ -1,5 +1,7 @@
 # Changelog
-## Version 4.0.3 (not released yet)
+## Version 4.1.0  (not released yet)
+
+## Version 4.0.3
 - Added `.size` property for all `InputFile` subclasses.
 
 ## Version 4.0.2
