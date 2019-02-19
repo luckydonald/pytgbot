@@ -12,7 +12,7 @@ class SendableBase():
 {% for function in functions %}
 class {{ function.class_name }}(SendableBase):
     """
-    {% block class_docstring -%}
+    {% block class_docstring scoped -%}
     {{ function.description|indent(8) }}
 
     {{function.link}}

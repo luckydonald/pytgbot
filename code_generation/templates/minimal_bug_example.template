@@ -1,0 +1,11 @@
+{% set foobars = ["example text", "4458"] %}
+
+{% for foobar in foobars %}
+    {% block test_block scoped %}
+    A single bar contains: {{ foobar.upper() }}
+    {% endblock %}
+
+    Let's keep it DRY, output that another time:
+    {{ self.test_block() }}
+{% endfor %}
+
