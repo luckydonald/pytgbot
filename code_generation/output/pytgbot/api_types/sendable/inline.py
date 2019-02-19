@@ -56,10 +56,10 @@ class InlineQueryResultArticle(InlineQueryResult):
     def __init__(self, type, id, title, input_message_content, reply_markup=None, url=None, hide_url=None, description=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a link to an article or web page.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultarticle
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be article
@@ -74,7 +74,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         :param input_message_content: Content of the message to be sent
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         
-    
+
         Optional keyword parameters:
         
         :param reply_markup: Optional. Inline keyboard attached to the message
@@ -145,19 +145,27 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         array = super(InlineQueryResultArticle, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
+
         if self.hide_url is not None:
             array['hide_url'] = bool(self.hide_url)  # type bool
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -220,7 +228,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultarticle_instance`
         """
-        return key in ["type", "id", "title", "input_message_content", "reply_markup", "url", "hide_url", "description", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "title", "input_message_content", "reply_markup", "url", "hide_url", "description", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultArticle
 
@@ -277,10 +285,10 @@ class InlineQueryResultPhoto(InlineQueryResult):
     def __init__(self, type, id, photo_url, thumb_url, photo_width=None, photo_height=None, title=None, description=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultphoto
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be photo
@@ -295,7 +303,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :param thumb_url: URL of the thumbnail for the photo
         :type  thumb_url: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param photo_width: Optional. Width of the photo
@@ -372,25 +380,35 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         array = super(InlineQueryResultPhoto, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['photo_url'] = u(self.photo_url)  # py2: type unicode, py3: type str
+
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+
         if self.photo_width is not None:
             array['photo_width'] = int(self.photo_width)  # type int
         if self.photo_height is not None:
             array['photo_height'] = int(self.photo_height)  # type int
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -450,7 +468,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultphoto_instance`
         """
-        return key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultPhoto
 
@@ -507,10 +525,10 @@ class InlineQueryResultGif(InlineQueryResult):
     def __init__(self, type, id, gif_url, thumb_url, gif_width=None, gif_height=None, gif_duration=None, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultgif
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be gif
@@ -525,7 +543,7 @@ class InlineQueryResultGif(InlineQueryResult):
         :param thumb_url: URL of the static thumbnail for the result (jpeg or gif)
         :type  thumb_url: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param gif_width: Optional. Width of the GIF
@@ -602,9 +620,13 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         array = super(InlineQueryResultGif, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['gif_url'] = u(self.gif_url)  # py2: type unicode, py3: type str
+
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+
         if self.gif_width is not None:
             array['gif_width'] = int(self.gif_width)  # type int
         if self.gif_height is not None:
@@ -613,14 +635,19 @@ class InlineQueryResultGif(InlineQueryResult):
             array['gif_duration'] = int(self.gif_duration)  # type int
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -680,7 +707,7 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultgif_instance`
         """
-        return key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultGif
 
@@ -737,10 +764,10 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     def __init__(self, type, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be mpeg4_gif
@@ -755,7 +782,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :param thumb_url: URL of the static thumbnail (jpeg or gif) for the result
         :type  thumb_url: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param mpeg4_width: Optional. Video width
@@ -832,9 +859,13 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         array = super(InlineQueryResultMpeg4Gif, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['mpeg4_url'] = u(self.mpeg4_url)  # py2: type unicode, py3: type str
+
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+
         if self.mpeg4_width is not None:
             array['mpeg4_width'] = int(self.mpeg4_width)  # type int
         if self.mpeg4_height is not None:
@@ -843,14 +874,19 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             array['mpeg4_duration'] = int(self.mpeg4_duration)  # type int
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -910,7 +946,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultmpeg4gif_instance`
         """
-        return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultMpeg4Gif
 
@@ -918,7 +954,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 class InlineQueryResultVideo(InlineQueryResult):
     """
     Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
-    
+
     If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you must replace its content using input_message_content.
 
     https://core.telegram.org/bots/api#inlinequeryresultvideo
@@ -975,12 +1011,12 @@ class InlineQueryResultVideo(InlineQueryResult):
     def __init__(self, type, id, video_url, mime_type, thumb_url, title, caption=None, parse_mode=None, video_width=None, video_height=None, video_duration=None, description=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
-        
+
         If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you must replace its content using input_message_content.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultvideo
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be video
@@ -1001,7 +1037,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         :param title: Title for the result
         :type  title: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param caption: Optional. Caption of the video to be sent, 0-200 characters
@@ -1084,15 +1120,23 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         array = super(InlineQueryResultVideo, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['video_url'] = u(self.video_url)  # py2: type unicode, py3: type str
+
         array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.video_width is not None:
             array['video_width'] = int(self.video_width)  # type int
         if self.video_height is not None:
@@ -1101,10 +1145,13 @@ class InlineQueryResultVideo(InlineQueryResult):
             array['video_duration'] = int(self.video_duration)  # type int
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -1166,7 +1213,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultvideo_instance`
         """
-        return key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "parse_mode", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "parse_mode", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultVideo
 
@@ -1219,10 +1266,10 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         Represents a link to an mp3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultaudio
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be audio
@@ -1237,7 +1284,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         :param title: Title
         :type  title: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param caption: Optional. Caption, 0-200 characters
@@ -1302,21 +1349,30 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         array = super(InlineQueryResultAudio, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['audio_url'] = u(self.audio_url)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
+
         if self.audio_duration is not None:
             array['audio_duration'] = int(self.audio_duration)  # type int
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -1374,7 +1430,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultaudio_instance`
         """
-        return key in ["type", "id", "audio_url", "title", "caption", "parse_mode", "performer", "audio_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "audio_url", "title", "caption", "parse_mode", "performer", "audio_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultAudio
 
@@ -1424,10 +1480,10 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         Represents a link to a voice recording in an .ogg container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultvoice
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be voice
@@ -1442,7 +1498,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         :param title: Recording title
         :type  title: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param caption: Optional. Caption, 0-200 characters
@@ -1501,19 +1557,27 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         array = super(InlineQueryResultVoice, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['voice_url'] = u(self.voice_url)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.voice_duration is not None:
             array['voice_duration'] = int(self.voice_duration)  # type int
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -1570,7 +1634,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultvoice_instance`
         """
-        return key in ["type", "id", "voice_url", "title", "caption", "parse_mode", "voice_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "voice_url", "title", "caption", "parse_mode", "voice_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultVoice
 
@@ -1632,10 +1696,10 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultdocument
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be document
@@ -1653,7 +1717,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         :param mime_type: Mime type of the content of the file, either “application/pdf” or “application/zip”
         :type  mime_type: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param caption: Optional. Caption of the document to be sent, 0-200 characters
@@ -1733,22 +1797,33 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         array = super(InlineQueryResultDocument, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['document_url'] = u(self.document_url)  # py2: type unicode, py3: type str
+
         array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -1813,7 +1888,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultdocument_instance`
         """
-        return key in ["type", "id", "title", "document_url", "mime_type", "caption", "parse_mode", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "title", "document_url", "mime_type", "caption", "parse_mode", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultDocument
 
@@ -1869,10 +1944,10 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultlocation
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be location
@@ -1890,7 +1965,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         :param title: Location title
         :type  title: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
@@ -1958,18 +2033,24 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         array = super(InlineQueryResultLocation, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.live_period is not None:
             array['live_period'] = int(self.live_period)  # type int
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -2032,7 +2113,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultlocation_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "live_period", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "latitude", "longitude", "title", "live_period", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultLocation
 
@@ -2094,10 +2175,10 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultvenue
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be venue
@@ -2118,7 +2199,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         :param address: Address of the venue
         :type  address: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param foursquare_id: Optional. Foursquare identifier of the venue if known
@@ -2195,21 +2276,30 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         array = super(InlineQueryResultVenue, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
+
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
+
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -2274,7 +2364,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultvenue_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultVenue
 
@@ -2330,10 +2420,10 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultcontact
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be contact
@@ -2348,7 +2438,7 @@ class InlineQueryResultContact(InlineQueryResult):
         :param first_name: Contact's first name
         :type  first_name: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param last_name: Optional. Contact's last name
@@ -2419,19 +2509,28 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         array = super(InlineQueryResultContact, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
+
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -2494,7 +2593,7 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultcontact_instance`
         """
-        return key in ["type", "id", "phone_number", "first_name", "last_name", "vcard", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "phone_number", "first_name", "last_name", "vcard", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultContact
 
@@ -2529,10 +2628,10 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         Represents a Game.
         Note: This will only work in Telegram versions released after October 1, 2016. Older clients will not display any inline results if a game result is among them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultgame
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be game
@@ -2544,7 +2643,7 @@ class InlineQueryResultGame(InlineQueryResult):
         :param game_short_name: Short name of the game
         :type  game_short_name: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param reply_markup: Optional. Inline keyboard attached to the message
@@ -2575,10 +2674,14 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         array = super(InlineQueryResultGame, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         return array
     # end def to_array
 
@@ -2629,7 +2732,7 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultgame_instance`
         """
-        return key in ["type", "id", "game_short_name", "reply_markup"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "game_short_name", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultGame
 
@@ -2677,10 +2780,10 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     def __init__(self, type, id, photo_file_id, title=None, description=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultcachedphoto
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be photo
@@ -2692,7 +2795,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :param photo_file_id: A valid file identifier of the photo
         :type  photo_file_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param title: Optional. Title for the result
@@ -2754,20 +2857,29 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedPhoto, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['photo_file_id'] = u(self.photo_file_id)  # py2: type unicode, py3: type str
+
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -2824,7 +2936,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedphoto_instance`
         """
-        return key in ["type", "id", "photo_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "photo_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedPhoto
 
@@ -2869,10 +2981,10 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     def __init__(self, type, id, gif_file_id, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultcachedgif
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be gif
@@ -2884,7 +2996,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :param gif_file_id: A valid file identifier for the GIF file
         :type  gif_file_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param title: Optional. Title for the result
@@ -2940,18 +3052,26 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedGif, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['gif_file_id'] = u(self.gif_file_id)  # py2: type unicode, py3: type str
+
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -3007,7 +3127,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedgif_instance`
         """
-        return key in ["type", "id", "gif_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "gif_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedGif
 
@@ -3052,10 +3172,10 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     def __init__(self, type, id, mpeg4_file_id, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultcachedmpeg4gif
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be mpeg4_gif
@@ -3067,7 +3187,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :param mpeg4_file_id: A valid file identifier for the MP4 file
         :type  mpeg4_file_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param title: Optional. Title for the result
@@ -3123,18 +3243,26 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['mpeg4_file_id'] = u(self.mpeg4_file_id)  # py2: type unicode, py3: type str
+
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -3190,7 +3318,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedmpeg4gif_instance`
         """
-        return key in ["type", "id", "mpeg4_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "mpeg4_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedMpeg4Gif
 
@@ -3228,10 +3356,10 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultcachedsticker
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be sticker
@@ -3243,7 +3371,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :param sticker_file_id: A valid file identifier of the sticker
         :type  sticker_file_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param reply_markup: Optional. Inline keyboard attached to the message
@@ -3281,12 +3409,17 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedSticker, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['sticker_file_id'] = u(self.sticker_file_id)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -3339,7 +3472,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedsticker_instance`
         """
-        return key in ["type", "id", "sticker_file_id", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "sticker_file_id", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedSticker
 
@@ -3389,10 +3522,10 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultcacheddocument
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be document
@@ -3407,7 +3540,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :param document_file_id: A valid file identifier for the file
         :type  document_file_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param description: Optional. Short description of the result
@@ -3466,19 +3599,28 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedDocument, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['document_file_id'] = u(self.document_file_id)  # py2: type unicode, py3: type str
+
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -3535,7 +3677,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcacheddocument_instance`
         """
-        return key in ["type", "id", "title", "document_file_id", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "title", "document_file_id", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedDocument
 
@@ -3583,10 +3725,10 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     def __init__(self, type, id, video_file_id, title, description=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultcachedvideo
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be video
@@ -3601,7 +3743,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :param title: Title for the result
         :type  title: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param description: Optional. Short description of the result
@@ -3660,19 +3802,28 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedVideo, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['video_file_id'] = u(self.video_file_id)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -3729,7 +3880,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedvideo_instance`
         """
-        return key in ["type", "id", "video_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "video_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedVideo
 
@@ -3776,10 +3927,10 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultcachedvoice
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be voice
@@ -3794,7 +3945,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         :param title: Voice message title
         :type  title: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param caption: Optional. Caption, 0-200 characters
@@ -3847,17 +3998,25 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedVoice, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['voice_file_id'] = u(self.voice_file_id)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -3913,7 +4072,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedvoice_instance`
         """
-        return key in ["type", "id", "voice_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "voice_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedVoice
 
@@ -3957,10 +4116,10 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be audio
@@ -3972,7 +4131,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :param audio_file_id: A valid file identifier for the audio file
         :type  audio_file_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param caption: Optional. Caption, 0-200 characters
@@ -4022,16 +4181,23 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedAudio, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['audio_file_id'] = u(self.audio_file_id)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+
         return array
     # end def to_array
 
@@ -4086,7 +4252,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedaudio_instance`
         """
-        return key in ["type", "id", "audio_file_id", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "audio_file_id", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedAudio
 
@@ -4116,16 +4282,16 @@ class InputTextMessageContent(InputMessageContent):
     def __init__(self, message_text, parse_mode=None, disable_web_page_preview=None):
         """
         Represents the content of a text message to be sent as the result of an inline query.
-    
+
         https://core.telegram.org/bots/api#inputtextmessagecontent
         
-    
+
         Parameters:
         
         :param message_text: Text of the message to be sent, 1-4096 characters
         :type  message_text: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
@@ -4154,8 +4320,10 @@ class InputTextMessageContent(InputMessageContent):
         """
         array = super(InputTextMessageContent, self).to_array()
         array['message_text'] = u(self.message_text)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.disable_web_page_preview is not None:
             array['disable_web_page_preview'] = bool(self.disable_web_page_preview)  # type bool
         return array
@@ -4205,7 +4373,7 @@ class InputTextMessageContent(InputMessageContent):
         """
         Implements `"key" in inputtextmessagecontent_instance`
         """
-        return key in ["message_text", "parse_mode", "disable_web_page_preview"] and hasattr(self, key) and getattr(self, key)
+        return key in ["message_text", "parse_mode", "disable_web_page_preview"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputTextMessageContent
 
@@ -4235,10 +4403,10 @@ class InputLocationMessageContent(InputMessageContent):
     def __init__(self, latitude, longitude, live_period=None):
         """
         Represents the content of a location message to be sent as the result of an inline query.
-    
+
         https://core.telegram.org/bots/api#inputlocationmessagecontent
         
-    
+
         Parameters:
         
         :param latitude: Latitude of the location in degrees
@@ -4247,7 +4415,7 @@ class InputLocationMessageContent(InputMessageContent):
         :param longitude: Longitude of the location in degrees
         :type  longitude: float
         
-    
+
         Optional keyword parameters:
         
         :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
@@ -4323,7 +4491,7 @@ class InputLocationMessageContent(InputMessageContent):
         """
         Implements `"key" in inputlocationmessagecontent_instance`
         """
-        return key in ["latitude", "longitude", "live_period"] and hasattr(self, key) and getattr(self, key)
+        return key in ["latitude", "longitude", "live_period"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputLocationMessageContent
 
@@ -4362,10 +4530,10 @@ class InputVenueMessageContent(InputMessageContent):
     def __init__(self, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None):
         """
         Represents the content of a venue message to be sent as the result of an inline query.
-    
+
         https://core.telegram.org/bots/api#inputvenuemessagecontent
         
-    
+
         Parameters:
         
         :param latitude: Latitude of the venue in degrees
@@ -4380,7 +4548,7 @@ class InputVenueMessageContent(InputMessageContent):
         :param address: Address of the venue
         :type  address: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param foursquare_id: Optional. Foursquare identifier of the venue, if known
@@ -4420,11 +4588,15 @@ class InputVenueMessageContent(InputMessageContent):
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
+
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
+
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -4475,7 +4647,7 @@ class InputVenueMessageContent(InputMessageContent):
         """
         Implements `"key" in inputvenuemessagecontent_instance`
         """
-        return key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and getattr(self, key)
+        return key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputVenueMessageContent
 
@@ -4508,10 +4680,10 @@ class InputContactMessageContent(InputMessageContent):
     def __init__(self, phone_number, first_name, last_name=None, vcard=None):
         """
         Represents the content of a contact message to be sent as the result of an inline query.
-    
+
         https://core.telegram.org/bots/api#inputcontactmessagecontent
         
-    
+
         Parameters:
         
         :param phone_number: Contact's phone number
@@ -4520,7 +4692,7 @@ class InputContactMessageContent(InputMessageContent):
         :param first_name: Contact's first name
         :type  first_name: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param last_name: Optional. Contact's last name
@@ -4552,11 +4724,15 @@ class InputContactMessageContent(InputMessageContent):
         """
         array = super(InputContactMessageContent, self).to_array()
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
+
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -4605,7 +4781,7 @@ class InputContactMessageContent(InputMessageContent):
         """
         Implements `"key" in inputcontactmessagecontent_instance`
         """
-        return key in ["phone_number", "first_name", "last_name", "vcard"] and hasattr(self, key) and getattr(self, key)
+        return key in ["phone_number", "first_name", "last_name", "vcard"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputContactMessageContent
 

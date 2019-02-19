@@ -43,10 +43,10 @@ class User(Peer):
     def __init__(self, id, is_bot, first_name, last_name=None, username=None, language_code=None, _raw=None):
         """
         This object represents a Telegram user or bot.
-    
+
         https://core.telegram.org/bots/api#user
         
-    
+
         Parameters:
         
         :param id: Unique identifier for this user or bot
@@ -58,7 +58,7 @@ class User(Peer):
         :param first_name: User‘s or bot’s first name
         :type  first_name: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param last_name: Optional. User‘s or bot’s last name
@@ -106,12 +106,16 @@ class User(Peer):
         array['id'] = int(self.id)  # type int
         array['is_bot'] = bool(self.is_bot)  # type bool
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
+
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+
         if self.username is not None:
             array['username'] = u(self.username)  # py2: type unicode, py3: type str
+
         if self.language_code is not None:
             array['language_code'] = u(self.language_code)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -160,7 +164,7 @@ class User(Peer):
         """
         Implements `"key" in user_instance`
         """
-        return key in ["id", "is_bot", "first_name", "last_name", "username", "language_code"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "is_bot", "first_name", "last_name", "username", "language_code"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class User
 
@@ -223,10 +227,10 @@ class Chat(Peer):
     def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, all_members_are_administrators=None, photo=None, description=None, invite_link=None, pinned_message=None, sticker_set_name=None, can_set_sticker_set=None, _raw=None):
         """
         This object represents a chat.
-    
+
         https://core.telegram.org/bots/api#chat
         
-    
+
         Parameters:
         
         :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
@@ -235,7 +239,7 @@ class Chat(Peer):
         :param type: Type of chat, can be either “private”, “group”, “supergroup” or “channel”
         :type  type: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param title: Optional. Title, for supergroups, channels and group chats
@@ -330,26 +334,36 @@ class Chat(Peer):
         array = super(Chat, self).to_array()
         array['id'] = int(self.id)  # type int
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.username is not None:
             array['username'] = u(self.username)  # py2: type unicode, py3: type str
+
         if self.first_name is not None:
             array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
+
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+
         if self.all_members_are_administrators is not None:
             array['all_members_are_administrators'] = bool(self.all_members_are_administrators)  # type bool
         if self.photo is not None:
             array['photo'] = self.photo.to_array()  # type ChatPhoto
+
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         if self.invite_link is not None:
             array['invite_link'] = u(self.invite_link)  # py2: type unicode, py3: type str
+
         if self.pinned_message is not None:
             array['pinned_message'] = self.pinned_message.to_array()  # type Message
+
         if self.sticker_set_name is not None:
             array['sticker_set_name'] = u(self.sticker_set_name)  # py2: type unicode, py3: type str
+
         if self.can_set_sticker_set is not None:
             array['can_set_sticker_set'] = bool(self.can_set_sticker_set)  # type bool
         return array
@@ -410,7 +424,7 @@ class Chat(Peer):
         """
         Implements `"key" in chat_instance`
         """
-        return key in ["id", "type", "title", "username", "first_name", "last_name", "all_members_are_administrators", "photo", "description", "invite_link", "pinned_message", "sticker_set_name", "can_set_sticker_set"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "type", "title", "username", "first_name", "last_name", "all_members_are_administrators", "photo", "description", "invite_link", "pinned_message", "sticker_set_name", "can_set_sticker_set"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Chat
 
@@ -482,10 +496,10 @@ class ChatMember(Result):
     def __init__(self, user, status, until_date=None, can_be_edited=None, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None, can_send_messages=None, can_send_media_messages=None, can_send_other_messages=None, can_add_web_page_previews=None, _raw=None):
         """
         This object contains information about one member of a chat.
-    
+
         https://core.telegram.org/bots/api#chatmember
         
-    
+
         Parameters:
         
         :param user: Information about the user
@@ -494,7 +508,7 @@ class ChatMember(Result):
         :param status: The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
         :type  status: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user, unix time
@@ -605,7 +619,9 @@ class ChatMember(Result):
         """
         array = super(ChatMember, self).to_array()
         array['user'] = self.user.to_array()  # type User
+
         array['status'] = u(self.status)  # py2: type unicode, py3: type str
+
         if self.until_date is not None:
             array['until_date'] = int(self.until_date)  # type int
         if self.can_be_edited is not None:
@@ -694,7 +710,7 @@ class ChatMember(Result):
         """
         Implements `"key" in chatmember_instance`
         """
-        return key in ["user", "status", "until_date", "can_be_edited", "can_change_info", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_invite_users", "can_restrict_members", "can_pin_messages", "can_promote_members", "can_send_messages", "can_send_media_messages", "can_send_other_messages", "can_add_web_page_previews"] and hasattr(self, key) and getattr(self, key)
+        return key in ["user", "status", "until_date", "can_be_edited", "can_change_info", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_invite_users", "can_restrict_members", "can_pin_messages", "can_promote_members", "can_send_messages", "can_send_media_messages", "can_send_other_messages", "can_add_web_page_previews"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ChatMember
 

@@ -33,10 +33,10 @@ class InputMediaPhoto(InputMedia):
     def __init__(self, type, media, caption=None, parse_mode=None):
         """
         Represents a photo to be sent.
-    
+
         https://core.telegram.org/bots/api#inputmediaphoto
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be photo
@@ -45,7 +45,7 @@ class InputMediaPhoto(InputMedia):
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param caption: Optional. Caption of the photo to be sent, 0-200 characters
@@ -77,11 +77,15 @@ class InputMediaPhoto(InputMedia):
         """
         array = super(InputMediaPhoto, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -130,7 +134,7 @@ class InputMediaPhoto(InputMedia):
         """
         Implements `"key" in inputmediaphoto_instance`
         """
-        return key in ["type", "media", "caption", "parse_mode"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "caption", "parse_mode"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaPhoto
 
@@ -178,10 +182,10 @@ class InputMediaVideo(InputMedia):
     def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, width=None, height=None, duration=None, supports_streaming=None):
         """
         Represents a video to be sent.
-    
+
         https://core.telegram.org/bots/api#inputmediavideo
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be video
@@ -190,7 +194,7 @@ class InputMediaVideo(InputMedia):
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
@@ -254,7 +258,9 @@ class InputMediaVideo(InputMedia):
         """
         array = super(InputMediaVideo, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
+
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
@@ -263,10 +269,13 @@ class InputMediaVideo(InputMedia):
             else:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.width is not None:
             array['width'] = int(self.width)  # type int
         if self.height is not None:
@@ -338,7 +347,7 @@ class InputMediaVideo(InputMedia):
         """
         Implements `"key" in inputmediavideo_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaVideo
 
@@ -383,10 +392,10 @@ class InputMediaAnimation(InputMedia):
     def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, width=None, height=None, duration=None):
         """
         Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
-    
+
         https://core.telegram.org/bots/api#inputmediaanimation
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be animation
@@ -395,7 +404,7 @@ class InputMediaAnimation(InputMedia):
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
@@ -453,7 +462,9 @@ class InputMediaAnimation(InputMedia):
         """
         array = super(InputMediaAnimation, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
+
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
@@ -462,10 +473,13 @@ class InputMediaAnimation(InputMedia):
             else:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.width is not None:
             array['width'] = int(self.width)  # type int
         if self.height is not None:
@@ -534,7 +548,7 @@ class InputMediaAnimation(InputMedia):
         """
         Implements `"key" in inputmediaanimation_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaAnimation
 
@@ -579,10 +593,10 @@ class InputMediaAudio(InputMedia):
     def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, duration=None, performer=None, title=None):
         """
         Represents an audio file to be treated as music to be sent.
-    
+
         https://core.telegram.org/bots/api#inputmediaaudio
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be audio
@@ -591,7 +605,7 @@ class InputMediaAudio(InputMedia):
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
@@ -649,7 +663,9 @@ class InputMediaAudio(InputMedia):
         """
         array = super(InputMediaAudio, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
+
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
@@ -658,16 +674,21 @@ class InputMediaAudio(InputMedia):
             else:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
+
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -730,7 +751,7 @@ class InputMediaAudio(InputMedia):
         """
         Implements `"key" in inputmediaaudio_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaAudio
 
@@ -766,10 +787,10 @@ class InputMediaDocument(InputMedia):
     def __init__(self, type, media, thumb=None, caption=None, parse_mode=None):
         """
         Represents a general file to be sent.
-    
+
         https://core.telegram.org/bots/api#inputmediadocument
         
-    
+
         Parameters:
         
         :param type: Type of the result, must be document
@@ -778,7 +799,7 @@ class InputMediaDocument(InputMedia):
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
@@ -818,7 +839,9 @@ class InputMediaDocument(InputMedia):
         """
         array = super(InputMediaDocument, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
+
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
@@ -827,10 +850,13 @@ class InputMediaDocument(InputMedia):
             else:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -890,7 +916,7 @@ class InputMediaDocument(InputMedia):
         """
         Implements `"key" in inputmediadocument_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "thumb", "caption", "parse_mode"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaDocument
 

@@ -36,10 +36,10 @@ class PassportElementErrorDataField(PassportElementError):
     def __init__(self, source, type, field_name, data_hash, message):
         """
         Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
-    
+
         https://core.telegram.org/bots/api#passportelementerrordatafield
         
-    
+
         Parameters:
         
         :param source: Error source, must be data
@@ -57,7 +57,7 @@ class PassportElementErrorDataField(PassportElementError):
         :param message: Error message
         :type  message: str|unicode
         
-    
+
         Optional keyword parameters:
         """
         super(PassportElementErrorDataField, self).__init__()
@@ -86,10 +86,15 @@ class PassportElementErrorDataField(PassportElementError):
         """
         array = super(PassportElementErrorDataField, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
+
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['field_name'] = u(self.field_name)  # py2: type unicode, py3: type str
+
         array['data_hash'] = u(self.data_hash)  # py2: type unicode, py3: type str
+
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -139,7 +144,7 @@ class PassportElementErrorDataField(PassportElementError):
         """
         Implements `"key" in passportelementerrordatafield_instance`
         """
-        return key in ["source", "type", "field_name", "data_hash", "message"] and hasattr(self, key) and getattr(self, key)
+        return key in ["source", "type", "field_name", "data_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PassportElementErrorDataField
 
@@ -172,10 +177,10 @@ class PassportElementErrorFrontSide(PassportElementError):
     def __init__(self, source, type, file_hash, message):
         """
         Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
-    
+
         https://core.telegram.org/bots/api#passportelementerrorfrontside
         
-    
+
         Parameters:
         
         :param source: Error source, must be front_side
@@ -190,7 +195,7 @@ class PassportElementErrorFrontSide(PassportElementError):
         :param message: Error message
         :type  message: str|unicode
         
-    
+
         Optional keyword parameters:
         """
         super(PassportElementErrorFrontSide, self).__init__()
@@ -216,9 +221,13 @@ class PassportElementErrorFrontSide(PassportElementError):
         """
         array = super(PassportElementErrorFrontSide, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
+
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
+
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -267,7 +276,7 @@ class PassportElementErrorFrontSide(PassportElementError):
         """
         Implements `"key" in passportelementerrorfrontside_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and getattr(self, key)
+        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PassportElementErrorFrontSide
 
@@ -300,10 +309,10 @@ class PassportElementErrorReverseSide(PassportElementError):
     def __init__(self, source, type, file_hash, message):
         """
         Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
-    
+
         https://core.telegram.org/bots/api#passportelementerrorreverseside
         
-    
+
         Parameters:
         
         :param source: Error source, must be reverse_side
@@ -318,7 +327,7 @@ class PassportElementErrorReverseSide(PassportElementError):
         :param message: Error message
         :type  message: str|unicode
         
-    
+
         Optional keyword parameters:
         """
         super(PassportElementErrorReverseSide, self).__init__()
@@ -344,9 +353,13 @@ class PassportElementErrorReverseSide(PassportElementError):
         """
         array = super(PassportElementErrorReverseSide, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
+
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
+
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -395,7 +408,7 @@ class PassportElementErrorReverseSide(PassportElementError):
         """
         Implements `"key" in passportelementerrorreverseside_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and getattr(self, key)
+        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PassportElementErrorReverseSide
 
@@ -428,10 +441,10 @@ class PassportElementErrorSelfie(PassportElementError):
     def __init__(self, source, type, file_hash, message):
         """
         Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
-    
+
         https://core.telegram.org/bots/api#passportelementerrorselfie
         
-    
+
         Parameters:
         
         :param source: Error source, must be selfie
@@ -446,7 +459,7 @@ class PassportElementErrorSelfie(PassportElementError):
         :param message: Error message
         :type  message: str|unicode
         
-    
+
         Optional keyword parameters:
         """
         super(PassportElementErrorSelfie, self).__init__()
@@ -472,9 +485,13 @@ class PassportElementErrorSelfie(PassportElementError):
         """
         array = super(PassportElementErrorSelfie, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
+
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
+
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -523,7 +540,7 @@ class PassportElementErrorSelfie(PassportElementError):
         """
         Implements `"key" in passportelementerrorselfie_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and getattr(self, key)
+        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PassportElementErrorSelfie
 
@@ -556,10 +573,10 @@ class PassportElementErrorFile(PassportElementError):
     def __init__(self, source, type, file_hash, message):
         """
         Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
-    
+
         https://core.telegram.org/bots/api#passportelementerrorfile
         
-    
+
         Parameters:
         
         :param source: Error source, must be file
@@ -574,7 +591,7 @@ class PassportElementErrorFile(PassportElementError):
         :param message: Error message
         :type  message: str|unicode
         
-    
+
         Optional keyword parameters:
         """
         super(PassportElementErrorFile, self).__init__()
@@ -600,9 +617,13 @@ class PassportElementErrorFile(PassportElementError):
         """
         array = super(PassportElementErrorFile, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
+
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
+
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -651,7 +672,7 @@ class PassportElementErrorFile(PassportElementError):
         """
         Implements `"key" in passportelementerrorfile_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and getattr(self, key)
+        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PassportElementErrorFile
 
@@ -684,10 +705,10 @@ class PassportElementErrorFiles(PassportElementError):
     def __init__(self, source, type, file_hashes, message):
         """
         Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
-    
+
         https://core.telegram.org/bots/api#passportelementerrorfiles
         
-    
+
         Parameters:
         
         :param source: Error source, must be files
@@ -702,7 +723,7 @@ class PassportElementErrorFiles(PassportElementError):
         :param message: Error message
         :type  message: str|unicode
         
-    
+
         Optional keyword parameters:
         """
         super(PassportElementErrorFiles, self).__init__()
@@ -728,9 +749,13 @@ class PassportElementErrorFiles(PassportElementError):
         """
         array = super(PassportElementErrorFiles, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
+
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['file_hashes'] = self._as_array(self.file_hashes)  # type list of str
+
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -779,7 +804,7 @@ class PassportElementErrorFiles(PassportElementError):
         """
         Implements `"key" in passportelementerrorfiles_instance`
         """
-        return key in ["source", "type", "file_hashes", "message"] and hasattr(self, key) and getattr(self, key)
+        return key in ["source", "type", "file_hashes", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PassportElementErrorFiles
 

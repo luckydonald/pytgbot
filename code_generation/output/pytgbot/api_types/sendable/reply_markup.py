@@ -34,16 +34,16 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, selective=None):
         """
         This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
-    
+
         https://core.telegram.org/bots/api#replykeyboardmarkup
         
-    
+
         Parameters:
         
         :param keyboard: Array of button rows, each represented by an Array of KeyboardButton objects
         :type  keyboard: list of list of pytgbot.api_types.sendable.reply_markup.KeyboardButton
         
-    
+
         Optional keyword parameters:
         
         :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
@@ -80,6 +80,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         """
         array = super(ReplyKeyboardMarkup, self).to_array()
         array['keyboard'] = self._as_array(self.keyboard)  # type list of list of KeyboardButton
+
         if self.resize_keyboard is not None:
             array['resize_keyboard'] = bool(self.resize_keyboard)  # type bool
         if self.one_time_keyboard is not None:
@@ -136,7 +137,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         """
         Implements `"key" in replykeyboardmarkup_instance`
         """
-        return key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"] and hasattr(self, key) and getattr(self, key)
+        return key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ReplyKeyboardMarkup
 
@@ -168,16 +169,16 @@ class KeyboardButton(Button):
         """
         This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields are mutually exclusive.
         Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
-    
+
         https://core.telegram.org/bots/api#keyboardbutton
         
-    
+
         Parameters:
         
         :param text: Text of the button. If none of the optional fields are used, it will be sent as a message when the button is pressed
         :type  text: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
@@ -206,6 +207,7 @@ class KeyboardButton(Button):
         """
         array = super(KeyboardButton, self).to_array()
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
+
         if self.request_contact is not None:
             array['request_contact'] = bool(self.request_contact)  # type bool
         if self.request_location is not None:
@@ -257,7 +259,7 @@ class KeyboardButton(Button):
         """
         Implements `"key" in keyboardbutton_instance`
         """
-        return key in ["text", "request_contact", "request_location"] and hasattr(self, key) and getattr(self, key)
+        return key in ["text", "request_contact", "request_location"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class KeyboardButton
 
@@ -284,16 +286,16 @@ class ReplyKeyboardRemove(ReplyMarkup):
     def __init__(self, remove_keyboard, selective=None):
         """
         Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
-    
+
         https://core.telegram.org/bots/api#replykeyboardremove
         
-    
+
         Parameters:
         
         :param remove_keyboard: Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard in ReplyKeyboardMarkup)
         :type  remove_keyboard: bool
         
-    
+
         Optional keyword parameters:
         
         :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
@@ -364,7 +366,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         """
         Implements `"key" in replykeyboardremove_instance`
         """
-        return key in ["remove_keyboard", "selective"] and hasattr(self, key) and getattr(self, key)
+        return key in ["remove_keyboard", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ReplyKeyboardRemove
 
@@ -390,16 +392,16 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         This object represents an inline keyboard that appears right next to the message it belongs to.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
-    
+
         https://core.telegram.org/bots/api#inlinekeyboardmarkup
         
-    
+
         Parameters:
         
         :param inline_keyboard: Array of button rows, each represented by an Array of InlineKeyboardButton objects
         :type  inline_keyboard: list of list of pytgbot.api_types.sendable.reply_markup.InlineKeyboardButton
         
-    
+
         Optional keyword parameters:
         """
         super(InlineKeyboardMarkup, self).__init__()
@@ -418,6 +420,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         array = super(InlineKeyboardMarkup, self).to_array()
         array['inline_keyboard'] = self._as_array(self.inline_keyboard)  # type list of list of InlineKeyboardButton
+
         return array
     # end def to_array
 
@@ -465,7 +468,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         Implements `"key" in inlinekeyboardmarkup_instance`
         """
-        return key in ["inline_keyboard"] and hasattr(self, key) and getattr(self, key)
+        return key in ["inline_keyboard"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineKeyboardMarkup
 
@@ -507,16 +510,16 @@ class InlineKeyboardButton(Button):
     def __init__(self, text, url=None, callback_data=None, switch_inline_query=None, switch_inline_query_current_chat=None, callback_game=None, pay=None):
         """
         This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
-    
+
         https://core.telegram.org/bots/api#inlinekeyboardbutton
         
-    
+
         Parameters:
         
         :param text: Label text on the button
         :type  text: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param url: Optional. HTTP or tg:// url to be opened when button is pressed
@@ -571,16 +574,22 @@ class InlineKeyboardButton(Button):
         """
         array = super(InlineKeyboardButton, self).to_array()
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
+
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
+
         if self.callback_data is not None:
             array['callback_data'] = u(self.callback_data)  # py2: type unicode, py3: type str
+
         if self.switch_inline_query is not None:
             array['switch_inline_query'] = u(self.switch_inline_query)  # py2: type unicode, py3: type str
+
         if self.switch_inline_query_current_chat is not None:
             array['switch_inline_query_current_chat'] = u(self.switch_inline_query_current_chat)  # py2: type unicode, py3: type str
+
         if self.callback_game is not None:
             array['callback_game'] = self.callback_game.to_array()  # type CallbackGame
+
         if self.pay is not None:
             array['pay'] = bool(self.pay)  # type bool
         return array
@@ -636,7 +645,7 @@ class InlineKeyboardButton(Button):
         """
         Implements `"key" in inlinekeyboardbutton_instance`
         """
-        return key in ["text", "url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"] and hasattr(self, key) and getattr(self, key)
+        return key in ["text", "url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineKeyboardButton
 
@@ -644,9 +653,9 @@ class InlineKeyboardButton(Button):
 class ForceReply(ReplyMarkup):
     """
     Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot‘s message and tapped ’Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
-    
+
     Example: A poll bot for groups runs in privacy mode (only receives commands, replies to its messages and mentions). There could be two ways to create a new poll:
-    
+
     The last option is definitely more attractive. And if you use ForceReply in your bot‘s questions, it will receive the user’s answers even if it only receives replies, commands and mentions — without any extra work for the user.
 
     https://core.telegram.org/bots/api#forcereply
@@ -667,20 +676,20 @@ class ForceReply(ReplyMarkup):
     def __init__(self, force_reply, selective=None):
         """
         Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot‘s message and tapped ’Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
-        
+
         Example: A poll bot for groups runs in privacy mode (only receives commands, replies to its messages and mentions). There could be two ways to create a new poll:
-        
+
         The last option is definitely more attractive. And if you use ForceReply in your bot‘s questions, it will receive the user’s answers even if it only receives replies, commands and mentions — without any extra work for the user.
-    
+
         https://core.telegram.org/bots/api#forcereply
         
-    
+
         Parameters:
         
         :param force_reply: Shows reply interface to the user, as if they manually selected the bot‘s message and tapped ’Reply'
         :type  force_reply: bool
         
-    
+
         Optional keyword parameters:
         
         :param selective: Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
@@ -751,7 +760,7 @@ class ForceReply(ReplyMarkup):
         """
         Implements `"key" in forcereply_instance`
         """
-        return key in ["force_reply", "selective"] and hasattr(self, key) and getattr(self, key)
+        return key in ["force_reply", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ForceReply
 

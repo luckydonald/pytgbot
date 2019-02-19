@@ -33,10 +33,10 @@ class GameHighScore(Result):
     def __init__(self, position, user, score, _raw=None):
         """
         This object represents one row of the high scores table for a game.
-    
+
         https://core.telegram.org/bots/api#gamehighscore
         
-    
+
         Parameters:
         
         :param position: Position in high score table for the game
@@ -48,7 +48,7 @@ class GameHighScore(Result):
         :param score: Score
         :type  score: int
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -79,6 +79,7 @@ class GameHighScore(Result):
         array = super(GameHighScore, self).to_array()
         array['position'] = int(self.position)  # type int
         array['user'] = self.user.to_array()  # type User
+
         array['score'] = int(self.score)  # type int
         return array
     # end def to_array
@@ -127,7 +128,7 @@ class GameHighScore(Result):
         """
         Implements `"key" in gamehighscore_instance`
         """
-        return key in ["position", "user", "score"] and hasattr(self, key) and getattr(self, key)
+        return key in ["position", "user", "score"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class GameHighScore
 

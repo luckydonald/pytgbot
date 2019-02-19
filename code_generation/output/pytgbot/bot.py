@@ -40,8 +40,9 @@ class Bot(object):
     def get_updates(self, offset=None, limit=None, timeout=None, allowed_updates=None):
         """
         Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
-        
+
         Notes1. This method will not work if an outgoing webhook is set up.2. In order to avoid getting duplicate updates, recalculate offset after each server response.
+
 
         https://core.telegram.org/bots/api#getupdates
 
@@ -92,9 +93,10 @@ class Bot(object):
         """
         Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
         If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot‘s token, you can be pretty sure it’s us.
-        
+
         Notes1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter. Please upload as InputFile, sending a String will not work.3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
         NEW! If you're having any trouble setting up webhooks, please check out this amazing guide to Webhooks.
+
 
         https://core.telegram.org/bots/api#setwebhook
 
@@ -1355,9 +1357,9 @@ class Bot(object):
     def send_chat_action(self, chat_id, action):
         """
         Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.
-        
+
         Example: The ImageBot needs some time to process a request and upload the image. Instead of sending a text message along the lines of “Retrieving image, please wait…”, the bot may use sendChatAction with action = upload_photo. The user will see a “sending photo” status for the bot.
-        
+
         We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
 
         https://core.telegram.org/bots/api#sendchataction
@@ -1481,8 +1483,9 @@ class Bot(object):
     def kick_chat_member(self, chat_id, user_id, until_date=None):
         """
         Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-        
+
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group's creator or by the member that added them.
+
 
         https://core.telegram.org/bots/api#kickchatmember
 
@@ -1749,8 +1752,9 @@ class Bot(object):
     def set_chat_photo(self, chat_id, photo):
         """
         Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
-        
+
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
+
 
         https://core.telegram.org/bots/api#setchatphoto
 
@@ -1792,8 +1796,9 @@ class Bot(object):
     def delete_chat_photo(self, chat_id):
         """
         Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
-        
+
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
+
 
         https://core.telegram.org/bots/api#deletechatphoto
 
@@ -1828,8 +1833,9 @@ class Bot(object):
     def set_chat_title(self, chat_id, title):
         """
         Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
-        
+
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
+
 
         https://core.telegram.org/bots/api#setchattitle
 
@@ -2241,8 +2247,9 @@ class Bot(object):
     def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
         """
         Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
-        
+
         Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via @Botfather and accept the terms. Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
+
 
         https://core.telegram.org/bots/api#answercallbackquery
 
@@ -3423,8 +3430,9 @@ class Bot(object):
     def get_game_high_scores(self, user_id, chat_id=None, message_id=None, inline_message_id=None):
         """
         Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
-        
+
         This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+
 
         https://core.telegram.org/bots/api#getgamehighscores
 

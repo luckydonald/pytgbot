@@ -40,10 +40,10 @@ class InlineQuery(Result):
     def __init__(self, id, from_peer, query, offset, location=None, _raw=None):
         """
         This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
-    
+
         https://core.telegram.org/bots/api#inlinequery
         
-    
+
         Parameters:
         
         :param id: Unique identifier for this query
@@ -58,7 +58,7 @@ class InlineQuery(Result):
         :param offset: Offset of the results to be returned, can be controlled by the bot
         :type  offset: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param location: Optional. Sender location, only for bots that request user location
@@ -98,11 +98,16 @@ class InlineQuery(Result):
         """
         array = super(InlineQuery, self).to_array()
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['from'] = self.from_peer.to_array()  # type User
+
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
+
         array['offset'] = u(self.offset)  # py2: type unicode, py3: type str
+
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
+
         return array
     # end def to_array
 
@@ -153,7 +158,7 @@ class InlineQuery(Result):
         """
         Implements `"key" in inlinequery_instance`
         """
-        return key in ["id", "from_peer", "query", "offset", "location"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "from_peer", "query", "offset", "location"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQuery
 
@@ -194,10 +199,10 @@ class ChosenInlineResult(UpdateType):
         """
         Represents a result of an inline query that was chosen by the user and sent to their chat partner. 
         Note: It is necessary to enable inline feedback via @Botfather in order to receive these objects in updates.
-    
+
         https://core.telegram.org/bots/api#choseninlineresult
         
-    
+
         Parameters:
         
         :param result_id: The unique identifier for the result that was chosen
@@ -209,7 +214,7 @@ class ChosenInlineResult(UpdateType):
         :param query: The query that was used to obtain the result
         :type  query: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param location: Optional. Sender location, only for bots that require user location
@@ -252,12 +257,17 @@ class ChosenInlineResult(UpdateType):
         """
         array = super(ChosenInlineResult, self).to_array()
         array['result_id'] = u(self.result_id)  # py2: type unicode, py3: type str
+
         array['from'] = self.from_peer.to_array()  # type User
+
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
+
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
+
         if self.inline_message_id is not None:
             array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -308,7 +318,7 @@ class ChosenInlineResult(UpdateType):
         """
         Implements `"key" in choseninlineresult_instance`
         """
-        return key in ["result_id", "from_peer", "query", "location", "inline_message_id"] and hasattr(self, key) and getattr(self, key)
+        return key in ["result_id", "from_peer", "query", "location", "inline_message_id"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ChosenInlineResult
 

@@ -36,10 +36,10 @@ class StickerSet(Result):
     def __init__(self, name, title, contains_masks, stickers, _raw=None):
         """
         This object represents a sticker set.
-    
+
         https://core.telegram.org/bots/api#stickerset
         
-    
+
         Parameters:
         
         :param name: Sticker set name
@@ -54,7 +54,7 @@ class StickerSet(Result):
         :param stickers: List of all set stickers
         :type  stickers: list of pytgbot.api_types.receivable.media.Sticker
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -87,9 +87,12 @@ class StickerSet(Result):
         """
         array = super(StickerSet, self).to_array()
         array['name'] = u(self.name)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['contains_masks'] = bool(self.contains_masks)  # type bool
         array['stickers'] = self._as_array(self.stickers)  # type list of Sticker
+
         return array
     # end def to_array
 
@@ -138,7 +141,7 @@ class StickerSet(Result):
         """
         Implements `"key" in stickerset_instance`
         """
-        return key in ["name", "title", "contains_masks", "stickers"] and hasattr(self, key) and getattr(self, key)
+        return key in ["name", "title", "contains_masks", "stickers"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class StickerSet
 
@@ -174,10 +177,10 @@ class MaskPosition(Result):
     def __init__(self, point, x_shift, y_shift, scale, _raw=None):
         """
         This object describes the position on faces where a mask should be placed by default.
-    
+
         https://core.telegram.org/bots/api#maskposition
         
-    
+
         Parameters:
         
         :param point: The part of the face relative to which the mask should be placed. One of “forehead”, “eyes”, “mouth”, or “chin”.
@@ -192,7 +195,7 @@ class MaskPosition(Result):
         :param scale: Mask scaling coefficient. For example, 2.0 means double size.
         :type  scale: float
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -223,6 +226,7 @@ class MaskPosition(Result):
         """
         array = super(MaskPosition, self).to_array()
         array['point'] = u(self.point)  # py2: type unicode, py3: type str
+
         array['x_shift'] = float(self.x_shift)  # type float
         array['y_shift'] = float(self.y_shift)  # type float
         array['scale'] = float(self.scale)  # type float
@@ -272,7 +276,7 @@ class MaskPosition(Result):
         """
         Implements `"key" in maskposition_instance`
         """
-        return key in ["point", "x_shift", "y_shift", "scale"] and hasattr(self, key) and getattr(self, key)
+        return key in ["point", "x_shift", "y_shift", "scale"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class MaskPosition
 

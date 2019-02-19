@@ -55,16 +55,16 @@ class Update(Receivable):
     def __init__(self, update_id, message=None, edited_message=None, channel_post=None, edited_channel_post=None, inline_query=None, chosen_inline_result=None, callback_query=None, shipping_query=None, pre_checkout_query=None, _raw=None):
         """
         This object represents an incoming update.At most one of the optional parameters can be present in any given update.
-    
+
         https://core.telegram.org/bots/api#update
         
-    
+
         Parameters:
         
         :param update_id: The update‘s unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you’re using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
         :type  update_id: int
         
-    
+
         Optional keyword parameters:
         
         :param message: Optional. New incoming message of any kind — text, photo, sticker, etc.
@@ -149,22 +149,31 @@ class Update(Receivable):
         array['update_id'] = int(self.update_id)  # type int
         if self.message is not None:
             array['message'] = self.message.to_array()  # type Message
+
         if self.edited_message is not None:
             array['edited_message'] = self.edited_message.to_array()  # type Message
+
         if self.channel_post is not None:
             array['channel_post'] = self.channel_post.to_array()  # type Message
+
         if self.edited_channel_post is not None:
             array['edited_channel_post'] = self.edited_channel_post.to_array()  # type Message
+
         if self.inline_query is not None:
             array['inline_query'] = self.inline_query.to_array()  # type InlineQuery
+
         if self.chosen_inline_result is not None:
             array['chosen_inline_result'] = self.chosen_inline_result.to_array()  # type ChosenInlineResult
+
         if self.callback_query is not None:
             array['callback_query'] = self.callback_query.to_array()  # type CallbackQuery
+
         if self.shipping_query is not None:
             array['shipping_query'] = self.shipping_query.to_array()  # type ShippingQuery
+
         if self.pre_checkout_query is not None:
             array['pre_checkout_query'] = self.pre_checkout_query.to_array()  # type PreCheckoutQuery
+
         return array
     # end def to_array
 
@@ -224,7 +233,7 @@ class Update(Receivable):
         """
         Implements `"key" in update_instance`
         """
-        return key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query"] and hasattr(self, key) and getattr(self, key)
+        return key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Update
 
@@ -269,10 +278,10 @@ class WebhookInfo(Receivable):
     def __init__(self, url, has_custom_certificate, pending_update_count, last_error_date=None, last_error_message=None, max_connections=None, allowed_updates=None, _raw=None):
         """
         Contains information about the current status of a webhook.
-    
+
         https://core.telegram.org/bots/api#webhookinfo
         
-    
+
         Parameters:
         
         :param url: Webhook URL, may be empty if webhook is not set up
@@ -284,7 +293,7 @@ class WebhookInfo(Receivable):
         :param pending_update_count: Number of updates awaiting delivery
         :type  pending_update_count: int
         
-    
+
         Optional keyword parameters:
         
         :param last_error_date: Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
@@ -336,16 +345,19 @@ class WebhookInfo(Receivable):
         """
         array = super(WebhookInfo, self).to_array()
         array['url'] = u(self.url)  # py2: type unicode, py3: type str
+
         array['has_custom_certificate'] = bool(self.has_custom_certificate)  # type bool
         array['pending_update_count'] = int(self.pending_update_count)  # type int
         if self.last_error_date is not None:
             array['last_error_date'] = int(self.last_error_date)  # type int
         if self.last_error_message is not None:
             array['last_error_message'] = u(self.last_error_message)  # py2: type unicode, py3: type str
+
         if self.max_connections is not None:
             array['max_connections'] = int(self.max_connections)  # type int
         if self.allowed_updates is not None:
             array['allowed_updates'] = self._as_array(self.allowed_updates)  # type list of str
+
         return array
     # end def to_array
 
@@ -395,7 +407,7 @@ class WebhookInfo(Receivable):
         """
         Implements `"key" in webhookinfo_instance`
         """
-        return key in ["url", "has_custom_certificate", "pending_update_count", "last_error_date", "last_error_message", "max_connections", "allowed_updates"] and hasattr(self, key) and getattr(self, key)
+        return key in ["url", "has_custom_certificate", "pending_update_count", "last_error_date", "last_error_message", "max_connections", "allowed_updates"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class WebhookInfo
 
@@ -551,10 +563,10 @@ class Message(UpdateType):
     def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_date=None, reply_to_message=None, edit_date=None, media_group_id=None, author_signature=None, text=None, entities=None, caption_entities=None, audio=None, document=None, animation=None, game=None, photo=None, sticker=None, video=None, voice=None, video_note=None, caption=None, contact=None, location=None, venue=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, _raw=None):
         """
         This object represents a message.
-    
+
         https://core.telegram.org/bots/api#message
         
-    
+
         Parameters:
         
         :param message_id: Unique message identifier inside this chat
@@ -566,7 +578,7 @@ class Message(UpdateType):
         :param chat: Conversation the message belongs to
         :type  chat: pytgbot.api_types.receivable.peer.Chat
         
-    
+
         Optional keyword parameters:
         
         :param from_peer: Optional. Sender, empty for messages sent to channels
@@ -862,66 +874,94 @@ class Message(UpdateType):
         array['message_id'] = int(self.message_id)  # type int
         array['date'] = int(self.date)  # type int
         array['chat'] = self.chat.to_array()  # type Chat
+
         if self.from_peer is not None:
             array['from'] = self.from_peer.to_array()  # type User
+
         if self.forward_from is not None:
             array['forward_from'] = self.forward_from.to_array()  # type User
+
         if self.forward_from_chat is not None:
             array['forward_from_chat'] = self.forward_from_chat.to_array()  # type Chat
+
         if self.forward_from_message_id is not None:
             array['forward_from_message_id'] = int(self.forward_from_message_id)  # type int
         if self.forward_signature is not None:
             array['forward_signature'] = u(self.forward_signature)  # py2: type unicode, py3: type str
+
         if self.forward_date is not None:
             array['forward_date'] = int(self.forward_date)  # type int
         if self.reply_to_message is not None:
             array['reply_to_message'] = self.reply_to_message.to_array()  # type Message
+
         if self.edit_date is not None:
             array['edit_date'] = int(self.edit_date)  # type int
         if self.media_group_id is not None:
             array['media_group_id'] = u(self.media_group_id)  # py2: type unicode, py3: type str
+
         if self.author_signature is not None:
             array['author_signature'] = u(self.author_signature)  # py2: type unicode, py3: type str
+
         if self.text is not None:
             array['text'] = u(self.text)  # py2: type unicode, py3: type str
+
         if self.entities is not None:
             array['entities'] = self._as_array(self.entities)  # type list of MessageEntity
+
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.audio is not None:
             array['audio'] = self.audio.to_array()  # type Audio
+
         if self.document is not None:
             array['document'] = self.document.to_array()  # type Document
+
         if self.animation is not None:
             array['animation'] = self.animation.to_array()  # type Animation
+
         if self.game is not None:
             array['game'] = self.game.to_array()  # type Game
+
         if self.photo is not None:
             array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
+
         if self.sticker is not None:
             array['sticker'] = self.sticker.to_array()  # type Sticker
+
         if self.video is not None:
             array['video'] = self.video.to_array()  # type Video
+
         if self.voice is not None:
             array['voice'] = self.voice.to_array()  # type Voice
+
         if self.video_note is not None:
             array['video_note'] = self.video_note.to_array()  # type VideoNote
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+
         if self.contact is not None:
             array['contact'] = self.contact.to_array()  # type Contact
+
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
+
         if self.venue is not None:
             array['venue'] = self.venue.to_array()  # type Venue
+
         if self.new_chat_members is not None:
             array['new_chat_members'] = self._as_array(self.new_chat_members)  # type list of User
+
         if self.left_chat_member is not None:
             array['left_chat_member'] = self.left_chat_member.to_array()  # type User
+
         if self.new_chat_title is not None:
             array['new_chat_title'] = u(self.new_chat_title)  # py2: type unicode, py3: type str
+
         if self.new_chat_photo is not None:
             array['new_chat_photo'] = self._as_array(self.new_chat_photo)  # type list of PhotoSize
+
         if self.delete_chat_photo is not None:
             array['delete_chat_photo'] = bool(self.delete_chat_photo)  # type bool
         if self.group_chat_created is not None:
@@ -936,14 +976,19 @@ class Message(UpdateType):
             array['migrate_from_chat_id'] = int(self.migrate_from_chat_id)  # type int
         if self.pinned_message is not None:
             array['pinned_message'] = self.pinned_message.to_array()  # type Message
+
         if self.invoice is not None:
             array['invoice'] = self.invoice.to_array()  # type Invoice
+
         if self.successful_payment is not None:
             array['successful_payment'] = self.successful_payment.to_array()  # type SuccessfulPayment
+
         if self.connected_website is not None:
             array['connected_website'] = u(self.connected_website)  # py2: type unicode, py3: type str
+
         if self.passport_data is not None:
             array['passport_data'] = self.passport_data.to_array()  # type PassportData
+
         return array
     # end def to_array
 
@@ -1050,7 +1095,7 @@ class Message(UpdateType):
         """
         Implements `"key" in message_instance`
         """
-        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_date", "reply_to_message", "edit_date", "media_group_id", "author_signature", "text", "entities", "caption_entities", "audio", "document", "animation", "game", "photo", "sticker", "video", "voice", "video_note", "caption", "contact", "location", "venue", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data"] and hasattr(self, key) and getattr(self, key)
+        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_date", "reply_to_message", "edit_date", "media_group_id", "author_signature", "text", "entities", "caption_entities", "audio", "document", "animation", "game", "photo", "sticker", "video", "voice", "video_note", "caption", "contact", "location", "venue", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Message
 
@@ -1058,7 +1103,7 @@ class Message(UpdateType):
 class CallbackQuery(UpdateType):
     """
     This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
-    
+
     NOTE: After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
 
     https://core.telegram.org/bots/api#callbackquery
@@ -1097,12 +1142,12 @@ class CallbackQuery(UpdateType):
     def __init__(self, id, from_peer, chat_instance, message=None, inline_message_id=None, data=None, game_short_name=None, _raw=None):
         """
         This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
-        
+
         NOTE: After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
-    
+
         https://core.telegram.org/bots/api#callbackquery
         
-    
+
         Parameters:
         
         :param id: Unique identifier for this query
@@ -1114,7 +1159,7 @@ class CallbackQuery(UpdateType):
         :param chat_instance: Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
         :type  chat_instance: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param message: Optional. Message with the callback button that originated the query. Note that message content and message date will not be available if the message is too old
@@ -1169,16 +1214,23 @@ class CallbackQuery(UpdateType):
         """
         array = super(CallbackQuery, self).to_array()
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['from'] = self.from_peer.to_array()  # type User
+
         array['chat_instance'] = u(self.chat_instance)  # py2: type unicode, py3: type str
+
         if self.message is not None:
             array['message'] = self.message.to_array()  # type Message
+
         if self.inline_message_id is not None:
             array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
+
         if self.data is not None:
             array['data'] = u(self.data)  # py2: type unicode, py3: type str
+
         if self.game_short_name is not None:
             array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -1231,7 +1283,7 @@ class CallbackQuery(UpdateType):
         """
         Implements `"key" in callbackquery_instance`
         """
-        return key in ["id", "from_peer", "chat_instance", "message", "inline_message_id", "data", "game_short_name"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "from_peer", "chat_instance", "message", "inline_message_id", "data", "game_short_name"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class CallbackQuery
 
@@ -1258,10 +1310,10 @@ class ResponseParameters(Receivable):
     def __init__(self, migrate_to_chat_id=None, retry_after=None, _raw=None):
         """
         Contains information about why a request was unsuccessful.
-    
+
         https://core.telegram.org/bots/api#responseparameters
         
-    
+
         Optional keyword parameters:
         
         :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
@@ -1339,7 +1391,7 @@ class ResponseParameters(Receivable):
         """
         Implements `"key" in responseparameters_instance`
         """
-        return key in ["migrate_to_chat_id", "retry_after"] and hasattr(self, key) and getattr(self, key)
+        return key in ["migrate_to_chat_id", "retry_after"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ResponseParameters
 

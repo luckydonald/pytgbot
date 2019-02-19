@@ -41,10 +41,10 @@ class MessageEntity(Result):
     def __init__(self, type, offset, length, url=None, user=None, _raw=None):
         """
         This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
-    
+
         https://core.telegram.org/bots/api#messageentity
         
-    
+
         Parameters:
         
         :param type: Type of the entity. Can be mention (@username), hashtag, cashtag, bot_command, url, email, phone_number, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
@@ -56,7 +56,7 @@ class MessageEntity(Result):
         :param length: Length of the entity in UTF-16 code units
         :type  length: int
         
-    
+
         Optional keyword parameters:
         
         :param url: Optional. For “text_link” only, url that will be opened after user taps on the text
@@ -98,12 +98,15 @@ class MessageEntity(Result):
         """
         array = super(MessageEntity, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         array['offset'] = int(self.offset)  # type int
         array['length'] = int(self.length)  # type int
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
+
         if self.user is not None:
             array['user'] = self.user.to_array()  # type User
+
         return array
     # end def to_array
 
@@ -153,7 +156,7 @@ class MessageEntity(Result):
         """
         Implements `"key" in messageentity_instance`
         """
-        return key in ["type", "offset", "length", "url", "user"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "offset", "length", "url", "user"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class MessageEntity
 
@@ -189,10 +192,10 @@ class PhotoSize(Result):
     def __init__(self, file_id, width, height, file_size=None, _raw=None):
         """
         This object represents one size of a photo or a file / sticker thumbnail.
-    
+
         https://core.telegram.org/bots/api#photosize
         
-    
+
         Parameters:
         
         :param file_id: Unique identifier for this file
@@ -204,7 +207,7 @@ class PhotoSize(Result):
         :param height: Photo height
         :type  height: int
         
-    
+
         Optional keyword parameters:
         
         :param file_size: Optional. File size
@@ -238,6 +241,7 @@ class PhotoSize(Result):
         """
         array = super(PhotoSize, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         if self.file_size is not None:
@@ -288,7 +292,7 @@ class PhotoSize(Result):
         """
         Implements `"key" in photosize_instance`
         """
-        return key in ["file_id", "width", "height", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "width", "height", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PhotoSize
 
@@ -333,10 +337,10 @@ class Audio(Media):
     def __init__(self, file_id, duration, performer=None, title=None, mime_type=None, file_size=None, thumb=None, _raw=None):
         """
         This object represents an audio file to be treated as music by the Telegram clients.
-    
+
         https://core.telegram.org/bots/api#audio
         
-    
+
         Parameters:
         
         :param file_id: Unique identifier for this file
@@ -345,7 +349,7 @@ class Audio(Media):
         :param duration: Duration of the audio in seconds as defined by sender
         :type  duration: int
         
-    
+
         Optional keyword parameters:
         
         :param performer: Optional. Performer of the audio as defined by sender or by audio tags
@@ -402,17 +406,22 @@ class Audio(Media):
         """
         array = super(Audio, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
+
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+
         return array
     # end def to_array
 
@@ -464,7 +473,7 @@ class Audio(Media):
         """
         Implements `"key" in audio_instance`
         """
-        return key in ["file_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Audio
 
@@ -503,16 +512,16 @@ class Document(Media):
     def __init__(self, file_id, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
         """
         This object represents a general file (as opposed to photos, voice messages and audio files).
-    
+
         https://core.telegram.org/bots/api#document
         
-    
+
         Parameters:
         
         :param file_id: Unique file identifier
         :type  file_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param thumb: Optional. Document thumbnail as defined by sender
@@ -560,12 +569,16 @@ class Document(Media):
         """
         array = super(Document, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -617,7 +630,7 @@ class Document(Media):
         """
         Implements `"key" in document_instance`
         """
-        return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Document
 
@@ -662,10 +675,10 @@ class Video(Media):
     def __init__(self, file_id, width, height, duration, thumb=None, mime_type=None, file_size=None, _raw=None):
         """
         This object represents a video file.
-    
+
         https://core.telegram.org/bots/api#video
         
-    
+
         Parameters:
         
         :param file_id: Unique identifier for this file
@@ -680,7 +693,7 @@ class Video(Media):
         :param duration: Duration of the video in seconds as defined by sender
         :type  duration: int
         
-    
+
         Optional keyword parameters:
         
         :param thumb: Optional. Video thumbnail
@@ -731,13 +744,16 @@ class Video(Media):
         """
         array = super(Video, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -791,7 +807,7 @@ class Video(Media):
         """
         Implements `"key" in video_instance`
         """
-        return key in ["file_id", "width", "height", "duration", "thumb", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "width", "height", "duration", "thumb", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Video
 
@@ -839,10 +855,10 @@ class Animation(Media):
     def __init__(self, file_id, width, height, duration, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
         """
         This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
-    
+
         https://core.telegram.org/bots/api#animation
         
-    
+
         Parameters:
         
         :param file_id: Unique file identifier
@@ -857,7 +873,7 @@ class Animation(Media):
         :param duration: Duration of the video in seconds as defined by sender
         :type  duration: int
         
-    
+
         Optional keyword parameters:
         
         :param thumb: Optional. Animation thumbnail as defined by sender
@@ -914,15 +930,19 @@ class Animation(Media):
         """
         array = super(Animation, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -977,7 +997,7 @@ class Animation(Media):
         """
         Implements `"key" in animation_instance`
         """
-        return key in ["file_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Animation
 
@@ -1013,10 +1033,10 @@ class Voice(Media):
     def __init__(self, file_id, duration, mime_type=None, file_size=None, _raw=None):
         """
         This object represents a voice note.
-    
+
         https://core.telegram.org/bots/api#voice
         
-    
+
         Parameters:
         
         :param file_id: Unique identifier for this file
@@ -1025,7 +1045,7 @@ class Voice(Media):
         :param duration: Duration of the audio in seconds as defined by sender
         :type  duration: int
         
-    
+
         Optional keyword parameters:
         
         :param mime_type: Optional. MIME type of the file as defined by sender
@@ -1062,9 +1082,11 @@ class Voice(Media):
         """
         array = super(Voice, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         array['duration'] = int(self.duration)  # type int
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -1113,7 +1135,7 @@ class Voice(Media):
         """
         Implements `"key" in voice_instance`
         """
-        return key in ["file_id", "duration", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "duration", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Voice
 
@@ -1152,10 +1174,10 @@ class VideoNote(Media):
     def __init__(self, file_id, length, duration, thumb=None, file_size=None, _raw=None):
         """
         This object represents a video message (available in Telegram apps as of v.4.0).
-    
+
         https://core.telegram.org/bots/api#videonote
         
-    
+
         Parameters:
         
         :param file_id: Unique identifier for this file
@@ -1167,7 +1189,7 @@ class VideoNote(Media):
         :param duration: Duration of the video in seconds as defined by sender
         :type  duration: int
         
-    
+
         Optional keyword parameters:
         
         :param thumb: Optional. Video thumbnail
@@ -1209,10 +1231,12 @@ class VideoNote(Media):
         """
         array = super(VideoNote, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         array['length'] = int(self.length)  # type int
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -1264,7 +1288,7 @@ class VideoNote(Media):
         """
         Implements `"key" in videonote_instance`
         """
-        return key in ["file_id", "length", "duration", "thumb", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "length", "duration", "thumb", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class VideoNote
 
@@ -1303,10 +1327,10 @@ class Contact(Media):
     def __init__(self, phone_number, first_name, last_name=None, user_id=None, vcard=None, _raw=None):
         """
         This object represents a phone contact.
-    
+
         https://core.telegram.org/bots/api#contact
         
-    
+
         Parameters:
         
         :param phone_number: Contact's phone number
@@ -1315,7 +1339,7 @@ class Contact(Media):
         :param first_name: Contact's first name
         :type  first_name: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param last_name: Optional. Contact's last name
@@ -1358,13 +1382,17 @@ class Contact(Media):
         """
         array = super(Contact, self).to_array()
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
+
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+
         if self.user_id is not None:
             array['user_id'] = int(self.user_id)  # type int
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -1412,7 +1440,7 @@ class Contact(Media):
         """
         Implements `"key" in contact_instance`
         """
-        return key in ["phone_number", "first_name", "last_name", "user_id", "vcard"] and hasattr(self, key) and getattr(self, key)
+        return key in ["phone_number", "first_name", "last_name", "user_id", "vcard"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Contact
 
@@ -1442,10 +1470,10 @@ class Location(Media):
     def __init__(self, longitude, latitude, _raw=None):
         """
         This object represents a point on the map.
-    
+
         https://core.telegram.org/bots/api#location
         
-    
+
         Parameters:
         
         :param longitude: Longitude as defined by sender
@@ -1454,7 +1482,7 @@ class Location(Media):
         :param latitude: Latitude as defined by sender
         :type  latitude: float
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1524,7 +1552,7 @@ class Location(Media):
         """
         Implements `"key" in location_instance`
         """
-        return key in ["longitude", "latitude"] and hasattr(self, key) and getattr(self, key)
+        return key in ["longitude", "latitude"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Location
 
@@ -1563,10 +1591,10 @@ class Venue(Media):
     def __init__(self, location, title, address, foursquare_id=None, foursquare_type=None, _raw=None):
         """
         This object represents a venue.
-    
+
         https://core.telegram.org/bots/api#venue
         
-    
+
         Parameters:
         
         :param location: Venue location
@@ -1578,7 +1606,7 @@ class Venue(Media):
         :param address: Address of the venue
         :type  address: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param foursquare_id: Optional. Foursquare identifier of the venue
@@ -1620,12 +1648,17 @@ class Venue(Media):
         """
         array = super(Venue, self).to_array()
         array['location'] = self.location.to_array()  # type Location
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
+
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
+
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -1675,7 +1708,7 @@ class Venue(Media):
         """
         Implements `"key" in venue_instance`
         """
-        return key in ["location", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and getattr(self, key)
+        return key in ["location", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Venue
 
@@ -1705,10 +1738,10 @@ class UserProfilePhotos(Result):
     def __init__(self, total_count, photos, _raw=None):
         """
         This object represent a user's profile pictures.
-    
+
         https://core.telegram.org/bots/api#userprofilephotos
         
-    
+
         Parameters:
         
         :param total_count: Total number of profile pictures the target user has
@@ -1717,7 +1750,7 @@ class UserProfilePhotos(Result):
         :param photos: Requested profile pictures (in up to 4 sizes each)
         :type  photos: list of list of pytgbot.api_types.receivable.media.PhotoSize
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1745,6 +1778,7 @@ class UserProfilePhotos(Result):
         array = super(UserProfilePhotos, self).to_array()
         array['total_count'] = int(self.total_count)  # type int
         array['photos'] = self._as_array(self.photos)  # type list of list of PhotoSize
+
         return array
     # end def to_array
 
@@ -1791,7 +1825,7 @@ class UserProfilePhotos(Result):
         """
         Implements `"key" in userprofilephotos_instance`
         """
-        return key in ["total_count", "photos"] and hasattr(self, key) and getattr(self, key)
+        return key in ["total_count", "photos"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class UserProfilePhotos
 
@@ -1799,7 +1833,7 @@ class UserProfilePhotos(Result):
 class File(Receivable):
     """
     This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
-    
+
     Maximum file size to download is 20 MB
 
     https://core.telegram.org/bots/api#file
@@ -1826,18 +1860,18 @@ class File(Receivable):
     def __init__(self, file_id, file_size=None, file_path=None, _raw=None):
         """
         This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
-        
+
         Maximum file size to download is 20 MB
-    
+
         https://core.telegram.org/bots/api#file
         
-    
+
         Parameters:
         
         :param file_id: Unique identifier for this file
         :type  file_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param file_size: Optional. File size, if known
@@ -1871,10 +1905,12 @@ class File(Receivable):
         """
         array = super(File, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         if self.file_path is not None:
             array['file_path'] = u(self.file_path)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -1920,7 +1956,7 @@ class File(Receivable):
         """
         Implements `"key" in file_instance`
         """
-        return key in ["file_id", "file_size", "file_path"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "file_size", "file_path"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class File
 
@@ -1950,10 +1986,10 @@ class ChatPhoto(Result):
     def __init__(self, small_file_id, big_file_id, _raw=None):
         """
         This object represents a chat photo.
-    
+
         https://core.telegram.org/bots/api#chatphoto
         
-    
+
         Parameters:
         
         :param small_file_id: Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
@@ -1962,7 +1998,7 @@ class ChatPhoto(Result):
         :param big_file_id: Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.
         :type  big_file_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1987,7 +2023,9 @@ class ChatPhoto(Result):
         """
         array = super(ChatPhoto, self).to_array()
         array['small_file_id'] = u(self.small_file_id)  # py2: type unicode, py3: type str
+
         array['big_file_id'] = u(self.big_file_id)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -2032,7 +2070,7 @@ class ChatPhoto(Result):
         """
         Implements `"key" in chatphoto_instance`
         """
-        return key in ["small_file_id", "big_file_id"] and hasattr(self, key) and getattr(self, key)
+        return key in ["small_file_id", "big_file_id"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ChatPhoto
 
@@ -2080,10 +2118,10 @@ class Sticker(Media):
     def __init__(self, file_id, width, height, thumb=None, emoji=None, set_name=None, mask_position=None, file_size=None, _raw=None):
         """
         This object represents a sticker.
-    
+
         https://core.telegram.org/bots/api#sticker
         
-    
+
         Parameters:
         
         :param file_id: Unique identifier for this file
@@ -2095,7 +2133,7 @@ class Sticker(Media):
         :param height: Sticker height
         :type  height: int
         
-    
+
         Optional keyword parameters:
         
         :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
@@ -2156,16 +2194,21 @@ class Sticker(Media):
         """
         array = super(Sticker, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+
         if self.emoji is not None:
             array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
+
         if self.set_name is not None:
             array['set_name'] = u(self.set_name)  # py2: type unicode, py3: type str
+
         if self.mask_position is not None:
             array['mask_position'] = self.mask_position.to_array()  # type MaskPosition
+
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -2221,7 +2264,7 @@ class Sticker(Media):
         """
         Implements `"key" in sticker_instance`
         """
-        return key in ["file_id", "width", "height", "thumb", "emoji", "set_name", "mask_position", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "width", "height", "thumb", "emoji", "set_name", "mask_position", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Sticker
 
@@ -2263,10 +2306,10 @@ class Game(Media):
     def __init__(self, title, description, photo, text=None, text_entities=None, animation=None, _raw=None):
         """
         This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
-    
+
         https://core.telegram.org/bots/api#game
         
-    
+
         Parameters:
         
         :param title: Title of the game
@@ -2278,7 +2321,7 @@ class Game(Media):
         :param photo: Photo that will be displayed in the game message in chats.
         :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
         
-    
+
         Optional keyword parameters:
         
         :param text: Optional. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters.
@@ -2328,14 +2371,20 @@ class Game(Media):
         """
         array = super(Game, self).to_array()
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
+
         if self.text is not None:
             array['text'] = u(self.text)  # py2: type unicode, py3: type str
+
         if self.text_entities is not None:
             array['text_entities'] = self._as_array(self.text_entities)  # type list of MessageEntity
+
         if self.animation is not None:
             array['animation'] = self.animation.to_array()  # type Animation
+
         return array
     # end def to_array
 
@@ -2388,7 +2437,7 @@ class Game(Media):
         """
         Implements `"key" in game_instance`
         """
-        return key in ["title", "description", "photo", "text", "text_entities", "animation"] and hasattr(self, key) and getattr(self, key)
+        return key in ["title", "description", "photo", "text", "text_entities", "animation"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Game
 

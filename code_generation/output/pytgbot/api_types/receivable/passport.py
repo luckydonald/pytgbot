@@ -30,10 +30,10 @@ class PassportData(Result):
     def __init__(self, data, credentials, _raw=None):
         """
         Contains information about Telegram Passport data shared with the bot by the user.
-    
+
         https://core.telegram.org/bots/api#passportdata
         
-    
+
         Parameters:
         
         :param data: Array with information about documents and other Telegram Passport elements that was shared with the bot
@@ -42,7 +42,7 @@ class PassportData(Result):
         :param credentials: Encrypted credentials required to decrypt the data
         :type  credentials: pytgbot.api_types.receivable.passport.EncryptedCredentials
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -70,7 +70,9 @@ class PassportData(Result):
         """
         array = super(PassportData, self).to_array()
         array['data'] = self._as_array(self.data)  # type list of EncryptedPassportElement
+
         array['credentials'] = self.credentials.to_array()  # type EncryptedCredentials
+
         return array
     # end def to_array
 
@@ -118,7 +120,7 @@ class PassportData(Result):
         """
         Implements `"key" in passportdata_instance`
         """
-        return key in ["data", "credentials"] and hasattr(self, key) and getattr(self, key)
+        return key in ["data", "credentials"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PassportData
 
@@ -151,10 +153,10 @@ class PassportFile(Result):
     def __init__(self, file_id, file_size, file_date, _raw=None):
         """
         This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
-    
+
         https://core.telegram.org/bots/api#passportfile
         
-    
+
         Parameters:
         
         :param file_id: Unique identifier for this file
@@ -166,7 +168,7 @@ class PassportFile(Result):
         :param file_date: Unix time when the file was uploaded
         :type  file_date: int
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -194,6 +196,7 @@ class PassportFile(Result):
         """
         array = super(PassportFile, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+
         array['file_size'] = int(self.file_size)  # type int
         array['file_date'] = int(self.file_date)  # type int
         return array
@@ -241,7 +244,7 @@ class PassportFile(Result):
         """
         Implements `"key" in passportfile_instance`
         """
-        return key in ["file_id", "file_size", "file_date"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "file_size", "file_date"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PassportFile
 
@@ -289,16 +292,16 @@ class EncryptedPassportElement(Result):
     def __init__(self, type, data=None, phone_number=None, email=None, files=None, front_side=None, reverse_side=None, selfie=None, _raw=None):
         """
         Contains information about documents or other Telegram Passport elements shared with the bot by the user.
-    
+
         https://core.telegram.org/bots/api#encryptedpassportelement
         
-    
+
         Parameters:
         
         :param type: Element type. One of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”, “phone_number”, “email”.
         :type  type: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param data: Optional. Base64-encoded encrypted Telegram Passport element data provided by the user, available for “personal_details”, “passport”, “driver_license”, “identity_card”, “identity_passport” and “address” types. Can be decrypted and verified using the accompanying EncryptedCredentials.
@@ -364,20 +367,28 @@ class EncryptedPassportElement(Result):
         """
         array = super(EncryptedPassportElement, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
         if self.data is not None:
             array['data'] = u(self.data)  # py2: type unicode, py3: type str
+
         if self.phone_number is not None:
             array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+
         if self.email is not None:
             array['email'] = u(self.email)  # py2: type unicode, py3: type str
+
         if self.files is not None:
             array['files'] = self._as_array(self.files)  # type list of PassportFile
+
         if self.front_side is not None:
             array['front_side'] = self.front_side.to_array()  # type PassportFile
+
         if self.reverse_side is not None:
             array['reverse_side'] = self.reverse_side.to_array()  # type PassportFile
+
         if self.selfie is not None:
             array['selfie'] = self.selfie.to_array()  # type PassportFile
+
         return array
     # end def to_array
 
@@ -430,7 +441,7 @@ class EncryptedPassportElement(Result):
         """
         Implements `"key" in encryptedpassportelement_instance`
         """
-        return key in ["type", "data", "phone_number", "email", "files", "front_side", "reverse_side", "selfie"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "data", "phone_number", "email", "files", "front_side", "reverse_side", "selfie"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class EncryptedPassportElement
 
@@ -463,10 +474,10 @@ class EncryptedCredentials(Result):
     def __init__(self, data, hash, secret, _raw=None):
         """
         Contains data required for decrypting and authenticating EncryptedPassportElement. See the Telegram Passport Documentation for a complete description of the data decryption and authentication processes.
-    
+
         https://core.telegram.org/bots/api#encryptedcredentials
         
-    
+
         Parameters:
         
         :param data: Base64-encoded encrypted JSON-serialized data with unique user's payload, data hashes and secrets required for EncryptedPassportElement decryption and authentication
@@ -478,7 +489,7 @@ class EncryptedCredentials(Result):
         :param secret: Base64-encoded secret, encrypted with the bot's public RSA key, required for data decryption
         :type  secret: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -506,8 +517,11 @@ class EncryptedCredentials(Result):
         """
         array = super(EncryptedCredentials, self).to_array()
         array['data'] = u(self.data)  # py2: type unicode, py3: type str
+
         array['hash'] = u(self.hash)  # py2: type unicode, py3: type str
+
         array['secret'] = u(self.secret)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -553,7 +567,7 @@ class EncryptedCredentials(Result):
         """
         Implements `"key" in encryptedcredentials_instance`
         """
-        return key in ["data", "hash", "secret"] and hasattr(self, key) and getattr(self, key)
+        return key in ["data", "hash", "secret"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class EncryptedCredentials
 

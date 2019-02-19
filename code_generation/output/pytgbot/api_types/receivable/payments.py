@@ -40,10 +40,10 @@ class Invoice(Result):
     def __init__(self, title, description, start_parameter, currency, total_amount, _raw=None):
         """
         This object contains basic information about an invoice.
-    
+
         https://core.telegram.org/bots/api#invoice
         
-    
+
         Parameters:
         
         :param title: Product name
@@ -61,7 +61,7 @@ class Invoice(Result):
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -95,9 +95,13 @@ class Invoice(Result):
         """
         array = super(Invoice, self).to_array()
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         array['start_parameter'] = u(self.start_parameter)  # py2: type unicode, py3: type str
+
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
+
         array['total_amount'] = int(self.total_amount)  # type int
         return array
     # end def to_array
@@ -146,7 +150,7 @@ class Invoice(Result):
         """
         Implements `"key" in invoice_instance`
         """
-        return key in ["title", "description", "start_parameter", "currency", "total_amount"] and hasattr(self, key) and getattr(self, key)
+        return key in ["title", "description", "start_parameter", "currency", "total_amount"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Invoice
 
@@ -188,10 +192,10 @@ class ShippingAddress(Result):
     def __init__(self, country_code, state, city, street_line1, street_line2, post_code, _raw=None):
         """
         This object represents a shipping address.
-    
+
         https://core.telegram.org/bots/api#shippingaddress
         
-    
+
         Parameters:
         
         :param country_code: ISO 3166-1 alpha-2 country code
@@ -212,7 +216,7 @@ class ShippingAddress(Result):
         :param post_code: Address post code
         :type  post_code: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -249,11 +253,17 @@ class ShippingAddress(Result):
         """
         array = super(ShippingAddress, self).to_array()
         array['country_code'] = u(self.country_code)  # py2: type unicode, py3: type str
+
         array['state'] = u(self.state)  # py2: type unicode, py3: type str
+
         array['city'] = u(self.city)  # py2: type unicode, py3: type str
+
         array['street_line1'] = u(self.street_line1)  # py2: type unicode, py3: type str
+
         array['street_line2'] = u(self.street_line2)  # py2: type unicode, py3: type str
+
         array['post_code'] = u(self.post_code)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -302,7 +312,7 @@ class ShippingAddress(Result):
         """
         Implements `"key" in shippingaddress_instance`
         """
-        return key in ["country_code", "state", "city", "street_line1", "street_line2", "post_code"] and hasattr(self, key) and getattr(self, key)
+        return key in ["country_code", "state", "city", "street_line1", "street_line2", "post_code"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ShippingAddress
 
@@ -335,10 +345,10 @@ class OrderInfo(Result):
     def __init__(self, name=None, phone_number=None, email=None, shipping_address=None, _raw=None):
         """
         This object represents information about an order.
-    
+
         https://core.telegram.org/bots/api#orderinfo
         
-    
+
         Optional keyword parameters:
         
         :param name: Optional. User name
@@ -384,12 +394,16 @@ class OrderInfo(Result):
         array = super(OrderInfo, self).to_array()
         if self.name is not None:
             array['name'] = u(self.name)  # py2: type unicode, py3: type str
+
         if self.phone_number is not None:
             array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+
         if self.email is not None:
             array['email'] = u(self.email)  # py2: type unicode, py3: type str
+
         if self.shipping_address is not None:
             array['shipping_address'] = self.shipping_address.to_array()  # type ShippingAddress
+
         return array
     # end def to_array
 
@@ -438,7 +452,7 @@ class OrderInfo(Result):
         """
         Implements `"key" in orderinfo_instance`
         """
-        return key in ["name", "phone_number", "email", "shipping_address"] and hasattr(self, key) and getattr(self, key)
+        return key in ["name", "phone_number", "email", "shipping_address"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class OrderInfo
 
@@ -483,10 +497,10 @@ class SuccessfulPayment(Result):
     def __init__(self, currency, total_amount, invoice_payload, telegram_payment_charge_id, provider_payment_charge_id, shipping_option_id=None, order_info=None, _raw=None):
         """
         This object contains basic information about a successful payment.
-    
+
         https://core.telegram.org/bots/api#successfulpayment
         
-    
+
         Parameters:
         
         :param currency: Three-letter ISO 4217 currency code
@@ -504,7 +518,7 @@ class SuccessfulPayment(Result):
         :param provider_payment_charge_id: Provider payment identifier
         :type  provider_payment_charge_id: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
@@ -552,14 +566,20 @@ class SuccessfulPayment(Result):
         """
         array = super(SuccessfulPayment, self).to_array()
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
+
         array['total_amount'] = int(self.total_amount)  # type int
         array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
+
         array['telegram_payment_charge_id'] = u(self.telegram_payment_charge_id)  # py2: type unicode, py3: type str
+
         array['provider_payment_charge_id'] = u(self.provider_payment_charge_id)  # py2: type unicode, py3: type str
+
         if self.shipping_option_id is not None:
             array['shipping_option_id'] = u(self.shipping_option_id)  # py2: type unicode, py3: type str
+
         if self.order_info is not None:
             array['order_info'] = self.order_info.to_array()  # type OrderInfo
+
         return array
     # end def to_array
 
@@ -611,7 +631,7 @@ class SuccessfulPayment(Result):
         """
         Implements `"key" in successfulpayment_instance`
         """
-        return key in ["currency", "total_amount", "invoice_payload", "telegram_payment_charge_id", "provider_payment_charge_id", "shipping_option_id", "order_info"] and hasattr(self, key) and getattr(self, key)
+        return key in ["currency", "total_amount", "invoice_payload", "telegram_payment_charge_id", "provider_payment_charge_id", "shipping_option_id", "order_info"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class SuccessfulPayment
 
@@ -647,10 +667,10 @@ class ShippingQuery(UpdateType):
     def __init__(self, id, from_peer, invoice_payload, shipping_address, _raw=None):
         """
         This object contains information about an incoming shipping query.
-    
+
         https://core.telegram.org/bots/api#shippingquery
         
-    
+
         Parameters:
         
         :param id: Unique query identifier
@@ -665,7 +685,7 @@ class ShippingQuery(UpdateType):
         :param shipping_address: User specified shipping address
         :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
         
-    
+
         Optional keyword parameters:
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -699,9 +719,13 @@ class ShippingQuery(UpdateType):
         """
         array = super(ShippingQuery, self).to_array()
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['from'] = self.from_peer.to_array()  # type User
+
         array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
+
         array['shipping_address'] = self.shipping_address.to_array()  # type ShippingAddress
+
         return array
     # end def to_array
 
@@ -751,7 +775,7 @@ class ShippingQuery(UpdateType):
         """
         Implements `"key" in shippingquery_instance`
         """
-        return key in ["id", "from_peer", "invoice_payload", "shipping_address"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "from_peer", "invoice_payload", "shipping_address"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ShippingQuery
 
@@ -796,10 +820,10 @@ class PreCheckoutQuery(UpdateType):
     def __init__(self, id, from_peer, currency, total_amount, invoice_payload, shipping_option_id=None, order_info=None, _raw=None):
         """
         This object contains information about an incoming pre-checkout query.
-    
+
         https://core.telegram.org/bots/api#precheckoutquery
         
-    
+
         Parameters:
         
         :param id: Unique query identifier
@@ -817,7 +841,7 @@ class PreCheckoutQuery(UpdateType):
         :param invoice_payload: Bot specified invoice payload
         :type  invoice_payload: str|unicode
         
-    
+
         Optional keyword parameters:
         
         :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
@@ -866,14 +890,20 @@ class PreCheckoutQuery(UpdateType):
         """
         array = super(PreCheckoutQuery, self).to_array()
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['from'] = self.from_peer.to_array()  # type User
+
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
+
         array['total_amount'] = int(self.total_amount)  # type int
         array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
+
         if self.shipping_option_id is not None:
             array['shipping_option_id'] = u(self.shipping_option_id)  # py2: type unicode, py3: type str
+
         if self.order_info is not None:
             array['order_info'] = self.order_info.to_array()  # type OrderInfo
+
         return array
     # end def to_array
 
@@ -926,7 +956,7 @@ class PreCheckoutQuery(UpdateType):
         """
         Implements `"key" in precheckoutquery_instance`
         """
-        return key in ["id", "from_peer", "currency", "total_amount", "invoice_payload", "shipping_option_id", "order_info"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "from_peer", "currency", "total_amount", "invoice_payload", "shipping_option_id", "order_info"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PreCheckoutQuery
 

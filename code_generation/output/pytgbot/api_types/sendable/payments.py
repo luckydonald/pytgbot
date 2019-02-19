@@ -27,10 +27,10 @@ class LabeledPrice(Sendable):
     def __init__(self, label, amount):
         """
         This object represents a portion of the price for goods or services.
-    
+
         https://core.telegram.org/bots/api#labeledprice
         
-    
+
         Parameters:
         
         :param label: Portion label
@@ -39,7 +39,7 @@ class LabeledPrice(Sendable):
         :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  amount: int
         
-    
+
         Optional keyword parameters:
         """
         super(LabeledPrice, self).__init__()
@@ -59,6 +59,7 @@ class LabeledPrice(Sendable):
         """
         array = super(LabeledPrice, self).to_array()
         array['label'] = u(self.label)  # py2: type unicode, py3: type str
+
         array['amount'] = int(self.amount)  # type int
         return array
     # end def to_array
@@ -106,7 +107,7 @@ class LabeledPrice(Sendable):
         """
         Implements `"key" in labeledprice_instance`
         """
-        return key in ["label", "amount"] and hasattr(self, key) and getattr(self, key)
+        return key in ["label", "amount"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class LabeledPrice
 
@@ -136,10 +137,10 @@ class ShippingOption(Sendable):
     def __init__(self, id, title, prices):
         """
         This object represents one shipping option.
-    
+
         https://core.telegram.org/bots/api#shippingoption
         
-    
+
         Parameters:
         
         :param id: Shipping option identifier
@@ -151,7 +152,7 @@ class ShippingOption(Sendable):
         :param prices: List of price portions
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
         
-    
+
         Optional keyword parameters:
         """
         super(ShippingOption, self).__init__()
@@ -176,8 +177,11 @@ class ShippingOption(Sendable):
         """
         array = super(ShippingOption, self).to_array()
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+
         array['prices'] = self._as_array(self.prices)  # type list of LabeledPrice
+
         return array
     # end def to_array
 
@@ -227,7 +231,7 @@ class ShippingOption(Sendable):
         """
         Implements `"key" in shippingoption_instance`
         """
-        return key in ["id", "title", "prices"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "title", "prices"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ShippingOption
 
