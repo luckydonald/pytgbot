@@ -61,9 +61,6 @@ class InputFile(object):
                 'create_instance': False,
             })
             clazz, args, kwargs = cls.factory(*outer_args, **outer_kwargs)
-            # return clazz(*c_args, **c_kwargs)
-            # return Rectangle(desc)
-            # return super(Shape, cls).__new__(Rectangle)
             if clazz is str:
                 return args[0]  # for string we return only the string.
             # end if
