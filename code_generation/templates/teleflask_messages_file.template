@@ -1,0 +1,12 @@
+# -*- coding: utf-8 -*-
+
+__author__ = "luckydonald"
+
+
+class SendableBase():
+    pass
+# end def
+
+{% for function in functions %}
+{% include "teleflask_messages_class.template" %}
+{% endfor %}

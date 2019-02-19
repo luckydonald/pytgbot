@@ -438,7 +438,7 @@ def safe_to_file(folder, results):
 
     bot_template = get_template("bot.template")
     clazzfile_template = get_template("classfile.template")
-    teleflask_messages_template = get_template("minimal_bug_example.template")
+    teleflask_messages_template = get_template("teleflask_messages_file.template")
     for path, clazz_list in clazzes.items():
         clazz_imports = set()
         for clazz_ in clazz_list:
