@@ -3,7 +3,7 @@
 {%- from "macros.template" import set_array, set_array_element -%}
 
 
-class {{ function.class_name_teleflask_message }}(SendableBase):
+class {{ function.class_name_teleflask_message }}(SendableMessageBase):
     """
     {% block class_docstring scoped -%}
     {{ function.description|indent(8) }}
@@ -67,22 +67,11 @@ class {{ function.class_name_teleflask_message }}(SendableBase):
     @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
     def send(self, sender: PytgbotApiBot):
         """
-        {% set receiver_param = ((function.class_variables_separated[1]|selectattr("name", "equalto", "receiver"))|first) -%}
-        {% if receiver_param is defined -%}
-        :param receiver_to_use: The receiver `chat_id` to use.
-                                Either `self.receiver`, if set, e.g. when instancing `{{ function.class_name_teleflask_message }}(receiver=10001231231, ...)`,
-                                or the `chat.id` of the update context, being the id of groups or the user's `from_peer.id` in private messages.
-        :type  receiver_to_use: {{ for_type_list_of_full(receiver_param) }}
+        Send the message via pytgbot.
 
-        {% endif %}
-        {% set reply_id_param = ((function.class_variables_separated[1]|selectattr("name", "equalto", "reply_id"))|first) -%}
-        {% if reply_id_param is defined -%}
-        :param reply_id_to_use: Reply to that `message_id` in the chat we send to.
-                                Either `self.reply_id`, if set, e.g. when instancing `{{ function.class_name_teleflask_message }}(reply_id=123123, ...)`,
-                                or the `message_id` of the update which triggered the bot's functions.
-        :type  reply_id_to_use: {{ for_type_list_of_full(reply_id_param) }}
+        :param sender: The bot instance to send with.
+        :type  sender: pytgbot.bot.Bot
 
-        {%- endif %}
         :rtype: PytgbotApiMessage
         """
         return sender.{{ function.name }}(
@@ -144,7 +133,6 @@ class {{ function.class_name_teleflask_message }}(SendableBase):
         # end if
         {% endif -%}
         {%- endfor -%}{%- if not is_sendable -%}
-        data['_raw'] = array
         return {{ function.class_name_teleflask_message }}(**data){% else %}
         instance = {{ function.class_name_teleflask_message }}(**data)
         return instance{% endif %}
@@ -161,9 +149,6 @@ class {{ function.class_name_teleflask_message }}(SendableBase):
         """
         Implements `repr({{ function.class_name_teleflask_message|lower }}_instance)`
         """
-        if self._raw:
-            return "{{ function.class_name_teleflask_message }}.from_array({self._raw})".format(self=self)
-        # end if
         return "{{ function.class_name_teleflask_message }}({{ for_args_format_repr(function.class_variables) }})".format(self=self)
     # end def __repr__
 
