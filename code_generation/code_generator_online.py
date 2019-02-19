@@ -33,6 +33,7 @@ class_fields = [
 ]
 func_fields = [
     ["Parameters", "Type", "Required", "Description"],
+    ["Parameter", "Type", "Required", "Description"],
 ]
 
 
@@ -46,48 +47,78 @@ def parse_table(tag):
     table_header = None
     table_type = 'unknown'
     param_strings = []
-    for row in tag.find_all("tr"):
-        if first:  # row
-            first = False
-            # TABLE HEADER
-            found_columns = []
-            for column in row.find_all("td"):
-                col_text = column.find("strong").text
-                found_columns.append(col_text)
-            # end def
 
-            # if is func
-            for test_columns in func_fields:
-                if found_columns == test_columns:
-                    table_header = test_columns
-                    table_type = 'func'
-                    break
-                # end if
-            # end for
-            if table_header:
-                continue  # don't need to process the header any longer.
+    thead = tag.find('thead', recursive=False)
+    theads = None  # list (items in <tr> row) of <th>/<tr> elements.
+    if thead:
+        theads = thead.find_all(["th", "td"])
+    # end if
+    tbody = tag.find('tbody', recursive=False)
+    if tbody:
+        tbody_rows = tbody.find_all("tr")
+    else:
+        tbody_rows = tag.find_all("tr")
+    # end if
+    tbodys = [  # list (rows) of list (items in <tr> row) of <tr> elements.
+        row.find_all(["td" ,"th"]) for row in tbody_rows
+    ]
+    if not thead:  # so first row = header
+        theads = tbody_rows[0]
+        tbodys = tbody_rows[1:]
+    # end if
+
+    # TABLE HEADER
+
+    found_columns = []
+    for column in theads:
+        # Either (a) `<td><strong> ... </strong></td>`
+        # or new (b) `<th> ... </th>`
+        col = column.find("strong")
+        if col:
+            # (a) `<td><strong> ... </strong></td>`
+            col_text = col.text
+        else:
+            # (b) `<th> ... </th>`
+            col_text = column.text
+        # end if
+        found_columns.append(col_text)
+    # end def
+
+    # if TABLE is func
+    for test_columns in func_fields:
+        if found_columns == test_columns:
+            table_header = test_columns
+            table_type = 'func'
+            break
+        # end if
+    # end for
+
+    # if TABLE is class
+    if not table_header:  # only check if we don't have a result yet
+        # search class now
+        for test_columns in class_fields:
+            if found_columns == test_columns:
+                if table_header is not None:
+                    raise AssertionError("Table detected as func and class: {!r}".format(found_columns))
+                table_header = test_columns
+                table_type = 'class'
+                break
             # end if
-            # search class now
-            for test_columns in class_fields:
-                if found_columns == test_columns:
-                    if table_header is not None:
-                        raise AssertionError("Table detected as func and class: {!r}".format(found_columns))
-                    table_header = test_columns
-                    table_type = 'class'
-                    break
-                # end if
-            # end for
-            if table_header:
-                continue  # don't need to process the header any longer.
-            # end if
-            raise AssertionError("Unknown table, {!r}".format(found_columns))
-        else:  # is not first row
-            # TABLE BODY
-            string = "\t".join([col.text for col in row.find_all("td")])
-            logger.debug("t: " + string)
-            param_strings.append(string)
-            pass
-        # end if first - else
+        # end for
+    # end if
+
+    # TABLE is none of the above
+    if not table_header:  # we don't have a result yet
+        raise AssertionError("Unknown table, {!r}".format(found_columns))
+    # end if
+
+    # TABLE BODY
+
+    for tds in tbodys:
+        string = "\t".join([col.text for col in tds])
+        logger.debug("t: " + string)
+        param_strings.append(string)
+        pass
     # end for row
     return table_type, param_strings
 # end def

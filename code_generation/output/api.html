@@ -14,7 +14,7 @@ To learn how to create…">
 
     <link href="/css/bootstrap.min.css?2" rel="stylesheet">
     
-    <link href="/css/telegram.css?148" rel="stylesheet" media="screen">
+    <link href="/css/telegram.css?157" rel="stylesheet" media="screen">
     <style>
     </style>
   </head>
@@ -47,6 +47,12 @@ To learn how to create…">
 <p>The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.<br>To learn how to create and set up a bot, please consult our <a href="https://core.telegram.org/bots"><strong>Introduction to Bots</strong></a> and <a href="/bots/faq"><strong>Bot FAQ</strong></a>.</p>
 </blockquote>
 <h3><a class="anchor" name="recent-changes" href="#recent-changes"><i class="anchor-icon"></i></a>Recent changes</h3>
+<h4><a class="anchor" name="august-27-2018" href="#august-27-2018"><i class="anchor-icon"></i></a>August 27, 2018</h4>
+<p><strong>Bot API 4.1</strong></p>
+<ul>
+<li>Added support for translated versions of documents in <a href="/passport">Telegram Passport</a>. New field <em>translation</em> in <a href="#encryptedpassportelement">EncryptedPassportElement</a>.</li>
+<li>New errors: <a href="#passportelementerrortranslationfile">PassportElementErrorTranslationFile</a> and <a href="#passportelementerrortranslationfile">PassportElementErrorTranslationFiles</a>, <a href="#passportelementerrorunspecified">PassportElementErrorUnspecified</a>.</li>
+</ul>
 <h4><a class="anchor" name="july-26-2018" href="#july-26-2018"><i class="anchor-icon"></i></a>July 26, 2018</h4>
 <p><strong>Bot API 4.0</strong>.</p>
 <ul>
@@ -63,14 +69,6 @@ To learn how to create…">
 <li>You can now use the <code>Retry-After</code> response header to configure the delay after which the Bot API will retry the request after an unsuccessful response from a webhook.</li>
 <li>If a webhook returns the HTTP error <code>410 Gone</code> for all requests for more than 23 hours successively, it can be automatically removed.</li>
 <li>Added <a href="https://en.wikipedia.org/wiki/VCard">vCard</a> support when sharing contacts: added the field <em>vcard</em> to the objects <a href="#contact">Contact</a>, <a href="#inlinequeryresultcontact">InlineQueryResultContact</a>, <a href="#inputcontactmessagecontent">InputContactMessageContent</a> and the method <a href="#sendcontact">sendContact</a>.</li>
-</ul>
-<h4><a class="anchor" name="february-13-2018" href="#february-13-2018"><i class="anchor-icon"></i></a>February 13, 2018</h4>
-<p><strong>Bot API 3.6</strong>.</p>
-<ul>
-<li>Supported <a href="https://core.telegram.org/bots/api#formatting-options">text formatting</a> in media captions. Specify the desired <em>parse_mode</em> (<a href="https://core.telegram.org/bots/api#markdown-style">Markdown</a> or <a href="https://core.telegram.org/bots/api#html-style">HTML</a>) when you provide a caption.</li>
-<li>In supergroups, if the bot receives a message that is a reply, it will also receive the message to which that message is replying – even if the original message is inaccessible due to the bot&#39;s privacy settings. (In other words, replying to any message in a supergroup with a message that mentions the bot or features a command for it acts as forwarding the original message to the bot). </li>
-<li>Added the new field <em>connected_website</em> to <a href="#message">Message</a>. The bot will receive a message with this field in a private chat when a user logs in on the bot&#39;s connected website using the <a href="https://core.telegram.org/widgets/login">Login Widget</a> and allows sending messages from your bot.</li>
-<li>Added the new parameter <em>supports_streaming</em> to the <a href="#sendvideo">sendVideo</a> method and a field with the same name to the <a href="#inputmediavideo">InputMediaVideo</a> object.</li>
 </ul>
 <p><strong><a href="/bots/api-changelog">See earlier changes »</a></strong></p>
 <h3><a class="anchor" name="authorizing-your-bot" href="#authorizing-your-bot"><i class="anchor-icon"></i></a>Authorizing your bot</h3>
@@ -101,12 +99,14 @@ To learn how to create…">
 <h4><a class="anchor" name="update" href="#update"><i class="anchor-icon"></i></a>Update</h4>
 <p>This <a href="#available-types">object</a> represents an incoming update.<br>At most <strong>one</strong> of the optional parameters can be present in any given update.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>update_id</td>
 <td>Integer</td>
@@ -162,13 +162,15 @@ To learn how to create…">
 <h4><a class="anchor" name="getupdates" href="#getupdates"><i class="anchor-icon"></i></a>getUpdates</h4>
 <p>Use this method to receive incoming updates using long polling (<a href="http://en.wikipedia.org/wiki/Push_technology#Long_polling">wiki</a>). An Array of <a href="#update">Update</a> objects is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>offset</td>
 <td>Integer</td>
@@ -202,13 +204,15 @@ To learn how to create…">
 <p>Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized <a href="#update">Update</a>. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns <em>True</em> on success.</p>
 <p>If you&#39;d like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. <code>https://www.example.com/&lt;token&gt;</code>. Since nobody else knows your bot‘s token, you can be pretty sure it’s us.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>url</td>
 <td>String</td>
@@ -246,12 +250,14 @@ To learn how to create…">
 <h4><a class="anchor" name="webhookinfo" href="#webhookinfo"><i class="anchor-icon"></i></a>WebhookInfo</h4>
 <p>Contains information about the current status of a webhook.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>url</td>
 <td>String</td>
@@ -298,12 +304,14 @@ To learn how to create…">
 <h4><a class="anchor" name="user" href="#user"><i class="anchor-icon"></i></a>User</h4>
 <p>This object represents a Telegram user or bot.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>id</td>
 <td>Integer</td>
@@ -339,12 +347,14 @@ To learn how to create…">
 <h4><a class="anchor" name="chat" href="#chat"><i class="anchor-icon"></i></a>Chat</h4>
 <p>This object represents a chat.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>id</td>
 <td>Integer</td>
@@ -393,7 +403,7 @@ To learn how to create…">
 <tr>
 <td>invite_link</td>
 <td>String</td>
-<td><em>Optional</em>. Chat invite link, for supergroups and channel chats. Returned only in <a href="#getchat">getChat</a>.</td>
+<td><em>Optional</em>. Chat invite link, for supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using <a href="#exportchatinvitelink">exportChatInviteLink</a>. Returned only in <a href="#getchat">getChat</a>.</td>
 </tr>
 <tr>
 <td>pinned_message</td>
@@ -415,12 +425,14 @@ To learn how to create…">
 <h4><a class="anchor" name="message" href="#message"><i class="anchor-icon"></i></a>Message</h4>
 <p>This object represents a message.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>message_id</td>
 <td>Integer</td>
@@ -549,7 +561,7 @@ To learn how to create…">
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption for the audio, document, photo, video or voice, 0-200 characters</td>
+<td><em>Optional</em>. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters</td>
 </tr>
 <tr>
 <td>contact</td>
@@ -646,12 +658,14 @@ To learn how to create…">
 <h4><a class="anchor" name="messageentity" href="#messageentity"><i class="anchor-icon"></i></a>MessageEntity</h4>
 <p>This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc. </p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -682,12 +696,14 @@ To learn how to create…">
 <h4><a class="anchor" name="photosize" href="#photosize"><i class="anchor-icon"></i></a>PhotoSize</h4>
 <p>This object represents one size of a photo or a <a href="#document">file</a> / <a href="#sticker">sticker</a> thumbnail.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -713,12 +729,14 @@ To learn how to create…">
 <h4><a class="anchor" name="audio" href="#audio"><i class="anchor-icon"></i></a>Audio</h4>
 <p>This object represents an audio file to be treated as music by the Telegram clients.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -759,12 +777,14 @@ To learn how to create…">
 <h4><a class="anchor" name="document" href="#document"><i class="anchor-icon"></i></a>Document</h4>
 <p>This object represents a general file (as opposed to <a href="#photosize">photos</a>, <a href="#voice">voice messages</a> and <a href="#audio">audio files</a>).</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -795,12 +815,14 @@ To learn how to create…">
 <h4><a class="anchor" name="video" href="#video"><i class="anchor-icon"></i></a>Video</h4>
 <p>This object represents a video file.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -841,12 +863,14 @@ To learn how to create…">
 <h4><a class="anchor" name="animation" href="#animation"><i class="anchor-icon"></i></a>Animation</h4>
 <p>This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -892,12 +916,14 @@ To learn how to create…">
 <h4><a class="anchor" name="voice" href="#voice"><i class="anchor-icon"></i></a>Voice</h4>
 <p>This object represents a voice note.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -923,12 +949,14 @@ To learn how to create…">
 <h4><a class="anchor" name="videonote" href="#videonote"><i class="anchor-icon"></i></a>VideoNote</h4>
 <p>This object represents a <a href="https://telegram.org/blog/video-messages-and-telescope">video message</a> (available in Telegram apps as of <a href="https://telegram.org/blog/video-messages-and-telescope">v.4.0</a>).</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -937,7 +965,7 @@ To learn how to create…">
 <tr>
 <td>length</td>
 <td>Integer</td>
-<td>Video width and height as defined by sender</td>
+<td>Video width and height (diameter of the video message) as defined by sender</td>
 </tr>
 <tr>
 <td>duration</td>
@@ -959,12 +987,14 @@ To learn how to create…">
 <h4><a class="anchor" name="contact" href="#contact"><i class="anchor-icon"></i></a>Contact</h4>
 <p>This object represents a phone contact.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>phone_number</td>
 <td>String</td>
@@ -995,12 +1025,14 @@ To learn how to create…">
 <h4><a class="anchor" name="location" href="#location"><i class="anchor-icon"></i></a>Location</h4>
 <p>This object represents a point on the map.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>longitude</td>
 <td>Float</td>
@@ -1016,12 +1048,14 @@ To learn how to create…">
 <h4><a class="anchor" name="venue" href="#venue"><i class="anchor-icon"></i></a>Venue</h4>
 <p>This object represents a venue.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>location</td>
 <td><a href="#location">Location</a></td>
@@ -1052,12 +1086,14 @@ To learn how to create…">
 <h4><a class="anchor" name="userprofilephotos" href="#userprofilephotos"><i class="anchor-icon"></i></a>UserProfilePhotos</h4>
 <p>This object represent a user&#39;s profile pictures.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>total_count</td>
 <td>Integer</td>
@@ -1076,12 +1112,14 @@ To learn how to create…">
 <p>Maximum file size to download is 20 MB</p>
 </blockquote>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -1102,12 +1140,14 @@ To learn how to create…">
 <h4><a class="anchor" name="replykeyboardmarkup" href="#replykeyboardmarkup"><i class="anchor-icon"></i></a>ReplyKeyboardMarkup</h4>
 <p>This object represents a <a href="https://core.telegram.org/bots#keyboards">custom keyboard</a> with reply options (see <a href="https://core.telegram.org/bots#keyboards">Introduction to bots</a> for details and examples).</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>keyboard</td>
 <td>Array of Array of <a href="#keyboardbutton">KeyboardButton</a></td>
@@ -1133,12 +1173,14 @@ To learn how to create…">
 <h4><a class="anchor" name="keyboardbutton" href="#keyboardbutton"><i class="anchor-icon"></i></a>KeyboardButton</h4>
 <p>This object represents one button of the reply keyboard. For simple text buttons <em>String</em> can be used instead of this object to specify text of the button. Optional fields are mutually exclusive.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>text</td>
 <td>String</td>
@@ -1160,12 +1202,14 @@ To learn how to create…">
 <h4><a class="anchor" name="replykeyboardremove" href="#replykeyboardremove"><i class="anchor-icon"></i></a>ReplyKeyboardRemove</h4>
 <p>Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see <a href="#replykeyboardmarkup">ReplyKeyboardMarkup</a>).</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>remove_keyboard</td>
 <td>True</td>
@@ -1181,12 +1225,14 @@ To learn how to create…">
 <h4><a class="anchor" name="inlinekeyboardmarkup" href="#inlinekeyboardmarkup"><i class="anchor-icon"></i></a>InlineKeyboardMarkup</h4>
 <p>This object represents an <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a> that appears right next to the message it belongs to.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>inline_keyboard</td>
 <td>Array of Array of <a href="#inlinekeyboardbutton">InlineKeyboardButton</a></td>
@@ -1198,12 +1244,14 @@ To learn how to create…">
 <h4><a class="anchor" name="inlinekeyboardbutton" href="#inlinekeyboardbutton"><i class="anchor-icon"></i></a>InlineKeyboardButton</h4>
 <p>This object represents one button of an inline keyboard. You <strong>must</strong> use exactly one of the optional fields.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>text</td>
 <td>String</td>
@@ -1244,12 +1292,14 @@ To learn how to create…">
 <h4><a class="anchor" name="callbackquery" href="#callbackquery"><i class="anchor-icon"></i></a>CallbackQuery</h4>
 <p>This object represents an incoming callback query from a callback button in an <a href="/bots#inline-keyboards-and-on-the-fly-updating">inline keyboard</a>. If the button that originated the query was attached to a message sent by the bot, the field <em>message</em> will be present. If the button was attached to a message sent via the bot (in <a href="#inline-mode">inline mode</a>), the field <em>inline_message_id</em> will be present. Exactly one of the fields <em>data</em> or <em>game_short_name</em> will be present.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>id</td>
 <td>String</td>
@@ -1293,12 +1343,14 @@ To learn how to create…">
 <h4><a class="anchor" name="forcereply" href="#forcereply"><i class="anchor-icon"></i></a>ForceReply</h4>
 <p>Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot‘s message and tapped ’Reply&#39;). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice <a href="/bots#privacy-mode">privacy mode</a>.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>force_reply</td>
 <td>True</td>
@@ -1322,12 +1374,14 @@ To learn how to create…">
 <h4><a class="anchor" name="chatphoto" href="#chatphoto"><i class="anchor-icon"></i></a>ChatPhoto</h4>
 <p>This object represents a chat photo.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>small_file_id</td>
 <td>String</td>
@@ -1343,12 +1397,14 @@ To learn how to create…">
 <h4><a class="anchor" name="chatmember" href="#chatmember"><i class="anchor-icon"></i></a>ChatMember</h4>
 <p>This object contains information about one member of a chat.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>user</td>
 <td><a href="#user">User</a></td>
@@ -1434,12 +1490,14 @@ To learn how to create…">
 <h4><a class="anchor" name="responseparameters" href="#responseparameters"><i class="anchor-icon"></i></a>ResponseParameters</h4>
 <p>Contains information about why a request was unsuccessful.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>migrate_to_chat_id</td>
 <td>Integer</td>
@@ -1464,12 +1522,14 @@ To learn how to create…">
 <h4><a class="anchor" name="inputmediaphoto" href="#inputmediaphoto"><i class="anchor-icon"></i></a>InputMediaPhoto</h4>
 <p>Represents a photo to be sent.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -1483,7 +1543,7 @@ To learn how to create…">
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the photo to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the photo to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -1495,12 +1555,14 @@ To learn how to create…">
 <h4><a class="anchor" name="inputmediavideo" href="#inputmediavideo"><i class="anchor-icon"></i></a>InputMediaVideo</h4>
 <p>Represents a video to be sent.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -1514,12 +1576,12 @@ To learn how to create…">
 <tr>
 <td>thumb</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
-<td><em>Optional</em>. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+<td><em>Optional</em>. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the video to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the video to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -1551,12 +1613,14 @@ To learn how to create…">
 <h4><a class="anchor" name="inputmediaanimation" href="#inputmediaanimation"><i class="anchor-icon"></i></a>InputMediaAnimation</h4>
 <p>Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -1570,12 +1634,12 @@ To learn how to create…">
 <tr>
 <td>thumb</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
-<td><em>Optional</em>. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+<td><em>Optional</em>. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the animation to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the animation to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -1602,12 +1666,14 @@ To learn how to create…">
 <h4><a class="anchor" name="inputmediaaudio" href="#inputmediaaudio"><i class="anchor-icon"></i></a>InputMediaAudio</h4>
 <p>Represents an audio file to be treated as music to be sent.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -1621,12 +1687,12 @@ To learn how to create…">
 <tr>
 <td>thumb</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
-<td><em>Optional</em>. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+<td><em>Optional</em>. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the audio to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the audio to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -1653,12 +1719,14 @@ To learn how to create…">
 <h4><a class="anchor" name="inputmediadocument" href="#inputmediadocument"><i class="anchor-icon"></i></a>InputMediaDocument</h4>
 <p>Represents a general file to be sent.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -1672,12 +1740,12 @@ To learn how to create…">
 <tr>
 <td>thumb</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
-<td><em>Optional</em>. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+<td><em>Optional</em>. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the document to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the document to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -1720,13 +1788,15 @@ To learn how to create…">
 <h4><a class="anchor" name="sendmessage" href="#sendmessage"><i class="anchor-icon"></i></a>sendMessage</h4>
 <p>Use this method to send text messages. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -1776,7 +1846,7 @@ To learn how to create…">
 <p>Note that Telegram clients will display an <strong>alert</strong> to the user before opening an inline link (‘Open this link?’ together with the full URL).</p>
 <p>Links <code>tg://user?id=&lt;user_id&gt;</code> can be used to mention a user by their id without using a username. Please note:</p>
 <ul>
-<li>These links will work only if they are used inside an inline link. For example, they will not work, when used in an inline keyboard button.</li>
+<li>These links will work <strong>only</strong> if they are used inside an inline link. For example, they will not work, when used in an inline keyboard button or in a message text.</li>
 <li>These mentions are only guaranteed to work if the user has contacted the bot in the past, has sent a callback query to the bot via inline button or is a member in the group where he was mentioned.</li>
 </ul>
 <h6><a class="anchor" name="markdown-style" href="#markdown-style"><i class="anchor-icon"></i></a>Markdown style</h6>
@@ -1808,13 +1878,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="forwardmessage" href="#forwardmessage"><i class="anchor-icon"></i></a>forwardMessage</h4>
 <p>Use this method to forward messages of any kind. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -1844,13 +1916,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendphoto" href="#sendphoto"><i class="anchor-icon"></i></a>sendPhoto</h4>
 <p>Use this method to send photos. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -1867,7 +1941,7 @@ pre-formatted fixed-width code block
 <td>caption</td>
 <td>String</td>
 <td>Optional</td>
-<td>Photo caption (may also be used when resending photos by <em>file_id</em>), 0-200 characters</td>
+<td>Photo caption (may also be used when resending photos by <em>file_id</em>), 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -1899,13 +1973,15 @@ pre-formatted fixed-width code block
 <p>Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. On success, the sent <a href="#message">Message</a> is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.</p>
 <p>For sending voice messages, use the <a href="#sendvoice">sendVoice</a> method instead.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -1922,7 +1998,7 @@ pre-formatted fixed-width code block
 <td>caption</td>
 <td>String</td>
 <td>Optional</td>
-<td>Audio caption, 0-200 characters</td>
+<td>Audio caption, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -1952,7 +2028,7 @@ pre-formatted fixed-width code block
 <td>thumb</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
 <td>Optional</td>
-<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+<td>Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>disable_notification</td>
@@ -1977,13 +2053,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="senddocument" href="#senddocument"><i class="anchor-icon"></i></a>sendDocument</h4>
 <p>Use this method to send general files. On success, the sent <a href="#message">Message</a> is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2000,13 +2078,13 @@ pre-formatted fixed-width code block
 <td>thumb</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
 <td>Optional</td>
-<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+<td>Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
 <td>String</td>
 <td>Optional</td>
-<td>Document caption (may also be used when resending documents by <em>file_id</em>), 0-200 characters</td>
+<td>Document caption (may also be used when resending documents by <em>file_id</em>), 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -2037,13 +2115,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendvideo" href="#sendvideo"><i class="anchor-icon"></i></a>sendVideo</h4>
 <p>Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as <a href="#document">Document</a>). On success, the sent <a href="#message">Message</a> is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2078,13 +2158,13 @@ pre-formatted fixed-width code block
 <td>thumb</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
 <td>Optional</td>
-<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+<td>Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
 <td>String</td>
 <td>Optional</td>
-<td>Video caption (may also be used when resending videos by <em>file_id</em>), 0-200 characters</td>
+<td>Video caption (may also be used when resending videos by <em>file_id</em>), 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -2121,13 +2201,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendanimation" href="#sendanimation"><i class="anchor-icon"></i></a>sendAnimation</h4>
 <p>Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent <a href="#message">Message</a> is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2162,13 +2244,13 @@ pre-formatted fixed-width code block
 <td>thumb</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
 <td>Optional</td>
-<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+<td>Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
 <td>String</td>
 <td>Optional</td>
-<td>Animation caption (may also be used when resending animation by <em>file_id</em>), 0-200 characters</td>
+<td>Animation caption (may also be used when resending animation by <em>file_id</em>), 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -2199,13 +2281,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendvoice" href="#sendvoice"><i class="anchor-icon"></i></a>sendVoice</h4>
 <p>Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as <a href="#audio">Audio</a> or <a href="#document">Document</a>). On success, the sent <a href="#message">Message</a> is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2222,7 +2306,7 @@ pre-formatted fixed-width code block
 <td>caption</td>
 <td>String</td>
 <td>Optional</td>
-<td>Voice message caption, 0-200 characters</td>
+<td>Voice message caption, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -2259,13 +2343,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendvideonote" href="#sendvideonote"><i class="anchor-icon"></i></a>sendVideoNote</h4>
 <p>As of <a href="https://telegram.org/blog/video-messages-and-telescope">v.4.0</a>, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2288,13 +2374,13 @@ pre-formatted fixed-width code block
 <td>length</td>
 <td>Integer</td>
 <td>Optional</td>
-<td>Video width and height</td>
+<td>Video width and height, i.e. diameter of the video message</td>
 </tr>
 <tr>
 <td>thumb</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
 <td>Optional</td>
-<td>Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
+<td>Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>disable_notification</td>
@@ -2319,13 +2405,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendmediagroup" href="#sendmediagroup"><i class="anchor-icon"></i></a>sendMediaGroup</h4>
 <p>Use this method to send a group of photos or videos as an album. On success, an array of the sent <a href="#message">Messages</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2355,13 +2443,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendlocation" href="#sendlocation"><i class="anchor-icon"></i></a>sendLocation</h4>
 <p>Use this method to send point on the map. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2409,13 +2499,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="editmessagelivelocation" href="#editmessagelivelocation"><i class="anchor-icon"></i></a>editMessageLiveLocation</h4>
 <p>Use this method to edit live location messages sent by the bot or via the bot (for <a href="#inline-mode">inline bots</a>). A location can be edited until its <em>live_period</em> expires or editing is explicitly disabled by a call to <a href="#stopmessagelivelocation">stopMessageLiveLocation</a>. On success, if the edited message was sent by the bot, the edited <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2457,13 +2549,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="stopmessagelivelocation" href="#stopmessagelivelocation"><i class="anchor-icon"></i></a>stopMessageLiveLocation</h4>
 <p>Use this method to stop updating a live location message sent by the bot or via the bot (for <a href="#inline-mode">inline bots</a>) before <em>live_period</em> expires. On success, if the message was sent by the bot, the sent <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2493,13 +2587,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendvenue" href="#sendvenue"><i class="anchor-icon"></i></a>sendVenue</h4>
 <p>Use this method to send information about a venue. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2565,13 +2661,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendcontact" href="#sendcontact"><i class="anchor-icon"></i></a>sendContact</h4>
 <p>Use this method to send phone contacts. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2629,13 +2727,15 @@ pre-formatted fixed-width code block
 </blockquote>
 <p>We only recommend using this method when a response from the bot will take a <strong>noticeable</strong> amount of time to arrive.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2653,13 +2753,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="getuserprofilephotos" href="#getuserprofilephotos"><i class="anchor-icon"></i></a>getUserProfilePhotos</h4>
 <p>Use this method to get a list of profile pictures for a user. Returns a <a href="#userprofilephotos">UserProfilePhotos</a> object.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>user_id</td>
 <td>Integer</td>
@@ -2683,13 +2785,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="getfile" href="#getfile"><i class="anchor-icon"></i></a>getFile</h4>
 <p>Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a <a href="#file">File</a> object is returned. The file can then be downloaded via the link <code>https://api.telegram.org/file/bot&lt;token&gt;/&lt;file_path&gt;</code>, where <code>&lt;file_path&gt;</code> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling <a href="#getfile">getFile</a> again.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -2705,13 +2809,15 @@ pre-formatted fixed-width code block
 <p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group&#39;s creator or by the member that added them.</p>
 </blockquote>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2735,13 +2841,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="unbanchatmember" href="#unbanchatmember"><i class="anchor-icon"></i></a>unbanChatMember</h4>
 <p>Use this method to unban a previously kicked user in a supergroup or channel. The user will <strong>not</strong> return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2759,13 +2867,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="restrictchatmember" href="#restrictchatmember"><i class="anchor-icon"></i></a>restrictChatMember</h4>
 <p>Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass <em>True</em> for all boolean parameters to lift restrictions from a user. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2813,13 +2923,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="promotechatmember" href="#promotechatmember"><i class="anchor-icon"></i></a>promoteChatMember</h4>
 <p>Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass <em>False</em> for all boolean parameters to demote a user. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2885,13 +2997,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="exportchatinvitelink" href="#exportchatinvitelink"><i class="anchor-icon"></i></a>exportChatInviteLink</h4>
 <p>Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as <em>String</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2900,19 +3014,24 @@ pre-formatted fixed-width code block
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>Note: Each administrator in a chat generates their own invite links. Bots can&#39;t use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using <a href="#exportchatinvitelink">exportChatInviteLink</a> – after this the link will become available to the bot via the <a href="#getchat">getChat</a> method. If your bot needs to generate a new invite link replacing its previous one, use <a href="#exportchatinvitelink">exportChatInviteLink</a> again.</p>
+</blockquote>
 <h4><a class="anchor" name="setchatphoto" href="#setchatphoto"><i class="anchor-icon"></i></a>setChatPhoto</h4>
 <p>Use this method to set a new profile photo for the chat. Photos can&#39;t be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
 <blockquote>
 <p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.</p>
 </blockquote>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2933,13 +3052,15 @@ pre-formatted fixed-width code block
 <p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.</p>
 </blockquote>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2954,13 +3075,15 @@ pre-formatted fixed-width code block
 <p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.</p>
 </blockquote>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -2978,13 +3101,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="setchatdescription" href="#setchatdescription"><i class="anchor-icon"></i></a>setChatDescription</h4>
 <p>Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success. </p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3002,13 +3127,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="pinchatmessage" href="#pinchatmessage"><i class="anchor-icon"></i></a>pinChatMessage</h4>
 <p>Use this method to pin a message in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3032,13 +3159,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="unpinchatmessage" href="#unpinchatmessage"><i class="anchor-icon"></i></a>unpinChatMessage</h4>
 <p>Use this method to unpin a message in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns <em>True</em> on success. </p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3050,13 +3179,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="leavechat" href="#leavechat"><i class="anchor-icon"></i></a>leaveChat</h4>
 <p>Use this method for your bot to leave a group, supergroup or channel. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3068,13 +3199,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="getchat" href="#getchat"><i class="anchor-icon"></i></a>getChat</h4>
 <p>Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a <a href="#chat">Chat</a> object on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3086,13 +3219,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="getchatadministrators" href="#getchatadministrators"><i class="anchor-icon"></i></a>getChatAdministrators</h4>
 <p>Use this method to get a list of administrators in a chat. On success, returns an Array of <a href="#chatmember">ChatMember</a> objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3104,13 +3239,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="getchatmemberscount" href="#getchatmemberscount"><i class="anchor-icon"></i></a>getChatMembersCount</h4>
 <p>Use this method to get the number of members in a chat. Returns <em>Int</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3122,13 +3259,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="getchatmember" href="#getchatmember"><i class="anchor-icon"></i></a>getChatMember</h4>
 <p>Use this method to get information about a member of a chat. Returns a <a href="#chatmember">ChatMember</a> object on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3146,13 +3285,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="setchatstickerset" href="#setchatstickerset"><i class="anchor-icon"></i></a>setChatStickerSet</h4>
 <p>Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field <em>can_set_sticker_set</em> optionally returned in <a href="#getchat">getChat</a> requests to check if the bot can use this method. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3170,13 +3311,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="deletechatstickerset" href="#deletechatstickerset"><i class="anchor-icon"></i></a>deleteChatStickerSet</h4>
 <p>Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field <em>can_set_sticker_set</em> optionally returned in <a href="#getchat">getChat</a> requests to check if the bot can use this method. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3191,13 +3334,15 @@ pre-formatted fixed-width code block
 <p>Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via <a href="https://t.me/botfather">@Botfather</a> and accept the terms. Otherwise, you may use links like <code>t.me/your_bot?start=XXXX</code> that open your bot with a parameter.</p>
 </blockquote>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>callback_query_id</td>
 <td>String</td>
@@ -3238,13 +3383,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="editmessagetext" href="#editmessagetext"><i class="anchor-icon"></i></a>editMessageText</h4>
 <p>Use this method to edit text and <a href="#games">game</a> messages sent by the bot or via the bot (for <a href="#inline-mode">inline bots</a>). On success, if edited message is sent by the bot, the edited <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3292,13 +3439,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="editmessagecaption" href="#editmessagecaption"><i class="anchor-icon"></i></a>editMessageCaption</h4>
 <p>Use this method to edit captions of messages sent by the bot or via the bot (for <a href="#inline-mode">inline bots</a>). On success, if edited message is sent by the bot, the edited <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3338,15 +3487,17 @@ pre-formatted fixed-width code block
 </tbody>
 </table>
 <h4><a class="anchor" name="editmessagemedia" href="#editmessagemedia"><i class="anchor-icon"></i></a>editMessageMedia</h4>
-<p>Use this method to edit audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can&#39;t be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
+<p>Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can&#39;t be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3382,13 +3533,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="editmessagereplymarkup" href="#editmessagereplymarkup"><i class="anchor-icon"></i></a>editMessageReplyMarkup</h4>
 <p>Use this method to edit only the reply markup of messages sent by the bot or via the bot (for <a href="#inline-mode">inline bots</a>).  On success, if edited message is sent by the bot, the edited <a href="#message">Message</a> is returned, otherwise <em>True</em> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3416,15 +3569,17 @@ pre-formatted fixed-width code block
 </tbody>
 </table>
 <h4><a class="anchor" name="deletemessage" href="#deletemessage"><i class="anchor-icon"></i></a>deleteMessage</h4>
-<p>Use this method to delete a message, including service messages, with the following limitations:<br>- A message can only be deleted if it was sent less than 48 hours ago.<br>- Bots can delete outgoing messages in groups and supergroups.<br>- Bots granted <em>can_post_messages</em> permissions can delete outgoing messages in channels.<br>- If the bot is an administrator of a group, it can delete any message there.<br>- If the bot has <em>can_delete_messages</em> permission in a supergroup or a channel, it can delete any message there.<br>Returns <em>True</em> on success.</p>
+<p>Use this method to delete a message, including service messages, with the following limitations:<br>- A message can only be deleted if it was sent less than 48 hours ago.<br>- Bots can delete outgoing messages in private chats, groups, and supergroups.<br>- Bots granted <em>can_post_messages</em> permissions can delete outgoing messages in channels.<br>- If the bot is an administrator of a group, it can delete any message there.<br>- If the bot has <em>can_delete_messages</em> permission in a supergroup or a channel, it can delete any message there.<br>Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3444,12 +3599,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sticker" href="#sticker"><i class="anchor-icon"></i></a>Sticker</h4>
 <p>This object represents a sticker.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -3495,12 +3652,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="stickerset" href="#stickerset"><i class="anchor-icon"></i></a>StickerSet</h4>
 <p>This object represents a sticker set.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>name</td>
 <td>String</td>
@@ -3526,12 +3685,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="maskposition" href="#maskposition"><i class="anchor-icon"></i></a>MaskPosition</h4>
 <p>This object describes the position on faces where a mask should be placed by default.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>point</td>
 <td>String</td>
@@ -3557,13 +3718,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendsticker" href="#sendsticker"><i class="anchor-icon"></i></a>sendSticker</h4>
 <p>Use this method to send .webp stickers. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer or String</td>
@@ -3599,13 +3762,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="getstickerset" href="#getstickerset"><i class="anchor-icon"></i></a>getStickerSet</h4>
 <p>Use this method to get a sticker set. On success, a <a href="#stickerset">StickerSet</a> object is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>name</td>
 <td>String</td>
@@ -3617,13 +3782,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="uploadstickerfile" href="#uploadstickerfile"><i class="anchor-icon"></i></a>uploadStickerFile</h4>
 <p>Use this method to upload a .png file with a sticker for later use in <em>createNewStickerSet</em> and <em>addStickerToSet</em> methods (can be used multiple times). Returns the uploaded <a href="#file">File</a> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>user_id</td>
 <td>Integer</td>
@@ -3641,13 +3808,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="createnewstickerset" href="#createnewstickerset"><i class="anchor-icon"></i></a>createNewStickerSet</h4>
 <p>Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>user_id</td>
 <td>Integer</td>
@@ -3695,13 +3864,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="addstickertoset" href="#addstickertoset"><i class="anchor-icon"></i></a>addStickerToSet</h4>
 <p>Use this method to add a new sticker to a set created by the bot. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>user_id</td>
 <td>Integer</td>
@@ -3737,13 +3908,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="setstickerpositioninset" href="#setstickerpositioninset"><i class="anchor-icon"></i></a>setStickerPositionInSet</h4>
 <p>Use this method to move a sticker in a set created by the bot to a specific position . Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>sticker</td>
 <td>String</td>
@@ -3761,13 +3934,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="deletestickerfromset" href="#deletestickerfromset"><i class="anchor-icon"></i></a>deleteStickerFromSet</h4>
 <p>Use this method to delete a sticker from a set created by the bot. Returns <em>True</em> on success.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>sticker</td>
 <td>String</td>
@@ -3782,12 +3957,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequery" href="#inlinequery"><i class="anchor-icon"></i></a>InlineQuery</h4>
 <p>This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>id</td>
 <td>String</td>
@@ -3818,13 +3995,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="answerinlinequery" href="#answerinlinequery"><i class="anchor-icon"></i></a>answerInlineQuery</h4>
 <p>Use this method to send answers to an inline query. On success, <em>True</em> is returned.<br>No more than <strong>50</strong> results per query are allowed.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>inline_query_id</td>
 <td>String</td>
@@ -3896,12 +4075,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultarticle" href="#inlinequeryresultarticle"><i class="anchor-icon"></i></a>InlineQueryResultArticle</h4>
 <p>Represents a link to an article or web page.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -3962,12 +4143,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultphoto" href="#inlinequeryresultphoto"><i class="anchor-icon"></i></a>InlineQueryResultPhoto</h4>
 <p>Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the photo.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4011,7 +4194,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the photo to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the photo to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4033,12 +4216,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultgif" href="#inlinequeryresultgif"><i class="anchor-icon"></i></a>InlineQueryResultGif</h4>
 <p>Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the animation.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4082,7 +4267,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the GIF file to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the GIF file to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4104,12 +4289,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultmpeg4gif" href="#inlinequeryresultmpeg4gif"><i class="anchor-icon"></i></a>InlineQueryResultMpeg4Gif</h4>
 <p>Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the animation.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4153,7 +4340,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the MPEG-4 file to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the MPEG-4 file to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4178,12 +4365,14 @@ pre-formatted fixed-width code block
 <p>If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you <strong>must</strong> replace its content using <em>input_message_content</em>.</p>
 </blockquote>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4217,7 +4406,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the video to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the video to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4259,12 +4448,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultaudio" href="#inlinequeryresultaudio"><i class="anchor-icon"></i></a>InlineQueryResultAudio</h4>
 <p>Represents a link to an mp3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the audio.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4288,7 +4479,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption, 0-200 characters</td>
+<td><em>Optional</em>. Caption, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4321,12 +4512,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultvoice" href="#inlinequeryresultvoice"><i class="anchor-icon"></i></a>InlineQueryResultVoice</h4>
 <p>Represents a link to a voice recording in an .ogg container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the the voice message.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4350,7 +4543,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption, 0-200 characters</td>
+<td><em>Optional</em>. Caption, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4378,12 +4571,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultdocument" href="#inlinequeryresultdocument"><i class="anchor-icon"></i></a>InlineQueryResultDocument</h4>
 <p>Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the file. Currently, only <strong>.PDF</strong> and <strong>.ZIP</strong> files can be sent using this method.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4402,7 +4597,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the document to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the document to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4455,12 +4650,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultlocation" href="#inlinequeryresultlocation"><i class="anchor-icon"></i></a>InlineQueryResultLocation</h4>
 <p>Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the location.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4522,12 +4719,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultvenue" href="#inlinequeryresultvenue"><i class="anchor-icon"></i></a>InlineQueryResultVenue</h4>
 <p>Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the venue.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4599,12 +4798,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultcontact" href="#inlinequeryresultcontact"><i class="anchor-icon"></i></a>InlineQueryResultContact</h4>
 <p>Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the contact.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4666,12 +4867,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultgame" href="#inlinequeryresultgame"><i class="anchor-icon"></i></a>InlineQueryResultGame</h4>
 <p>Represents a <a href="#games">Game</a>.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4698,12 +4901,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultcachedphoto" href="#inlinequeryresultcachedphoto"><i class="anchor-icon"></i></a>InlineQueryResultCachedPhoto</h4>
 <p>Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the photo.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4732,7 +4937,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the photo to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the photo to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4754,12 +4959,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultcachedgif" href="#inlinequeryresultcachedgif"><i class="anchor-icon"></i></a>InlineQueryResultCachedGif</h4>
 <p>Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with specified content instead of the animation.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4783,7 +4990,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the GIF file to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the GIF file to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4805,12 +5012,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultcachedmpeg4gif" href="#inlinequeryresultcachedmpeg4gif"><i class="anchor-icon"></i></a>InlineQueryResultCachedMpeg4Gif</h4>
 <p>Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the animation.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4834,7 +5043,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the MPEG-4 file to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the MPEG-4 file to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4856,12 +5065,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultcachedsticker" href="#inlinequeryresultcachedsticker"><i class="anchor-icon"></i></a>InlineQueryResultCachedSticker</h4>
 <p>Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the sticker.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4893,12 +5104,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultcacheddocument" href="#inlinequeryresultcacheddocument"><i class="anchor-icon"></i></a>InlineQueryResultCachedDocument</h4>
 <p>Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the file.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4927,7 +5140,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the document to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the document to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -4950,12 +5163,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultcachedvideo" href="#inlinequeryresultcachedvideo"><i class="anchor-icon"></i></a>InlineQueryResultCachedVideo</h4>
 <p>Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the video.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -4984,7 +5199,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption of the video to be sent, 0-200 characters</td>
+<td><em>Optional</em>. Caption of the video to be sent, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -5006,12 +5221,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultcachedvoice" href="#inlinequeryresultcachedvoice"><i class="anchor-icon"></i></a>InlineQueryResultCachedVoice</h4>
 <p>Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the voice message.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -5035,7 +5252,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption, 0-200 characters</td>
+<td><em>Optional</em>. Caption, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -5058,12 +5275,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inlinequeryresultcachedaudio" href="#inlinequeryresultcachedaudio"><i class="anchor-icon"></i></a>InlineQueryResultCachedAudio</h4>
 <p>Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the audio.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -5082,7 +5301,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>caption</td>
 <td>String</td>
-<td><em>Optional</em>. Caption, 0-200 characters</td>
+<td><em>Optional</em>. Caption, 0-1024 characters</td>
 </tr>
 <tr>
 <td>parse_mode</td>
@@ -5113,12 +5332,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inputtextmessagecontent" href="#inputtextmessagecontent"><i class="anchor-icon"></i></a>InputTextMessageContent</h4>
 <p>Represents the <a href="#inputmessagecontent">content</a> of a text message to be sent as the result of an inline query. </p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>message_text</td>
 <td>String</td>
@@ -5139,12 +5360,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inputlocationmessagecontent" href="#inputlocationmessagecontent"><i class="anchor-icon"></i></a>InputLocationMessageContent</h4>
 <p>Represents the <a href="#inputmessagecontent">content</a> of a location message to be sent as the result of an inline query. </p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>latitude</td>
 <td>Float</td>
@@ -5165,12 +5388,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inputvenuemessagecontent" href="#inputvenuemessagecontent"><i class="anchor-icon"></i></a>InputVenueMessageContent</h4>
 <p>Represents the <a href="#inputmessagecontent">content</a> of a venue message to be sent as the result of an inline query. </p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>latitude</td>
 <td>Float</td>
@@ -5206,12 +5431,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="inputcontactmessagecontent" href="#inputcontactmessagecontent"><i class="anchor-icon"></i></a>InputContactMessageContent</h4>
 <p>Represents the <a href="#inputmessagecontent">content</a> of a contact message to be sent as the result of an inline query. </p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>phone_number</td>
 <td>String</td>
@@ -5237,12 +5464,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="choseninlineresult" href="#choseninlineresult"><i class="anchor-icon"></i></a>ChosenInlineResult</h4>
 <p>Represents a <a href="#inlinequeryresult">result</a> of an inline query that was chosen by the user and sent to their chat partner. </p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>result_id</td>
 <td>String</td>
@@ -5276,13 +5505,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendinvoice" href="#sendinvoice"><i class="anchor-icon"></i></a>sendInvoice</h4>
 <p>Use this method to send invoices. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer</td>
@@ -5426,13 +5657,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="answershippingquery" href="#answershippingquery"><i class="anchor-icon"></i></a>answerShippingQuery</h4>
 <p>If you sent an invoice requesting a shipping address and the parameter <em>is_flexible</em> was specified, the Bot API will send an <a href="#update">Update</a> with a <em>shipping_query</em> field to the bot. Use this method to reply to shipping queries. On success, True is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>shipping_query_id</td>
 <td>String</td>
@@ -5462,13 +5695,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="answerprecheckoutquery" href="#answerprecheckoutquery"><i class="anchor-icon"></i></a>answerPreCheckoutQuery</h4>
 <p>Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an <a href="#update">Update</a> with the field <em>pre_checkout_query</em>. Use this method to respond to such pre-checkout queries. On success, True is returned. <strong>Note:</strong> The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>pre_checkout_query_id</td>
 <td>String</td>
@@ -5492,12 +5727,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="labeledprice" href="#labeledprice"><i class="anchor-icon"></i></a>LabeledPrice</h4>
 <p>This object represents a portion of the price for goods or services.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>label</td>
 <td>String</td>
@@ -5513,12 +5750,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="invoice" href="#invoice"><i class="anchor-icon"></i></a>Invoice</h4>
 <p>This object contains basic information about an invoice.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>title</td>
 <td>String</td>
@@ -5549,12 +5788,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="shippingaddress" href="#shippingaddress"><i class="anchor-icon"></i></a>ShippingAddress</h4>
 <p>This object represents a shipping address.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>country_code</td>
 <td>String</td>
@@ -5590,12 +5831,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="orderinfo" href="#orderinfo"><i class="anchor-icon"></i></a>OrderInfo</h4>
 <p>This object represents information about an order.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>name</td>
 <td>String</td>
@@ -5621,12 +5864,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="shippingoption" href="#shippingoption"><i class="anchor-icon"></i></a>ShippingOption</h4>
 <p>This object represents one shipping option.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>id</td>
 <td>String</td>
@@ -5647,12 +5892,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="successfulpayment" href="#successfulpayment"><i class="anchor-icon"></i></a>SuccessfulPayment</h4>
 <p>This object contains basic information about a successful payment.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>currency</td>
 <td>String</td>
@@ -5693,12 +5940,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="shippingquery" href="#shippingquery"><i class="anchor-icon"></i></a>ShippingQuery</h4>
 <p>This object contains information about an incoming shipping query.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>id</td>
 <td>String</td>
@@ -5724,12 +5973,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="precheckoutquery" href="#precheckoutquery"><i class="anchor-icon"></i></a>PreCheckoutQuery</h4>
 <p>This object contains information about an incoming pre-checkout query.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>id</td>
 <td>String</td>
@@ -5772,12 +6023,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="passportdata" href="#passportdata"><i class="anchor-icon"></i></a>PassportData</h4>
 <p>Contains information about Telegram Passport data shared with the bot by the user.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>data</td>
 <td>Array of <a href="#encryptedpassportelement">EncryptedPassportElement</a></td>
@@ -5793,12 +6046,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="passportfile" href="#passportfile"><i class="anchor-icon"></i></a>PassportFile</h4>
 <p>This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don&#39;t exceed 10MB.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>file_id</td>
 <td>String</td>
@@ -5819,12 +6074,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="encryptedpassportelement" href="#encryptedpassportelement"><i class="anchor-icon"></i></a>EncryptedPassportElement</h4>
 <p>Contains information about documents or other Telegram Passport elements shared with the bot by the user.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>type</td>
 <td>String</td>
@@ -5833,7 +6090,7 @@ pre-formatted fixed-width code block
 <tr>
 <td>data</td>
 <td>String</td>
-<td><em>Optional</em>. Base64-encoded encrypted Telegram Passport element data provided by the user, available for “personal_details”, “passport”, “driver_license”, “identity_card”, “identity_passport” and “address” types. Can be decrypted and verified using the accompanying <a href="#encryptedcredentials">EncryptedCredentials</a>.</td>
+<td><em>Optional</em>. Base64-encoded encrypted Telegram Passport element data provided by the user, available for “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport” and “address” types. Can be decrypted and verified using the accompanying <a href="#encryptedcredentials">EncryptedCredentials</a>.</td>
 </tr>
 <tr>
 <td>phone_number</td>
@@ -5865,17 +6122,29 @@ pre-formatted fixed-width code block
 <td><a href="#passportfile">PassportFile</a></td>
 <td><em>Optional</em>. Encrypted file with the selfie of the user holding a document, provided by the user; available for “passport”, “driver_license”, “identity_card” and “internal_passport”. The file can be decrypted and verified using the accompanying <a href="#encryptedcredentials">EncryptedCredentials</a>.</td>
 </tr>
+<tr>
+<td>translation</td>
+<td>Array of <a href="#passportfile">PassportFile</a></td>
+<td><em>Optional</em>. Array of encrypted files with translated versions of documents provided by the user. Available if requested for “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration” and “temporary_registration” types. Files can be decrypted and verified using the accompanying <a href="#encryptedcredentials">EncryptedCredentials</a>.</td>
+</tr>
+<tr>
+<td>hash</td>
+<td>String</td>
+<td>Base64-encoded element hash for using in <a href="#passportelementerrorunspecified">PassportElementErrorUnspecified</a></td>
+</tr>
 </tbody>
 </table>
 <h4><a class="anchor" name="encryptedcredentials" href="#encryptedcredentials"><i class="anchor-icon"></i></a>EncryptedCredentials</h4>
-<p>Contains data required for decrypting and authenticating <a href="#encryptedpassportelement">EncryptedPassportElement</a>. See the <a href="https://core.telegram.org/telegram-passport#receiving-information">Telegram Passport Documentation</a> for a complete description of the data decryption and authentication processes.</p>
+<p>Contains data required for decrypting and authenticating <a href="#encryptedpassportelement">EncryptedPassportElement</a>. See the <a href="https://core.telegram.org/passport#receiving-information">Telegram Passport Documentation</a> for a complete description of the data decryption and authentication processes.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>data</td>
 <td>String</td>
@@ -5897,13 +6166,15 @@ pre-formatted fixed-width code block
 <p>Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns <em>True</em> on success.</p>
 <p>Use this if the data submitted by the user doesn&#39;t satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>user_id</td>
 <td>Integer</td>
@@ -5927,16 +6198,21 @@ pre-formatted fixed-width code block
 <li><a href="#passportelementerrorselfie">PassportElementErrorSelfie</a></li>
 <li><a href="#passportelementerrorfile">PassportElementErrorFile</a></li>
 <li><a href="#passportelementerrorfiles">PassportElementErrorFiles</a></li>
+<li><a href="#passportelementerrortranslationfile">PassportElementErrorTranslationFile</a></li>
+<li><a href="#passportelementerrortranslationfiles">PassportElementErrorTranslationFiles</a></li>
+<li><a href="#passportelementerrorunspecified">PassportElementErrorUnspecified</a></li>
 </ul>
 <h4><a class="anchor" name="passportelementerrordatafield" href="#passportelementerrordatafield"><i class="anchor-icon"></i></a>PassportElementErrorDataField</h4>
 <p>Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field&#39;s value changes.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>source</td>
 <td>String</td>
@@ -5967,12 +6243,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="passportelementerrorfrontside" href="#passportelementerrorfrontside"><i class="anchor-icon"></i></a>PassportElementErrorFrontSide</h4>
 <p>Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>source</td>
 <td>String</td>
@@ -5998,12 +6276,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="passportelementerrorreverseside" href="#passportelementerrorreverseside"><i class="anchor-icon"></i></a>PassportElementErrorReverseSide</h4>
 <p>Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>source</td>
 <td>String</td>
@@ -6029,12 +6309,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="passportelementerrorselfie" href="#passportelementerrorselfie"><i class="anchor-icon"></i></a>PassportElementErrorSelfie</h4>
 <p>Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>source</td>
 <td>String</td>
@@ -6060,12 +6342,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="passportelementerrorfile" href="#passportelementerrorfile"><i class="anchor-icon"></i></a>PassportElementErrorFile</h4>
 <p>Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>source</td>
 <td>String</td>
@@ -6091,12 +6375,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="passportelementerrorfiles" href="#passportelementerrorfiles"><i class="anchor-icon"></i></a>PassportElementErrorFiles</h4>
 <p>Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>source</td>
 <td>String</td>
@@ -6111,6 +6397,105 @@ pre-formatted fixed-width code block
 <td>file_hashes</td>
 <td>Array of String</td>
 <td>List of base64-encoded file hashes</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportelementerrortranslationfile" href="#passportelementerrortranslationfile"><i class="anchor-icon"></i></a>PassportElementErrorTranslationFile</h4>
+<p>Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.</p>
+<table class="table">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>Error source, must be <em>translation_file</em></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Type of element of the user&#39;s Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”</td>
+</tr>
+<tr>
+<td>file_hash</td>
+<td>String</td>
+<td>Base64-encoded file hash</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportelementerrortranslationfiles" href="#passportelementerrortranslationfiles"><i class="anchor-icon"></i></a>PassportElementErrorTranslationFiles</h4>
+<p>Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.</p>
+<table class="table">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>Error source, must be <em>translation_files</em></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Type of element of the user&#39;s Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”</td>
+</tr>
+<tr>
+<td>file_hashes</td>
+<td>Array of String</td>
+<td>List of base64-encoded file hashes</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Error message</td>
+</tr>
+</tbody>
+</table>
+<h4><a class="anchor" name="passportelementerrorunspecified" href="#passportelementerrorunspecified"><i class="anchor-icon"></i></a>PassportElementErrorUnspecified</h4>
+<p>Represents an issue in an unspecified place. The error is considered resolved when new data is added.</p>
+<table class="table">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source</td>
+<td>String</td>
+<td>Error source, must be <em>unspecified</em></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Type of element of the user&#39;s Telegram Passport which has the issue</td>
+</tr>
+<tr>
+<td>element_hash</td>
+<td>String</td>
+<td>Base64-encoded element hash</td>
 </tr>
 <tr>
 <td>message</td>
@@ -6135,13 +6520,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="sendgame" href="#sendgame"><i class="anchor-icon"></i></a>sendGame</h4>
 <p>Use this method to send a game. On success, the sent <a href="#message">Message</a> is returned.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>chat_id</td>
 <td>Integer</td>
@@ -6177,12 +6564,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="game" href="#game"><i class="anchor-icon"></i></a>Game</h4>
 <p>This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>title</td>
 <td>String</td>
@@ -6220,13 +6609,15 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="setgamescore" href="#setgamescore"><i class="anchor-icon"></i></a>setGameScore</h4>
 <p>Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited <a href="#message">Message</a>, otherwise returns <em>True</em>. Returns an error, if the new score is not greater than the user&#39;s current score in the chat and <em>force</em> is <em>False</em>.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>user_id</td>
 <td>Integer</td>
@@ -6277,13 +6668,15 @@ pre-formatted fixed-width code block
 <p>This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.</p>
 </blockquote>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Parameters</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Required</strong></td>
-<td><strong>Description</strong></td>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>user_id</td>
 <td>Integer</td>
@@ -6313,12 +6706,14 @@ pre-formatted fixed-width code block
 <h4><a class="anchor" name="gamehighscore" href="#gamehighscore"><i class="anchor-icon"></i></a>GameHighScore</h4>
 <p>This object represents one row of the high scores table for a game.</p>
 <table class="table">
-<tbody>
+<thead>
 <tr>
-<td><strong>Field</strong></td>
-<td><strong>Type</strong></td>
-<td><strong>Description</strong></td>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>position</td>
 <td>Integer</td>
@@ -6404,7 +6799,7 @@ pre-formatted fixed-width code block
   </div>
 </div>
     </div>
-    <script src="/js/main.js?23"></script>
+    <script src="/js/main.js?26"></script>
     <script src="/js/jquery.min.js?1"></script>
 <script src="/js/bootstrap.min.js"></script>
 
@@ -6415,9 +6810,10 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-45099287-4', 'auto');
+ga('set', 'anonymizeIp', true);
 ga('send', 'pageview');initDevPageNav();
 backToTopInit();
 </script>
   </body>
 </html>
-<!-- page generated in 28.37ms -->
+<!-- page generated in 31.6ms -->
