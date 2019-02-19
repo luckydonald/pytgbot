@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-{% from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple, for_args_set_self, set_array %}
-{% from "macros.template" import set_data_array_element, for_type, for_args_format_repr, for_args_keys %}
+{%- from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple, for_args_set_self -%}
+{%- from "macros.template" import set_data_array_element, for_type, for_args_format_repr, for_args_keys -%}
+{%- from "macros.template" import set_array, set_array_element -%}
 
 __author__ = "luckydonald"
 
