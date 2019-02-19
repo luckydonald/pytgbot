@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 {% from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple, for_args_set_self, set_array %}
 {% from "macros.template" import set_data_array_element, for_type, for_args_format_repr, for_args_keys %}
 
@@ -31,6 +31,7 @@ class {{ function.class_name }}(SendableBase):
     :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
     {% endfor %}
     {% endif -%}
+    {% endblock class_docstring -%}
     """
 
     def __init__(self, {{ for_args_none(function.class_variables) }}):
