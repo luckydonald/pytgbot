@@ -44,7 +44,7 @@ class Bot(object):
         self.api_key = api_key
         self.return_python_objects = return_python_objects
         self._last_update = datetime.now()
-        self._id = None  # will be filled when using the property .id or .username, or when calling ._load_info()
+        self._id = None        # will be filled when using the property .id or .username, or when calling ._load_info()
         self._username = None  # will be filled when using the property .id or .username, or when calling ._load_info()
     # end def __init__
 
@@ -400,8 +400,6 @@ class Bot(object):
         # end if return_python_objects
         return result
     # end def send_message
-
-    send_msg = send_message  # alias to send_message(...)
 
     def forward_message(self, chat_id, from_chat_id, message_id, disable_notification=False):
         """
@@ -3584,7 +3582,7 @@ class Bot(object):
         Returns:
 
         :return: On success, True is returned
-        :rtype:
+        :rtype:  bool
         """
         from pytgbot.api_types.sendable.payments import ShippingOption
 
@@ -3598,7 +3596,13 @@ class Bot(object):
 
         result = self.do("answerShippingQuery", shipping_query_id=shipping_query_id, ok=ok, shipping_options=shipping_options, error_message=error_message)
         if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
@@ -3628,7 +3632,7 @@ class Bot(object):
         Returns:
 
         :return: On success, True is returned
-        :rtype:
+        :rtype:  bool
         """
         assert_type_or_raise(pre_checkout_query_id, unicode_type, parameter_name="pre_checkout_query_id")
 
@@ -3638,7 +3642,13 @@ class Bot(object):
 
         result = self.do("answerPreCheckoutQuery", pre_checkout_query_id=pre_checkout_query_id, ok=ok, error_message=error_message)
         if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
@@ -3913,7 +3923,7 @@ class Bot(object):
         :param query: all the other `**kwargs` will get json encoded.
 
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
         import requests
 
@@ -3957,8 +3967,9 @@ class Bot(object):
 
         :param r: the request response
         :type  r: requests.Response
+
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
         from DictObject import DictObject
         import requests

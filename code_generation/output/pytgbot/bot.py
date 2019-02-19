@@ -16,6 +16,7 @@ from .exceptions import TgApiTypeError, TgApiResponseException
 from .api_types.sendable.inline import InlineQueryResult
 from .api_types import from_array_list
 
+
 __author__ = 'luckydonald'
 __all__ = ["Bot"]
 
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class Bot(object):
-    _base_url = "https://api.telegram.org/bot{api_key}/{command}"
+    _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # you shouldn't change that.
 
     def __init__(self, api_key, return_python_objects=True):
         """
