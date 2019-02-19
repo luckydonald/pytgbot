@@ -325,6 +325,7 @@ def output(folder, results, html_content=None):
         # end if
 
         # write crawled data
+        mkdir_p(folder)
         with open(path_join(folder, "api.py"), "w") as f:
             f.write("[\n    ")
             f.write(",\n    ".join([repr(result) for result in results]))
@@ -422,14 +423,15 @@ def safe_to_file(folder, results):
             assert isinstance(result, Function)
             import_path = "pytgbot.bot."
             file_path = calc_path_and_create_folders(folder, import_path)
-            result.filepath = [file_path, None]
+            result.filepath = file_path
             functions.append(result)
 
             if result.name.startswith('send_'):
                 import_path = "teleflask_messages."
                 file_path = calc_path_and_create_folders(folder, import_path)
-                result = safe_eval(repr(result), SAVE_VALUES)  # serialize + unserialize = deepcopy
-                result.filepath = file_path
+                result2 = safe_eval(repr(result), SAVE_VALUES)  # serialize + unserialize = deepcopy
+                result2.filepath = file_path
+                message_send_functions.append(result2)
             # end if
         # end if
     # end for
@@ -460,6 +462,12 @@ def safe_to_file(folder, results):
     if functions:
         txt = bot_template.render(functions=functions)
         with open(functions[0].filepath, "w") as f:
+            f.write(txt)
+        # end with
+    # end if
+    if message_send_functions:
+        txt = teleflask_messages_template.render(functions=message_send_functions)
+        with open(message_send_functions[0].filepath, "w") as f:
             f.write(txt)
         # end with
     # end if

@@ -304,8 +304,8 @@ class Variable(dict):
             name: str = None,
             types: List['Type'] = None,
             optional: bool = None,
-            default: Optional[str, None] = None,
-            description: Optional[str]=None
+            default: Optional[str] = None,
+            description: Optional[str] = None
     ):
         """
         :param api_name: Name the telegram api uses.
