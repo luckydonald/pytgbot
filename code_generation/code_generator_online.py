@@ -18,8 +18,10 @@ import requests
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 from os.path import abspath, dirname, join as path_join, sep as folder_seperator, isfile, exists, isdir
+from luckydonaldUtils.interactions import safe_eval, NoBuiltins
 
 BASE_URL = "https://core.telegram.org/bots/api"
+SAVE_VALUES = NoBuiltins([], {}, {"Function": Function, "Clazz": Clazz, "Import": Import, "Type": Type, "Variable": Variable})
 
 def lol1(tag):
     return tag.has_attr("class") and "anchor" in tag["class"]
@@ -289,9 +291,6 @@ def load_api_definitions():
 
 
 def load_from_dump(folder):
-    from luckydonaldUtils.interactions import safe_eval, NoBuiltins
-    safe_values = NoBuiltins([], {}, {"Function":Function, "Clazz":Clazz, "Import":Import, "Type":Type, "Variable":Variable})
-
     # read dump
     dump = ""
     with open(path_join(folder, "api.py"), "r") as f:
@@ -305,7 +304,7 @@ def load_from_dump(folder):
             html_document = f.read()
         # end with
     # end if
-    results = safe_eval(dump, safe_values)
+    results = safe_eval(dump, SAVE_VALUES)
     return results, html_document
 # end def
 
@@ -322,22 +321,25 @@ def output(folder, results, html_content=None):
             except ImportError:
                 import shutil
                 shutil.rmtree(folder)
-                # end try
+            # end try
         # end if
+
+        # write crawled data
+        with open(path_join(folder, "api.py"), "w") as f:
+            f.write("[\n    ")
+            f.write(",\n    ".join([repr(result) for result in results]))
+            f.write("\n]")
+            # end for
+        # end with
+        if html_content:
+            with open(path_join(folder, "api.html"), "wb") as f:
+                f.write(html_content)
+            # end with
+        # end if
+
+        # write templates
         try:
             safe_to_file(folder, results)
-            with open(path_join(folder, "api.py"), "w") as f:
-                f.write("[\n    ")
-                f.write(",\n    ".join([repr(result) for result in results]))
-                f.write("\n]")
-                # end for
-            # end with
-            if html_content:
-                with open(path_join(folder, "api.html"), "wb") as f:
-                    f.write(html_content)
-                # end with
-            # end if
-            print("Writen to file.")
         except TemplateError as e:
             if isinstance(e, TemplateSyntaxError):
                 logger.exception("Template error at {file}:{line}".format(file=e.filename, line=e.lineno))
@@ -345,6 +347,7 @@ def output(folder, results, html_content=None):
                 logger.exception("Template error.")
                 # end if
         # end try
+        print("Writen to file.")
         can_quit = not confirm("Write again after reloading templates?", default=True)
     print("#########")
     print("Exit.")
@@ -401,6 +404,7 @@ def safe_to_file(folder, results):
 
     """
     functions = []
+    message_send_functions = []
     clazzes = {} # "filepath": [Class, Class, ...]
 
     # split results into functions and classes
@@ -418,13 +422,21 @@ def safe_to_file(folder, results):
             assert isinstance(result, Function)
             import_path = "pytgbot.bot."
             file_path = calc_path_and_create_folders(folder, import_path)
-            result.filepath = file_path
+            result.filepath = [file_path, None]
             functions.append(result)
+
+            if result.name.startswith('send_'):
+                import_path = "teleflask_messages."
+                file_path = calc_path_and_create_folders(folder, import_path)
+                result = safe_eval(repr(result), SAVE_VALUES)  # serialize + unserialize = deepcopy
+                result.filepath = file_path
+            # end if
         # end if
     # end for
 
     bot_template = get_template("bot.template")
     clazzfile_template = get_template("classfile.template")
+    teleflask_messages_template = get_template("teleflask_messages.template")
     for path, clazz_list in clazzes.items():
         clazz_imports = set()
         for clazz_ in clazz_list:

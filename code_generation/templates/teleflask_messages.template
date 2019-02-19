@@ -1,0 +1,176 @@
+# coding=utf-8
+{% from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple, for_args_set_self, set_array %}
+{% from "macros.template" import set_data_array_element, for_type, for_args_format_repr, for_args_keys %}
+
+__author__ = "luckydonald"
+
+
+class SendableBase():
+    pass
+# end def
+
+{% for function in functions %}
+class {{ function.class_name }}(SendableBase):
+    """
+    {% block class_docstring -%}
+    {{ function.description|indent(8) }}
+
+    {{function.link}}
+
+    {% if function.class_parameters %}
+    Parameters:
+    {% for param in function.class_parameters %}
+    :param {{ param.name }}: {{ param.description }}
+    :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
+    {% endfor %}
+    {% endif %}
+    {% if function.class_keywords -%}
+    Optional keyword parameters:
+    {% for keyword in function.class_keywords %}
+    :param {{ keyword.name }}: {{ keyword.description }}
+    :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
+    {% endfor %}
+    {% endif -%}
+    """
+
+    def __init__(self, {{ for_args_none(function.class_variables) }}):
+        """
+        {{ self.class_docstring()|indent -}}
+        """
+        super({{ function.class_name }}, self).__init__()
+
+        {%- block imports_block -%}
+        {%- if function.imports %}
+        {% for import in function.imports -%}
+        from {{ import.path }} import {{ import.name }}
+        {% endfor -%}
+        {% endif -%}
+        {%- endblock -%}
+        {% for variable in function.class_variables -%}
+        {% if variable.optional %}
+        assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(function.class_variables, variable) }}, parameter_name="{{ variable.name }}")
+        {% if variable.always_is_value -%}
+        if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
+            raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
+        # end if
+        {%- endif -%}
+        {%- else %}
+        assert_type_or_raise({{ variable.name }}, {{ types_as_tuple(function.class_variables, variable) }}, parameter_name="{{ variable.name }}")
+        {% if variable.always_is_value -%}
+        if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
+            raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
+        # end if
+        {%- endif %}
+        {%- endif -%}
+        self.{{ variable.name }} = {{ variable.name }}
+        {%- if not loop.last %}
+        {% endif -%}
+        {% endfor %}
+        self._next_msg = None
+    {# force line tabs -#}
+    # end def __init__
+
+    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
+    def send(self, sender: PytgbotApiBot, receiver, reply_id):
+        """
+        :rtype: PytgbotApiMessage
+        """
+        if self.receiver:
+            receiver = self.receiver
+        # end if
+        if self.reply_id is not DEFAULT_MESSAGE_ID:
+            reply_id = self.reply_id
+        # end if
+
+        return sender.{{ function.name }}(
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
+            {{ for_args_set_self(function.variables) }}
+        )
+    # end def send
+
+    def to_array(self):
+        """
+        Serializes this {{ function.class_name }} to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super({{ function.class_name }}, self).to_array()
+        {# fresh line #}
+        {%- for variable in function.class_variables -%}
+        {%- if variable.optional %}if self.{{ variable.name }} is not None:
+            {{ set_array(variable)|indent(12) }}
+        {% else -%}
+        {{ set_array(variable)|indent(8) }}
+        {% endif -%}
+        {% endfor -%}
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new {{ function.class_name }} from a given dictionary.
+
+        :return: new {{ function.class_name }} instance.
+        :rtype: {{ function.class_name }}
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert_type_or_raise(array, dict, parameter_name="array")
+        {#- strip linebreak after #}
+        {{- self.imports_block() -}}
+        {#- does strip before #}
+
+        data = {}
+        {% for variable in function.class_variables -%}
+        {% if variable.types|length == 1 -%}
+        {{- set_data_array_element(variable, variable.types[0], clazz, variable.optional) -}}
+        {% else -%}
+        {%- if variable.optional -%}
+        if array.get('{{ variable.api_name }}') is None:
+            data['{{ variable.name }}'] = None
+        {% endif -%}
+        {%- for var_type in variable.types -%}
+        {%- if not loop.first or variable.optional %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
+            {{ set_data_array_element(variable, var_type, clazz, False) -}}
+        {%- endfor -%}
+        else:
+            raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
+        # end if
+        {% endif -%}
+        {%- endfor -%}{%- if not is_sendable -%}
+        data['_raw'] = array
+        return {{ function.class_name }}(**data){% else %}
+        instance = {{ function.class_name }}(**data)
+        return instance{% endif %}
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str({{ function.class_name|lower }}_instance)`
+        """
+        return "{{ function.class_name }}({{ for_args_format_repr(function.class_variables) }})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr({{ function.class_name|lower }}_instance)`
+        """
+        if self._raw:
+            return "{{ function.class_name }}.from_array({self._raw})".format(self=self)
+        # end if
+        return "{{ function.class_name }}({{ for_args_format_repr(function.class_variables) }})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in {{ function.class_name|lower }}_instance`
+        """
+        return key in [{{ for_args_keys(function.class_variables) }}] and hasattr(self, key) and bool(getattr(self, key, None))
+    # end def __contains__
+# end class {{ function.class_name }}
+
+
+{% endfor %}

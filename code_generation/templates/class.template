@@ -225,6 +225,6 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         """
         Implements `"key" in {{ clazz.clazz|lower }}_instance`
         """
-        return key in [{{ for_args_keys(clazz.variables) }}] and hasattr(self, key) and getattr(self, key)
+        return key in [{{ for_args_keys(clazz.variables) }}] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class {{ clazz.clazz }}

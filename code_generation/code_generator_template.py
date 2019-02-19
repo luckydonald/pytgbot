@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from typing import List, Union, Optional
+
 from jinja2 import Template, Environment, FileSystemLoader
 from jinja2.exceptions import TemplateSyntaxError
 from luckydonaldUtils.logger import logging
@@ -189,7 +191,7 @@ class Function(ClassOrFunction):
         self.link = link
         self.description = description
         self.returns = returns
-        self.parameters = parameters
+        self.parameters: List[Variable] = parameters
         self.keywords = keywords
     # end def __init__
 
@@ -211,23 +213,113 @@ class Function(ClassOrFunction):
             ")".format(s=self)
         )
     # end def __repr__
+
+    @property
+    def class_name(self):
+        return self.api_name.title()
+    # end def
+
+    @property
+    def class_parameters(self):
+        args = []
+        for arg in self.parameters:
+            if arg.name == "chat_id":
+                # :param receiver: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+                # :type  receiver: int|str
+                args.append(Variable(
+                    api_name=arg.api_name,
+                    name='receiver',
+                    types=[
+                        Type(
+                            'str',
+                            is_builtin=True,
+                            always_is_value=None,
+                            is_list=False,
+                            import_path=None,
+                            description="The @username of user/group/channel."
+                        ),
+                        Type(
+                            'int',
+                            is_builtin=True,
+                            always_is_value=None,
+                            is_list=False,
+                            import_path=None,
+                            description="The chat's id."
+                        )
+                    ],
+                    optional=True,
+                    description="Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations."
+                ))
+            elif arg.name == "reply_to_message_id":
+                # :param reply_id: If the messages are a reply, ID of the original message
+                # :type  reply_id: int
+                args.append(Variable(
+                    api_name=arg.api_name,
+                    name='receiver',
+                    types=[
+                        Type(
+                            'DEFAULT_MESSAGE_ID',
+                            is_builtin=False,
+                            always_is_value='DEFAULT_MESSAGE_ID',
+                            is_list=False,
+                            import_path=None,
+                            description="So you can overwrite it with `None`."
+                        ),
+                        Type(
+                            'int',
+                            is_builtin=True,
+                            always_is_value=None,
+                            is_list=False,
+                            import_path=None,
+                            description="A different `message_id` to reply to."
+                        )
+                    ],
+                    optional=True,
+                    default="DEFAULT_MESSAGE_ID",
+                    description="Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot."
+                ))
+            else:
+                args.append(arg)
+            # end if
+        # end for
+        return args
+    # end def
+
+    @property
+    def class_keywords(self):
+        return self.keywords
+    # end def
+
+    @property
+    def class_variables(self):
+        return self.class_parameters + self.class_keywords
+    # end def
 # end class Function
 
 
 class Variable(dict):
-    def __init__(self, api_name=None, name=None, types=None, optional=None, description=None):
+    def __init__(
+            self,
+            api_name: str = None,
+            name: str = None,
+            types: List['Type'] = None,
+            optional: bool = None,
+            default: Optional[str, None] = None,
+            description: Optional[str]=None
+    ):
         """
-
-        :param api_name:
-        :param name:
+        :param api_name: Name the telegram api uses.
+        :param name: Internal name we use.
         :param types: `list` of :class:`Type`.  [Type(int), Type(bool)]  or  [Type(Message)]  etc.
         :param optional: If it is not needed. `True` will be a normal parameter, `False` means a kwarg.
+        :param default: If it is optional, that is the default value. Else it uses "None" via templating.
         :param description:
         """
         self.api_name = api_name                    # parse_param_types(param)
         self.name = name if name else api_name      # parse_param_types(param)
         self.types = types if types else []         # parse_param_types(param)
         self.optional = optional  # bool            # parse_param_types(param)
+        self.default = default  # bool              # parse_param_types(param)
         self.description = description  # some text about it.     # parse_param_types(param)
     # end def
 
@@ -252,7 +344,7 @@ class Variable(dict):
         return (
             "Variable("
                 "api_name={s.api_name!r}, name={s.name!r}, types={s.types!r}, optional={s.optional!r}, "
-                "description={s.description!r}"
+                "default={s.default!r}, description={s.description!r}"
             ")"
         ).format(s=self)
     # end def __repr__
