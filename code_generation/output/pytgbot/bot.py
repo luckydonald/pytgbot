@@ -1,8 +1,19 @@
 # -*- coding: utf-8 -*-
+import json
+import re
+
+import requests
+from time import sleep
+from datetime import timedelta
+from DictObject import DictObject
+
 from luckydonaldUtils.logger import logging
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from .exceptions import TgApiServerException, TgApiParseException, TgApiTypeError
+
+from .exceptions import TgApiServerException, TgApiParseException
+from .exceptions import TgApiTypeError, TgApiResponseException
+from .api_types.sendable.inline import InlineQueryResult
 from .api_types import from_array_list
 
 __author__ = 'luckydonald'
@@ -959,7 +970,7 @@ class Bot(object):
         :type  chat_id: int | str|unicode
         
         :param media: A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
-        :type  media: list of InputMediaPhoto and InputMediaVideo
+        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
         Optional keyword parameters:
@@ -973,11 +984,14 @@ class Bot(object):
         Returns:
 
         :return: On success, an array of the sent Messages is returned
-        :rtype:  Messages
+        :rtype:  list of pytgbot.api_types.receivable.updates.Message
         """
+        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
+        from pytgbot.api_types.sendable.input_media import InputMediaVideo
+        
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
-        assert_type_or_raise(media, list, parameter_name="media")
+        assert_type_or_raise(media, (list, list), parameter_name="media")
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         
@@ -985,7 +999,14 @@ class Bot(object):
         
         result = self.do("sendMediaGroup", chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id)
         if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array_list(result, list_level=1)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
@@ -3196,7 +3217,7 @@ class Bot(object):
         Returns:
 
         :return: On success, True is returned
-        :rtype:  
+        :rtype:  bool
         """
         from pytgbot.api_types.sendable.payments import ShippingOption
         
@@ -3210,7 +3231,13 @@ class Bot(object):
         
         result = self.do("answerShippingQuery", shipping_query_id=shipping_query_id, ok=ok, shipping_options=shipping_options, error_message=error_message)
         if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
@@ -3240,7 +3267,7 @@ class Bot(object):
         Returns:
 
         :return: On success, True is returned
-        :rtype:  
+        :rtype:  bool
         """
         assert_type_or_raise(pre_checkout_query_id, unicode_type, parameter_name="pre_checkout_query_id")
         
@@ -3250,7 +3277,13 @@ class Bot(object):
         
         result = self.do("answerPreCheckoutQuery", pre_checkout_query_id=pre_checkout_query_id, ok=ok, error_message=error_message)
         if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))    # no valid parsing so far
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result

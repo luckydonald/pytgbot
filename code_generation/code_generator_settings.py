@@ -117,6 +117,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     # pytgbot.api_types.sendable.input_media.*
     "InputMedia":                   ("pytgbot.api_types.sendable.input_media.", "Sendable", None),
     "InputMediaPhoto":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
+    "InputMediaWithThumb":          ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
     "InputMediaVideo":              ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
     "InputMediaAnimation":          ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
     "InputMediaAudio":              ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
@@ -155,17 +156,20 @@ class: import, master_class, descr
 
 WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
     # "func": {'return': {'expected': '', 'replace': ''}, 'r_type': {'expected': '', 'replace': ''}},
-    "getMe":                 {'return': {'expected': '', 'replace': 'Returns basic information about the bot in form of a User object'}, 'r_type': {'expected': '', 'replace': 'User'}},
-    "deleteWebhook":         {'return': {'expected': '', 'replace': 'Returns True on success'}, 'r_type': {'expected': '', 'replace': 'True'}},
-    "getWebhookInfo":        {'return': {'expected': 'On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty', 'replace': 'On success, returns a WebhookInfo object'}, 'r_type': {'expected': 'WebhookInfo or getUpdates or url', 'replace': 'WebhookInfo'}},
-    "kickChatMember":        {'return': {'expected': 'In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
-    "unbanChatMember":       {'return': {'expected': 'The user will not return to the group or channel automatically, but will be able to join via link, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
-    "getChatAdministrators": {'return': {'expected': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned', 'replace': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots'}, 'r_type': {'expected': 'list of ChatMember', 'replace': 'list of ChatMember'}},
-    "setChatStickerSet":     {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
-    "deleteChatStickerSet":  {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
-    "setGameScore":          {'return': {'expected': "On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False", 'replace': 'On success, if the message was sent by the bot, returns the edited Message, otherwise returns True'}, 'r_type': {'expected': 'Message or True or force or False', 'replace': 'Message or True'}},
-    "getGameHighScores":     {'return': {'expected': 'This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.', 'replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
-    "setPassportDataErrors": {'return': {'expected': 'The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
+    "getMe":                  {'return': {'expected': '', 'replace': 'Returns basic information about the bot in form of a User object'}, 'r_type': {'expected': '', 'replace': 'User'}},
+    "deleteWebhook":          {'return': {'expected': '', 'replace': 'Returns True on success'}, 'r_type': {'expected': '', 'replace': 'True'}},
+    "getWebhookInfo":         {'return': {'expected': 'On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty', 'replace': 'On success, returns a WebhookInfo object'}, 'r_type': {'expected': 'WebhookInfo or getUpdates or url', 'replace': 'WebhookInfo'}},
+    "kickChatMember":         {'return': {'expected': 'In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
+    "unbanChatMember":        {'return': {'expected': 'The user will not return to the group or channel automatically, but will be able to join via link, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
+    "getChatAdministrators":  {'return': {'expected': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned', 'replace': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots'}, 'r_type': {'expected': 'list of ChatMember', 'replace': 'list of ChatMember'}},
+    "setChatStickerSet":      {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
+    "deleteChatStickerSet":   {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
+    "setGameScore":           {'return': {'expected': "On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False", 'replace': 'On success, if the message was sent by the bot, returns the edited Message, otherwise returns True'}, 'r_type': {'expected': 'Message or True or force or False', 'replace': 'Message or True'}},
+    "getGameHighScores":      {'return': {'expected': 'This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.', 'replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
+    "setPassportDataErrors":  {'return': {'expected': 'The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
+    "sendMediaGroup":         {'return': {'expected': 'On success, an array of the sent Messages is returned', 'replace': 'On success, an array of the sent Messages is returned'}, 'r_type': {'expected': 'Messages', 'replace': 'list of Message'}},
+    "answerShippingQuery":    {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
+    "answerPreCheckoutQuery": {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
 }
 """
 Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
@@ -176,12 +180,23 @@ WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters 
     "InlineQueryResult",
     "InputMedia",
     "PassportElementError",
+    "InputMediaWithThumb",
 ]
 """ Array with names of classes which have no parameters table and thus wouldn't be detected."""
 
 
 MESSAGE_CLASS_OVERRIDES = {  # Overrides of send function classification for teleflask. More docstring below.
     "MessageMessage": "TextMessage",  # sendMessage, for text
+}
+""" 
+Overrides of send function classification for teleflask.
+Function "sendMessage" => "Message" will be replaced with "TextMessage".
+"""
+
+
+TYPE_STRING_OVERRIDES = {  # Overrides function types
+    "Array of InputMediaPhoto and InputMediaVideo": "list of InputMediaPhoto | list of InputMediaVideo",  # sendMediaGroup
+    "Messages": "list of Message",  # sendMediaGroup
 }
 """ 
 Overrides of send function classification for teleflask.

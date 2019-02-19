@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable.updates import Message as PytgbotApiMessage
 from pytgbot.bot import Bot as PytgbotApiBot
 
@@ -171,8 +173,7 @@ class TextMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -234,7 +235,7 @@ class TextMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -423,8 +424,7 @@ class PhotoMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -494,7 +494,7 @@ class PhotoMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -721,8 +721,7 @@ class AudioMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -809,7 +808,7 @@ class AudioMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -1019,8 +1018,7 @@ class DocumentMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -1099,7 +1097,7 @@ class DocumentMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -1342,8 +1340,7 @@ class VideoMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -1430,7 +1427,7 @@ class VideoMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -1668,8 +1665,7 @@ class AnimationMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -1754,7 +1750,7 @@ class AnimationMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -1964,8 +1960,7 @@ class VoiceMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -2037,7 +2032,7 @@ class VoiceMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -2236,8 +2231,7 @@ class VideoNoteMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -2314,7 +2308,7 @@ class VideoNoteMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -2380,7 +2374,7 @@ class MediaGroupMessage(SendableMessageBase):
     Parameters:
     
     :param media: A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
-    :type  media: list of InputMediaPhoto and InputMediaVideo
+    :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
     
     
     Optional keyword parameters:
@@ -2406,7 +2400,7 @@ class MediaGroupMessage(SendableMessageBase):
         Parameters:
         
         :param media: A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
-        :type  media: list of InputMediaPhoto and InputMediaVideo
+        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
         Optional keyword parameters:
@@ -2422,7 +2416,10 @@ class MediaGroupMessage(SendableMessageBase):
         
         """
         super(MediaGroupMessage, self).__init__()
-        assert_type_or_raise(media, list, parameter_name="media")
+        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
+        from pytgbot.api_types.sendable.input_media import InputMediaVideo
+        
+        assert_type_or_raise(media, list, list, parameter_name="media")
         self.media = media
         
         assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
@@ -2460,7 +2457,13 @@ class MediaGroupMessage(SendableMessageBase):
         :rtype: dict
         """
         array = super(MediaGroupMessage, self).to_array()
-        array['media'] = self._as_array(self.media)  # type list of InputMediaPhoto and InputMediaVideo
+        if isinstance(self.media, InputMediaPhoto):
+            array['media'] = self._as_array(self.media)  # type list of InputMediaPhoto | list of InputMediaVideo
+        elif isinstance(self.media, InputMediaVideo):
+            array['media'] = self._as_array(self.media)  # type list of InputMediaPhoto | list of InputMediaVideo
+        else:
+            raise TypeError('Unknown type, must be one of InputMediaPhoto, InputMediaVideo.')
+        # end if
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
@@ -2473,8 +2476,7 @@ class MediaGroupMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -2496,9 +2498,18 @@ class MediaGroupMessage(SendableMessageBase):
             return None
         # end if
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
+        from pytgbot.api_types.sendable.input_media import InputMediaVideo
+        
 
         data = {}
-        data['media'] = InputMediaPhoto and InputMediaVideo.from_array_list(array.get('media'), list_level=1)
+        if isinstance(array.get('media'), InputMediaPhoto):
+            data['media'] = InputMediaPhoto.from_array_list(array.get('media'), list_level=1)
+        elif isinstance(array.get('media'), InputMediaVideo):
+            data['media'] = InputMediaVideo.from_array_list(array.get('media'), list_level=1)
+        else:
+            raise TypeError('Unknown type, must be one of InputMediaPhoto, InputMediaVideo.')
+        # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
@@ -2513,7 +2524,7 @@ class MediaGroupMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -2680,8 +2691,7 @@ class LocationMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -2741,7 +2751,7 @@ class LocationMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -2953,8 +2963,7 @@ class VenueMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -3020,7 +3029,7 @@ class VenueMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -3213,8 +3222,7 @@ class ContactMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -3278,7 +3286,7 @@ class ContactMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -3594,8 +3602,7 @@ class StickerMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -3659,7 +3666,7 @@ class StickerMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -3993,8 +4000,7 @@ class InvoiceMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -4071,7 +4077,7 @@ class InvoiceMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
@@ -4230,8 +4236,7 @@ class GameMessage(SendableMessageBase):
 
         if self.reply_id is not None:
             if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
-                array['reply_to_message_id'] = self.reply_id.to_array()  # type DEFAULT_MESSAGE_ID
-            elif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
                 array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
@@ -4275,7 +4280,7 @@ class GameMessage(SendableMessageBase):
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
-            data['reply_id'] = DEFAULT_MESSAGE_ID.from_array(array.get('reply_to_message_id'))
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
         elif isinstance(array.get('reply_to_message_id'), int):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:

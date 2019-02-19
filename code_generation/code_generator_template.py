@@ -14,10 +14,12 @@ from luckydonaldUtils.decorators import cached
 
 try:
     from code_generator import safe_var_translations, get_type_path, convert_to_underscore
-    from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT, MESSAGE_CLASS_OVERRIDES
+    from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+    from code_generator_settings import MESSAGE_CLASS_OVERRIDES, TYPE_STRING_OVERRIDES
 except ImportError:
     from .code_generator import safe_var_translations, get_type_path, convert_to_underscore
     from .code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+    from .code_generator_settings import MESSAGE_CLASS_OVERRIDES, TYPE_STRING_OVERRIDES
 # end if
 
 __author__ = 'luckydonald'
@@ -299,7 +301,7 @@ class Function(ClassOrFunction):
                 # :type  reply_id: int
                 default = Type(
                     'DEFAULT_MESSAGE_ID',
-                    is_builtin=False,
+                    is_builtin=True,
                     always_is_value='DEFAULT_MESSAGE_ID',
                     is_list=False,
                     import_path=None,
@@ -611,28 +613,33 @@ def as_types(types_string, variable_name):
     # end if
 
     # ## types_string = "String or Boolean"
-    types_string = types_string.strip().join([" ", " "])
+    if types_string in TYPE_STRING_OVERRIDES:
+        types_string = TYPE_STRING_OVERRIDES[types_string]
+    else:
+        types_string = types_string.strip().join([" ", " "])
 
-    # ## types_string = " String or Boolean "
-    types_string = types_string.replace(" Float number ", " float ")
-    types_string = types_string.replace(" Float ", " float ")
-    types_string = types_string.replace(" Array ", " list ")
-    types_string = types_string.replace(" String ", " str ")
-    types_string = types_string.replace(" Integer ", " int ")
-    types_string = types_string.replace(" Int ", " int ")  # https://core.telegram.org/bots/api#getchatmemberscount
-    types_string = types_string.replace(" Boolean ", " bool ")
-    types_string = types_string.replace(" Nothing ", " None ")
-    types_string = types_string.replace(" Null ", " None ")
-    types_string = types_string.replace(" true ", " True ")
+        # ## types_string = " String or Boolean "
+        types_string = types_string.replace(" Float number ", " float ")
+        types_string = types_string.replace(" Float ", " float ")
+        types_string = types_string.replace(" Array ", " list ")
+        types_string = types_string.replace(" String ", " str ")
+        types_string = types_string.replace(" Integer ", " int ")
+        types_string = types_string.replace(" Int ", " int ")  # https://core.telegram.org/bots/api#getchatmemberscount
+        types_string = types_string.replace(" Boolean ", " bool ")
+        types_string = types_string.replace(" Nothing ", " None ")
+        types_string = types_string.replace(" Null ", " None ")
+        types_string = types_string.replace(" true ", " True ")
 
-    types_string = types_string.replace(" or ", " | ")
+        types_string = types_string.replace(" or ", " | ")
+        types_string = types_string.replace(" and ", " | ")
+    # end if
     types_string = types_string.strip()
     # ## "str | bool"
 
     the_types = types_string.split("|")
     types = []
     for t in the_types:
-        var_type = to_type(t, variable_name=variable_name)
+        var_type = to_type(t.strip(), variable_name=variable_name)
         types.append(var_type)
     # end for
     return types
@@ -681,8 +688,6 @@ def to_type(type_string, variable_name) -> Type:
             "Added unrecognized type in param <{var}>: {type!r}".format(var=variable_name, type=var_type.string))
     # end if
     return var_type
-
-
 # end def
 
 

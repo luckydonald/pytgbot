@@ -3,6 +3,7 @@ from . import updates
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.sendable.input_media import InputMedia
+from pytgbot.api_types.sendable.input_media import InputMediaWithThumb
 
 
 class InputMediaPhoto(InputMedia):
@@ -139,7 +140,7 @@ class InputMediaPhoto(InputMedia):
 # end class InputMediaPhoto
 
 
-class InputMediaVideo(InputMedia):
+class InputMediaVideo(InputMediaWithThumb):
     """
     Represents a video to be sent.
 
@@ -352,7 +353,7 @@ class InputMediaVideo(InputMedia):
 # end class InputMediaVideo
 
 
-class InputMediaAnimation(InputMedia):
+class InputMediaAnimation(InputMediaWithThumb):
     """
     Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 
@@ -553,7 +554,7 @@ class InputMediaAnimation(InputMedia):
 # end class InputMediaAnimation
 
 
-class InputMediaAudio(InputMedia):
+class InputMediaAudio(InputMediaWithThumb):
     """
     Represents an audio file to be treated as music to be sent.
 
@@ -756,7 +757,7 @@ class InputMediaAudio(InputMedia):
 # end class InputMediaAudio
 
 
-class InputMediaDocument(InputMedia):
+class InputMediaDocument(InputMediaWithThumb):
     """
     Represents a general file to be sent.
 

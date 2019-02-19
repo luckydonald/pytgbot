@@ -260,10 +260,10 @@ def load_from_html(folder):
                 wlist_func_return = wlist_func['return'] if 'return' in wlist_func else None
                 wlist_func_r_type = wlist_func['r_type'] if 'r_type' in wlist_func else None
                 if wlist_func_return and default_returns[0] != wlist_func_return['expected']:
-                    print("whitelist: Mismatch in return. Expected " + repr(wlist_func_return['expected']) + '.')
+                    print(f"whitelist: Mismatch in return. Expected {wlist_func_return['expected']!r}, got {default_returns[0]!r}.")
                     replaced_valid = False
                 if wlist_func_r_type and default_returns[1] != wlist_func_r_type['expected']:
-                    print("whitelist: Mismatch in r_type. Expected " + repr(wlist_func_r_type['expected']) + '.')
+                    print(f"whitelist: Mismatch in r_type. Expected {wlist_func_r_type['expected']!r}, got {default_returns[1]!r}")
                     replaced_valid = False
                 if replaced_valid is None:  # whitelist didn't fail
                     replaced_valid = True
