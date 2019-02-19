@@ -1,9 +1,9 @@
-{%- from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple, for_args_set_self -%}
+{%- from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple, for_args_pytg_send_params -%}
 {%- from "macros.template" import set_data_array_element, for_type, for_args_format_repr, for_args_keys -%}
 {%- from "macros.template" import set_array, set_array_element -%}
 
 
-class {{ function.class_name }}(SendableBase):
+class {{ function.class_name_teleflask_message }}(SendableBase):
     """
     {% block class_docstring scoped -%}
     {{ function.description|indent(8) }}
@@ -31,7 +31,7 @@ class {{ function.class_name }}(SendableBase):
         """
         {{ self.class_docstring()|indent -}}
         """
-        super({{ function.class_name }}, self).__init__()
+        super({{ function.class_name_teleflask_message }}, self).__init__()
 
         {%- block imports_block -%}
         {%- if function.imports %}
@@ -65,31 +65,40 @@ class {{ function.class_name }}(SendableBase):
     # end def __init__
 
     @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot, receiver, reply_id):
+    def send(self, sender: PytgbotApiBot):
         """
+        {% set receiver_param = ((function.class_variables_separated[1]|selectattr("name", "equalto", "receiver"))|first) -%}
+        {% if receiver_param is defined -%}
+        :param receiver_to_use: The receiver `chat_id` to use.
+                                Either `self.receiver`, if set, e.g. when instancing `{{ function.class_name_teleflask_message }}(receiver=10001231231, ...)`,
+                                or the `chat.id` of the update context, being the id of groups or the user's `from_peer.id` in private messages.
+        :type  receiver_to_use: {{ for_type_list_of_full(receiver_param) }}
+
+        {% endif %}
+        {% set reply_id_param = ((function.class_variables_separated[1]|selectattr("name", "equalto", "reply_id"))|first) -%}
+        {% if reply_id_param is defined -%}
+        :param reply_id_to_use: Reply to that `message_id` in the chat we send to.
+                                Either `self.reply_id`, if set, e.g. when instancing `{{ function.class_name_teleflask_message }}(reply_id=123123, ...)`,
+                                or the `message_id` of the update which triggered the bot's functions.
+        :type  reply_id_to_use: {{ for_type_list_of_full(reply_id_param) }}
+
+        {%- endif %}
         :rtype: PytgbotApiMessage
         """
-        if self.receiver:
-            receiver = self.receiver
-        # end if
-        if self.reply_id is not DEFAULT_MESSAGE_ID:
-            reply_id = self.reply_id
-        # end if
-
         return sender.{{ function.name }}(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            {{ for_args_set_self(function.variables) }}
+            {{ for_args_pytg_send_params(function.class_variables) }}
         )
     # end def send
 
     def to_array(self):
         """
-        Serializes this {{ function.class_name }} to a dictionary.
+        Serializes this {{ function.class_name_teleflask_message }} to a dictionary.
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
-        array = super({{ function.class_name }}, self).to_array()
+        array = super({{ function.class_name_teleflask_message }}, self).to_array()
         {# fresh line #}
         {%- for variable in function.class_variables -%}
         {%- if variable.optional %}if self.{{ variable.name }} is not None:
@@ -104,10 +113,10 @@ class {{ function.class_name }}(SendableBase):
     @staticmethod
     def from_array(array):
         """
-        Deserialize a new {{ function.class_name }} from a given dictionary.
+        Deserialize a new {{ function.class_name_teleflask_message }} from a given dictionary.
 
-        :return: new {{ function.class_name }} instance.
-        :rtype: {{ function.class_name }}
+        :return: new {{ function.class_name_teleflask_message }} instance.
+        :rtype: {{ function.class_name_teleflask_message }}
         """
         if array is None or not array:
             return None
@@ -136,32 +145,32 @@ class {{ function.class_name }}(SendableBase):
         {% endif -%}
         {%- endfor -%}{%- if not is_sendable -%}
         data['_raw'] = array
-        return {{ function.class_name }}(**data){% else %}
-        instance = {{ function.class_name }}(**data)
+        return {{ function.class_name_teleflask_message }}(**data){% else %}
+        instance = {{ function.class_name_teleflask_message }}(**data)
         return instance{% endif %}
     # end def from_array
 
     def __str__(self):
         """
-        Implements `str({{ function.class_name|lower }}_instance)`
+        Implements `str({{ function.class_name_teleflask_message|lower }}_instance)`
         """
-        return "{{ function.class_name }}({{ for_args_format_repr(function.class_variables) }})".format(self=self)
+        return "{{ function.class_name_teleflask_message }}({{ for_args_format_repr(function.class_variables) }})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
-        Implements `repr({{ function.class_name|lower }}_instance)`
+        Implements `repr({{ function.class_name_teleflask_message|lower }}_instance)`
         """
         if self._raw:
-            return "{{ function.class_name }}.from_array({self._raw})".format(self=self)
+            return "{{ function.class_name_teleflask_message }}.from_array({self._raw})".format(self=self)
         # end if
-        return "{{ function.class_name }}({{ for_args_format_repr(function.class_variables) }})".format(self=self)
+        return "{{ function.class_name_teleflask_message }}({{ for_args_format_repr(function.class_variables) }})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
-        Implements `"key" in {{ function.class_name|lower }}_instance`
+        Implements `"key" in {{ function.class_name_teleflask_message|lower }}_instance`
         """
         return key in [{{ for_args_keys(function.class_variables) }}] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
-# end class {{ function.class_name }}
+# end class {{ function.class_name_teleflask_message }}

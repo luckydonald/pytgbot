@@ -1,6 +1,7 @@
 CLASS_TYPE_PATHS__IMPORT = 0
 CLASS_TYPE_PATHS__PARENT = 1
 CLASS_TYPE_PATHS__DESCRIPTION = 2
+
 CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     # "to_unicode": ("luckydonaldUtils.encoding.", "object", None), # https://github.com/luckydonald/pytgbot/issues/5
     "TgBotApiObject": ("pytgbot.api_types.", "object", None),
@@ -145,6 +146,9 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "PassportElementErrorFile":        ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
     "PassportElementErrorFiles":       ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
 }
+"""
+class: import, master_class, descr
+"""
 
 WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
     # "func": {'return': {'expected': '', 'replace': ''}, 'r_type': {'expected': '', 'replace': ''}},
@@ -160,21 +164,23 @@ WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters 
     "getGameHighScores":     {'return': {'expected': 'This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.', 'replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
     "setPassportDataErrors": {'return': {'expected': 'The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
 }
+"""
+Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
+"""
+
 WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters table and thus wouldn't be detected.
     "CallbackGame",
     "InlineQueryResult",
     "InputMedia",
     "PassportElementError",
 ]
+""" Array with names of classes which have no parameters table and thus wouldn't be detected."""
 
+
+MESSAGE_CLASS_OVERRIDES = {  # Overrides of send function classification for teleflask. More docstring below.
+    "MessageMessage": "TextMessage",  # sendMessage, for text
+}
+""" 
+Overrides of send function classification for teleflask.
+Function "sendMessage" => "Message" will be replaced with "TextMessage".
 """
-You can either pass a file_id as String to resend a photo
-                      file that is already on the Telegram servers (recommended),
-                      pass an HTTP URL as a String for Telegram to get a photo from the Internet,
-                      or upload a new photo, by specifying the file path as
-                      :class:`InputFile <pytgbot/pytgbot.api_types.sendable.files.InputFile>`.
-                      
-
-"""
-
-#list of GameHighScore

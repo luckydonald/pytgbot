@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
-from typing import List, Union, Optional
-
-from jinja2 import Template, Environment, FileSystemLoader
-from jinja2.exceptions import TemplateSyntaxError
-from luckydonaldUtils.logger import logging
-from collections import Mapping
 import os
+
+from collections import Mapping
+from itertools import chain
+from typing import List, Optional, Tuple, Union
+
+from jinja2 import  Environment, FileSystemLoader
+from jinja2.exceptions import TemplateSyntaxError
+
+from luckydonaldUtils.logger import logging
+from luckydonaldUtils.decorators import cached
 
 
 try:
     from code_generator import safe_var_translations, get_type_path, convert_to_underscore
-    from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+    from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT, MESSAGE_CLASS_OVERRIDES
 except ImportError:
     from .code_generator import safe_var_translations, get_type_path, convert_to_underscore
     from .code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
@@ -215,21 +219,60 @@ class Function(ClassOrFunction):
     # end def __repr__
 
     @property
-    def class_name(self):
-        return self.api_name.title()
+    def class_name(self) -> str:
+        """
+        Makes the fist letter big, keep the rest of the camelCaseApiName.
+        """
+        if not self.api_name:  # empty string
+            return self.api_name
+        # end if
+        return self.api_name[0].upper() + self.api_name[1:]
     # end def
 
     @property
-    def class_parameters(self):
+    def class_name_teleflask_message(self) -> str:
+        """
+        If it starts with `Send` remove that.
+        """
+        # strip leading "Send"
+        name = self.class_name  # "sendPhoto" -> "SendPhoto"
+        name = name[4:] if name.startswith('Send') else name  # "SendPhoto" -> "Photo"
+        name = name + "Message"  # "Photo" -> "PhotoMessage"
+
+        # e.g. "MessageMessage" will be replaced as "TextMessage"
+        # b/c "sendMessage" -> "SendMessage" -> "Message" -> "MessageMessage"  ==> "TextMessage"
+        if name in MESSAGE_CLASS_OVERRIDES:
+            return MESSAGE_CLASS_OVERRIDES[name]
+        # end if
+        return name
+    # end def
+
+    @property
+    @cached
+    def class_variables_separated(self) -> Tuple[List['Variable'], List['Variable'], List['Variable']]:
         args = []
-        for arg in self.parameters:
-            if arg.name == "chat_id":
+        special_kwargs = []  # receiver and reply_id
+        kwargs = []
+        args_and_kwargs = chain((('arg', arg) for arg in self.parameters), (('kwarg', kwarg) for kwarg in self.keywords))
+        for variable, param in args_and_kwargs:
+            if param.name == "chat_id":
                 # :param receiver: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
                 # :type  receiver: int|str
-                args.append(Variable(
-                    api_name=arg.api_name,
+                default = Type(
+                    'None',
+                    is_builtin=True,
+                    always_is_value=None,
+                    is_list=False,
+                    import_path=None,
+                    description="Use the chat from the update context."
+                )
+
+                special_kwargs.append(Variable(
+                    api_name=param.api_name,
+                    pytg_name=param.name,
                     name='receiver',
                     types=[
+                        default,
                         Type(
                             'str',
                             is_builtin=True,
@@ -248,23 +291,26 @@ class Function(ClassOrFunction):
                         )
                     ],
                     optional=True,
+                    default=default,
                     description="Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations."
                 ))
-            elif arg.name == "reply_to_message_id":
+            elif param.name == "reply_to_message_id":
                 # :param reply_id: If the messages are a reply, ID of the original message
                 # :type  reply_id: int
-                args.append(Variable(
-                    api_name=arg.api_name,
-                    name='receiver',
+                default = Type(
+                    'DEFAULT_MESSAGE_ID',
+                    is_builtin=False,
+                    always_is_value='DEFAULT_MESSAGE_ID',
+                    is_list=False,
+                    import_path=None,
+                    description="So you can overwrite it with `None` if you don't want a reply."
+                )
+                special_kwargs.append(Variable(
+                    api_name=param.api_name,
+                    name='reply_id',
+                    pytg_name=param.name,
                     types=[
-                        Type(
-                            'DEFAULT_MESSAGE_ID',
-                            is_builtin=False,
-                            always_is_value='DEFAULT_MESSAGE_ID',
-                            is_list=False,
-                            import_path=None,
-                            description="So you can overwrite it with `None`."
-                        ),
+                        default,
                         Type(
                             'int',
                             is_builtin=True,
@@ -275,22 +321,31 @@ class Function(ClassOrFunction):
                         )
                     ],
                     optional=True,
-                    default="DEFAULT_MESSAGE_ID",
+                    default=default,
                     description="Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot."
                 ))
+            elif variable == 'arg':
+                args.append(param)
             else:
-                args.append(arg)
+                assert variable == 'kwarg'
+                kwargs.append(param)
             # end if
         # end for
-        return args
+        return args, special_kwargs, kwargs
     # end def
 
     @property
-    def class_keywords(self):
-        return self.keywords
+    def class_parameters(self) -> List['Variable']:
+        return self.class_variables_separated[0]
     # end def
 
     @property
+    def class_keywords(self) -> List['Variable']:
+        return self.class_variables_separated[1] + self.class_variables_separated[2]
+    # end def
+
+    @property
+    @cached
     def class_variables(self):
         return self.class_parameters + self.class_keywords
     # end def
@@ -302,25 +357,28 @@ class Variable(dict):
             self,
             api_name: str = None,
             name: str = None,
+            pytg_name: str = None,
             types: List['Type'] = None,
             optional: bool = None,
-            default: Optional[str] = None,
+            default: Union[None, str, 'Type'] = None,
             description: Optional[str] = None
     ):
         """
         :param api_name: Name the telegram api uses.
         :param name: Internal name we use.
+        :param pytg_name: Internal name we use with pytg's send_* functions in the teleflask message classes.
         :param types: `list` of :class:`Type`.  [Type(int), Type(bool)]  or  [Type(Message)]  etc.
         :param optional: If it is not needed. `True` will be a normal parameter, `False` means a kwarg.
         :param default: If it is optional, that is the default value. Else it uses "None" via templating.
         :param description:
         """
-        self.api_name = api_name                    # parse_param_types(param)
-        self.name = name if name else api_name      # parse_param_types(param)
-        self.types = types if types else []         # parse_param_types(param)
-        self.optional = optional  # bool            # parse_param_types(param)
-        self.default = default  # bool              # parse_param_types(param)
-        self.description = description  # some text about it.     # parse_param_types(param)
+        self.api_name = api_name                           # parse_param_types(param)
+        self.name = name if name else api_name             # parse_param_types(param)
+        self.types = types if types else []                # parse_param_types(param)
+        self.pytg_name = pytg_name if pytg_name else name  # teleflask messages
+        self.optional = optional  # bool                   # parse_param_types(param)
+        self.default = default  # bool
+        self.description = description  # some text about it.  # parse_param_types(param)
     # end def
 
     """
@@ -343,8 +401,8 @@ class Variable(dict):
     def __repr__(self):
         return (
             "Variable("
-                "api_name={s.api_name!r}, name={s.name!r}, types={s.types!r}, optional={s.optional!r}, "
-                "default={s.default!r}, description={s.description!r}"
+                "api_name={s.api_name!r}, name={s.name!r}, pytg_name={s.pytg_name!r}, types={s.types!r}, "
+                "optional={s.optional!r}, default={s.default!r}, description={s.description!r}"
             ")"
         ).format(s=self)
     # end def __repr__
