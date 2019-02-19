@@ -23,43 +23,43 @@ class Update(Receivable):
     This object represents an incoming update. At most one of the optional parameters can be present in any given update.
 
     https://core.telegram.org/bots/api#update
-    
+
 
     Parameters:
-    
+
     :param update_id: The update‘s unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you’re using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
     :type  update_id: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param message: Optional. New incoming message of any kind — text, photo, sticker, etc.
     :type  message: pytgbot.api_types.receivable.updates.Message
-    
+
     :param edited_message: Optional. New version of a message that is known to the bot and was edited
     :type  edited_message: pytgbot.api_types.receivable.updates.Message
-    
+
     :param channel_post: Optional. New incoming channel post of any kind — text, photo, sticker, etc.
     :type  channel_post: pytgbot.api_types.receivable.updates.Message
-    
+
     :param edited_channel_post: Optional. New version of a channel post that is known to the bot and was edited
     :type  edited_channel_post: pytgbot.api_types.receivable.updates.Message
-    
+
     :param inline_query: Optional. New incoming inline query
     :type  inline_query: pytgbot.api_types.receivable.inline.InlineQuery
-    
-    :param chosen_inline_result: Optional. The result of an inline query that was chosen by a user and sent to their chat partner.
+
+    :param chosen_inline_result: Optional. The result of an inline query that was chosen by a user and sent to their chat partner. Please see our documentation on the feedback collecting for details on how to enable these updates for your bot.
     :type  chosen_inline_result: pytgbot.api_types.receivable.inline.ChosenInlineResult
-    
+
     :param callback_query: Optional. New incoming callback query
     :type  callback_query: pytgbot.api_types.receivable.updates.CallbackQuery
-    
+
     :param shipping_query: Optional. New incoming shipping query. Only for invoices with flexible price
     :type  shipping_query: pytgbot.api_types.receivable.payments.ShippingQuery
-    
+
     :param pre_checkout_query: Optional. New incoming pre-checkout query. Contains full information about checkout
     :type  pre_checkout_query: pytgbot.api_types.receivable.payments.PreCheckoutQuery
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -67,45 +67,45 @@ class Update(Receivable):
     def __init__(self, update_id, message=None, edited_message=None, channel_post=None, edited_channel_post=None, inline_query=None, chosen_inline_result=None, callback_query=None, shipping_query=None, pre_checkout_query=None, _raw=None):
         """
         This object represents an incoming update. At most one of the optional parameters can be present in any given update.
-    
+
         https://core.telegram.org/bots/api#update
 
 
         Parameters:
-        
-        :param update_id: The update‘s unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you’re using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order.
+
+        :param update_id: The update‘s unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you’re using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
         :type  update_id: int
-        
+
 
         Optional keyword parameters:
-        
+
         :param message: Optional. New incoming message of any kind — text, photo, sticker, etc.
         :type  message: pytgbot.api_types.receivable.updates.Message
-        
+
         :param edited_message: Optional. New version of a message that is known to the bot and was edited
         :type  edited_message: pytgbot.api_types.receivable.updates.Message
-        
+
         :param channel_post: Optional. New incoming channel post of any kind — text, photo, sticker, etc.
         :type  channel_post: pytgbot.api_types.receivable.updates.Message
-        
+
         :param edited_channel_post: Optional. New version of a channel post that is known to the bot and was edited
         :type  edited_channel_post: pytgbot.api_types.receivable.updates.Message
-        
+
         :param inline_query: Optional. New incoming inline query
         :type  inline_query: pytgbot.api_types.receivable.inline.InlineQuery
-        
+
         :param chosen_inline_result: Optional. The result of an inline query that was chosen by a user and sent to their chat partner. Please see our documentation on the feedback collecting for details on how to enable these updates for your bot.
         :type  chosen_inline_result: pytgbot.api_types.receivable.inline.ChosenInlineResult
-        
+
         :param callback_query: Optional. New incoming callback query
         :type  callback_query: pytgbot.api_types.receivable.updates.CallbackQuery
-        
+
         :param shipping_query: Optional. New incoming shipping query. Only for invoices with flexible price
         :type  shipping_query: pytgbot.api_types.receivable.payments.ShippingQuery
-        
+
         :param pre_checkout_query: Optional. New incoming pre-checkout query. Contains full information about checkout
         :type  pre_checkout_query: pytgbot.api_types.receivable.payments.PreCheckoutQuery
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -228,7 +228,7 @@ class Update(Receivable):
         """
         Implements `"key" in update_instance`
         """
-        return key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query"] and hasattr(self, key) and getattr(self, key)
+        return key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Update
 
@@ -238,34 +238,34 @@ class WebhookInfo(Receivable):
     Contains information about the current status of a webhook.
 
     https://core.telegram.org/bots/api#webhookinfo
-    
+
 
     Parameters:
-    
+
     :param url: Webhook URL, may be empty if webhook is not set up
     :type  url: str|unicode
-    
+
     :param has_custom_certificate: True, if a custom certificate was provided for webhook certificate checks
     :type  has_custom_certificate: bool
-    
+
     :param pending_update_count: Number of updates awaiting delivery
     :type  pending_update_count: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param last_error_date: Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
     :type  last_error_date: int
-    
+
     :param last_error_message: Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
     :type  last_error_message: str|unicode
-    
+
     :param max_connections: Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
     :type  max_connections: int
-    
+
     :param allowed_updates: Optional. A list of update types the bot is subscribed to. Defaults to all update types
     :type  allowed_updates: list of str|unicode
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -273,36 +273,36 @@ class WebhookInfo(Receivable):
     def __init__(self, url, has_custom_certificate, pending_update_count, last_error_date=None, last_error_message=None, max_connections=None, allowed_updates=None, _raw=None):
         """
         Contains information about the current status of a webhook.
-    
+
         https://core.telegram.org/bots/api#webhookinfo
 
 
         Parameters:
-        
+
         :param url: Webhook URL, may be empty if webhook is not set up
         :type  url: str|unicode
-        
+
         :param has_custom_certificate: True, if a custom certificate was provided for webhook certificate checks
         :type  has_custom_certificate: bool
-        
+
         :param pending_update_count: Number of updates awaiting delivery
         :type  pending_update_count: int
-        
+
 
         Optional keyword parameters:
-        
+
         :param last_error_date: Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
         :type  last_error_date: int
-        
+
         :param last_error_message: Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
         :type  last_error_message: str|unicode
-        
+
         :param max_connections: Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
         :type  max_connections: int
-        
+
         :param allowed_updates: Optional. A list of update types the bot is subscribed to. Defaults to all update types
         :type  allowed_updates: list of str|unicode
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -399,7 +399,7 @@ class WebhookInfo(Receivable):
         """
         Implements `"key" in webhookinfo_instance`
         """
-        return key in ["url", "has_custom_certificate", "pending_update_count", "last_error_date", "last_error_message", "max_connections", "allowed_updates"] and hasattr(self, key) and getattr(self, key)
+        return key in ["url", "has_custom_certificate", "pending_update_count", "last_error_date", "last_error_message", "max_connections", "allowed_updates"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class WebhookInfo
 
@@ -409,136 +409,136 @@ class Message(UpdateType):
     This object represents a message.
 
     https://core.telegram.org/bots/api#message
-    
+
 
     Parameters:
-    
+
     :param message_id: Unique message identifier inside this chat
     :type  message_id: int
-    
+
     :param date: Date the message was sent in Unix time
     :type  date: int
-    
+
     :param chat: Conversation the message belongs to
     :type  chat: pytgbot.api_types.receivable.peer.Chat
-    
+
 
     Optional keyword parameters:
-    
+
     :param from_peer: Optional. Sender, empty for messages sent to channels
     :type  from_peer: pytgbot.api_types.receivable.peer.User
-    
+
     :param forward_from: Optional. For forwarded messages, sender of the original message
     :type  forward_from: pytgbot.api_types.receivable.peer.User
-    
+
     :param forward_from_chat: Optional. For messages forwarded from channels, information about the original channel
     :type  forward_from_chat: pytgbot.api_types.receivable.peer.Chat
-    
+
     :param forward_from_message_id: Optional. For messages forwarded from channels, identifier of the original message in the channel
     :type  forward_from_message_id: int
-    
+
     :param forward_signature: Optional. For messages forwarded from channels, signature of the post author if present
     :type  forward_signature: str|unicode
-    
+
     :param forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
     :type  forward_date: int
-    
+
     :param reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
     :type  reply_to_message: pytgbot.api_types.receivable.updates.Message
-    
+
     :param edit_date: Optional. Date the message was last edited in Unix time
     :type  edit_date: int
 
     :param media_group_id: Optional. The unique identifier of a media message group this message belongs to
     :type  media_group_id: str|unicode
-    
+
     :param author_signature: Optional. Signature of the post author for messages in channels
     :type  author_signature: str|unicode
-    
+
     :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
     :type  text: str|unicode
-    
+
     :param entities: Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
     :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
     :param caption_entities: Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param audio: Optional. Message is an audio file, information about the file
     :type  audio: pytgbot.api_types.receivable.media.Audio
-    
+
     :param document: Optional. Message is a general file, information about the file
     :type  document: pytgbot.api_types.receivable.media.Document
-    
+
     :param animation: Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
     :type  animation: pytgbot.api_types.receivable.media.Animation
 
     :param game: Optional. Message is a game, information about the game. More about games »
     :type  game: pytgbot.api_types.receivable.media.Game
-    
+
     :param photo: Optional. Message is a photo, available sizes of the photo
     :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
-    
+
     :param sticker: Optional. Message is a sticker, information about the sticker
     :type  sticker: pytgbot.api_types.receivable.media.Sticker
-    
+
     :param video: Optional. Message is a video, information about the video
     :type  video: pytgbot.api_types.receivable.media.Video
-    
+
     :param voice: Optional. Message is a voice message, information about the file
     :type  voice: pytgbot.api_types.receivable.media.Voice
-    
+
     :param video_note: Optional. Message is a video note, information about the video message
     :type  video_note: pytgbot.api_types.receivable.media.VideoNote
-    
-    :param caption: Optional. Caption for the audio, document, photo, video or voice, 0-200 characters
+
+    :param caption: Optional. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
     :type  caption: str|unicode
-    
+
     :param contact: Optional. Message is a shared contact, information about the contact
     :type  contact: pytgbot.api_types.receivable.media.Contact
-    
+
     :param location: Optional. Message is a shared location, information about the location
     :type  location: pytgbot.api_types.receivable.media.Location
-    
+
     :param venue: Optional. Message is a venue, information about the venue
     :type  venue: pytgbot.api_types.receivable.media.Venue
-    
+
     :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
-    
+
     :param left_chat_member: Optional. A member was removed from the group, information about them (this member may be the bot itself)
     :type  left_chat_member: pytgbot.api_types.receivable.peer.User
-    
+
     :param new_chat_title: Optional. A chat title was changed to this value
     :type  new_chat_title: str|unicode
-    
+
     :param new_chat_photo: Optional. A chat photo was change to this value
     :type  new_chat_photo: list of pytgbot.api_types.receivable.media.PhotoSize
-    
+
     :param delete_chat_photo: Optional. Service message: the chat photo was deleted
     :type  delete_chat_photo: bool
-    
+
     :param group_chat_created: Optional. Service message: the group has been created
     :type  group_chat_created: bool
-    
+
     :param supergroup_chat_created: Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
     :type  supergroup_chat_created: bool
-    
+
     :param channel_chat_created: Optional. Service message: the channel has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
     :type  channel_chat_created: bool
-    
+
     :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
     :type  migrate_to_chat_id: int
-    
+
     :param migrate_from_chat_id: Optional. The supergroup has been migrated from a group with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
     :type  migrate_from_chat_id: int
-    
+
     :param pinned_message: Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
     :type  pinned_message: pytgbot.api_types.receivable.updates.Message
-    
+
     :param invoice: Optional. Message is an invoice for a payment, information about the invoice. More about payments »
     :type  invoice: pytgbot.api_types.receivable.payments.Invoice
-    
+
     :param successful_payment: Optional. Message is a service message about a successful payment, information about the payment. More about payments »
     :type  successful_payment: pytgbot.api_types.receivable.payments.SuccessfulPayment
 
@@ -555,57 +555,57 @@ class Message(UpdateType):
     def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_date=None, reply_to_message=None, edit_date=None, media_group_id=None, author_signature=None, text=None, entities=None, caption_entities=None, audio=None, document=None, animation=None, game=None, photo=None, sticker=None, video=None, voice=None, video_note=None, caption=None, contact=None, location=None, venue=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, _raw=None):
         """
         This object represents a message.
-    
+
         https://core.telegram.org/bots/api#message
 
 
         Parameters:
-        
+
         :param message_id: Unique message identifier inside this chat
         :type  message_id: int
-        
+
         :param date: Date the message was sent in Unix time
         :type  date: int
-        
+
         :param chat: Conversation the message belongs to
         :type  chat: pytgbot.api_types.receivable.peer.Chat
-        
+
 
         Optional keyword parameters:
-        
+
         :param from_peer: Optional. Sender, empty for messages sent to channels
         :type  from_peer: pytgbot.api_types.receivable.peer.User
-        
+
         :param forward_from: Optional. For forwarded messages, sender of the original message
         :type  forward_from: pytgbot.api_types.receivable.peer.User
-        
+
         :param forward_from_chat: Optional. For messages forwarded from channels, information about the original channel
         :type  forward_from_chat: pytgbot.api_types.receivable.peer.Chat
-        
+
         :param forward_from_message_id: Optional. For messages forwarded from channels, identifier of the original message in the channel
         :type  forward_from_message_id: int
-        
+
         :param forward_signature: Optional. For messages forwarded from channels, signature of the post author if present
         :type  forward_signature: str|unicode
-        
+
         :param forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
         :type  forward_date: int
-        
+
         :param reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
         :type  reply_to_message: pytgbot.api_types.receivable.updates.Message
-        
+
         :param edit_date: Optional. Date the message was last edited in Unix time
         :type  edit_date: int
 
         :param media_group_id: Optional. The unique identifier of a media message group this message belongs to
         :type  media_group_id: str|unicode
-        
+
         :param author_signature: Optional. Signature of the post author for messages in channels
         :type  author_signature: str|unicode
-        
+
         :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
         :type  text: str|unicode
-        
+
         :param entities: Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
@@ -614,79 +614,79 @@ class Message(UpdateType):
 
         :param audio: Optional. Message is an audio file, information about the file
         :type  audio: pytgbot.api_types.receivable.media.Audio
-        
+
         :param document: Optional. Message is a general file, information about the file
         :type  document: pytgbot.api_types.receivable.media.Document
-        
+
         :param animation: Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
         :type  animation: pytgbot.api_types.receivable.media.Animation
 
         :param game: Optional. Message is a game, information about the game. More about games »
         :type  game: pytgbot.api_types.receivable.media.Game
-        
+
         :param photo: Optional. Message is a photo, available sizes of the photo
         :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
-        
+
         :param sticker: Optional. Message is a sticker, information about the sticker
         :type  sticker: pytgbot.api_types.receivable.media.Sticker
-        
+
         :param video: Optional. Message is a video, information about the video
         :type  video: pytgbot.api_types.receivable.media.Video
-        
+
         :param voice: Optional. Message is a voice message, information about the file
         :type  voice: pytgbot.api_types.receivable.media.Voice
-        
+
         :param video_note: Optional. Message is a video note, information about the video message
         :type  video_note: pytgbot.api_types.receivable.media.VideoNote
-        
-        :param caption: Optional. Caption for the audio, document, photo, video or voice, 0-200 characters
+
+        :param caption: Optional. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
         :type  caption: str|unicode
-        
+
         :param contact: Optional. Message is a shared contact, information about the contact
         :type  contact: pytgbot.api_types.receivable.media.Contact
-        
+
         :param location: Optional. Message is a shared location, information about the location
         :type  location: pytgbot.api_types.receivable.media.Location
-        
+
         :param venue: Optional. Message is a venue, information about the venue
         :type  venue: pytgbot.api_types.receivable.media.Venue
-        
+
         :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
         :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
-        
+
         :param left_chat_member: Optional. A member was removed from the group, information about them (this member may be the bot itself)
         :type  left_chat_member: pytgbot.api_types.receivable.peer.User
-        
+
         :param new_chat_title: Optional. A chat title was changed to this value
         :type  new_chat_title: str|unicode
-        
+
         :param new_chat_photo: Optional. A chat photo was change to this value
         :type  new_chat_photo: list of pytgbot.api_types.receivable.media.PhotoSize
-        
+
         :param delete_chat_photo: Optional. Service message: the chat photo was deleted
         :type  delete_chat_photo: bool
-        
+
         :param group_chat_created: Optional. Service message: the group has been created
         :type  group_chat_created: bool
-        
+
         :param supergroup_chat_created: Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
         :type  supergroup_chat_created: bool
-        
+
         :param channel_chat_created: Optional. Service message: the channel has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
         :type  channel_chat_created: bool
-        
+
         :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
         :type  migrate_to_chat_id: int
-        
+
         :param migrate_from_chat_id: Optional. The supergroup has been migrated from a group with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
         :type  migrate_from_chat_id: int
-        
+
         :param pinned_message: Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
         :type  pinned_message: pytgbot.api_types.receivable.updates.Message
-        
+
         :param invoice: Optional. Message is an invoice for a payment, information about the invoice. More about payments »
         :type  invoice: pytgbot.api_types.receivable.payments.Invoice
-        
+
         :param successful_payment: Optional. Message is a service message about a successful payment, information about the payment. More about payments »
         :type  successful_payment: pytgbot.api_types.receivable.payments.SuccessfulPayment
 
@@ -1027,7 +1027,7 @@ class Message(UpdateType):
         """
         Implements `"key" in message_instance`
         """
-        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_date", "reply_to_message", "edit_date", "media_group_id", "author_signature", "text", "entities", "caption_entities", "audio", "document", "animation", "game", "photo", "sticker", "video", "voice", "video_note", "caption", "contact", "location", "venue", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data"] and hasattr(self, key) and getattr(self, key)
+        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_date", "reply_to_message", "edit_date", "media_group_id", "author_signature", "text", "entities", "caption_entities", "audio", "document", "animation", "game", "photo", "sticker", "video", "voice", "video_note", "caption", "contact", "location", "venue", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Message
 
@@ -1039,34 +1039,34 @@ class CallbackQuery(UpdateType):
     NOTE: After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
 
     https://core.telegram.org/bots/api#callbackquery
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this query
     :type  id: str|unicode
-    
+
     :param from_peer: Sender
     :type  from_peer: pytgbot.api_types.receivable.peer.User
-    
+
     :param chat_instance: Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
     :type  chat_instance: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param message: Optional. Message with the callback button that originated the query. Note that message content and message date will not be available if the message is too old
     :type  message: pytgbot.api_types.receivable.updates.Message
-    
+
     :param inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query.
     :type  inline_message_id: str|unicode
-    
+
     :param data: Optional. Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field.
     :type  data: str|unicode
-    
+
     :param game_short_name: Optional. Short name of a Game to be returned, serves as the unique identifier for the game
     :type  game_short_name: str|unicode
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -1076,7 +1076,7 @@ class CallbackQuery(UpdateType):
         This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
 
         NOTE: After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
-    
+
         https://core.telegram.org/bots/api#callbackquery
 
 
@@ -1099,13 +1099,13 @@ class CallbackQuery(UpdateType):
 
         :param inline_message_id: Optional. Identifier of the message sent via the bot in inline mode, that originated the query.
         :type  inline_message_id: str|unicode
-        
+
         :param data: Optional. Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field.
         :type  data: str|unicode
-        
+
         :param game_short_name: Optional. Short name of a Game to be returned, serves as the unique identifier for the game
         :type  game_short_name: str|unicode
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -1127,10 +1127,10 @@ class CallbackQuery(UpdateType):
 
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
         self.inline_message_id = inline_message_id
-        
+
         assert_type_or_raise(data, None, unicode_type, parameter_name="data")
         self.data = data
-        
+
         assert_type_or_raise(game_short_name, None, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
 
@@ -1207,7 +1207,7 @@ class CallbackQuery(UpdateType):
         """
         Implements `"key" in callbackquery_instance`
         """
-        return key in ["id", "from_peer", "chat_instance", "message", "inline_message_id", "data", "game_short_name"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "from_peer", "chat_instance", "message", "inline_message_id", "data", "game_short_name"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class CallbackQuery
 
@@ -1215,7 +1215,7 @@ class CallbackQuery(UpdateType):
 class CallbackGame(UpdateType):
     """
     A placeholder, currently holds no information. Use BotFather to set up your game.
-    
+
     https://core.telegram.org/bots/api#callbackgame
     """
     def to_array(self):
@@ -1234,16 +1234,16 @@ class ResponseParameters(Receivable):
     Contains information about why a request was unsuccessful.
 
     https://core.telegram.org/bots/api#responseparameters
-    
+
 
     Optional keyword parameters:
-    
+
     :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
     :type  migrate_to_chat_id: int
-    
+
     :param retry_after: Optional. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated
     :type  retry_after: int
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -1251,25 +1251,25 @@ class ResponseParameters(Receivable):
     def __init__(self, migrate_to_chat_id=None, retry_after=None, _raw=None):
         """
         Contains information about why a request was unsuccessful.
-    
+
         https://core.telegram.org/bots/api#responseparameters
 
-    
+
         Optional keyword parameters:
-        
+
         :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
         :type  migrate_to_chat_id: int
-        
+
         :param retry_after: Optional. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated
         :type  retry_after: int
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(ResponseParameters, self).__init__()
         assert_type_or_raise(migrate_to_chat_id, None, int, parameter_name="migrate_to_chat_id")
         self.migrate_to_chat_id = migrate_to_chat_id
-        
+
         assert_type_or_raise(retry_after, None, int, parameter_name="retry_after")
         self.retry_after = retry_after
 
@@ -1303,7 +1303,7 @@ class ResponseParameters(Receivable):
             return None
         # end if
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = {}
         data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id')) if array.get('migrate_to_chat_id') is not None else None
         data['retry_after'] = int(array.get('retry_after')) if array.get('retry_after') is not None else None
@@ -1332,6 +1332,6 @@ class ResponseParameters(Receivable):
         """
         Implements `"key" in responseparameters_instance`
         """
-        return key in ["migrate_to_chat_id", "retry_after"] and hasattr(self, key) and getattr(self, key)
+        return key in ["migrate_to_chat_id", "retry_after"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ResponseParameters

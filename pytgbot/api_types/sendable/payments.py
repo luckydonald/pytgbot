@@ -10,35 +10,35 @@ class LabeledPrice(Sendable):
     This object represents a portion of the price for goods or services.
 
     https://core.telegram.org/bots/api#labeledprice
-    
+
 
     Parameters:
-    
+
     :param label: Portion label
     :type  label: str|unicode
-    
+
     :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  amount: int
     """
     def __init__(self, label, amount):
         """
         This object represents a portion of the price for goods or services.
-    
+
         https://core.telegram.org/bots/api#labeledprice
 
 
         Parameters:
-        
+
         :param label: Portion label
         :type  label: str|unicode
-        
+
         :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  amount: int
         """
         super(LabeledPrice, self).__init__()
         assert_type_or_raise(label, unicode_type, parameter_name="label")
         self.label = label
-        
+
         assert_type_or_raise(amount, int, parameter_name="amount")
         self.amount = amount
     # end def __init__
@@ -68,7 +68,7 @@ class LabeledPrice(Sendable):
             return None
         # end if
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = {}
         data['label'] = u(array.get('label'))
         data['amount'] = int(array.get('amount'))
@@ -99,7 +99,7 @@ class LabeledPrice(Sendable):
         """
         Implements `"key" in labeledprice_instance`
         """
-        return key in ["label", "amount"] and hasattr(self, key) and getattr(self, key)
+        return key in ["label", "amount"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class LabeledPrice
 
@@ -110,16 +110,16 @@ class ShippingOption(Sendable):
     This object represents one shipping option.
 
     https://core.telegram.org/bots/api#shippingoption
-    
+
 
     Parameters:
-    
+
     :param id: Shipping option identifier
     :type  id: str|unicode
-    
+
     :param title: Option title
     :type  title: str|unicode
-    
+
     :param prices: List of price portions
     :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
     """
@@ -127,18 +127,18 @@ class ShippingOption(Sendable):
     def __init__(self, id, title, prices):
         """
         This object represents one shipping option.
-    
+
         https://core.telegram.org/bots/api#shippingoption
 
 
         Parameters:
-        
+
         :param id: Shipping option identifier
         :type  id: str|unicode
-        
+
         :param title: Option title
         :type  title: str|unicode
-        
+
         :param prices: List of price portions
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
         """
@@ -146,10 +146,10 @@ class ShippingOption(Sendable):
 
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
+
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
+
         assert_type_or_raise(prices, list, parameter_name="prices")
         self.prices = prices
     # end def __init__
@@ -213,6 +213,6 @@ class ShippingOption(Sendable):
         """
         Implements `"key" in shippingoption_instance`
         """
-        return key in ["id", "title", "prices"] and hasattr(self, key) and getattr(self, key)
+        return key in ["id", "title", "prices"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ShippingOption

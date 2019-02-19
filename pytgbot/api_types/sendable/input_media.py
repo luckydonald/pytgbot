@@ -163,8 +163,8 @@ class InputMediaPhoto(InputMedia):
 
 
     Optional keyword parameters:
-    
-    :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -174,7 +174,7 @@ class InputMediaPhoto(InputMedia):
     def __init__(self, media, caption=None, parse_mode=None):
         """
         Represents a photo to be sent.
-    
+
         https://core.telegram.org/bots/api#inputmediaphoto
 
 
@@ -185,8 +185,8 @@ class InputMediaPhoto(InputMedia):
 
 
         Optional keyword parameters:
-        
-        :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -261,7 +261,7 @@ class InputMediaPhoto(InputMedia):
         """
         Implements `"key" in inputmediaphoto_instance`
         """
-        return key in ["type", "media", "caption", "parse_mode"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "caption", "parse_mode"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaPhoto
 
@@ -271,31 +271,31 @@ class InputMediaVideo(InputMediaWithThumb):
     Represents a video to be sent.
 
     https://core.telegram.org/bots/api#inputmediavideo
-    
+
 
     Parameters:
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
-    
+
 
     Optional keyword parameters:
-    
-    :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
     :param caption: Optional. Caption of the video to be sent, 0-200 characters
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
 
     :param width: Optional. Video width
     :type  width: int
-    
+
     :param height: Optional. Video height
     :type  height: int
-    
+
     :param duration: Optional. Video duration
     :type  duration: int
 
@@ -306,33 +306,33 @@ class InputMediaVideo(InputMediaWithThumb):
     def __init__(self, media, thumb=None, caption=None, parse_mode=None, width=None, height=None, duration=None, supports_streaming=None):
         """
         Represents a video to be sent.
-    
+
         https://core.telegram.org/bots/api#inputmediavideo
-        
-    
+
+
         Parameters:
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
-        
-    
+
+
         Optional keyword parameters:
-        
-        :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
         :param caption: Optional. Caption of the video to be sent, 0-200 characters
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
         :type  parse_mode: str|unicode
 
         :param width: Optional. Video width
         :type  width: int
-        
+
         :param height: Optional. Video height
         :type  height: int
-        
+
         :param duration: Optional. Video duration
         :type  duration: int
 
@@ -346,13 +346,13 @@ class InputMediaVideo(InputMediaWithThumb):
         # thumb is set by InputMediaWithThumb base class
         # caption is set by InputMedia base class
         # parse_mode is set by InputMedia base class
-        
+
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
 
         assert_type_or_raise(height, None, int, parameter_name="height")
         self.height = height
-        
+
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
 
@@ -451,7 +451,7 @@ class InputMediaVideo(InputMediaWithThumb):
         """
         Implements `"key" in inputmediavideo_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaVideo
 
@@ -471,10 +471,10 @@ class InputMediaAnimation(InputMediaWithThumb):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
-    :param caption: Optional. Caption of the animation to be sent, 0-200 characters
+    :param caption: Optional. Caption of the animation to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -505,7 +505,7 @@ class InputMediaAnimation(InputMediaWithThumb):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
         :param caption: Optional. Caption of the animation to be sent, 0-200 characters
@@ -629,7 +629,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         """
         Implements `"key" in inputmediaanimation_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaAnimation
 
@@ -649,10 +649,10 @@ class InputMediaAudio(InputMediaWithThumb):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
-    :param caption: Optional. Caption of the audio to be sent, 0-200 characters
+    :param caption: Optional. Caption of the audio to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -683,10 +683,10 @@ class InputMediaAudio(InputMediaWithThumb):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
-        :param caption: Optional. Caption of the audio to be sent, 0-200 characters
+        :param caption: Optional. Caption of the audio to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -701,7 +701,7 @@ class InputMediaAudio(InputMediaWithThumb):
         :param title: Optional. Title of the audio
         :type  title: str|unicode
         """
-        super(InputMediaAudio, self).__init__('audio', media, caption=caption, parse_mode=parse_mode)
+        super(InputMediaAudio, self).__init__('audio', media, thumb, caption=caption, parse_mode=parse_mode)
         from pytgbot.api_types.sendable.files import InputFile
 
         # type is set by InputMedia base class
@@ -808,7 +808,7 @@ class InputMediaAudio(InputMediaWithThumb):
         """
         Implements `"key" in inputmediaaudio_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaAudio
 
@@ -828,7 +828,7 @@ class InputMediaDocument(InputMediaWithThumb):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
     :param caption: Optional. Caption of the document to be sent, 0-200 characters
@@ -853,7 +853,7 @@ class InputMediaDocument(InputMediaWithThumb):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
         :param caption: Optional. Caption of the document to be sent, 0-200 characters
@@ -949,7 +949,7 @@ class InputMediaDocument(InputMediaWithThumb):
         """
         Implements `"key" in inputmediadocument_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "media", "thumb", "caption", "parse_mode"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputMediaDocument
 

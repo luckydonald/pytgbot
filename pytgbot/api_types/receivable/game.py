@@ -9,22 +9,22 @@ class GameHighScore(Result):
     This object represents one row of the high scores table for a game.
 
     https://core.telegram.org/bots/api#gamehighscore
-    
+
 
     Parameters:
-    
+
     :param position: Position in high score table for the game
     :type  position: int
-    
+
     :param user: User
     :type  user: pytgbot.api_types.receivable.peer.User
-    
+
     :param score: Score
     :type  score: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -32,38 +32,38 @@ class GameHighScore(Result):
     def __init__(self, position, user, score, _raw=None):
         """
         This object represents one row of the high scores table for a game.
-    
+
         https://core.telegram.org/bots/api#gamehighscore
 
 
         Parameters:
-        
+
         :param position: Position in high score table for the game
         :type  position: int
-        
+
         :param user: User
         :type  user: pytgbot.api_types.receivable.peer.User
-        
+
         :param score: Score
         :type  score: int
-        
-    
+
+
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(GameHighScore, self).__init__()
         from pytgbot.api_types.receivable.peer import User
-        
+
         assert_type_or_raise(position, int, parameter_name="position")
 
         self.position = position
-        
+
         assert_type_or_raise(user, User, parameter_name="user")
 
         self.user = user
-        
+
         assert_type_or_raise(score, int, parameter_name="score")
 
         self.score = score
@@ -99,7 +99,7 @@ class GameHighScore(Result):
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.receivable.peer import User
-        
+
         data = {}
         data['position'] = int(array.get('position'))
         data['user'] = User.from_array(array.get('user'))
@@ -129,7 +129,7 @@ class GameHighScore(Result):
         """
         Implements `"key" in gamehighscore_instance`
         """
-        return key in ["position", "user", "score"] and hasattr(self, key) and getattr(self, key)
+        return key in ["position", "user", "score"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class GameHighScore
 

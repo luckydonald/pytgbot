@@ -12,9 +12,9 @@ logger = logging.getLogger(__name__)
 class InlineQueryResult(Sendable):
     """
     This object represents one result of an inline query.
-    
+
     https://core.telegram.org/bots/api#inlinequeryresult
-    
+
     Telegram clients currently support results of 20 types
     """
     def __init__(self, id, type):
@@ -49,40 +49,40 @@ class InlineQueryResultArticle(InlineQueryResult):
     Represents a link to an article or web page.
 
     https://core.telegram.org/bots/api#inlinequeryresultarticle
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 Bytes
     :type  id: str|unicode
-    
+
     :param title: Title of the result
     :type  title: str|unicode
-    
+
     :param input_message_content: Content of the message to be sent
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
-    
+
 
     Optional keyword parameters:
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param url: Optional. URL of the result
     :type  url: str|unicode
-    
+
     :param hide_url: Optional. Pass True, if you don't want the URL to be shown in the message
     :type  hide_url: bool
-    
+
     :param description: Optional. Short description of the result
     :type  description: str|unicode
-    
+
     :param thumb_url: Optional. Url of the thumbnail for the result
     :type  thumb_url: str|unicode
-    
+
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
-    
+
     :param thumb_height: Optional. Thumbnail height
     :type  thumb_height: int
     """
@@ -246,7 +246,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultarticle_instance`
         """
-        return key in ["type", "id", "title", "input_message_content", "reply_markup", "url", "hide_url", "description", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "title", "input_message_content", "reply_markup", "url", "hide_url", "description", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultArticle
 
@@ -256,35 +256,35 @@ class InlineQueryResultPhoto(InlineQueryResult):
     Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
     https://core.telegram.org/bots/api#inlinequeryresultphoto
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param photo_url: A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
     :type  photo_url: str|unicode
-    
+
     :param thumb_url: URL of the thumbnail for the photo
     :type  thumb_url: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param photo_width: Optional. Width of the photo
     :type  photo_width: int
-    
+
     :param photo_height: Optional. Height of the photo
     :type  photo_height: int
-    
+
     :param title: Optional. Title for the result
     :type  title: str|unicode
-    
+
     :param description: Optional. Short description of the result
     :type  description: str|unicode
-    
-    :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -292,7 +292,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
 
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the photo
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -329,7 +329,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :param description: Optional. Short description of the result
         :type  description: str|unicode
 
-        :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -464,7 +464,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultphoto_instance`
         """
-        return key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultPhoto
 
@@ -474,35 +474,35 @@ class InlineQueryResultGif(InlineQueryResult):
     Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
     https://core.telegram.org/bots/api#inlinequeryresultgif
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param gif_url: A valid URL for the GIF file. File size must not exceed 1MB
     :type  gif_url: str|unicode
-    
+
     :param thumb_url: URL of the static thumbnail for the result (jpeg or gif)
     :type  thumb_url: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param gif_width: Optional. Width of the GIF
     :type  gif_width: int
-    
+
     :param gif_height: Optional. Height of the GIF
     :type  gif_height: int
-    
+
     :param gif_duration: Optional. Duration of the GIF
     :type  gif_duration: int
-    
+
     :param title: Optional. Title for the result
     :type  title: str|unicode
-    
-    :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -510,7 +510,7 @@ class InlineQueryResultGif(InlineQueryResult):
 
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -543,11 +543,11 @@ class InlineQueryResultGif(InlineQueryResult):
 
         :param gif_duration: Optional. Duration of the GIF
         :type  gif_duration: int
-        
+
         :param title: Optional. Title for the result
         :type  title: str|unicode
 
-        :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+    :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -682,7 +682,7 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultgif_instance`
         """
-        return key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultGif
 
@@ -692,43 +692,43 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
     https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param mpeg4_url: A valid URL for the MP4 file. File size must not exceed 1MB
     :type  mpeg4_url: str|unicode
-    
+
     :param thumb_url: URL of the static thumbnail (jpeg or gif) for the result
     :type  thumb_url: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param mpeg4_width: Optional. Video width
     :type  mpeg4_width: int
-    
+
     :param mpeg4_height: Optional. Video height
     :type  mpeg4_height: int
-    
+
     :param mpeg4_duration: Optional. Video duration
     :type  mpeg4_duration: int
-    
+
     :param title: Optional. Title for the result
     :type  title: str|unicode
-    
-    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the video animation
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -761,11 +761,11 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
         :param mpeg4_duration: Optional. Video duration
         :type  mpeg4_duration: int
-        
+
         :param title: Optional. Title for the result
         :type  title: str|unicode
 
-        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -900,7 +900,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultmpeg4gif_instance`
         """
-        return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultMpeg4Gif
 
@@ -912,28 +912,28 @@ class InlineQueryResultVideo(InlineQueryResult):
     If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you must replace its content using input_message_content.
 
     https://core.telegram.org/bots/api#inlinequeryresultvideo
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param video_url: A valid URL for the embedded video player or video file
     :type  video_url: str|unicode
-    
+
     :param mime_type: Mime type of the content of video url, “text/html” or “video/mp4”
     :type  mime_type: str|unicode
-    
+
     :param thumb_url: URL of the thumbnail (jpeg only) for the video
     :type  thumb_url: str|unicode
-    
+
     :param title: Title for the result
     :type  title: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param caption: Optional. Caption of the video to be sent, 0-200 characters
     :type  caption: str|unicode
 
@@ -942,19 +942,19 @@ class InlineQueryResultVideo(InlineQueryResult):
 
     :param video_width: Optional. Video width
     :type  video_width: int
-    
+
     :param video_height: Optional. Video height
     :type  video_height: int
-    
+
     :param video_duration: Optional. Video duration in seconds
     :type  video_duration: int
-    
+
     :param description: Optional. Short description of the result
     :type  description: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the video. This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -963,7 +963,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
         If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you must replace its content using input_message_content.
-    
+
         https://core.telegram.org/bots/api#inlinequeryresultvideo
 
 
@@ -987,7 +987,7 @@ class InlineQueryResultVideo(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the video to be sent, 0-200 characters
+    :param caption: Optional. Caption of the video to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1144,7 +1144,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultvideo_instance`
         """
-        return key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "parse_mode", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "parse_mode", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultVideo
 
@@ -1155,37 +1155,37 @@ class InlineQueryResultAudio(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultaudio
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param audio_url: A valid URL for the audio file
     :type  audio_url: str|unicode
-    
+
     :param title: Title
     :type  title: str|unicode
-    
+
 
     Optional keyword parameters:
-    
-    :param caption: Optional. Caption of the video to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the video to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param performer: Optional. Performer
     :type  performer: str|unicode
-    
+
     :param audio_duration: Optional. Audio duration in seconds
     :type  audio_duration: int
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the audio
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -1340,7 +1340,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultaudio_instance`
         """
-        return key in ["type", "id", "audio_url", "title", "caption", "parse_mode", "performer", "audio_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "audio_url", "title", "caption", "parse_mode", "performer", "audio_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultAudio
 
@@ -1351,34 +1351,34 @@ class InlineQueryResultVoice(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultvoice
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param voice_url: A valid URL for the voice recording
     :type  voice_url: str|unicode
-    
+
     :param title: Recording title
     :type  title: str|unicode
-    
+
 
     Optional keyword parameters:
-    
-    :param caption: Optional. Caption, 0-200 characters
+
+    :param caption: Optional. Caption, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param voice_duration: Optional. Recording duration in seconds
     :type  voice_duration: int
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the voice recording
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -1404,7 +1404,7 @@ class InlineQueryResultVoice(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption, 0-200 characters
+    :param caption: Optional. Caption, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1524,7 +1524,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultvoice_instance`
         """
-        return key in ["type", "id", "voice_url", "title", "caption", "parse_mode", "voice_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "voice_url", "title", "caption", "parse_mode", "voice_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultVoice
 
@@ -1535,46 +1535,46 @@ class InlineQueryResultDocument(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultdocument
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param title: Title for the result
     :type  title: str|unicode
-    
+
     :param document_url: A valid URL for the file
     :type  document_url: str|unicode
-    
+
     :param mime_type: Mime type of the content of the file, either “application/pdf” or “application/zip”
     :type  mime_type: str|unicode
-    
+
 
     Optional keyword parameters:
-    
-    :param caption: Optional. Caption of the document to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the document to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param description: Optional. Short description of the result
     :type  description: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the file
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
-    
+
     :param thumb_url: Optional. URL of the thumbnail (jpeg only) for the file
     :type  thumb_url: str|unicode
-    
+
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
-    
+
     :param thumb_height: Optional. Thumbnail height
     :type  thumb_height: int
     """
@@ -1603,7 +1603,7 @@ class InlineQueryResultDocument(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the document to be sent, 0-200 characters
+    :param caption: Optional. Caption of the document to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1755,7 +1755,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultdocument_instance`
         """
-        return key in ["type", "id", "title", "document_url", "mime_type", "caption", "parse_mode", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "title", "document_url", "mime_type", "caption", "parse_mode", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultDocument
 
@@ -1766,40 +1766,40 @@ class InlineQueryResultLocation(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultlocation
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 Bytes
     :type  id: str|unicode
-    
+
     :param latitude: Location latitude in degrees
     :type  latitude: float
-    
+
     :param longitude: Location longitude in degrees
     :type  longitude: float
-    
+
     :param title: Location title
     :type  title: str|unicode
-    
+
 
     Optional keyword parameters:
 
     :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
     :type  live_period: int
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the location
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
-    
+
     :param thumb_url: Optional. Url of the thumbnail for the result
     :type  thumb_url: str|unicode
-    
+
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
-    
+
     :param thumb_height: Optional. Thumbnail height
     :type  thumb_height: int
     """
@@ -1962,7 +1962,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultlocation_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "live_period", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "latitude", "longitude", "title", "live_period", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultLocation
 
@@ -1973,46 +1973,46 @@ class InlineQueryResultVenue(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultvenue
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 Bytes
     :type  id: str|unicode
-    
+
     :param latitude: Latitude of the venue location in degrees
     :type  latitude: float
-    
+
     :param longitude: Longitude of the venue location in degrees
     :type  longitude: float
-    
+
     :param title: Title of the venue
     :type  title: str|unicode
-    
+
     :param address: Address of the venue
     :type  address: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param foursquare_id: Optional. Foursquare identifier of the venue if known
     :type  foursquare_id: str|unicode
-    
+
     :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
     :type  foursquare_type: str|unicode
 
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the venue
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
-    
+
     :param thumb_url: Optional. Url of the thumbnail for the result
     :type  thumb_url: str|unicode
-    
+
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
-    
+
     :param thumb_height: Optional. Thumbnail height
     :type  thumb_height: int
     """
@@ -2192,7 +2192,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultvenue_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultVenue
 
@@ -2203,40 +2203,40 @@ class InlineQueryResultContact(InlineQueryResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcontact
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 Bytes
     :type  id: str|unicode
-    
+
     :param phone_number: Contact's phone number
     :type  phone_number: str|unicode
-    
+
     :param first_name: Contact's first name
     :type  first_name: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param last_name: Optional. Contact's last name
     :type  last_name: str|unicode
-    
+
     :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
     :type  vcard: str|unicode
 
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the contact
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
-    
+
     :param thumb_url: Optional. Url of the thumbnail for the result
     :type  thumb_url: str|unicode
-    
+
     :param thumb_width: Optional. Thumbnail width
     :type  thumb_width: int
-    
+
     :param thumb_height: Optional. Thumbnail height
     :type  thumb_height: int
     """
@@ -2398,7 +2398,7 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultcontact_instance`
         """
-        return key in ["type", "id", "phone_number", "first_name", "last_name", "vcard", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "phone_number", "first_name", "last_name", "vcard", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultContact
 
@@ -2410,19 +2410,19 @@ class InlineQueryResultGame(InlineQueryResult):
     Note: This will only work in Telegram versions released after October 1, 2016. Older clients will not display any inline results if a game result is among them.
 
     https://core.telegram.org/bots/api#inlinequeryresultgame
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param game_short_name: Short name of the game
     :type  game_short_name: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     """
@@ -2525,7 +2525,7 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultgame_instance`
         """
-        return key in ["type", "id", "game_short_name", "reply_markup"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "game_short_name", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultGame
 
@@ -2536,34 +2536,34 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedphoto
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param photo_file_id: A valid file identifier of the photo
     :type  photo_file_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param title: Optional. Title for the result
     :type  title: str|unicode
-    
+
     :param description: Optional. Short description of the result
     :type  description: str|unicode
-    
-    :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the photo
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -2592,7 +2592,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :param description: Optional. Short description of the result
         :type  description: str|unicode
 
-        :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -2710,7 +2710,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedphoto_instance`
         """
-        return key in ["type", "id", "photo_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "photo_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedPhoto
 
@@ -2720,31 +2720,31 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedgif
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param gif_file_id: A valid file identifier for the GIF file
     :type  gif_file_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param title: Optional. Title for the result
     :type  title: str|unicode
-    
-    :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -2770,7 +2770,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :param title: Optional. Title for the result
         :type  title: str|unicode
 
-        :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+        :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -2882,7 +2882,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedgif_instance`
         """
-        return key in ["type", "id", "gif_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "gif_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedGif
 
@@ -2892,31 +2892,31 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedmpeg4gif
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param mpeg4_file_id: A valid file identifier for the MP4 file
     :type  mpeg4_file_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param title: Optional. Title for the result
     :type  title: str|unicode
-    
-    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the video animation
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -2941,7 +2941,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :param title: Optional. Title for the result
         :type  title: str|unicode
 
-        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3053,7 +3053,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedmpeg4gif_instance`
         """
-        return key in ["type", "id", "mpeg4_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "mpeg4_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedMpeg4Gif
 
@@ -3065,22 +3065,22 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedsticker
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param sticker_file_id: A valid file identifier of the sticker
     :type  sticker_file_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the sticker
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -3193,7 +3193,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedsticker_instance`
         """
-        return key in ["type", "id", "sticker_file_id", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "sticker_file_id", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedSticker
 
@@ -3205,34 +3205,34 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcacheddocument
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param title: Title for the result
     :type  title: str|unicode
-    
+
     :param document_file_id: A valid file identifier for the file
     :type  document_file_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param description: Optional. Short description of the result
     :type  description: str|unicode
-    
-    :param caption: Optional. Caption of the document to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the document to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the file
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -3262,7 +3262,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :param description: Optional. Short description of the result
         :type  description: str|unicode
 
-        :param caption: Optional. Caption of the document to be sent, 0-200 characters
+        :param caption: Optional. Caption of the document to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3378,7 +3378,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcacheddocument_instance`
         """
-        return key in ["type", "id", "title", "document_file_id", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "title", "document_file_id", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedDocument
 
@@ -3388,34 +3388,34 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedvideo
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param video_file_id: A valid file identifier for the video file
     :type  video_file_id: str|unicode
-    
+
     :param title: Title for the result
     :type  title: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param description: Optional. Short description of the result
     :type  description: str|unicode
-    
-    :param caption: Optional. Caption of the video to be sent, 0-200 characters
+
+    :param caption: Optional. Caption of the video to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the video
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -3444,7 +3444,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :param description: Optional. Short description of the result
         :type  description: str|unicode
 
-        :param caption: Optional. Caption of the video to be sent, 0-200 characters
+        :param caption: Optional. Caption of the video to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3561,7 +3561,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedvideo_instance`
         """
-        return key in ["type", "id", "video_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "video_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedVideo
 
@@ -3572,31 +3572,31 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedvoice
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param voice_file_id: A valid file identifier for the voice message
     :type  voice_file_id: str|unicode
-    
+
     :param title: Voice message title
     :type  title: str|unicode
-    
+
 
     Optional keyword parameters:
-    
-    :param caption: Optional. Caption, 0-200 characters
+
+    :param caption: Optional. Caption, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the voice message
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -3623,7 +3623,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption, 0-200 characters
+        :param caption: Optional. Caption, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3734,7 +3734,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedvoice_instance`
         """
-        return key in ["type", "id", "voice_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "voice_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedVoice
 
@@ -3745,28 +3745,28 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
-    
+
     :param audio_file_id: A valid file identifier for the audio file
     :type  audio_file_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
-    :param caption: Optional. Caption, 0-200 characters
+
+    :param caption: Optional. Caption, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     :type  parse_mode: str|unicode
-    
+
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
+
     :param input_message_content: Optional. Content of the message to be sent instead of the audio
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
@@ -3790,7 +3790,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption, 0-200 characters
+    :param caption: Optional. Caption, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3896,7 +3896,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedaudio_instance`
         """
-        return key in ["type", "id", "audio_file_id", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "id", "audio_file_id", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineQueryResultCachedAudio
 
@@ -3906,19 +3906,19 @@ class InputTextMessageContent(InputMessageContent):
     Represents the content of a text message to be sent as the result of an inline query.
 
     https://core.telegram.org/bots/api#inputtextmessagecontent
-    
+
 
     Parameters:
-    
+
     :param message_text: Text of the message to be sent, 1-4096 characters
     :type  message_text: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
     :type  parse_mode: str|unicode
-    
+
     :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
     :type  disable_web_page_preview: bool
     """
@@ -4015,7 +4015,7 @@ class InputTextMessageContent(InputMessageContent):
         """
         Implements `"key" in inputtextmessagecontent_instance`
         """
-        return key in ["message_text", "parse_mode", "disable_web_page_preview"] and hasattr(self, key) and getattr(self, key)
+        return key in ["message_text", "parse_mode", "disable_web_page_preview"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputTextMessageContent
 
@@ -4026,13 +4026,13 @@ class InputLocationMessageContent(InputMessageContent):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inputlocationmessagecontent
-    
+
 
     Parameters:
-    
+
     :param latitude: Latitude of the location in degrees
     :type  latitude: float
-    
+
     :param longitude: Longitude of the location in degrees
     :type  longitude: float
 
@@ -4133,7 +4133,7 @@ class InputLocationMessageContent(InputMessageContent):
         """
         Implements `"key" in inputlocationmessagecontent_instance`
         """
-        return key in ["latitude", "longitude", "live_period"] and hasattr(self, key) and getattr(self, key)
+        return key in ["latitude", "longitude", "live_period"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputLocationMessageContent
 
@@ -4144,25 +4144,25 @@ class InputVenueMessageContent(InputMessageContent):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inputvenuemessagecontent
-    
+
 
     Parameters:
-    
+
     :param latitude: Latitude of the venue in degrees
     :type  latitude: float
-    
+
     :param longitude: Longitude of the venue in degrees
     :type  longitude: float
-    
+
     :param title: Name of the venue
     :type  title: str|unicode
-    
+
     :param address: Address of the venue
     :type  address: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param foursquare_id: Optional. Foursquare identifier of the venue, if known
     :type  foursquare_id: str|unicode
 
@@ -4287,7 +4287,7 @@ class InputVenueMessageContent(InputMessageContent):
         """
         Implements `"key" in inputvenuemessagecontent_instance`
         """
-        return key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and getattr(self, key)
+        return key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputVenueMessageContent
 
@@ -4298,19 +4298,19 @@ class InputContactMessageContent(InputMessageContent):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inputcontactmessagecontent
-    
+
 
     Parameters:
-    
+
     :param phone_number: Contact's phone number
     :type  phone_number: str|unicode
-    
+
     :param first_name: Contact's first name
     :type  first_name: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param last_name: Optional. Contact's last name
     :type  last_name: str|unicode
 
@@ -4419,6 +4419,6 @@ class InputContactMessageContent(InputMessageContent):
         """
         Implements `"key" in inputcontactmessagecontent_instance`
         """
-        return key in ["phone_number", "first_name", "last_name", "vcard"] and hasattr(self, key) and getattr(self, key)
+        return key in ["phone_number", "first_name", "last_name", "vcard"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InputContactMessageContent

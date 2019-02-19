@@ -117,10 +117,10 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     # pytgbot.api_types.sendable.input_media.*
     "InputMedia":                   ("pytgbot.api_types.sendable.input_media.", "Sendable", None),
     "InputMediaPhoto":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
-    "InputMediaVideo":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
-    "InputMediaAnimation":          ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
-    "InputMediaAudio":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
-    "InputMediaDocument":           ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
+    "InputMediaVideo":              ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
+    "InputMediaAnimation":          ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
+    "InputMediaAudio":              ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
+    "InputMediaDocument":           ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
 
     # pytgbot.api_types.sendable.reply_markup.*
     "Button":               ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),

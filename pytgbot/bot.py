@@ -484,7 +484,7 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :param caption: Photo caption (may also be used when resending photos by file_id), 0-200 characters
+        :param caption: Photo caption (may also be used when resending photos by file_id), 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -576,7 +576,7 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :param caption: Audio caption (may also be used when resending audio by file_id), 0-200 characters
+        :param caption: Audio caption (may also be used when resending audio by file_id), 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -680,10 +680,10 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :param thumb: Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-        :param caption: Document caption (may also be used when resending documents by file_id), 0-200 characters
+        :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -782,10 +782,10 @@ class Bot(object):
         :param height: Video height
         :type  height: int
 
-        :param thumb: Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-        :param caption: Video caption (may also be used when resending videos by file_id), 0-200 characters
+        :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -896,10 +896,10 @@ class Bot(object):
         :param height: Animation height
         :type  height: int
 
-        :param thumb: Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-        :param caption: Animation caption (may also be used when resending animation by file_id), 0-200 characters
+        :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -999,7 +999,7 @@ class Bot(object):
 
         Optional keyword parameters:
 
-        :param caption: Voice message caption, 0-200 characters
+        :param caption: Voice message caption, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1087,10 +1087,10 @@ class Bot(object):
         :param duration: Duration of sent video in seconds
         :type  duration: int
 
-        :param length: Video width and height
+        :param length: Video width and height, i.e. diameter of the video message
         :type  length: int
 
-        :param thumb: Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1991,6 +1991,9 @@ class Bot(object):
         """
         Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
 
+        Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink – after this the link will become available to the bot via the getChat method. If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
+
+
         https://core.telegram.org/bots/api#exportchatinvitelink
 
 
@@ -2751,7 +2754,7 @@ class Bot(object):
 
     def edit_message_media(self, media, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
-        Use this method to edit audio, document, photo, or video messages.
+        Use this method to edit animation, audio, document, photo, or video messages.
         If a message is a part of a message album, then it can be edited only to a photo or a video.
         Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded.
         Use previously uploaded file via its file_id or specify a URL.
@@ -2890,7 +2893,7 @@ class Bot(object):
         """
         Use this method to delete a message, including service messages, with the following limitations:
         - A message can only be deleted if it was sent less than 48 hours ago.
-        - Bots can delete outgoing messages in groups and supergroups.
+        - Bots can delete outgoing messages in private chats, groups, and supergroups.
         - Bots granted `can_post_messages` permissions can delete outgoing messages in channels.
         - If the bot is an administrator of a group, it can delete any message there.
         - If the bot has `can_delete_messages` permission in a supergroup or a channel, it can delete any message there.
@@ -3051,7 +3054,7 @@ class Bot(object):
         :param user_id: User identifier of sticker file owner
         :type  user_id: int
 
-        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. 
+        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px.
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile
 
 
@@ -3099,7 +3102,7 @@ class Bot(object):
         :param title: Sticker set title, 1-64 characters
         :type  title: str|unicode
 
-        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. 
+        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
         :param emojis: One or more emoji corresponding to the sticker
@@ -3165,7 +3168,7 @@ class Bot(object):
         :param name: Sticker set name
         :type  name: str|unicode
 
-        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. 
+        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
         :param emojis: One or more emoji corresponding to the sticker

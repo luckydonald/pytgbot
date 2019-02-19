@@ -30,22 +30,22 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 
     https://core.telegram.org/bots/api#replykeyboardmarkup
-    
+
 
     Parameters:
-    
+
     :param keyboard: Array of button rows, each represented by an Array of KeyboardButton objects
     :type  keyboard: list of list of pytgbot.api_types.sendable.reply_markup.KeyboardButton
-    
+
 
     Optional keyword parameters:
-    
+
     :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
     :type  resize_keyboard: bool
-    
+
     :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
     :type  one_time_keyboard: bool
-    
+
     :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot‘s language, bot replies to the request with a keyboard to select the new language. Other users in the group don’t see the keyboard.
     :type  selective: bool
     """
@@ -163,7 +163,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         """
         Implements `"key" in replykeyboardmarkup_instance`
         """
-        return key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"] and hasattr(self, key) and getattr(self, key)
+        return key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ReplyKeyboardMarkup
 
@@ -177,19 +177,19 @@ class KeyboardButton(Button):
           Older clients will ignore them.
 
     https://core.telegram.org/bots/api#keyboardbutton
-    
+
 
     Parameters:
-    
+
     :param text: Text of the button. If none of the optional fields are used, it will be sent as a message when the button is pressed
     :type  text: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
     :type  request_contact: bool
-    
+
     :param request_location: Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
     :type  request_location: bool
     """
@@ -293,7 +293,7 @@ class KeyboardButton(Button):
         """
         Implements `"key" in keyboardbutton_instance`
         """
-        return key in ["text", "request_contact", "request_location"] and hasattr(self, key) and getattr(self, key)
+        return key in ["text", "request_contact", "request_location"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class KeyboardButton
 
@@ -307,10 +307,10 @@ class ReplyKeyboardRemove(ReplyMarkup):
     (see ReplyKeyboardMarkup).
 
     https://core.telegram.org/bots/api#replykeyboardremove
-    
+
 
     Optional keyword parameters:
-    
+
     :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
     :type  selective: bool
     """
@@ -404,7 +404,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         """
         Implements `"key" in replykeyboardremove_instance`
         """
-        return key in ["remove_keyboard", "selective"] and hasattr(self, key) and getattr(self, key)
+        return key in ["remove_keyboard", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ReplyKeyboardRemove
 
@@ -416,10 +416,10 @@ class InlineKeyboardMarkup(ReplyMarkup):
           Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#inlinekeyboardmarkup
-    
+
 
     Parameters:
-    
+
     :param inline_keyboard: Array of button rows, each represented by an Array of InlineKeyboardButton objects
     :type  inline_keyboard: list of list of pytgbot.api_types.sendable.reply_markup.InlineKeyboardButton
     """
@@ -497,7 +497,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         Implements `"key" in inlinekeyboardmarkup_instance`
         """
-        return key in ["inline_keyboard"] and hasattr(self, key) and getattr(self, key)
+        return key in ["inline_keyboard"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineKeyboardMarkup
 
@@ -510,31 +510,31 @@ class InlineKeyboardButton(Button):
           Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#inlinekeyboardbutton
-    
+
 
     Parameters:
-    
+
     :param text: Label text on the button
     :type  text: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param url: Optional. HTTP or tg:// url to be opened when button is pressed
     :type  url: str|unicode
-    
+
     :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
     :type  callback_data: str|unicode
-    
+
     :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot‘s username and the specified inline query in the input field. Can be empty, in which case just the bot’s username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it. Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
     :type  switch_inline_query: str|unicode
-    
+
     :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
     :type  switch_inline_query_current_chat: str|unicode
-    
+
     :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
     :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
-    
+
     :param pay: Optional. Specify True, to send a Pay button.NOTE: This type of button must always be the first button in the first row.
     :type  pay: bool
     """
@@ -574,13 +574,13 @@ class InlineKeyboardButton(Button):
                                            user will be automatically returned to the chat they switched from,
                                            skipping the chat selection screen.
         :type  switch_inline_query: str|unicode
-        
+
         :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
         :type  switch_inline_query_current_chat: str|unicode
-        
+
         :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
         :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
-        
+
         :param pay: Optional. Specify True, to send a Pay button. NOTE: This type of button must always be the first button in the first row.
         :type  pay: bool
         """
@@ -598,10 +598,10 @@ class InlineKeyboardButton(Button):
 
         assert_type_or_raise(switch_inline_query, None, unicode_type, parameter_name="switch_inline_query")
         self.switch_inline_query = switch_inline_query
-        
+
         assert_type_or_raise(switch_inline_query_current_chat, None, unicode_type, parameter_name="switch_inline_query_current_chat")
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
-        
+
         assert_type_or_raise(callback_game, None, CallbackGame, parameter_name="callback_game")
         self.callback_game = callback_game
 
@@ -682,7 +682,7 @@ class InlineKeyboardButton(Button):
         """
         Implements `"key" in inlinekeyboardbutton_instance`
         """
-        return key in ["text", "url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"] and hasattr(self, key) and getattr(self, key)
+        return key in ["text", "url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class InlineKeyboardButton
 
@@ -706,10 +706,10 @@ class ForceReply(ReplyMarkup):
     — without any extra work for the user.
 
     https://core.telegram.org/bots/api#forcereply
-    
-    
+
+
     Optional keyword parameters:
-    
+
     :param selective: Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
     :type  selective: bool
     """
@@ -809,6 +809,6 @@ class ForceReply(ReplyMarkup):
         """
         Implements `"key" in forcereply_instance`
         """
-        return key in ["force_reply", "selective"] and hasattr(self, key) and getattr(self, key)
+        return key in ["force_reply", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ForceReply

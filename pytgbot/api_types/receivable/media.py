@@ -15,28 +15,28 @@ class MessageEntity(Result):
     This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
 
     https://core.telegram.org/bots/api#messageentity
-    
+
 
     Parameters:
-    
+
     :param type: Type of the entity. Can be mention (@username), hashtag, cashtag, bot_command, url, email, phone_number, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
     :type  type: str|unicode
-    
+
     :param offset: Offset in UTF-16 code units to the start of the entity
     :type  offset: int
-    
+
     :param length: Length of the entity in UTF-16 code units
     :type  length: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param url: Optional. For “text_link” only, url that will be opened after user taps on the text
     :type  url: str|unicode
-    
+
     :param user: Optional. For “text_mention” only, the mentioned user
     :type  user: pytgbot.api_types.receivable.peer.User
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -50,7 +50,7 @@ class MessageEntity(Result):
 
         Parameters:
 
-        :param type: Type of the entity. Can be mention (@username), hashtag, cashtag, bot_command, url, email, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
+        :param type: Type of the entity. Can be mention (@username), hashtag, cashtag, bot_command, url, email, phone_number, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
         :type  type: str|unicode
 
         :param offset: Offset in UTF-16 code units to the start of the entity
@@ -67,7 +67,7 @@ class MessageEntity(Result):
 
         :param user: Optional. For “text_mention” only, the mentioned user
         :type  user: pytgbot.api_types.receivable.peer.User
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -155,7 +155,7 @@ class MessageEntity(Result):
         """
         Implements `"key" in messageentity_instance`
         """
-        return key in ["type", "offset", "length", "url", "user"] and hasattr(self, key) and getattr(self, key)
+        return key in ["type", "offset", "length", "url", "user"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class MessageEntity
 
@@ -182,25 +182,25 @@ class PhotoSize(Result):
     This object represents one size of a photo or a file / sticker thumbnail.
 
     https://core.telegram.org/bots/api#photosize
-    
+
 
     Parameters:
-    
+
     :param file_id: Unique identifier for this file
     :type  file_id: str|unicode
-    
+
     :param width: Photo width
     :type  width: int
-    
+
     :param height: Photo height
     :type  height: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param file_size: Optional. File size
     :type  file_size: int
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -228,20 +228,20 @@ class PhotoSize(Result):
 
         :param file_size: Optional. File size
         :type  file_size: int
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(PhotoSize, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
+
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-        
+
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-        
+
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
         self._raw = _raw
@@ -306,7 +306,7 @@ class PhotoSize(Result):
         """
         Implements `"key" in photosize_instance`
         """
-        return key in ["file_id", "width", "height", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "width", "height", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class PhotoSize
 
@@ -316,31 +316,31 @@ class Audio(Media):
     This object represents an audio file to be treated as music by the Telegram clients.
 
     https://core.telegram.org/bots/api#audio
-    
+
 
     Parameters:
-    
+
     :param file_id: Unique identifier for this file
     :type  file_id: str|unicode
-    
+
     :param duration: Duration of the audio in seconds as defined by sender
     :type  duration: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param performer: Optional. Performer of the audio as defined by sender or by audio tags
     :type  performer: str|unicode
-    
+
     :param title: Optional. Title of the audio as defined by sender or by audio tags
     :type  title: str|unicode
-    
+
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
-    
+
     :param file_size: Optional. File size
     :type  file_size: int
-    
+
     :param thumb: Optional. Thumbnail of the album cover to which the music file belongs
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
@@ -377,7 +377,7 @@ class Audio(Media):
 
         :param file_size: Optional. File size
         :type  file_size: int
-        
+
         :param thumb: Optional. Thumbnail of the album cover to which the music file belongs
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
@@ -387,19 +387,19 @@ class Audio(Media):
         super(Audio, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
+
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-        
+
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
-        
+
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-        
+
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
+
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
@@ -478,7 +478,7 @@ class Audio(Media):
         """
         Implements `"key" in audio_instance`
         """
-        return key in ["file_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Audio
 
@@ -681,28 +681,28 @@ class Document(Media):
     This object represents a general file (as opposed to photos, voice messages and audio files).
 
     https://core.telegram.org/bots/api#document
-    
+
 
     Parameters:
-    
+
     :param file_id: Unique file identifier
     :type  file_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param thumb: Optional. Document thumbnail as defined by sender
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-    
+
     :param file_name: Optional. Original filename as defined by sender
     :type  file_name: str|unicode
-    
+
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
-    
+
     :param file_size: Optional. File size
     :type  file_size: int
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -733,7 +733,7 @@ class Document(Media):
 
         :param file_size: Optional. File size
         :type  file_size: int
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -741,16 +741,16 @@ class Document(Media):
 
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
+
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-        
+
         assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
-        
+
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
+
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
         self._raw = _raw
@@ -821,7 +821,7 @@ class Document(Media):
         """
         Implements `"key" in document_instance`
         """
-        return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class Document
 
@@ -1023,34 +1023,34 @@ class Video(Media):
     This object represents a video file.
 
     https://core.telegram.org/bots/api#video
-    
+
 
     Parameters:
-    
+
     :param file_id: Unique identifier for this file
     :type  file_id: str|unicode
-    
+
     :param width: Video width as defined by sender
     :type  width: int
-    
+
     :param height: Video height as defined by sender
     :type  height: int
-    
+
     :param duration: Duration of the video in seconds as defined by sender
     :type  duration: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param thumb: Optional. Video thumbnail
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-    
+
     :param mime_type: Optional. Mime type of a file as defined by sender
     :type  mime_type: str|unicode
-    
+
     :param file_size: Optional. File size
     :type  file_size: int
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -1087,7 +1087,7 @@ class Video(Media):
 
         :param file_size: Optional. File size
         :type  file_size: int
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -1095,22 +1095,22 @@ class Video(Media):
 
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
+
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-        
+
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-        
+
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-        
+
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-        
+
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
+
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
         self._raw = _raw
@@ -1193,25 +1193,25 @@ class Voice(Media):
     This object represents a voice note.
 
     https://core.telegram.org/bots/api#voice
-    
+
 
     Parameters:
-    
+
     :param file_id: Unique identifier for this file
     :type  file_id: str|unicode
-    
+
     :param duration: Duration of the audio in seconds as defined by sender
     :type  duration: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
-    
+
     :param file_size: Optional. File size
     :type  file_size: int
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -1239,20 +1239,20 @@ class Voice(Media):
 
         :param file_size: Optional. File size
         :type  file_size: int
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Voice, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
+
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-        
+
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
+
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
@@ -1330,28 +1330,28 @@ class VideoNote(Media):
     This object represents a video message (available in Telegram apps as of v.4.0).
 
     https://core.telegram.org/bots/api#videonote
-    
+
 
     Parameters:
-    
+
     :param file_id: Unique identifier for this file
     :type  file_id: str|unicode
-    
-    :param length: Video width and height as defined by sender
+
+    :param length: Video width and height (diameter of the video message) as defined by sender
     :type  length: int
-    
+
     :param duration: Duration of the video in seconds as defined by sender
     :type  duration: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param thumb: Optional. Video thumbnail
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-    
+
     :param file_size: Optional. File size
     :type  file_size: int
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -1359,30 +1359,30 @@ class VideoNote(Media):
     def __init__(self, file_id, length, duration, thumb=None, file_size=None, _raw=None):
         """
         This object represents a video message (available in Telegram apps as of v.4.0).
-    
+
         https://core.telegram.org/bots/api#videonote
 
 
         Parameters:
-        
+
         :param file_id: Unique identifier for this file
         :type  file_id: str|unicode
-        
-        :param length: Video width and height as defined by sender
+
+        :param length: Video width and height (diameter of the video message) as defined by sender
         :type  length: int
-        
+
         :param duration: Duration of the video in seconds as defined by sender
         :type  duration: int
-        
+
 
         Optional keyword parameters:
-        
+
         :param thumb: Optional. Video thumbnail
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-        
+
         :param file_size: Optional. File size
         :type  file_size: int
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -1479,25 +1479,25 @@ class Contact(Media):
     This object represents a phone contact.
 
     https://core.telegram.org/bots/api#contact
-    
+
 
     Parameters:
-    
+
     :param phone_number: Contact's phone number
     :type  phone_number: str|unicode
-    
+
     :param first_name: Contact's first name
     :type  first_name: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param last_name: Optional. Contact's last name
     :type  last_name: str|unicode
-    
+
     :param user_id: Optional. Contact's user identifier in Telegram
     :type  user_id: int
-    
+
     :param vcard: Optional. Additional data about the contact in the form of a vCard
     :type  vcard: str|unicode
 
@@ -1528,7 +1528,7 @@ class Contact(Media):
 
         :param user_id: Optional. Contact's user identifier in Telegram
         :type  user_id: int
-        
+
         :param vcard: Optional. Additional data about the contact in the form of a vCard
         :type  vcard: str|unicode
 
@@ -1538,13 +1538,13 @@ class Contact(Media):
         super(Contact, self).__init__()
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-        
+
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-        
+
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
-        
+
         assert_type_or_raise(user_id, None, int, parameter_name="user_id")
         self.user_id = user_id
 
@@ -1627,19 +1627,19 @@ class Location(Media):
     This object represents a point on the map.
 
     https://core.telegram.org/bots/api#location
-    
+
 
     Parameters:
-    
+
     :param longitude: Longitude as defined by sender
     :type  longitude: float
-    
+
     :param latitude: Latitude as defined by sender
     :type  latitude: float
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -1658,17 +1658,17 @@ class Location(Media):
 
         :param latitude: Latitude as defined by sender
         :type  latitude: float
-        
-    
+
+
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Location, self).__init__()
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-        
+
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
 
@@ -1739,25 +1739,25 @@ class Venue(Media):
     This object represents a venue.
 
     https://core.telegram.org/bots/api#venue
-    
+
 
     Parameters:
-    
+
     :param location: Venue location
     :type  location: pytgbot.api_types.receivable.media.Location
-    
+
     :param title: Name of the venue
     :type  title: str|unicode
-    
+
     :param address: Address of the venue
     :type  address: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param foursquare_id: Optional. Foursquare identifier of the venue
     :type  foursquare_id: str|unicode
-    
+
     :param foursquare_type: Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
     :type  foursquare_type: str|unicode
 
@@ -1788,7 +1788,7 @@ class Venue(Media):
 
         :param foursquare_id: Optional. Foursquare identifier of the venue
         :type  foursquare_id: str|unicode
-        
+
         :param foursquare_type: Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
         :type  foursquare_type: str|unicode
 
@@ -1799,13 +1799,13 @@ class Venue(Media):
 
         assert_type_or_raise(location, Location, parameter_name="location")
         self.location = location
-        
+
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
+
         assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
-        
+
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
 
@@ -1887,19 +1887,19 @@ class UserProfilePhotos(Result):
     This object represent a user's profile pictures.
 
     https://core.telegram.org/bots/api#userprofilephotos
-    
+
 
     Parameters:
-    
+
     :param total_count: Total number of profile pictures the target user has
     :type  total_count: int
-    
+
     :param photos: Requested profile pictures (in up to 4 sizes each)
     :type  photos: list of list of pytgbot.api_types.receivable.media.PhotoSize
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -1918,10 +1918,10 @@ class UserProfilePhotos(Result):
 
         :param photos: Requested profile pictures (in up to 4 sizes each)
         :type  photos: list of list of pytgbot.api_types.receivable.media.PhotoSize
-        
-    
+
+
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -1929,7 +1929,7 @@ class UserProfilePhotos(Result):
 
         assert_type_or_raise(total_count, int, parameter_name="total_count")
         self.total_count = total_count
-        
+
         assert_type_or_raise(photos, list, parameter_name="photos")
         self.photos = photos
 
@@ -2001,26 +2001,26 @@ class File(Receivable):
     The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
     It is guaranteed that the link will be valid for at least 1 hour.
     When the link expires, a new one can be requested by calling getFile.
-    
+
     Maximum file size to download is 20 MB
 
     https://core.telegram.org/bots/api#file
-    
+
 
     Parameters:
-    
+
     :param file_id: Unique identifier for this file
     :type  file_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param file_size: Optional. File size, if known
     :type  file_size: int
-    
+
     :param file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
     :type  file_path: str|unicode
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -2031,7 +2031,7 @@ class File(Receivable):
         The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
         It is guaranteed that the link will be valid for at least 1 hour.
         When the link expires, a new one can be requested by calling getFile.
-        
+
         Maximum file size to download is 20 MB
 
         https://core.telegram.org/bots/api#file
@@ -2050,17 +2050,17 @@ class File(Receivable):
 
         :param file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
         :type  file_path: str|unicode
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(File, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
+
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
-        
+
         assert_type_or_raise(file_path, None, unicode_type, parameter_name="file_path")
         self.file_path = file_path
 
@@ -2150,19 +2150,19 @@ class ChatPhoto(Result):
     This object represents a chat photo.
 
     https://core.telegram.org/bots/api#chatphoto
-    
+
 
     Parameters:
-    
+
     :param small_file_id: Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
     :type  small_file_id: str|unicode
-    
+
     :param big_file_id: Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.
     :type  big_file_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -2170,21 +2170,21 @@ class ChatPhoto(Result):
     def __init__(self, small_file_id, big_file_id, _raw=None):
         """
         This object represents a chat photo.
-    
+
         https://core.telegram.org/bots/api#chatphoto
-        
-    
+
+
         Parameters:
-        
+
         :param small_file_id: Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
         :type  small_file_id: str|unicode
-        
+
         :param big_file_id: Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.
         :type  big_file_id: str|unicode
-        
-    
+
+
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -2262,31 +2262,31 @@ class Game(Media):
     This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
 
     https://core.telegram.org/bots/api#game
-    
+
 
     Parameters:
-    
+
     :param title: Title of the game
     :type  title: str|unicode
-    
+
     :param description: Description of the game
     :type  description: str|unicode
-    
+
     :param photo: Photo that will be displayed in the game message in chats.
     :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
-    
+
 
     Optional keyword parameters:
-    
+
     :param text: Optional. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters.
     :type  text: str|unicode
-    
+
     :param text_entities: Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
     :type  text_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param animation: Optional. Animation that will be displayed in the game message in chats. Upload via BotFather
     :type  animation: pytgbot.api_types.receivable.media.Animation
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -2294,33 +2294,33 @@ class Game(Media):
     def __init__(self, title, description, photo, text=None, text_entities=None, animation=None, _raw=None):
         """
         This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
-    
+
         https://core.telegram.org/bots/api#game
 
 
         Parameters:
-        
+
         :param title: Title of the game
         :type  title: str|unicode
-        
+
         :param description: Description of the game
         :type  description: str|unicode
-        
+
         :param photo: Photo that will be displayed in the game message in chats.
         :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
-        
+
 
         Optional keyword parameters:
-        
+
         :param text: Optional. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters.
         :type  text: str|unicode
-        
+
         :param text_entities: Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
         :type  text_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param animation: Optional. Animation that will be displayed in the game message in chats. Upload via BotFather
         :type  animation: pytgbot.api_types.receivable.media.Animation
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -2328,19 +2328,19 @@ class Game(Media):
 
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
+
         assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
-        
+
         assert_type_or_raise(photo, list, parameter_name="photo")
         self.photo = photo
-        
+
         assert_type_or_raise(text, None, unicode_type, parameter_name="text")
         self.text = text
-        
+
         assert_type_or_raise(text_entities, None, list, parameter_name="text_entities")
         self.text_entities = text_entities
-        
+
         assert_type_or_raise(animation, None, Animation, parameter_name="animation")
         self.animation = animation
 
@@ -2379,7 +2379,7 @@ class Game(Media):
             return None
         # end if
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = {}
         data['title'] = u(array.get('title'))
         data['description'] = u(array.get('description'))
