@@ -1152,7 +1152,7 @@ class VideoNote(Media):
     :param file_id: Unique identifier for this file
     :type  file_id: str|unicode
     
-    :param length: Video width and height as defined by sender
+    :param length: Video width and height (diameter of the video message) as defined by sender
     :type  length: int
     
     :param duration: Duration of the video in seconds as defined by sender
@@ -1183,7 +1183,7 @@ class VideoNote(Media):
         :param file_id: Unique identifier for this file
         :type  file_id: str|unicode
         
-        :param length: Video width and height as defined by sender
+        :param length: Video width and height (diameter of the video message) as defined by sender
         :type  length: int
         
         :param duration: Duration of the video in seconds as defined by sender

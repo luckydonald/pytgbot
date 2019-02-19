@@ -808,3 +808,399 @@ class PassportElementErrorFiles(PassportElementError):
     # end def __contains__
 # end class PassportElementErrorFiles
 
+
+class PassportElementErrorTranslationFile(PassportElementError):
+    """
+    Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
+
+    https://core.telegram.org/bots/api#passportelementerrortranslationfile
+    
+
+    Parameters:
+    
+    :param source: Error source, must be translation_file
+    :type  source: str|unicode
+    
+    :param type: Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+    :type  type: str|unicode
+    
+    :param file_hash: Base64-encoded file hash
+    :type  file_hash: str|unicode
+    
+    :param message: Error message
+    :type  message: str|unicode
+    
+
+    Optional keyword parameters:
+    """
+
+    def __init__(self, source, type, file_hash, message):
+        """
+        Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
+
+        https://core.telegram.org/bots/api#passportelementerrortranslationfile
+        
+
+        Parameters:
+        
+        :param source: Error source, must be translation_file
+        :type  source: str|unicode
+        
+        :param type: Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+        :type  type: str|unicode
+        
+        :param file_hash: Base64-encoded file hash
+        :type  file_hash: str|unicode
+        
+        :param message: Error message
+        :type  message: str|unicode
+        
+
+        Optional keyword parameters:
+        """
+        super(PassportElementErrorTranslationFile, self).__init__()
+        assert_type_or_raise(source, unicode_type, parameter_name="source")
+        self.source = source
+        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
+        self.type = type
+        
+        assert_type_or_raise(file_hash, unicode_type, parameter_name="file_hash")
+        self.file_hash = file_hash
+        
+        assert_type_or_raise(message, unicode_type, parameter_name="message")
+        self.message = message
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this PassportElementErrorTranslationFile to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(PassportElementErrorTranslationFile, self).to_array()
+        array['source'] = u(self.source)  # py2: type unicode, py3: type str
+
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
+        array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
+
+        array['message'] = u(self.message)  # py2: type unicode, py3: type str
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorTranslationFile from a given dictionary.
+
+        :return: new PassportElementErrorTranslationFile instance.
+        :rtype: PassportElementErrorTranslationFile
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = {}
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['file_hash'] = u(array.get('file_hash'))
+        data['message'] = u(array.get('message'))
+        
+        instance = PassportElementErrorTranslationFile(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(passportelementerrortranslationfile_instance)`
+        """
+        return "PassportElementErrorTranslationFile(source={self.source!r}, type={self.type!r}, file_hash={self.file_hash!r}, message={self.message!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(passportelementerrortranslationfile_instance)`
+        """
+        if self._raw:
+            return "PassportElementErrorTranslationFile.from_array({self._raw})".format(self=self)
+        # end if
+        return "PassportElementErrorTranslationFile(source={self.source!r}, type={self.type!r}, file_hash={self.file_hash!r}, message={self.message!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in passportelementerrortranslationfile_instance`
+        """
+        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+    # end def __contains__
+# end class PassportElementErrorTranslationFile
+
+
+class PassportElementErrorTranslationFiles(PassportElementError):
+    """
+    Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
+
+    https://core.telegram.org/bots/api#passportelementerrortranslationfiles
+    
+
+    Parameters:
+    
+    :param source: Error source, must be translation_files
+    :type  source: str|unicode
+    
+    :param type: Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+    :type  type: str|unicode
+    
+    :param file_hashes: List of base64-encoded file hashes
+    :type  file_hashes: list of str|unicode
+    
+    :param message: Error message
+    :type  message: str|unicode
+    
+
+    Optional keyword parameters:
+    """
+
+    def __init__(self, source, type, file_hashes, message):
+        """
+        Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
+
+        https://core.telegram.org/bots/api#passportelementerrortranslationfiles
+        
+
+        Parameters:
+        
+        :param source: Error source, must be translation_files
+        :type  source: str|unicode
+        
+        :param type: Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+        :type  type: str|unicode
+        
+        :param file_hashes: List of base64-encoded file hashes
+        :type  file_hashes: list of str|unicode
+        
+        :param message: Error message
+        :type  message: str|unicode
+        
+
+        Optional keyword parameters:
+        """
+        super(PassportElementErrorTranslationFiles, self).__init__()
+        assert_type_or_raise(source, unicode_type, parameter_name="source")
+        self.source = source
+        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
+        self.type = type
+        
+        assert_type_or_raise(file_hashes, list, parameter_name="file_hashes")
+        self.file_hashes = file_hashes
+        
+        assert_type_or_raise(message, unicode_type, parameter_name="message")
+        self.message = message
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this PassportElementErrorTranslationFiles to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(PassportElementErrorTranslationFiles, self).to_array()
+        array['source'] = u(self.source)  # py2: type unicode, py3: type str
+
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
+        array['file_hashes'] = self._as_array(self.file_hashes)  # type list of str
+
+        array['message'] = u(self.message)  # py2: type unicode, py3: type str
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorTranslationFiles from a given dictionary.
+
+        :return: new PassportElementErrorTranslationFiles instance.
+        :rtype: PassportElementErrorTranslationFiles
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = {}
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['file_hashes'] = PassportElementErrorTranslationFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
+        data['message'] = u(array.get('message'))
+        
+        instance = PassportElementErrorTranslationFiles(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(passportelementerrortranslationfiles_instance)`
+        """
+        return "PassportElementErrorTranslationFiles(source={self.source!r}, type={self.type!r}, file_hashes={self.file_hashes!r}, message={self.message!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(passportelementerrortranslationfiles_instance)`
+        """
+        if self._raw:
+            return "PassportElementErrorTranslationFiles.from_array({self._raw})".format(self=self)
+        # end if
+        return "PassportElementErrorTranslationFiles(source={self.source!r}, type={self.type!r}, file_hashes={self.file_hashes!r}, message={self.message!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in passportelementerrortranslationfiles_instance`
+        """
+        return key in ["source", "type", "file_hashes", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+    # end def __contains__
+# end class PassportElementErrorTranslationFiles
+
+
+class PassportElementErrorUnspecified(PassportElementError):
+    """
+    Represents an issue in an unspecified place. The error is considered resolved when new data is added.
+
+    https://core.telegram.org/bots/api#passportelementerrorunspecified
+    
+
+    Parameters:
+    
+    :param source: Error source, must be unspecified
+    :type  source: str|unicode
+    
+    :param type: Type of element of the user's Telegram Passport which has the issue
+    :type  type: str|unicode
+    
+    :param element_hash: Base64-encoded element hash
+    :type  element_hash: str|unicode
+    
+    :param message: Error message
+    :type  message: str|unicode
+    
+
+    Optional keyword parameters:
+    """
+
+    def __init__(self, source, type, element_hash, message):
+        """
+        Represents an issue in an unspecified place. The error is considered resolved when new data is added.
+
+        https://core.telegram.org/bots/api#passportelementerrorunspecified
+        
+
+        Parameters:
+        
+        :param source: Error source, must be unspecified
+        :type  source: str|unicode
+        
+        :param type: Type of element of the user's Telegram Passport which has the issue
+        :type  type: str|unicode
+        
+        :param element_hash: Base64-encoded element hash
+        :type  element_hash: str|unicode
+        
+        :param message: Error message
+        :type  message: str|unicode
+        
+
+        Optional keyword parameters:
+        """
+        super(PassportElementErrorUnspecified, self).__init__()
+        assert_type_or_raise(source, unicode_type, parameter_name="source")
+        self.source = source
+        
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
+        self.type = type
+        
+        assert_type_or_raise(element_hash, unicode_type, parameter_name="element_hash")
+        self.element_hash = element_hash
+        
+        assert_type_or_raise(message, unicode_type, parameter_name="message")
+        self.message = message
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this PassportElementErrorUnspecified to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(PassportElementErrorUnspecified, self).to_array()
+        array['source'] = u(self.source)  # py2: type unicode, py3: type str
+
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+
+        array['element_hash'] = u(self.element_hash)  # py2: type unicode, py3: type str
+
+        array['message'] = u(self.message)  # py2: type unicode, py3: type str
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorUnspecified from a given dictionary.
+
+        :return: new PassportElementErrorUnspecified instance.
+        :rtype: PassportElementErrorUnspecified
+        """
+        if array is None or not array:
+            return None
+        # end if
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = {}
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['element_hash'] = u(array.get('element_hash'))
+        data['message'] = u(array.get('message'))
+        
+        instance = PassportElementErrorUnspecified(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(passportelementerrorunspecified_instance)`
+        """
+        return "PassportElementErrorUnspecified(source={self.source!r}, type={self.type!r}, element_hash={self.element_hash!r}, message={self.message!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(passportelementerrorunspecified_instance)`
+        """
+        if self._raw:
+            return "PassportElementErrorUnspecified.from_array({self._raw})".format(self=self)
+        # end if
+        return "PassportElementErrorUnspecified(source={self.source!r}, type={self.type!r}, element_hash={self.element_hash!r}, message={self.message!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in passportelementerrorunspecified_instance`
+        """
+        return key in ["source", "type", "element_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+    # end def __contains__
+# end class PassportElementErrorUnspecified
+

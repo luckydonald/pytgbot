@@ -138,13 +138,16 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
 
 
     # pytgbot.api_types.sendable.passport.*
-    "PassportElementError":            ("pytgbot.api_types.sendable.passport.", "Sendable", None),  # July 26, 2018
-    "PassportElementErrorDataField":   ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
-    "PassportElementErrorFrontSide":   ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
-    "PassportElementErrorReverseSide": ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
-    "PassportElementErrorSelfie":      ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
-    "PassportElementErrorFile":        ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
-    "PassportElementErrorFiles":       ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementError":                 ("pytgbot.api_types.sendable.passport.", "Sendable", None),  # July 26, 2018
+    "PassportElementErrorDataField":        ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorFrontSide":        ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorReverseSide":      ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorSelfie":           ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorFile":             ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorFiles":            ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # July 26, 2018
+    "PassportElementErrorTranslationFile":  ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # August 27, 2018
+    "PassportElementErrorTranslationFiles": ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # August 27, 2018
+    "PassportElementErrorUnspecified":      ("pytgbot.api_types.sendable.passport.", "PassportElementError", None),  # August 27, 2018
 }
 """
 class: import, master_class, descr

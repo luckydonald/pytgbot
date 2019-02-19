@@ -499,7 +499,7 @@ class Message(UpdateType):
     :param video_note: Optional. Message is a video note, information about the video message
     :type  video_note: pytgbot.api_types.receivable.media.VideoNote
     
-    :param caption: Optional. Caption for the audio, document, photo, video or voice, 0-200 characters
+    :param caption: Optional. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
     :type  caption: str|unicode
     
     :param contact: Optional. Message is a shared contact, information about the contact
@@ -647,7 +647,7 @@ class Message(UpdateType):
         :param video_note: Optional. Message is a video note, information about the video message
         :type  video_note: pytgbot.api_types.receivable.media.VideoNote
         
-        :param caption: Optional. Caption for the audio, document, photo, video or voice, 0-200 characters
+        :param caption: Optional. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
         :type  caption: str|unicode
         
         :param contact: Optional. Message is a shared contact, information about the contact

@@ -208,7 +208,7 @@ class Chat(Peer):
     :param description: Optional. Description, for supergroups and channel chats. Returned only in getChat.
     :type  description: str|unicode
     
-    :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
+    :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
     :type  invite_link: str|unicode
     
     :param pinned_message: Optional. Pinned message, for supergroups and channel chats. Returned only in getChat.
@@ -263,7 +263,7 @@ class Chat(Peer):
         :param description: Optional. Description, for supergroups and channel chats. Returned only in getChat.
         :type  description: str|unicode
         
-        :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
+        :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
         :type  invite_link: str|unicode
         
         :param pinned_message: Optional. Pinned message, for supergroups and channel chats. Returned only in getChat.

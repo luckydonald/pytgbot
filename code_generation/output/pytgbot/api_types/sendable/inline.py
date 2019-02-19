@@ -269,7 +269,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
     :param description: Optional. Short description of the result
     :type  description: str|unicode
     
-    :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -318,7 +318,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :param description: Optional. Short description of the result
         :type  description: str|unicode
         
-        :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -509,7 +509,7 @@ class InlineQueryResultGif(InlineQueryResult):
     :param title: Optional. Title for the result
     :type  title: str|unicode
     
-    :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+    :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -558,7 +558,7 @@ class InlineQueryResultGif(InlineQueryResult):
         :param title: Optional. Title for the result
         :type  title: str|unicode
         
-        :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+        :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -748,7 +748,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :param title: Optional. Title for the result
     :type  title: str|unicode
     
-    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -797,7 +797,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :param title: Optional. Title for the result
         :type  title: str|unicode
         
-        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -983,7 +983,7 @@ class InlineQueryResultVideo(InlineQueryResult):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption of the video to be sent, 0-200 characters
+    :param caption: Optional. Caption of the video to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1040,7 +1040,7 @@ class InlineQueryResultVideo(InlineQueryResult):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption of the video to be sent, 0-200 characters
+        :param caption: Optional. Caption of the video to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1243,7 +1243,7 @@ class InlineQueryResultAudio(InlineQueryResult):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption, 0-200 characters
+    :param caption: Optional. Caption, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1287,7 +1287,7 @@ class InlineQueryResultAudio(InlineQueryResult):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption, 0-200 characters
+        :param caption: Optional. Caption, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1460,7 +1460,7 @@ class InlineQueryResultVoice(InlineQueryResult):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption, 0-200 characters
+    :param caption: Optional. Caption, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1501,7 +1501,7 @@ class InlineQueryResultVoice(InlineQueryResult):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption, 0-200 characters
+        :param caption: Optional. Caption, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1667,7 +1667,7 @@ class InlineQueryResultDocument(InlineQueryResult):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption of the document to be sent, 0-200 characters
+    :param caption: Optional. Caption of the document to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -1720,7 +1720,7 @@ class InlineQueryResultDocument(InlineQueryResult):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption of the document to be sent, 0-200 characters
+        :param caption: Optional. Caption of the document to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -2764,7 +2764,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     :param description: Optional. Short description of the result
     :type  description: str|unicode
     
-    :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -2804,7 +2804,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :param description: Optional. Short description of the result
         :type  description: str|unicode
         
-        :param caption: Optional. Caption of the photo to be sent, 0-200 characters
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -2965,7 +2965,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     :param title: Optional. Title for the result
     :type  title: str|unicode
     
-    :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+    :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3002,7 +3002,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :param title: Optional. Title for the result
         :type  title: str|unicode
         
-        :param caption: Optional. Caption of the GIF file to be sent, 0-200 characters
+        :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3156,7 +3156,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     :param title: Optional. Title for the result
     :type  title: str|unicode
     
-    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3193,7 +3193,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :param title: Optional. Title for the result
         :type  title: str|unicode
         
-        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-200 characters
+        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3505,7 +3505,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     :param description: Optional. Short description of the result
     :type  description: str|unicode
     
-    :param caption: Optional. Caption of the document to be sent, 0-200 characters
+    :param caption: Optional. Caption of the document to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3546,7 +3546,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :param description: Optional. Short description of the result
         :type  description: str|unicode
         
-        :param caption: Optional. Caption of the document to be sent, 0-200 characters
+        :param caption: Optional. Caption of the document to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3709,7 +3709,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     :param description: Optional. Short description of the result
     :type  description: str|unicode
     
-    :param caption: Optional. Caption of the video to be sent, 0-200 characters
+    :param caption: Optional. Caption of the video to be sent, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3749,7 +3749,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :param description: Optional. Short description of the result
         :type  description: str|unicode
         
-        :param caption: Optional. Caption of the video to be sent, 0-200 characters
+        :param caption: Optional. Caption of the video to be sent, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3910,7 +3910,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption, 0-200 characters
+    :param caption: Optional. Caption, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -3948,7 +3948,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption, 0-200 characters
+        :param caption: Optional. Caption, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -4099,7 +4099,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption, 0-200 characters
+    :param caption: Optional. Caption, 0-1024 characters
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -4134,7 +4134,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption, 0-200 characters
+        :param caption: Optional. Caption, 0-1024 characters
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
