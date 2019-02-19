@@ -1,14 +1,12 @@
-# pytgbot - Telegram Bot API [`4`.`0`](https://core.telegram.org/bots/api)
-### Version [4.0.3 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
+# pytgbot - Telegram Bot API [`4`.`1`](https://core.telegram.org/bots/api)
+### Version [4.1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
 ###### Python module to access the telegram bot api.
 
 Native python package with a pure Python interface for the [Telegram Bot API](https://core.telegram.org/bots).
 > The code is generated directly from the API documentation, meaning up-to-date code is a matter of minutes.
 
 # Recent changes
- - Updated official API changes of [`Bot API 4`.`0` (July 26, 2018)](https://core.telegram.org/bots/api-changelog#july-26-2018)
- - Handle the API returning HTML text for `413 Request Entity Too Large` when uploading too large files.
- - Added `.size` property for all `InputFile` subclasses.
+ - Updated official API changes of [`Bot API 4`.`1` (August 27, 2018)](https://core.telegram.org/bots/api-changelog#august-27-2018)
  - [And more...](CHANGELOG.md)
 
  [Older changes...](CHANGELOG.md)
