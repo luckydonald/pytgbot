@@ -1,5 +1,5 @@
 # pytgbot - Telegram Bot API [`4`.`1`](https://core.telegram.org/bots/api)
-### Version [4.1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
+### Version [4.1.1 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
 ###### Python module to access the telegram bot api.
 
 Native python package with a pure Python interface for the [Telegram Bot API](https://core.telegram.org/bots).
@@ -119,3 +119,15 @@ logging.basicConfig(level=logging.DEBUG)
 
 If you are about to open a new issue, search the existing ones (open and closed) first.
 Sometimes they are already reported or even solved.
+
+# Note for maintainers of this package:
+Best way to apply changes is to create a patch from the commit containing the new generated files `output`.
+
+```
+git apply --verbose --reject --no-index -C1 --whitespace=fix --ignore-space-change --ignore-whitespace --directory pytgbot/ NAME.patch
+find ./pytgbot/ -type f -name '*.rej' | xargs --replace={}  --max-args=1   echo "{} {}"
+find ./pytgbot/ -type f -name '*.rej' |  xargs  --replace={}  --max-args=1  bash -c 'file="{}";file="${file%.*}"; echo wiggle --replace ${file} {};'
+wiggle --replace pytgbot
+```
+You may need to install wiggle: `brew install wiggle`
+_See also https://stackoverflow.com/questions/4770177/git-patch-does-not-apply_
