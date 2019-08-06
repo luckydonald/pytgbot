@@ -97,6 +97,25 @@ class StickerSet(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the StickerSet constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import Sticker
+        
+        data = Result.validate_array(array)
+        data['name'] = u(array.get('name'))
+        data['title'] = u(array.get('title'))
+        data['contains_masks'] = bool(array.get('contains_masks'))
+        data['stickers'] = Sticker.from_array_list(array.get('stickers'), list_level=1)
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new StickerSet from a given dictionary.
@@ -104,18 +123,11 @@ class StickerSet(Result):
         :return: new StickerSet instance.
         :rtype: StickerSet
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Sticker
-        
 
-        data = {}
-        data['name'] = u(array.get('name'))
-        data['title'] = u(array.get('title'))
-        data['contains_masks'] = bool(array.get('contains_masks'))
-        data['stickers'] = Sticker.from_array_list(array.get('stickers'), list_level=1)
+        data = StickerSet.validate_array(array)
         data['_raw'] = array
         return StickerSet(**data)
     # end def from_array
@@ -234,6 +246,23 @@ class MaskPosition(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the MaskPosition constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['point'] = u(array.get('point'))
+        data['x_shift'] = float(array.get('x_shift'))
+        data['y_shift'] = float(array.get('y_shift'))
+        data['scale'] = float(array.get('scale'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new MaskPosition from a given dictionary.
@@ -241,16 +270,11 @@ class MaskPosition(Result):
         :return: new MaskPosition instance.
         :rtype: MaskPosition
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['point'] = u(array.get('point'))
-        data['x_shift'] = float(array.get('x_shift'))
-        data['y_shift'] = float(array.get('y_shift'))
-        data['scale'] = float(array.get('scale'))
+        data = MaskPosition.validate_array(array)
         data['_raw'] = array
         return MaskPosition(**data)
     # end def from_array

@@ -111,6 +111,26 @@ class MessageEntity(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the MessageEntity constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.peer import User
+        
+        data = Result.validate_array(array)
+        data['type'] = u(array.get('type'))
+        data['offset'] = int(array.get('offset'))
+        data['length'] = int(array.get('length'))
+        data['url'] = u(array.get('url')) if array.get('url') is not None else None
+        data['user'] = User.from_array(array.get('user')) if array.get('user') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new MessageEntity from a given dictionary.
@@ -118,19 +138,11 @@ class MessageEntity(Result):
         :return: new MessageEntity instance.
         :rtype: MessageEntity
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
-        
 
-        data = {}
-        data['type'] = u(array.get('type'))
-        data['offset'] = int(array.get('offset'))
-        data['length'] = int(array.get('length'))
-        data['url'] = u(array.get('url')) if array.get('url') is not None else None
-        data['user'] = User.from_array(array.get('user')) if array.get('user') is not None else None
+        data = MessageEntity.validate_array(array)
         data['_raw'] = array
         return MessageEntity(**data)
     # end def from_array
@@ -250,6 +262,23 @@ class PhotoSize(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PhotoSize constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['width'] = int(array.get('width'))
+        data['height'] = int(array.get('height'))
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PhotoSize from a given dictionary.
@@ -257,16 +286,11 @@ class PhotoSize(Result):
         :return: new PhotoSize instance.
         :rtype: PhotoSize
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['width'] = int(array.get('width'))
-        data['height'] = int(array.get('height'))
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        data = PhotoSize.validate_array(array)
         data['_raw'] = array
         return PhotoSize(**data)
     # end def from_array
@@ -426,21 +450,17 @@ class Audio(Media):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new Audio from a given dictionary.
+        Builds a new array with valid values for the Audio constructor.
 
-        :return: new Audio instance.
-        :rtype: Audio
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import PhotoSize
         
-
-        data = {}
+        data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['duration'] = int(array.get('duration'))
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
@@ -448,6 +468,22 @@ class Audio(Media):
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Audio from a given dictionary.
+
+        :return: new Audio instance.
+        :rtype: Audio
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Audio.validate_array(array)
         data['_raw'] = array
         return Audio(**data)
     # end def from_array
@@ -585,6 +621,26 @@ class Document(Media):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Document constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import PhotoSize
+        
+        data = Media.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new Document from a given dictionary.
@@ -592,19 +648,11 @@ class Document(Media):
         :return: new Document instance.
         :rtype: Document
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
-        
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
-        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        data = Document.validate_array(array)
         data['_raw'] = array
         return Document(**data)
     # end def from_array
@@ -760,21 +808,17 @@ class Video(Media):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new Video from a given dictionary.
+        Builds a new array with valid values for the Video constructor.
 
-        :return: new Video instance.
-        :rtype: Video
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import PhotoSize
         
-
-        data = {}
+        data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
@@ -782,6 +826,22 @@ class Video(Media):
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Video from a given dictionary.
+
+        :return: new Video instance.
+        :rtype: Video
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Video.validate_array(array)
         data['_raw'] = array
         return Video(**data)
     # end def from_array
@@ -949,21 +1009,17 @@ class Animation(Media):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new Animation from a given dictionary.
+        Builds a new array with valid values for the Animation constructor.
 
-        :return: new Animation instance.
-        :rtype: Animation
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import PhotoSize
         
-
-        data = {}
+        data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
@@ -972,6 +1028,22 @@ class Animation(Media):
         data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Animation from a given dictionary.
+
+        :return: new Animation instance.
+        :rtype: Animation
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Animation.validate_array(array)
         data['_raw'] = array
         return Animation(**data)
     # end def from_array
@@ -1093,6 +1165,23 @@ class Voice(Media):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Voice constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Media.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['duration'] = int(array.get('duration'))
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new Voice from a given dictionary.
@@ -1100,16 +1189,11 @@ class Voice(Media):
         :return: new Voice instance.
         :rtype: Voice
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['duration'] = int(array.get('duration'))
-        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        data = Voice.validate_array(array)
         data['_raw'] = array
         return Voice(**data)
     # end def from_array
@@ -1243,6 +1327,26 @@ class VideoNote(Media):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the VideoNote constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import PhotoSize
+        
+        data = Media.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['length'] = int(array.get('length'))
+        data['duration'] = int(array.get('duration'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new VideoNote from a given dictionary.
@@ -1250,19 +1354,11 @@ class VideoNote(Media):
         :return: new VideoNote instance.
         :rtype: VideoNote
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
-        
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['length'] = int(array.get('length'))
-        data['duration'] = int(array.get('duration'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        data = VideoNote.validate_array(array)
         data['_raw'] = array
         return VideoNote(**data)
     # end def from_array
@@ -1397,6 +1493,24 @@ class Contact(Media):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Contact constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Media.validate_array(array)
+        data['phone_number'] = u(array.get('phone_number'))
+        data['first_name'] = u(array.get('first_name'))
+        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
+        data['user_id'] = int(array.get('user_id')) if array.get('user_id') is not None else None
+        data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new Contact from a given dictionary.
@@ -1404,17 +1518,11 @@ class Contact(Media):
         :return: new Contact instance.
         :rtype: Contact
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['phone_number'] = u(array.get('phone_number'))
-        data['first_name'] = u(array.get('first_name'))
-        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
-        data['user_id'] = int(array.get('user_id')) if array.get('user_id') is not None else None
-        data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
+        data = Contact.validate_array(array)
         data['_raw'] = array
         return Contact(**data)
     # end def from_array
@@ -1512,6 +1620,21 @@ class Location(Media):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Location constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Media.validate_array(array)
+        data['longitude'] = float(array.get('longitude'))
+        data['latitude'] = float(array.get('latitude'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new Location from a given dictionary.
@@ -1519,14 +1642,11 @@ class Location(Media):
         :return: new Location instance.
         :rtype: Location
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['longitude'] = float(array.get('longitude'))
-        data['latitude'] = float(array.get('latitude'))
+        data = Location.validate_array(array)
         data['_raw'] = array
         return Location(**data)
     # end def from_array
@@ -1663,6 +1783,26 @@ class Venue(Media):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Venue constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import Location
+        
+        data = Media.validate_array(array)
+        data['location'] = Location.from_array(array.get('location'))
+        data['title'] = u(array.get('title'))
+        data['address'] = u(array.get('address'))
+        data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
+        data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new Venue from a given dictionary.
@@ -1670,19 +1810,11 @@ class Venue(Media):
         :return: new Venue instance.
         :rtype: Venue
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Location
-        
 
-        data = {}
-        data['location'] = Location.from_array(array.get('location'))
-        data['title'] = u(array.get('title'))
-        data['address'] = u(array.get('address'))
-        data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
-        data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
+        data = Venue.validate_array(array)
         data['_raw'] = array
         return Venue(**data)
     # end def from_array
@@ -1783,6 +1915,23 @@ class UserProfilePhotos(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the UserProfilePhotos constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import PhotoSize
+        
+        data = Result.validate_array(array)
+        data['total_count'] = int(array.get('total_count'))
+        data['photos'] = PhotoSize.from_array_list(array.get('photos'), list_level=2)
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new UserProfilePhotos from a given dictionary.
@@ -1790,16 +1939,11 @@ class UserProfilePhotos(Result):
         :return: new UserProfilePhotos instance.
         :rtype: UserProfilePhotos
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
-        
 
-        data = {}
-        data['total_count'] = int(array.get('total_count'))
-        data['photos'] = PhotoSize.from_array_list(array.get('photos'), list_level=2)
+        data = UserProfilePhotos.validate_array(array)
         data['_raw'] = array
         return UserProfilePhotos(**data)
     # end def from_array
@@ -1915,6 +2059,22 @@ class File(Receivable):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the File constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Receivable.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        data['file_path'] = u(array.get('file_path')) if array.get('file_path') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new File from a given dictionary.
@@ -1922,15 +2082,11 @@ class File(Receivable):
         :return: new File instance.
         :rtype: File
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['file_path'] = u(array.get('file_path')) if array.get('file_path') is not None else None
+        data = File.validate_array(array)
         data['_raw'] = array
         return File(**data)
     # end def from_array
@@ -2030,6 +2186,21 @@ class ChatPhoto(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ChatPhoto constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['small_file_id'] = u(array.get('small_file_id'))
+        data['big_file_id'] = u(array.get('big_file_id'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new ChatPhoto from a given dictionary.
@@ -2037,14 +2208,11 @@ class ChatPhoto(Result):
         :return: new ChatPhoto instance.
         :rtype: ChatPhoto
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['small_file_id'] = u(array.get('small_file_id'))
-        data['big_file_id'] = u(array.get('big_file_id'))
+        data = ChatPhoto.validate_array(array)
         data['_raw'] = array
         return ChatPhoto(**data)
     # end def from_array
@@ -2215,22 +2383,18 @@ class Sticker(Media):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new Sticker from a given dictionary.
+        Builds a new array with valid values for the Sticker constructor.
 
-        :return: new Sticker instance.
-        :rtype: Sticker
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import PhotoSize
         from pytgbot.api_types.receivable.stickers import MaskPosition
         
-
-        data = {}
+        data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
@@ -2239,6 +2403,22 @@ class Sticker(Media):
         data['set_name'] = u(array.get('set_name')) if array.get('set_name') is not None else None
         data['mask_position'] = MaskPosition.from_array(array.get('mask_position')) if array.get('mask_position') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Sticker from a given dictionary.
+
+        :return: new Sticker instance.
+        :rtype: Sticker
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Sticker.validate_array(array)
         data['_raw'] = array
         return Sticker(**data)
     # end def from_array
@@ -2389,6 +2569,29 @@ class Game(Media):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Game constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import Animation
+        from pytgbot.api_types.receivable.media import MessageEntity
+        from pytgbot.api_types.receivable.media import PhotoSize
+        
+        data = Media.validate_array(array)
+        data['title'] = u(array.get('title'))
+        data['description'] = u(array.get('description'))
+        data['photo'] = PhotoSize.from_array_list(array.get('photo'), list_level=1)
+        data['text'] = u(array.get('text')) if array.get('text') is not None else None
+        data['text_entities'] = MessageEntity.from_array_list(array.get('text_entities'), list_level=1) if array.get('text_entities') is not None else None
+        data['animation'] = Animation.from_array(array.get('animation')) if array.get('animation') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new Game from a given dictionary.
@@ -2396,22 +2599,11 @@ class Game(Media):
         :return: new Game instance.
         :rtype: Game
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Animation
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.receivable.media import PhotoSize
-        
 
-        data = {}
-        data['title'] = u(array.get('title'))
-        data['description'] = u(array.get('description'))
-        data['photo'] = PhotoSize.from_array_list(array.get('photo'), list_level=1)
-        data['text'] = u(array.get('text')) if array.get('text') is not None else None
-        data['text_entities'] = MessageEntity.from_array_list(array.get('text_entities'), list_level=1) if array.get('text_entities') is not None else None
-        data['animation'] = Animation.from_array(array.get('animation')) if array.get('animation') is not None else None
+        data = Game.validate_array(array)
         data['_raw'] = array
         return Game(**data)
     # end def from_array

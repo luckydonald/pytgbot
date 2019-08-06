@@ -99,6 +99,24 @@ class PassportElementErrorDataField(PassportElementError):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementErrorDataField constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = PassportElementError.validate_array(array)
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['field_name'] = u(array.get('field_name'))
+        data['data_hash'] = u(array.get('data_hash'))
+        data['message'] = u(array.get('message'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportElementErrorDataField from a given dictionary.
@@ -106,18 +124,11 @@ class PassportElementErrorDataField(PassportElementError):
         :return: new PassportElementErrorDataField instance.
         :rtype: PassportElementErrorDataField
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['source'] = u(array.get('source'))
-        data['type'] = u(array.get('type'))
-        data['field_name'] = u(array.get('field_name'))
-        data['data_hash'] = u(array.get('data_hash'))
-        data['message'] = u(array.get('message'))
-        
+        data = PassportElementErrorDataField.validate_array(array)
         instance = PassportElementErrorDataField(**data)
         instance._raw = array
         return instance
@@ -232,6 +243,23 @@ class PassportElementErrorFrontSide(PassportElementError):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementErrorFrontSide constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = PassportElementError.validate_array(array)
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['file_hash'] = u(array.get('file_hash'))
+        data['message'] = u(array.get('message'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportElementErrorFrontSide from a given dictionary.
@@ -239,17 +267,11 @@ class PassportElementErrorFrontSide(PassportElementError):
         :return: new PassportElementErrorFrontSide instance.
         :rtype: PassportElementErrorFrontSide
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['source'] = u(array.get('source'))
-        data['type'] = u(array.get('type'))
-        data['file_hash'] = u(array.get('file_hash'))
-        data['message'] = u(array.get('message'))
-        
+        data = PassportElementErrorFrontSide.validate_array(array)
         instance = PassportElementErrorFrontSide(**data)
         instance._raw = array
         return instance
@@ -364,6 +386,23 @@ class PassportElementErrorReverseSide(PassportElementError):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementErrorReverseSide constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = PassportElementError.validate_array(array)
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['file_hash'] = u(array.get('file_hash'))
+        data['message'] = u(array.get('message'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportElementErrorReverseSide from a given dictionary.
@@ -371,17 +410,11 @@ class PassportElementErrorReverseSide(PassportElementError):
         :return: new PassportElementErrorReverseSide instance.
         :rtype: PassportElementErrorReverseSide
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['source'] = u(array.get('source'))
-        data['type'] = u(array.get('type'))
-        data['file_hash'] = u(array.get('file_hash'))
-        data['message'] = u(array.get('message'))
-        
+        data = PassportElementErrorReverseSide.validate_array(array)
         instance = PassportElementErrorReverseSide(**data)
         instance._raw = array
         return instance
@@ -496,6 +529,23 @@ class PassportElementErrorSelfie(PassportElementError):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementErrorSelfie constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = PassportElementError.validate_array(array)
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['file_hash'] = u(array.get('file_hash'))
+        data['message'] = u(array.get('message'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportElementErrorSelfie from a given dictionary.
@@ -503,17 +553,11 @@ class PassportElementErrorSelfie(PassportElementError):
         :return: new PassportElementErrorSelfie instance.
         :rtype: PassportElementErrorSelfie
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['source'] = u(array.get('source'))
-        data['type'] = u(array.get('type'))
-        data['file_hash'] = u(array.get('file_hash'))
-        data['message'] = u(array.get('message'))
-        
+        data = PassportElementErrorSelfie.validate_array(array)
         instance = PassportElementErrorSelfie(**data)
         instance._raw = array
         return instance
@@ -628,6 +672,23 @@ class PassportElementErrorFile(PassportElementError):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementErrorFile constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = PassportElementError.validate_array(array)
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['file_hash'] = u(array.get('file_hash'))
+        data['message'] = u(array.get('message'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportElementErrorFile from a given dictionary.
@@ -635,17 +696,11 @@ class PassportElementErrorFile(PassportElementError):
         :return: new PassportElementErrorFile instance.
         :rtype: PassportElementErrorFile
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['source'] = u(array.get('source'))
-        data['type'] = u(array.get('type'))
-        data['file_hash'] = u(array.get('file_hash'))
-        data['message'] = u(array.get('message'))
-        
+        data = PassportElementErrorFile.validate_array(array)
         instance = PassportElementErrorFile(**data)
         instance._raw = array
         return instance
@@ -760,6 +815,23 @@ class PassportElementErrorFiles(PassportElementError):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementErrorFiles constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = PassportElementError.validate_array(array)
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['file_hashes'] = PassportElementErrorFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
+        data['message'] = u(array.get('message'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportElementErrorFiles from a given dictionary.
@@ -767,17 +839,11 @@ class PassportElementErrorFiles(PassportElementError):
         :return: new PassportElementErrorFiles instance.
         :rtype: PassportElementErrorFiles
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['source'] = u(array.get('source'))
-        data['type'] = u(array.get('type'))
-        data['file_hashes'] = PassportElementErrorFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
-        data['message'] = u(array.get('message'))
-        
+        data = PassportElementErrorFiles.validate_array(array)
         instance = PassportElementErrorFiles(**data)
         instance._raw = array
         return instance
@@ -892,6 +958,23 @@ class PassportElementErrorTranslationFile(PassportElementError):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementErrorTranslationFile constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = PassportElementError.validate_array(array)
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['file_hash'] = u(array.get('file_hash'))
+        data['message'] = u(array.get('message'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportElementErrorTranslationFile from a given dictionary.
@@ -899,17 +982,11 @@ class PassportElementErrorTranslationFile(PassportElementError):
         :return: new PassportElementErrorTranslationFile instance.
         :rtype: PassportElementErrorTranslationFile
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['source'] = u(array.get('source'))
-        data['type'] = u(array.get('type'))
-        data['file_hash'] = u(array.get('file_hash'))
-        data['message'] = u(array.get('message'))
-        
+        data = PassportElementErrorTranslationFile.validate_array(array)
         instance = PassportElementErrorTranslationFile(**data)
         instance._raw = array
         return instance
@@ -1024,6 +1101,23 @@ class PassportElementErrorTranslationFiles(PassportElementError):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementErrorTranslationFiles constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = PassportElementError.validate_array(array)
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['file_hashes'] = PassportElementErrorTranslationFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
+        data['message'] = u(array.get('message'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportElementErrorTranslationFiles from a given dictionary.
@@ -1031,17 +1125,11 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         :return: new PassportElementErrorTranslationFiles instance.
         :rtype: PassportElementErrorTranslationFiles
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['source'] = u(array.get('source'))
-        data['type'] = u(array.get('type'))
-        data['file_hashes'] = PassportElementErrorTranslationFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
-        data['message'] = u(array.get('message'))
-        
+        data = PassportElementErrorTranslationFiles.validate_array(array)
         instance = PassportElementErrorTranslationFiles(**data)
         instance._raw = array
         return instance
@@ -1156,6 +1244,23 @@ class PassportElementErrorUnspecified(PassportElementError):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementErrorUnspecified constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = PassportElementError.validate_array(array)
+        data['source'] = u(array.get('source'))
+        data['type'] = u(array.get('type'))
+        data['element_hash'] = u(array.get('element_hash'))
+        data['message'] = u(array.get('message'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportElementErrorUnspecified from a given dictionary.
@@ -1163,17 +1268,11 @@ class PassportElementErrorUnspecified(PassportElementError):
         :return: new PassportElementErrorUnspecified instance.
         :rtype: PassportElementErrorUnspecified
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['source'] = u(array.get('source'))
-        data['type'] = u(array.get('type'))
-        data['element_hash'] = u(array.get('element_hash'))
-        data['message'] = u(array.get('message'))
-        
+        data = PassportElementErrorUnspecified.validate_array(array)
         instance = PassportElementErrorUnspecified(**data)
         instance._raw = array
         return instance

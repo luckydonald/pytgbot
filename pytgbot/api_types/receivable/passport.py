@@ -74,16 +74,13 @@ class PassportData(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new PassportData from a given dictionary.
 
         :return: new PassportData instance.
         :rtype: PassportData
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
 
@@ -92,7 +89,7 @@ class PassportData(Result):
         data['credentials'] = EncryptedCredentials.from_array(array.get('credentials'))
         data['_raw'] = array
         return PassportData(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -198,16 +195,13 @@ class PassportFile(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new PassportFile from a given dictionary.
 
         :return: new PassportFile instance.
         :rtype: PassportFile
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -216,7 +210,7 @@ class PassportFile(Result):
         data['file_date'] = int(array.get('file_date'))
         data['_raw'] = array
         return PassportFile(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -402,16 +396,13 @@ class EncryptedPassportElement(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new EncryptedPassportElement from a given dictionary.
 
         :return: new EncryptedPassportElement instance.
         :rtype: EncryptedPassportElement
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
 
@@ -428,7 +419,7 @@ class EncryptedPassportElement(Result):
         data['translation'] = PassportFile.from_array_list(array.get('translation'), list_level=1) if array.get('translation') is not None else None
         data['_raw'] = array
         return EncryptedPassportElement(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -534,16 +525,13 @@ class EncryptedCredentials(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new EncryptedCredentials from a given dictionary.
 
         :return: new EncryptedCredentials instance.
         :rtype: EncryptedCredentials
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -552,7 +540,7 @@ class EncryptedCredentials(Result):
         data['secret'] = u(array.get('secret'))
         data['_raw'] = array
         return EncryptedCredentials(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """

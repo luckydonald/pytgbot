@@ -76,8 +76,8 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         :rtype: dict
         """
         array = super({{ clazz.clazz }}, self).to_array()
-        {# fresh line #}
-        {%- for variable in clazz.variables -%}
+        {# fresh line -#}
+        {% for variable in clazz.variables -%}
         {%- if variable.optional %}if self.{{ variable.name }} is not None:
             {{ set_array(variable)|indent(12) }}
         {% else -%}
@@ -88,26 +88,23 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new {{ clazz.clazz }} from a given dictionary.
+        Builds a new array with valid values for the {{ clazz.clazz }} constructor.
 
-        :return: new {{ clazz.clazz }} instance.
-        :rtype: {{ clazz.clazz }}
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
-        {#- strip linebreak after #}
+        {#- strip linebreak after -#}
         {{- self.imports_block() -}}
         {#- does strip before #}
-
-        data = {}
+        {#- this will be a new line #}
+        data = {{ clazz.parent_clazz.string }}.validate_array(array)
         {% for variable in clazz.variables -%}
-        {% if variable.types|length == 1 -%}
+        {%- if variable.types|length == 1 -%}
         {{- set_data_array_element(variable, variable.types[0], clazz, variable.optional) -}}
-        {% else -%}
+        {%- else -%}
         {%- if variable.optional -%}
         if array.get('{{ variable.api_name }}') is None:
             data['{{ variable.name }}'] = None
@@ -119,10 +116,27 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
         # end if
-        {% endif -%}
-        {%- endfor -%}{%- if not is_sendable -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {#- remove empty line  #}
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new {{ clazz.clazz }} from a given dictionary.
+
+        :return: new {{ clazz.clazz }} instance.
+        :rtype: {{ clazz.clazz }}
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = {{ clazz.clazz }}.validate_array(array)
+        {% if not is_sendable -%}
         data['_raw'] = array
-        return {{ clazz.clazz }}(**data){% else %}
+        return {{ clazz.clazz }}(**data){% else -%}
         instance = {{ clazz.clazz }}(**data)
         instance._raw = array
         return instance{% endif %}

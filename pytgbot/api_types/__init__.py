@@ -22,11 +22,22 @@ class TgBotApiObject(object):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the {{ clazz.clazz }} constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        return {}
+    # end def
+
+    @staticmethod
     def from_array(array):
         if not array:
             return None
-        return {}
-    # end def
+        return TgBotApiObject()
+    # end def from_array
 
     # # # # # # # # # # # # # #
     # helper functions below #

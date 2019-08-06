@@ -217,16 +217,13 @@ class InputMediaPhoto(InputMedia):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InputMediaPhoto from a given dictionary.
 
         :return: new InputMediaPhoto instance.
         :rtype: InputMediaPhoto
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -238,7 +235,7 @@ class InputMediaPhoto(InputMedia):
         instance = InputMediaPhoto(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -393,16 +390,13 @@ class InputMediaVideo(InputMediaWithThumb):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InputMediaVideo from a given dictionary.
 
         :return: new InputMediaVideo instance.
         :rtype: InputMediaVideo
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
 
@@ -428,7 +422,7 @@ class InputMediaVideo(InputMediaWithThumb):
         instance = InputMediaVideo(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -571,16 +565,13 @@ class InputMediaAnimation(InputMediaWithThumb):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InputMediaAnimation from a given dictionary.
 
         :return: new InputMediaAnimation instance.
         :rtype: InputMediaAnimation
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
 
@@ -606,7 +597,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         instance = InputMediaAnimation(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -750,16 +741,13 @@ class InputMediaAudio(InputMediaWithThumb):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InputMediaAudio from a given dictionary.
 
         :return: new InputMediaAudio instance.
         :rtype: InputMediaAudio
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
 
@@ -785,7 +773,7 @@ class InputMediaAudio(InputMediaWithThumb):
         instance = InputMediaAudio(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -894,16 +882,13 @@ class InputMediaDocument(InputMediaWithThumb):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InputMediaDocument from a given dictionary.
 
         :return: new InputMediaDocument instance.
         :rtype: InputMediaDocument
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
 
@@ -926,7 +911,7 @@ class InputMediaDocument(InputMediaWithThumb):
         instance = InputMediaDocument(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """

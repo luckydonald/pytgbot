@@ -120,6 +120,25 @@ class User(Peer):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the User constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Peer.validate_array(array)
+        data['id'] = int(array.get('id'))
+        data['is_bot'] = bool(array.get('is_bot'))
+        data['first_name'] = u(array.get('first_name'))
+        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
+        data['username'] = u(array.get('username')) if array.get('username') is not None else None
+        data['language_code'] = u(array.get('language_code')) if array.get('language_code') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new User from a given dictionary.
@@ -127,18 +146,11 @@ class User(Peer):
         :return: new User instance.
         :rtype: User
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['id'] = int(array.get('id'))
-        data['is_bot'] = bool(array.get('is_bot'))
-        data['first_name'] = u(array.get('first_name'))
-        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
-        data['username'] = u(array.get('username')) if array.get('username') is not None else None
-        data['language_code'] = u(array.get('language_code')) if array.get('language_code') is not None else None
+        data = User.validate_array(array)
         data['_raw'] = array
         return User(**data)
     # end def from_array
@@ -370,22 +382,18 @@ class Chat(Peer):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new Chat from a given dictionary.
+        Builds a new array with valid values for the Chat constructor.
 
-        :return: new Chat instance.
-        :rtype: Chat
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import ChatPhoto
         from pytgbot.api_types.receivable.updates import Message
         
-
-        data = {}
+        data = Peer.validate_array(array)
         data['id'] = int(array.get('id'))
         data['type'] = u(array.get('type'))
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
@@ -399,6 +407,22 @@ class Chat(Peer):
         data['pinned_message'] = Message.from_array(array.get('pinned_message')) if array.get('pinned_message') is not None else None
         data['sticker_set_name'] = u(array.get('sticker_set_name')) if array.get('sticker_set_name') is not None else None
         data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Chat from a given dictionary.
+
+        :return: new Chat instance.
+        :rtype: Chat
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Chat.validate_array(array)
         data['_raw'] = array
         return Chat(**data)
     # end def from_array
@@ -654,21 +678,17 @@ class ChatMember(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new ChatMember from a given dictionary.
+        Builds a new array with valid values for the ChatMember constructor.
 
-        :return: new ChatMember instance.
-        :rtype: ChatMember
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.peer import User
         
-
-        data = {}
+        data = Result.validate_array(array)
         data['user'] = User.from_array(array.get('user'))
         data['status'] = u(array.get('status'))
         data['until_date'] = int(array.get('until_date')) if array.get('until_date') is not None else None
@@ -685,6 +705,22 @@ class ChatMember(Result):
         data['can_send_media_messages'] = bool(array.get('can_send_media_messages')) if array.get('can_send_media_messages') is not None else None
         data['can_send_other_messages'] = bool(array.get('can_send_other_messages')) if array.get('can_send_other_messages') is not None else None
         data['can_add_web_page_previews'] = bool(array.get('can_add_web_page_previews')) if array.get('can_add_web_page_previews') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new ChatMember from a given dictionary.
+
+        :return: new ChatMember instance.
+        :rtype: ChatMember
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = ChatMember.validate_array(array)
         data['_raw'] = array
         return ChatMember(**data)
     # end def from_array

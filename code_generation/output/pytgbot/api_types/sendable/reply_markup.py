@@ -91,6 +91,25 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ReplyKeyboardMarkup constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.sendable.reply_markup import KeyboardButton
+        
+        data = ReplyMarkup.validate_array(array)
+        data['keyboard'] = KeyboardButton.from_array_list(array.get('keyboard'), list_level=2)
+        data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
+        data['one_time_keyboard'] = bool(array.get('one_time_keyboard')) if array.get('one_time_keyboard') is not None else None
+        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new ReplyKeyboardMarkup from a given dictionary.
@@ -98,19 +117,11 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         :return: new ReplyKeyboardMarkup instance.
         :rtype: ReplyKeyboardMarkup
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import KeyboardButton
-        
 
-        data = {}
-        data['keyboard'] = KeyboardButton.from_array_list(array.get('keyboard'), list_level=2)
-        data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
-        data['one_time_keyboard'] = bool(array.get('one_time_keyboard')) if array.get('one_time_keyboard') is not None else None
-        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        
+        data = ReplyKeyboardMarkup.validate_array(array)
         instance = ReplyKeyboardMarkup(**data)
         instance._raw = array
         return instance
@@ -216,6 +227,22 @@ class KeyboardButton(Button):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the KeyboardButton constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Button.validate_array(array)
+        data['text'] = u(array.get('text'))
+        data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
+        data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new KeyboardButton from a given dictionary.
@@ -223,16 +250,11 @@ class KeyboardButton(Button):
         :return: new KeyboardButton instance.
         :rtype: KeyboardButton
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['text'] = u(array.get('text'))
-        data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
-        data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
-        
+        data = KeyboardButton.validate_array(array)
         instance = KeyboardButton(**data)
         instance._raw = array
         return instance
@@ -324,6 +346,21 @@ class ReplyKeyboardRemove(ReplyMarkup):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ReplyKeyboardRemove constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = ReplyMarkup.validate_array(array)
+        data['remove_keyboard'] = bool(array.get('remove_keyboard'))
+        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new ReplyKeyboardRemove from a given dictionary.
@@ -331,15 +368,11 @@ class ReplyKeyboardRemove(ReplyMarkup):
         :return: new ReplyKeyboardRemove instance.
         :rtype: ReplyKeyboardRemove
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['remove_keyboard'] = bool(array.get('remove_keyboard'))
-        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        
+        data = ReplyKeyboardRemove.validate_array(array)
         instance = ReplyKeyboardRemove(**data)
         instance._raw = array
         return instance
@@ -425,6 +458,22 @@ class InlineKeyboardMarkup(ReplyMarkup):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InlineKeyboardMarkup constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardButton
+        
+        data = ReplyMarkup.validate_array(array)
+        data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new InlineKeyboardMarkup from a given dictionary.
@@ -432,16 +481,11 @@ class InlineKeyboardMarkup(ReplyMarkup):
         :return: new InlineKeyboardMarkup instance.
         :rtype: InlineKeyboardMarkup
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardButton
-        
 
-        data = {}
-        data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
-        
+        data = InlineKeyboardMarkup.validate_array(array)
         instance = InlineKeyboardMarkup(**data)
         instance._raw = array
         return instance
@@ -596,21 +640,17 @@ class InlineKeyboardButton(Button):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineKeyboardButton from a given dictionary.
+        Builds a new array with valid values for the InlineKeyboardButton constructor.
 
-        :return: new InlineKeyboardButton instance.
-        :rtype: InlineKeyboardButton
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.updates import CallbackGame
         
-
-        data = {}
+        data = Button.validate_array(array)
         data['text'] = u(array.get('text'))
         data['url'] = u(array.get('url')) if array.get('url') is not None else None
         data['callback_data'] = u(array.get('callback_data')) if array.get('callback_data') is not None else None
@@ -619,6 +659,21 @@ class InlineKeyboardButton(Button):
         data['callback_game'] = CallbackGame.from_array(array.get('callback_game')) if array.get('callback_game') is not None else None
         data['pay'] = bool(array.get('pay')) if array.get('pay') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineKeyboardButton from a given dictionary.
+
+        :return: new InlineKeyboardButton instance.
+        :rtype: InlineKeyboardButton
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineKeyboardButton.validate_array(array)
         instance = InlineKeyboardButton(**data)
         instance._raw = array
         return instance
@@ -718,6 +773,21 @@ class ForceReply(ReplyMarkup):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ForceReply constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = ReplyMarkup.validate_array(array)
+        data['force_reply'] = bool(array.get('force_reply'))
+        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new ForceReply from a given dictionary.
@@ -725,15 +795,11 @@ class ForceReply(ReplyMarkup):
         :return: new ForceReply instance.
         :rtype: ForceReply
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['force_reply'] = bool(array.get('force_reply'))
-        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        
+        data = ForceReply.validate_array(array)
         instance = ForceReply(**data)
         instance._raw = array
         return instance

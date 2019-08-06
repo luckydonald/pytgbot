@@ -65,6 +65,21 @@ class LabeledPrice(Sendable):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the LabeledPrice constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Sendable.validate_array(array)
+        data['label'] = u(array.get('label'))
+        data['amount'] = int(array.get('amount'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new LabeledPrice from a given dictionary.
@@ -72,15 +87,11 @@ class LabeledPrice(Sendable):
         :return: new LabeledPrice instance.
         :rtype: LabeledPrice
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['label'] = u(array.get('label'))
-        data['amount'] = int(array.get('amount'))
-        
+        data = LabeledPrice.validate_array(array)
         instance = LabeledPrice(**data)
         instance._raw = array
         return instance
@@ -186,6 +197,24 @@ class ShippingOption(Sendable):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ShippingOption constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.sendable.payments import LabeledPrice
+        
+        data = Sendable.validate_array(array)
+        data['id'] = u(array.get('id'))
+        data['title'] = u(array.get('title'))
+        data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new ShippingOption from a given dictionary.
@@ -193,18 +222,11 @@ class ShippingOption(Sendable):
         :return: new ShippingOption instance.
         :rtype: ShippingOption
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.payments import LabeledPrice
-        
 
-        data = {}
-        data['id'] = u(array.get('id'))
-        data['title'] = u(array.get('title'))
-        data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
-        
+        data = ShippingOption.validate_array(array)
         instance = ShippingOption(**data)
         instance._raw = array
         return instance

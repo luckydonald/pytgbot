@@ -177,16 +177,13 @@ class Update(Receivable):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new Update from a given dictionary.
 
         :return: new Update instance.
         :rtype: Update
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from ..receivable.inline import InlineQuery, ChosenInlineResult
@@ -205,7 +202,7 @@ class Update(Receivable):
         data['pre_checkout_query'] = PreCheckoutQuery.from_array(array.get('pre_checkout_query')) if array.get('pre_checkout_query') is not None else None
         data['_raw'] = array
         return Update(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -354,16 +351,13 @@ class WebhookInfo(Receivable):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new WebhookInfo from a given dictionary.
 
         :return: new WebhookInfo instance.
         :rtype: WebhookInfo
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -376,7 +370,7 @@ class WebhookInfo(Receivable):
         data['allowed_updates'] = WebhookInfo._builtin_from_array_list(required_type=unicode_type, value=array.get('allowed_updates'), list_level=1) if array.get('allowed_updates') is not None else None
         data['_raw'] = array
         return WebhookInfo(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -939,16 +933,13 @@ class Message(UpdateType):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new Message from a given dictionary.
 
         :return: new Message instance.
         :rtype: Message
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from ..receivable.peer import User, Chat
@@ -1004,7 +995,7 @@ class Message(UpdateType):
         data['passport_data'] = PassportData.from_array(array.get('passport_data')) if array.get('passport_data') is not None else None
         data['_raw'] = array
         return Message(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -1160,16 +1151,13 @@ class CallbackQuery(UpdateType):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new CallbackQuery from a given dictionary.
 
         :return: new CallbackQuery instance.
         :rtype: CallbackQuery
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from ..receivable.peer import User
@@ -1184,7 +1172,7 @@ class CallbackQuery(UpdateType):
         data['game_short_name'] = u(array.get('game_short_name')) if array.get('game_short_name') is not None else None
         data['_raw'] = array
         return CallbackQuery(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -1223,7 +1211,7 @@ class CallbackGame(UpdateType):
     # end def
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         return CallbackGame()
     # end def
 # end class
@@ -1292,16 +1280,13 @@ class ResponseParameters(Receivable):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new ResponseParameters from a given dictionary.
 
         :return: new ResponseParameters instance.
         :rtype: ResponseParameters
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -1309,7 +1294,7 @@ class ResponseParameters(Receivable):
         data['retry_after'] = int(array.get('retry_after')) if array.get('retry_after') is not None else None
         data['_raw'] = array
         return ResponseParameters(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """

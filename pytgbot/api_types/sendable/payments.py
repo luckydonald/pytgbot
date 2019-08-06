@@ -57,16 +57,13 @@ class LabeledPrice(Sendable):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new LabeledPrice from a given dictionary.
 
         :return: new LabeledPrice instance.
         :rtype: LabeledPrice
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -76,7 +73,7 @@ class LabeledPrice(Sendable):
         instance = LabeledPrice(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -169,16 +166,13 @@ class ShippingOption(Sendable):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new ShippingOption from a given dictionary.
 
         :return: new ShippingOption instance.
         :rtype: ShippingOption
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
 
@@ -190,7 +184,7 @@ class ShippingOption(Sendable):
         instance = ShippingOption(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """

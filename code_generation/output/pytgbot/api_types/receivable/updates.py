@@ -178,16 +178,13 @@ class Update(Receivable):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new Update from a given dictionary.
+        Builds a new array with valid values for the Update constructor.
 
-        :return: new Update instance.
-        :rtype: Update
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.inline import ChosenInlineResult
         from pytgbot.api_types.receivable.inline import InlineQuery
@@ -196,8 +193,7 @@ class Update(Receivable):
         from pytgbot.api_types.receivable.updates import CallbackQuery
         from pytgbot.api_types.receivable.updates import Message
         
-
-        data = {}
+        data = Receivable.validate_array(array)
         data['update_id'] = int(array.get('update_id'))
         data['message'] = Message.from_array(array.get('message')) if array.get('message') is not None else None
         data['edited_message'] = Message.from_array(array.get('edited_message')) if array.get('edited_message') is not None else None
@@ -208,6 +204,22 @@ class Update(Receivable):
         data['callback_query'] = CallbackQuery.from_array(array.get('callback_query')) if array.get('callback_query') is not None else None
         data['shipping_query'] = ShippingQuery.from_array(array.get('shipping_query')) if array.get('shipping_query') is not None else None
         data['pre_checkout_query'] = PreCheckoutQuery.from_array(array.get('pre_checkout_query')) if array.get('pre_checkout_query') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Update from a given dictionary.
+
+        :return: new Update instance.
+        :rtype: Update
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Update.validate_array(array)
         data['_raw'] = array
         return Update(**data)
     # end def from_array
@@ -362,19 +374,15 @@ class WebhookInfo(Receivable):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new WebhookInfo from a given dictionary.
+        Builds a new array with valid values for the WebhookInfo constructor.
 
-        :return: new WebhookInfo instance.
-        :rtype: WebhookInfo
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = Receivable.validate_array(array)
         data['url'] = u(array.get('url'))
         data['has_custom_certificate'] = bool(array.get('has_custom_certificate'))
         data['pending_update_count'] = int(array.get('pending_update_count'))
@@ -382,6 +390,22 @@ class WebhookInfo(Receivable):
         data['last_error_message'] = u(array.get('last_error_message')) if array.get('last_error_message') is not None else None
         data['max_connections'] = int(array.get('max_connections')) if array.get('max_connections') is not None else None
         data['allowed_updates'] = WebhookInfo._builtin_from_array_list(required_type=unicode_type, value=array.get('allowed_updates'), list_level=1) if array.get('allowed_updates') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new WebhookInfo from a given dictionary.
+
+        :return: new WebhookInfo instance.
+        :rtype: WebhookInfo
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = WebhookInfo.validate_array(array)
         data['_raw'] = array
         return WebhookInfo(**data)
     # end def from_array
@@ -993,16 +1017,13 @@ class Message(UpdateType):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new Message from a given dictionary.
+        Builds a new array with valid values for the Message constructor.
 
-        :return: new Message instance.
-        :rtype: Message
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import Animation
         from pytgbot.api_types.receivable.media import Audio
@@ -1024,8 +1045,7 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.peer import User
         from pytgbot.api_types.receivable.updates import Message
         
-
-        data = {}
+        data = UpdateType.validate_array(array)
         data['message_id'] = int(array.get('message_id'))
         data['date'] = int(array.get('date'))
         data['chat'] = Chat.from_array(array.get('chat'))
@@ -1070,6 +1090,22 @@ class Message(UpdateType):
         data['successful_payment'] = SuccessfulPayment.from_array(array.get('successful_payment')) if array.get('successful_payment') is not None else None
         data['connected_website'] = u(array.get('connected_website')) if array.get('connected_website') is not None else None
         data['passport_data'] = PassportData.from_array(array.get('passport_data')) if array.get('passport_data') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Message from a given dictionary.
+
+        :return: new Message instance.
+        :rtype: Message
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Message.validate_array(array)
         data['_raw'] = array
         return Message(**data)
     # end def from_array
@@ -1235,22 +1271,18 @@ class CallbackQuery(UpdateType):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new CallbackQuery from a given dictionary.
+        Builds a new array with valid values for the CallbackQuery constructor.
 
-        :return: new CallbackQuery instance.
-        :rtype: CallbackQuery
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.peer import User
         from pytgbot.api_types.receivable.updates import Message
         
-
-        data = {}
+        data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
         data['chat_instance'] = u(array.get('chat_instance'))
@@ -1258,6 +1290,22 @@ class CallbackQuery(UpdateType):
         data['inline_message_id'] = u(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
         data['data'] = u(array.get('data')) if array.get('data') is not None else None
         data['game_short_name'] = u(array.get('game_short_name')) if array.get('game_short_name') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new CallbackQuery from a given dictionary.
+
+        :return: new CallbackQuery instance.
+        :rtype: CallbackQuery
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = CallbackQuery.validate_array(array)
         data['_raw'] = array
         return CallbackQuery(**data)
     # end def from_array
@@ -1351,6 +1399,21 @@ class ResponseParameters(Receivable):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ResponseParameters constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Receivable.validate_array(array)
+        data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id')) if array.get('migrate_to_chat_id') is not None else None
+        data['retry_after'] = int(array.get('retry_after')) if array.get('retry_after') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new ResponseParameters from a given dictionary.
@@ -1358,14 +1421,11 @@ class ResponseParameters(Receivable):
         :return: new ResponseParameters instance.
         :rtype: ResponseParameters
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id')) if array.get('migrate_to_chat_id') is not None else None
-        data['retry_after'] = int(array.get('retry_after')) if array.get('retry_after') is not None else None
+        data = ResponseParameters.validate_array(array)
         data['_raw'] = array
         return ResponseParameters(**data)
     # end def from_array

@@ -92,16 +92,13 @@ class StickerSet(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new StickerSet from a given dictionary.
 
         :return: new StickerSet instance.
         :rtype: StickerSet
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import Sticker
 
@@ -112,7 +109,7 @@ class StickerSet(Result):
         data['stickers'] = Sticker.from_array_list(array.get('stickers'), list_level=1)
         data['_raw'] = array
         return StickerSet(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -228,16 +225,13 @@ class MaskPosition(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new MaskPosition from a given dictionary.
 
         :return: new MaskPosition instance.
         :rtype: MaskPosition
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -247,7 +241,7 @@ class MaskPosition(Result):
         data['scale'] = float(array.get('scale'))
         data['_raw'] = array
         return MaskPosition(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """

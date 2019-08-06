@@ -124,16 +124,13 @@ class User(Peer):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new User from a given dictionary.
 
         :return: new User instance.
         :rtype: User
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -145,7 +142,7 @@ class User(Peer):
         data['language_code'] = u(array.get('language_code')) if array.get('language_code') is not None else None
         data['_raw'] = array
         return User(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -364,16 +361,13 @@ class Chat(Peer):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new Chat from a given dictionary.
 
         :return: new Chat instance.
         :rtype: Chat
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import ChatPhoto
         from .updates import Message
@@ -394,7 +388,7 @@ class Chat(Peer):
         data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
         data['_raw'] = array
         return Chat(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -644,16 +638,13 @@ class ChatMember(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new ChatMember from a given dictionary.
 
         :return: new ChatMember instance.
         :rtype: ChatMember
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -675,7 +666,7 @@ class ChatMember(Result):
         data['can_add_web_page_previews'] = bool(array.get('can_add_web_page_previews')) if array.get('can_add_web_page_previews') is not None else None
         data['_raw'] = array
         return ChatMember(**data)
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """

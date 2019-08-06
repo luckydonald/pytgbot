@@ -193,16 +193,13 @@ class InlineQueryResultArticle(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultArticle from a given dictionary.
 
         :return: new InlineQueryResultArticle instance.
         :rtype: InlineQueryResultArticle
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -223,7 +220,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         instance = InlineQueryResultArticle(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -410,16 +407,13 @@ class InlineQueryResultPhoto(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultPhoto from a given dictionary.
 
         :return: new InlineQueryResultPhoto instance.
         :rtype: InlineQueryResultPhoto
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -441,7 +435,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         instance = InlineQueryResultPhoto(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -628,16 +622,13 @@ class InlineQueryResultGif(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultGif from a given dictionary.
 
         :return: new InlineQueryResultGif instance.
         :rtype: InlineQueryResultGif
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -659,7 +650,7 @@ class InlineQueryResultGif(InlineQueryResult):
         instance = InlineQueryResultGif(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -846,16 +837,13 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultMpeg4Gif from a given dictionary.
 
         :return: new InlineQueryResultMpeg4Gif instance.
         :rtype: InlineQueryResultMpeg4Gif
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -877,7 +865,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         instance = InlineQueryResultMpeg4Gif(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -1088,16 +1076,13 @@ class InlineQueryResultVideo(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultVideo from a given dictionary.
 
         :return: new InlineQueryResultVideo instance.
         :rtype: InlineQueryResultVideo
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1121,7 +1106,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         instance = InlineQueryResultVideo(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -1288,16 +1273,13 @@ class InlineQueryResultAudio(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultAudio from a given dictionary.
 
         :return: new InlineQueryResultAudio instance.
         :rtype: InlineQueryResultAudio
         """
-        if array is None or not array:
-            return None
-        # end if
         assert(isinstance(array, dict))
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1317,7 +1299,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         instance = InlineQueryResultAudio(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -1473,16 +1455,13 @@ class InlineQueryResultVoice(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultVoice from a given dictionary.
 
         :return: new InlineQueryResultVoice instance.
         :rtype: InlineQueryResultVoice
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1501,7 +1480,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         instance = InlineQueryResultVoice(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -1700,16 +1679,13 @@ class InlineQueryResultDocument(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultDocument from a given dictionary.
 
         :return: new InlineQueryResultDocument instance.
         :rtype: InlineQueryResultDocument
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1732,7 +1708,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         instance = InlineQueryResultDocument(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -1909,16 +1885,13 @@ class InlineQueryResultLocation(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultLocation from a given dictionary.
 
         :return: new InlineQueryResultLocation instance.
         :rtype: InlineQueryResultLocation
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1939,7 +1912,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         instance = InlineQueryResultLocation(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -2137,16 +2110,13 @@ class InlineQueryResultVenue(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultVenue from a given dictionary.
 
         :return: new InlineQueryResultVenue instance.
         :rtype: InlineQueryResultVenue
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -2169,7 +2139,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         instance = InlineQueryResultVenue(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -2345,16 +2315,13 @@ class InlineQueryResultContact(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultContact from a given dictionary.
 
         :return: new InlineQueryResultContact instance.
         :rtype: InlineQueryResultContact
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -2375,7 +2342,7 @@ class InlineQueryResultContact(InlineQueryResult):
         instance = InlineQueryResultContact(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -2480,16 +2447,13 @@ class InlineQueryResultGame(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultGame from a given dictionary.
 
         :return: new InlineQueryResultGame instance.
         :rtype: InlineQueryResultGame
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
@@ -2502,7 +2466,7 @@ class InlineQueryResultGame(InlineQueryResult):
         instance = InlineQueryResultGame(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -2659,16 +2623,13 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultCachedPhoto from a given dictionary.
 
         :return: new InlineQueryResultCachedPhoto instance.
         :rtype: InlineQueryResultCachedPhoto
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -2687,7 +2648,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         instance = InlineQueryResultCachedPhoto(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -2832,16 +2793,13 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultCachedGif from a given dictionary.
 
         :return: new InlineQueryResultCachedGif instance.
         :rtype: InlineQueryResultCachedGif
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -2859,7 +2817,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         instance = InlineQueryResultCachedGif(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -3003,16 +2961,13 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultCachedMpeg4Gif from a given dictionary.
 
         :return: new InlineQueryResultCachedMpeg4Gif instance.
         :rtype: InlineQueryResultCachedMpeg4Gif
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -3030,7 +2985,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         instance = InlineQueryResultCachedMpeg4Gif(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -3146,16 +3101,13 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultCachedSticker from a given dictionary.
 
         :return: new InlineQueryResultCachedSticker instance.
         :rtype: InlineQueryResultCachedSticker
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -3170,7 +3122,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         instance = InlineQueryResultCachedSticker(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -3328,16 +3280,13 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultCachedDocument from a given dictionary.
 
         :return: new InlineQueryResultCachedDocument instance.
         :rtype: InlineQueryResultCachedDocument
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -3355,7 +3304,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         instance = InlineQueryResultCachedDocument(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -3510,16 +3459,13 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultCachedVideo from a given dictionary.
 
         :return: new InlineQueryResultCachedVideo instance.
         :rtype: InlineQueryResultCachedVideo
         """
-        if array is None or not array:
-            return None
-        # end if
         assert(isinstance(array, dict))
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -3538,7 +3484,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         instance = InlineQueryResultCachedVideo(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -3684,16 +3630,13 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultCachedVoice from a given dictionary.
 
         :return: new InlineQueryResultCachedVoice instance.
         :rtype: InlineQueryResultCachedVoice
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -3711,7 +3654,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         instance = InlineQueryResultCachedVoice(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -3847,16 +3790,13 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineQueryResultCachedAudio from a given dictionary.
 
         :return: new InlineQueryResultCachedAudio instance.
         :rtype: InlineQueryResultCachedAudio
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -3873,7 +3813,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         instance = InlineQueryResultCachedAudio(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -3972,16 +3912,13 @@ class InputTextMessageContent(InputMessageContent):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InputTextMessageContent from a given dictionary.
 
         :return: new InputTextMessageContent instance.
         :rtype: InputTextMessageContent
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -3992,7 +3929,7 @@ class InputTextMessageContent(InputMessageContent):
         instance = InputTextMessageContent(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -4090,16 +4027,13 @@ class InputLocationMessageContent(InputMessageContent):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InputLocationMessageContent from a given dictionary.
 
         :return: new InputLocationMessageContent instance.
         :rtype: InputLocationMessageContent
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -4110,7 +4044,7 @@ class InputLocationMessageContent(InputMessageContent):
         instance = InputLocationMessageContent(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -4241,16 +4175,13 @@ class InputVenueMessageContent(InputMessageContent):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InputVenueMessageContent from a given dictionary.
 
         :return: new InputVenueMessageContent instance.
         :rtype: InputVenueMessageContent
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -4264,7 +4195,7 @@ class InputVenueMessageContent(InputMessageContent):
         instance = InputVenueMessageContent(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -4375,16 +4306,13 @@ class InputContactMessageContent(InputMessageContent):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InputContactMessageContent from a given dictionary.
 
         :return: new InputContactMessageContent instance.
         :rtype: InputContactMessageContent
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -4396,7 +4324,7 @@ class InputContactMessageContent(InputMessageContent):
         instance = InputContactMessageContent(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """

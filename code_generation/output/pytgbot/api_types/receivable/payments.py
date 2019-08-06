@@ -107,6 +107,24 @@ class Invoice(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Invoice constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['title'] = u(array.get('title'))
+        data['description'] = u(array.get('description'))
+        data['start_parameter'] = u(array.get('start_parameter'))
+        data['currency'] = u(array.get('currency'))
+        data['total_amount'] = int(array.get('total_amount'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new Invoice from a given dictionary.
@@ -114,17 +132,11 @@ class Invoice(Result):
         :return: new Invoice instance.
         :rtype: Invoice
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['title'] = u(array.get('title'))
-        data['description'] = u(array.get('description'))
-        data['start_parameter'] = u(array.get('start_parameter'))
-        data['currency'] = u(array.get('currency'))
-        data['total_amount'] = int(array.get('total_amount'))
+        data = Invoice.validate_array(array)
         data['_raw'] = array
         return Invoice(**data)
     # end def from_array
@@ -268,6 +280,25 @@ class ShippingAddress(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ShippingAddress constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['country_code'] = u(array.get('country_code'))
+        data['state'] = u(array.get('state'))
+        data['city'] = u(array.get('city'))
+        data['street_line1'] = u(array.get('street_line1'))
+        data['street_line2'] = u(array.get('street_line2'))
+        data['post_code'] = u(array.get('post_code'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new ShippingAddress from a given dictionary.
@@ -275,18 +306,11 @@ class ShippingAddress(Result):
         :return: new ShippingAddress instance.
         :rtype: ShippingAddress
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['country_code'] = u(array.get('country_code'))
-        data['state'] = u(array.get('state'))
-        data['city'] = u(array.get('city'))
-        data['street_line1'] = u(array.get('street_line1'))
-        data['street_line2'] = u(array.get('street_line2'))
-        data['post_code'] = u(array.get('post_code'))
+        data = ShippingAddress.validate_array(array)
         data['_raw'] = array
         return ShippingAddress(**data)
     # end def from_array
@@ -408,6 +432,25 @@ class OrderInfo(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the OrderInfo constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.payments import ShippingAddress
+        
+        data = Result.validate_array(array)
+        data['name'] = u(array.get('name')) if array.get('name') is not None else None
+        data['phone_number'] = u(array.get('phone_number')) if array.get('phone_number') is not None else None
+        data['email'] = u(array.get('email')) if array.get('email') is not None else None
+        data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address')) if array.get('shipping_address') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new OrderInfo from a given dictionary.
@@ -415,18 +458,11 @@ class OrderInfo(Result):
         :return: new OrderInfo instance.
         :rtype: OrderInfo
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.payments import ShippingAddress
-        
 
-        data = {}
-        data['name'] = u(array.get('name')) if array.get('name') is not None else None
-        data['phone_number'] = u(array.get('phone_number')) if array.get('phone_number') is not None else None
-        data['email'] = u(array.get('email')) if array.get('email') is not None else None
-        data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address')) if array.get('shipping_address') is not None else None
+        data = OrderInfo.validate_array(array)
         data['_raw'] = array
         return OrderInfo(**data)
     # end def from_array
@@ -584,21 +620,17 @@ class SuccessfulPayment(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new SuccessfulPayment from a given dictionary.
+        Builds a new array with valid values for the SuccessfulPayment constructor.
 
-        :return: new SuccessfulPayment instance.
-        :rtype: SuccessfulPayment
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.payments import OrderInfo
         
-
-        data = {}
+        data = Result.validate_array(array)
         data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
         data['invoice_payload'] = u(array.get('invoice_payload'))
@@ -606,6 +638,22 @@ class SuccessfulPayment(Result):
         data['provider_payment_charge_id'] = u(array.get('provider_payment_charge_id'))
         data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new SuccessfulPayment from a given dictionary.
+
+        :return: new SuccessfulPayment instance.
+        :rtype: SuccessfulPayment
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = SuccessfulPayment.validate_array(array)
         data['_raw'] = array
         return SuccessfulPayment(**data)
     # end def from_array
@@ -730,6 +778,26 @@ class ShippingQuery(UpdateType):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ShippingQuery constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.payments import ShippingAddress
+        from pytgbot.api_types.receivable.peer import User
+        
+        data = UpdateType.validate_array(array)
+        data['id'] = u(array.get('id'))
+        data['from_peer'] = User.from_array(array.get('from'))
+        data['invoice_payload'] = u(array.get('invoice_payload'))
+        data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new ShippingQuery from a given dictionary.
@@ -737,19 +805,11 @@ class ShippingQuery(UpdateType):
         :return: new ShippingQuery instance.
         :rtype: ShippingQuery
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.payments import ShippingAddress
-        from pytgbot.api_types.receivable.peer import User
-        
 
-        data = {}
-        data['id'] = u(array.get('id'))
-        data['from_peer'] = User.from_array(array.get('from'))
-        data['invoice_payload'] = u(array.get('invoice_payload'))
-        data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address'))
+        data = ShippingQuery.validate_array(array)
         data['_raw'] = array
         return ShippingQuery(**data)
     # end def from_array
@@ -908,22 +968,18 @@ class PreCheckoutQuery(UpdateType):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new PreCheckoutQuery from a given dictionary.
+        Builds a new array with valid values for the PreCheckoutQuery constructor.
 
-        :return: new PreCheckoutQuery instance.
-        :rtype: PreCheckoutQuery
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.payments import OrderInfo
         from pytgbot.api_types.receivable.peer import User
         
-
-        data = {}
+        data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
         data['currency'] = u(array.get('currency'))
@@ -931,6 +987,22 @@ class PreCheckoutQuery(UpdateType):
         data['invoice_payload'] = u(array.get('invoice_payload'))
         data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PreCheckoutQuery from a given dictionary.
+
+        :return: new PreCheckoutQuery instance.
+        :rtype: PreCheckoutQuery
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PreCheckoutQuery.validate_array(array)
         data['_raw'] = array
         return PreCheckoutQuery(**data)
     # end def from_array

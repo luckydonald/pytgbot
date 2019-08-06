@@ -119,16 +119,13 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new ReplyKeyboardMarkup from a given dictionary.
 
         :return: new ReplyKeyboardMarkup instance.
         :rtype: ReplyKeyboardMarkup
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -140,7 +137,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         instance = ReplyKeyboardMarkup(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -250,16 +247,13 @@ class KeyboardButton(Button):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new KeyboardButton from a given dictionary.
 
         :return: new KeyboardButton instance.
         :rtype: KeyboardButton
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -270,7 +264,7 @@ class KeyboardButton(Button):
         instance = KeyboardButton(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -362,16 +356,13 @@ class ReplyKeyboardRemove(ReplyMarkup):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new ReplyKeyboardRemove from a given dictionary.
 
         :return: new ReplyKeyboardRemove instance.
         :rtype: ReplyKeyboardRemove
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -381,7 +372,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         instance = ReplyKeyboardRemove(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -456,16 +447,13 @@ class InlineKeyboardMarkup(ReplyMarkup):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineKeyboardMarkup from a given dictionary.
 
         :return: new InlineKeyboardMarkup instance.
         :rtype: InlineKeyboardMarkup
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -474,7 +462,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         instance = InlineKeyboardMarkup(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -634,16 +622,13 @@ class InlineKeyboardButton(Button):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new InlineKeyboardButton from a given dictionary.
 
         :return: new InlineKeyboardButton instance.
         :rtype: InlineKeyboardButton
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.updates import CallbackGame
 
@@ -659,7 +644,7 @@ class InlineKeyboardButton(Button):
         instance = InlineKeyboardButton(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """
@@ -767,16 +752,13 @@ class ForceReply(ReplyMarkup):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
         Deserialize a new ForceReply from a given dictionary.
 
         :return: new ForceReply instance.
         :rtype: ForceReply
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = {}
@@ -786,7 +768,7 @@ class ForceReply(ReplyMarkup):
         instance = ForceReply(**data)
         instance._raw = array
         return instance
-    # end def from_array
+    # end def validate_array
 
     def __str__(self):
         """

@@ -112,6 +112,27 @@ class InlineQuery(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InlineQuery constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import Location
+        from pytgbot.api_types.receivable.peer import User
+        
+        data = Result.validate_array(array)
+        data['id'] = u(array.get('id'))
+        data['from_peer'] = User.from_array(array.get('from'))
+        data['query'] = u(array.get('query'))
+        data['offset'] = u(array.get('offset'))
+        data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new InlineQuery from a given dictionary.
@@ -119,20 +140,11 @@ class InlineQuery(Result):
         :return: new InlineQuery instance.
         :rtype: InlineQuery
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Location
-        from pytgbot.api_types.receivable.peer import User
-        
 
-        data = {}
-        data['id'] = u(array.get('id'))
-        data['from_peer'] = User.from_array(array.get('from'))
-        data['query'] = u(array.get('query'))
-        data['offset'] = u(array.get('offset'))
-        data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
+        data = InlineQuery.validate_array(array)
         data['_raw'] = array
         return InlineQuery(**data)
     # end def from_array
@@ -272,6 +284,27 @@ class ChosenInlineResult(UpdateType):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ChosenInlineResult constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import Location
+        from pytgbot.api_types.receivable.peer import User
+        
+        data = UpdateType.validate_array(array)
+        data['result_id'] = u(array.get('result_id'))
+        data['from_peer'] = User.from_array(array.get('from'))
+        data['query'] = u(array.get('query'))
+        data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
+        data['inline_message_id'] = u(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new ChosenInlineResult from a given dictionary.
@@ -279,20 +312,11 @@ class ChosenInlineResult(UpdateType):
         :return: new ChosenInlineResult instance.
         :rtype: ChosenInlineResult
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Location
-        from pytgbot.api_types.receivable.peer import User
-        
 
-        data = {}
-        data['result_id'] = u(array.get('result_id'))
-        data['from_peer'] = User.from_array(array.get('from'))
-        data['query'] = u(array.get('query'))
-        data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
-        data['inline_message_id'] = u(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
+        data = ChosenInlineResult.validate_array(array)
         data['_raw'] = array
         return ChosenInlineResult(**data)
     # end def from_array

@@ -77,6 +77,24 @@ class PassportData(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportData constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.passport import EncryptedCredentials
+        from pytgbot.api_types.receivable.passport import EncryptedPassportElement
+        
+        data = Result.validate_array(array)
+        data['data'] = EncryptedPassportElement.from_array_list(array.get('data'), list_level=1)
+        data['credentials'] = EncryptedCredentials.from_array(array.get('credentials'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportData from a given dictionary.
@@ -84,17 +102,11 @@ class PassportData(Result):
         :return: new PassportData instance.
         :rtype: PassportData
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.passport import EncryptedCredentials
-        from pytgbot.api_types.receivable.passport import EncryptedPassportElement
-        
 
-        data = {}
-        data['data'] = EncryptedPassportElement.from_array_list(array.get('data'), list_level=1)
-        data['credentials'] = EncryptedCredentials.from_array(array.get('credentials'))
+        data = PassportData.validate_array(array)
         data['_raw'] = array
         return PassportData(**data)
     # end def from_array
@@ -203,6 +215,22 @@ class PassportFile(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportFile constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['file_size'] = int(array.get('file_size'))
+        data['file_date'] = int(array.get('file_date'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new PassportFile from a given dictionary.
@@ -210,15 +238,11 @@ class PassportFile(Result):
         :return: new PassportFile instance.
         :rtype: PassportFile
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['file_size'] = int(array.get('file_size'))
-        data['file_date'] = int(array.get('file_date'))
+        data = PassportFile.validate_array(array)
         data['_raw'] = array
         return PassportFile(**data)
     # end def from_array
@@ -416,21 +440,17 @@ class EncryptedPassportElement(Result):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new EncryptedPassportElement from a given dictionary.
+        Builds a new array with valid values for the EncryptedPassportElement constructor.
 
-        :return: new EncryptedPassportElement instance.
-        :rtype: EncryptedPassportElement
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.passport import PassportFile
         
-
-        data = {}
+        data = Result.validate_array(array)
         data['type'] = u(array.get('type'))
         data['hash'] = u(array.get('hash'))
         data['data'] = u(array.get('data')) if array.get('data') is not None else None
@@ -441,6 +461,22 @@ class EncryptedPassportElement(Result):
         data['reverse_side'] = PassportFile.from_array(array.get('reverse_side')) if array.get('reverse_side') is not None else None
         data['selfie'] = PassportFile.from_array(array.get('selfie')) if array.get('selfie') is not None else None
         data['translation'] = PassportFile.from_array_list(array.get('translation'), list_level=1) if array.get('translation') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new EncryptedPassportElement from a given dictionary.
+
+        :return: new EncryptedPassportElement instance.
+        :rtype: EncryptedPassportElement
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = EncryptedPassportElement.validate_array(array)
         data['_raw'] = array
         return EncryptedPassportElement(**data)
     # end def from_array
@@ -551,6 +587,22 @@ class EncryptedCredentials(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the EncryptedCredentials constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['data'] = u(array.get('data'))
+        data['hash'] = u(array.get('hash'))
+        data['secret'] = u(array.get('secret'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new EncryptedCredentials from a given dictionary.
@@ -558,15 +610,11 @@ class EncryptedCredentials(Result):
         :return: new EncryptedCredentials instance.
         :rtype: EncryptedCredentials
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['data'] = u(array.get('data'))
-        data['hash'] = u(array.get('hash'))
-        data['secret'] = u(array.get('secret'))
+        data = EncryptedCredentials.validate_array(array)
         data['_raw'] = array
         return EncryptedCredentials(**data)
     # end def from_array

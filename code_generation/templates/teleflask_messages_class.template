@@ -88,8 +88,8 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         :rtype: dict
         """
         array = super({{ function.class_name_teleflask_message }}, self).to_array()
-        {# fresh line #}
-        {%- for variable in function.class_variables -%}
+        {# fresh line -#}
+        {% for variable in function.class_variables -%}
         {%- if variable.optional %}if self.{{ variable.name }} is not None:
             {{ set_array(variable)|indent(12) }}
         {% else -%}
@@ -100,24 +100,21 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new {{ function.class_name_teleflask_message }} from a given dictionary.
+        Builds a new array with valid values for the {{ function.class_name_teleflask_message }} constructor.
 
-        :return: new {{ function.class_name_teleflask_message }} instance.
-        :rtype: {{ function.class_name_teleflask_message }}
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         {#- strip linebreak after #}
         {{- self.imports_block() -}}
         {#- does strip before #}
-
-        data = {}
+        {#- this will be a new line #}
+        data = SendableMessageBase.validate_array(array)
         {% for variable in function.class_variables -%}
-        {% if variable.types|length == 1 -%}
+        {%- if variable.types|length == 1 -%}
         {{- set_data_array_element(variable, variable.types[0], clazz, variable.optional) -}}
         {% else -%}
         {%- if variable.optional -%}
@@ -131,8 +128,25 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
         # end if
-        {% endif -%}
-        {%- endfor -%}{%- if not is_sendable -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {#- remove empty line  #}
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new {{ function.class_name_teleflask_message }} from a given dictionary.
+
+        :return: new {{ function.class_name_teleflask_message }} instance.
+        :rtype: {{ function.class_name_teleflask_message }}
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = {{ function.class_name_teleflask_message }}.validate_array(array)
+        {%- if not is_sendable -%}
         return {{ function.class_name_teleflask_message }}(**data){% else %}
         instance = {{ function.class_name_teleflask_message }}(**data)
         return instance{% endif %}

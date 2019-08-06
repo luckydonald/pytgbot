@@ -85,6 +85,24 @@ class GameHighScore(Result):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the GameHighScore constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.peer import User
+        
+        data = Result.validate_array(array)
+        data['position'] = int(array.get('position'))
+        data['user'] = User.from_array(array.get('user'))
+        data['score'] = int(array.get('score'))
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new GameHighScore from a given dictionary.
@@ -92,17 +110,11 @@ class GameHighScore(Result):
         :return: new GameHighScore instance.
         :rtype: GameHighScore
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
-        
 
-        data = {}
-        data['position'] = int(array.get('position'))
-        data['user'] = User.from_array(array.get('user'))
-        data['score'] = int(array.get('score'))
+        data = GameHighScore.validate_array(array)
         data['_raw'] = array
         return GameHighScore(**data)
     # end def from_array

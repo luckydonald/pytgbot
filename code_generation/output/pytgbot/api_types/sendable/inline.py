@@ -174,22 +174,18 @@ class InlineQueryResultArticle(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultArticle from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultArticle constructor.
 
-        :return: new InlineQueryResultArticle instance.
-        :rtype: InlineQueryResultArticle
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))
@@ -202,6 +198,21 @@ class InlineQueryResultArticle(InlineQueryResult):
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultArticle from a given dictionary.
+
+        :return: new InlineQueryResultArticle instance.
+        :rtype: InlineQueryResultArticle
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultArticle.validate_array(array)
         instance = InlineQueryResultArticle(**data)
         instance._raw = array
         return instance
@@ -413,22 +424,18 @@ class InlineQueryResultPhoto(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultPhoto from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultPhoto constructor.
 
-        :return: new InlineQueryResultPhoto instance.
-        :rtype: InlineQueryResultPhoto
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['photo_url'] = u(array.get('photo_url'))
@@ -442,6 +449,21 @@ class InlineQueryResultPhoto(InlineQueryResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultPhoto from a given dictionary.
+
+        :return: new InlineQueryResultPhoto instance.
+        :rtype: InlineQueryResultPhoto
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultPhoto.validate_array(array)
         instance = InlineQueryResultPhoto(**data)
         instance._raw = array
         return instance
@@ -652,22 +674,18 @@ class InlineQueryResultGif(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultGif from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultGif constructor.
 
-        :return: new InlineQueryResultGif instance.
-        :rtype: InlineQueryResultGif
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['gif_url'] = u(array.get('gif_url'))
@@ -681,6 +699,21 @@ class InlineQueryResultGif(InlineQueryResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultGif from a given dictionary.
+
+        :return: new InlineQueryResultGif instance.
+        :rtype: InlineQueryResultGif
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultGif.validate_array(array)
         instance = InlineQueryResultGif(**data)
         instance._raw = array
         return instance
@@ -891,22 +924,18 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultMpeg4Gif from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultMpeg4Gif constructor.
 
-        :return: new InlineQueryResultMpeg4Gif instance.
-        :rtype: InlineQueryResultMpeg4Gif
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['mpeg4_url'] = u(array.get('mpeg4_url'))
@@ -920,6 +949,21 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultMpeg4Gif from a given dictionary.
+
+        :return: new InlineQueryResultMpeg4Gif instance.
+        :rtype: InlineQueryResultMpeg4Gif
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultMpeg4Gif.validate_array(array)
         instance = InlineQueryResultMpeg4Gif(**data)
         instance._raw = array
         return instance
@@ -1156,22 +1200,18 @@ class InlineQueryResultVideo(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultVideo from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultVideo constructor.
 
-        :return: new InlineQueryResultVideo instance.
-        :rtype: InlineQueryResultVideo
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['video_url'] = u(array.get('video_url'))
@@ -1187,6 +1227,21 @@ class InlineQueryResultVideo(InlineQueryResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultVideo from a given dictionary.
+
+        :return: new InlineQueryResultVideo instance.
+        :rtype: InlineQueryResultVideo
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultVideo.validate_array(array)
         instance = InlineQueryResultVideo(**data)
         instance._raw = array
         return instance
@@ -1377,22 +1432,18 @@ class InlineQueryResultAudio(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultAudio from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultAudio constructor.
 
-        :return: new InlineQueryResultAudio instance.
-        :rtype: InlineQueryResultAudio
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['audio_url'] = u(array.get('audio_url'))
@@ -1404,6 +1455,21 @@ class InlineQueryResultAudio(InlineQueryResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultAudio from a given dictionary.
+
+        :return: new InlineQueryResultAudio instance.
+        :rtype: InlineQueryResultAudio
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultAudio.validate_array(array)
         instance = InlineQueryResultAudio(**data)
         instance._raw = array
         return instance
@@ -1582,22 +1648,18 @@ class InlineQueryResultVoice(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultVoice from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultVoice constructor.
 
-        :return: new InlineQueryResultVoice instance.
-        :rtype: InlineQueryResultVoice
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['voice_url'] = u(array.get('voice_url'))
@@ -1608,6 +1670,21 @@ class InlineQueryResultVoice(InlineQueryResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultVoice from a given dictionary.
+
+        :return: new InlineQueryResultVoice instance.
+        :rtype: InlineQueryResultVoice
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultVoice.validate_array(array)
         instance = InlineQueryResultVoice(**data)
         instance._raw = array
         return instance
@@ -1832,22 +1909,18 @@ class InlineQueryResultDocument(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultDocument from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultDocument constructor.
 
-        :return: new InlineQueryResultDocument instance.
-        :rtype: InlineQueryResultDocument
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))
@@ -1862,6 +1935,21 @@ class InlineQueryResultDocument(InlineQueryResult):
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultDocument from a given dictionary.
+
+        :return: new InlineQueryResultDocument instance.
+        :rtype: InlineQueryResultDocument
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultDocument.validate_array(array)
         instance = InlineQueryResultDocument(**data)
         instance._raw = array
         return instance
@@ -2059,22 +2147,18 @@ class InlineQueryResultLocation(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultLocation from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultLocation constructor.
 
-        :return: new InlineQueryResultLocation instance.
-        :rtype: InlineQueryResultLocation
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['latitude'] = float(array.get('latitude'))
@@ -2087,6 +2171,21 @@ class InlineQueryResultLocation(InlineQueryResult):
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultLocation from a given dictionary.
+
+        :return: new InlineQueryResultLocation instance.
+        :rtype: InlineQueryResultLocation
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultLocation.validate_array(array)
         instance = InlineQueryResultLocation(**data)
         instance._raw = array
         return instance
@@ -2308,22 +2407,18 @@ class InlineQueryResultVenue(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultVenue from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultVenue constructor.
 
-        :return: new InlineQueryResultVenue instance.
-        :rtype: InlineQueryResultVenue
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['latitude'] = float(array.get('latitude'))
@@ -2338,6 +2433,21 @@ class InlineQueryResultVenue(InlineQueryResult):
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultVenue from a given dictionary.
+
+        :return: new InlineQueryResultVenue instance.
+        :rtype: InlineQueryResultVenue
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultVenue.validate_array(array)
         instance = InlineQueryResultVenue(**data)
         instance._raw = array
         return instance
@@ -2539,22 +2649,18 @@ class InlineQueryResultContact(InlineQueryResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultContact from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultContact constructor.
 
-        :return: new InlineQueryResultContact instance.
-        :rtype: InlineQueryResultContact
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['phone_number'] = u(array.get('phone_number'))
@@ -2567,6 +2673,21 @@ class InlineQueryResultContact(InlineQueryResult):
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultContact from a given dictionary.
+
+        :return: new InlineQueryResultContact instance.
+        :rtype: InlineQueryResultContact
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultContact.validate_array(array)
         instance = InlineQueryResultContact(**data)
         instance._raw = array
         return instance
@@ -2686,6 +2807,25 @@ class InlineQueryResultGame(InlineQueryResult):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InlineQueryResultGame constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        
+        data = InlineQueryResult.validate_array(array)
+        data['type'] = u(array.get('type'))
+        data['id'] = u(array.get('id'))
+        data['game_short_name'] = u(array.get('game_short_name'))
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new InlineQueryResultGame from a given dictionary.
@@ -2693,19 +2833,11 @@ class InlineQueryResultGame(InlineQueryResult):
         :return: new InlineQueryResultGame instance.
         :rtype: InlineQueryResultGame
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
 
-        data = {}
-        data['type'] = u(array.get('type'))
-        data['id'] = u(array.get('id'))
-        data['game_short_name'] = u(array.get('game_short_name'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
-        
+        data = InlineQueryResultGame.validate_array(array)
         instance = InlineQueryResultGame(**data)
         instance._raw = array
         return instance
@@ -2884,22 +3016,18 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultCachedPhoto from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultCachedPhoto constructor.
 
-        :return: new InlineQueryResultCachedPhoto instance.
-        :rtype: InlineQueryResultCachedPhoto
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['photo_file_id'] = u(array.get('photo_file_id'))
@@ -2910,6 +3038,21 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultCachedPhoto from a given dictionary.
+
+        :return: new InlineQueryResultCachedPhoto instance.
+        :rtype: InlineQueryResultCachedPhoto
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultCachedPhoto.validate_array(array)
         instance = InlineQueryResultCachedPhoto(**data)
         instance._raw = array
         return instance
@@ -3076,22 +3219,18 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultCachedGif from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultCachedGif constructor.
 
-        :return: new InlineQueryResultCachedGif instance.
-        :rtype: InlineQueryResultCachedGif
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['gif_file_id'] = u(array.get('gif_file_id'))
@@ -3101,6 +3240,21 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultCachedGif from a given dictionary.
+
+        :return: new InlineQueryResultCachedGif instance.
+        :rtype: InlineQueryResultCachedGif
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultCachedGif.validate_array(array)
         instance = InlineQueryResultCachedGif(**data)
         instance._raw = array
         return instance
@@ -3267,22 +3421,18 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultCachedMpeg4Gif from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultCachedMpeg4Gif constructor.
 
-        :return: new InlineQueryResultCachedMpeg4Gif instance.
-        :rtype: InlineQueryResultCachedMpeg4Gif
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['mpeg4_file_id'] = u(array.get('mpeg4_file_id'))
@@ -3292,6 +3442,21 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultCachedMpeg4Gif from a given dictionary.
+
+        :return: new InlineQueryResultCachedMpeg4Gif instance.
+        :rtype: InlineQueryResultCachedMpeg4Gif
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultCachedMpeg4Gif.validate_array(array)
         instance = InlineQueryResultCachedMpeg4Gif(**data)
         instance._raw = array
         return instance
@@ -3424,6 +3589,27 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InlineQueryResultCachedSticker constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.sendable.inline import InputMessageContent
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        
+        data = InlineQueryCachedResult.validate_array(array)
+        data['type'] = u(array.get('type'))
+        data['id'] = u(array.get('id'))
+        data['sticker_file_id'] = u(array.get('sticker_file_id'))
+        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new InlineQueryResultCachedSticker from a given dictionary.
@@ -3431,21 +3617,11 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :return: new InlineQueryResultCachedSticker instance.
         :rtype: InlineQueryResultCachedSticker
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
 
-        data = {}
-        data['type'] = u(array.get('type'))
-        data['id'] = u(array.get('id'))
-        data['sticker_file_id'] = u(array.get('sticker_file_id'))
-        data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
-        data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        data = InlineQueryResultCachedSticker.validate_array(array)
         instance = InlineQueryResultCachedSticker(**data)
         instance._raw = array
         return instance
@@ -3625,22 +3801,18 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultCachedDocument from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultCachedDocument constructor.
 
-        :return: new InlineQueryResultCachedDocument instance.
-        :rtype: InlineQueryResultCachedDocument
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))
@@ -3651,6 +3823,21 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultCachedDocument from a given dictionary.
+
+        :return: new InlineQueryResultCachedDocument instance.
+        :rtype: InlineQueryResultCachedDocument
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultCachedDocument.validate_array(array)
         instance = InlineQueryResultCachedDocument(**data)
         instance._raw = array
         return instance
@@ -3828,22 +4015,18 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultCachedVideo from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultCachedVideo constructor.
 
-        :return: new InlineQueryResultCachedVideo instance.
-        :rtype: InlineQueryResultCachedVideo
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['video_file_id'] = u(array.get('video_file_id'))
@@ -3854,6 +4037,21 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultCachedVideo from a given dictionary.
+
+        :return: new InlineQueryResultCachedVideo instance.
+        :rtype: InlineQueryResultCachedVideo
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultCachedVideo.validate_array(array)
         instance = InlineQueryResultCachedVideo(**data)
         instance._raw = array
         return instance
@@ -4021,22 +4219,18 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultCachedVoice from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultCachedVoice constructor.
 
-        :return: new InlineQueryResultCachedVoice instance.
-        :rtype: InlineQueryResultCachedVoice
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['voice_file_id'] = u(array.get('voice_file_id'))
@@ -4046,6 +4240,21 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultCachedVoice from a given dictionary.
+
+        :return: new InlineQueryResultCachedVoice instance.
+        :rtype: InlineQueryResultCachedVoice
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultCachedVoice.validate_array(array)
         instance = InlineQueryResultCachedVoice(**data)
         instance._raw = array
         return instance
@@ -4202,22 +4411,18 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InlineQueryResultCachedAudio from a given dictionary.
+        Builds a new array with valid values for the InlineQueryResultCachedAudio constructor.
 
-        :return: new InlineQueryResultCachedAudio instance.
-        :rtype: InlineQueryResultCachedAudio
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
-
-        data = {}
+        data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
         data['id'] = u(array.get('id'))
         data['audio_file_id'] = u(array.get('audio_file_id'))
@@ -4226,6 +4431,21 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResultCachedAudio from a given dictionary.
+
+        :return: new InlineQueryResultCachedAudio instance.
+        :rtype: InlineQueryResultCachedAudio
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResultCachedAudio.validate_array(array)
         instance = InlineQueryResultCachedAudio(**data)
         instance._raw = array
         return instance
@@ -4330,6 +4550,22 @@ class InputTextMessageContent(InputMessageContent):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputTextMessageContent constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = InputMessageContent.validate_array(array)
+        data['message_text'] = u(array.get('message_text'))
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['disable_web_page_preview'] = bool(array.get('disable_web_page_preview')) if array.get('disable_web_page_preview') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new InputTextMessageContent from a given dictionary.
@@ -4337,16 +4573,11 @@ class InputTextMessageContent(InputMessageContent):
         :return: new InputTextMessageContent instance.
         :rtype: InputTextMessageContent
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['message_text'] = u(array.get('message_text'))
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['disable_web_page_preview'] = bool(array.get('disable_web_page_preview')) if array.get('disable_web_page_preview') is not None else None
-        
+        data = InputTextMessageContent.validate_array(array)
         instance = InputTextMessageContent(**data)
         instance._raw = array
         return instance
@@ -4448,6 +4679,22 @@ class InputLocationMessageContent(InputMessageContent):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputLocationMessageContent constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = InputMessageContent.validate_array(array)
+        data['latitude'] = float(array.get('latitude'))
+        data['longitude'] = float(array.get('longitude'))
+        data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new InputLocationMessageContent from a given dictionary.
@@ -4455,16 +4702,11 @@ class InputLocationMessageContent(InputMessageContent):
         :return: new InputLocationMessageContent instance.
         :rtype: InputLocationMessageContent
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['latitude'] = float(array.get('latitude'))
-        data['longitude'] = float(array.get('longitude'))
-        data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
-        
+        data = InputLocationMessageContent.validate_array(array)
         instance = InputLocationMessageContent(**data)
         instance._raw = array
         return instance
@@ -4601,19 +4843,15 @@ class InputVenueMessageContent(InputMessageContent):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InputVenueMessageContent from a given dictionary.
+        Builds a new array with valid values for the InputVenueMessageContent constructor.
 
-        :return: new InputVenueMessageContent instance.
-        :rtype: InputVenueMessageContent
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = InputMessageContent.validate_array(array)
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
         data['title'] = u(array.get('title'))
@@ -4621,6 +4859,21 @@ class InputVenueMessageContent(InputMessageContent):
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputVenueMessageContent from a given dictionary.
+
+        :return: new InputVenueMessageContent instance.
+        :rtype: InputVenueMessageContent
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputVenueMessageContent.validate_array(array)
         instance = InputVenueMessageContent(**data)
         instance._raw = array
         return instance
@@ -4737,6 +4990,23 @@ class InputContactMessageContent(InputMessageContent):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputContactMessageContent constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = InputMessageContent.validate_array(array)
+        data['phone_number'] = u(array.get('phone_number'))
+        data['first_name'] = u(array.get('first_name'))
+        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
+        data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new InputContactMessageContent from a given dictionary.
@@ -4744,17 +5014,11 @@ class InputContactMessageContent(InputMessageContent):
         :return: new InputContactMessageContent instance.
         :rtype: InputContactMessageContent
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['phone_number'] = u(array.get('phone_number'))
-        data['first_name'] = u(array.get('first_name'))
-        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
-        data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
-        
+        data = InputContactMessageContent.validate_array(array)
         instance = InputContactMessageContent(**data)
         instance._raw = array
         return instance

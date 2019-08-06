@@ -91,6 +91,23 @@ class InputMediaPhoto(InputMedia):
     # end def to_array
 
     @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputMediaPhoto constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = InputMedia.validate_array(array)
+        data['type'] = u(array.get('type'))
+        data['media'] = u(array.get('media'))
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        
+    # end def validate_array
+
+    @staticmethod
     def from_array(array):
         """
         Deserialize a new InputMediaPhoto from a given dictionary.
@@ -98,17 +115,11 @@ class InputMediaPhoto(InputMedia):
         :return: new InputMediaPhoto instance.
         :rtype: InputMediaPhoto
         """
-        if array is None or not array:
+        if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
-        data['type'] = u(array.get('type'))
-        data['media'] = u(array.get('media'))
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        
+        data = InputMediaPhoto.validate_array(array)
         instance = InputMediaPhoto(**data)
         instance._raw = array
         return instance
@@ -289,21 +300,17 @@ class InputMediaVideo(InputMediaWithThumb):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InputMediaVideo from a given dictionary.
+        Builds a new array with valid values for the InputMediaVideo constructor.
 
-        :return: new InputMediaVideo instance.
-        :rtype: InputMediaVideo
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
         
-
-        data = {}
+        data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
         if array.get('thumb') is None:
@@ -314,14 +321,28 @@ class InputMediaVideo(InputMediaWithThumb):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end if
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['supports_streaming'] = bool(array.get('supports_streaming')) if array.get('supports_streaming') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaVideo from a given dictionary.
+
+        :return: new InputMediaVideo instance.
+        :rtype: InputMediaVideo
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaVideo.validate_array(array)
         instance = InputMediaVideo(**data)
         instance._raw = array
         return instance
@@ -491,21 +512,17 @@ class InputMediaAnimation(InputMediaWithThumb):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InputMediaAnimation from a given dictionary.
+        Builds a new array with valid values for the InputMediaAnimation constructor.
 
-        :return: new InputMediaAnimation instance.
-        :rtype: InputMediaAnimation
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
         
-
-        data = {}
+        data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
         if array.get('thumb') is None:
@@ -516,13 +533,27 @@ class InputMediaAnimation(InputMediaWithThumb):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end if
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaAnimation from a given dictionary.
+
+        :return: new InputMediaAnimation instance.
+        :rtype: InputMediaAnimation
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaAnimation.validate_array(array)
         instance = InputMediaAnimation(**data)
         instance._raw = array
         return instance
@@ -694,21 +725,17 @@ class InputMediaAudio(InputMediaWithThumb):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InputMediaAudio from a given dictionary.
+        Builds a new array with valid values for the InputMediaAudio constructor.
 
-        :return: new InputMediaAudio instance.
-        :rtype: InputMediaAudio
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
         
-
-        data = {}
+        data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
         if array.get('thumb') is None:
@@ -719,13 +746,27 @@ class InputMediaAudio(InputMediaWithThumb):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end if
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaAudio from a given dictionary.
+
+        :return: new InputMediaAudio instance.
+        :rtype: InputMediaAudio
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaAudio.validate_array(array)
         instance = InputMediaAudio(**data)
         instance._raw = array
         return instance
@@ -862,21 +903,17 @@ class InputMediaDocument(InputMediaWithThumb):
     # end def to_array
 
     @staticmethod
-    def from_array(array):
+    def validate_array(array):
         """
-        Deserialize a new InputMediaDocument from a given dictionary.
+        Builds a new array with valid values for the InputMediaDocument constructor.
 
-        :return: new InputMediaDocument instance.
-        :rtype: InputMediaDocument
+        :return: new array with valid values
+        :rtype: dict
         """
-        if array is None or not array:
-            return None
-        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
         
-
-        data = {}
+        data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
         if array.get('thumb') is None:
@@ -887,10 +924,24 @@ class InputMediaDocument(InputMediaWithThumb):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end if
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaDocument from a given dictionary.
+
+        :return: new InputMediaDocument instance.
+        :rtype: InputMediaDocument
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaDocument.validate_array(array)
         instance = InputMediaDocument(**data)
         instance._raw = array
         return instance
