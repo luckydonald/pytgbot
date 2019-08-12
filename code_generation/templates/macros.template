@@ -74,17 +74,17 @@ array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {
 {%- endmacro %}
 
 
-{%- macro set_data_array_element(variable, var_type, clazz, optional) -%}
+{%- macro set_data_array_element(variable, var_type, clazz_name, optional) -%}
 {% if var_type.is_builtin -%}
         {% if var_type.string == 'str' -%}
         {% if var_type.is_list > 0 -%}
-        data['{{ variable.name }}'] = {{ clazz.clazz }}._builtin_from_array_list(required_type=unicode_type, value=array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        data['{{ variable.name }}'] = {{ clazz_name }}._builtin_from_array_list(required_type=unicode_type, value=array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
         {% else -%}
         data['{{ variable.name }}'] = u(array.get('{{ variable.api_name }}')){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
         {% endif -%}
         {% else -%}
         {% if var_type.is_list > 0 -%}
-        data['{{ variable.name }}'] = {{ clazz.clazz }}._builtin_from_array_list(required_type={{ var_type.string }}, value=array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        data['{{ variable.name }}'] = {{ clazz_name }}._builtin_from_array_list(required_type={{ var_type.string }}, value=array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
         {% else -%}
         data['{{ variable.name }}'] = {{ var_type.string }}(array.get('{{ variable.api_name }}')){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
         {% endif -%}

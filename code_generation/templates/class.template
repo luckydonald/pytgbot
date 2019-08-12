@@ -103,7 +103,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         data = {{ clazz.parent_clazz.string }}.validate_array(array)
         {% for variable in clazz.variables -%}
         {%- if variable.types|length == 1 -%}
-        {{- set_data_array_element(variable, variable.types[0], clazz, variable.optional) -}}
+        {{- set_data_array_element(variable, variable.types[0], clazz.clazz, variable.optional) -}}
         {%- else -%}
         {%- if variable.optional -%}
         if array.get('{{ variable.api_name }}') is None:
@@ -111,7 +111,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% endif -%}
         {%- for var_type in variable.types -%}
         {%- if not loop.first or variable.optional %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
-            {{ set_data_array_element(variable, var_type, clazz, False) -}}
+            {{ set_data_array_element(variable, var_type, clazz.clazz, False) -}}
         {%- endfor -%}
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
