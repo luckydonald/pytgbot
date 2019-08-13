@@ -166,7 +166,11 @@ class MessageEntity(Result):
         """
         Implements `"key" in messageentity_instance`
         """
-        return key in ["type", "offset", "length", "url", "user"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "offset", "length", "url", "user"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class MessageEntity
 
@@ -313,7 +317,11 @@ class PhotoSize(Result):
         """
         Implements `"key" in photosize_instance`
         """
-        return key in ["file_id", "width", "height", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "width", "height", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PhotoSize
 
@@ -502,7 +510,11 @@ class Audio(Media):
         """
         Implements `"key" in audio_instance`
         """
-        return key in ["file_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Audio
 
@@ -668,7 +680,11 @@ class Document(Media):
         """
         Implements `"key" in document_instance`
         """
-        return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "thumb", "file_name", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Document
 
@@ -855,7 +871,11 @@ class Video(Media):
         """
         Implements `"key" in video_instance`
         """
-        return key in ["file_id", "width", "height", "duration", "thumb", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "width", "height", "duration", "thumb", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Video
 
@@ -1054,7 +1074,11 @@ class Animation(Media):
         """
         Implements `"key" in animation_instance`
         """
-        return key in ["file_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Animation
 
@@ -1202,7 +1226,11 @@ class Voice(Media):
         """
         Implements `"key" in voice_instance`
         """
-        return key in ["file_id", "duration", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "duration", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Voice
 
@@ -1366,7 +1394,11 @@ class VideoNote(Media):
         """
         Implements `"key" in videonote_instance`
         """
-        return key in ["file_id", "length", "duration", "thumb", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "length", "duration", "thumb", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class VideoNote
 
@@ -1526,7 +1558,11 @@ class Contact(Media):
         """
         Implements `"key" in contact_instance`
         """
-        return key in ["phone_number", "first_name", "last_name", "user_id", "vcard"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["phone_number", "first_name", "last_name", "user_id", "vcard"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Contact
 
@@ -1650,7 +1686,11 @@ class Location(Media):
         """
         Implements `"key" in location_instance`
         """
-        return key in ["longitude", "latitude"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["longitude", "latitude"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Location
 
@@ -1814,7 +1854,11 @@ class Venue(Media):
         """
         Implements `"key" in venue_instance`
         """
-        return key in ["location", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["location", "title", "address", "foursquare_id", "foursquare_type"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Venue
 
@@ -1938,7 +1982,11 @@ class PollOption(Receivable):
         """
         Implements `"key" in polloption_instance`
         """
-        return key in ["text", "voter_count"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["text", "voter_count"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PollOption
 
@@ -2089,7 +2137,11 @@ class Poll(Media):
         """
         Implements `"key" in poll_instance`
         """
-        return key in ["id", "question", "options", "is_closed"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "question", "options", "is_closed"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Poll
 
@@ -2218,7 +2270,11 @@ class UserProfilePhotos(Result):
         """
         Implements `"key" in userprofilephotos_instance`
         """
-        return key in ["total_count", "photos"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["total_count", "photos"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class UserProfilePhotos
 
@@ -2359,7 +2415,11 @@ class File(Receivable):
         """
         Implements `"key" in file_instance`
         """
-        return key in ["file_id", "file_size", "file_path"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "file_size", "file_path"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class File
 
@@ -2483,7 +2543,11 @@ class ChatPhoto(Result):
         """
         Implements `"key" in chatphoto_instance`
         """
-        return key in ["small_file_id", "big_file_id"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["small_file_id", "big_file_id"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ChatPhoto
 
@@ -2697,7 +2761,11 @@ class Sticker(Media):
         """
         Implements `"key" in sticker_instance`
         """
-        return key in ["file_id", "width", "height", "is_animated", "thumb", "emoji", "set_name", "mask_position", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "width", "height", "is_animated", "thumb", "emoji", "set_name", "mask_position", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Sticker
 
@@ -2879,7 +2947,11 @@ class Game(Media):
         """
         Implements `"key" in game_instance`
         """
-        return key in ["title", "description", "photo", "text", "text_entities", "animation"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["title", "description", "photo", "text", "text_entities", "animation"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Game
 

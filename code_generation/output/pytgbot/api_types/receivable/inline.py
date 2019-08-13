@@ -167,7 +167,11 @@ class InlineQuery(Result):
         """
         Implements `"key" in inlinequery_instance`
         """
-        return key in ["id", "from_peer", "query", "offset", "location"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "from_peer", "query", "offset", "location"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQuery
 
@@ -336,7 +340,11 @@ class ChosenInlineResult(UpdateType):
         """
         Implements `"key" in choseninlineresult_instance`
         """
-        return key in ["result_id", "from_peer", "query", "location", "inline_message_id"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["result_id", "from_peer", "query", "location", "inline_message_id"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ChosenInlineResult
 

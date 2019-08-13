@@ -150,7 +150,11 @@ class PassportElementErrorDataField(PassportElementError):
         """
         Implements `"key" in passportelementerrordatafield_instance`
         """
-        return key in ["source", "type", "field_name", "data_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "field_name", "data_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorDataField
 
@@ -289,7 +293,11 @@ class PassportElementErrorFrontSide(PassportElementError):
         """
         Implements `"key" in passportelementerrorfrontside_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorFrontSide
 
@@ -428,7 +436,11 @@ class PassportElementErrorReverseSide(PassportElementError):
         """
         Implements `"key" in passportelementerrorreverseside_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorReverseSide
 
@@ -567,7 +579,11 @@ class PassportElementErrorSelfie(PassportElementError):
         """
         Implements `"key" in passportelementerrorselfie_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorSelfie
 
@@ -706,7 +722,11 @@ class PassportElementErrorFile(PassportElementError):
         """
         Implements `"key" in passportelementerrorfile_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorFile
 
@@ -846,7 +866,11 @@ class PassportElementErrorFiles(PassportElementError):
         """
         Implements `"key" in passportelementerrorfiles_instance`
         """
-        return key in ["source", "type", "file_hashes", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hashes", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorFiles
 
@@ -985,7 +1009,11 @@ class PassportElementErrorTranslationFile(PassportElementError):
         """
         Implements `"key" in passportelementerrortranslationfile_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorTranslationFile
 
@@ -1125,7 +1153,11 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         """
         Implements `"key" in passportelementerrortranslationfiles_instance`
         """
-        return key in ["source", "type", "file_hashes", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hashes", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorTranslationFiles
 
@@ -1264,7 +1296,11 @@ class PassportElementErrorUnspecified(PassportElementError):
         """
         Implements `"key" in passportelementerrorunspecified_instance`
         """
-        return key in ["source", "type", "element_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "element_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorUnspecified
 

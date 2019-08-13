@@ -288,7 +288,11 @@ class TextMessage(SendableMessageBase):
         """
         Implements `"key" in textmessage_instance`
         """
-        return key in ["text", "receiver", "reply_id", "parse_mode", "disable_web_page_preview", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["text", "receiver", "reply_id", "parse_mode", "disable_web_page_preview", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class TextMessage
 
@@ -556,7 +560,11 @@ class PhotoMessage(SendableMessageBase):
         """
         Implements `"key" in photomessage_instance`
         """
-        return key in ["photo", "receiver", "reply_id", "caption", "parse_mode", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["photo", "receiver", "reply_id", "caption", "parse_mode", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PhotoMessage
 
@@ -888,7 +896,11 @@ class AudioMessage(SendableMessageBase):
         """
         Implements `"key" in audiomessage_instance`
         """
-        return key in ["audio", "receiver", "reply_id", "caption", "parse_mode", "duration", "performer", "title", "thumb", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["audio", "receiver", "reply_id", "caption", "parse_mode", "duration", "performer", "title", "thumb", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class AudioMessage
 
@@ -1182,7 +1194,11 @@ class DocumentMessage(SendableMessageBase):
         """
         Implements `"key" in documentmessage_instance`
         """
-        return key in ["document", "receiver", "reply_id", "thumb", "caption", "parse_mode", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["document", "receiver", "reply_id", "thumb", "caption", "parse_mode", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class DocumentMessage
 
@@ -1524,7 +1540,11 @@ class VideoMessage(SendableMessageBase):
         """
         Implements `"key" in videomessage_instance`
         """
-        return key in ["video", "receiver", "reply_id", "duration", "width", "height", "thumb", "caption", "parse_mode", "supports_streaming", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["video", "receiver", "reply_id", "duration", "width", "height", "thumb", "caption", "parse_mode", "supports_streaming", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class VideoMessage
 
@@ -1854,7 +1874,11 @@ class AnimationMessage(SendableMessageBase):
         """
         Implements `"key" in animationmessage_instance`
         """
-        return key in ["animation", "receiver", "reply_id", "duration", "width", "height", "thumb", "caption", "parse_mode", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["animation", "receiver", "reply_id", "duration", "width", "height", "thumb", "caption", "parse_mode", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class AnimationMessage
 
@@ -2134,7 +2158,11 @@ class VoiceMessage(SendableMessageBase):
         """
         Implements `"key" in voicemessage_instance`
         """
-        return key in ["voice", "receiver", "reply_id", "caption", "parse_mode", "duration", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["voice", "receiver", "reply_id", "caption", "parse_mode", "duration", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class VoiceMessage
 
@@ -2428,7 +2456,11 @@ class VideoNoteMessage(SendableMessageBase):
         """
         Implements `"key" in videonotemessage_instance`
         """
-        return key in ["video_note", "receiver", "reply_id", "duration", "length", "thumb", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["video_note", "receiver", "reply_id", "duration", "length", "thumb", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class VideoNoteMessage
 
@@ -2632,7 +2664,11 @@ class MediaGroupMessage(SendableMessageBase):
         """
         Implements `"key" in mediagroupmessage_instance`
         """
-        return key in ["media", "receiver", "reply_id", "disable_notification"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["media", "receiver", "reply_id", "disable_notification"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class MediaGroupMessage
 
@@ -2885,7 +2921,11 @@ class LocationMessage(SendableMessageBase):
         """
         Implements `"key" in locationmessage_instance`
         """
-        return key in ["latitude", "longitude", "receiver", "reply_id", "live_period", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["latitude", "longitude", "receiver", "reply_id", "live_period", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class LocationMessage
 
@@ -3172,7 +3212,11 @@ class VenueMessage(SendableMessageBase):
         """
         Implements `"key" in venuemessage_instance`
         """
-        return key in ["latitude", "longitude", "title", "address", "receiver", "reply_id", "foursquare_id", "foursquare_type", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["latitude", "longitude", "title", "address", "receiver", "reply_id", "foursquare_id", "foursquare_type", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class VenueMessage
 
@@ -3437,7 +3481,11 @@ class ContactMessage(SendableMessageBase):
         """
         Implements `"key" in contactmessage_instance`
         """
-        return key in ["phone_number", "first_name", "receiver", "reply_id", "last_name", "vcard", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["phone_number", "first_name", "receiver", "reply_id", "last_name", "vcard", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ContactMessage
 
@@ -3679,7 +3727,11 @@ class PollMessage(SendableMessageBase):
         """
         Implements `"key" in pollmessage_instance`
         """
-        return key in ["question", "options", "receiver", "reply_id", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["question", "options", "receiver", "reply_id", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PollMessage
 
@@ -3835,7 +3887,11 @@ class ChatActionMessage(SendableMessageBase):
         """
         Implements `"key" in chatactionmessage_instance`
         """
-        return key in ["action", "receiver"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["action", "receiver"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ChatActionMessage
 
@@ -4079,7 +4135,11 @@ class StickerMessage(SendableMessageBase):
         """
         Implements `"key" in stickermessage_instance`
         """
-        return key in ["sticker", "receiver", "reply_id", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["sticker", "receiver", "reply_id", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class StickerMessage
 
@@ -4494,7 +4554,11 @@ class InvoiceMessage(SendableMessageBase):
         """
         Implements `"key" in invoicemessage_instance`
         """
-        return key in ["title", "description", "payload", "provider_token", "start_parameter", "currency", "prices", "receiver", "reply_id", "provider_data", "photo_url", "photo_size", "photo_width", "photo_height", "need_name", "need_phone_number", "need_email", "need_shipping_address", "send_phone_number_to_provider", "send_email_to_provider", "is_flexible", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["title", "description", "payload", "provider_token", "start_parameter", "currency", "prices", "receiver", "reply_id", "provider_data", "photo_url", "photo_size", "photo_width", "photo_height", "need_name", "need_phone_number", "need_email", "need_shipping_address", "send_phone_number_to_provider", "send_email_to_provider", "is_flexible", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InvoiceMessage
 
@@ -4696,6 +4760,10 @@ class GameMessage(SendableMessageBase):
         """
         Implements `"key" in gamemessage_instance`
         """
-        return key in ["game_short_name", "receiver", "reply_id", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["game_short_name", "receiver", "reply_id", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class GameMessage

@@ -132,7 +132,11 @@ class PassportData(Result):
         """
         Implements `"key" in passportdata_instance`
         """
-        return key in ["data", "credentials"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["data", "credentials"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportData
 
@@ -267,7 +271,11 @@ class PassportFile(Result):
         """
         Implements `"key" in passportfile_instance`
         """
-        return key in ["file_id", "file_size", "file_date"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "file_size", "file_date"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportFile
 
@@ -496,7 +504,11 @@ class EncryptedPassportElement(Result):
         """
         Implements `"key" in encryptedpassportelement_instance`
         """
-        return key in ["type", "hash", "data", "phone_number", "email", "files", "front_side", "reverse_side", "selfie", "translation"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "hash", "data", "phone_number", "email", "files", "front_side", "reverse_side", "selfie", "translation"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class EncryptedPassportElement
 
@@ -631,7 +643,11 @@ class EncryptedCredentials(Result):
         """
         Implements `"key" in encryptedcredentials_instance`
         """
-        return key in ["data", "hash", "secret"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["data", "hash", "secret"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class EncryptedCredentials
 

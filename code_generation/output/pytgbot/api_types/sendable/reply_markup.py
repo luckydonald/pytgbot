@@ -149,7 +149,11 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         """
         Implements `"key" in replykeyboardmarkup_instance`
         """
-        return key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ReplyKeyboardMarkup
 
@@ -281,7 +285,11 @@ class KeyboardButton(Button):
         """
         Implements `"key" in keyboardbutton_instance`
         """
-        return key in ["text", "request_contact", "request_location"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["text", "request_contact", "request_location"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class KeyboardButton
 
@@ -399,7 +407,11 @@ class ReplyKeyboardRemove(ReplyMarkup):
         """
         Implements `"key" in replykeyboardremove_instance`
         """
-        return key in ["remove_keyboard", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["remove_keyboard", "selective"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ReplyKeyboardRemove
 
@@ -512,7 +524,11 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         Implements `"key" in inlinekeyboardmarkup_instance`
         """
-        return key in ["inline_keyboard"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["inline_keyboard"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineKeyboardMarkup
 
@@ -710,7 +726,11 @@ class InlineKeyboardButton(Button):
         """
         Implements `"key" in inlinekeyboardbutton_instance`
         """
-        return key in ["text", "url", "login_url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["text", "url", "login_url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineKeyboardButton
 
@@ -858,7 +878,11 @@ class LoginUrl(Sendable):
         """
         Implements `"key" in loginurl_instance`
         """
-        return key in ["url", "forward_text", "bot_username", "request_write_access"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["url", "forward_text", "bot_username", "request_write_access"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class LoginUrl
 
@@ -990,7 +1014,11 @@ class ForceReply(ReplyMarkup):
         """
         Implements `"key" in forcereply_instance`
         """
-        return key in ["force_reply", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["force_reply", "selective"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ForceReply
 

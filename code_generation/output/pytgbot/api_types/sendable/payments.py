@@ -117,7 +117,11 @@ class LabeledPrice(Sendable):
         """
         Implements `"key" in labeledprice_instance`
         """
-        return key in ["label", "amount"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["label", "amount"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class LabeledPrice
 
@@ -250,7 +254,11 @@ class ShippingOption(Sendable):
         """
         Implements `"key" in shippingoption_instance`
         """
-        return key in ["id", "title", "prices"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "title", "prices"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ShippingOption
 

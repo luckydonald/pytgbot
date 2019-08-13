@@ -172,7 +172,11 @@ class User(Peer):
         """
         Implements `"key" in user_instance`
         """
-        return key in ["id", "is_bot", "first_name", "last_name", "username", "language_code"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "is_bot", "first_name", "last_name", "username", "language_code"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class User
 
@@ -439,7 +443,11 @@ class Chat(Peer):
         """
         Implements `"key" in chat_instance`
         """
-        return key in ["id", "type", "title", "username", "first_name", "last_name", "photo", "description", "invite_link", "pinned_message", "permissions", "sticker_set_name", "can_set_sticker_set"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "type", "title", "username", "first_name", "last_name", "photo", "description", "invite_link", "pinned_message", "permissions", "sticker_set_name", "can_set_sticker_set"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Chat
 
@@ -760,7 +768,11 @@ class ChatMember(Result):
         """
         Implements `"key" in chatmember_instance`
         """
-        return key in ["user", "status", "until_date", "can_be_edited", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_restrict_members", "can_promote_members", "can_change_info", "can_invite_users", "can_pin_messages", "is_member", "can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["user", "status", "until_date", "can_be_edited", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_restrict_members", "can_promote_members", "can_change_info", "can_invite_users", "can_pin_messages", "is_member", "can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ChatMember
 
@@ -952,7 +964,11 @@ class ChatPermissions(Result):
         """
         Implements `"key" in chatpermissions_instance`
         """
-        return key in ["can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews", "can_change_info", "can_invite_users", "can_pin_messages"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews", "can_change_info", "can_invite_users", "can_pin_messages"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ChatPermissions
 

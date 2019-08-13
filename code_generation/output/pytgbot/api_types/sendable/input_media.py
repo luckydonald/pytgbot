@@ -142,7 +142,11 @@ class InputMediaPhoto(InputMedia):
         """
         Implements `"key" in inputmediaphoto_instance`
         """
-        return key in ["type", "media", "caption", "parse_mode"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "caption", "parse_mode"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaPhoto
 
@@ -360,7 +364,11 @@ class InputMediaVideo(InputMediaWithThumb):
         """
         Implements `"key" in inputmediavideo_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaVideo
 
@@ -566,7 +574,11 @@ class InputMediaAnimation(InputMediaWithThumb):
         """
         Implements `"key" in inputmediaanimation_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaAnimation
 
@@ -772,7 +784,11 @@ class InputMediaAudio(InputMediaWithThumb):
         """
         Implements `"key" in inputmediaaudio_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaAudio
 
@@ -942,7 +958,11 @@ class InputMediaDocument(InputMediaWithThumb):
         """
         Implements `"key" in inputmediadocument_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "thumb", "caption", "parse_mode"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaDocument
 

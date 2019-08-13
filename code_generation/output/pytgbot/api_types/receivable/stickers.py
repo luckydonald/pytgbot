@@ -162,7 +162,11 @@ class StickerSet(Result):
         """
         Implements `"key" in stickerset_instance`
         """
-        return key in ["name", "title", "is_animated", "contains_masks", "stickers"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["name", "title", "is_animated", "contains_masks", "stickers"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class StickerSet
 
@@ -308,7 +312,11 @@ class MaskPosition(Result):
         """
         Implements `"key" in maskposition_instance`
         """
-        return key in ["point", "x_shift", "y_shift", "scale"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["point", "x_shift", "y_shift", "scale"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class MaskPosition
 

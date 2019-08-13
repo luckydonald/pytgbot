@@ -129,8 +129,7 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
         # end if
         {% endif -%}
-        {%- endfor -%}
-        {#- remove empty line  #}
+        {%- endfor -%}{# remove empty line #}
     # end def validate_array
 
     @staticmethod
@@ -170,6 +169,10 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         """
         Implements `"key" in {{ function.class_name_teleflask_message|lower }}_instance`
         """
-        return key in [{{ for_args_keys(function.class_variables) }}] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in [{{ for_args_keys(function.class_variables) }}]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class {{ function.class_name_teleflask_message }}

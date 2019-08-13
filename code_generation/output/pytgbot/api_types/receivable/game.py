@@ -140,7 +140,11 @@ class GameHighScore(Result):
         """
         Implements `"key" in gamehighscore_instance`
         """
-        return key in ["position", "user", "score"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["position", "user", "score"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class GameHighScore
 

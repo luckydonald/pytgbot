@@ -233,7 +233,11 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultarticle_instance`
         """
-        return key in ["type", "id", "title", "input_message_content", "reply_markup", "url", "hide_url", "description", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "title", "input_message_content", "reply_markup", "url", "hide_url", "description", "thumb_url", "thumb_width", "thumb_height"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultArticle
 
@@ -476,7 +480,11 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultphoto_instance`
         """
-        return key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultPhoto
 
@@ -719,7 +727,11 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultgif_instance`
         """
-        return key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultGif
 
@@ -962,7 +974,11 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultmpeg4gif_instance`
         """
-        return key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultMpeg4Gif
 
@@ -1231,7 +1247,11 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultvideo_instance`
         """
-        return key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "parse_mode", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "parse_mode", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultVideo
 
@@ -1452,7 +1472,11 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultaudio_instance`
         """
-        return key in ["type", "id", "audio_url", "title", "caption", "parse_mode", "performer", "audio_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "audio_url", "title", "caption", "parse_mode", "performer", "audio_duration", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultAudio
 
@@ -1661,7 +1685,11 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultvoice_instance`
         """
-        return key in ["type", "id", "voice_url", "title", "caption", "parse_mode", "voice_duration", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "voice_url", "title", "caption", "parse_mode", "voice_duration", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultVoice
 
@@ -1917,7 +1945,11 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultdocument_instance`
         """
-        return key in ["type", "id", "title", "document_url", "mime_type", "caption", "parse_mode", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "title", "document_url", "mime_type", "caption", "parse_mode", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultDocument
 
@@ -2149,7 +2181,11 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultlocation_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "live_period", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "latitude", "longitude", "title", "live_period", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultLocation
 
@@ -2404,7 +2440,11 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultvenue_instance`
         """
-        return key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultVenue
 
@@ -2637,7 +2677,11 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultcontact_instance`
         """
-        return key in ["type", "id", "phone_number", "first_name", "last_name", "vcard", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "phone_number", "first_name", "last_name", "vcard", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultContact
 
@@ -2784,7 +2828,11 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         Implements `"key" in inlinequeryresultgame_instance`
         """
-        return key in ["type", "id", "game_short_name", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "game_short_name", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultGame
 
@@ -2992,7 +3040,11 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedphoto_instance`
         """
-        return key in ["type", "id", "photo_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "photo_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultCachedPhoto
 
@@ -3188,7 +3240,11 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedgif_instance`
         """
-        return key in ["type", "id", "gif_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "gif_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultCachedGif
 
@@ -3384,7 +3440,11 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedmpeg4gif_instance`
         """
-        return key in ["type", "id", "mpeg4_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "mpeg4_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultCachedMpeg4Gif
 
@@ -3546,7 +3606,11 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedsticker_instance`
         """
-        return key in ["type", "id", "sticker_file_id", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "sticker_file_id", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultCachedSticker
 
@@ -3755,7 +3819,11 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcacheddocument_instance`
         """
-        return key in ["type", "id", "title", "document_file_id", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "title", "document_file_id", "description", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultCachedDocument
 
@@ -3962,7 +4030,11 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedvideo_instance`
         """
-        return key in ["type", "id", "video_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "video_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultCachedVideo
 
@@ -4159,7 +4231,11 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedvoice_instance`
         """
-        return key in ["type", "id", "voice_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "voice_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultCachedVoice
 
@@ -4345,7 +4421,11 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         Implements `"key" in inlinequeryresultcachedaudio_instance`
         """
-        return key in ["type", "id", "audio_file_id", "caption", "parse_mode", "reply_markup", "input_message_content"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "id", "audio_file_id", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQueryResultCachedAudio
 
@@ -4475,7 +4555,11 @@ class InputTextMessageContent(InputMessageContent):
         """
         Implements `"key" in inputtextmessagecontent_instance`
         """
-        return key in ["message_text", "parse_mode", "disable_web_page_preview"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["message_text", "parse_mode", "disable_web_page_preview"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputTextMessageContent
 
@@ -4604,7 +4688,11 @@ class InputLocationMessageContent(InputMessageContent):
         """
         Implements `"key" in inputlocationmessagecontent_instance`
         """
-        return key in ["latitude", "longitude", "live_period"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["latitude", "longitude", "live_period"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputLocationMessageContent
 
@@ -4767,7 +4855,11 @@ class InputVenueMessageContent(InputMessageContent):
         """
         Implements `"key" in inputvenuemessagecontent_instance`
         """
-        return key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputVenueMessageContent
 
@@ -4908,7 +5000,11 @@ class InputContactMessageContent(InputMessageContent):
         """
         Implements `"key" in inputcontactmessagecontent_instance`
         """
-        return key in ["phone_number", "first_name", "last_name", "vcard"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["phone_number", "first_name", "last_name", "vcard"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputContactMessageContent
 

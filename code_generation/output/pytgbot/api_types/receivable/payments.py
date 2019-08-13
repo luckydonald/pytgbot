@@ -158,7 +158,11 @@ class Invoice(Result):
         """
         Implements `"key" in invoice_instance`
         """
-        return key in ["title", "description", "start_parameter", "currency", "total_amount"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["title", "description", "start_parameter", "currency", "total_amount"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Invoice
 
@@ -326,7 +330,11 @@ class ShippingAddress(Result):
         """
         Implements `"key" in shippingaddress_instance`
         """
-        return key in ["country_code", "state", "city", "street_line1", "street_line2", "post_code"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["country_code", "state", "city", "street_line1", "street_line2", "post_code"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ShippingAddress
 
@@ -475,7 +483,11 @@ class OrderInfo(Result):
         """
         Implements `"key" in orderinfo_instance`
         """
-        return key in ["name", "phone_number", "email", "shipping_address"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["name", "phone_number", "email", "shipping_address"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class OrderInfo
 
@@ -661,7 +673,11 @@ class SuccessfulPayment(Result):
         """
         Implements `"key" in successfulpayment_instance`
         """
-        return key in ["currency", "total_amount", "invoice_payload", "telegram_payment_charge_id", "provider_payment_charge_id", "shipping_option_id", "order_info"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["currency", "total_amount", "invoice_payload", "telegram_payment_charge_id", "provider_payment_charge_id", "shipping_option_id", "order_info"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class SuccessfulPayment
 
@@ -815,7 +831,11 @@ class ShippingQuery(UpdateType):
         """
         Implements `"key" in shippingquery_instance`
         """
-        return key in ["id", "from_peer", "invoice_payload", "shipping_address"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "from_peer", "invoice_payload", "shipping_address"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ShippingQuery
 
@@ -1004,7 +1024,11 @@ class PreCheckoutQuery(UpdateType):
         """
         Implements `"key" in precheckoutquery_instance`
         """
-        return key in ["id", "from_peer", "currency", "total_amount", "invoice_payload", "shipping_option_id", "order_info"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "from_peer", "currency", "total_amount", "invoice_payload", "shipping_option_id", "order_info"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PreCheckoutQuery
 

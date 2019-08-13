@@ -260,7 +260,11 @@ class Update(Receivable):
         """
         Implements `"key" in update_instance`
         """
-        return key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query", "poll"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query", "poll"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Update
 
@@ -444,7 +448,11 @@ class WebhookInfo(Receivable):
         """
         Implements `"key" in webhookinfo_instance`
         """
-        return key in ["url", "has_custom_certificate", "pending_update_count", "last_error_date", "last_error_message", "max_connections", "allowed_updates"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["url", "has_custom_certificate", "pending_update_count", "last_error_date", "last_error_message", "max_connections", "allowed_updates"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class WebhookInfo
 
@@ -1179,7 +1187,11 @@ class Message(UpdateType):
         """
         Implements `"key" in message_instance`
         """
-        return key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "reply_to_message", "edit_date", "media_group_id", "author_signature", "text", "entities", "caption_entities", "audio", "document", "animation", "game", "photo", "sticker", "video", "voice", "video_note", "caption", "contact", "location", "venue", "poll", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "reply_to_message", "edit_date", "media_group_id", "author_signature", "text", "entities", "caption_entities", "audio", "document", "animation", "game", "photo", "sticker", "video", "voice", "video_note", "caption", "contact", "location", "venue", "poll", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Message
 
@@ -1374,7 +1386,11 @@ class CallbackQuery(UpdateType):
         """
         Implements `"key" in callbackquery_instance`
         """
-        return key in ["id", "from_peer", "chat_instance", "message", "inline_message_id", "data", "game_short_name"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "from_peer", "chat_instance", "message", "inline_message_id", "data", "game_short_name"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class CallbackQuery
 
@@ -1494,7 +1510,11 @@ class ResponseParameters(Receivable):
         """
         Implements `"key" in responseparameters_instance`
         """
-        return key in ["migrate_to_chat_id", "retry_after"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["migrate_to_chat_id", "retry_after"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ResponseParameters
 
