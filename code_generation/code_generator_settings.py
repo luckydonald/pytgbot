@@ -18,24 +18,27 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Media":                ("pytgbot.api_types.receivable.media.", "Receivable", None),
     "File":                 ("pytgbot.api_types.receivable.media.", "Receivable", None),
     "Voice":                ("pytgbot.api_types.receivable.media.", "Media", None),
-    "VideoNote":            ("pytgbot.api_types.receivable.media.", "Media", None), # May 18, 2017
+    "VideoNote":            ("pytgbot.api_types.receivable.media.", "Media", None),  # May 18, 2017
     "Contact":              ("pytgbot.api_types.receivable.media.", "Media", None),
     "Location":             ("pytgbot.api_types.receivable.media.", "Media", None),
     "Venue":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Audio":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Document":             ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Sticker":              ("pytgbot.api_types.receivable.media.", "Media", None), # Moved July 21, 2017
+    "Sticker":              ("pytgbot.api_types.receivable.media.", "Media", None),  # Moved July 21, 2017
     "Video":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Game":                 ("pytgbot.api_types.receivable.media.", "Media", None),
     "Animation":            ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Poll":                 ("pytgbot.api_types.receivable.media.", "Media", None),  # April 14, 2019
+    "PollOption":           ("pytgbot.api_types.receivable.media.", "Receivable", None),  # April 14, 2019
 
     # pytgbot.api_types.receivable.responses.*
 
     # pytgbot.api_types.receivable.peer.*
-    "ChatMember":   ("pytgbot.api_types.receivable.peer.", "Result", None),
-    "Peer":         ("pytgbot.api_types.receivable.peer.", "Result", None),
-    "User":         ("pytgbot.api_types.receivable.peer.", "Peer", None),
-    "Chat":         ("pytgbot.api_types.receivable.peer.", "Peer", None),
+    "ChatPermissions": ("pytgbot.api_types.receivable.peer.", "Result", None),  # July 29, 2019
+    "ChatMember":      ("pytgbot.api_types.receivable.peer.", "Result", None),
+    "Peer":            ("pytgbot.api_types.receivable.peer.", "Result", None),
+    "User":            ("pytgbot.api_types.receivable.peer.", "Peer", None),
+    "Chat":            ("pytgbot.api_types.receivable.peer.", "Peer", None),
 
     # pytgbot.api_types.receivable.updates.*
     "Update":               ("pytgbot.api_types.receivable.updates.", "Receivable", None),
@@ -132,6 +135,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InlineKeyboardMarkup": ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
     "KeyboardButton":       ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
     "InlineKeyboardButton": ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
+    "LoginUrl":             ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),  # May 31, 2019
 
     # pytgbot.api_types.sendable.payments.*
     "LabeledPrice":     ("pytgbot.api_types.sendable.payments.", "Sendable", None),  # May 18, 2017
