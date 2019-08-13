@@ -1,3 +1,5 @@
 # online docs
 bs4
 jinja2
+yapf  # linter
+black  # linter

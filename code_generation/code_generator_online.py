@@ -8,20 +8,27 @@ from luckydonaldUtils.logger import logging
 from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS
 from jinja2.exceptions import TemplateError, TemplateSyntaxError
 
+import requests
+
+
+import black  # code formatter
+from yapf.yapflib.yapf_api import FormatFile  # code formatter
+
+from bs4 import BeautifulSoup
+from bs4.element import NavigableString
+from os.path import abspath, dirname, join as path_join, sep as folder_seperator, isfile, exists, isdir
+from luckydonaldUtils.interactions import safe_eval, NoBuiltins
+
 FILE_HEADER = "# -*- coding: utf-8 -*-\n"
 MAIN_FILE_CLASS_HEADER = "class Bot(object):\n    _base_url = \"https://api.telegram.org/bot{api_key}/{command}\"\n"
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
 
-import requests
-from bs4 import BeautifulSoup
-from bs4.element import NavigableString
-from os.path import abspath, dirname, join as path_join, sep as folder_seperator, isfile, exists, isdir
-from luckydonaldUtils.interactions import safe_eval, NoBuiltins
 
 BASE_URL = "https://core.telegram.org/bots/api"
 SAVE_VALUES = NoBuiltins([], {}, {"Function": Function, "Clazz": Clazz, "Import": Import, "Type": Type, "Variable": Variable})
+
 
 def lol1(tag):
     return tag.has_attr("class") and "anchor" in tag["class"]
@@ -35,6 +42,72 @@ func_fields = [
     ["Parameters", "Type", "Required", "Description"],
     ["Parameter", "Type", "Required", "Description"],
 ]
+
+
+use_back = False
+use_yapf = False
+
+black_settings = dict(
+    write_back=black.WriteBack.from_configuration(check=False, diff=False),
+    report=black.Report(check=False, quiet=False, verbose=False),
+    mode=black.FileMode(
+        target_versions=set(),
+        line_length=black.DEFAULT_LINE_LENGTH,
+        is_pyi=False,
+        string_normalization=True,
+    ),
+)
+yapf_settings = dict(
+    style={
+        'ALIGN_CLOSING_BRACKET_WITH_VISUAL_INDENT': True,
+        'ALLOW_MULTILINE_LAMBDAS': True,
+        'ALLOW_MULTILINE_DICTIONARY_KEYS': False,
+        'ALLOW_SPLIT_BEFORE_DEFAULT_OR_NAMED_ASSIGNS': True,
+        'ALLOW_SPLIT_BEFORE_DICT_VALUE': False,
+        'ARITHMETIC_PRECEDENCE_INDICATION': False,
+        'BLANK_LINE_BEFORE_NESTED_CLASS_OR_DEF': False,
+        'BLANK_LINE_BEFORE_MODULE_DOCSTRING': True,
+        'BLANK_LINE_BEFORE_CLASS_DOCSTRING': False,
+        'BLANK_LINES_AROUND_TOP_LEVEL_DEFINITION': 2,  # Sets the number of desired blank lines surrounding top-level function and class definitions.
+        'COALESCE_BRACKETS': True,
+        'COLUMN_LIMIT': black.DEFAULT_LINE_LENGTH,
+        'CONTINUATION_ALIGN_STYLE': "space",
+        'CONTINUATION_INDENT_WIDTH': 2,
+        'DEDENT_CLOSING_BRACKETS': True,
+        'DISABLE_ENDING_COMMA_HEURISTIC': True,
+        'EACH_DICT_ENTRY_ON_SEPARATE_LINE': False,
+        'INDENT_DICTIONARY_VALUE': False,  # Indent the dictionary value if it cannot fit on the same line as the dictionary key.
+        'INDENT_WIDTH': 2,
+        'INDENT_BLANK_LINES': False,  # Set to True to prefer indented blank lines rather than empty
+        'JOIN_MULTIPLE_LINES': False,  # Join short lines into one line. E.g., single line if statements.
+        'NO_SPACES_AROUND_SELECTED_BINARY_OPERATORS': False,  # Do not include spaces around selected binary operators. For example: 1 + 2*3 - 4/5
+        'SPACES_AROUND_POWER_OPERATOR': True,  # Set to True to prefer using spaces around **.
+        # 'SPACES_AROUND_DEFAULT_OR_NAMED_ASSIGN': False,  # Set to True to prefer spaces around the assignment operator for default or keyword arguments.
+        'SPACES_BEFORE_COMMENT': 2,
+        'SPACE_BETWEEN_ENDING_COMMA_AND_CLOSING_BRACKET': False,  # Insert a space between the ending comma and closing bracket of a list, etc.
+        'SPLIT_ARGUMENTS_WHEN_COMMA_TERMINATED': True,  # Split before arguments if the argument list is terminated by a comma.
+        'SPLIT_ALL_COMMA_SEPARATED_VALUES': True,  # If a comma separated list (dict, list, tuple, or function def) is on a line that is too long, split such that all elements are on a single line.
+        'SPLIT_ALL_TOP_LEVEL_COMMA_SEPARATED_VALUES': True,  # Variation on SPLIT_ALL_COMMA_SEPARATED_VALUES in which, if a subexpression with a comma fits in its starting line, then the subexpression is not split. This avoids splits like the one for b in this code:
+        'SPLIT_BEFORE_BITWISE_OPERATOR': False,  # Set to True to prefer splitting before &, | or ^ rather than after.
+        'SPLIT_BEFORE_ARITHMETIC_OPERATOR': False,  # Set to True to prefer splitting before +, -, *, /, //, or @ rather than after.
+        'SPLIT_BEFORE_CLOSING_BRACKET': True,  # Split before the closing bracket if a list or dict literal doesn't fit on a single line.
+        'SPLIT_BEFORE_DICT_SET_GENERATOR': True,  # Split before a dictionary or set generator (comp_for). For example, note the split before the for:
+        'SPLIT_BEFORE_DOT': False,  # Split before the . if we need to split a longer expression:
+        # 'SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN': False,  # Split after the opening paren which surrounds an expression if it doesn't fit on a single line.
+        'SPLIT_BEFORE_FIRST_ARGUMENT': True,  # If an argument / parameter list is going to be split, then split before the first argument.
+        'SPLIT_BEFORE_LOGICAL_OPERATOR': True,  # Set to True to prefer splitting before and or or rather than after.
+        # 'SPLIT_BEFORE_NAMED_ASSIGNS': False,  # Split named assignments onto individual lines.
+        'SPLIT_COMPLEX_COMPREHENSION': True,  # For list comprehensions and generator expressions with multiple clauses (e.g multiple for calls, if filter expressions) and which need to be reflowed, split each clause onto its own line.
+        'USE_TABS': False,
+
+        # 'SPLIT_PENALTY_AFTER_OPENING_BRACKET': 0
+        # 'SPLIT_PENALTY_AFTER_UNARY_OPERATOR':
+        # 'SPLIT_PENALTY_ARITHMETIC_OPERATOR':
+        # 'SPLIT_PENALTY_BEFORE_IF_EXPR':
+        # 'SPLIT_PENALTY_BEFORE_IF_EXPR': 30
+        # 'SPLIT_PENALTY_FOR_ADDED_LINE_SPLIT': 30
+    },
+)
 
 
 def parse_table(tag):
@@ -481,27 +554,46 @@ def safe_to_file(folder, results):
         clazz_imports.sort()
         is_sendable = ("sendable" in path)
         try:
-            with open(path, "w") as f:
-                result = clazzfile_template.render(clazzes=clazz_list, imports=clazz_imports, is_sendable=is_sendable)
-                result = result.replace("\t", "    ")
-                f.write(result)
-                # end with
+            txt = clazzfile_template.render(clazzes=clazz_list, imports=clazz_imports, is_sendable=is_sendable)
+            txt = txt.replace("\t", "    ")
+            render_file_to_disk(path, txt)
         except IOError:
             raise  # lol
             # end try
     # end for classes
     if functions:
         txt = bot_template.render(functions=functions)
-        with open(functions[0].filepath, "w") as f:
-            f.write(txt)
-        # end with
+        render_file_to_disk(functions[0].filepath, txt)
     # end if
     if message_send_functions:
         txt = teleflask_messages_template.render(functions=message_send_functions)
-        with open(message_send_functions[0].filepath, "w") as f:
-            f.write(txt)
-        # end with
+        render_file_to_disk(message_send_functions[0].filepath, txt)
+        # end if
     # end if
+
+
+def render_file_to_disk(file, txt):
+    with open(file, "w") as f:
+        f.write(txt)
+    # end with
+    if use_back:
+        black.reformat_one(
+            src=black.Path(file),
+            write_back=black_settings['write_back'],
+            fast=False,
+            mode=black_settings['mode'],
+            report=black_settings['report'],
+        )
+    # end if
+    if use_yapf:
+        try:
+            FormatFile(file, in_place=True, style_config=yapf_settings['style'])
+        except:
+            logger.exception("Formatting file {file} failed.".format(file=file))
+        # end try
+    # end if
+
+
 # end def
 
 
