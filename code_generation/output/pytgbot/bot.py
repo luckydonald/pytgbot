@@ -473,7 +473,7 @@ class Bot(object):
         :param title: Track name
         :type  title: str|unicode
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -551,7 +551,7 @@ class Bot(object):
         
         Optional keyword parameters:
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters
@@ -638,7 +638,7 @@ class Bot(object):
         :param height: Video height
         :type  height: int
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters
@@ -736,7 +736,7 @@ class Bot(object):
         :param height: Animation height
         :type  height: int
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters
@@ -904,7 +904,7 @@ class Bot(object):
         :param length: Video width and height, i.e. diameter of the video message
         :type  length: int
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1087,7 +1087,7 @@ class Bot(object):
     
     def edit_message_live_location(self, latitude, longitude, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
-        Use this method to edit live location messages sent by the bot or via the bot (for inline bots). A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+        Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
 
         https://core.telegram.org/bots/api#editmessagelivelocation
 
@@ -1106,7 +1106,7 @@ class Bot(object):
         :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
-        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :param message_id: Required if inline_message_id is not specified. Identifier of the message to edit
         :type  message_id: int
         
         :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -1157,7 +1157,7 @@ class Bot(object):
     
     def stop_message_live_location(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
-        Use this method to stop updating a live location message sent by the bot or via the bot (for inline bots) before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+        Use this method to stop updating a live location message before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
 
         https://core.telegram.org/bots/api#stopmessagelivelocation
 
@@ -1167,7 +1167,7 @@ class Bot(object):
         :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
-        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :param message_id: Required if inline_message_id is not specified. Identifier of the message with live location to stop
         :type  message_id: int
         
         :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -1375,6 +1375,73 @@ class Bot(object):
         # end if return_python_objects
         return result
     # end def send_contact
+    
+    def send_poll(self, chat_id, question, options, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+        """
+        Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendpoll
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername). A native poll can't be sent to a private chat.
+        :type  chat_id: int | str|unicode
+        
+        :param question: Poll question, 1-255 characters
+        :type  question: str|unicode
+        
+        :param options: List of answer options, 2-10 strings 1-100 characters each
+        :type  options: list of str|unicode
+        
+        
+        Optional keyword parameters:
+        
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
+        
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
+        
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        
+        Returns:
+
+        :return: On success, the sent Message is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message
+        """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        
+        assert_type_or_raise(question, unicode_type, parameter_name="question")
+        
+        assert_type_or_raise(options, list, parameter_name="options")
+        
+        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        
+        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
+        
+        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
+        
+        result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def send_poll
     
     def send_chat_action(self, chat_id, action):
         """
@@ -1590,9 +1657,9 @@ class Bot(object):
         return result
     # end def unban_chat_member
     
-    def restrict_chat_member(self, chat_id, user_id, until_date=None, can_send_messages=None, can_send_media_messages=None, can_send_other_messages=None, can_add_web_page_previews=None):
+    def restrict_chat_member(self, chat_id, user_id, permissions, until_date=None):
         """
-        Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from a user. Returns True on success.
+        Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
 
         https://core.telegram.org/bots/api#restrictchatmember
 
@@ -1605,44 +1672,31 @@ class Bot(object):
         :param user_id: Unique identifier of the target user
         :type  user_id: int
         
+        :param permissions: New user permissions
+        :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
+        
         
         Optional keyword parameters:
         
         :param until_date: Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
         :type  until_date: int
         
-        :param can_send_messages: Pass True, if the user can send text messages, contacts, locations and venues
-        :type  can_send_messages: bool
-        
-        :param can_send_media_messages: Pass True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
-        :type  can_send_media_messages: bool
-        
-        :param can_send_other_messages: Pass True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
-        :type  can_send_other_messages: bool
-        
-        :param can_add_web_page_previews: Pass True, if the user may add web page previews to their messages, implies can_send_media_messages
-        :type  can_add_web_page_previews: bool
-        
         Returns:
 
         :return: Returns True on success
         :rtype:  bool
         """
+        from pytgbot.api_types.receivable.peer import ChatPermissions
+        
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
         assert_type_or_raise(user_id, int, parameter_name="user_id")
         
+        assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
+        
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
         
-        assert_type_or_raise(can_send_messages, None, bool, parameter_name="can_send_messages")
-        
-        assert_type_or_raise(can_send_media_messages, None, bool, parameter_name="can_send_media_messages")
-        
-        assert_type_or_raise(can_send_other_messages, None, bool, parameter_name="can_send_other_messages")
-        
-        assert_type_or_raise(can_add_web_page_previews, None, bool, parameter_name="can_add_web_page_previews")
-        
-        result = self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date, can_send_messages=can_send_messages, can_send_media_messages=can_send_media_messages, can_send_other_messages=can_send_other_messages, can_add_web_page_previews=can_add_web_page_previews)
+        result = self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, permissions=permissions, until_date=until_date)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1737,6 +1791,47 @@ class Bot(object):
         return result
     # end def promote_chat_member
     
+    def set_chat_permissions(self, chat_id, permissions):
+        """
+        Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatpermissions
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id: int | str|unicode
+        
+        :param permissions: New default chat permissions
+        :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        from pytgbot.api_types.receivable.peer import ChatPermissions
+        
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        
+        assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
+        
+        result = self.do("setChatPermissions", chat_id=chat_id, permissions=permissions)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_chat_permissions
+    
     def export_chat_invite_link(self, chat_id):
         """
         Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
@@ -1776,7 +1871,7 @@ class Bot(object):
     
     def set_chat_photo(self, chat_id, photo):
         """
-        Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
 
@@ -1820,7 +1915,7 @@ class Bot(object):
     
     def delete_chat_photo(self, chat_id):
         """
-        Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
 
@@ -1857,7 +1952,7 @@ class Bot(object):
     
     def set_chat_title(self, chat_id, title):
         """
-        Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
         Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
 
@@ -1899,7 +1994,7 @@ class Bot(object):
     
     def set_chat_description(self, chat_id, description=None):
         """
-        Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success. 
+        Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
         https://core.telegram.org/bots/api#setchatdescription
 
@@ -1940,7 +2035,7 @@ class Bot(object):
     
     def pin_chat_message(self, chat_id, message_id, disable_notification=None):
         """
-        Use this method to pin a message in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
+        Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
 
         https://core.telegram.org/bots/api#pinchatmessage
 
@@ -1986,7 +2081,7 @@ class Bot(object):
     
     def unpin_chat_message(self, chat_id):
         """
-        Use this method to unpin a message in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success. 
+        Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
 
         https://core.telegram.org/bots/api#unpinchatmessage
 
@@ -2330,7 +2425,7 @@ class Bot(object):
     
     def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None, disable_web_page_preview=None, reply_markup=None):
         """
-        Use this method to edit text and game messages sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+        Use this method to edit text and game messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 
         https://core.telegram.org/bots/api#editmessagetext
 
@@ -2346,7 +2441,7 @@ class Bot(object):
         :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
-        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :param message_id: Required if inline_message_id is not specified. Identifier of the message to edit
         :type  message_id: int
         
         :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -2405,7 +2500,7 @@ class Bot(object):
     
     def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None, parse_mode=None, reply_markup=None):
         """
-        Use this method to edit captions of messages sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+        Use this method to edit captions of messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 
         https://core.telegram.org/bots/api#editmessagecaption
 
@@ -2415,7 +2510,7 @@ class Bot(object):
         :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
-        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :param message_id: Required if inline_message_id is not specified. Identifier of the message to edit
         :type  message_id: int
         
         :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -2488,7 +2583,7 @@ class Bot(object):
         :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
-        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :param message_id: Required if inline_message_id is not specified. Identifier of the message to edit
         :type  message_id: int
         
         :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -2538,7 +2633,7 @@ class Bot(object):
     
     def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
-        Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots).  On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+        Use this method to edit only the reply markup of messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 
         https://core.telegram.org/bots/api#editmessagereplymarkup
 
@@ -2548,7 +2643,7 @@ class Bot(object):
         :param chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
-        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :param message_id: Required if inline_message_id is not specified. Identifier of the message to edit
         :type  message_id: int
         
         :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -2593,9 +2688,58 @@ class Bot(object):
         return result
     # end def edit_message_reply_markup
     
+    def stop_poll(self, chat_id, message_id, reply_markup=None):
+        """
+        Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the final results is returned.
+
+        https://core.telegram.org/bots/api#stoppoll
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+        
+        :param message_id: Identifier of the original message with the poll
+        :type  message_id: int
+        
+        
+        Optional keyword parameters:
+        
+        :param reply_markup: A JSON-serialized object for a new message inline keyboard.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+        
+        Returns:
+
+        :return: On success, the stopped Poll with the final results is returned
+        :rtype:  pytgbot.api_types.receivable.media.Poll
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        
+        assert_type_or_raise(message_id, int, parameter_name="message_id")
+        
+        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
+        
+        result = self.do("stopPoll", chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.media import Poll
+            try:
+                return Poll.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Poll", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def stop_poll
+    
     def delete_message(self, chat_id, message_id):
         """
-        Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
+        Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming messages in private chats.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
 
         https://core.telegram.org/bots/api#deletemessage
 
@@ -2634,7 +2778,7 @@ class Bot(object):
     
     def send_sticker(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
-        Use this method to send .webp stickers. On success, the sent Message is returned.
+        Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendsticker
 

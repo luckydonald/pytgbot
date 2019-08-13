@@ -95,13 +95,9 @@ class Invoice(Result):
         """
         array = super(Invoice, self).to_array()
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         array['start_parameter'] = u(self.start_parameter)  # py2: type unicode, py3: type str
-
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
-
         array['total_amount'] = int(self.total_amount)  # type int
         return array
     # end def to_array
@@ -265,17 +261,11 @@ class ShippingAddress(Result):
         """
         array = super(ShippingAddress, self).to_array()
         array['country_code'] = u(self.country_code)  # py2: type unicode, py3: type str
-
         array['state'] = u(self.state)  # py2: type unicode, py3: type str
-
         array['city'] = u(self.city)  # py2: type unicode, py3: type str
-
         array['street_line1'] = u(self.street_line1)  # py2: type unicode, py3: type str
-
         array['street_line2'] = u(self.street_line2)  # py2: type unicode, py3: type str
-
         array['post_code'] = u(self.post_code)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -418,13 +408,10 @@ class OrderInfo(Result):
         array = super(OrderInfo, self).to_array()
         if self.name is not None:
             array['name'] = u(self.name)  # py2: type unicode, py3: type str
-
         if self.phone_number is not None:
             array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
-
         if self.email is not None:
             array['email'] = u(self.email)  # py2: type unicode, py3: type str
-
         if self.shipping_address is not None:
             array['shipping_address'] = self.shipping_address.to_array()  # type ShippingAddress
 
@@ -602,17 +589,12 @@ class SuccessfulPayment(Result):
         """
         array = super(SuccessfulPayment, self).to_array()
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
-
         array['total_amount'] = int(self.total_amount)  # type int
         array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
-
         array['telegram_payment_charge_id'] = u(self.telegram_payment_charge_id)  # py2: type unicode, py3: type str
-
         array['provider_payment_charge_id'] = u(self.provider_payment_charge_id)  # py2: type unicode, py3: type str
-
         if self.shipping_option_id is not None:
             array['shipping_option_id'] = u(self.shipping_option_id)  # py2: type unicode, py3: type str
-
         if self.order_info is not None:
             array['order_info'] = self.order_info.to_array()  # type OrderInfo
 
@@ -767,11 +749,9 @@ class ShippingQuery(UpdateType):
         """
         array = super(ShippingQuery, self).to_array()
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['from'] = self.from_peer.to_array()  # type User
 
         array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
-
         array['shipping_address'] = self.shipping_address.to_array()  # type ShippingAddress
 
         return array
@@ -950,17 +930,13 @@ class PreCheckoutQuery(UpdateType):
         """
         array = super(PreCheckoutQuery, self).to_array()
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['from'] = self.from_peer.to_array()  # type User
 
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
-
         array['total_amount'] = int(self.total_amount)  # type int
         array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
-
         if self.shipping_option_id is not None:
             array['shipping_option_id'] = u(self.shipping_option_id)  # py2: type unicode, py3: type str
-
         if self.order_info is not None:
             array['order_info'] = self.order_info.to_array()  # type OrderInfo
 

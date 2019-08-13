@@ -20,6 +20,9 @@ class StickerSet(Result):
     :param title: Sticker set title
     :type  title: str|unicode
     
+    :param is_animated: True, if the sticker set contains animated stickers
+    :type  is_animated: bool
+    
     :param contains_masks: True, if the sticker set contains masks
     :type  contains_masks: bool
     
@@ -33,7 +36,7 @@ class StickerSet(Result):
     :type  _raw: None | dict
     """
 
-    def __init__(self, name, title, contains_masks, stickers, _raw=None):
+    def __init__(self, name, title, is_animated, contains_masks, stickers, _raw=None):
         """
         This object represents a sticker set.
 
@@ -47,6 +50,9 @@ class StickerSet(Result):
         
         :param title: Sticker set title
         :type  title: str|unicode
+        
+        :param is_animated: True, if the sticker set contains animated stickers
+        :type  is_animated: bool
         
         :param contains_masks: True, if the sticker set contains masks
         :type  contains_masks: bool
@@ -69,6 +75,9 @@ class StickerSet(Result):
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
+        assert_type_or_raise(is_animated, bool, parameter_name="is_animated")
+        self.is_animated = is_animated
+        
         assert_type_or_raise(contains_masks, bool, parameter_name="contains_masks")
         self.contains_masks = contains_masks
         
@@ -87,9 +96,8 @@ class StickerSet(Result):
         """
         array = super(StickerSet, self).to_array()
         array['name'] = u(self.name)  # py2: type unicode, py3: type str
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
+        array['is_animated'] = bool(self.is_animated)  # type bool
         array['contains_masks'] = bool(self.contains_masks)  # type bool
         array['stickers'] = self._as_array(self.stickers)  # type list of Sticker
 
@@ -110,6 +118,7 @@ class StickerSet(Result):
         data = Result.validate_array(array)
         data['name'] = u(array.get('name'))
         data['title'] = u(array.get('title'))
+        data['is_animated'] = bool(array.get('is_animated'))
         data['contains_masks'] = bool(array.get('contains_masks'))
         data['stickers'] = Sticker.from_array_list(array.get('stickers'), list_level=1)
         
@@ -136,7 +145,7 @@ class StickerSet(Result):
         """
         Implements `str(stickerset_instance)`
         """
-        return "StickerSet(name={self.name!r}, title={self.title!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r})".format(self=self)
+        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -146,14 +155,14 @@ class StickerSet(Result):
         if self._raw:
             return "StickerSet.from_array({self._raw})".format(self=self)
         # end if
-        return "StickerSet(name={self.name!r}, title={self.title!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r})".format(self=self)
+        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in stickerset_instance`
         """
-        return key in ["name", "title", "contains_masks", "stickers"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return key in ["name", "title", "is_animated", "contains_masks", "stickers"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class StickerSet
 
@@ -238,7 +247,6 @@ class MaskPosition(Result):
         """
         array = super(MaskPosition, self).to_array()
         array['point'] = u(self.point)  # py2: type unicode, py3: type str
-
         array['x_shift'] = float(self.x_shift)  # type float
         array['y_shift'] = float(self.y_shift)  # type float
         array['scale'] = float(self.scale)  # type float

@@ -78,15 +78,11 @@ class InputMediaPhoto(InputMedia):
         """
         array = super(InputMediaPhoto, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -169,7 +165,7 @@ class InputMediaVideo(InputMediaWithThumb):
 
     Optional keyword parameters:
     
-    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     :param caption: Optional. Caption of the video to be sent, 0-1024 characters
@@ -209,7 +205,7 @@ class InputMediaVideo(InputMediaWithThumb):
 
         Optional keyword parameters:
         
-        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Optional. Caption of the video to be sent, 0-1024 characters
@@ -270,24 +266,19 @@ class InputMediaVideo(InputMediaWithThumb):
         """
         array = super(InputMediaVideo, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
-
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.width is not None:
             array['width'] = int(self.width)  # type int
         if self.height is not None:
@@ -392,7 +383,7 @@ class InputMediaAnimation(InputMediaWithThumb):
 
     Optional keyword parameters:
     
-    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     :param caption: Optional. Caption of the animation to be sent, 0-1024 characters
@@ -429,7 +420,7 @@ class InputMediaAnimation(InputMediaWithThumb):
 
         Optional keyword parameters:
         
-        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Optional. Caption of the animation to be sent, 0-1024 characters
@@ -484,24 +475,19 @@ class InputMediaAnimation(InputMediaWithThumb):
         """
         array = super(InputMediaAnimation, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
-
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.width is not None:
             array['width'] = int(self.width)  # type int
         if self.height is not None:
@@ -603,7 +589,7 @@ class InputMediaAudio(InputMediaWithThumb):
 
     Optional keyword parameters:
     
-    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     :param caption: Optional. Caption of the audio to be sent, 0-1024 characters
@@ -640,7 +626,7 @@ class InputMediaAudio(InputMediaWithThumb):
 
         Optional keyword parameters:
         
-        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Optional. Caption of the audio to be sent, 0-1024 characters
@@ -695,32 +681,25 @@ class InputMediaAudio(InputMediaWithThumb):
         """
         array = super(InputMediaAudio, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
-
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
-
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -816,7 +795,7 @@ class InputMediaDocument(InputMediaWithThumb):
 
     Optional keyword parameters:
     
-    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     :param caption: Optional. Caption of the document to be sent, 0-1024 characters
@@ -844,7 +823,7 @@ class InputMediaDocument(InputMediaWithThumb):
 
         Optional keyword parameters:
         
-        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Optional. Caption of the document to be sent, 0-1024 characters
@@ -881,24 +860,19 @@ class InputMediaDocument(InputMediaWithThumb):
         """
         array = super(InputMediaDocument, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
-
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 

@@ -145,11 +145,8 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         array = super(InlineQueryResultArticle, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
 
         if self.reply_markup is not None:
@@ -157,15 +154,12 @@ class InlineQueryResultArticle(InlineQueryResult):
 
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
-
         if self.hide_url is not None:
             array['hide_url'] = bool(self.hide_url)  # type bool
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
-
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -391,29 +385,21 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         array = super(InlineQueryResultPhoto, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['photo_url'] = u(self.photo_url)  # py2: type unicode, py3: type str
-
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
-
         if self.photo_width is not None:
             array['photo_width'] = int(self.photo_width)  # type int
         if self.photo_height is not None:
             array['photo_height'] = int(self.photo_height)  # type int
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -642,13 +628,9 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         array = super(InlineQueryResultGif, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['gif_url'] = u(self.gif_url)  # py2: type unicode, py3: type str
-
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
-
         if self.gif_width is not None:
             array['gif_width'] = int(self.gif_width)  # type int
         if self.gif_height is not None:
@@ -657,13 +639,10 @@ class InlineQueryResultGif(InlineQueryResult):
             array['gif_duration'] = int(self.gif_duration)  # type int
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -892,13 +871,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         array = super(InlineQueryResultMpeg4Gif, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['mpeg4_url'] = u(self.mpeg4_url)  # py2: type unicode, py3: type str
-
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
-
         if self.mpeg4_width is not None:
             array['mpeg4_width'] = int(self.mpeg4_width)  # type int
         if self.mpeg4_height is not None:
@@ -907,13 +882,10 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             array['mpeg4_duration'] = int(self.mpeg4_duration)  # type int
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -1164,23 +1136,15 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         array = super(InlineQueryResultVideo, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['video_url'] = u(self.video_url)  # py2: type unicode, py3: type str
-
         array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
-
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.video_width is not None:
             array['video_width'] = int(self.video_width)  # type int
         if self.video_height is not None:
@@ -1189,7 +1153,6 @@ class InlineQueryResultVideo(InlineQueryResult):
             array['video_duration'] = int(self.video_duration)  # type int
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -1404,22 +1367,15 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         array = super(InlineQueryResultAudio, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['audio_url'] = u(self.audio_url)  # py2: type unicode, py3: type str
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
-
         if self.audio_duration is not None:
             array['audio_duration'] = int(self.audio_duration)  # type int
         if self.reply_markup is not None:
@@ -1623,19 +1579,13 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         array = super(InlineQueryResultVoice, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['voice_url'] = u(self.voice_url)  # py2: type unicode, py3: type str
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.voice_duration is not None:
             array['voice_duration'] = int(self.voice_duration)  # type int
         if self.reply_markup is not None:
@@ -1874,24 +1824,16 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         array = super(InlineQueryResultDocument, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         array['document_url'] = u(self.document_url)  # py2: type unicode, py3: type str
-
         array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -1900,7 +1842,6 @@ class InlineQueryResultDocument(InlineQueryResult):
 
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
-
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -2121,13 +2062,10 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         array = super(InlineQueryResultLocation, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.live_period is not None:
             array['live_period'] = int(self.live_period)  # type int
         if self.reply_markup is not None:
@@ -2138,7 +2076,6 @@ class InlineQueryResultLocation(InlineQueryResult):
 
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
-
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -2375,21 +2312,15 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         array = super(InlineQueryResultVenue, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
-
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
-
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -2398,7 +2329,6 @@ class InlineQueryResultVenue(InlineQueryResult):
 
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
-
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -2619,19 +2549,13 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         array = super(InlineQueryResultContact, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
-
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
-
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
-
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -2640,7 +2564,6 @@ class InlineQueryResultContact(InlineQueryResult):
 
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
-
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
         if self.thumb_height is not None:
@@ -2795,11 +2718,8 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         array = super(InlineQueryResultGame, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -2989,23 +2909,16 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedPhoto, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['photo_file_id'] = u(self.photo_file_id)  # py2: type unicode, py3: type str
-
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3195,20 +3108,14 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedGif, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['gif_file_id'] = u(self.gif_file_id)  # py2: type unicode, py3: type str
-
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3397,20 +3304,14 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['mpeg4_file_id'] = u(self.mpeg4_file_id)  # py2: type unicode, py3: type str
-
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3491,7 +3392,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
 class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     """
     Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
-    Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+    Note: This will only work in Telegram versions released after 9 April, 2016 for static stickers and after 06 July, 2019 for animated stickers. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedsticker
     
@@ -3520,7 +3421,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     def __init__(self, type, id, sticker_file_id, reply_markup=None, input_message_content=None):
         """
         Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
-        Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+        Note: This will only work in Telegram versions released after 9 April, 2016 for static stickers and after 06 July, 2019 for animated stickers. Older clients will ignore them.
 
         https://core.telegram.org/bots/api#inlinequeryresultcachedsticker
         
@@ -3574,11 +3475,8 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedSticker, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['sticker_file_id'] = u(self.sticker_file_id)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3775,22 +3673,15 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedDocument, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         array['document_file_id'] = u(self.document_file_id)  # py2: type unicode, py3: type str
-
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3989,22 +3880,15 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedVideo, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['video_file_id'] = u(self.video_file_id)  # py2: type unicode, py3: type str
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -4196,19 +4080,13 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedVoice, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['voice_file_id'] = u(self.voice_file_id)  # py2: type unicode, py3: type str
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -4390,17 +4268,12 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         array = super(InlineQueryResultCachedAudio, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['audio_file_id'] = u(self.audio_file_id)  # py2: type unicode, py3: type str
-
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -4540,10 +4413,8 @@ class InputTextMessageContent(InputMessageContent):
         """
         array = super(InputTextMessageContent, self).to_array()
         array['message_text'] = u(self.message_text)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.disable_web_page_preview is not None:
             array['disable_web_page_preview'] = bool(self.disable_web_page_preview)  # type bool
         return array
@@ -4830,15 +4701,11 @@ class InputVenueMessageContent(InputMessageContent):
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
-
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
-
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -4977,15 +4844,11 @@ class InputContactMessageContent(InputMessageContent):
         """
         array = super(InputContactMessageContent, self).to_array()
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
-
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
-
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
-
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 

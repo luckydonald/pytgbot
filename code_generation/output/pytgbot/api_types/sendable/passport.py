@@ -86,15 +86,10 @@ class PassportElementErrorDataField(PassportElementError):
         """
         array = super(PassportElementErrorDataField, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['field_name'] = u(self.field_name)  # py2: type unicode, py3: type str
-
         array['data_hash'] = u(self.data_hash)  # py2: type unicode, py3: type str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -232,13 +227,9 @@ class PassportElementErrorFrontSide(PassportElementError):
         """
         array = super(PassportElementErrorFrontSide, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -375,13 +366,9 @@ class PassportElementErrorReverseSide(PassportElementError):
         """
         array = super(PassportElementErrorReverseSide, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -518,13 +505,9 @@ class PassportElementErrorSelfie(PassportElementError):
         """
         array = super(PassportElementErrorSelfie, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -661,13 +644,9 @@ class PassportElementErrorFile(PassportElementError):
         """
         array = super(PassportElementErrorFile, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -804,13 +783,10 @@ class PassportElementErrorFiles(PassportElementError):
         """
         array = super(PassportElementErrorFiles, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['file_hashes'] = self._as_array(self.file_hashes)  # type list of str
 
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -947,13 +923,9 @@ class PassportElementErrorTranslationFile(PassportElementError):
         """
         array = super(PassportElementErrorTranslationFile, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -1090,13 +1062,10 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         """
         array = super(PassportElementErrorTranslationFiles, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['file_hashes'] = self._as_array(self.file_hashes)  # type list of str
 
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -1233,13 +1202,9 @@ class PassportElementErrorUnspecified(PassportElementError):
         """
         array = super(PassportElementErrorUnspecified, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['element_hash'] = u(self.element_hash)  # py2: type unicode, py3: type str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 

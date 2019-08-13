@@ -146,7 +146,7 @@ class PassportFile(Result):
 
     Parameters:
     
-    :param file_id: Unique identifier for this file
+    :param file_id: Identifier for this file
     :type  file_id: str|unicode
     
     :param file_size: File size
@@ -171,7 +171,7 @@ class PassportFile(Result):
 
         Parameters:
         
-        :param file_id: Unique identifier for this file
+        :param file_id: Identifier for this file
         :type  file_id: str|unicode
         
         :param file_size: File size
@@ -208,7 +208,6 @@ class PassportFile(Result):
         """
         array = super(PassportFile, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
-
         array['file_size'] = int(self.file_size)  # type int
         array['file_date'] = int(self.file_date)  # type int
         return array
@@ -409,18 +408,13 @@ class EncryptedPassportElement(Result):
         """
         array = super(EncryptedPassportElement, self).to_array()
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['hash'] = u(self.hash)  # py2: type unicode, py3: type str
-
         if self.data is not None:
             array['data'] = u(self.data)  # py2: type unicode, py3: type str
-
         if self.phone_number is not None:
             array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
-
         if self.email is not None:
             array['email'] = u(self.email)  # py2: type unicode, py3: type str
-
         if self.files is not None:
             array['files'] = self._as_array(self.files)  # type list of PassportFile
 
@@ -578,11 +572,8 @@ class EncryptedCredentials(Result):
         """
         array = super(EncryptedCredentials, self).to_array()
         array['data'] = u(self.data)  # py2: type unicode, py3: type str
-
         array['hash'] = u(self.hash)  # py2: type unicode, py3: type str
-
         array['secret'] = u(self.secret)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 

@@ -98,13 +98,10 @@ class InlineQuery(Result):
         """
         array = super(InlineQuery, self).to_array()
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
-
         array['from'] = self.from_peer.to_array()  # type User
 
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
-
         array['offset'] = u(self.offset)  # py2: type unicode, py3: type str
-
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
 
@@ -177,7 +174,7 @@ class InlineQuery(Result):
 
 class ChosenInlineResult(UpdateType):
     """
-    Represents a result of an inline query that was chosen by the user and sent to their chat partner. 
+    Represents a result of an inline query that was chosen by the user and sent to their chat partner.
     Note: It is necessary to enable inline feedback via @Botfather in order to receive these objects in updates.
 
     https://core.telegram.org/bots/api#choseninlineresult
@@ -209,7 +206,7 @@ class ChosenInlineResult(UpdateType):
 
     def __init__(self, result_id, from_peer, query, location=None, inline_message_id=None, _raw=None):
         """
-        Represents a result of an inline query that was chosen by the user and sent to their chat partner. 
+        Represents a result of an inline query that was chosen by the user and sent to their chat partner.
         Note: It is necessary to enable inline feedback via @Botfather in order to receive these objects in updates.
 
         https://core.telegram.org/bots/api#choseninlineresult
@@ -269,17 +266,14 @@ class ChosenInlineResult(UpdateType):
         """
         array = super(ChosenInlineResult, self).to_array()
         array['result_id'] = u(self.result_id)  # py2: type unicode, py3: type str
-
         array['from'] = self.from_peer.to_array()  # type User
 
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
-
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
 
         if self.inline_message_id is not None:
             array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 

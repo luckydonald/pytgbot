@@ -161,12 +161,11 @@ class TextMessage(SendableMessageBase):
         """
         array = super(TextMessage, self).to_array()
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
-
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -180,7 +179,6 @@ class TextMessage(SendableMessageBase):
 
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.disable_web_page_preview is not None:
             array['disable_web_page_preview'] = bool(self.disable_web_page_preview)  # type bool
         if self.disable_notification is not None:
@@ -227,7 +225,8 @@ class TextMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -235,7 +234,8 @@ class TextMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        # end if
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['disable_web_page_preview'] = bool(array.get('disable_web_page_preview')) if array.get('disable_web_page_preview') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
@@ -251,6 +251,7 @@ class TextMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -265,7 +266,8 @@ class TextMessage(SendableMessageBase):
             return None
         # end if
 
-        data = TextMessage.validate_array(array)return TextMessage(**data)
+        data = TextMessage.validate_array(array)
+        return TextMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -416,16 +418,15 @@ class PhotoMessage(SendableMessageBase):
         if isinstance(self.photo, InputFile):
             array['photo'] = self.photo.to_array()  # type InputFile
         elif isinstance(self.photo, str):
-            array['photo'] = u(self.photo)  # py2: type unicode, py3: type str
-        else:
+            array['photo'] = u(self.photo)  # py2: type unicode, py3: type strelse:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -439,10 +440,8 @@ class PhotoMessage(SendableMessageBase):
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
         if self.reply_markup is not None:
@@ -483,7 +482,8 @@ class PhotoMessage(SendableMessageBase):
             data['photo'] = u(array.get('photo'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifif array.get('chat_id') is None:
+        # end if
+        if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
             data['receiver'] = None(array.get('chat_id'))
@@ -493,7 +493,8 @@ class PhotoMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -501,7 +502,8 @@ class PhotoMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
@@ -517,6 +519,7 @@ class PhotoMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -531,7 +534,8 @@ class PhotoMessage(SendableMessageBase):
             return None
         # end if
 
-        data = PhotoMessage.validate_array(array)return PhotoMessage(**data)
+        data = PhotoMessage.validate_array(array)
+        return PhotoMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -593,7 +597,7 @@ class AudioMessage(SendableMessageBase):
     :param title: Track name
     :type  title: str|unicode
     
-    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -641,7 +645,7 @@ class AudioMessage(SendableMessageBase):
         :param title: Track name
         :type  title: str|unicode
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -720,16 +724,15 @@ class AudioMessage(SendableMessageBase):
         if isinstance(self.audio, InputFile):
             array['audio'] = self.audio.to_array()  # type InputFile
         elif isinstance(self.audio, str):
-            array['audio'] = u(self.audio)  # py2: type unicode, py3: type str
-        else:
+            array['audio'] = u(self.audio)  # py2: type unicode, py3: type strelse:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -743,24 +746,19 @@ class AudioMessage(SendableMessageBase):
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
-
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
 
@@ -804,7 +802,8 @@ class AudioMessage(SendableMessageBase):
             data['audio'] = u(array.get('audio'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifif array.get('chat_id') is None:
+        # end if
+        if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
             data['receiver'] = None(array.get('chat_id'))
@@ -814,7 +813,8 @@ class AudioMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -822,7 +822,8 @@ class AudioMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
@@ -835,7 +836,8 @@ class AudioMessage(SendableMessageBase):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end ifdata['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        # end if
+        data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -849,6 +851,7 @@ class AudioMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -863,7 +866,8 @@ class AudioMessage(SendableMessageBase):
             return None
         # end if
 
-        data = AudioMessage.validate_array(array)return AudioMessage(**data)
+        data = AudioMessage.validate_array(array)
+        return AudioMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -909,7 +913,7 @@ class DocumentMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
-    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters
@@ -947,7 +951,7 @@ class DocumentMessage(SendableMessageBase):
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters
@@ -1023,16 +1027,15 @@ class DocumentMessage(SendableMessageBase):
         if isinstance(self.document, InputFile):
             array['document'] = self.document.to_array()  # type InputFile
         elif isinstance(self.document, str):
-            array['document'] = u(self.document)  # py2: type unicode, py3: type str
-        else:
+            array['document'] = u(self.document)  # py2: type unicode, py3: type strelse:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -1048,17 +1051,14 @@ class DocumentMessage(SendableMessageBase):
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
         if self.reply_markup is not None:
@@ -1099,7 +1099,8 @@ class DocumentMessage(SendableMessageBase):
             data['document'] = u(array.get('document'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifif array.get('chat_id') is None:
+        # end if
+        if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
             data['receiver'] = None(array.get('chat_id'))
@@ -1109,7 +1110,8 @@ class DocumentMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -1117,7 +1119,8 @@ class DocumentMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifif array.get('thumb') is None:
+        # end if
+        if array.get('thumb') is None:
             data['thumb'] = None
         elif isinstance(array.get('thumb'), InputFile):
             data['thumb'] = InputFile.from_array(array.get('thumb'))
@@ -1125,7 +1128,8 @@ class DocumentMessage(SendableMessageBase):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
@@ -1141,6 +1145,7 @@ class DocumentMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -1155,7 +1160,8 @@ class DocumentMessage(SendableMessageBase):
             return None
         # end if
 
-        data = DocumentMessage.validate_array(array)return DocumentMessage(**data)
+        data = DocumentMessage.validate_array(array)
+        return DocumentMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -1210,7 +1216,7 @@ class VideoMessage(SendableMessageBase):
     :param height: Video height
     :type  height: int
     
-    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters
@@ -1260,7 +1266,7 @@ class VideoMessage(SendableMessageBase):
         :param height: Video height
         :type  height: int
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters
@@ -1351,16 +1357,15 @@ class VideoMessage(SendableMessageBase):
         if isinstance(self.video, InputFile):
             array['video'] = self.video.to_array()  # type InputFile
         elif isinstance(self.video, str):
-            array['video'] = u(self.video)  # py2: type unicode, py3: type str
-        else:
+            array['video'] = u(self.video)  # py2: type unicode, py3: type strelse:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -1382,17 +1387,14 @@ class VideoMessage(SendableMessageBase):
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.supports_streaming is not None:
             array['supports_streaming'] = bool(self.supports_streaming)  # type bool
         if self.disable_notification is not None:
@@ -1435,7 +1437,8 @@ class VideoMessage(SendableMessageBase):
             data['video'] = u(array.get('video'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifif array.get('chat_id') is None:
+        # end if
+        if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
             data['receiver'] = None(array.get('chat_id'))
@@ -1445,7 +1448,8 @@ class VideoMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -1453,7 +1457,8 @@ class VideoMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
+        # end if
+        data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         if array.get('thumb') is None:
@@ -1464,7 +1469,8 @@ class VideoMessage(SendableMessageBase):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['supports_streaming'] = bool(array.get('supports_streaming')) if array.get('supports_streaming') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
@@ -1481,6 +1487,7 @@ class VideoMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -1495,7 +1502,8 @@ class VideoMessage(SendableMessageBase):
             return None
         # end if
 
-        data = VideoMessage.validate_array(array)return VideoMessage(**data)
+        data = VideoMessage.validate_array(array)
+        return VideoMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -1550,7 +1558,7 @@ class AnimationMessage(SendableMessageBase):
     :param height: Animation height
     :type  height: int
     
-    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters
@@ -1597,7 +1605,7 @@ class AnimationMessage(SendableMessageBase):
         :param height: Animation height
         :type  height: int
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters
@@ -1682,16 +1690,15 @@ class AnimationMessage(SendableMessageBase):
         if isinstance(self.animation, InputFile):
             array['animation'] = self.animation.to_array()  # type InputFile
         elif isinstance(self.animation, str):
-            array['animation'] = u(self.animation)  # py2: type unicode, py3: type str
-        else:
+            array['animation'] = u(self.animation)  # py2: type unicode, py3: type strelse:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -1713,17 +1720,14 @@ class AnimationMessage(SendableMessageBase):
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
         if self.reply_markup is not None:
@@ -1764,7 +1768,8 @@ class AnimationMessage(SendableMessageBase):
             data['animation'] = u(array.get('animation'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifif array.get('chat_id') is None:
+        # end if
+        if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
             data['receiver'] = None(array.get('chat_id'))
@@ -1774,7 +1779,8 @@ class AnimationMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -1782,7 +1788,8 @@ class AnimationMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
+        # end if
+        data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         if array.get('thumb') is None:
@@ -1793,7 +1800,8 @@ class AnimationMessage(SendableMessageBase):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
@@ -1809,6 +1817,7 @@ class AnimationMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -1823,7 +1832,8 @@ class AnimationMessage(SendableMessageBase):
             return None
         # end if
 
-        data = AnimationMessage.validate_array(array)return AnimationMessage(**data)
+        data = AnimationMessage.validate_array(array)
+        return AnimationMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -1983,16 +1993,15 @@ class VoiceMessage(SendableMessageBase):
         if isinstance(self.voice, InputFile):
             array['voice'] = self.voice.to_array()  # type InputFile
         elif isinstance(self.voice, str):
-            array['voice'] = u(self.voice)  # py2: type unicode, py3: type str
-        else:
+            array['voice'] = u(self.voice)  # py2: type unicode, py3: type strelse:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -2006,10 +2015,8 @@ class VoiceMessage(SendableMessageBase):
 
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
         if self.disable_notification is not None:
@@ -2052,7 +2059,8 @@ class VoiceMessage(SendableMessageBase):
             data['voice'] = u(array.get('voice'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifif array.get('chat_id') is None:
+        # end if
+        if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
             data['receiver'] = None(array.get('chat_id'))
@@ -2062,7 +2070,8 @@ class VoiceMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -2070,7 +2079,8 @@ class VoiceMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
@@ -2087,6 +2097,7 @@ class VoiceMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -2101,7 +2112,8 @@ class VoiceMessage(SendableMessageBase):
             return None
         # end if
 
-        data = VoiceMessage.validate_array(array)return VoiceMessage(**data)
+        data = VoiceMessage.validate_array(array)
+        return VoiceMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -2153,7 +2165,7 @@ class VideoNoteMessage(SendableMessageBase):
     :param length: Video width and height, i.e. diameter of the video message
     :type  length: int
     
-    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -2191,7 +2203,7 @@ class VideoNoteMessage(SendableMessageBase):
         :param length: Video width and height, i.e. diameter of the video message
         :type  length: int
         
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -2261,16 +2273,15 @@ class VideoNoteMessage(SendableMessageBase):
         if isinstance(self.video_note, InputFile):
             array['video_note'] = self.video_note.to_array()  # type InputFile
         elif isinstance(self.video_note, str):
-            array['video_note'] = u(self.video_note)  # py2: type unicode, py3: type str
-        else:
+            array['video_note'] = u(self.video_note)  # py2: type unicode, py3: type strelse:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -2290,8 +2301,7 @@ class VideoNoteMessage(SendableMessageBase):
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
 
@@ -2335,7 +2345,8 @@ class VideoNoteMessage(SendableMessageBase):
             data['video_note'] = u(array.get('video_note'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifif array.get('chat_id') is None:
+        # end if
+        if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
             data['receiver'] = None(array.get('chat_id'))
@@ -2345,7 +2356,8 @@ class VideoNoteMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -2353,7 +2365,8 @@ class VideoNoteMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
+        # end if
+        data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['length'] = int(array.get('length')) if array.get('length') is not None else None
         if array.get('thumb') is None:
             data['thumb'] = None
@@ -2363,7 +2376,8 @@ class VideoNoteMessage(SendableMessageBase):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end ifdata['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        # end if
+        data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -2377,6 +2391,7 @@ class VideoNoteMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -2391,7 +2406,8 @@ class VideoNoteMessage(SendableMessageBase):
             return None
         # end if
 
-        data = VideoNoteMessage.validate_array(array)return VideoNoteMessage(**data)
+        data = VideoNoteMessage.validate_array(array)
+        return VideoNoteMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -2519,9 +2535,9 @@ class MediaGroupMessage(SendableMessageBase):
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -2557,7 +2573,8 @@ class MediaGroupMessage(SendableMessageBase):
             data['media'] = InputMediaVideo.from_array_list(array.get('media'), list_level=1)
         else:
             raise TypeError('Unknown type, must be one of InputMediaPhoto, InputMediaVideo.')
-        # end ifif array.get('chat_id') is None:
+        # end if
+        if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
             data['receiver'] = None(array.get('chat_id'))
@@ -2567,7 +2584,8 @@ class MediaGroupMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -2575,7 +2593,8 @@ class MediaGroupMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        # end if
+        data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         
     # end def validate_array
 
@@ -2591,7 +2610,8 @@ class MediaGroupMessage(SendableMessageBase):
             return None
         # end if
 
-        data = MediaGroupMessage.validate_array(array)return MediaGroupMessage(**data)
+        data = MediaGroupMessage.validate_array(array)
+        return MediaGroupMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -2742,9 +2762,9 @@ class LocationMessage(SendableMessageBase):
         array['longitude'] = float(self.longitude)  # type float
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -2803,7 +2823,8 @@ class LocationMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -2811,7 +2832,8 @@ class LocationMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
+        # end if
+        data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
@@ -2826,6 +2848,7 @@ class LocationMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -2840,7 +2863,8 @@ class LocationMessage(SendableMessageBase):
             return None
         # end if
 
-        data = LocationMessage.validate_array(array)return LocationMessage(**data)
+        data = LocationMessage.validate_array(array)
+        return LocationMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -3017,14 +3041,12 @@ class VenueMessage(SendableMessageBase):
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
-
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -3038,10 +3060,8 @@ class VenueMessage(SendableMessageBase):
 
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
-
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
-
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
         if self.reply_markup is not None:
@@ -3089,7 +3109,8 @@ class VenueMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -3097,7 +3118,8 @@ class VenueMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
+        # end if
+        data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
@@ -3113,6 +3135,7 @@ class VenueMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -3127,7 +3150,8 @@ class VenueMessage(SendableMessageBase):
             return None
         # end if
 
-        data = VenueMessage.validate_array(array)return VenueMessage(**data)
+        data = VenueMessage.validate_array(array)
+        return VenueMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -3284,14 +3308,12 @@ class ContactMessage(SendableMessageBase):
         """
         array = super(ContactMessage, self).to_array()
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
-
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
-
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -3305,10 +3327,8 @@ class ContactMessage(SendableMessageBase):
 
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
-
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
-
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
         if self.reply_markup is not None:
@@ -3354,7 +3374,8 @@ class ContactMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -3362,7 +3383,8 @@ class ContactMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
+        # end if
+        data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
@@ -3378,6 +3400,7 @@ class ContactMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -3392,7 +3415,8 @@ class ContactMessage(SendableMessageBase):
             return None
         # end if
 
-        data = ContactMessage.validate_array(array)return ContactMessage(**data)
+        data = ContactMessage.validate_array(array)
+        return ContactMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -3416,6 +3440,248 @@ class ContactMessage(SendableMessageBase):
         return key in ["phone_number", "first_name", "receiver", "reply_id", "last_name", "vcard", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
     # end def __contains__
 # end class ContactMessage
+
+class PollMessage(SendableMessageBase):
+    """
+    Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+
+    https://core.telegram.org/bots/api#sendpoll
+
+    
+    Parameters:
+    
+    :param question: Poll question, 1-255 characters
+    :type  question: str|unicode
+    
+    :param options: List of answer options, 2-10 strings 1-100 characters each
+    :type  options: list of str|unicode
+    
+    
+    Optional keyword parameters:
+    
+    :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
+    :type  receiver: None | str|unicode | int
+    
+    :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
+    :type  reply_id: DEFAULT_MESSAGE_ID | int
+    
+    :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+    :type  disable_notification: bool
+    
+    :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+    
+    """
+
+    def __init__(self, question, options, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, reply_markup=None):
+        """
+        Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendpoll
+
+        
+        Parameters:
+        
+        :param question: Poll question, 1-255 characters
+        :type  question: str|unicode
+        
+        :param options: List of answer options, 2-10 strings 1-100 characters each
+        :type  options: list of str|unicode
+        
+        
+        Optional keyword parameters:
+        
+        :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
+        :type  receiver: None | str|unicode | int
+        
+        :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
+        :type  reply_id: DEFAULT_MESSAGE_ID | int
+        
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
+        
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        
+        """
+        super(PollMessage, self).__init__()
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        
+        assert_type_or_raise(question, unicode_type, parameter_name="question")
+        self.question = question
+        
+        assert_type_or_raise(options, list, parameter_name="options")
+        self.options = options
+        
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
+        self.receiver = receiver
+        
+        assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
+        self.reply_id = reply_id
+        
+        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        self.disable_notification = disable_notification
+        
+        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
+        self.reply_markup = reply_markup
+        self._next_msg = None
+    # end def __init__
+
+    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
+    def send(self, sender: PytgbotApiBot):
+        """
+        Send the message via pytgbot.
+
+        :param sender: The bot instance to send with.
+        :type  sender: pytgbot.bot.Bot
+
+        :rtype: PytgbotApiMessage
+        """
+        return sender.send_poll(
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
+            question=self.question, options=self.options, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+        )
+    # end def send
+
+    def to_array(self):
+        """
+        Serializes this PollMessage to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(PollMessage, self).to_array()
+        array['question'] = u(self.question)  # py2: type unicode, py3: type str
+        array['options'] = self._as_array(self.options)  # type list of str
+
+        if self.receiver is not None:
+            if isinstance(self.receiver, None):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
+                array['chat_id'] = int(self.receiver)  # type intelse:
+                raise TypeError('Unknown type, must be one of None, str, int.')
+            # end if
+
+        if self.reply_id is not None:
+            if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
+                raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
+            # end if
+
+        if self.disable_notification is not None:
+            array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.reply_markup is not None:
+            if isinstance(self.reply_markup, InlineKeyboardMarkup):
+                array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+            elif isinstance(self.reply_markup, ReplyKeyboardMarkup):
+                array['reply_markup'] = self.reply_markup.to_array()  # type ReplyKeyboardMarkup
+            elif isinstance(self.reply_markup, ReplyKeyboardRemove):
+                array['reply_markup'] = self.reply_markup.to_array()  # type ReplyKeyboardRemove
+            elif isinstance(self.reply_markup, ForceReply):
+                array['reply_markup'] = self.reply_markup.to_array()  # type ForceReply
+            else:
+                raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply.')
+            # end if
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PollMessage constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        
+        data = SendableMessageBase.validate_array(array)
+        data['question'] = u(array.get('question'))
+        data['options'] = PollMessage._builtin_from_array_list(required_type=unicode_type, value=array.get('options'), list_level=1)
+        if array.get('chat_id') is None:
+            data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
+        elif isinstance(array.get('chat_id'), str):
+            data['receiver'] = u(array.get('chat_id'))
+        elif isinstance(array.get('chat_id'), int):
+            data['receiver'] = int(array.get('chat_id'))
+        else:
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
+        # end if
+        if array.get('reply_to_message_id') is None:
+            data['reply_id'] = None
+        elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
+        elif isinstance(array.get('reply_to_message_id'), int):
+            data['reply_id'] = int(array.get('reply_to_message_id'))
+        else:
+            raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
+        # end if
+        data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        if array.get('reply_markup') is None:
+            data['reply_markup'] = None
+        elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
+            data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
+        elif isinstance(array.get('reply_markup'), ReplyKeyboardMarkup):
+            data['reply_markup'] = ReplyKeyboardMarkup.from_array(array.get('reply_markup'))
+        elif isinstance(array.get('reply_markup'), ReplyKeyboardRemove):
+            data['reply_markup'] = ReplyKeyboardRemove.from_array(array.get('reply_markup'))
+        elif isinstance(array.get('reply_markup'), ForceReply):
+            data['reply_markup'] = ForceReply.from_array(array.get('reply_markup'))
+        else:
+            raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
+        # end if
+        
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PollMessage from a given dictionary.
+
+        :return: new PollMessage instance.
+        :rtype: PollMessage
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PollMessage.validate_array(array)
+        return PollMessage(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(pollmessage_instance)`
+        """
+        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(pollmessage_instance)`
+        """
+        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in pollmessage_instance`
+        """
+        return key in ["question", "options", "receiver", "reply_id", "disable_notification", "reply_markup"] and hasattr(self, key) and bool(getattr(self, key, None))
+    # end def __contains__
+# end class PollMessage
 
 class ChatActionMessage(SendableMessageBase):
     """
@@ -3498,12 +3764,11 @@ class ChatActionMessage(SendableMessageBase):
         """
         array = super(ChatActionMessage, self).to_array()
         array['action'] = u(self.action)  # py2: type unicode, py3: type str
-
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -3533,6 +3798,7 @@ class ChatActionMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -3547,7 +3813,8 @@ class ChatActionMessage(SendableMessageBase):
             return None
         # end if
 
-        data = ChatActionMessage.validate_array(array)return ChatActionMessage(**data)
+        data = ChatActionMessage.validate_array(array)
+        return ChatActionMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -3574,7 +3841,7 @@ class ChatActionMessage(SendableMessageBase):
 
 class StickerMessage(SendableMessageBase):
     """
-    Use this method to send .webp stickers. On success, the sent Message is returned.
+    Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendsticker
 
@@ -3603,7 +3870,7 @@ class StickerMessage(SendableMessageBase):
 
     def __init__(self, sticker, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, reply_markup=None):
         """
-        Use this method to send .webp stickers. On success, the sent Message is returned.
+        Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendsticker
 
@@ -3680,16 +3947,15 @@ class StickerMessage(SendableMessageBase):
         if isinstance(self.sticker, InputFile):
             array['sticker'] = self.sticker.to_array()  # type InputFile
         elif isinstance(self.sticker, str):
-            array['sticker'] = u(self.sticker)  # py2: type unicode, py3: type str
-        else:
+            array['sticker'] = u(self.sticker)  # py2: type unicode, py3: type strelse:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -3741,7 +4007,8 @@ class StickerMessage(SendableMessageBase):
             data['sticker'] = u(array.get('sticker'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifif array.get('chat_id') is None:
+        # end if
+        if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
             data['receiver'] = None(array.get('chat_id'))
@@ -3751,7 +4018,8 @@ class StickerMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -3759,7 +4027,8 @@ class StickerMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        # end if
+        data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -3773,6 +4042,7 @@ class StickerMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
+        
     # end def validate_array
 
     @staticmethod
@@ -3787,7 +4057,8 @@ class StickerMessage(SendableMessageBase):
             return None
         # end if
 
-        data = StickerMessage.validate_array(array)return StickerMessage(**data)
+        data = StickerMessage.validate_array(array)
+        return StickerMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -4077,24 +4348,18 @@ class InvoiceMessage(SendableMessageBase):
         """
         array = super(InvoiceMessage, self).to_array()
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
-
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         array['payload'] = u(self.payload)  # py2: type unicode, py3: type str
-
         array['provider_token'] = u(self.provider_token)  # py2: type unicode, py3: type str
-
         array['start_parameter'] = u(self.start_parameter)  # py2: type unicode, py3: type str
-
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
-
         array['prices'] = self._as_array(self.prices)  # type list of LabeledPrice
 
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -4108,10 +4373,8 @@ class InvoiceMessage(SendableMessageBase):
 
         if self.provider_data is not None:
             array['provider_data'] = u(self.provider_data)  # py2: type unicode, py3: type str
-
         if self.photo_url is not None:
             array['photo_url'] = u(self.photo_url)  # py2: type unicode, py3: type str
-
         if self.photo_size is not None:
             array['photo_size'] = int(self.photo_size)  # type int
         if self.photo_width is not None:
@@ -4170,7 +4433,8 @@ class InvoiceMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -4178,7 +4442,8 @@ class InvoiceMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['provider_data'] = u(array.get('provider_data')) if array.get('provider_data') is not None else None
+        # end if
+        data['provider_data'] = u(array.get('provider_data')) if array.get('provider_data') is not None else None
         data['photo_url'] = u(array.get('photo_url')) if array.get('photo_url') is not None else None
         data['photo_size'] = int(array.get('photo_size')) if array.get('photo_size') is not None else None
         data['photo_width'] = int(array.get('photo_width')) if array.get('photo_width') is not None else None
@@ -4207,7 +4472,8 @@ class InvoiceMessage(SendableMessageBase):
             return None
         # end if
 
-        data = InvoiceMessage.validate_array(array)return InvoiceMessage(**data)
+        data = InvoiceMessage.validate_array(array)
+        return InvoiceMessage(**data)
     # end def from_array
 
     def __str__(self):
@@ -4334,12 +4600,11 @@ class GameMessage(SendableMessageBase):
         """
         array = super(GameMessage, self).to_array()
         array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
-
         if self.receiver is not None:
             if isinstance(self.receiver, None):
-                array['chat_id'] = None(self.receiver)  # type Noneelif isinstance(self.receiver, str):
-                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
-            elif isinstance(self.receiver, int):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
                 array['chat_id'] = int(self.receiver)  # type intelse:
                 raise TypeError('Unknown type, must be one of None, str, int.')
             # end if
@@ -4382,7 +4647,8 @@ class GameMessage(SendableMessageBase):
             data['receiver'] = int(array.get('chat_id'))
         else:
             raise TypeError('Unknown type, must be one of None, str, int or None.')
-        # end ifif array.get('reply_to_message_id') is None:
+        # end if
+        if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
         elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
             data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
@@ -4390,7 +4656,8 @@ class GameMessage(SendableMessageBase):
             data['reply_id'] = int(array.get('reply_to_message_id'))
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
-        # end ifdata['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        # end if
+        data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         
     # end def validate_array
@@ -4407,7 +4674,8 @@ class GameMessage(SendableMessageBase):
             return None
         # end if
 
-        data = GameMessage.validate_array(array)return GameMessage(**data)
+        data = GameMessage.validate_array(array)
+        return GameMessage(**data)
     # end def from_array
 
     def __str__(self):

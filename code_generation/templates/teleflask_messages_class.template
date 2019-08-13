@@ -128,7 +128,7 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
         # end if
-        {%- endif -%}
+        {% endif -%}
         {%- endfor -%}
         {#- remove empty line  #}
     # end def validate_array
@@ -146,8 +146,8 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         # end if
 
         data = {{ function.class_name_teleflask_message }}.validate_array(array)
-        {%- if not is_sendable -%}
-        return {{ function.class_name_teleflask_message }}(**data){% else %}
+        {% if not is_sendable -%}
+        return {{ function.class_name_teleflask_message }}(**data){% else -%}
         instance = {{ function.class_name_teleflask_message }}(**data)
         return instance{% endif %}
     # end def from_array
