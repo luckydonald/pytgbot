@@ -59,21 +59,35 @@ class LabeledPrice(Sendable):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the LabeledPrice constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Sendable.validate_array(array)
+        data['label'] = u(array.get('label'))
+        data['amount'] = int(array.get('amount'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new LabeledPrice from a given dictionary.
 
         :return: new LabeledPrice instance.
         :rtype: LabeledPrice
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['label'] = u(array.get('label'))
-        data['amount'] = int(array.get('amount'))
-
+        data = LabeledPrice.validate_array(array)
         instance = LabeledPrice(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -96,7 +110,11 @@ class LabeledPrice(Sendable):
         """
         Implements `"key" in labeledprice_instance`
         """
-        return key in ["label", "amount"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["label", "amount"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class LabeledPrice
 
@@ -168,23 +186,37 @@ class ShippingOption(Sendable):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the ShippingOption constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = Sendable.validate_array(array)
+        data['id'] = u(array.get('id'))
+        data['title'] = u(array.get('title'))
+        data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new ShippingOption from a given dictionary.
 
         :return: new ShippingOption instance.
         :rtype: ShippingOption
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-
-        data = {}
-        data['id'] = u(array.get('id'))
-        data['title'] = u(array.get('title'))
-        data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
-
+        data = ShippingOption.validate_array(array)
         instance = ShippingOption(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -207,6 +239,10 @@ class ShippingOption(Sendable):
         """
         Implements `"key" in shippingoption_instance`
         """
-        return key in ["id", "title", "prices"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "title", "prices"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ShippingOption

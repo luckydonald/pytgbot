@@ -112,24 +112,40 @@ class InlineQuery(Result):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new InlineQuery from a given dictionary.
+        Builds a new array with valid values for the InlineQuery constructor.
 
-        :return: new InlineQuery instance.
+        :return: new array with valid values
         :rtype: InlineQuery
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.peer import User
 
-        data = {}
+        data = Result.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
         data['query'] = u(array.get('query'))
         data['offset'] = u(array.get('offset'))
         data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQuery from a given dictionary.
+
+        :return: new InlineQuery instance.
+        :rtype: InlineQuery
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQuery.validate_array(array)
         data['_raw'] = array
         return InlineQuery(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -152,7 +168,11 @@ class InlineQuery(Result):
         """
         Implements `"key" in inlinequery_instance`
         """
-        return key in ["id", "from_peer", "query", "offset", "location"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "from_peer", "query", "offset", "location"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineQuery
 
@@ -263,25 +283,40 @@ class ChosenInlineResult(UpdateType):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new ChosenInlineResult from a given dictionary.
+        Builds a new array with valid values for the ChosenInlineResult constructor.
 
-        :return: new ChosenInlineResult instance.
-        :rtype: ChosenInlineResult
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         from ..receivable.media import Location
         from ..receivable.peer import User
 
-        data = {}
+        data = UpdateType.validate_array(array)
         data['result_id'] = u(array.get('result_id'))
         data['from_peer'] = User.from_array(array.get('from'))
         data['query'] = u(array.get('query'))
         data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
         data['inline_message_id'] = u(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new ChosenInlineResult from a given dictionary.
+
+        :return: new ChosenInlineResult instance.
+        :rtype: ChosenInlineResult
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = ChosenInlineResult.validate_array(array)
         data['_raw'] = array
         return ChosenInlineResult(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -304,6 +339,10 @@ class ChosenInlineResult(UpdateType):
         """
         Implements `"key" in choseninlineresult_instance`
         """
-        return key in ["result_id", "from_peer", "query", "location", "inline_message_id"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["result_id", "from_peer", "query", "location", "inline_message_id"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ChosenInlineResult

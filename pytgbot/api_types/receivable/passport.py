@@ -76,20 +76,35 @@ class PassportData(Result):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the PassportData constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = Result.validate_array(array)
+        data['data'] = EncryptedPassportElement.from_array_list(array.get('data'), list_level=1)
+        data['credentials'] = EncryptedCredentials.from_array(array.get('credentials'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new PassportData from a given dictionary.
 
         :return: new PassportData instance.
         :rtype: PassportData
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-
-        data = {}
-        data['data'] = EncryptedPassportElement.from_array_list(array.get('data'), list_level=1)
-        data['credentials'] = EncryptedCredentials.from_array(array.get('credentials'))
+        data = PassportData.validate_array(array)
         data['_raw'] = array
         return PassportData(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -112,10 +127,13 @@ class PassportData(Result):
         """
         Implements `"key" in passportdata_instance`
         """
-        return key in ["data", "credentials"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["data", "credentials"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportData
-
 
 
 class PassportFile(Result):
@@ -127,7 +145,7 @@ class PassportFile(Result):
 
     Parameters:
 
-    :param file_id: Unique identifier for this file
+    :param file_id: Identifier for this file
     :type  file_id: str|unicode
 
     :param file_size: File size
@@ -152,7 +170,7 @@ class PassportFile(Result):
 
         Parameters:
 
-        :param file_id: Unique identifier for this file
+        :param file_id: Identifier for this file
         :type  file_id: str|unicode
 
         :param file_size: File size
@@ -197,20 +215,35 @@ class PassportFile(Result):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the PassportFile constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['file_size'] = int(array.get('file_size'))
+        data['file_date'] = int(array.get('file_date'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new PassportFile from a given dictionary.
 
         :return: new PassportFile instance.
         :rtype: PassportFile
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['file_size'] = int(array.get('file_size'))
-        data['file_date'] = int(array.get('file_date'))
+        data = PassportFile.validate_array(array)
         data['_raw'] = array
         return PassportFile(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -233,7 +266,11 @@ class PassportFile(Result):
         """
         Implements `"key" in passportfile_instance`
         """
-        return key in ["file_id", "file_size", "file_date"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "file_size", "file_date"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportFile
 
@@ -398,15 +435,14 @@ class EncryptedPassportElement(Result):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new EncryptedPassportElement from a given dictionary.
+        Builds a new array with valid values for the EncryptedPassportElement constructor.
 
-        :return: new EncryptedPassportElement instance.
-        :rtype: EncryptedPassportElement
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
 
-
-        data = {}
+        data = Result.validate_array(array)
         data['type'] = u(array.get('type'))
         data['hash'] = u(array.get('hash'))
         data['data'] = u(array.get('data')) if array.get('data') is not None else None
@@ -417,9 +453,25 @@ class EncryptedPassportElement(Result):
         data['reverse_side'] = PassportFile.from_array(array.get('reverse_side')) if array.get('reverse_side') is not None else None
         data['selfie'] = PassportFile.from_array(array.get('selfie')) if array.get('selfie') is not None else None
         data['translation'] = PassportFile.from_array_list(array.get('translation'), list_level=1) if array.get('translation') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new EncryptedPassportElement from a given dictionary.
+
+        :return: new EncryptedPassportElement instance.
+        :rtype: EncryptedPassportElement
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = EncryptedPassportElement.validate_array(array)
         data['_raw'] = array
         return EncryptedPassportElement(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -442,7 +494,11 @@ class EncryptedPassportElement(Result):
         """
         Implements `"key" in encryptedpassportelement_instance`
         """
-        return key in ["type", "hash", "data", "phone_number", "email", "files", "front_side", "reverse_side", "selfie", "translation"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "hash", "data", "phone_number", "email", "files", "front_side", "reverse_side", "selfie", "translation"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class EncryptedPassportElement
 
@@ -527,20 +583,35 @@ class EncryptedCredentials(Result):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the EncryptedCredentials constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['data'] = u(array.get('data'))
+        data['hash'] = u(array.get('hash'))
+        data['secret'] = u(array.get('secret'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new EncryptedCredentials from a given dictionary.
 
         :return: new EncryptedCredentials instance.
         :rtype: EncryptedCredentials
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['data'] = u(array.get('data'))
-        data['hash'] = u(array.get('hash'))
-        data['secret'] = u(array.get('secret'))
+        data = EncryptedCredentials.validate_array(array)
         data['_raw'] = array
         return EncryptedCredentials(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -563,7 +634,11 @@ class EncryptedCredentials(Result):
         """
         Implements `"key" in encryptedcredentials_instance`
         """
-        return key in ["data", "hash", "secret"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["data", "hash", "secret"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class EncryptedCredentials
 

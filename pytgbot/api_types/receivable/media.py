@@ -113,23 +113,39 @@ class MessageEntity(Result):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new MessageEntity from a given dictionary.
+        Builds a new array with valid values for the MessageEntity constructor.
 
-        :return: new MessageEntity instance.
-        :rtype: MessageEntity
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.peer import User
 
-        data = {}
+        data = Result.validate_array(array)
         data['type'] = u(array.get('type'))
         data['offset'] = int(array.get('offset'))
         data['length'] = int(array.get('length'))
         data['url'] = u(array.get('url')) if array.get('url') is not None else None
         data['user'] = User.from_array(array.get('user')) if array.get('user') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new MessageEntity from a given dictionary.
+
+        :return: new MessageEntity instance.
+        :rtype: MessageEntity
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = MessageEntity.validate_array(array)
         data['_raw'] = array
         return MessageEntity(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -152,7 +168,11 @@ class MessageEntity(Result):
         """
         Implements `"key" in messageentity_instance`
         """
-        return key in ["type", "offset", "length", "url", "user"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "offset", "length", "url", "user"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class MessageEntity
 
@@ -167,7 +187,7 @@ class DownloadableMedia(Media):
         :return: a dict with file_id and file_size extracted from the array
         :rtype: dict
         """
-        data = super(DownloadableMedia).from_array(array)
+        data = Media.from_array(array)
         data["file_id"] = array.get("file_id")
         data["file_size"] = array.get("file_size")  # can be None
         return data
@@ -183,7 +203,7 @@ class PhotoSize(Result):
 
     Parameters:
 
-    :param file_id: Unique identifier for this file
+    :param file_id: Identifier for this file
     :type  file_id: str|unicode
 
     :param width: Photo width
@@ -211,7 +231,7 @@ class PhotoSize(Result):
 
         Parameters:
 
-        :param file_id: Unique identifier for this file
+        :param file_id: Identifier for this file
         :type  file_id: str|unicode
 
         :param width: Photo width
@@ -263,21 +283,36 @@ class PhotoSize(Result):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the PhotoSize constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['width'] = int(array.get('width'))
+        data['height'] = int(array.get('height'))
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new PhotoSize from a given dictionary.
 
         :return: new PhotoSize instance.
         :rtype: PhotoSize
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['width'] = int(array.get('width'))
-        data['height'] = int(array.get('height'))
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        data = PhotoSize.validate_array(array)
         data['_raw'] = array
         return PhotoSize(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -300,7 +335,11 @@ class PhotoSize(Result):
         """
         Implements `"key" in photosize_instance`
         """
-        return key in ["file_id", "width", "height", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "width", "height", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PhotoSize
 
@@ -314,7 +353,7 @@ class Audio(Media):
 
     Parameters:
 
-    :param file_id: Unique identifier for this file
+    :param file_id: Identifier for this file
     :type  file_id: str|unicode
 
     :param duration: Duration of the audio in seconds as defined by sender
@@ -351,7 +390,7 @@ class Audio(Media):
 
         Parameters:
 
-        :param file_id: Unique identifier for this file
+        :param file_id: Identifier for this file
         :type  file_id: str|unicode
 
         :param duration: Duration of the audio in seconds as defined by sender
@@ -429,14 +468,14 @@ class Audio(Media):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new Audio from a given dictionary.
+        Builds a new array with valid values for the Audio constructor.
 
-        :return: new Audio instance.
-        :rtype: Audio
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
+        data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['duration'] = int(array.get('duration'))
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
@@ -444,9 +483,25 @@ class Audio(Media):
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Audio from a given dictionary.
+
+        :return: new Audio instance.
+        :rtype: Audio
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Audio.validate_array(array)
         data['_raw'] = array
         return Audio(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -469,9 +524,368 @@ class Audio(Media):
         """
         Implements `"key" in audio_instance`
         """
-        return key in ["file_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["file_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Audio
+
+
+
+class Document(Media):
+    """
+    This object represents a general file (as opposed to photos, voice messages and audio files).
+
+    https://core.telegram.org/bots/api#document
+
+
+    Parameters:
+
+    :param file_id: Identifier for this file
+    :type  file_id: str|unicode
+
+
+    Optional keyword parameters:
+
+    :param thumb: Optional. Document thumbnail as defined by sender
+    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
+    :param file_name: Optional. Original filename as defined by sender
+    :type  file_name: str|unicode
+
+    :param mime_type: Optional. MIME type of the file as defined by sender
+    :type  mime_type: str|unicode
+
+    :param file_size: Optional. File size
+    :type  file_size: int
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, file_id, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
+        """
+        This object represents a general file (as opposed to photos, voice messages and audio files).
+
+        https://core.telegram.org/bots/api#document
+
+
+        Parameters:
+
+        :param file_id: Identifier for this file
+        :type  file_id: str|unicode
+
+
+        Optional keyword parameters:
+
+        :param thumb: Optional. Document thumbnail as defined by sender
+        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
+        :param file_name: Optional. Original filename as defined by sender
+        :type  file_name: str|unicode
+
+        :param mime_type: Optional. MIME type of the file as defined by sender
+        :type  mime_type: str|unicode
+
+        :param file_size: Optional. File size
+        :type  file_size: int
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Document, self).__init__()
+
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
+        self.file_id = file_id
+
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
+        self.thumb = thumb
+
+        assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
+        self.file_name = file_name
+
+        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
+        self.mime_type = mime_type
+
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        self.file_size = file_size
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Document to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Document, self).to_array()
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        if self.thumb is not None:
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        if self.file_name is not None:
+            array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        if self.mime_type is not None:
+            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        if self.file_size is not None:
+            array['file_size'] = int(self.file_size)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Document constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import PhotoSize
+
+        data = Media.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Document from a given dictionary.
+
+        :return: new Document instance.
+        :rtype: Document
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Document.validate_array(array)
+        data['_raw'] = array
+        return Document(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(document_instance)`
+        """
+        return "Document(file_id={self.file_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(document_instance)`
+        """
+        if self._raw:
+            return "Document.from_array({self._raw})".format(self=self)
+        # end if
+        return "Document(file_id={self.file_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in document_instance`
+        """
+        return (
+            key in ["file_id", "thumb", "file_name", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Document
+
+
+class Video(Media):
+    """
+    This object represents a video file.
+
+    https://core.telegram.org/bots/api#video
+
+
+    Parameters:
+
+    :param file_id: Identifier for this file
+    :type  file_id: str|unicode
+
+    :param width: Video width as defined by sender
+    :type  width: int
+
+    :param height: Video height as defined by sender
+    :type  height: int
+
+    :param duration: Duration of the video in seconds as defined by sender
+    :type  duration: int
+
+
+    Optional keyword parameters:
+
+    :param thumb: Optional. Video thumbnail
+    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
+    :param mime_type: Optional. Mime type of a file as defined by sender
+    :type  mime_type: str|unicode
+
+    :param file_size: Optional. File size
+    :type  file_size: int
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, file_id, width, height, duration, thumb=None, mime_type=None, file_size=None, _raw=None):
+        """
+        This object represents a video file.
+
+        https://core.telegram.org/bots/api#video
+
+
+        Parameters:
+
+        :param file_id: Identifier for this file
+        :type  file_id: str|unicode
+
+        :param width: Video width as defined by sender
+        :type  width: int
+
+        :param height: Video height as defined by sender
+        :type  height: int
+
+        :param duration: Duration of the video in seconds as defined by sender
+        :type  duration: int
+
+
+        Optional keyword parameters:
+
+        :param thumb: Optional. Video thumbnail
+        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
+        :param mime_type: Optional. Mime type of a file as defined by sender
+        :type  mime_type: str|unicode
+
+        :param file_size: Optional. File size
+        :type  file_size: int
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Video, self).__init__()
+
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
+        self.file_id = file_id
+
+        assert_type_or_raise(width, int, parameter_name="width")
+        self.width = width
+
+        assert_type_or_raise(height, int, parameter_name="height")
+        self.height = height
+
+        assert_type_or_raise(duration, int, parameter_name="duration")
+        self.duration = duration
+
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
+        self.thumb = thumb
+
+        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
+        self.mime_type = mime_type
+
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        self.file_size = file_size
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Video to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Video, self).to_array()
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['width'] = int(self.width)  # type int
+        array['height'] = int(self.height)  # type int
+        array['duration'] = int(self.duration)  # type int
+        if self.thumb is not None:
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        if self.mime_type is not None:
+            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        if self.file_size is not None:
+            array['file_size'] = int(self.file_size)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Video constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = Media.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['width'] = int(array.get('width'))
+        data['height'] = int(array.get('height'))
+        data['duration'] = int(array.get('duration'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Video from a given dictionary.
+
+        :return: new Video instance.
+        :rtype: Video
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Video.validate_array(array)
+        data['_raw'] = array
+        return Video(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(video_instance)`
+        """
+        return "Video(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(video_instance)`
+        """
+        if self._raw:
+            return "Video.from_array({self._raw})".format(self=self)
+        # end if
+        return "Video(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in video_instance`
+        """
+        return (
+            key in ["file_id", "width", "height", "duration", "thumb", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Video
 
 
 class Animation(Media):
@@ -483,7 +897,7 @@ class Animation(Media):
 
     Parameters:
 
-    :param file_id: Unique file identifier
+    :param file_id: Identifier for this file
     :type  file_id: str|unicode
 
     :param width: Video width as defined by sender
@@ -524,7 +938,7 @@ class Animation(Media):
 
         Parameters:
 
-        :param file_id: Unique file identifier
+        :param file_id: Identifier for this file
         :type  file_id: str|unicode
 
         :param width: Video width as defined by sender
@@ -612,14 +1026,14 @@ class Animation(Media):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new Animation from a given dictionary.
+        Builds a new array with valid values for the Animation constructor.
 
-        :return: new Animation instance.
-        :rtype: Animation
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
+        data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
@@ -628,10 +1042,25 @@ class Animation(Media):
         data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['_raw'] = array
-        return Animation(**data)
 
     # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Animation from a given dictionary.
+
+        :return: new Animation instance.
+        :rtype: Animation
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Animation.validate_array(array)
+        data['_raw'] = array
+        return Animation(**data)
+    # end def from_array
 
     def __str__(self):
         """
@@ -658,513 +1087,15 @@ class Animation(Media):
         """
         Implements `"key" in animation_instance`
         """
-        return key in ["file_id", "width", "height", "duration", "thumb", "file_name", "mime_type",
-                       "file_size"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["file_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Animation
 
 
-class Document(Media):
-    """
-    This object represents a general file (as opposed to photos, voice messages and audio files).
-
-    https://core.telegram.org/bots/api#document
-
-
-    Parameters:
-
-    :param file_id: Unique file identifier
-    :type  file_id: str|unicode
-
-
-    Optional keyword parameters:
-
-    :param thumb: Optional. Document thumbnail as defined by sender
-    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
-    :param file_name: Optional. Original filename as defined by sender
-    :type  file_name: str|unicode
-
-    :param mime_type: Optional. MIME type of the file as defined by sender
-    :type  mime_type: str|unicode
-
-    :param file_size: Optional. File size
-    :type  file_size: int
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, file_id, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
-        """
-        This object represents a general file (as opposed to photos, voice messages and audio files).
-
-        https://core.telegram.org/bots/api#document
-
-
-        Parameters:
-
-        :param file_id: Unique file identifier
-        :type  file_id: str|unicode
-
-
-        Optional keyword parameters:
-
-        :param thumb: Optional. Document thumbnail as defined by sender
-        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
-        :param file_name: Optional. Original filename as defined by sender
-        :type  file_name: str|unicode
-
-        :param mime_type: Optional. MIME type of the file as defined by sender
-        :type  mime_type: str|unicode
-
-        :param file_size: Optional. File size
-        :type  file_size: int
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(Document, self).__init__()
-
-        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
-        self.file_id = file_id
-
-        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
-        self.thumb = thumb
-
-        assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
-        self.file_name = file_name
-
-        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
-        self.mime_type = mime_type
-
-        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
-        self.file_size = file_size
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this Document to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Document, self).to_array()
-        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
-        if self.thumb is not None:
-            array['thumb'] = self.thumb.to_array()  # type PhotoSize
-        if self.file_name is not None:
-            array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
-        if self.mime_type is not None:
-            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
-        if self.file_size is not None:
-            array['file_size'] = int(self.file_size)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Deserialize a new Document from a given dictionary.
-
-        :return: new Document instance.
-        :rtype: Document
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
-
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
-        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['_raw'] = array
-        return Document(**data)
-    # end def validate_array
-
-    def __str__(self):
-        """
-        Implements `str(document_instance)`
-        """
-        return "Document(file_id={self.file_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(document_instance)`
-        """
-        if self._raw:
-            return "Document.from_array({self._raw})".format(self=self)
-        # end if
-        return "Document(file_id={self.file_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in document_instance`
-        """
-        return key in ["file_id", "thumb", "file_name", "mime_type", "file_size"] and hasattr(self, key) and bool(getattr(self, key, None))
-    # end def __contains__
-# end class Document
-
-
-class Sticker(Media):
-    """
-    This object represents a sticker.
-
-    https://core.telegram.org/bots/api#sticker
-
-
-    Parameters:
-
-    :param file_id: Unique identifier for this file
-    :type  file_id: str|unicode
-
-    :param width: Sticker width
-    :type  width: int
-
-    :param height: Sticker height
-    :type  height: int
-
-
-    Optional keyword parameters:
-
-    :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
-    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
-    :param emoji: Optional. Emoji associated with the sticker
-    :type  emoji: str|unicode
-
-    :param set_name: Optional. Name of the sticker set to which the sticker belongs
-    :type  set_name: str|unicode
-
-    :param mask_position: Optional. For mask stickers, the position where the mask should be placed
-    :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
-
-    :param file_size: Optional. File size
-    :type  file_size: int
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, file_id, width, height, thumb=None, emoji=None, set_name=None, mask_position=None,
-                 file_size=None, _raw=None):
-        """
-        This object represents a sticker.
-
-        https://core.telegram.org/bots/api#sticker
-
-
-        Parameters:
-
-        :param file_id: Unique identifier for this file
-        :type  file_id: str|unicode
-
-        :param width: Sticker width
-        :type  width: int
-
-        :param height: Sticker height
-        :type  height: int
-
-
-        Optional keyword parameters:
-
-        :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
-        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
-        :param emoji: Optional. Emoji associated with the sticker
-        :type  emoji: str|unicode
-
-        :param set_name: Optional. Name of the sticker set to which the sticker belongs
-        :type  set_name: str|unicode
-
-        :param mask_position: Optional. For mask stickers, the position where the mask should be placed
-        :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
-
-        :param file_size: Optional. File size
-        :type  file_size: int
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(Sticker, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
-        from pytgbot.api_types.receivable.stickers import MaskPosition
-
-        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
-        self.file_id = file_id
-
-        assert_type_or_raise(width, int, parameter_name="width")
-        self.width = width
-
-        assert_type_or_raise(height, int, parameter_name="height")
-        self.height = height
-
-        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
-        self.thumb = thumb
-
-        assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
-        self.emoji = emoji
-
-        assert_type_or_raise(set_name, None, unicode_type, parameter_name="set_name")
-        self.set_name = set_name
-
-        assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
-        self.mask_position = mask_position
-
-        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
-        self.file_size = file_size
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this Sticker to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Sticker, self).to_array()
-        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
-        array['width'] = int(self.width)  # type int
-        array['height'] = int(self.height)  # type int
-        if self.thumb is not None:
-            array['thumb'] = self.thumb.to_array()  # type PhotoSize
-        if self.emoji is not None:
-            array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
-        if self.set_name is not None:
-            array['set_name'] = u(self.set_name)  # py2: type unicode, py3: type str
-        if self.mask_position is not None:
-            array['mask_position'] = self.mask_position.to_array()  # type MaskPosition
-        if self.file_size is not None:
-            array['file_size'] = int(self.file_size)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Deserialize a new Sticker from a given dictionary.
-
-        :return: new Sticker instance.
-        :rtype: Sticker
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from .stickers import MaskPosition
-
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['width'] = int(array.get('width'))
-        data['height'] = int(array.get('height'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['emoji'] = u(array.get('emoji')) if array.get('emoji') is not None else None
-        data['set_name'] = u(array.get('set_name')) if array.get('set_name') is not None else None
-        data['mask_position'] = MaskPosition.from_array(array.get('mask_position')) if array.get(
-            'mask_position') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['_raw'] = array
-        return Sticker(**data)
-    # end def validate_array
-
-    def __str__(self):
-        """
-        Implements `str(sticker_instance)`
-        """
-        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(
-            self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(sticker_instance)`
-        """
-        if self._raw:
-            return "Sticker.from_array({self._raw})".format(self=self)
-        # end if
-        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(
-            self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in sticker_instance`
-        """
-        return key in ["file_id", "width", "height", "thumb", "emoji", "set_name", "mask_position",
-                       "file_size"] and hasattr(self, key) and getattr(self, key)
-    # end def __contains__
-# end class Sticker
-
-
-class Video(Media):
-    """
-    This object represents a video file.
-
-    https://core.telegram.org/bots/api#video
-
-
-    Parameters:
-
-    :param file_id: Unique identifier for this file
-    :type  file_id: str|unicode
-
-    :param width: Video width as defined by sender
-    :type  width: int
-
-    :param height: Video height as defined by sender
-    :type  height: int
-
-    :param duration: Duration of the video in seconds as defined by sender
-    :type  duration: int
-
-
-    Optional keyword parameters:
-
-    :param thumb: Optional. Video thumbnail
-    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
-    :param mime_type: Optional. Mime type of a file as defined by sender
-    :type  mime_type: str|unicode
-
-    :param file_size: Optional. File size
-    :type  file_size: int
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, file_id, width, height, duration, thumb=None, mime_type=None, file_size=None, _raw=None):
-        """
-        This object represents a video file.
-
-        https://core.telegram.org/bots/api#video
-
-
-        Parameters:
-
-        :param file_id: Unique identifier for this file
-        :type  file_id: str|unicode
-
-        :param width: Video width as defined by sender
-        :type  width: int
-
-        :param height: Video height as defined by sender
-        :type  height: int
-
-        :param duration: Duration of the video in seconds as defined by sender
-        :type  duration: int
-
-
-        Optional keyword parameters:
-
-        :param thumb: Optional. Video thumbnail
-        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
-        :param mime_type: Optional. Mime type of a file as defined by sender
-        :type  mime_type: str|unicode
-
-        :param file_size: Optional. File size
-        :type  file_size: int
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(Video, self).__init__()
-
-        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
-        self.file_id = file_id
-
-        assert_type_or_raise(width, int, parameter_name="width")
-        self.width = width
-
-        assert_type_or_raise(height, int, parameter_name="height")
-        self.height = height
-
-        assert_type_or_raise(duration, int, parameter_name="duration")
-        self.duration = duration
-
-        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
-        self.thumb = thumb
-
-        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
-        self.mime_type = mime_type
-
-        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
-        self.file_size = file_size
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this Video to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Video, self).to_array()
-        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
-        array['width'] = int(self.width)  # type int
-        array['height'] = int(self.height)  # type int
-        array['duration'] = int(self.duration)  # type int
-        if self.thumb is not None:
-            array['thumb'] = self.thumb.to_array()  # type PhotoSize
-        if self.mime_type is not None:
-            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
-        if self.file_size is not None:
-            array['file_size'] = int(self.file_size)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Deserialize a new Video from a given dictionary.
-
-        :return: new Video instance.
-        :rtype: Video
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['width'] = int(array.get('width'))
-        data['height'] = int(array.get('height'))
-        data['duration'] = int(array.get('duration'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['_raw'] = array
-        return Video(**data)
-    # end def validate_array
-
-    def __str__(self):
-        """
-        Implements `str(video_instance)`
-        """
-        return "Video(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(video_instance)`
-        """
-        if self._raw:
-            return "Video.from_array({self._raw})".format(self=self)
-        # end if
-        return "Video(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in video_instance`
-        """
-        return key in ["file_id", "width", "height", "duration", "thumb", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
-    # end def __contains__
-# end class Video
 
 
 class Voice(Media):
@@ -1176,7 +1107,7 @@ class Voice(Media):
 
     Parameters:
 
-    :param file_id: Unique identifier for this file
+    :param file_id: Identifier for this file
     :type  file_id: str|unicode
 
     :param duration: Duration of the audio in seconds as defined by sender
@@ -1204,7 +1135,7 @@ class Voice(Media):
 
         Parameters:
 
-        :param file_id: Unique identifier for this file
+        :param file_id: Identifier for this file
         :type  file_id: str|unicode
 
         :param duration: Duration of the audio in seconds as defined by sender
@@ -1258,21 +1189,36 @@ class Voice(Media):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the Voice constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Media.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['duration'] = int(array.get('duration'))
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new Voice from a given dictionary.
 
         :return: new Voice instance.
         :rtype: Voice
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['duration'] = int(array.get('duration'))
-        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        data = Voice.validate_array(array)
         data['_raw'] = array
         return Voice(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -1295,7 +1241,11 @@ class Voice(Media):
         """
         Implements `"key" in voice_instance`
         """
-        return key in ["file_id", "duration", "mime_type", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["file_id", "duration", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Voice
 
@@ -1310,7 +1260,7 @@ class VideoNote(Media):
 
     Parameters:
 
-    :param file_id: Unique identifier for this file
+    :param file_id: Identifier for this file
     :type  file_id: str|unicode
 
     :param length: Video width and height (diameter of the video message) as defined by sender
@@ -1341,7 +1291,7 @@ class VideoNote(Media):
 
         Parameters:
 
-        :param file_id: Unique identifier for this file
+        :param file_id: Identifier for this file
         :type  file_id: str|unicode
 
         :param length: Video width and height (diameter of the video message) as defined by sender
@@ -1403,22 +1353,38 @@ class VideoNote(Media):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new VideoNote from a given dictionary.
+        Builds a new array with valid values for the VideoNote constructor.
 
-        :return: new VideoNote instance.
-        :rtype: VideoNote
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
+        data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['length'] = int(array.get('length'))
         data['duration'] = int(array.get('duration'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new VideoNote from a given dictionary.
+
+        :return: new VideoNote instance.
+        :rtype: VideoNote
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = VideoNote.validate_array(array)
         data['_raw'] = array
         return VideoNote(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -1441,7 +1407,11 @@ class VideoNote(Media):
         """
         Implements `"key" in videonote_instance`
         """
-        return key in ["file_id", "length", "duration", "thumb", "file_size"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["file_id", "length", "duration", "thumb", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class VideoNote
 
@@ -1549,22 +1519,37 @@ class Contact(Media):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new Contact from a given dictionary.
+        Builds a new array with valid values for the Contact constructor.
 
-        :return: new Contact instance.
-        :rtype: Contact
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = Media.validate_array(array)
         data['phone_number'] = u(array.get('phone_number'))
         data['first_name'] = u(array.get('first_name'))
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['user_id'] = int(array.get('user_id')) if array.get('user_id') is not None else None
         data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Contact from a given dictionary.
+
+        :return: new Contact instance.
+        :rtype: Contact
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Contact.validate_array(array)
         data['_raw'] = array
         return Contact(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -1587,7 +1572,11 @@ class Contact(Media):
         """
         Implements `"key" in contact_instance`
         """
-        return key in ["phone_number", "first_name", "last_name", "user_id", "vcard"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["phone_number", "first_name", "last_name", "user_id", "vcard"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Contact
 
@@ -1661,19 +1650,34 @@ class Location(Media):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the Location constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Media.validate_array(array)
+        data['longitude'] = float(array.get('longitude'))
+        data['latitude'] = float(array.get('latitude'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new Location from a given dictionary.
 
         :return: new Location instance.
         :rtype: Location
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['longitude'] = float(array.get('longitude'))
-        data['latitude'] = float(array.get('latitude'))
+        data = Location.validate_array(array)
         data['_raw'] = array
         return Location(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -1696,7 +1700,11 @@ class Location(Media):
         """
         Implements `"key" in location_instance`
         """
-        return key in ["longitude", "latitude"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["longitude", "latitude"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Location
 
@@ -1732,7 +1740,7 @@ class Venue(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, location, title, address, foursquare_id=None, _raw=None):
+    def __init__(self, location, title, address, foursquare_id=None, foursquare_type=None, _raw=None):
         """
         This object represents a venue.
 
@@ -1803,22 +1811,38 @@ class Venue(Media):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new Venue from a given dictionary.
+        Builds a new array with valid values for the Venue constructor.
 
-        :return: new Venue instance.
-        :rtype: Venue
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
+        data = Media.validate_array(array)
         data['location'] = Location.from_array(array.get('location'))
         data['title'] = u(array.get('title'))
         data['address'] = u(array.get('address'))
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Venue from a given dictionary.
+
+        :return: new Venue instance.
+        :rtype: Venue
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Venue.validate_array(array)
         data['_raw'] = array
         return Venue(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -1841,9 +1865,296 @@ class Venue(Media):
         """
         Implements `"key" in venue_instance`
         """
-        return key in ["location", "title", "address", "foursquare_id", "foursquare_type"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["location", "title", "address", "foursquare_id", "foursquare_type"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Venue
+
+
+class PollOption(Receivable):
+    """
+    This object contains information about one answer option in a poll.
+
+    https://core.telegram.org/bots/api#polloption
+
+
+    Parameters:
+
+    :param text: Option text, 1-100 characters
+    :type  text: str|unicode
+
+    :param voter_count: Number of users that voted for this option
+    :type  voter_count: int
+
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, text, voter_count, _raw=None):
+        """
+        This object contains information about one answer option in a poll.
+
+        https://core.telegram.org/bots/api#polloption
+
+
+        Parameters:
+
+        :param text: Option text, 1-100 characters
+        :type  text: str|unicode
+
+        :param voter_count: Number of users that voted for this option
+        :type  voter_count: int
+
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(PollOption, self).__init__()
+        assert_type_or_raise(text, unicode_type, parameter_name="text")
+        self.text = text
+
+        assert_type_or_raise(voter_count, int, parameter_name="voter_count")
+        self.voter_count = voter_count
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this PollOption to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(PollOption, self).to_array()
+        array['text'] = u(self.text)  # py2: type unicode, py3: type str
+        array['voter_count'] = int(self.voter_count)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PollOption constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Receivable.validate_array(array)
+        data['text'] = u(array.get('text'))
+        data['voter_count'] = int(array.get('voter_count'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PollOption from a given dictionary.
+
+        :return: new PollOption instance.
+        :rtype: PollOption
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PollOption.validate_array(array)
+        data['_raw'] = array
+        return PollOption(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(polloption_instance)`
+        """
+        return "PollOption(text={self.text!r}, voter_count={self.voter_count!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(polloption_instance)`
+        """
+        if self._raw:
+            return "PollOption.from_array({self._raw})".format(self=self)
+        # end if
+        return "PollOption(text={self.text!r}, voter_count={self.voter_count!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in polloption_instance`
+        """
+        return (
+            key in ["text", "voter_count"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class PollOption
+
+
+class Poll(Media):
+    """
+    This object contains information about a poll.
+
+    https://core.telegram.org/bots/api#poll
+
+
+    Parameters:
+
+    :param id: Unique poll identifier
+    :type  id: str|unicode
+
+    :param question: Poll question, 1-255 characters
+    :type  question: str|unicode
+
+    :param options: List of poll options
+    :type  options: list of pytgbot.api_types.receivable.media.PollOption
+
+    :param is_closed: True, if the poll is closed
+    :type  is_closed: bool
+
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, id, question, options, is_closed, _raw=None):
+        """
+        This object contains information about a poll.
+
+        https://core.telegram.org/bots/api#poll
+
+
+        Parameters:
+
+        :param id: Unique poll identifier
+        :type  id: str|unicode
+
+        :param question: Poll question, 1-255 characters
+        :type  question: str|unicode
+
+        :param options: List of poll options
+        :type  options: list of pytgbot.api_types.receivable.media.PollOption
+
+        :param is_closed: True, if the poll is closed
+        :type  is_closed: bool
+
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Poll, self).__init__()
+        from pytgbot.api_types.receivable.media import PollOption
+
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
+        self.id = id
+
+        assert_type_or_raise(question, unicode_type, parameter_name="question")
+        self.question = question
+
+        assert_type_or_raise(options, list, parameter_name="options")
+        self.options = options
+
+        assert_type_or_raise(is_closed, bool, parameter_name="is_closed")
+        self.is_closed = is_closed
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Poll to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Poll, self).to_array()
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['question'] = u(self.question)  # py2: type unicode, py3: type str
+        array['options'] = self._as_array(self.options)  # type list of PollOption
+
+        array['is_closed'] = bool(self.is_closed)  # type bool
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Poll constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import PollOption
+
+        data = Media.validate_array(array)
+        data['id'] = u(array.get('id'))
+        data['question'] = u(array.get('question'))
+        data['options'] = PollOption.from_array_list(array.get('options'), list_level=1)
+        data['is_closed'] = bool(array.get('is_closed'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Poll from a given dictionary.
+
+        :return: new Poll instance.
+        :rtype: Poll
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Poll.validate_array(array)
+        data['_raw'] = array
+        return Poll(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(poll_instance)`
+        """
+        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, is_closed={self.is_closed!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(poll_instance)`
+        """
+        if self._raw:
+            return "Poll.from_array({self._raw})".format(self=self)
+        # end if
+        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, is_closed={self.is_closed!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in poll_instance`
+        """
+        return (
+            key in ["id", "question", "options", "is_closed"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Poll
 
 
 class UserProfilePhotos(Result):
@@ -1916,19 +2227,35 @@ class UserProfilePhotos(Result):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the UserProfilePhotos constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = Result.validate_array(array)
+        data['total_count'] = int(array.get('total_count'))
+        data['photos'] = PhotoSize.from_array_list(array.get('photos'), list_level=2)
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new UserProfilePhotos from a given dictionary.
 
         :return: new UserProfilePhotos instance.
         :rtype: UserProfilePhotos
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['total_count'] = int(array.get('total_count'))
-        data['photos'] = PhotoSize.from_array_list(array.get('photos'), list_level=2)
+        data = UserProfilePhotos.validate_array(array)
         data['_raw'] = array
         return UserProfilePhotos(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -1951,7 +2278,11 @@ class UserProfilePhotos(Result):
         """
         Implements `"key" in userprofilephotos_instance`
         """
-        return key in ["total_count", "photos"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["total_count", "photos"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class UserProfilePhotos
 
@@ -1970,7 +2301,7 @@ class File(Receivable):
 
     Parameters:
 
-    :param file_id: Unique identifier for this file
+    :param file_id: Identifier for this file
     :type  file_id: str|unicode
 
 
@@ -2000,7 +2331,7 @@ class File(Receivable):
 
         Parameters:
 
-        :param file_id: Unique identifier for this file
+        :param file_id: Identifier for this file
         :type  file_id: str|unicode
 
 
@@ -2062,20 +2393,35 @@ class File(Receivable):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the File constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Receivable.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        data['file_path'] = u(array.get('file_path')) if array.get('file_path') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new File from a given dictionary.
 
         :return: new File instance.
         :rtype: File
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['file_id'] = u(array.get('file_id'))
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        data['file_path'] = u(array.get('file_path')) if array.get('file_path') is not None else None
+        data = File.validate_array(array)
         data['_raw'] = array
         return File(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -2098,7 +2444,11 @@ class File(Receivable):
         """
         Implements `"key" in file_instance`
         """
-        return key in ["file_id", "file_size", "file_path"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["file_id", "file_size", "file_path"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class File
 
@@ -2112,10 +2462,10 @@ class ChatPhoto(Result):
 
     Parameters:
 
-    :param small_file_id: Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
+    :param small_file_id: File identifier of small (160x160) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed.
     :type  small_file_id: str|unicode
 
-    :param big_file_id: Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.
+    :param big_file_id: File identifier of big (640x640) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed.
     :type  big_file_id: str|unicode
 
 
@@ -2134,10 +2484,10 @@ class ChatPhoto(Result):
 
         Parameters:
 
-        :param small_file_id: Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
+        :param small_file_id: File identifier of small (160x160) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed.
         :type  small_file_id: str|unicode
 
-        :param big_file_id: Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.
+        :param big_file_id: File identifier of big (640x640) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed.
         :type  big_file_id: str|unicode
 
 
@@ -2172,19 +2522,34 @@ class ChatPhoto(Result):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the ChatPhoto constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['small_file_id'] = u(array.get('small_file_id'))
+        data['big_file_id'] = u(array.get('big_file_id'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new ChatPhoto from a given dictionary.
 
         :return: new ChatPhoto instance.
         :rtype: ChatPhoto
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['small_file_id'] = u(array.get('small_file_id'))
-        data['big_file_id'] = u(array.get('big_file_id'))
+        data = ChatPhoto.validate_array(array)
         data['_raw'] = array
         return ChatPhoto(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -2207,9 +2572,230 @@ class ChatPhoto(Result):
         """
         Implements `"key" in chatphoto_instance`
         """
-        return key in ["small_file_id", "big_file_id"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["small_file_id", "big_file_id"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ChatPhoto
+
+
+class Sticker(Media):
+    """
+    This object represents a sticker.
+
+    https://core.telegram.org/bots/api#sticker
+
+
+    Parameters:
+
+    :param file_id: Identifier for this file
+    :type  file_id: str|unicode
+
+    :param width: Sticker width
+    :type  width: int
+
+    :param height: Sticker height
+    :type  height: int
+
+    :param is_animated: True, if the sticker is animated
+    :type  is_animated: bool
+
+
+    Optional keyword parameters:
+
+    :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
+    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
+    :param emoji: Optional. Emoji associated with the sticker
+    :type  emoji: str|unicode
+
+    :param set_name: Optional. Name of the sticker set to which the sticker belongs
+    :type  set_name: str|unicode
+
+    :param mask_position: Optional. For mask stickers, the position where the mask should be placed
+    :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
+
+    :param file_size: Optional. File size
+    :type  file_size: int
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, file_id, width, height, is_animated, thumb=None, emoji=None, set_name=None, mask_position=None, file_size=None, _raw=None):
+        """
+        This object represents a sticker.
+
+        https://core.telegram.org/bots/api#sticker
+
+
+        Parameters:
+
+        :param file_id: Identifier for this file
+        :type  file_id: str|unicode
+
+        :param width: Sticker width
+        :type  width: int
+
+        :param height: Sticker height
+        :type  height: int
+
+        :param is_animated: True, if the sticker is animated
+        :type  is_animated: bool
+
+
+        Optional keyword parameters:
+
+        :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
+        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
+        :param emoji: Optional. Emoji associated with the sticker
+        :type  emoji: str|unicode
+
+        :param set_name: Optional. Name of the sticker set to which the sticker belongs
+        :type  set_name: str|unicode
+
+        :param mask_position: Optional. For mask stickers, the position where the mask should be placed
+        :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
+
+        :param file_size: Optional. File size
+        :type  file_size: int
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Sticker, self).__init__()
+        from pytgbot.api_types.receivable.media import PhotoSize
+        from pytgbot.api_types.receivable.stickers import MaskPosition
+
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
+        self.file_id = file_id
+
+        assert_type_or_raise(width, int, parameter_name="width")
+        self.width = width
+
+        assert_type_or_raise(height, int, parameter_name="height")
+        self.height = height
+
+        assert_type_or_raise(is_animated, bool, parameter_name="is_animated")
+        self.is_animated = is_animated
+
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
+        self.thumb = thumb
+
+        assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
+        self.emoji = emoji
+
+        assert_type_or_raise(set_name, None, unicode_type, parameter_name="set_name")
+        self.set_name = set_name
+
+        assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
+        self.mask_position = mask_position
+
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        self.file_size = file_size
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Sticker to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Sticker, self).to_array()
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['width'] = int(self.width)  # type int
+        array['height'] = int(self.height)  # type int
+        array['is_animated'] = bool(self.is_animated)  # type bool
+        if self.thumb is not None:
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        if self.emoji is not None:
+            array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
+        if self.set_name is not None:
+            array['set_name'] = u(self.set_name)  # py2: type unicode, py3: type str
+        if self.mask_position is not None:
+            array['mask_position'] = self.mask_position.to_array()  # type MaskPosition
+        if self.file_size is not None:
+            array['file_size'] = int(self.file_size)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Sticker constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from .stickers import MaskPosition
+
+        data = Media.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['width'] = int(array.get('width'))
+        data['height'] = int(array.get('height'))
+        data['is_animated'] = bool(array.get('is_animated'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['emoji'] = u(array.get('emoji')) if array.get('emoji') is not None else None
+        data['set_name'] = u(array.get('set_name')) if array.get('set_name') is not None else None
+        data['mask_position'] = MaskPosition.from_array(array.get('mask_position')) if array.get(
+            'mask_position') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Sticker from a given dictionary.
+
+        :return: new Sticker instance.
+        :rtype: Sticker
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Sticker.validate_array(array)
+        data['_raw'] = array
+        return Sticker(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(sticker_instance)`
+        """
+        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(sticker_instance)`
+        """
+        if self._raw:
+            return "Sticker.from_array({self._raw})".format(self=self)
+        # end if
+        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in sticker_instance`
+        """
+        return (
+            key in ["file_id", "width", "height", "is_animated", "thumb", "emoji", "set_name", "mask_position", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Sticker
+
 
 
 class Game(Media):
@@ -2325,23 +2911,39 @@ class Game(Media):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new Game from a given dictionary.
+        Builds a new array with valid values for the Game constructor.
 
-        :return: new Game instance.
-        :rtype: Game
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
+        data = Media.validate_array(array)
         data['title'] = u(array.get('title'))
         data['description'] = u(array.get('description'))
         data['photo'] = PhotoSize.from_array_list(array.get('photo'), list_level=1)
         data['text'] = u(array.get('text')) if array.get('text') is not None else None
         data['text_entities'] = MessageEntity.from_array_list(array.get('text_entities'), list_level=1) if array.get('text_entities') is not None else None
         data['animation'] = Animation.from_array(array.get('animation')) if array.get('animation') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Game from a given dictionary.
+
+        :return: new Game instance.
+        :rtype: Game
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Game.validate_array(array)
         data['_raw'] = array
         return Game(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -2364,6 +2966,10 @@ class Game(Media):
         """
         Implements `"key" in game_instance`
         """
-        return key in ["title", "description", "photo", "text", "text_entities", "animation"] and hasattr(self, key) and getattr(self, key)
+        return (
+            key in ["title", "description", "photo", "text", "text_entities", "animation"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Game

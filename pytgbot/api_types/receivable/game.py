@@ -88,22 +88,37 @@ class GameHighScore(Result):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new GameHighScore from a given dictionary.
+        Builds a new array with valid values for the GameHighScore constructor.
 
-        :return: new GameHighScore instance.
-        :rtype: GameHighScore
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from pytgbot.api_types.receivable.peer import User
 
-        data = {}
+        data = Result.validate_array(array)
         data['position'] = int(array.get('position'))
         data['user'] = User.from_array(array.get('user'))
         data['score'] = int(array.get('score'))
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new GameHighScore from a given dictionary.
+
+        :return: new GameHighScore instance.
+        :rtype: GameHighScore
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = GameHighScore.validate_array(array)
         data['_raw'] = array
         return GameHighScore(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -126,7 +141,11 @@ class GameHighScore(Result):
         """
         Implements `"key" in gamehighscore_instance`
         """
-        return key in ["position", "user", "score"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["position", "user", "score"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class GameHighScore
 

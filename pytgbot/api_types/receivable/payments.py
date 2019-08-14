@@ -104,22 +104,37 @@ class Invoice(Result):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new Invoice from a given dictionary.
+        Builds a new array with valid values for the Invoice constructor.
 
-        :return: new Invoice instance.
-        :rtype: Invoice
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = Result.validate_array(array)
         data['title'] = u(array.get('title'))
         data['description'] = u(array.get('description'))
         data['start_parameter'] = u(array.get('start_parameter'))
         data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Invoice from a given dictionary.
+
+        :return: new Invoice instance.
+        :rtype: Invoice
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Invoice.validate_array(array)
         data['_raw'] = array
         return Invoice(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -142,7 +157,11 @@ class Invoice(Result):
         """
         Implements `"key" in invoice_instance`
         """
-        return key in ["title", "description", "start_parameter", "currency", "total_amount"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["title", "description", "start_parameter", "currency", "total_amount"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Invoice
 
@@ -257,23 +276,38 @@ class ShippingAddress(Result):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new ShippingAddress from a given dictionary.
+        Builds a new array with valid values for the ShippingAddress constructor.
 
-        :return: new ShippingAddress instance.
-        :rtype: ShippingAddress
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = Result.validate_array(array)
         data['country_code'] = u(array.get('country_code'))
         data['state'] = u(array.get('state'))
         data['city'] = u(array.get('city'))
         data['street_line1'] = u(array.get('street_line1'))
         data['street_line2'] = u(array.get('street_line2'))
         data['post_code'] = u(array.get('post_code'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new ShippingAddress from a given dictionary.
+
+        :return: new ShippingAddress instance.
+        :rtype: ShippingAddress
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = ShippingAddress.validate_array(array)
         data['_raw'] = array
         return ShippingAddress(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -296,7 +330,11 @@ class ShippingAddress(Result):
         """
         Implements `"key" in shippingaddress_instance`
         """
-        return key in ["country_code", "state", "city", "street_line1", "street_line2", "post_code"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["country_code", "state", "city", "street_line1", "street_line2", "post_code"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ShippingAddress
 
@@ -390,21 +428,37 @@ class OrderInfo(Result):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the OrderInfo constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = Result.validate_array(array)
+        data['name'] = u(array.get('name')) if array.get('name') is not None else None
+        data['phone_number'] = u(array.get('phone_number')) if array.get('phone_number') is not None else None
+        data['email'] = u(array.get('email')) if array.get('email') is not None else None
+        data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address')) if array.get('shipping_address') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new OrderInfo from a given dictionary.
 
         :return: new OrderInfo instance.
         :rtype: OrderInfo
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['name'] = u(array.get('name')) if array.get('name') is not None else None
-        data['phone_number'] = u(array.get('phone_number')) if array.get('phone_number') is not None else None
-        data['email'] = u(array.get('email')) if array.get('email') is not None else None
-        data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address')) if array.get('shipping_address') is not None else None
+        data = OrderInfo.validate_array(array)
         data['_raw'] = array
         return OrderInfo(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -427,7 +481,11 @@ class OrderInfo(Result):
         """
         Implements `"key" in orderinfo_instance`
         """
-        return key in ["name", "phone_number", "email", "shipping_address"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["name", "phone_number", "email", "shipping_address"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class OrderInfo
 
@@ -555,14 +613,14 @@ class SuccessfulPayment(Result):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new SuccessfulPayment from a given dictionary.
+        Builds a new array with valid values for the SuccessfulPayment constructor.
 
-        :return: new SuccessfulPayment instance.
-        :rtype: SuccessfulPayment
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
+        data = Result.validate_array(array)
         data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
         data['invoice_payload'] = u(array.get('invoice_payload'))
@@ -570,9 +628,25 @@ class SuccessfulPayment(Result):
         data['provider_payment_charge_id'] = u(array.get('provider_payment_charge_id'))
         data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new SuccessfulPayment from a given dictionary.
+
+        :return: new SuccessfulPayment instance.
+        :rtype: SuccessfulPayment
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = SuccessfulPayment.validate_array(array)
         data['_raw'] = array
         return SuccessfulPayment(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -595,7 +669,11 @@ class SuccessfulPayment(Result):
         """
         Implements `"key" in successfulpayment_instance`
         """
-        return key in ["currency", "total_amount", "invoice_payload", "telegram_payment_charge_id", "provider_payment_charge_id", "shipping_option_id", "order_info"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["currency", "total_amount", "invoice_payload", "telegram_payment_charge_id", "provider_payment_charge_id", "shipping_option_id", "order_info"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class SuccessfulPayment
 
@@ -692,22 +770,38 @@ class ShippingQuery(UpdateType):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the ShippingQuery constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from ..receivable.peer import User
+
+        data = UpdateType.validate_array(array)
+        data['id'] = u(array.get('id'))
+        data['from_peer'] = User.from_array(array.get('from'))
+        data['invoice_payload'] = u(array.get('invoice_payload'))
+        data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address'))
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new ShippingQuery from a given dictionary.
 
         :return: new ShippingQuery instance.
         :rtype: ShippingQuery
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['id'] = u(array.get('id'))
-        data['from_peer'] = User.from_array(array.get('from'))
-        data['invoice_payload'] = u(array.get('invoice_payload'))
-        data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address'))
+        data = ShippingQuery.validate_array(array)
         data['_raw'] = array
         return ShippingQuery(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -730,7 +824,11 @@ class ShippingQuery(UpdateType):
         """
         Implements `"key" in shippingquery_instance`
         """
-        return key in ["id", "from_peer", "invoice_payload", "shipping_address"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "from_peer", "invoice_payload", "shipping_address"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ShippingQuery
 
@@ -859,15 +957,15 @@ class PreCheckoutQuery(UpdateType):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PreCheckoutQuery from a given dictionary.
+        Builds a new array with valid values for the PreCheckoutQuery constructor.
 
-        :return: new PreCheckoutQuery instance.
-        :rtype: PreCheckoutQuery
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
+        from ..receivable.peer import User
 
-        data = {}
+        data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
         data['currency'] = u(array.get('currency'))
@@ -875,9 +973,25 @@ class PreCheckoutQuery(UpdateType):
         data['invoice_payload'] = u(array.get('invoice_payload'))
         data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PreCheckoutQuery from a given dictionary.
+
+        :return: new PreCheckoutQuery instance.
+        :rtype: PreCheckoutQuery
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PreCheckoutQuery.validate_array(array)
         data['_raw'] = array
         return PreCheckoutQuery(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -900,7 +1014,11 @@ class PreCheckoutQuery(UpdateType):
         """
         Implements `"key" in precheckoutquery_instance`
         """
-        return key in ["id", "from_peer", "currency", "total_amount", "invoice_payload", "shipping_option_id", "order_info"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "from_peer", "currency", "total_amount", "invoice_payload", "shipping_option_id", "order_info"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PreCheckoutQuery
 

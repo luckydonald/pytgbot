@@ -107,24 +107,38 @@ class PassportElementErrorDataField(PassportElementError):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PassportElementErrorDataField from a given dictionary.
+        Builds a new array with valid values for the PassportElementErrorDataField constructor.
 
-        :return: new PassportElementErrorDataField instance.
-        :rtype: PassportElementErrorDataField
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = PassportElementError.validate_array(array)
         data['source'] = u(array.get('source'))
         data['type'] = u(array.get('type'))
         data['field_name'] = u(array.get('field_name'))
         data['data_hash'] = u(array.get('data_hash'))
         data['message'] = u(array.get('message'))
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorDataField from a given dictionary.
+
+        :return: new PassportElementErrorDataField instance.
+        :rtype: PassportElementErrorDataField
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementErrorDataField.validate_array(array)
         instance = PassportElementErrorDataField(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -147,7 +161,11 @@ class PassportElementErrorDataField(PassportElementError):
         """
         Implements `"key" in passportelementerrordatafield_instance`
         """
-        return key in ["source", "type", "field_name", "data_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "field_name", "data_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorDataField
 
@@ -234,23 +252,37 @@ class PassportElementErrorFrontSide(PassportElementError):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PassportElementErrorFrontSide from a given dictionary.
+        Builds a new array with valid values for the PassportElementErrorFrontSide constructor.
 
-        :return: new PassportElementErrorFrontSide instance.
-        :rtype: PassportElementErrorFrontSide
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = PassportElementError.validate_array(array)
         data['source'] = u(array.get('source'))
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorFrontSide from a given dictionary.
+
+        :return: new PassportElementErrorFrontSide instance.
+        :rtype: PassportElementErrorFrontSide
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementErrorFrontSide.validate_array(array)
         instance = PassportElementErrorFrontSide(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -273,7 +305,11 @@ class PassportElementErrorFrontSide(PassportElementError):
         """
         Implements `"key" in passportelementerrorfrontside_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorFrontSide
 
@@ -360,23 +396,37 @@ class PassportElementErrorReverseSide(PassportElementError):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PassportElementErrorReverseSide from a given dictionary.
+        Builds a new array with valid values for the PassportElementErrorReverseSide constructor.
 
-        :return: new PassportElementErrorReverseSide instance.
-        :rtype: PassportElementErrorReverseSide
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = PassportElementError.validate_array(array)
         data['source'] = u(array.get('source'))
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorReverseSide from a given dictionary.
+
+        :return: new PassportElementErrorReverseSide instance.
+        :rtype: PassportElementErrorReverseSide
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementErrorReverseSide.validate_array(array)
         instance = PassportElementErrorReverseSide(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -399,7 +449,11 @@ class PassportElementErrorReverseSide(PassportElementError):
         """
         Implements `"key" in passportelementerrorreverseside_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorReverseSide
 
@@ -486,23 +540,37 @@ class PassportElementErrorSelfie(PassportElementError):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PassportElementErrorSelfie from a given dictionary.
+        Builds a new array with valid values for the PassportElementErrorSelfie constructor.
 
-        :return: new PassportElementErrorSelfie instance.
-        :rtype: PassportElementErrorSelfie
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = PassportElementError.validate_array(array)
         data['source'] = u(array.get('source'))
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorSelfie from a given dictionary.
+
+        :return: new PassportElementErrorSelfie instance.
+        :rtype: PassportElementErrorSelfie
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementErrorSelfie.validate_array(array)
         instance = PassportElementErrorSelfie(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -525,7 +593,11 @@ class PassportElementErrorSelfie(PassportElementError):
         """
         Implements `"key" in passportelementerrorselfie_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorSelfie
 
@@ -612,23 +684,37 @@ class PassportElementErrorFile(PassportElementError):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PassportElementErrorFile from a given dictionary.
+        Builds a new array with valid values for the PassportElementErrorFile constructor.
 
-        :return: new PassportElementErrorFile instance.
-        :rtype: PassportElementErrorFile
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = PassportElementError.validate_array(array)
         data['source'] = u(array.get('source'))
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorFile from a given dictionary.
+
+        :return: new PassportElementErrorFile instance.
+        :rtype: PassportElementErrorFile
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementErrorFile.validate_array(array)
         instance = PassportElementErrorFile(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -651,7 +737,11 @@ class PassportElementErrorFile(PassportElementError):
         """
         Implements `"key" in passportelementerrorfile_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorFile
 
@@ -738,23 +828,37 @@ class PassportElementErrorFiles(PassportElementError):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PassportElementErrorFiles from a given dictionary.
+        Builds a new array with valid values for the PassportElementErrorFiles constructor.
 
-        :return: new PassportElementErrorFiles instance.
-        :rtype: PassportElementErrorFiles
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = PassportElementError.validate_array(array)
         data['source'] = u(array.get('source'))
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorFiles from a given dictionary.
+
+        :return: new PassportElementErrorFiles instance.
+        :rtype: PassportElementErrorFiles
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementErrorFiles.validate_array(array)
         instance = PassportElementErrorFiles(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -777,7 +881,11 @@ class PassportElementErrorFiles(PassportElementError):
         """
         Implements `"key" in passportelementerrorfiles_instance`
         """
-        return key in ["source", "type", "file_hashes", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hashes", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorFiles
 
@@ -867,23 +975,37 @@ class PassportElementErrorTranslationFile(PassportElementError):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PassportElementErrorTranslationFile from a given dictionary.
+        Builds a new array with valid values for the PassportElementErrorTranslationFile constructor.
 
-        :return: new PassportElementErrorTranslationFile instance.
-        :rtype: PassportElementErrorTranslationFile
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = PassportElementError.validate_array(array)
         data['source'] = u(array.get('source'))
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorTranslationFile from a given dictionary.
+
+        :return: new PassportElementErrorTranslationFile instance.
+        :rtype: PassportElementErrorTranslationFile
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementErrorTranslationFile.validate_array(array)
         instance = PassportElementErrorTranslationFile(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -906,7 +1028,11 @@ class PassportElementErrorTranslationFile(PassportElementError):
         """
         Implements `"key" in passportelementerrortranslationfile_instance`
         """
-        return key in ["source", "type", "file_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorTranslationFile
 
@@ -996,23 +1122,37 @@ class PassportElementErrorTranslationFiles(PassportElementError):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PassportElementErrorTranslationFiles from a given dictionary.
+        Builds a new array with valid values for the PassportElementErrorTranslationFiles constructor.
 
-        :return: new PassportElementErrorTranslationFiles instance.
-        :rtype: PassportElementErrorTranslationFiles
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = PassportElementError.validate_array(array)
         data['source'] = u(array.get('source'))
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorTranslationFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorTranslationFiles from a given dictionary.
+
+        :return: new PassportElementErrorTranslationFiles instance.
+        :rtype: PassportElementErrorTranslationFiles
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementErrorTranslationFiles.validate_array(array)
         instance = PassportElementErrorTranslationFiles(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -1035,7 +1175,11 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         """
         Implements `"key" in passportelementerrortranslationfiles_instance`
         """
-        return key in ["source", "type", "file_hashes", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "file_hashes", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorTranslationFiles
 
@@ -1125,23 +1269,37 @@ class PassportElementErrorUnspecified(PassportElementError):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new PassportElementErrorUnspecified from a given dictionary.
+        Builds a new array with valid values for the PassportElementErrorUnspecified constructor.
 
-        :return: new PassportElementErrorUnspecified instance.
-        :rtype: PassportElementErrorUnspecified
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = PassportElementError.validate_array(array)
         data['source'] = u(array.get('source'))
         data['type'] = u(array.get('type'))
         data['element_hash'] = u(array.get('element_hash'))
         data['message'] = u(array.get('message'))
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementErrorUnspecified from a given dictionary.
+
+        :return: new PassportElementErrorUnspecified instance.
+        :rtype: PassportElementErrorUnspecified
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementErrorUnspecified.validate_array(array)
         instance = PassportElementErrorUnspecified(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -1164,6 +1322,10 @@ class PassportElementErrorUnspecified(PassportElementError):
         """
         Implements `"key" in passportelementerrorunspecified_instance`
         """
-        return key in ["source", "type", "element_hash", "message"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["source", "type", "element_hash", "message"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class PassportElementErrorUnspecified

@@ -126,23 +126,38 @@ class User(Peer):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new User from a given dictionary.
+        Builds a new array with valid values for the User constructor.
 
-        :return: new User instance.
-        :rtype: User
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = {}
+        data = Peer.validate_array(array)
         data['id'] = int(array.get('id'))
         data['is_bot'] = bool(array.get('is_bot'))
         data['first_name'] = u(array.get('first_name'))
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['username'] = u(array.get('username')) if array.get('username') is not None else None
         data['language_code'] = u(array.get('language_code')) if array.get('language_code') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new User from a given dictionary.
+
+        :return: new User instance.
+        :rtype: User
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = User.validate_array(array)
         data['_raw'] = array
         return User(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -165,7 +180,11 @@ class User(Peer):
         """
         Implements `"key" in user_instance`
         """
-        return key in ["id", "is_bot", "first_name", "last_name", "username", "language_code"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "is_bot", "first_name", "last_name", "username", "language_code"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class User
 
@@ -200,20 +219,20 @@ class Chat(Peer):
     :param last_name: Optional. Last name of the other party in a private chat
     :type  last_name: str|unicode
 
-    :param all_members_are_administrators: Optional. True if a group has ‘All Members Are Admins’ enabled.
-    :type  all_members_are_administrators: bool
-
     :param photo: Optional. Chat photo. Returned only in getChat.
     :type  photo: pytgbot.api_types.receivable.media.ChatPhoto
 
-    :param description: Optional. Description, for supergroups and channel chats. Returned only in getChat.
+    :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
     :type  description: str|unicode
 
-    :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
+    :param invite_link: Optional. Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
     :type  invite_link: str|unicode
 
-    :param pinned_message: Optional. Pinned message, for supergroups and channel chats. Returned only in getChat.
+    :param pinned_message: Optional. Pinned message, for groups, supergroups and channels. Returned only in getChat.
     :type  pinned_message: pytgbot.api_types.receivable.updates.Message
+
+    :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
+    :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
     :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
     :type  sticker_set_name: str|unicode
@@ -225,7 +244,7 @@ class Chat(Peer):
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, all_members_are_administrators=None, photo=None, description=None, invite_link=None, pinned_message=None, sticker_set_name=None, can_set_sticker_set=None, _raw=None):
+    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, photo=None, description=None, invite_link=None, pinned_message=None, permissions=None, sticker_set_name=None, can_set_sticker_set=None, _raw=None):
         """
         This object represents a chat.
 
@@ -255,20 +274,20 @@ class Chat(Peer):
         :param last_name: Optional. Last name of the other party in a private chat
         :type  last_name: str|unicode
 
-        :param all_members_are_administrators: Optional. True if a group has ‘All Members Are Admins’ enabled.
-        :type  all_members_are_administrators: bool
-
         :param photo: Optional. Chat photo. Returned only in getChat.
         :type  photo: pytgbot.api_types.receivable.media.ChatPhoto
 
-        :param description: Optional. Description, for supergroups and channel chats. Returned only in getChat.
+        :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
         :type  description: str|unicode
 
-        :param invite_link: Optional. Chat invite link, for supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
+        :param invite_link: Optional. Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
         :type  invite_link: str|unicode
 
-        :param pinned_message: Optional. Pinned message, for supergroups and channel chats. Returned only in getChat.
+        :param pinned_message: Optional. Pinned message, for groups, supergroups and channels. Returned only in getChat.
         :type  pinned_message: pytgbot.api_types.receivable.updates.Message
+
+        :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
+        :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
         :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
         :type  sticker_set_name: str|unicode
@@ -301,9 +320,6 @@ class Chat(Peer):
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
 
-        assert_type_or_raise(all_members_are_administrators, None, bool, parameter_name="all_members_are_administrators")
-        self.all_members_are_administrators = all_members_are_administrators
-
         assert_type_or_raise(photo, None, ChatPhoto, parameter_name="photo")
         self.photo = photo
 
@@ -315,6 +331,9 @@ class Chat(Peer):
 
         assert_type_or_raise(pinned_message, None, Message, parameter_name="pinned_message")
         self.pinned_message = pinned_message
+
+        assert_type_or_raise(permissions, None, ChatPermissions, parameter_name="permissions")
+        self.permissions = permissions
 
         assert_type_or_raise(sticker_set_name, None, unicode_type, parameter_name="sticker_set_name")
         self.sticker_set_name = sticker_set_name
@@ -343,8 +362,6 @@ class Chat(Peer):
             array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
-        if self.all_members_are_administrators is not None:
-            array['all_members_are_administrators'] = bool(self.all_members_are_administrators)  # type bool
         if self.photo is not None:
             array['photo'] = self.photo.to_array()  # type ChatPhoto
         if self.description is not None:
@@ -353,6 +370,10 @@ class Chat(Peer):
             array['invite_link'] = u(self.invite_link)  # py2: type unicode, py3: type str
         if self.pinned_message is not None:
             array['pinned_message'] = self.pinned_message.to_array()  # type Message
+
+        if self.permissions is not None:
+            array['permissions'] = self.permissions.to_array()  # type ChatPermissions
+
         if self.sticker_set_name is not None:
             array['sticker_set_name'] = u(self.sticker_set_name)  # py2: type unicode, py3: type str
         if self.can_set_sticker_set is not None:
@@ -363,38 +384,54 @@ class Chat(Peer):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new Chat from a given dictionary.
+        Builds a new array with valid values for the Chat constructor.
 
-        :return: new Chat instance.
-        :rtype: Chat
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import ChatPhoto
         from .updates import Message
 
-        data = {}
+        data = Peer.validate_array(array)
         data['id'] = int(array.get('id'))
         data['type'] = u(array.get('type'))
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['username'] = u(array.get('username')) if array.get('username') is not None else None
         data['first_name'] = u(array.get('first_name')) if array.get('first_name') is not None else None
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
-        data['all_members_are_administrators'] = bool(array.get('all_members_are_administrators')) if array.get('all_members_are_administrators') is not None else None
         data['photo'] = ChatPhoto.from_array(array.get('photo')) if array.get('photo') is not None else None
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['invite_link'] = u(array.get('invite_link')) if array.get('invite_link') is not None else None
         data['pinned_message'] = Message.from_array(array.get('pinned_message')) if array.get('pinned_message') is not None else None
+        data['permissions'] = ChatPermissions.from_array(array.get('permissions')) if array.get('permissions') is not None else None
         data['sticker_set_name'] = u(array.get('sticker_set_name')) if array.get('sticker_set_name') is not None else None
         data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Chat from a given dictionary.
+
+        :return: new Chat instance.
+        :rtype: Chat
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Chat.validate_array(array)
         data['_raw'] = array
         return Chat(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
         Implements `str(chat_instance)`
         """
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -404,14 +441,18 @@ class Chat(Peer):
         if self._raw:
             return "Chat.from_array({self._raw})".format(self=self)
         # end if
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, all_members_are_administrators={self.all_members_are_administrators!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in chat_instance`
         """
-        return key in ["id", "type", "title", "username", "first_name", "last_name", "all_members_are_administrators", "photo", "description", "invite_link", "pinned_message", "sticker_set_name", "can_set_sticker_set"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["id", "type", "title", "username", "first_name", "last_name", "photo", "description", "invite_link", "pinned_message", "permissions", "sticker_set_name", "can_set_sticker_set"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class Chat
 
@@ -434,53 +475,59 @@ class ChatMember(Result):
 
     Optional keyword parameters:
 
-    :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user, unix time
+    :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
     :type  until_date: int
 
     :param can_be_edited: Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
     :type  can_be_edited: bool
 
-    :param can_change_info: Optional. Administrators only. True, if the administrator can change the chat title, photo and other settings
-    :type  can_change_info: bool
-
-    :param can_post_messages: Optional. Administrators only. True, if the administrator can post in the channel, channels only
+    :param can_post_messages: Optional. Administrators only. True, if the administrator can post in the channel; channels only
     :type  can_post_messages: bool
 
-    :param can_edit_messages: Optional. Administrators only. True, if the administrator can edit messages of other users and can pin messages, channels only
+    :param can_edit_messages: Optional. Administrators only. True, if the administrator can edit messages of other users and can pin messages; channels only
     :type  can_edit_messages: bool
 
     :param can_delete_messages: Optional. Administrators only. True, if the administrator can delete messages of other users
     :type  can_delete_messages: bool
 
-    :param can_invite_users: Optional. Administrators only. True, if the administrator can invite new users to the chat
-    :type  can_invite_users: bool
-
     :param can_restrict_members: Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members
     :type  can_restrict_members: bool
-
-    :param can_pin_messages: Optional. Administrators only. True, if the administrator can pin messages, supergroups only
-    :type  can_pin_messages: bool
 
     :param can_promote_members: Optional. Administrators only. True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
     :type  can_promote_members: bool
 
-    :param can_send_messages: Optional. Restricted only. True, if the user can send text messages, contacts, locations and venues
+    :param can_change_info: Optional. Administrators and restricted only. True, if the user is allowed to change the chat title, photo and other settings
+    :type  can_change_info: bool
+
+    :param can_invite_users: Optional. Administrators and restricted only. True, if the user is allowed to invite new users to the chat
+    :type  can_invite_users: bool
+
+    :param can_pin_messages: Optional. Administrators and restricted only. True, if the user is allowed to pin messages; groups and supergroups only
+    :type  can_pin_messages: bool
+
+    :param is_member: Optional. Restricted only. True, if the user is a member of the chat at the moment of the request
+    :type  is_member: bool
+
+    :param can_send_messages: Optional. Restricted only. True, if the user is allowed to send text messages, contacts, locations and venues
     :type  can_send_messages: bool
 
-    :param can_send_media_messages: Optional. Restricted only. True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+    :param can_send_media_messages: Optional. Restricted only. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes
     :type  can_send_media_messages: bool
 
-    :param can_send_other_messages: Optional. Restricted only. True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
+    :param can_send_polls: Optional. Restricted only. True, if the user is allowed to send polls
+    :type  can_send_polls: bool
+
+    :param can_send_other_messages: Optional. Restricted only. True, if the user is allowed to send animations, games, stickers and use inline bots
     :type  can_send_other_messages: bool
 
-    :param can_add_web_page_previews: Optional. Restricted only. True, if user may add web page previews to his messages, implies can_send_media_messages
+    :param can_add_web_page_previews: Optional. Restricted only. True, if the user is allowed to add web page previews to their messages
     :type  can_add_web_page_previews: bool
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, user, status, until_date=None, can_be_edited=None, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None, can_send_messages=None, can_send_media_messages=None, can_send_other_messages=None, can_add_web_page_previews=None, _raw=None):
+    def __init__(self, user, status, until_date=None, can_be_edited=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_restrict_members=None, can_promote_members=None, can_change_info=None, can_invite_users=None, can_pin_messages=None, is_member=None, can_send_messages=None, can_send_media_messages=None, can_send_polls=None, can_send_other_messages=None, can_add_web_page_previews=None, _raw=None):
         """
         This object contains information about one member of a chat.
 
@@ -498,46 +545,52 @@ class ChatMember(Result):
 
         Optional keyword parameters:
 
-        :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user, unix time
+        :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
         :type  until_date: int
 
         :param can_be_edited: Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
         :type  can_be_edited: bool
 
-        :param can_change_info: Optional. Administrators only. True, if the administrator can change the chat title, photo and other settings
-        :type  can_change_info: bool
-
-        :param can_post_messages: Optional. Administrators only. True, if the administrator can post in the channel, channels only
+        :param can_post_messages: Optional. Administrators only. True, if the administrator can post in the channel; channels only
         :type  can_post_messages: bool
 
-        :param can_edit_messages: Optional. Administrators only. True, if the administrator can edit messages of other users and can pin messages, channels only
+        :param can_edit_messages: Optional. Administrators only. True, if the administrator can edit messages of other users and can pin messages; channels only
         :type  can_edit_messages: bool
 
         :param can_delete_messages: Optional. Administrators only. True, if the administrator can delete messages of other users
         :type  can_delete_messages: bool
 
-        :param can_invite_users: Optional. Administrators only. True, if the administrator can invite new users to the chat
-        :type  can_invite_users: bool
-
         :param can_restrict_members: Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members
         :type  can_restrict_members: bool
-
-        :param can_pin_messages: Optional. Administrators only. True, if the administrator can pin messages, supergroups only
-        :type  can_pin_messages: bool
 
         :param can_promote_members: Optional. Administrators only. True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
         :type  can_promote_members: bool
 
-        :param can_send_messages: Optional. Restricted only. True, if the user can send text messages, contacts, locations and venues
+        :param can_change_info: Optional. Administrators and restricted only. True, if the user is allowed to change the chat title, photo and other settings
+        :type  can_change_info: bool
+
+        :param can_invite_users: Optional. Administrators and restricted only. True, if the user is allowed to invite new users to the chat
+        :type  can_invite_users: bool
+
+        :param can_pin_messages: Optional. Administrators and restricted only. True, if the user is allowed to pin messages; groups and supergroups only
+        :type  can_pin_messages: bool
+
+        :param is_member: Optional. Restricted only. True, if the user is a member of the chat at the moment of the request
+        :type  is_member: bool
+
+        :param can_send_messages: Optional. Restricted only. True, if the user is allowed to send text messages, contacts, locations and venues
         :type  can_send_messages: bool
 
-        :param can_send_media_messages: Optional. Restricted only. True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+        :param can_send_media_messages: Optional. Restricted only. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes
         :type  can_send_media_messages: bool
 
-        :param can_send_other_messages: Optional. Restricted only. True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
+        :param can_send_polls: Optional. Restricted only. True, if the user is allowed to send polls
+        :type  can_send_polls: bool
+
+        :param can_send_other_messages: Optional. Restricted only. True, if the user is allowed to send animations, games, stickers and use inline bots
         :type  can_send_other_messages: bool
 
-        :param can_add_web_page_previews: Optional. Restricted only. True, if user may add web page previews to his messages, implies can_send_media_messages
+        :param can_add_web_page_previews: Optional. Restricted only. True, if the user is allowed to add web page previews to their messages
         :type  can_add_web_page_previews: bool
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -557,9 +610,6 @@ class ChatMember(Result):
         assert_type_or_raise(can_be_edited, None, bool, parameter_name="can_be_edited")
         self.can_be_edited = can_be_edited
 
-        assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
-        self.can_change_info = can_change_info
-
         assert_type_or_raise(can_post_messages, None, bool, parameter_name="can_post_messages")
         self.can_post_messages = can_post_messages
 
@@ -569,23 +619,32 @@ class ChatMember(Result):
         assert_type_or_raise(can_delete_messages, None, bool, parameter_name="can_delete_messages")
         self.can_delete_messages = can_delete_messages
 
-        assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
-        self.can_invite_users = can_invite_users
-
         assert_type_or_raise(can_restrict_members, None, bool, parameter_name="can_restrict_members")
         self.can_restrict_members = can_restrict_members
+
+        assert_type_or_raise(can_promote_members, None, bool, parameter_name="can_promote_members")
+        self.can_promote_members = can_promote_members
+
+        assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
+        self.can_change_info = can_change_info
+
+        assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
+        self.can_invite_users = can_invite_users
 
         assert_type_or_raise(can_pin_messages, None, bool, parameter_name="can_pin_messages")
         self.can_pin_messages = can_pin_messages
 
-        assert_type_or_raise(can_promote_members, None, bool, parameter_name="can_promote_members")
-        self.can_promote_members = can_promote_members
+        assert_type_or_raise(is_member, None, bool, parameter_name="is_member")
+        self.is_member = is_member
 
         assert_type_or_raise(can_send_messages, None, bool, parameter_name="can_send_messages")
         self.can_send_messages = can_send_messages
 
         assert_type_or_raise(can_send_media_messages, None, bool, parameter_name="can_send_media_messages")
         self.can_send_media_messages = can_send_media_messages
+
+        assert_type_or_raise(can_send_polls, None, bool, parameter_name="can_send_polls")
+        self.can_send_polls = can_send_polls
 
         assert_type_or_raise(can_send_other_messages, None, bool, parameter_name="can_send_other_messages")
         self.can_send_other_messages = can_send_other_messages
@@ -610,26 +669,30 @@ class ChatMember(Result):
             array['until_date'] = int(self.until_date)  # type int
         if self.can_be_edited is not None:
             array['can_be_edited'] = bool(self.can_be_edited)  # type bool
-        if self.can_change_info is not None:
-            array['can_change_info'] = bool(self.can_change_info)  # type bool
         if self.can_post_messages is not None:
             array['can_post_messages'] = bool(self.can_post_messages)  # type bool
         if self.can_edit_messages is not None:
             array['can_edit_messages'] = bool(self.can_edit_messages)  # type bool
         if self.can_delete_messages is not None:
             array['can_delete_messages'] = bool(self.can_delete_messages)  # type bool
-        if self.can_invite_users is not None:
-            array['can_invite_users'] = bool(self.can_invite_users)  # type bool
         if self.can_restrict_members is not None:
             array['can_restrict_members'] = bool(self.can_restrict_members)  # type bool
-        if self.can_pin_messages is not None:
-            array['can_pin_messages'] = bool(self.can_pin_messages)  # type bool
         if self.can_promote_members is not None:
             array['can_promote_members'] = bool(self.can_promote_members)  # type bool
+        if self.can_change_info is not None:
+            array['can_change_info'] = bool(self.can_change_info)  # type bool
+        if self.can_invite_users is not None:
+            array['can_invite_users'] = bool(self.can_invite_users)  # type bool
+        if self.can_pin_messages is not None:
+            array['can_pin_messages'] = bool(self.can_pin_messages)  # type bool
+        if self.is_member is not None:
+            array['is_member'] = bool(self.is_member)  # type bool
         if self.can_send_messages is not None:
             array['can_send_messages'] = bool(self.can_send_messages)  # type bool
         if self.can_send_media_messages is not None:
             array['can_send_media_messages'] = bool(self.can_send_media_messages)  # type bool
+        if self.can_send_polls is not None:
+            array['can_send_polls'] = bool(self.can_send_polls)  # type bool
         if self.can_send_other_messages is not None:
             array['can_send_other_messages'] = bool(self.can_send_other_messages)  # type bool
         if self.can_add_web_page_previews is not None:
@@ -640,39 +703,57 @@ class ChatMember(Result):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the ChatMember constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = Result.validate_array(array)
+        data['user'] = User.from_array(array.get('user'))
+        data['status'] = u(array.get('status'))
+        data['until_date'] = int(array.get('until_date')) if array.get('until_date') is not None else None
+        data['can_be_edited'] = bool(array.get('can_be_edited')) if array.get('can_be_edited') is not None else None
+        data['can_post_messages'] = bool(array.get('can_post_messages')) if array.get('can_post_messages') is not None else None
+        data['can_edit_messages'] = bool(array.get('can_edit_messages')) if array.get('can_edit_messages') is not None else None
+        data['can_delete_messages'] = bool(array.get('can_delete_messages')) if array.get('can_delete_messages') is not None else None
+        data['can_restrict_members'] = bool(array.get('can_restrict_members')) if array.get('can_restrict_members') is not None else None
+        data['can_promote_members'] = bool(array.get('can_promote_members')) if array.get('can_promote_members') is not None else None
+        data['can_change_info'] = bool(array.get('can_change_info')) if array.get('can_change_info') is not None else None
+        data['can_invite_users'] = bool(array.get('can_invite_users')) if array.get('can_invite_users') is not None else None
+        data['can_pin_messages'] = bool(array.get('can_pin_messages')) if array.get('can_pin_messages') is not None else None
+        data['is_member'] = bool(array.get('is_member')) if array.get('is_member') is not None else None
+        data['can_send_messages'] = bool(array.get('can_send_messages')) if array.get('can_send_messages') is not None else None
+        data['can_send_media_messages'] = bool(array.get('can_send_media_messages')) if array.get('can_send_media_messages') is not None else None
+        data['can_send_polls'] = bool(array.get('can_send_polls')) if array.get('can_send_polls') is not None else None
+        data['can_send_other_messages'] = bool(array.get('can_send_other_messages')) if array.get('can_send_other_messages') is not None else None
+        data['can_add_web_page_previews'] = bool(array.get('can_add_web_page_previews')) if array.get('can_add_web_page_previews') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new ChatMember from a given dictionary.
 
         :return: new ChatMember instance.
         :rtype: ChatMember
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['user'] = User.from_array(array.get('user'))
-        data['status'] = u(array.get('status'))
-        data['until_date'] = int(array.get('until_date')) if array.get('until_date') is not None else None
-        data['can_be_edited'] = bool(array.get('can_be_edited')) if array.get('can_be_edited') is not None else None
-        data['can_change_info'] = bool(array.get('can_change_info')) if array.get('can_change_info') is not None else None
-        data['can_post_messages'] = bool(array.get('can_post_messages')) if array.get('can_post_messages') is not None else None
-        data['can_edit_messages'] = bool(array.get('can_edit_messages')) if array.get('can_edit_messages') is not None else None
-        data['can_delete_messages'] = bool(array.get('can_delete_messages')) if array.get('can_delete_messages') is not None else None
-        data['can_invite_users'] = bool(array.get('can_invite_users')) if array.get('can_invite_users') is not None else None
-        data['can_restrict_members'] = bool(array.get('can_restrict_members')) if array.get('can_restrict_members') is not None else None
-        data['can_pin_messages'] = bool(array.get('can_pin_messages')) if array.get('can_pin_messages') is not None else None
-        data['can_promote_members'] = bool(array.get('can_promote_members')) if array.get('can_promote_members') is not None else None
-        data['can_send_messages'] = bool(array.get('can_send_messages')) if array.get('can_send_messages') is not None else None
-        data['can_send_media_messages'] = bool(array.get('can_send_media_messages')) if array.get('can_send_media_messages') is not None else None
-        data['can_send_other_messages'] = bool(array.get('can_send_other_messages')) if array.get('can_send_other_messages') is not None else None
-        data['can_add_web_page_previews'] = bool(array.get('can_add_web_page_previews')) if array.get('can_add_web_page_previews') is not None else None
+        data = ChatMember.validate_array(array)
         data['_raw'] = array
         return ChatMember(**data)
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
         Implements `str(chatmember_instance)`
         """
-        return "ChatMember(user={self.user!r}, status={self.status!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_change_info={self.can_change_info!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_invite_users={self.can_invite_users!r}, can_restrict_members={self.can_restrict_members!r}, can_pin_messages={self.can_pin_messages!r}, can_promote_members={self.can_promote_members!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
+        return "ChatMember(user={self.user!r}, status={self.status!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -682,13 +763,214 @@ class ChatMember(Result):
         if self._raw:
             return "ChatMember.from_array({self._raw})".format(self=self)
         # end if
-        return "ChatMember(user={self.user!r}, status={self.status!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_change_info={self.can_change_info!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_invite_users={self.can_invite_users!r}, can_restrict_members={self.can_restrict_members!r}, can_pin_messages={self.can_pin_messages!r}, can_promote_members={self.can_promote_members!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
+        return "ChatMember(user={self.user!r}, status={self.status!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in chatmember_instance`
         """
-        return key in ["user", "status", "until_date", "can_be_edited", "can_change_info", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_invite_users", "can_restrict_members", "can_pin_messages", "can_promote_members", "can_send_messages", "can_send_media_messages", "can_send_other_messages", "can_add_web_page_previews"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["user", "status", "until_date", "can_be_edited", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_restrict_members", "can_promote_members", "can_change_info", "can_invite_users", "can_pin_messages", "is_member", "can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ChatMember
+
+
+class ChatPermissions(Result):
+    """
+    Describes actions that a non-administrator user is allowed to take in a chat.
+
+    https://core.telegram.org/bots/api#chatpermissions
+
+
+    Optional keyword parameters:
+
+    :param can_send_messages: Optional. True, if the user is allowed to send text messages, contacts, locations and venues
+    :type  can_send_messages: bool
+
+    :param can_send_media_messages: Optional. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+    :type  can_send_media_messages: bool
+
+    :param can_send_polls: Optional. True, if the user is allowed to send polls, implies can_send_messages
+    :type  can_send_polls: bool
+
+    :param can_send_other_messages: Optional. True, if the user is allowed to send animations, games, stickers and use inline bots, implies can_send_media_messages
+    :type  can_send_other_messages: bool
+
+    :param can_add_web_page_previews: Optional. True, if the user is allowed to add web page previews to their messages, implies can_send_media_messages
+    :type  can_add_web_page_previews: bool
+
+    :param can_change_info: Optional. True, if the user is allowed to change the chat title, photo and other settings. Ignored in public supergroups
+    :type  can_change_info: bool
+
+    :param can_invite_users: Optional. True, if the user is allowed to invite new users to the chat
+    :type  can_invite_users: bool
+
+    :param can_pin_messages: Optional. True, if the user is allowed to pin messages. Ignored in public supergroups
+    :type  can_pin_messages: bool
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, can_send_messages=None, can_send_media_messages=None, can_send_polls=None, can_send_other_messages=None, can_add_web_page_previews=None, can_change_info=None, can_invite_users=None, can_pin_messages=None, _raw=None):
+        """
+        Describes actions that a non-administrator user is allowed to take in a chat.
+
+        https://core.telegram.org/bots/api#chatpermissions
+
+
+        Optional keyword parameters:
+
+        :param can_send_messages: Optional. True, if the user is allowed to send text messages, contacts, locations and venues
+        :type  can_send_messages: bool
+
+        :param can_send_media_messages: Optional. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+        :type  can_send_media_messages: bool
+
+        :param can_send_polls: Optional. True, if the user is allowed to send polls, implies can_send_messages
+        :type  can_send_polls: bool
+
+        :param can_send_other_messages: Optional. True, if the user is allowed to send animations, games, stickers and use inline bots, implies can_send_media_messages
+        :type  can_send_other_messages: bool
+
+        :param can_add_web_page_previews: Optional. True, if the user is allowed to add web page previews to their messages, implies can_send_media_messages
+        :type  can_add_web_page_previews: bool
+
+        :param can_change_info: Optional. True, if the user is allowed to change the chat title, photo and other settings. Ignored in public supergroups
+        :type  can_change_info: bool
+
+        :param can_invite_users: Optional. True, if the user is allowed to invite new users to the chat
+        :type  can_invite_users: bool
+
+        :param can_pin_messages: Optional. True, if the user is allowed to pin messages. Ignored in public supergroups
+        :type  can_pin_messages: bool
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(ChatPermissions, self).__init__()
+        assert_type_or_raise(can_send_messages, None, bool, parameter_name="can_send_messages")
+        self.can_send_messages = can_send_messages
+
+        assert_type_or_raise(can_send_media_messages, None, bool, parameter_name="can_send_media_messages")
+        self.can_send_media_messages = can_send_media_messages
+
+        assert_type_or_raise(can_send_polls, None, bool, parameter_name="can_send_polls")
+        self.can_send_polls = can_send_polls
+
+        assert_type_or_raise(can_send_other_messages, None, bool, parameter_name="can_send_other_messages")
+        self.can_send_other_messages = can_send_other_messages
+
+        assert_type_or_raise(can_add_web_page_previews, None, bool, parameter_name="can_add_web_page_previews")
+        self.can_add_web_page_previews = can_add_web_page_previews
+
+        assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
+        self.can_change_info = can_change_info
+
+        assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
+        self.can_invite_users = can_invite_users
+
+        assert_type_or_raise(can_pin_messages, None, bool, parameter_name="can_pin_messages")
+        self.can_pin_messages = can_pin_messages
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this ChatPermissions to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(ChatPermissions, self).to_array()
+        if self.can_send_messages is not None:
+            array['can_send_messages'] = bool(self.can_send_messages)  # type bool
+        if self.can_send_media_messages is not None:
+            array['can_send_media_messages'] = bool(self.can_send_media_messages)  # type bool
+        if self.can_send_polls is not None:
+            array['can_send_polls'] = bool(self.can_send_polls)  # type bool
+        if self.can_send_other_messages is not None:
+            array['can_send_other_messages'] = bool(self.can_send_other_messages)  # type bool
+        if self.can_add_web_page_previews is not None:
+            array['can_add_web_page_previews'] = bool(self.can_add_web_page_previews)  # type bool
+        if self.can_change_info is not None:
+            array['can_change_info'] = bool(self.can_change_info)  # type bool
+        if self.can_invite_users is not None:
+            array['can_invite_users'] = bool(self.can_invite_users)  # type bool
+        if self.can_pin_messages is not None:
+            array['can_pin_messages'] = bool(self.can_pin_messages)  # type bool
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ChatPermissions constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['can_send_messages'] = bool(array.get('can_send_messages')) if array.get('can_send_messages') is not None else None
+        data['can_send_media_messages'] = bool(array.get('can_send_media_messages')) if array.get('can_send_media_messages') is not None else None
+        data['can_send_polls'] = bool(array.get('can_send_polls')) if array.get('can_send_polls') is not None else None
+        data['can_send_other_messages'] = bool(array.get('can_send_other_messages')) if array.get('can_send_other_messages') is not None else None
+        data['can_add_web_page_previews'] = bool(array.get('can_add_web_page_previews')) if array.get('can_add_web_page_previews') is not None else None
+        data['can_change_info'] = bool(array.get('can_change_info')) if array.get('can_change_info') is not None else None
+        data['can_invite_users'] = bool(array.get('can_invite_users')) if array.get('can_invite_users') is not None else None
+        data['can_pin_messages'] = bool(array.get('can_pin_messages')) if array.get('can_pin_messages') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new ChatPermissions from a given dictionary.
+
+        :return: new ChatPermissions instance.
+        :rtype: ChatPermissions
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = ChatPermissions.validate_array(array)
+        data['_raw'] = array
+        return ChatPermissions(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(chatpermissions_instance)`
+        """
+        return "ChatPermissions(can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(chatpermissions_instance)`
+        """
+        if self._raw:
+            return "ChatPermissions.from_array({self._raw})".format(self=self)
+        # end if
+        return "ChatPermissions(can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in chatpermissions_instance`
+        """
+        return (
+            key in ["can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews", "can_change_info", "can_invite_users", "can_pin_messages"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class ChatPermissions
+

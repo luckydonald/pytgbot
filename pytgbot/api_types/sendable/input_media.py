@@ -38,12 +38,17 @@ class InputMedia(Sendable):
         :param type: Type of the result
         :type  type: str|unicode
 
-        :param caption: Caption of the document to be sent, 0-200 characters
+        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+        :type  media: str|unicode
+
+
+        Optional keyword parameters:
+
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters
         :type  caption: str|unicode
 
-        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: InputFile|str|unicode
-
+        :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
         """
         super(InputMedia, self).__init__()
 
@@ -61,6 +66,12 @@ class InputMedia(Sendable):
     # end def __init__
 
     def to_array(self):
+        """
+        Serializes this InputMediaPhoto to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
         array = {
             "type": u(self.type),
             #"media": u(self.media),
@@ -73,6 +84,69 @@ class InputMedia(Sendable):
         # end if
         return array
     # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputMedia constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = InputMedia.validate_array(array)
+        data['type'] = u(array.get('type'))
+        data['media'] = u(array.get('media'))
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMedia from a given dictionary.
+
+        :return: new InputMedia instance.
+        :rtype: InputMedia
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMedia.validate_array(array)
+        instance = InputMedia(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inputmediaphoto_instance)`
+        """
+        return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(inputmedia_instance)`
+        """
+        if self._raw:
+            return "InputMedia.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inputmedia_instance`
+        """
+        return (
+            key in ["type", "media", "caption", "parse_mode"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
 
     def get_request_data(self, var_name, full_data=False):
         """
@@ -107,15 +181,60 @@ class InputMedia(Sendable):
 
 
 class InputMediaWithThumb(InputMedia):
+    """
+    Represents a media with thumb field to be sent.
 
+
+    Parameters:
+
+    :param type: Type of the result, must be photo
+    :type  type: str|unicode
+
+    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+    :type  media: str|unicode
+
+    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file
+    :type  thumb: InputFile | str|unicode
+
+
+    Optional keyword parameters:
+
+    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
+    :type  caption: str|unicode
+
+    :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :type  parse_mode: str|unicode
     """
-    thumb field.
-    """
+
     def __init__(self, type, media, thumb, caption=None, parse_mode=None):
+        """
+        Represents a media with thumb field to be sent.
+
+
+        Parameters:
+
+        :param type: Type of the result, must be photo
+        :type  type: str|unicode
+
+        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+        :type  media: str|unicode
+
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file
+        :type  thumb: InputFile | str|unicode
+
+
+        Optional keyword parameters:
+
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
+        :type  caption: str|unicode
+
+        :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :type  parse_mode: str|unicode
+        """
+        super(InputMediaWithThumb, self).__init__(type, media, caption, parse_mode)
         assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")
         self.thumb = thumb
-        super(InputMediaWithThumb, self).__init__(type, media, caption, parse_mode)
-    # end if
+    # end def
 
     def get_request_data(self, var_name, full_data=False):
         """
@@ -147,6 +266,88 @@ class InputMediaWithThumb(InputMedia):
         return data, (file or None)
         # end if
     # end def
+
+    def to_array(self):
+        """
+        Serializes this InputMediaPhoto to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(InputMediaWithThumb, self).to_array()
+        # 'type' is handled by superclass
+        array['media'] = u(self.media)  # py2: type unicode, py3: type str
+        if self.caption is not None:
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        if self.parse_mode is not None:
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputMediaPhoto constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = InputMedia.validate_array(array)
+        # 'type' is handled by the superclass.
+        data['media'] = u(array.get('media'))
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaWithThumb from a given dictionary.
+
+        :return: new InputMediaWithThumb instance.
+        :rtype: InputMediaWithThumb
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaWithThumb.validate_array(array)
+        instance = InputMediaWithThumb(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inputmediawiththumb_instance)`
+        """
+        return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(inputmediawiththumb_instance)`
+        """
+        if self._raw:
+            return "InputMediaWithThumb.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inputmediawiththumb_instance`
+        """
+        return (
+            key in ["type", "media", "caption", "parse_mode"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class InputMediaWithThumb
+
 
 
 class InputMediaPhoto(InputMedia):
@@ -195,8 +396,11 @@ class InputMediaPhoto(InputMedia):
         super(InputMediaPhoto, self).__init__("photo", media, caption=caption, parse_mode=parse_mode)
 
         # type is set by InputMedia base class
+
         # caption is set by InputMedia base class
+
         # media is set by InputMedia base class
+
         # parse_mode is set by InputMedia base class
 
     # end def __init__
@@ -219,23 +423,37 @@ class InputMediaPhoto(InputMedia):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the InputMediaPhoto constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = InputMedia.validate_array(array)
+        # 'type' is given by class type
+        data['media'] = u(array.get('media'))
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new InputMediaPhoto from a given dictionary.
 
         :return: new InputMediaPhoto instance.
         :rtype: InputMediaPhoto
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        # 'type' is given by class type
-        data['media'] = u(array.get('media'))
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('caption')) if array.get('caption') is not None else None
-
+        data = InputMediaPhoto.validate_array(array)
         instance = InputMediaPhoto(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -258,7 +476,11 @@ class InputMediaPhoto(InputMedia):
         """
         Implements `"key" in inputmediaphoto_instance`
         """
-        return key in ["type", "media", "caption", "parse_mode"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "caption", "parse_mode"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaPhoto
 
@@ -281,7 +503,7 @@ class InputMediaVideo(InputMediaWithThumb):
     :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
-    :param caption: Optional. Caption of the video to be sent, 0-200 characters
+    :param caption: Optional. Caption of the video to be sent, 0-1024 characters
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -318,7 +540,7 @@ class InputMediaVideo(InputMediaWithThumb):
         :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
-        :param caption: Optional. Caption of the video to be sent, 0-200 characters
+        :param caption: Optional. Caption of the video to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -370,7 +592,7 @@ class InputMediaVideo(InputMediaWithThumb):
         # 'media' given by superclass
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
-                array['thumb'] = None  # type InputFile
+                array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
                 array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
             else:
@@ -392,15 +614,15 @@ class InputMediaVideo(InputMediaWithThumb):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new InputMediaVideo from a given dictionary.
+        Builds a new array with valid values for the InputMediaVideo constructor.
 
-        :return: new InputMediaVideo instance.
-        :rtype: InputMediaVideo
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
 
-        data = {}
+        data = InputMediaWithThumb.validate_array(array)
         # 'type' is given by class type
         data['media'] = u(array.get('media'))
         if array.get('thumb') is None:
@@ -413,16 +635,31 @@ class InputMediaVideo(InputMediaWithThumb):
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('caption')) if array.get('caption') is not None else None
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['supports_streaming'] = bool(array.get('supports_streaming')) if array.get('supports_streaming') is not None else None
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaVideo from a given dictionary.
+
+        :return: new InputMediaVideo instance.
+        :rtype: InputMediaVideo
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaVideo.validate_array(array)
         instance = InputMediaVideo(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -445,7 +682,11 @@ class InputMediaVideo(InputMediaWithThumb):
         """
         Implements `"key" in inputmediavideo_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaVideo
 
@@ -502,7 +743,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
-        :param caption: Optional. Caption of the animation to be sent, 0-200 characters
+        :param caption: Optional. Caption of the animation to be sent, 0-1024 characters
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -567,16 +808,15 @@ class InputMediaAnimation(InputMediaWithThumb):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new InputMediaAnimation from a given dictionary.
+        Builds a new array with valid values for the InputMediaAnimation constructor.
 
-        :return: new InputMediaAnimation instance.
-        :rtype: InputMediaAnimation
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
 
-
-        data = {}
+        data = InputMediaWithThumb.validate_array(array)
         # 'type' is given by class type
         data['media'] = u(array.get('media'))
         if array.get('thumb') is None:
@@ -589,15 +829,30 @@ class InputMediaAnimation(InputMediaWithThumb):
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('caption')) if array.get('caption') is not None else None
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaAnimation from a given dictionary.
+
+        :return: new InputMediaAnimation instance.
+        :rtype: InputMediaAnimation
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaAnimation.validate_array(array)
         instance = InputMediaAnimation(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -620,7 +875,11 @@ class InputMediaAnimation(InputMediaWithThumb):
         """
         Implements `"key" in inputmediaanimation_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaAnimation
 
@@ -743,16 +1002,15 @@ class InputMediaAudio(InputMediaWithThumb):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new InputMediaAudio from a given dictionary.
+        Builds a new array with valid values for the InputMediaAudio constructor.
 
-        :return: new InputMediaAudio instance.
-        :rtype: InputMediaAudio
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
 
-
-        data = {}
+        data = InputMediaWithThumb.validate_array(array)
         # 'type' is given by class type
         data['media'] = u(array.get('media'))
         if array.get('thumb') is None:
@@ -770,10 +1028,25 @@ class InputMediaAudio(InputMediaWithThumb):
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaAudio from a given dictionary.
+
+        :return: new InputMediaAudio instance.
+        :rtype: InputMediaAudio
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaAudio.validate_array(array)
         instance = InputMediaAudio(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -796,7 +1069,11 @@ class InputMediaAudio(InputMediaWithThumb):
         """
         Implements `"key" in inputmediaaudio_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaAudio
 
@@ -884,16 +1161,15 @@ class InputMediaDocument(InputMediaWithThumb):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new InputMediaDocument from a given dictionary.
+        Builds a new array with valid values for the InputMediaDocument constructor.
 
-        :return: new InputMediaDocument instance.
-        :rtype: InputMediaDocument
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.sendable.files import InputFile
 
-
-        data = {}
+        data = InputMediaWithThumb.validate_array(array)
         # 'type' is given by class type
         data['media'] = u(array.get('media'))
         if array.get('thumb') is None:
@@ -908,10 +1184,25 @@ class InputMediaDocument(InputMediaWithThumb):
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaDocument from a given dictionary.
+
+        :return: new InputMediaDocument instance.
+        :rtype: InputMediaDocument
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaDocument.validate_array(array)
         instance = InputMediaDocument(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -934,7 +1225,11 @@ class InputMediaDocument(InputMediaWithThumb):
         """
         Implements `"key" in inputmediadocument_instance`
         """
-        return key in ["type", "media", "thumb", "caption", "parse_mode"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["type", "media", "thumb", "caption", "parse_mode"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InputMediaDocument
 

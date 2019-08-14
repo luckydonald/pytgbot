@@ -11,28 +11,28 @@ class Invoice(Result):
     This object contains basic information about an invoice.
 
     https://core.telegram.org/bots/api#invoice
-    
+
 
     Parameters:
-    
+
     :param title: Product name
     :type  title: str|unicode
-    
+
     :param description: Product description
     :type  description: str|unicode
-    
+
     :param start_parameter: Unique bot deep-linking parameter that can be used to generate this invoice
     :type  start_parameter: str|unicode
-    
+
     :param currency: Three-letter ISO 4217 currency code
     :type  currency: str|unicode
-    
+
     :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  total_amount: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -42,44 +42,44 @@ class Invoice(Result):
         This object contains basic information about an invoice.
 
         https://core.telegram.org/bots/api#invoice
-        
+
 
         Parameters:
-        
+
         :param title: Product name
         :type  title: str|unicode
-        
+
         :param description: Product description
         :type  description: str|unicode
-        
+
         :param start_parameter: Unique bot deep-linking parameter that can be used to generate this invoice
         :type  start_parameter: str|unicode
-        
+
         :param currency: Three-letter ISO 4217 currency code
         :type  currency: str|unicode
-        
+
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
-        
+
 
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Invoice, self).__init__()
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
+
         assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
-        
+
         assert_type_or_raise(start_parameter, unicode_type, parameter_name="start_parameter")
         self.start_parameter = start_parameter
-        
+
         assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
-        
+
         assert_type_or_raise(total_amount, int, parameter_name="total_amount")
         self.total_amount = total_amount
 
@@ -117,7 +117,7 @@ class Invoice(Result):
         data['start_parameter'] = u(array.get('start_parameter'))
         data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
-        
+
     # end def validate_array
 
     @staticmethod
@@ -172,31 +172,31 @@ class ShippingAddress(Result):
     This object represents a shipping address.
 
     https://core.telegram.org/bots/api#shippingaddress
-    
+
 
     Parameters:
-    
+
     :param country_code: ISO 3166-1 alpha-2 country code
     :type  country_code: str|unicode
-    
+
     :param state: State, if applicable
     :type  state: str|unicode
-    
+
     :param city: City
     :type  city: str|unicode
-    
+
     :param street_line1: First line for the address
     :type  street_line1: str|unicode
-    
+
     :param street_line2: Second line for the address
     :type  street_line2: str|unicode
-    
+
     :param post_code: Address post code
     :type  post_code: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -206,50 +206,50 @@ class ShippingAddress(Result):
         This object represents a shipping address.
 
         https://core.telegram.org/bots/api#shippingaddress
-        
+
 
         Parameters:
-        
+
         :param country_code: ISO 3166-1 alpha-2 country code
         :type  country_code: str|unicode
-        
+
         :param state: State, if applicable
         :type  state: str|unicode
-        
+
         :param city: City
         :type  city: str|unicode
-        
+
         :param street_line1: First line for the address
         :type  street_line1: str|unicode
-        
+
         :param street_line2: Second line for the address
         :type  street_line2: str|unicode
-        
+
         :param post_code: Address post code
         :type  post_code: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(ShippingAddress, self).__init__()
         assert_type_or_raise(country_code, unicode_type, parameter_name="country_code")
         self.country_code = country_code
-        
+
         assert_type_or_raise(state, unicode_type, parameter_name="state")
         self.state = state
-        
+
         assert_type_or_raise(city, unicode_type, parameter_name="city")
         self.city = city
-        
+
         assert_type_or_raise(street_line1, unicode_type, parameter_name="street_line1")
         self.street_line1 = street_line1
-        
+
         assert_type_or_raise(street_line2, unicode_type, parameter_name="street_line2")
         self.street_line2 = street_line2
-        
+
         assert_type_or_raise(post_code, unicode_type, parameter_name="post_code")
         self.post_code = post_code
 
@@ -289,7 +289,7 @@ class ShippingAddress(Result):
         data['street_line1'] = u(array.get('street_line1'))
         data['street_line2'] = u(array.get('street_line2'))
         data['post_code'] = u(array.get('post_code'))
-        
+
     # end def validate_array
 
     @staticmethod
@@ -344,22 +344,22 @@ class OrderInfo(Result):
     This object represents information about an order.
 
     https://core.telegram.org/bots/api#orderinfo
-    
+
 
     Optional keyword parameters:
-    
+
     :param name: Optional. User name
     :type  name: str|unicode
-    
+
     :param phone_number: Optional. User's phone number
     :type  phone_number: str|unicode
-    
+
     :param email: Optional. User email
     :type  email: str|unicode
-    
+
     :param shipping_address: Optional. User shipping address
     :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -369,37 +369,37 @@ class OrderInfo(Result):
         This object represents information about an order.
 
         https://core.telegram.org/bots/api#orderinfo
-        
+
 
         Optional keyword parameters:
-        
+
         :param name: Optional. User name
         :type  name: str|unicode
-        
+
         :param phone_number: Optional. User's phone number
         :type  phone_number: str|unicode
-        
+
         :param email: Optional. User email
         :type  email: str|unicode
-        
+
         :param shipping_address: Optional. User shipping address
         :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(OrderInfo, self).__init__()
         from pytgbot.api_types.receivable.payments import ShippingAddress
-        
+
         assert_type_or_raise(name, None, unicode_type, parameter_name="name")
         self.name = name
-        
+
         assert_type_or_raise(phone_number, None, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-        
+
         assert_type_or_raise(email, None, unicode_type, parameter_name="email")
         self.email = email
-        
+
         assert_type_or_raise(shipping_address, None, ShippingAddress, parameter_name="shipping_address")
         self.shipping_address = shipping_address
 
@@ -436,13 +436,13 @@ class OrderInfo(Result):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.payments import ShippingAddress
-        
+
         data = Result.validate_array(array)
         data['name'] = u(array.get('name')) if array.get('name') is not None else None
         data['phone_number'] = u(array.get('phone_number')) if array.get('phone_number') is not None else None
         data['email'] = u(array.get('email')) if array.get('email') is not None else None
         data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address')) if array.get('shipping_address') is not None else None
-        
+
     # end def validate_array
 
     @staticmethod
@@ -497,34 +497,34 @@ class SuccessfulPayment(Result):
     This object contains basic information about a successful payment.
 
     https://core.telegram.org/bots/api#successfulpayment
-    
+
 
     Parameters:
-    
+
     :param currency: Three-letter ISO 4217 currency code
     :type  currency: str|unicode
-    
+
     :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  total_amount: int
-    
+
     :param invoice_payload: Bot specified invoice payload
     :type  invoice_payload: str|unicode
-    
+
     :param telegram_payment_charge_id: Telegram payment identifier
     :type  telegram_payment_charge_id: str|unicode
-    
+
     :param provider_payment_charge_id: Provider payment identifier
     :type  provider_payment_charge_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
     :type  shipping_option_id: str|unicode
-    
+
     :param order_info: Optional. Order info provided by the user
     :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -534,58 +534,58 @@ class SuccessfulPayment(Result):
         This object contains basic information about a successful payment.
 
         https://core.telegram.org/bots/api#successfulpayment
-        
+
 
         Parameters:
-        
+
         :param currency: Three-letter ISO 4217 currency code
         :type  currency: str|unicode
-        
+
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
-        
+
         :param invoice_payload: Bot specified invoice payload
         :type  invoice_payload: str|unicode
-        
+
         :param telegram_payment_charge_id: Telegram payment identifier
         :type  telegram_payment_charge_id: str|unicode
-        
+
         :param provider_payment_charge_id: Provider payment identifier
         :type  provider_payment_charge_id: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
         :type  shipping_option_id: str|unicode
-        
+
         :param order_info: Optional. Order info provided by the user
         :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(SuccessfulPayment, self).__init__()
         from pytgbot.api_types.receivable.payments import OrderInfo
-        
+
         assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
-        
+
         assert_type_or_raise(total_amount, int, parameter_name="total_amount")
         self.total_amount = total_amount
-        
+
         assert_type_or_raise(invoice_payload, unicode_type, parameter_name="invoice_payload")
         self.invoice_payload = invoice_payload
-        
+
         assert_type_or_raise(telegram_payment_charge_id, unicode_type, parameter_name="telegram_payment_charge_id")
         self.telegram_payment_charge_id = telegram_payment_charge_id
-        
+
         assert_type_or_raise(provider_payment_charge_id, unicode_type, parameter_name="provider_payment_charge_id")
         self.provider_payment_charge_id = provider_payment_charge_id
-        
+
         assert_type_or_raise(shipping_option_id, None, unicode_type, parameter_name="shipping_option_id")
         self.shipping_option_id = shipping_option_id
-        
+
         assert_type_or_raise(order_info, None, OrderInfo, parameter_name="order_info")
         self.order_info = order_info
 
@@ -623,7 +623,7 @@ class SuccessfulPayment(Result):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.payments import OrderInfo
-        
+
         data = Result.validate_array(array)
         data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
@@ -632,7 +632,7 @@ class SuccessfulPayment(Result):
         data['provider_payment_charge_id'] = u(array.get('provider_payment_charge_id'))
         data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
-        
+
     # end def validate_array
 
     @staticmethod
@@ -687,25 +687,25 @@ class ShippingQuery(UpdateType):
     This object contains information about an incoming shipping query.
 
     https://core.telegram.org/bots/api#shippingquery
-    
+
 
     Parameters:
-    
+
     :param id: Unique query identifier
     :type  id: str|unicode
-    
+
     :param from_peer: User who sent the query
     :type  from_peer: pytgbot.api_types.receivable.peer.User
-    
+
     :param invoice_payload: Bot specified invoice payload
     :type  invoice_payload: str|unicode
-    
+
     :param shipping_address: User specified shipping address
     :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -715,41 +715,41 @@ class ShippingQuery(UpdateType):
         This object contains information about an incoming shipping query.
 
         https://core.telegram.org/bots/api#shippingquery
-        
+
 
         Parameters:
-        
+
         :param id: Unique query identifier
         :type  id: str|unicode
-        
+
         :param from_peer: User who sent the query
         :type  from_peer: pytgbot.api_types.receivable.peer.User
-        
+
         :param invoice_payload: Bot specified invoice payload
         :type  invoice_payload: str|unicode
-        
+
         :param shipping_address: User specified shipping address
         :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
-        
+
 
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(ShippingQuery, self).__init__()
         from pytgbot.api_types.receivable.payments import ShippingAddress
         from pytgbot.api_types.receivable.peer import User
-        
+
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
+
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
         self.from_peer = from_peer
-        
+
         assert_type_or_raise(invoice_payload, unicode_type, parameter_name="invoice_payload")
         self.invoice_payload = invoice_payload
-        
+
         assert_type_or_raise(shipping_address, ShippingAddress, parameter_name="shipping_address")
         self.shipping_address = shipping_address
 
@@ -782,15 +782,14 @@ class ShippingQuery(UpdateType):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.payments import ShippingAddress
-        from pytgbot.api_types.receivable.peer import User
-        
+        from ..sendable.peer import User
+
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
         data['invoice_payload'] = u(array.get('invoice_payload'))
         data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address'))
-        
+
     # end def validate_array
 
     @staticmethod
@@ -845,34 +844,34 @@ class PreCheckoutQuery(UpdateType):
     This object contains information about an incoming pre-checkout query.
 
     https://core.telegram.org/bots/api#precheckoutquery
-    
+
 
     Parameters:
-    
+
     :param id: Unique query identifier
     :type  id: str|unicode
-    
+
     :param from_peer: User who sent the query
     :type  from_peer: pytgbot.api_types.receivable.peer.User
-    
+
     :param currency: Three-letter ISO 4217 currency code
     :type  currency: str|unicode
-    
+
     :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  total_amount: int
-    
+
     :param invoice_payload: Bot specified invoice payload
     :type  invoice_payload: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
     :type  shipping_option_id: str|unicode
-    
+
     :param order_info: Optional. Order info provided by the user
     :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -882,59 +881,59 @@ class PreCheckoutQuery(UpdateType):
         This object contains information about an incoming pre-checkout query.
 
         https://core.telegram.org/bots/api#precheckoutquery
-        
+
 
         Parameters:
-        
+
         :param id: Unique query identifier
         :type  id: str|unicode
-        
+
         :param from_peer: User who sent the query
         :type  from_peer: pytgbot.api_types.receivable.peer.User
-        
+
         :param currency: Three-letter ISO 4217 currency code
         :type  currency: str|unicode
-        
+
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
-        
+
         :param invoice_payload: Bot specified invoice payload
         :type  invoice_payload: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
         :type  shipping_option_id: str|unicode
-        
+
         :param order_info: Optional. Order info provided by the user
         :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(PreCheckoutQuery, self).__init__()
         from pytgbot.api_types.receivable.payments import OrderInfo
         from pytgbot.api_types.receivable.peer import User
-        
+
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
+
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
         self.from_peer = from_peer
-        
+
         assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
-        
+
         assert_type_or_raise(total_amount, int, parameter_name="total_amount")
         self.total_amount = total_amount
-        
+
         assert_type_or_raise(invoice_payload, unicode_type, parameter_name="invoice_payload")
         self.invoice_payload = invoice_payload
-        
+
         assert_type_or_raise(shipping_option_id, None, unicode_type, parameter_name="shipping_option_id")
         self.shipping_option_id = shipping_option_id
-        
+
         assert_type_or_raise(order_info, None, OrderInfo, parameter_name="order_info")
         self.order_info = order_info
 
@@ -974,7 +973,7 @@ class PreCheckoutQuery(UpdateType):
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.payments import OrderInfo
         from pytgbot.api_types.receivable.peer import User
-        
+
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
@@ -983,7 +982,7 @@ class PreCheckoutQuery(UpdateType):
         data['invoice_payload'] = u(array.get('invoice_payload'))
         data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
-        
+
     # end def validate_array
 
     @staticmethod

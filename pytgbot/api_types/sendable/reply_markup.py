@@ -121,23 +121,38 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new ReplyKeyboardMarkup from a given dictionary.
+        Builds a new array with valid values for the ReplyKeyboardMarkup constructor.
 
-        :return: new ReplyKeyboardMarkup instance.
-        :rtype: ReplyKeyboardMarkup
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
+        data = ReplyMarkup.validate_array(array)
         data['keyboard'] = KeyboardButton.from_array_list(array.get('keyboard'), list_level=2)
         data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
         data['one_time_keyboard'] = bool(array.get('one_time_keyboard')) if array.get('one_time_keyboard') is not None else None
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
 
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new ReplyKeyboardMarkup from a given dictionary.
+
+        :return: new ReplyKeyboardMarkup instance.
+        :rtype: ReplyKeyboardMarkup
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = ReplyKeyboardMarkup.validate_array(array)
         instance = ReplyKeyboardMarkup(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -160,7 +175,11 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         """
         Implements `"key" in replykeyboardmarkup_instance`
         """
-        return key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ReplyKeyboardMarkup
 
@@ -249,22 +268,36 @@ class KeyboardButton(Button):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the KeyboardButton constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Button.validate_array(array)
+        data['text'] = u(array.get('text'))
+        data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
+        data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new KeyboardButton from a given dictionary.
 
         :return: new KeyboardButton instance.
         :rtype: KeyboardButton
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['text'] = u(array.get('text'))
-        data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
-        data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
-
+        data = KeyboardButton.validate_array(array)
         instance = KeyboardButton(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -287,7 +320,11 @@ class KeyboardButton(Button):
         """
         Implements `"key" in keyboardbutton_instance`
         """
-        return key in ["text", "request_contact", "request_location"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["text", "request_contact", "request_location"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class KeyboardButton
 
@@ -363,16 +400,19 @@ class ReplyKeyboardRemove(ReplyMarkup):
         :return: new ReplyKeyboardRemove instance.
         :rtype: ReplyKeyboardRemove
         """
+        if not array:  # None or {}
+            return None
+        # end if
         assert_type_or_raise(array, dict, parameter_name="array")
 
-        data = {}
+        data = ReplyKeyboardRemove.validate_array(array)
         assert (bool(array.get('remove_keyboard')) == True)
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
 
         instance = ReplyKeyboardRemove(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -395,7 +435,11 @@ class ReplyKeyboardRemove(ReplyMarkup):
         """
         Implements `"key" in replykeyboardremove_instance`
         """
-        return key in ["remove_keyboard", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["remove_keyboard", "selective"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ReplyKeyboardRemove
 
@@ -449,20 +493,36 @@ class InlineKeyboardMarkup(ReplyMarkup):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the InlineKeyboardMarkup constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = ReplyMarkup.validate_array(array)
+        data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new InlineKeyboardMarkup from a given dictionary.
 
         :return: new InlineKeyboardMarkup instance.
         :rtype: InlineKeyboardMarkup
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
-        data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
-
+        data = InlineKeyboardMarkup.validate_array(array)
         instance = InlineKeyboardMarkup(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -485,7 +545,11 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """
         Implements `"key" in inlinekeyboardmarkup_instance`
         """
-        return key in ["inline_keyboard"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["inline_keyboard"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineKeyboardMarkup
 
@@ -511,6 +575,9 @@ class InlineKeyboardButton(Button):
     :param url: Optional. HTTP or tg:// url to be opened when button is pressed
     :type  url: str|unicode
 
+    :param login_url: Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.
+    :type  login_url: pytgbot.api_types.sendable.reply_markup.LoginUrl
+
     :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
     :type  callback_data: str|unicode
 
@@ -527,7 +594,7 @@ class InlineKeyboardButton(Button):
     :type  pay: bool
     """
 
-    def __init__(self, text, url=None, callback_data=None, switch_inline_query=None, switch_inline_query_current_chat=None, callback_game=None, pay=None):
+    def __init__(self, text, url=None, login_url=None, callback_data=None, switch_inline_query=None, switch_inline_query_current_chat=None, callback_game=None, pay=None):
         """
         This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
 
@@ -547,6 +614,9 @@ class InlineKeyboardButton(Button):
 
         :param url: Optional. HTTP or tg:// url to be opened when button is pressed
         :type  url: str|unicode
+
+        :param login_url: Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.
+        :type  login_url: pytgbot.api_types.sendable.reply_markup.LoginUrl
 
         :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
         :type  callback_data: str|unicode
@@ -581,6 +651,9 @@ class InlineKeyboardButton(Button):
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
 
+        assert_type_or_raise(login_url, None, LoginUrl, parameter_name="login_url")
+        self.login_url = login_url
+
         assert_type_or_raise(callback_data, None, unicode_type, parameter_name="callback_data")
         self.callback_data = callback_data
 
@@ -608,6 +681,9 @@ class InlineKeyboardButton(Button):
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
+        if self.login_url is not None:
+            array['login_url'] = self.login_url.to_array()  # type LoginUrl
+
         if self.callback_data is not None:
             array['callback_data'] = u(self.callback_data)  # py2: type unicode, py3: type str
         if self.switch_inline_query is not None:
@@ -624,17 +700,18 @@ class InlineKeyboardButton(Button):
     @staticmethod
     def validate_array(array):
         """
-        Deserialize a new InlineKeyboardButton from a given dictionary.
+        Builds a new array with valid values for the InlineKeyboardButton constructor.
 
-        :return: new InlineKeyboardButton instance.
-        :rtype: InlineKeyboardButton
+        :return: new array with valid values
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.updates import CallbackGame
 
-        data = {}
+        data = Button.validate_array(array)
         data['text'] = u(array.get('text'))
         data['url'] = u(array.get('url')) if array.get('url') is not None else None
+        data['login_url'] = LoginUrl.from_array(array.get('login_url')) if array.get('login_url') is not None else None
         data['callback_data'] = u(array.get('callback_data')) if array.get('callback_data') is not None else None
         data['switch_inline_query'] = u(array.get('switch_inline_query')) if array.get('switch_inline_query') is not None else None
         data['switch_inline_query_current_chat'] = u(array.get('switch_inline_query_current_chat')) if array.get('switch_inline_query_current_chat') is not None else None
@@ -644,13 +721,13 @@ class InlineKeyboardButton(Button):
         instance = InlineKeyboardButton(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
         Implements `str(inlinekeyboardbutton_instance)`
         """
-        return "InlineKeyboardButton(text={self.text!r}, url={self.url!r}, callback_data={self.callback_data!r}, switch_inline_query={self.switch_inline_query!r}, switch_inline_query_current_chat={self.switch_inline_query_current_chat!r}, callback_game={self.callback_game!r}, pay={self.pay!r})".format(self=self)
+        return "InlineKeyboardButton(text={self.text!r}, url={self.url!r}, login_url={self.login_url!r}, callback_data={self.callback_data!r}, switch_inline_query={self.switch_inline_query!r}, switch_inline_query_current_chat={self.switch_inline_query_current_chat!r}, callback_game={self.callback_game!r}, pay={self.pay!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -660,16 +737,172 @@ class InlineKeyboardButton(Button):
         if self._raw:
             return "InlineKeyboardButton.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineKeyboardButton(text={self.text!r}, url={self.url!r}, callback_data={self.callback_data!r}, switch_inline_query={self.switch_inline_query!r}, switch_inline_query_current_chat={self.switch_inline_query_current_chat!r}, callback_game={self.callback_game!r}, pay={self.pay!r})".format(self=self)
+        return "InlineKeyboardButton(text={self.text!r}, url={self.url!r}, login_url={self.login_url!r}, callback_data={self.callback_data!r}, switch_inline_query={self.switch_inline_query!r}, switch_inline_query_current_chat={self.switch_inline_query_current_chat!r}, callback_game={self.callback_game!r}, pay={self.pay!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
         Implements `"key" in inlinekeyboardbutton_instance`
         """
-        return key in ["text", "url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["text", "url", "login_url", "callback_data", "switch_inline_query", "switch_inline_query_current_chat", "callback_game", "pay"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class InlineKeyboardButton
+
+
+class LoginUrl(Sendable):
+    """
+    This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:
+    Telegram apps support these buttons as of version 5.7.
+
+    Sample bot: @discussbot
+
+    https://core.telegram.org/bots/api#loginurl
+
+
+    Parameters:
+
+    :param url: An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data.NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
+    :type  url: str|unicode
+
+
+    Optional keyword parameters:
+
+    :param forward_text: Optional. New text of the button in forwarded messages.
+    :type  forward_text: str|unicode
+
+    :param bot_username: Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
+    :type  bot_username: str|unicode
+
+    :param request_write_access: Optional. Pass True to request the permission for your bot to send messages to the user.
+    :type  request_write_access: bool
+    """
+
+    def __init__(self, url, forward_text=None, bot_username=None, request_write_access=None):
+        """
+        This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:
+        Telegram apps support these buttons as of version 5.7.
+
+        Sample bot: @discussbot
+
+        https://core.telegram.org/bots/api#loginurl
+
+
+        Parameters:
+
+        :param url: An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data.NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
+        :type  url: str|unicode
+
+
+        Optional keyword parameters:
+
+        :param forward_text: Optional. New text of the button in forwarded messages.
+        :type  forward_text: str|unicode
+
+        :param bot_username: Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
+        :type  bot_username: str|unicode
+
+        :param request_write_access: Optional. Pass True to request the permission for your bot to send messages to the user.
+        :type  request_write_access: bool
+        """
+        super(LoginUrl, self).__init__()
+        assert_type_or_raise(url, unicode_type, parameter_name="url")
+        self.url = url
+
+        assert_type_or_raise(forward_text, None, unicode_type, parameter_name="forward_text")
+        self.forward_text = forward_text
+
+        assert_type_or_raise(bot_username, None, unicode_type, parameter_name="bot_username")
+        self.bot_username = bot_username
+
+        assert_type_or_raise(request_write_access, None, bool, parameter_name="request_write_access")
+        self.request_write_access = request_write_access
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this LoginUrl to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(LoginUrl, self).to_array()
+        array['url'] = u(self.url)  # py2: type unicode, py3: type str
+        if self.forward_text is not None:
+            array['forward_text'] = u(self.forward_text)  # py2: type unicode, py3: type str
+        if self.bot_username is not None:
+            array['bot_username'] = u(self.bot_username)  # py2: type unicode, py3: type str
+        if self.request_write_access is not None:
+            array['request_write_access'] = bool(self.request_write_access)  # type bool
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the LoginUrl constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Sendable.validate_array(array)
+        data['url'] = u(array.get('url'))
+        data['forward_text'] = u(array.get('forward_text')) if array.get('forward_text') is not None else None
+        data['bot_username'] = u(array.get('bot_username')) if array.get('bot_username') is not None else None
+        data['request_write_access'] = bool(array.get('request_write_access')) if array.get('request_write_access') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new LoginUrl from a given dictionary.
+
+        :return: new LoginUrl instance.
+        :rtype: LoginUrl
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = LoginUrl.validate_array(array)
+        instance = LoginUrl(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(loginurl_instance)`
+        """
+        return "LoginUrl(url={self.url!r}, forward_text={self.forward_text!r}, bot_username={self.bot_username!r}, request_write_access={self.request_write_access!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(loginurl_instance)`
+        """
+        if self._raw:
+            return "LoginUrl.from_array({self._raw})".format(self=self)
+        # end if
+        return "LoginUrl(url={self.url!r}, forward_text={self.forward_text!r}, bot_username={self.bot_username!r}, request_write_access={self.request_write_access!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in loginurl_instance`
+        """
+        return (
+            key in ["url", "forward_text", "bot_username", "request_write_access"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class LoginUrl
 
 
 class ForceReply(ReplyMarkup):
@@ -754,21 +987,38 @@ class ForceReply(ReplyMarkup):
     @staticmethod
     def validate_array(array):
         """
+        Builds a new array with valid values for the ForceReply constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = ReplyMarkup.validate_array(array)
+        data['force_reply'] = bool(array.get('force_reply'))
+        data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
         Deserialize a new ForceReply from a given dictionary.
 
         :return: new ForceReply instance.
         :rtype: ForceReply
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
+        if not array:  # None or {}
+            return None
+        # end if
 
-        data = {}
+        data = ForceReply.validate_array(array)
         assert(bool(array.get('force_reply')) == True)
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
 
         instance = ForceReply(**data)
         instance._raw = array
         return instance
-    # end def validate_array
+    # end def from_array
 
     def __str__(self):
         """
@@ -791,6 +1041,10 @@ class ForceReply(ReplyMarkup):
         """
         Implements `"key" in forcereply_instance`
         """
-        return key in ["force_reply", "selective"] and hasattr(self, key) and bool(getattr(self, key, None))
+        return (
+            key in ["force_reply", "selective"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
     # end def __contains__
 # end class ForceReply
