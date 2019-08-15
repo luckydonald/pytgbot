@@ -68,7 +68,7 @@ class LabeledPrice(Sendable):
         data = Sendable.validate_array(array)
         data['label'] = u(array.get('label'))
         data['amount'] = int(array.get('amount'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -117,7 +117,6 @@ class LabeledPrice(Sendable):
         )
     # end def __contains__
 # end class LabeledPrice
-
 
 
 class ShippingOption(Sendable):
@@ -197,7 +196,7 @@ class ShippingOption(Sendable):
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))
         data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
-
+        return data
     # end def validate_array
 
     @staticmethod

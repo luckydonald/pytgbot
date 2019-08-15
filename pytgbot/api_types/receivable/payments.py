@@ -116,7 +116,7 @@ class Invoice(Result):
         data['start_parameter'] = u(array.get('start_parameter'))
         data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -164,7 +164,6 @@ class Invoice(Result):
         )
     # end def __contains__
 # end class Invoice
-
 
 
 class ShippingAddress(Result):
@@ -289,7 +288,7 @@ class ShippingAddress(Result):
         data['street_line1'] = u(array.get('street_line1'))
         data['street_line2'] = u(array.get('street_line2'))
         data['post_code'] = u(array.get('post_code'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -337,7 +336,6 @@ class ShippingAddress(Result):
         )
     # end def __contains__
 # end class ShippingAddress
-
 
 
 class OrderInfo(Result):
@@ -440,7 +438,7 @@ class OrderInfo(Result):
         data['phone_number'] = u(array.get('phone_number')) if array.get('phone_number') is not None else None
         data['email'] = u(array.get('email')) if array.get('email') is not None else None
         data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address')) if array.get('shipping_address') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -488,7 +486,6 @@ class OrderInfo(Result):
         )
     # end def __contains__
 # end class OrderInfo
-
 
 
 class SuccessfulPayment(Result):
@@ -628,7 +625,7 @@ class SuccessfulPayment(Result):
         data['provider_payment_charge_id'] = u(array.get('provider_payment_charge_id'))
         data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -676,7 +673,6 @@ class SuccessfulPayment(Result):
         )
     # end def __contains__
 # end class SuccessfulPayment
-
 
 
 class ShippingQuery(UpdateType):
@@ -783,7 +779,7 @@ class ShippingQuery(UpdateType):
         data['from_peer'] = User.from_array(array.get('from'))
         data['invoice_payload'] = u(array.get('invoice_payload'))
         data['shipping_address'] = ShippingAddress.from_array(array.get('shipping_address'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -831,7 +827,6 @@ class ShippingQuery(UpdateType):
         )
     # end def __contains__
 # end class ShippingQuery
-
 
 
 class PreCheckoutQuery(UpdateType):
@@ -973,7 +968,7 @@ class PreCheckoutQuery(UpdateType):
         data['invoice_payload'] = u(array.get('invoice_payload'))
         data['shipping_option_id'] = u(array.get('shipping_option_id')) if array.get('shipping_option_id') is not None else None
         data['order_info'] = OrderInfo.from_array(array.get('order_info')) if array.get('order_info') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1021,4 +1016,3 @@ class PreCheckoutQuery(UpdateType):
         )
     # end def __contains__
 # end class PreCheckoutQuery
-

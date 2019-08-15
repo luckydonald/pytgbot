@@ -127,7 +127,7 @@ class InlineQuery(Result):
         data['query'] = u(array.get('query'))
         data['offset'] = u(array.get('offset'))
         data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -298,7 +298,7 @@ class ChosenInlineResult(UpdateType):
         data['query'] = u(array.get('query'))
         data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
         data['inline_message_id'] = u(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod

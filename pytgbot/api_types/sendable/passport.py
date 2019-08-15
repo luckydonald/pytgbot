@@ -119,7 +119,7 @@ class PassportElementErrorDataField(PassportElementError):
         data['field_name'] = u(array.get('field_name'))
         data['data_hash'] = u(array.get('data_hash'))
         data['message'] = u(array.get('message'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -168,7 +168,6 @@ class PassportElementErrorDataField(PassportElementError):
         )
     # end def __contains__
 # end class PassportElementErrorDataField
-
 
 
 class PassportElementErrorFrontSide(PassportElementError):
@@ -314,7 +313,6 @@ class PassportElementErrorFrontSide(PassportElementError):
 # end class PassportElementErrorFrontSide
 
 
-
 class PassportElementErrorReverseSide(PassportElementError):
     """
     Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
@@ -407,7 +405,7 @@ class PassportElementErrorReverseSide(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -456,7 +454,6 @@ class PassportElementErrorReverseSide(PassportElementError):
         )
     # end def __contains__
 # end class PassportElementErrorReverseSide
-
 
 
 class PassportElementErrorSelfie(PassportElementError):
@@ -551,7 +548,7 @@ class PassportElementErrorSelfie(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -600,7 +597,6 @@ class PassportElementErrorSelfie(PassportElementError):
         )
     # end def __contains__
 # end class PassportElementErrorSelfie
-
 
 
 class PassportElementErrorFile(PassportElementError):
@@ -695,7 +691,7 @@ class PassportElementErrorFile(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -744,7 +740,6 @@ class PassportElementErrorFile(PassportElementError):
         )
     # end def __contains__
 # end class PassportElementErrorFile
-
 
 
 class PassportElementErrorFiles(PassportElementError):
@@ -839,7 +834,7 @@ class PassportElementErrorFiles(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -986,7 +981,7 @@ class PassportElementErrorTranslationFile(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1109,13 +1104,9 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         """
         array = super(PassportElementErrorTranslationFiles, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['file_hashes'] = self._as_array(self.file_hashes)  # type list of str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -1133,7 +1124,7 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorTranslationFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1256,13 +1247,9 @@ class PassportElementErrorUnspecified(PassportElementError):
         """
         array = super(PassportElementErrorUnspecified, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['element_hash'] = u(self.element_hash)  # py2: type unicode, py3: type str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -1280,7 +1267,7 @@ class PassportElementErrorUnspecified(PassportElementError):
         data['type'] = u(array.get('type'))
         data['element_hash'] = u(array.get('element_hash'))
         data['message'] = u(array.get('message'))
-
+        return data
     # end def validate_array
 
     @staticmethod

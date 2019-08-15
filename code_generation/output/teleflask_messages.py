@@ -252,6 +252,7 @@ class TextMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -524,6 +525,7 @@ class PhotoMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -860,6 +862,7 @@ class AudioMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1158,6 +1161,7 @@ class DocumentMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1504,6 +1508,7 @@ class VideoMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1838,6 +1843,7 @@ class AnimationMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2122,6 +2128,7 @@ class VoiceMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2420,6 +2427,7 @@ class VideoNoteMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2628,6 +2636,7 @@ class MediaGroupMessage(SendableMessageBase):
         # end if
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2885,6 +2894,7 @@ class LocationMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3176,6 +3186,7 @@ class VenueMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3445,6 +3456,7 @@ class ContactMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3691,6 +3703,7 @@ class PollMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3851,6 +3864,7 @@ class ChatActionMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -4099,6 +4113,7 @@ class StickerMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -4518,6 +4533,7 @@ class InvoiceMessage(SendableMessageBase):
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         
+        return data
     # end def validate_array
 
     @staticmethod
@@ -4724,6 +4740,7 @@ class GameMessage(SendableMessageBase):
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         
+        return data
     # end def validate_array
 
     @staticmethod

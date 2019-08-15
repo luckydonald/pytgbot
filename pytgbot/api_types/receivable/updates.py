@@ -35,7 +35,6 @@ class CallbackGame(UpdateType):
 # end class
 
 
-
 class Update(Receivable):
     """
     This object represents an incoming update. At most one of the optional parameters can be present in any given update.
@@ -235,7 +234,7 @@ class Update(Receivable):
         data['shipping_query'] = ShippingQuery.from_array(array.get('shipping_query')) if array.get('shipping_query') is not None else None
         data['pre_checkout_query'] = PreCheckoutQuery.from_array(array.get('pre_checkout_query')) if array.get('pre_checkout_query') is not None else None
         data['poll'] = Poll.from_array(array.get('poll')) if array.get('poll') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -422,7 +421,7 @@ class WebhookInfo(Receivable):
         data['last_error_message'] = u(array.get('last_error_message')) if array.get('last_error_message') is not None else None
         data['max_connections'] = int(array.get('max_connections')) if array.get('max_connections') is not None else None
         data['allowed_updates'] = WebhookInfo._builtin_from_array_list(required_type=unicode_type, value=array.get('allowed_updates'), list_level=1) if array.get('allowed_updates') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -790,7 +789,6 @@ class Message(UpdateType):
         from ..receivable.passport import PassportData
         from ..sendable.reply_markup import InlineKeyboardMarkup
 
-
         assert_type_or_raise(message_id, int, parameter_name="message_id")
         self.message_id = message_id
 
@@ -1110,7 +1108,7 @@ class Message(UpdateType):
         data['connected_website'] = u(array.get('connected_website')) if array.get('connected_website') is not None else None
         data['passport_data'] = PassportData.from_array(array.get('passport_data')) if array.get('passport_data') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1307,7 +1305,7 @@ class CallbackQuery(UpdateType):
         data['inline_message_id'] = u(array.get('inline_message_id')) if array.get('inline_message_id') is not None else None
         data['data'] = u(array.get('data')) if array.get('data') is not None else None
         data['game_short_name'] = u(array.get('game_short_name')) if array.get('game_short_name') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1431,7 +1429,7 @@ class ResponseParameters(Receivable):
         data = Receivable.validate_array(array)
         data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id')) if array.get('migrate_to_chat_id') is not None else None
         data['retry_after'] = int(array.get('retry_after')) if array.get('retry_after') is not None else None
-
+        return data
     # end def validate_array
 
     @staticmethod

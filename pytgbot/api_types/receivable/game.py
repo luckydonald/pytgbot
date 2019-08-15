@@ -101,6 +101,7 @@ class GameHighScore(Result):
         data['position'] = int(array.get('position'))
         data['user'] = User.from_array(array.get('user'))
         data['score'] = int(array.get('score'))
+        return data
     # end def validate_array
 
     @staticmethod

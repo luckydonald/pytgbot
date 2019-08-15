@@ -119,7 +119,7 @@ class StickerSet(Result):
         data['is_animated'] = bool(array.get('is_animated'))
         data['contains_masks'] = bool(array.get('contains_masks'))
         data['stickers'] = Sticker.from_array_list(array.get('stickers'), list_level=1)
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -269,7 +269,7 @@ class MaskPosition(Result):
         data['x_shift'] = float(array.get('x_shift'))
         data['y_shift'] = float(array.get('y_shift'))
         data['scale'] = float(array.get('scale'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -317,4 +317,3 @@ class MaskPosition(Result):
         )
     # end def __contains__
 # end class MaskPosition
-

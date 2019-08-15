@@ -130,6 +130,7 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         # end if
         {% endif -%}
         {%- endfor -%}{# remove empty line #}
+        return data
     # end def validate_array
 
     @staticmethod
