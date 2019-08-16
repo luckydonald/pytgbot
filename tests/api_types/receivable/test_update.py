@@ -45,6 +45,7 @@ class TestUpdate(TestCase):
 
         new = Update(update_id=1234)
         self.assertEqual(data, new.to_array(), 'to_array()')
+        # self.assertEqual(data, update, 'compare')
     # end def
 
 
@@ -78,5 +79,6 @@ class TestMessage(TestCase):
             text="/start"
         )
         self.assertEqual(data, new.to_array(), 'to_array()')
+        # self.assertEqual(data, msg, 'compare')
     # end def
 # end class
