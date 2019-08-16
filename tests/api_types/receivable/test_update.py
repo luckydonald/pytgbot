@@ -18,10 +18,10 @@ if __name__ == '__main__':
 class TestUpdate(TestCase):
     def test_1(self):
         data = {
-            "update_id": 10000,
+            "update_id": 1234,
         }
         update = Update.from_array(data)
-        self.assertEqual(10000, update.update_id)
+        self.assertEqual(1234, update.update_id)
 
         self.assertIsNone(update.message, "element should be not set")
         self.assertIsNone(update.callback_query, "element should be not set")
@@ -42,6 +42,9 @@ class TestUpdate(TestCase):
         self.assertNotIn("poll", update, "__contains__ should be false as well")
         self.assertNotIn("pre_checkout_query", update, "__contains__ should be false as well")
         self.assertNotIn("shipping_query", update, "__contains__ should be false as well")
+
+        new = Update(update_id=1234)
+        self.assertEqual(data, new.to_array(), 'to_array()')
     # end def
 
 
@@ -50,20 +53,29 @@ class TestMessage(TestCase):
         data = {
                 "date": 1441645532,
                 "chat": {
-                    "last_name": "Test Lastname A",
                     "id": 1111101,
+                    "type": "private",
                     "first_name": "Alfred",
-                    "username": "TestA"
+                    "last_name": "Alfons",
                 },
                 "message_id": 1365,
                 "from": {
-                    "last_name": "Test Lastname B",
-                    "id": 1111102,
-                    "first_name": "Beate",
-                    "username": "TestB"
+                    "id": 1111101,
+                    "first_name": "Alfred",
+                    "last_name": "Alfons",
                 },
                 "text": "/start"
             }
         msg = Message.from_array(data)
         self.assertEqual(1441645532, msg.date)
 
+        from api_types.receivable.peer import Chat, User
+        new = Message(
+            message_id=1365, date=1441645532,
+            chat=Chat(id=1111101, type="private", first_name="Alfred", last_name="Alfons"),
+            from_peer=User(id=1111101, first_name="Alfred", last_name="Alfons"),
+            text="/start"
+        )
+        self.assertEqual(data, new.to_array(), 'to_array()')
+    # end def
+# end class
