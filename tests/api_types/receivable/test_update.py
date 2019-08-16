@@ -63,17 +63,18 @@ class TestMessage(TestCase):
                     "id": 1111101,
                     "first_name": "Alfred",
                     "last_name": "Alfons",
+                    "is_bot": False,
                 },
                 "text": "/start"
             }
         msg = Message.from_array(data)
         self.assertEqual(1441645532, msg.date)
 
-        from api_types.receivable.peer import Chat, User
+        from pytgbot.api_types.receivable.peer import Chat, User
         new = Message(
             message_id=1365, date=1441645532,
             chat=Chat(id=1111101, type="private", first_name="Alfred", last_name="Alfons"),
-            from_peer=User(id=1111101, first_name="Alfred", last_name="Alfons"),
+            from_peer=User(id=1111101, first_name="Alfred", last_name="Alfons", is_bot=False),
             text="/start"
         )
         self.assertEqual(data, new.to_array(), 'to_array()')
