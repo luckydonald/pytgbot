@@ -5,3 +5,6 @@ jinja2
 # linter
 yapf
 black
+
+# publish
+twine
