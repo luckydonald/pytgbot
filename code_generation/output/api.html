@@ -14,7 +14,7 @@ To learn how to create…">
 
     <link href="/css/bootstrap.min.css?3" rel="stylesheet">
     
-    <link href="/css/telegram.css?170" rel="stylesheet" media="screen">
+    <link href="/css/telegram.css?177" rel="stylesheet" media="screen">
     <style>
     </style>
   </head>
@@ -43,8 +43,6 @@ To learn how to create…">
   
   <div id="dev_page_content" dir="auto"><!-- scroll_nav -->
 
-
-
 <blockquote>
 <p>The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.<br>To learn how to create and set up a bot, please consult our <a href="https://core.telegram.org/bots"><strong>Introduction to Bots</strong></a> and <a href="/bots/faq"><strong>Bot FAQ</strong></a>.</p>
 </blockquote>
@@ -57,8 +55,8 @@ To learn how to create…">
 <li>The field <em>all_members_are_administrators</em> has been removed from the documentation for the <a href="#chat">Chat</a> object. The field is still returned in the object for backward compatibility, but new bots should use the <em>permissions</em> field instead.</li>
 <li>Added support for more permissions for group and supergroup members: added the new field <em>can_send_polls</em> to <a href="#chatmember">ChatMember</a> object, added <em>can_change_info</em>, <em>can_invite_users</em>, <em>can_pin_messages</em> in <a href="#chatmember">ChatMember</a> object for restricted users (previously available only for administrators).</li>
 <li>The method <a href="#restrictchatmember">restrictChatMember</a> now takes the new user permissions in a single argument of the type <a href="#chatpermissions">ChatPermissions</a>. The old way of passing parameters will keep working for a while for backward compatibility.</li>
-<li>Added <em>description</em> support for basic groups (previously available in supergroups and channel chats). You can pass a group&#39;s chat_id to <a href="#setchatdescription">setChatDescription</a> and receive the group&#39;s description in the <a href="#chat">Chat</a> object in the response to <a href="#getChat">getChat</a> method.</li>
-<li>Added <em>invite_link</em> support for basic groups (previously available in supergroups and channel chats). You can pass a group&#39;s chat_id to <a href="#exportchatinvitelink">exportChatInviteLink</a> and receive the group&#39;s invite link in the <a href="#chat">Chat</a> object in the response to <a href="#getChat">getChat</a> method.</li>
+<li>Added <em>description</em> support for basic groups (previously available in supergroups and channel chats). You can pass a group&#39;s chat_id to <a href="#setchatdescription">setChatDescription</a> and receive the group&#39;s description in the <a href="#chat">Chat</a> object in the response to <a href="#getchat">getChat</a> method.</li>
+<li>Added <em>invite_link</em> support for basic groups (previously available in supergroups and channel chats). You can pass a group&#39;s chat_id to <a href="#exportchatinvitelink">exportChatInviteLink</a> and receive the group&#39;s invite link in the <a href="#chat">Chat</a> object in the response to <a href="#getchat">getChat</a> method.</li>
 <li>File identifiers from the <a href="#chatphoto">ChatPhoto</a> object are now invalidated and can no longer be used whenever the photo is changed.</li>
 <li>All <strong>webhook requests</strong> from the Bot API are now coming from the subnets <code>149.154.160.0/20</code> and <code>91.108.4.0/22</code>. Most users won&#39;t need to do anything to continue receiving webhooks. If you control inbound access with a firewall, you may need to update your configuration. You can always find the list of actual IP addresses of servers used to send webhooks there: <a href="/bots/webhooks"><a href="https://core.telegram.org/bots/webhooks">https://core.telegram.org/bots/webhooks</a></a>.</li>
 <li>As of the <strong>next Bot API</strong> update (<strong>version 4.5</strong>), nested <a href="#messageentity">MessageEntity</a> objects will be allowed in message texts and captions. Please make sure that your code can correctly handle such entities.</li>
@@ -94,7 +92,7 @@ To learn how to create…">
 </ul>
 <p><strong><a href="/bots/api-changelog">See earlier changes »</a></strong></p>
 <h3><a class="anchor" name="authorizing-your-bot" href="#authorizing-your-bot"><i class="anchor-icon"></i></a>Authorizing your bot</h3>
-<p>Each bot is given a unique authentication token <a href="/bots#botfather">when it is created</a>. The token looks something like <code>123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11</code>, but we&#39;ll use simply <strong>&lt;token&gt;</strong> in this document instead. You can learn about obtaining tokens and generating new ones in <a href="https://core.telegram.org/bots#botfather">this document</a>.</p>
+<p>Each bot is given a unique authentication token <a href="/bots#6-botfather">when it is created</a>. The token looks something like <code>123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11</code>, but we&#39;ll use simply <strong>&lt;token&gt;</strong> in this document instead. You can learn about obtaining tokens and generating new ones in <a href="https://core.telegram.org/bots#6-botfather">this document</a>.</p>
 <h3><a class="anchor" name="making-requests" href="#making-requests"><i class="anchor-icon"></i></a>Making requests</h3>
 <p>All queries to the Telegram Bot API must be served over HTTPS and need to be presented in this form: <code>https://api.telegram.org/bot&lt;token&gt;/METHOD_NAME</code>. Like this for example:</p>
 <pre><code>https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/getMe</code></pre>
@@ -187,7 +185,7 @@ To learn how to create…">
 </tbody>
 </table>
 <h4><a class="anchor" name="getupdates" href="#getupdates"><i class="anchor-icon"></i></a>getUpdates</h4>
-<p>Use this method to receive incoming updates using long polling (<a href="http://en.wikipedia.org/wiki/Push_technology#Long_polling">wiki</a>). An Array of <a href="#update">Update</a> objects is returned.</p>
+<p>Use this method to receive incoming updates using long polling (<a href="https://en.wikipedia.org/wiki/Push_technology#Long_polling">wiki</a>). An Array of <a href="#update">Update</a> objects is returned.</p>
 <table class="table">
 <thead>
 <tr>
@@ -1976,7 +1974,7 @@ To learn how to create…">
 <li>It is not possible to resend thumbnails.</li>
 <li>Resending a photo by <strong>file_id</strong> will send all of its <a href="#photosize">sizes</a>.</li>
 <li><strong>file_id</strong> is unique for each individual bot and <strong>can&#39;t</strong> be transferred from one bot to another.</li>
-<li><strong>file_id</strong> uniquely identifies a file, but a file can have different valid <strong>file_id</strong>s.</li>
+<li><strong>file_id</strong> uniquely identifies a file, but a file can have different valid <strong>file_id</strong>s even for the same bot.</li>
 </ul>
 <p><strong>Sending by URL</strong></p>
 <ul>
@@ -2178,7 +2176,7 @@ pre-formatted fixed-width code block
 </tbody>
 </table>
 <h4><a class="anchor" name="sendaudio" href="#sendaudio"><i class="anchor-icon"></i></a>sendAudio</h4>
-<p>Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. On success, the sent <a href="#message">Message</a> is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.</p>
+<p>Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent <a href="#message">Message</a> is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.</p>
 <p>For sending voice messages, use the <a href="#sendvoice">sendVoice</a> method instead.</p>
 <table class="table">
 <thead>
@@ -3063,9 +3061,6 @@ pre-formatted fixed-width code block
 <p><strong>Note:</strong> This function may not preserve the original file name and MIME type. You should save the file&#39;s MIME type and name (if available) when the File object is received.</p>
 <h4><a class="anchor" name="kickchatmember" href="#kickchatmember"><i class="anchor-icon"></i></a>kickChatMember</h4>
 <p>Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless <a href="#unbanchatmember">unbanned</a> first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success.</p>
-<blockquote>
-<p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group&#39;s creator or by the member that added them.</p>
-</blockquote>
 <table class="table">
 <thead>
 <tr>
@@ -3285,9 +3280,6 @@ pre-formatted fixed-width code block
 </blockquote>
 <h4><a class="anchor" name="setchatphoto" href="#setchatphoto"><i class="anchor-icon"></i></a>setChatPhoto</h4>
 <p>Use this method to set a new profile photo for the chat. Photos can&#39;t be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success.</p>
-<blockquote>
-<p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.</p>
-</blockquote>
 <table class="table">
 <thead>
 <tr>
@@ -3314,9 +3306,6 @@ pre-formatted fixed-width code block
 </table>
 <h4><a class="anchor" name="deletechatphoto" href="#deletechatphoto"><i class="anchor-icon"></i></a>deleteChatPhoto</h4>
 <p>Use this method to delete a chat photo. Photos can&#39;t be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success.</p>
-<blockquote>
-<p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.</p>
-</blockquote>
 <table class="table">
 <thead>
 <tr>
@@ -3337,9 +3326,6 @@ pre-formatted fixed-width code block
 </table>
 <h4><a class="anchor" name="setchattitle" href="#setchattitle"><i class="anchor-icon"></i></a>setChatTitle</h4>
 <p>Use this method to change the title of a chat. Titles can&#39;t be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns <em>True</em> on success.</p>
-<blockquote>
-<p>Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.</p>
-</blockquote>
 <table class="table">
 <thead>
 <tr>
@@ -4754,7 +4740,7 @@ pre-formatted fixed-width code block
 </tbody>
 </table>
 <h4><a class="anchor" name="inlinequeryresultaudio" href="#inlinequeryresultaudio"><i class="anchor-icon"></i></a>InlineQueryResultAudio</h4>
-<p>Represents a link to an mp3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the audio.</p>
+<p>Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the audio.</p>
 <table class="table">
 <thead>
 <tr>
@@ -5581,7 +5567,7 @@ pre-formatted fixed-width code block
 </table>
 <p><strong>Note:</strong> This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.</p>
 <h4><a class="anchor" name="inlinequeryresultcachedaudio" href="#inlinequeryresultcachedaudio"><i class="anchor-icon"></i></a>InlineQueryResultCachedAudio</h4>
-<p>Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the audio.</p>
+<p>Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use <em>input_message_content</em> to send a message with the specified content instead of the audio.</p>
 <table class="table">
 <thead>
 <tr>
@@ -7123,4 +7109,4 @@ backToTopInit();
 </script>
   </body>
 </html>
-<!-- page generated in 38.88ms -->
+<!-- page generated in 41.92ms -->
