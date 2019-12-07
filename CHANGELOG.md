@@ -1,5 +1,15 @@
 # Changelog
-## Version 4.1.0  (not released yet)
+## Version 4.4.0
+- Array validation is now a separate function to allow super calls.
+- Added API definitions of v4.4, (July 29th, 2019) with the following changelog:
+    - Added support for animated stickers. New field `is_animated` in `Sticker` and `StickerSet` objects, animated stickers can now be used in `send_sticker` and `InlineQueryResultCachedSticker`.
+    - Added support for default permissions in groups. New object `ChatPermissions`, containing actions which a member can take in a chat. New field permissions in the Chat object; new method setChatPermissions.
+    - The field `all_members_are_administrators` has been removed from the documentation for the `Chat` object. The field is still returned in the object for backward compatibility, but new bots should use the permissions field instead.
+    - Added support for more permissions for group and supergroup members: added the new field `can_send_polls` to `ChatMember` object, added `can_change_info`, `can_invite_users`, `can_pin_messages` in `ChatMember` object for restricted users (previously available only for administrators).
+    - The method `restrict_chat_member` now takes the new user permissions in a single argument of the type `ChatPermissions`.
+    - Added `description` support for basic groups (previously available in supergroups and channel chats). You can pass a group's `chat_id` to `set_chat_description` and receive the group's description in the `Chat` object in the response to `get_chat` method.
+    - Added `invite_link` support for basic groups (previously available in supergroups and channel chats). You can pass a group's chat_id to `export_chat_invite_link` and receive the group's invite link in the `Chat` object in the response to `get_chat` method.
+## Version 4.1.0
 - Renamed `InputFile`'s `file_name` to simply `name`. (`InputFileFromDisk`, `InputFileFromURL`, `InputFileFromBlob`)
 - Renamed `InputFile`'s `file_mime` to simply `mime`. (`InputFileFromDisk`, `InputFileFromURL`, `InputFileFromBlob`)
 - Renamed `InputFile`'s `file_blob` to simply `blob`. (`InputFileFromDisk`, `InputFileFromURL`, `InputFileFromBlob`)
