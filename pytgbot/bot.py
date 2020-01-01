@@ -1985,6 +1985,91 @@ class Bot(object):
         return result
     # end def promote_chat_member
 
+    def set_chat_administrator_custom_title(self, chat_id, user_id, custom_title):
+        """
+        Use this method to set a custom title for an administrator in a supergroup promoted by the bot. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatadministratorcustomtitle
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id: int | str|unicode
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+
+        :param custom_title: New custom title for the administrator; 0-16 characters, emoji are not allowed
+        :type  custom_title: str|unicode
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
+
+        assert_type_or_raise(custom_title, unicode_type, parameter_name="custom_title")
+
+        result = self.do("setChatAdministratorCustomTitle", chat_id=chat_id, user_id=user_id, custom_title=custom_title)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_chat_administrator_custom_title
+
+    def set_chat_permissions(self, chat_id, permissions):
+        """
+        Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatpermissions
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id: int | str|unicode
+
+        :param permissions: New default chat permissions
+        :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        from pytgbot.api_types.receivable.peer import ChatPermissions
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+
+        assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
+
+        result = self.do("setChatPermissions", chat_id=chat_id, permissions=permissions)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_chat_permissions
+
     def export_chat_invite_link(self, chat_id):
         """
         Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.

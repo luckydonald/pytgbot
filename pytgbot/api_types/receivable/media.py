@@ -274,6 +274,7 @@ class PhotoSize(Result):
         """
         array = super(PhotoSize, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         if self.file_size is not None:
@@ -292,6 +293,7 @@ class PhotoSize(Result):
         assert_type_or_raise(array, dict, parameter_name="array")
         data = Result.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
@@ -319,7 +321,7 @@ class PhotoSize(Result):
         """
         Implements `str(photosize_instance)`
         """
-        return "PhotoSize(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, file_size={self.file_size!r})".format(self=self)
+        return "PhotoSize(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -329,7 +331,7 @@ class PhotoSize(Result):
         if self._raw:
             return "PhotoSize.from_array({self._raw})".format(self=self)
         # end if
-        return "PhotoSize(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, file_size={self.file_size!r})".format(self=self)
+        return "PhotoSize(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, file_size={self.file_size!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -337,7 +339,7 @@ class PhotoSize(Result):
         Implements `"key" in photosize_instance`
         """
         return (
-            key in ["file_id", "width", "height", "file_size"]
+            key in ["file_id", "file_unique_id", "width", "height", "file_size"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -452,6 +454,7 @@ class Audio(Media):
         """
         array = super(Audio, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
@@ -508,7 +511,7 @@ class Audio(Media):
         """
         Implements `str(audio_instance)`
         """
-        return "Audio(file_id={self.file_id!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r}, thumb={self.thumb!r})".format(self=self)
+        return "Audio(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r}, thumb={self.thumb!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -518,7 +521,7 @@ class Audio(Media):
         if self._raw:
             return "Audio.from_array({self._raw})".format(self=self)
         # end if
-        return "Audio(file_id={self.file_id!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r}, thumb={self.thumb!r})".format(self=self)
+        return "Audio(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r}, thumb={self.thumb!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -526,7 +529,7 @@ class Audio(Media):
         Implements `"key" in audio_instance`
         """
         return (
-            key in ["file_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"]
+            key in ["file_id", "file_unique_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -623,6 +626,7 @@ class Document(Media):
         """
         array = super(Document, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
         if self.file_name is not None:
@@ -675,7 +679,7 @@ class Document(Media):
         """
         Implements `str(document_instance)`
         """
-        return "Document(file_id={self.file_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+        return "Document(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -685,7 +689,7 @@ class Document(Media):
         if self._raw:
             return "Document.from_array({self._raw})".format(self=self)
         # end if
-        return "Document(file_id={self.file_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+        return "Document(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -693,7 +697,7 @@ class Document(Media):
         Implements `"key" in document_instance`
         """
         return (
-            key in ["file_id", "thumb", "file_name", "mime_type", "file_size"]
+            key in ["file_id", "file_unique_id", "thumb", "file_name", "mime_type", "file_size"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -808,6 +812,7 @@ class Video(Media):
         """
         array = super(Video, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         array['duration'] = int(self.duration)  # type int
@@ -862,7 +867,7 @@ class Video(Media):
         """
         Implements `str(video_instance)`
         """
-        return "Video(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+        return "Video(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -872,7 +877,7 @@ class Video(Media):
         if self._raw:
             return "Video.from_array({self._raw})".format(self=self)
         # end if
-        return "Video(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+        return "Video(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -880,7 +885,7 @@ class Video(Media):
         Implements `"key" in video_instance`
         """
         return (
-            key in ["file_id", "width", "height", "duration", "thumb", "mime_type", "file_size"]
+            key in ["file_id", "file_unique_id", "width", "height", "duration", "thumb", "mime_type", "file_size"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1007,6 +1012,7 @@ class Animation(Media):
         """
         array = super(Animation, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         array['duration'] = int(self.duration)  # type int
@@ -1064,9 +1070,7 @@ class Animation(Media):
         """
         Implements `str(animation_instance)`
         """
-        return "Animation(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(
-            self=self)
-
+        return "Animation(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1076,9 +1080,7 @@ class Animation(Media):
         if self._raw:
             return "Animation.from_array({self._raw})".format(self=self)
         # end if
-        return "Animation(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(
-            self=self)
-
+        return "Animation(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1086,7 +1088,7 @@ class Animation(Media):
         Implements `"key" in animation_instance`
         """
         return (
-            key in ["file_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"]
+            key in ["file_id", "file_unique_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1174,6 +1176,7 @@ class Voice(Media):
         """
         array = super(Voice, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['duration'] = int(self.duration)  # type int
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
@@ -1193,6 +1196,7 @@ class Voice(Media):
         assert_type_or_raise(array, dict, parameter_name="array")
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['duration'] = int(array.get('duration'))
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
@@ -1220,7 +1224,7 @@ class Voice(Media):
         """
         Implements `str(voice_instance)`
         """
-        return "Voice(file_id={self.file_id!r}, duration={self.duration!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+        return "Voice(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1230,7 +1234,7 @@ class Voice(Media):
         if self._raw:
             return "Voice.from_array({self._raw})".format(self=self)
         # end if
-        return "Voice(file_id={self.file_id!r}, duration={self.duration!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+        return "Voice(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1238,7 +1242,7 @@ class Voice(Media):
         Implements `"key" in voice_instance`
         """
         return (
-            key in ["file_id", "duration", "mime_type", "file_size"]
+            key in ["file_id", "file_unique_id", "duration", "mime_type", "file_size"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1336,6 +1340,7 @@ class VideoNote(Media):
         """
         array = super(VideoNote, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['length'] = int(self.length)  # type int
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
@@ -1385,7 +1390,7 @@ class VideoNote(Media):
         """
         Implements `str(videonote_instance)`
         """
-        return "VideoNote(file_id={self.file_id!r}, length={self.length!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_size={self.file_size!r})".format(self=self)
+        return "VideoNote(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, length={self.length!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1395,7 +1400,7 @@ class VideoNote(Media):
         if self._raw:
             return "VideoNote.from_array({self._raw})".format(self=self)
         # end if
-        return "VideoNote(file_id={self.file_id!r}, length={self.length!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_size={self.file_size!r})".format(self=self)
+        return "VideoNote(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, length={self.length!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_size={self.file_size!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1403,7 +1408,7 @@ class VideoNote(Media):
         Implements `"key" in videonote_instance`
         """
         return (
-            key in ["file_id", "length", "duration", "thumb", "file_size"]
+            key in ["file_id", "file_unique_id", "length", "duration", "thumb", "file_size"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2375,6 +2380,7 @@ class File(Receivable):
         """
         array = super(File, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         if self.file_path is not None:
@@ -2393,6 +2399,7 @@ class File(Receivable):
         assert_type_or_raise(array, dict, parameter_name="array")
         data = Receivable.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['file_path'] = u(array.get('file_path')) if array.get('file_path') is not None else None
         return data
@@ -2419,7 +2426,7 @@ class File(Receivable):
         """
         Implements `str(file_instance)`
         """
-        return "File(file_id={self.file_id!r}, file_size={self.file_size!r}, file_path={self.file_path!r})".format(self=self)
+        return "File(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, file_size={self.file_size!r}, file_path={self.file_path!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2429,7 +2436,7 @@ class File(Receivable):
         if self._raw:
             return "File.from_array({self._raw})".format(self=self)
         # end if
-        return "File(file_id={self.file_id!r}, file_size={self.file_size!r}, file_path={self.file_path!r})".format(self=self)
+        return "File(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, file_size={self.file_size!r}, file_path={self.file_path!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2437,7 +2444,7 @@ class File(Receivable):
         Implements `"key" in file_instance`
         """
         return (
-            key in ["file_id", "file_size", "file_path"]
+            key in ["file_id", "file_unique_id", "file_size", "file_path"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2507,7 +2514,9 @@ class ChatPhoto(Result):
         """
         array = super(ChatPhoto, self).to_array()
         array['small_file_id'] = u(self.small_file_id)  # py2: type unicode, py3: type str
+        array['small_file_unique_id'] = u(self.small_file_unique_id)  # py2: type unicode, py3: type str
         array['big_file_id'] = u(self.big_file_id)  # py2: type unicode, py3: type str
+        array['big_file_unique_id'] = u(self.big_file_unique_id)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -2522,7 +2531,9 @@ class ChatPhoto(Result):
         assert_type_or_raise(array, dict, parameter_name="array")
         data = Result.validate_array(array)
         data['small_file_id'] = u(array.get('small_file_id'))
+        data['small_file_unique_id'] = u(array.get('small_file_unique_id'))
         data['big_file_id'] = u(array.get('big_file_id'))
+        data['big_file_unique_id'] = u(array.get('big_file_unique_id'))
         return data
     # end def validate_array
 
@@ -2547,7 +2558,7 @@ class ChatPhoto(Result):
         """
         Implements `str(chatphoto_instance)`
         """
-        return "ChatPhoto(small_file_id={self.small_file_id!r}, big_file_id={self.big_file_id!r})".format(self=self)
+        return "ChatPhoto(small_file_id={self.small_file_id!r}, small_file_unique_id={self.small_file_unique_id!r}, big_file_id={self.big_file_id!r}, big_file_unique_id={self.big_file_unique_id!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2557,7 +2568,7 @@ class ChatPhoto(Result):
         if self._raw:
             return "ChatPhoto.from_array({self._raw})".format(self=self)
         # end if
-        return "ChatPhoto(small_file_id={self.small_file_id!r}, big_file_id={self.big_file_id!r})".format(self=self)
+        return "ChatPhoto(small_file_id={self.small_file_id!r}, small_file_unique_id={self.small_file_unique_id!r}, big_file_id={self.big_file_id!r}, big_file_unique_id={self.big_file_unique_id!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2565,7 +2576,7 @@ class ChatPhoto(Result):
         Implements `"key" in chatphoto_instance`
         """
         return (
-            key in ["small_file_id", "big_file_id"]
+            key in ["small_file_id", "small_file_unique_id", "big_file_id", "big_file_unique_id"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2700,6 +2711,7 @@ class Sticker(Media):
         """
         array = super(Sticker, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         array['is_animated'] = bool(self.is_animated)  # type bool
@@ -2762,7 +2774,7 @@ class Sticker(Media):
         """
         Implements `str(sticker_instance)`
         """
-        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
+        return "Sticker(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2772,7 +2784,7 @@ class Sticker(Media):
         if self._raw:
             return "Sticker.from_array({self._raw})".format(self=self)
         # end if
-        return "Sticker(file_id={self.file_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
+        return "Sticker(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2780,7 +2792,7 @@ class Sticker(Media):
         Implements `"key" in sticker_instance`
         """
         return (
-            key in ["file_id", "width", "height", "is_animated", "thumb", "emoji", "set_name", "mask_position", "file_size"]
+            key in ["file_id", "file_unique_id", "width", "height", "is_animated", "thumb", "emoji", "set_name", "mask_position", "file_size"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

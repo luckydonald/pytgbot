@@ -405,6 +405,7 @@ class Chat(Peer):
         data['invite_link'] = u(array.get('invite_link')) if array.get('invite_link') is not None else None
         data['pinned_message'] = Message.from_array(array.get('pinned_message')) if array.get('pinned_message') is not None else None
         data['permissions'] = ChatPermissions.from_array(array.get('permissions')) if array.get('permissions') is not None else None
+        data['slow_mode_delay'] = int(array.get('slow_mode_delay')) if array.get('slow_mode_delay') is not None else None
         data['sticker_set_name'] = u(array.get('sticker_set_name')) if array.get('sticker_set_name') is not None else None
         data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
         return data
@@ -431,7 +432,7 @@ class Chat(Peer):
         """
         Implements `str(chat_instance)`
         """
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -441,7 +442,7 @@ class Chat(Peer):
         if self._raw:
             return "Chat.from_array({self._raw})".format(self=self)
         # end if
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -449,7 +450,7 @@ class Chat(Peer):
         Implements `"key" in chat_instance`
         """
         return (
-            key in ["id", "type", "title", "username", "first_name", "last_name", "photo", "description", "invite_link", "pinned_message", "permissions", "sticker_set_name", "can_set_sticker_set"]
+            key in ["id", "type", "title", "username", "first_name", "last_name", "photo", "description", "invite_link", "pinned_message", "permissions", "slow_mode_delay", "sticker_set_name", "can_set_sticker_set"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -713,6 +714,7 @@ class ChatMember(Result):
         data = Result.validate_array(array)
         data['user'] = User.from_array(array.get('user'))
         data['status'] = u(array.get('status'))
+        data['custom_title'] = u(array.get('custom_title')) if array.get('custom_title') is not None else None
         data['until_date'] = int(array.get('until_date')) if array.get('until_date') is not None else None
         data['can_be_edited'] = bool(array.get('can_be_edited')) if array.get('can_be_edited') is not None else None
         data['can_post_messages'] = bool(array.get('can_post_messages')) if array.get('can_post_messages') is not None else None
@@ -753,7 +755,7 @@ class ChatMember(Result):
         """
         Implements `str(chatmember_instance)`
         """
-        return "ChatMember(user={self.user!r}, status={self.status!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
+        return "ChatMember(user={self.user!r}, status={self.status!r}, custom_title={self.custom_title!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -763,7 +765,7 @@ class ChatMember(Result):
         if self._raw:
             return "ChatMember.from_array({self._raw})".format(self=self)
         # end if
-        return "ChatMember(user={self.user!r}, status={self.status!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
+        return "ChatMember(user={self.user!r}, status={self.status!r}, custom_title={self.custom_title!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -771,7 +773,7 @@ class ChatMember(Result):
         Implements `"key" in chatmember_instance`
         """
         return (
-            key in ["user", "status", "until_date", "can_be_edited", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_restrict_members", "can_promote_members", "can_change_info", "can_invite_users", "can_pin_messages", "is_member", "can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews"]
+            key in ["user", "status", "custom_title", "until_date", "can_be_edited", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_restrict_members", "can_promote_members", "can_change_info", "can_invite_users", "can_pin_messages", "is_member", "can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

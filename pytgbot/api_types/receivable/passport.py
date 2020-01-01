@@ -207,6 +207,7 @@ class PassportFile(Result):
         """
         array = super(PassportFile, self).to_array()
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['file_size'] = int(self.file_size)  # type int
         array['file_date'] = int(self.file_date)  # type int
         return array
@@ -223,6 +224,7 @@ class PassportFile(Result):
         assert_type_or_raise(array, dict, parameter_name="array")
         data = Result.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['file_size'] = int(array.get('file_size'))
         data['file_date'] = int(array.get('file_date'))
         return data
@@ -249,7 +251,7 @@ class PassportFile(Result):
         """
         Implements `str(passportfile_instance)`
         """
-        return "PassportFile(file_id={self.file_id!r}, file_size={self.file_size!r}, file_date={self.file_date!r})".format(self=self)
+        return "PassportFile(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, file_size={self.file_size!r}, file_date={self.file_date!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -259,7 +261,7 @@ class PassportFile(Result):
         if self._raw:
             return "PassportFile.from_array({self._raw})".format(self=self)
         # end if
-        return "PassportFile(file_id={self.file_id!r}, file_size={self.file_size!r}, file_date={self.file_date!r})".format(self=self)
+        return "PassportFile(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, file_size={self.file_size!r}, file_date={self.file_date!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -267,7 +269,7 @@ class PassportFile(Result):
         Implements `"key" in passportfile_instance`
         """
         return (
-            key in ["file_id", "file_size", "file_date"]
+            key in ["file_id", "file_unique_id", "file_size", "file_date"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
