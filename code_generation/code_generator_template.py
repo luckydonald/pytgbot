@@ -400,6 +400,28 @@ class Variable(dict):
         return imports
     # end def all_imports
 
+    @property
+    def typehint(self) -> str:
+        """
+        Returns a python 3.5+ type hint string.
+
+        Depending on the amount of types in the self.types list.
+        - For 0 elements, the returned type is `Any`.
+        - For 1 element it's just that type.
+        - For more elements it's a `Union[...]`.
+
+        :uses: Variable.types
+        :uses: Type.typehint
+        """
+        if len(self.types) == 0:
+            return "Any"
+        # end if
+        if len(self.types) == 1:
+            return self.types[0].typehint
+        # end if
+        return (", ".join(t.typehint for t in self.types)).join(("Union[", "]"))
+
+
     def __repr__(self):
         return (
             "Variable("
@@ -451,6 +473,18 @@ class Type(dict):
     def as_import(self):
         return Import(self.import_path, self.string)
     # end def as_import
+
+    @property
+    def typehint(self) -> str:
+        """
+        Returns a python 3.5+ type hint string.
+        """
+        type_str = self.string
+        for i in range(self.is_list):
+            type_str = type_str.join(("List[", "]"))
+        # end for
+        return type_str
+    # end def
 
     def __str__(self):
         return "{list}<{name}>".format(list="list of " * self.is_list, name=self.string)

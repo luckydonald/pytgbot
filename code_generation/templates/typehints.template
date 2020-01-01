@@ -1,0 +1,36 @@
+{%- from "macros.template" import for_args_none, for_type_list_of_full, for_type_list_of, types_as_tuple -%}
+{%- from "macros.template" import for_args_format_repr, for_args_keys, for_type -%}
+{%- from "macros.template" import set_array, set_array_element, set_data_array_element -%}
+
+
+class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}, BaseModel):
+    """
+    {% block class_docstring -%}
+    {{ clazz.description.strip()|indent }}
+
+    {{clazz.link}}
+    {# first line -#}
+    {%- if clazz.parameters %}
+
+    Parameters:
+    {% for param in clazz.parameters %}
+    :param {{ param.name }}: {{ param.description }}
+    :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
+    {% endfor -%}
+    {%- endif -%}
+    {#- {%- if clazz.keywords %} #}
+
+    Optional keyword parameters:
+    {% for keyword in clazz.keywords %}
+    :param {{ keyword.name }}: {{ keyword.description }}
+    :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
+    {% endfor -%}{%- if not is_sendable %}
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    {% endif -%}{%- endblock -%}
+    """
+
+    {%- for variable in clazz.variables %}
+    {{ variable.name }}: {{ variable.typehint }}
+    {%- endfor %}
+# end class {{ clazz.clazz }}

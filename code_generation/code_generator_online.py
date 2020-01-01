@@ -543,6 +543,7 @@ def safe_to_file(folder, results):
     bot_template = get_template("bot.template")
     clazzfile_template = get_template("classfile.template")
     teleflask_messages_template = get_template("teleflask_messages_file.template")
+    typehints_template = get_template("typehintsfile.template")
     for path, clazz_list in clazzes.items():
         clazz_imports = set()
         for clazz_ in clazz_list:
@@ -559,7 +560,14 @@ def safe_to_file(folder, results):
             render_file_to_disk(path, txt)
         except IOError:
             raise  # lol
-            # end try
+        # end try
+        try:
+            txt = typehints_template.render(clazzes=clazz_list, imports=clazz_imports, is_sendable=is_sendable)
+            txt = txt.replace("\t", "    ")
+            render_file_to_disk(path + "i", txt)  # "ponies.py" + "i" => "ponies.pyi"
+        except IOError:
+            raise  # lol
+        # end try
     # end for classes
     if functions:
         txt = bot_template.render(functions=functions)
