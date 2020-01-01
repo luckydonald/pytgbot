@@ -5,6 +5,8 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable.updates import UpdateType
 
+__author__ = 'luckydonald'
+
 
 class Update(Receivable):
     """

@@ -5,6 +5,8 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.sendable.input_media import InputMedia
 from pytgbot.api_types.sendable.input_media import InputMediaWithThumb
 
+__author__ = 'luckydonald'
+
 
 class InputMediaPhoto(InputMedia):
     """

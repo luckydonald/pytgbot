@@ -6,6 +6,8 @@ from pytgbot.api_types.sendable.inline import InlineQueryCachedResult
 from pytgbot.api_types.sendable.inline import InlineQueryResult
 from pytgbot.api_types.sendable.inline import InputMessageContent
 
+__author__ = 'luckydonald'
+
 
 class InlineQueryResultArticle(InlineQueryResult):
     """

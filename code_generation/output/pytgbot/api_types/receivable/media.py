@@ -6,6 +6,8 @@ from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.media import Media
 
+__author__ = 'luckydonald'
+
 
 class MessageEntity(Result):
     """

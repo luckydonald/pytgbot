@@ -8,6 +8,8 @@ from {{ import.path }} import {{ import.name }}
 {% endif %}
 {% endfor -%}
 
+__author__ = 'luckydonald'
+
 {% for clazz in clazzes %}
 {% include "class.template" %}
 
