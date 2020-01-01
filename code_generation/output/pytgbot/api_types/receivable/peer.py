@@ -193,7 +193,7 @@ class Chat(Peer):
     :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
     :type  id: int
     
-    :param type: Type of chat, can be either “private”, “group”, “supergroup” or “channel”
+    :param type: Type of chat, can be either "private", "group", "supergroup" or "channel"
     :type  type: str|unicode
     
 
@@ -251,7 +251,7 @@ class Chat(Peer):
         :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
         :type  id: int
         
-        :param type: Type of chat, can be either “private”, “group”, “supergroup” or “channel”
+        :param type: Type of chat, can be either "private", "group", "supergroup" or "channel"
         :type  type: str|unicode
         
 
@@ -476,7 +476,7 @@ class ChatMember(Result):
     :param user: Information about the user
     :type  user: pytgbot.api_types.receivable.peer.User
     
-    :param status: The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
+    :param status: The member's status in the chat. Can be "creator", "administrator", "member", "restricted", "left" or "kicked"
     :type  status: str|unicode
     
 
@@ -549,7 +549,7 @@ class ChatMember(Result):
         :param user: Information about the user
         :type  user: pytgbot.api_types.receivable.peer.User
         
-        :param status: The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
+        :param status: The member's status in the chat. Can be "creator", "administrator", "member", "restricted", "left" or "kicked"
         :type  status: str|unicode
         
 

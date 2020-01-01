@@ -1003,7 +1003,7 @@ class InlineQueryResultVideo(InlineQueryResult):
     :param video_url: A valid URL for the embedded video player or video file
     :type  video_url: str|unicode
     
-    :param mime_type: Mime type of the content of video url, “text/html” or “video/mp4”
+    :param mime_type: Mime type of the content of video url, "text/html" or "video/mp4"
     :type  mime_type: str|unicode
     
     :param thumb_url: URL of the thumbnail (jpeg only) for the video
@@ -1060,7 +1060,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         :param video_url: A valid URL for the embedded video player or video file
         :type  video_url: str|unicode
         
-        :param mime_type: Mime type of the content of video url, “text/html” or “video/mp4”
+        :param mime_type: Mime type of the content of video url, "text/html" or "video/mp4"
         :type  mime_type: str|unicode
         
         :param thumb_url: URL of the thumbnail (jpeg only) for the video
@@ -1716,7 +1716,7 @@ class InlineQueryResultDocument(InlineQueryResult):
     :param document_url: A valid URL for the file
     :type  document_url: str|unicode
     
-    :param mime_type: Mime type of the content of the file, either “application/pdf” or “application/zip”
+    :param mime_type: Mime type of the content of the file, either "application/pdf" or "application/zip"
     :type  mime_type: str|unicode
     
 
@@ -1769,7 +1769,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         :param document_url: A valid URL for the file
         :type  document_url: str|unicode
         
-        :param mime_type: Mime type of the content of the file, either “application/pdf” or “application/zip”
+        :param mime_type: Mime type of the content of the file, either "application/pdf" or "application/zip"
         :type  mime_type: str|unicode
         
 
@@ -2224,7 +2224,7 @@ class InlineQueryResultVenue(InlineQueryResult):
     :param foursquare_id: Optional. Foursquare identifier of the venue if known
     :type  foursquare_id: str|unicode
     
-    :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+    :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
     
     :param reply_markup: Optional. Inline keyboard attached to the message
@@ -2277,7 +2277,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         :param foursquare_id: Optional. Foursquare identifier of the venue if known
         :type  foursquare_id: str|unicode
         
-        :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+        :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
         :type  foursquare_type: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
@@ -4724,7 +4724,7 @@ class InputVenueMessageContent(InputMessageContent):
     :param foursquare_id: Optional. Foursquare identifier of the venue, if known
     :type  foursquare_id: str|unicode
     
-    :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+    :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
     """
 
@@ -4755,7 +4755,7 @@ class InputVenueMessageContent(InputMessageContent):
         :param foursquare_id: Optional. Foursquare identifier of the venue, if known
         :type  foursquare_id: str|unicode
         
-        :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+        :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
         :type  foursquare_type: str|unicode
         """
         super(InputVenueMessageContent, self).__init__()

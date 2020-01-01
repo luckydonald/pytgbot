@@ -569,12 +569,12 @@ def parse_param_types(param) -> Variable:
     table = param.split("\t")
     variable = Variable()
 
-    variable.api_name=table[0].strip()
-    if len(table) == 3: # class
-        variable.description = variable.description = table[2]
+    variable.api_name = table[0].strip()
+    if len(table) == 3:  # class
+        variable.description = table[2].replace('“', '"').replace('”', '"')
         variable.optional = variable.description.startswith("Optional.")
-    else:
-        variable.description = table[3]
+    else:  # function
+        variable.description = table[3].replace('“', '"').replace('”', '"')
         param_required = table[2].strip().lower()
         if param_required == "yes":
             variable.optional = False
