@@ -1258,7 +1258,7 @@ class InlineQueryResultVideo(InlineQueryResult):
 
 class InlineQueryResultAudio(InlineQueryResult):
     """
-    Represents a link to an mp3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
+    Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultaudio
@@ -1302,7 +1302,7 @@ class InlineQueryResultAudio(InlineQueryResult):
 
     def __init__(self, type, id, audio_url, title, caption=None, parse_mode=None, performer=None, audio_duration=None, reply_markup=None, input_message_content=None):
         """
-        Represents a link to an mp3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
+        Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
         https://core.telegram.org/bots/api#inlinequeryresultaudio
@@ -4242,7 +4242,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
 class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     """
-    Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
+    Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
@@ -4277,7 +4277,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
     def __init__(self, type, id, audio_file_id, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
-        Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
+        Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
         https://core.telegram.org/bots/api#inlinequeryresultcachedaudio

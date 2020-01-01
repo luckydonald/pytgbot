@@ -441,7 +441,7 @@ class Bot(object):
     
     def send_audio(self, chat_id, audio, caption=None, parse_mode=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
-        Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
+        Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
         For sending voice messages, use the sendVoice method instead.
 
         https://core.telegram.org/bots/api#sendaudio
@@ -1573,9 +1573,6 @@ class Bot(object):
         """
         Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
-        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group's creator or by the member that added them.
-
-
         https://core.telegram.org/bots/api#kickchatmember
 
         
@@ -1791,6 +1788,50 @@ class Bot(object):
         return result
     # end def promote_chat_member
     
+    def set_chat_administrator_custom_title(self, chat_id, user_id, custom_title):
+        """
+        Use this method to set a custom title for an administrator in a supergroup promoted by the bot. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatadministratorcustomtitle
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :type  chat_id: int | str|unicode
+        
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+        
+        :param custom_title: New custom title for the administrator; 0-16 characters, emoji are not allowed
+        :type  custom_title: str|unicode
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
+        
+        assert_type_or_raise(custom_title, unicode_type, parameter_name="custom_title")
+        
+        result = self.do("setChatAdministratorCustomTitle", chat_id=chat_id, user_id=user_id, custom_title=custom_title)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_chat_administrator_custom_title
+    
     def set_chat_permissions(self, chat_id, permissions):
         """
         Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights. Returns True on success.
@@ -1873,9 +1914,6 @@ class Bot(object):
         """
         Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
-        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
-
-
         https://core.telegram.org/bots/api#setchatphoto
 
         
@@ -1917,9 +1955,6 @@ class Bot(object):
         """
         Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
-        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
-
-
         https://core.telegram.org/bots/api#deletechatphoto
 
         
@@ -1953,9 +1988,6 @@ class Bot(object):
     def set_chat_title(self, chat_id, title):
         """
         Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-
-        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
-
 
         https://core.telegram.org/bots/api#setchattitle
 
