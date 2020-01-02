@@ -382,7 +382,7 @@ def main():
 
 def load_api_definitions():
     folder = get_folder_path()
-    mode = confirm("Load from a dump instead of the API Docs?")
+    mode = confirm("Offline Mode: Load from a dump instead of the API Docs?")
     if not mode:  # API
         results, html_document = load_from_html(folder)
     else:  # Dump
@@ -510,7 +510,7 @@ def safe_to_file(folder, results):
     """
     functions = []
     message_send_functions = []
-    clazzes = {} # "filepath": [Class, Class, ...]
+    clazzes = {}  # "filepath": [Class, Class, ...]
 
     # split results into functions and classes
     for result in results:
