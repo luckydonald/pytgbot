@@ -568,6 +568,13 @@ def safe_to_file(folder, results):
         except IOError:
             raise  # lol
         # end try
+        try:
+            txt = typehints_template.render(clazzes=clazz_list, imports=clazz_imports, is_sendable=is_sendable)
+            txt = txt.replace("\t", "    ")
+            render_file_to_disk(path + "i", txt)  # "ponies.py" + "i" => "ponies.pyi"
+        except IOError:
+            raise  # lol
+        # end try
     # end for classes
     if functions:
         txt = bot_template.render(functions=functions)
