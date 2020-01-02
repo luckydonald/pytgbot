@@ -1,4 +1,15 @@
 # Changelog
+## Version 4.5.0
+- Updated API definitions of v4.5, (December 31th, 2019) with the following changelog:
+    - <kbd>(not affected)</kbd> Added support for two new MessageEntity types, underline and strikethrough.
+    Added support for nested MessageEntity objects. Entities can now contain other entities. If two entities have common characters then one of them is fully contained inside the other.
+    - <kbd>(not affected)</kbd> Added support for nested entities and the new tags <u>/<ins> (for underlined text) and <s>/<strike>/<del> (for strikethrough text) in parse mode HTML.
+    - <kbd>(not affected)</kbd> Added a new parse mode, MarkdownV2, which supports nested entities and two new entities __ (for underlined text) and ~ (for strikethrough text). Parse mode Markdown remains unchanged for backward compatibility.
+    - <kbd>(not affected)</kbd> Added the field file_unique_id to the objects Animation, Audio, Document, PassportFile, PhotoSize, Sticker, Video, VideoNote, Voice, File and the fields small_file_unique_id and big_file_unique_id to the object ChatPhoto. The new fields contain a unique file identifier, which is supposed to be the same over time and for different bots, but can't be used to download or reuse the file.
+    - Added the field custom_title to the ChatMember object.
+    - Added the new method setChatAdministratorCustomTitle to manage the custom titles of administrators promoted by the bot.
+    - Added the field slow_mode_delay to the Chat object.
+
 ## Version 4.4.0
 - Array validation is now a separate function to allow super calls.
 - Added API definitions of v4.4, (July 29th, 2019) with the following changelog:
@@ -18,7 +29,7 @@
 - Renamed `InputFileFromDisk`'s `file_path` to simply `path`.
 - Added `InputFileUseUrl` and `InputFileUseFileID` as an abstract way for url/file_id instead of the plain string.
 - Now `InputFile(...)` wrappes the new `InputFile.factory(...)`, which can be used to create a instance of a matching subclass by parameter.
-    - e.g. `InputFile(url="https://example.com")` results in the same as `InputFileFromURL("https://example.com")` which is in long form `InputFileFromURL(url="https://example.com")`.   
+    - e.g. `InputFile(url="https://example.com")` results in the same as `InputFileFromURL("https://example.com")` which is in long form `InputFileFromURL(url="https://example.com")`.
 
 ## Version 4.0.3
 - Added `.size` property for all file based `InputFile` subclasses.
