@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.sendable.passport import PassportElementError
 
 __author__ = 'luckydonald'
 
 
-class PassportElementErrorDataField(PassportElementError, BaseModel):
+class PassportElementErrorDataField(PassportElementError):
     """
     Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
 
@@ -41,7 +41,7 @@ class PassportElementErrorDataField(PassportElementError, BaseModel):
     message: str
 # end class PassportElementErrorDataField
 
-class PassportElementErrorFrontSide(PassportElementError, BaseModel):
+class PassportElementErrorFrontSide(PassportElementError):
     """
     Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
 
@@ -71,7 +71,7 @@ class PassportElementErrorFrontSide(PassportElementError, BaseModel):
     message: str
 # end class PassportElementErrorFrontSide
 
-class PassportElementErrorReverseSide(PassportElementError, BaseModel):
+class PassportElementErrorReverseSide(PassportElementError):
     """
     Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
 
@@ -101,7 +101,7 @@ class PassportElementErrorReverseSide(PassportElementError, BaseModel):
     message: str
 # end class PassportElementErrorReverseSide
 
-class PassportElementErrorSelfie(PassportElementError, BaseModel):
+class PassportElementErrorSelfie(PassportElementError):
     """
     Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
 
@@ -131,7 +131,7 @@ class PassportElementErrorSelfie(PassportElementError, BaseModel):
     message: str
 # end class PassportElementErrorSelfie
 
-class PassportElementErrorFile(PassportElementError, BaseModel):
+class PassportElementErrorFile(PassportElementError):
     """
     Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
 
@@ -161,7 +161,7 @@ class PassportElementErrorFile(PassportElementError, BaseModel):
     message: str
 # end class PassportElementErrorFile
 
-class PassportElementErrorFiles(PassportElementError, BaseModel):
+class PassportElementErrorFiles(PassportElementError):
     """
     Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
 
@@ -191,7 +191,7 @@ class PassportElementErrorFiles(PassportElementError, BaseModel):
     message: str
 # end class PassportElementErrorFiles
 
-class PassportElementErrorTranslationFile(PassportElementError, BaseModel):
+class PassportElementErrorTranslationFile(PassportElementError):
     """
     Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
 
@@ -221,7 +221,7 @@ class PassportElementErrorTranslationFile(PassportElementError, BaseModel):
     message: str
 # end class PassportElementErrorTranslationFile
 
-class PassportElementErrorTranslationFiles(PassportElementError, BaseModel):
+class PassportElementErrorTranslationFiles(PassportElementError):
     """
     Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
 
@@ -251,7 +251,7 @@ class PassportElementErrorTranslationFiles(PassportElementError, BaseModel):
     message: str
 # end class PassportElementErrorTranslationFiles
 
-class PassportElementErrorUnspecified(PassportElementError, BaseModel):
+class PassportElementErrorUnspecified(PassportElementError):
     """
     Represents an issue in an unspecified place. The error is considered resolved when new data is added.
 

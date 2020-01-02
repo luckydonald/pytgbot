@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.sendable.inline import InlineQueryCachedResult
 from pytgbot.api_types.sendable.inline import InlineQueryResult
 from pytgbot.api_types.sendable.inline import InputMessageContent
@@ -9,7 +9,7 @@ from pytgbot.api_types.sendable.inline import InputMessageContent
 __author__ = 'luckydonald'
 
 
-class InlineQueryResultArticle(InlineQueryResult, BaseModel):
+class InlineQueryResultArticle(InlineQueryResult):
     """
     Represents a link to an article or web page.
 
@@ -67,7 +67,7 @@ class InlineQueryResultArticle(InlineQueryResult, BaseModel):
     thumb_height: int
 # end class InlineQueryResultArticle
 
-class InlineQueryResultPhoto(InlineQueryResult, BaseModel):
+class InlineQueryResultPhoto(InlineQueryResult):
     """
     Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
@@ -129,7 +129,7 @@ class InlineQueryResultPhoto(InlineQueryResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultPhoto
 
-class InlineQueryResultGif(InlineQueryResult, BaseModel):
+class InlineQueryResultGif(InlineQueryResult):
     """
     Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -191,7 +191,7 @@ class InlineQueryResultGif(InlineQueryResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultGif
 
-class InlineQueryResultMpeg4Gif(InlineQueryResult, BaseModel):
+class InlineQueryResultMpeg4Gif(InlineQueryResult):
     """
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -253,7 +253,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultMpeg4Gif
 
-class InlineQueryResultVideo(InlineQueryResult, BaseModel):
+class InlineQueryResultVideo(InlineQueryResult):
     """
     Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
@@ -325,7 +325,7 @@ class InlineQueryResultVideo(InlineQueryResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultVideo
 
-class InlineQueryResultAudio(InlineQueryResult, BaseModel):
+class InlineQueryResultAudio(InlineQueryResult):
     """
     Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -380,7 +380,7 @@ class InlineQueryResultAudio(InlineQueryResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultAudio
 
-class InlineQueryResultVoice(InlineQueryResult, BaseModel):
+class InlineQueryResultVoice(InlineQueryResult):
     """
     Represents a link to a voice recording in an .ogg container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -431,7 +431,7 @@ class InlineQueryResultVoice(InlineQueryResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultVoice
 
-class InlineQueryResultDocument(InlineQueryResult, BaseModel):
+class InlineQueryResultDocument(InlineQueryResult):
     """
     Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -498,7 +498,7 @@ class InlineQueryResultDocument(InlineQueryResult, BaseModel):
     thumb_height: int
 # end class InlineQueryResultDocument
 
-class InlineQueryResultLocation(InlineQueryResult, BaseModel):
+class InlineQueryResultLocation(InlineQueryResult):
     """
     Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -557,7 +557,7 @@ class InlineQueryResultLocation(InlineQueryResult, BaseModel):
     thumb_height: int
 # end class InlineQueryResultLocation
 
-class InlineQueryResultVenue(InlineQueryResult, BaseModel):
+class InlineQueryResultVenue(InlineQueryResult):
     """
     Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -624,7 +624,7 @@ class InlineQueryResultVenue(InlineQueryResult, BaseModel):
     thumb_height: int
 # end class InlineQueryResultVenue
 
-class InlineQueryResultContact(InlineQueryResult, BaseModel):
+class InlineQueryResultContact(InlineQueryResult):
     """
     Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -683,7 +683,7 @@ class InlineQueryResultContact(InlineQueryResult, BaseModel):
     thumb_height: int
 # end class InlineQueryResultContact
 
-class InlineQueryResultGame(InlineQueryResult, BaseModel):
+class InlineQueryResultGame(InlineQueryResult):
     """
     Represents a Game.
     Note: This will only work in Telegram versions released after October 1, 2016. Older clients will not display any inline results if a game result is among them.
@@ -714,7 +714,7 @@ class InlineQueryResultGame(InlineQueryResult, BaseModel):
     reply_markup: InlineKeyboardMarkup
 # end class InlineQueryResultGame
 
-class InlineQueryResultCachedPhoto(InlineQueryCachedResult, BaseModel):
+class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     """
     Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
@@ -764,7 +764,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedPhoto
 
-class InlineQueryResultCachedGif(InlineQueryCachedResult, BaseModel):
+class InlineQueryResultCachedGif(InlineQueryCachedResult):
     """
     Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
 
@@ -810,7 +810,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedGif
 
-class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult, BaseModel):
+class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     """
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -856,7 +856,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedMpeg4Gif
 
-class InlineQueryResultCachedSticker(InlineQueryCachedResult, BaseModel):
+class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     """
     Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
     Note: This will only work in Telegram versions released after 9 April, 2016 for static stickers and after 06 July, 2019 for animated stickers. Older clients will ignore them.
@@ -891,7 +891,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedSticker
 
-class InlineQueryResultCachedDocument(InlineQueryCachedResult, BaseModel):
+class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     """
     Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -942,7 +942,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedDocument
 
-class InlineQueryResultCachedVideo(InlineQueryCachedResult, BaseModel):
+class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     """
     Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
@@ -992,7 +992,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedVideo
 
-class InlineQueryResultCachedVoice(InlineQueryCachedResult, BaseModel):
+class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     """
     Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -1039,7 +1039,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedVoice
 
-class InlineQueryResultCachedAudio(InlineQueryCachedResult, BaseModel):
+class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     """
     Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -1082,7 +1082,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult, BaseModel):
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedAudio
 
-class InputTextMessageContent(InputMessageContent, BaseModel):
+class InputTextMessageContent(InputMessageContent):
     """
     Represents the content of a text message to be sent as the result of an inline query.
 
@@ -1108,7 +1108,7 @@ class InputTextMessageContent(InputMessageContent, BaseModel):
     disable_web_page_preview: bool
 # end class InputTextMessageContent
 
-class InputLocationMessageContent(InputMessageContent, BaseModel):
+class InputLocationMessageContent(InputMessageContent):
     """
     Represents the content of a location message to be sent as the result of an inline query.
 
@@ -1134,7 +1134,7 @@ class InputLocationMessageContent(InputMessageContent, BaseModel):
     live_period: int
 # end class InputLocationMessageContent
 
-class InputVenueMessageContent(InputMessageContent, BaseModel):
+class InputVenueMessageContent(InputMessageContent):
     """
     Represents the content of a venue message to be sent as the result of an inline query.
 
@@ -1172,7 +1172,7 @@ class InputVenueMessageContent(InputMessageContent, BaseModel):
     foursquare_type: str
 # end class InputVenueMessageContent
 
-class InputContactMessageContent(InputMessageContent, BaseModel):
+class InputContactMessageContent(InputMessageContent):
     """
     Represents the content of a contact message to be sent as the result of an inline query.
 

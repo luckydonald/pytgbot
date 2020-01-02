@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.sendable.input_media import InputMedia
 from pytgbot.api_types.sendable.input_media import InputMediaWithThumb
 
 __author__ = 'luckydonald'
 
 
-class InputMediaPhoto(InputMedia, BaseModel):
+class InputMediaPhoto(InputMedia):
     """
     Represents a photo to be sent.
 
@@ -38,7 +38,7 @@ class InputMediaPhoto(InputMedia, BaseModel):
     parse_mode: str
 # end class InputMediaPhoto
 
-class InputMediaVideo(InputMediaWithThumb, BaseModel):
+class InputMediaVideo(InputMediaWithThumb):
     """
     Represents a video to be sent.
 
@@ -88,7 +88,7 @@ class InputMediaVideo(InputMediaWithThumb, BaseModel):
     supports_streaming: bool
 # end class InputMediaVideo
 
-class InputMediaAnimation(InputMediaWithThumb, BaseModel):
+class InputMediaAnimation(InputMediaWithThumb):
     """
     Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 
@@ -134,7 +134,7 @@ class InputMediaAnimation(InputMediaWithThumb, BaseModel):
     duration: int
 # end class InputMediaAnimation
 
-class InputMediaAudio(InputMediaWithThumb, BaseModel):
+class InputMediaAudio(InputMediaWithThumb):
     """
     Represents an audio file to be treated as music to be sent.
 
@@ -180,7 +180,7 @@ class InputMediaAudio(InputMediaWithThumb, BaseModel):
     title: str
 # end class InputMediaAudio
 
-class InputMediaDocument(InputMediaWithThumb, BaseModel):
+class InputMediaDocument(InputMediaWithThumb):
     """
     Represents a general file to be sent.
 

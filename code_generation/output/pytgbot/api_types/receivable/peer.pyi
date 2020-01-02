@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.peer import Peer
 
 __author__ = 'luckydonald'
 
 
-class User(Peer, BaseModel):
+class User(Peer):
     """
     This object represents a Telegram user or bot.
 
@@ -49,7 +49,7 @@ class User(Peer, BaseModel):
     language_code: str
 # end class User
 
-class Chat(Peer, BaseModel):
+class Chat(Peer):
     """
     This object represents a chat.
 
@@ -122,7 +122,7 @@ class Chat(Peer, BaseModel):
     can_set_sticker_set: bool
 # end class Chat
 
-class ChatMember(Result, BaseModel):
+class ChatMember(Result):
     """
     This object contains information about one member of a chat.
 
@@ -215,7 +215,7 @@ class ChatMember(Result, BaseModel):
     can_add_web_page_previews: bool
 # end class ChatMember
 
-class ChatPermissions(Result, BaseModel):
+class ChatPermissions(Result):
     """
     Describes actions that a non-administrator user is allowed to take in a chat.
 

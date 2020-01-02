@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable.updates import UpdateType
 
 __author__ = 'luckydonald'
 
 
-class Update(Receivable, BaseModel):
+class Update(Receivable):
     """
     This object represents an incoming update.At most one of the optional parameters can be present in any given update.
 
@@ -69,7 +69,7 @@ class Update(Receivable, BaseModel):
     poll: Poll
 # end class Update
 
-class WebhookInfo(Receivable, BaseModel):
+class WebhookInfo(Receivable):
     """
     Contains information about the current status of a webhook.
 
@@ -114,7 +114,7 @@ class WebhookInfo(Receivable, BaseModel):
     allowed_updates: List[str]
 # end class WebhookInfo
 
-class Message(UpdateType, BaseModel):
+class Message(UpdateType):
     """
     This object represents a message.
 
@@ -319,7 +319,7 @@ class Message(UpdateType, BaseModel):
     reply_markup: InlineKeyboardMarkup
 # end class Message
 
-class CallbackQuery(UpdateType, BaseModel):
+class CallbackQuery(UpdateType):
     """
     This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
 
@@ -366,7 +366,7 @@ class CallbackQuery(UpdateType, BaseModel):
     game_short_name: str
 # end class CallbackQuery
 
-class ResponseParameters(Receivable, BaseModel):
+class ResponseParameters(Receivable):
     """
     Contains information about why a request was unsuccessful.
 

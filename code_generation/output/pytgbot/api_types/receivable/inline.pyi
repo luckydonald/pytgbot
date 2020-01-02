@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.updates import UpdateType
 
 __author__ = 'luckydonald'
 
 
-class InlineQuery(Result, BaseModel):
+class InlineQuery(Result):
     """
     This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
 
@@ -45,7 +45,7 @@ class InlineQuery(Result, BaseModel):
     location: Location
 # end class InlineQuery
 
-class ChosenInlineResult(UpdateType, BaseModel):
+class ChosenInlineResult(UpdateType):
     """
     Represents a result of an inline query that was chosen by the user and sent to their chat partner.
     Note: It is necessary to enable inline feedback via @Botfather in order to receive these objects in updates.

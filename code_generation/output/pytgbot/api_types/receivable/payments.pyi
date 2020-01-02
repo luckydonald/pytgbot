@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.updates import UpdateType
 
 __author__ = 'luckydonald'
 
 
-class Invoice(Result, BaseModel):
+class Invoice(Result):
     """
     This object contains basic information about an invoice.
 
@@ -45,7 +45,7 @@ class Invoice(Result, BaseModel):
     total_amount: int
 # end class Invoice
 
-class ShippingAddress(Result, BaseModel):
+class ShippingAddress(Result):
     """
     This object represents a shipping address.
 
@@ -86,7 +86,7 @@ class ShippingAddress(Result, BaseModel):
     post_code: str
 # end class ShippingAddress
 
-class OrderInfo(Result, BaseModel):
+class OrderInfo(Result):
     """
     This object represents information about an order.
 
@@ -116,7 +116,7 @@ class OrderInfo(Result, BaseModel):
     shipping_address: ShippingAddress
 # end class OrderInfo
 
-class SuccessfulPayment(Result, BaseModel):
+class SuccessfulPayment(Result):
     """
     This object contains basic information about a successful payment.
 
@@ -161,7 +161,7 @@ class SuccessfulPayment(Result, BaseModel):
     order_info: OrderInfo
 # end class SuccessfulPayment
 
-class ShippingQuery(UpdateType, BaseModel):
+class ShippingQuery(UpdateType):
     """
     This object contains information about an incoming shipping query.
 
@@ -194,7 +194,7 @@ class ShippingQuery(UpdateType, BaseModel):
     shipping_address: ShippingAddress
 # end class ShippingQuery
 
-class PreCheckoutQuery(UpdateType, BaseModel):
+class PreCheckoutQuery(UpdateType):
     """
     This object contains information about an incoming pre-checkout query.
 

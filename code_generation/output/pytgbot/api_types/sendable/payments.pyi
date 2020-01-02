@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.sendable import Sendable
 
 __author__ = 'luckydonald'
 
 
-class LabeledPrice(Sendable, BaseModel):
+class LabeledPrice(Sendable):
     """
     This object represents a portion of the price for goods or services.
 
@@ -29,7 +29,7 @@ class LabeledPrice(Sendable, BaseModel):
     amount: int
 # end class LabeledPrice
 
-class ShippingOption(Sendable, BaseModel):
+class ShippingOption(Sendable):
     """
     This object represents one shipping option.
 

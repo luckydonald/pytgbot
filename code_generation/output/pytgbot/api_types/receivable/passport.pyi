@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.receivable import Result
 
 __author__ = 'luckydonald'
 
 
-class PassportData(Result, BaseModel):
+class PassportData(Result):
     """
     Contains information about Telegram Passport data shared with the bot by the user.
 
@@ -32,7 +32,7 @@ class PassportData(Result, BaseModel):
     credentials: EncryptedCredentials
 # end class PassportData
 
-class PassportFile(Result, BaseModel):
+class PassportFile(Result):
     """
     This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
 
@@ -65,7 +65,7 @@ class PassportFile(Result, BaseModel):
     file_date: int
 # end class PassportFile
 
-class EncryptedPassportElement(Result, BaseModel):
+class EncryptedPassportElement(Result):
     """
     Contains information about documents or other Telegram Passport elements shared with the bot by the user.
 
@@ -122,7 +122,7 @@ class EncryptedPassportElement(Result, BaseModel):
     translation: List[PassportFile]
 # end class EncryptedPassportElement
 
-class EncryptedCredentials(Result, BaseModel):
+class EncryptedCredentials(Result):
     """
     Contains data required for decrypting and authenticating EncryptedPassportElement. See the Telegram Passport Documentation for a complete description of the data decryption and authentication processes.
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.media import Media
@@ -9,7 +9,7 @@ from pytgbot.api_types.receivable.media import Media
 __author__ = 'luckydonald'
 
 
-class MessageEntity(Result, BaseModel):
+class MessageEntity(Result):
     """
     This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
 
@@ -46,7 +46,7 @@ class MessageEntity(Result, BaseModel):
     user: User
 # end class MessageEntity
 
-class PhotoSize(Result, BaseModel):
+class PhotoSize(Result):
     """
     This object represents one size of a photo or a file / sticker thumbnail.
 
@@ -83,7 +83,7 @@ class PhotoSize(Result, BaseModel):
     file_size: int
 # end class PhotoSize
 
-class Audio(Media, BaseModel):
+class Audio(Media):
     """
     This object represents an audio file to be treated as music by the Telegram clients.
 
@@ -132,7 +132,7 @@ class Audio(Media, BaseModel):
     thumb: PhotoSize
 # end class Audio
 
-class Document(Media, BaseModel):
+class Document(Media):
     """
     This object represents a general file (as opposed to photos, voice messages and audio files).
 
@@ -173,7 +173,7 @@ class Document(Media, BaseModel):
     file_size: int
 # end class Document
 
-class Video(Media, BaseModel):
+class Video(Media):
     """
     This object represents a video file.
 
@@ -222,7 +222,7 @@ class Video(Media, BaseModel):
     file_size: int
 # end class Video
 
-class Animation(Media, BaseModel):
+class Animation(Media):
     """
     This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
 
@@ -275,7 +275,7 @@ class Animation(Media, BaseModel):
     file_size: int
 # end class Animation
 
-class Voice(Media, BaseModel):
+class Voice(Media):
     """
     This object represents a voice note.
 
@@ -312,7 +312,7 @@ class Voice(Media, BaseModel):
     file_size: int
 # end class Voice
 
-class VideoNote(Media, BaseModel):
+class VideoNote(Media):
     """
     This object represents a video message (available in Telegram apps as of v.4.0).
 
@@ -353,7 +353,7 @@ class VideoNote(Media, BaseModel):
     file_size: int
 # end class VideoNote
 
-class Contact(Media, BaseModel):
+class Contact(Media):
     """
     This object represents a phone contact.
 
@@ -390,7 +390,7 @@ class Contact(Media, BaseModel):
     vcard: str
 # end class Contact
 
-class Location(Media, BaseModel):
+class Location(Media):
     """
     This object represents a point on the map.
 
@@ -415,7 +415,7 @@ class Location(Media, BaseModel):
     latitude: float
 # end class Location
 
-class Venue(Media, BaseModel):
+class Venue(Media):
     """
     This object represents a venue.
 
@@ -452,7 +452,7 @@ class Venue(Media, BaseModel):
     foursquare_type: str
 # end class Venue
 
-class PollOption(Receivable, BaseModel):
+class PollOption(Receivable):
     """
     This object contains information about one answer option in a poll.
 
@@ -477,7 +477,7 @@ class PollOption(Receivable, BaseModel):
     voter_count: int
 # end class PollOption
 
-class Poll(Media, BaseModel):
+class Poll(Media):
     """
     This object contains information about a poll.
 
@@ -510,7 +510,7 @@ class Poll(Media, BaseModel):
     is_closed: bool
 # end class Poll
 
-class UserProfilePhotos(Result, BaseModel):
+class UserProfilePhotos(Result):
     """
     This object represent a user's profile pictures.
 
@@ -535,7 +535,7 @@ class UserProfilePhotos(Result, BaseModel):
     photos: List[List[PhotoSize]]
 # end class UserProfilePhotos
 
-class File(Receivable, BaseModel):
+class File(Receivable):
     """
     This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
 
@@ -570,7 +570,7 @@ class File(Receivable, BaseModel):
     file_path: str
 # end class File
 
-class ChatPhoto(Result, BaseModel):
+class ChatPhoto(Result):
     """
     This object represents a chat photo.
 
@@ -603,7 +603,7 @@ class ChatPhoto(Result, BaseModel):
     big_file_unique_id: str
 # end class ChatPhoto
 
-class Sticker(Media, BaseModel):
+class Sticker(Media):
     """
     This object represents a sticker.
 
@@ -660,7 +660,7 @@ class Sticker(Media, BaseModel):
     file_size: int
 # end class Sticker
 
-class Game(Media, BaseModel):
+class Game(Media):
     """
     This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
 

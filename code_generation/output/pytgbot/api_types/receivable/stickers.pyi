@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.receivable import Result
 
 __author__ = 'luckydonald'
 
 
-class StickerSet(Result, BaseModel):
+class StickerSet(Result):
     """
     This object represents a sticker set.
 
@@ -44,7 +44,7 @@ class StickerSet(Result, BaseModel):
     stickers: List[Sticker]
 # end class StickerSet
 
-class MaskPosition(Result, BaseModel):
+class MaskPosition(Result):
     """
     This object describes the position on faces where a mask should be placed by default.
 

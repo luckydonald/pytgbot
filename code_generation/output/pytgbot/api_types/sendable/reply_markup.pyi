@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.sendable import Sendable
 from pytgbot.api_types.sendable.reply_markup import Button
 from pytgbot.api_types.sendable.reply_markup import ReplyMarkup
@@ -9,7 +9,7 @@ from pytgbot.api_types.sendable.reply_markup import ReplyMarkup
 __author__ = 'luckydonald'
 
 
-class ReplyKeyboardMarkup(ReplyMarkup, BaseModel):
+class ReplyKeyboardMarkup(ReplyMarkup):
     """
     This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 
@@ -39,7 +39,7 @@ class ReplyKeyboardMarkup(ReplyMarkup, BaseModel):
     selective: bool
 # end class ReplyKeyboardMarkup
 
-class KeyboardButton(Button, BaseModel):
+class KeyboardButton(Button):
     """
     This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields are mutually exclusive.
     Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -66,7 +66,7 @@ class KeyboardButton(Button, BaseModel):
     request_location: bool
 # end class KeyboardButton
 
-class ReplyKeyboardRemove(ReplyMarkup, BaseModel):
+class ReplyKeyboardRemove(ReplyMarkup):
     """
     Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
 
@@ -88,7 +88,7 @@ class ReplyKeyboardRemove(ReplyMarkup, BaseModel):
     selective: bool
 # end class ReplyKeyboardRemove
 
-class InlineKeyboardMarkup(ReplyMarkup, BaseModel):
+class InlineKeyboardMarkup(ReplyMarkup):
     """
     This object represents an inline keyboard that appears right next to the message it belongs to.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
@@ -107,7 +107,7 @@ class InlineKeyboardMarkup(ReplyMarkup, BaseModel):
     inline_keyboard: List[List[InlineKeyboardButton]]
 # end class InlineKeyboardMarkup
 
-class InlineKeyboardButton(Button, BaseModel):
+class InlineKeyboardButton(Button):
     """
     This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
 
@@ -153,7 +153,7 @@ class InlineKeyboardButton(Button, BaseModel):
     pay: bool
 # end class InlineKeyboardButton
 
-class LoginUrl(Sendable, BaseModel):
+class LoginUrl(Sendable):
     """
     This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:
     Telegram apps support these buttons as of version 5.7.
@@ -186,7 +186,7 @@ class LoginUrl(Sendable, BaseModel):
     request_write_access: bool
 # end class LoginUrl
 
-class ForceReply(ReplyMarkup, BaseModel):
+class ForceReply(ReplyMarkup):
     """
     Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot‘s message and tapped ’Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
 

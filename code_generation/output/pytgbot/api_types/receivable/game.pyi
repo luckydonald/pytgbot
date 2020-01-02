@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from . import updates
-from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from typing import Any, Union, List
 from pytgbot.api_types.receivable import Result
 
 __author__ = 'luckydonald'
 
 
-class GameHighScore(Result, BaseModel):
+class GameHighScore(Result):
     """
     This object represents one row of the high scores table for a game.
 
