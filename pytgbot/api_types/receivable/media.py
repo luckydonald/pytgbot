@@ -20,7 +20,7 @@ class MessageEntity(Result):
 
     Parameters:
 
-    :param type: Type of the entity. Can be mention (@username), hashtag, cashtag, bot_command, url, email, phone_number, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
+    :param type: Type of the entity. Can be "mention" (@username), "hashtag" (#hashtag), "cashtag" ($USD), "bot_command" (/start@jobs_bot), "url" (https://telegram.org), "email" (do-not-reply@telegram.org), "phone_number" (+1-212-555-0123), "bold" (bold text), "italic" (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "code" (monowidth string), "pre" (monowidth block), "text_link" (for clickable text URLs), "text_mention" (for users without usernames)
     :type  type: str|unicode
 
     :param offset: Offset in UTF-16 code units to the start of the entity
@@ -32,10 +32,10 @@ class MessageEntity(Result):
 
     Optional keyword parameters:
 
-    :param url: Optional. For “text_link” only, url that will be opened after user taps on the text
+    :param url: Optional. For "text_link" only, url that will be opened after user taps on the text
     :type  url: str|unicode
 
-    :param user: Optional. For “text_mention” only, the mentioned user
+    :param user: Optional. For "text_mention" only, the mentioned user
     :type  user: pytgbot.api_types.receivable.peer.User
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -51,7 +51,7 @@ class MessageEntity(Result):
 
         Parameters:
 
-        :param type: Type of the entity. Can be mention (@username), hashtag, cashtag, bot_command, url, email, phone_number, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
+        :param type: Type of the entity. Can be "mention" (@username), "hashtag" (#hashtag), "cashtag" ($USD), "bot_command" (/start@jobs_bot), "url" (https://telegram.org), "email" (do-not-reply@telegram.org), "phone_number" (+1-212-555-0123), "bold" (bold text), "italic" (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "code" (monowidth string), "pre" (monowidth block), "text_link" (for clickable text URLs), "text_mention" (for users without usernames)
         :type  type: str|unicode
 
         :param offset: Offset in UTF-16 code units to the start of the entity
@@ -63,10 +63,10 @@ class MessageEntity(Result):
 
         Optional keyword parameters:
 
-        :param url: Optional. For “text_link” only, url that will be opened after user taps on the text
+        :param url: Optional. For "text_link" only, url that will be opened after user taps on the text
         :type  url: str|unicode
 
-        :param user: Optional. For “text_mention” only, the mentioned user
+        :param user: Optional. For "text_mention" only, the mentioned user
         :type  user: pytgbot.api_types.receivable.peer.User
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -204,8 +204,11 @@ class PhotoSize(Result):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
     :param width: Photo width
     :type  width: int
@@ -223,7 +226,7 @@ class PhotoSize(Result):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, width, height, file_size=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, width, height, file_size=None, _raw=None):
         """
         This object represents one size of a photo or a file / sticker thumbnail.
 
@@ -232,8 +235,11 @@ class PhotoSize(Result):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
         :param width: Photo width
         :type  width: int
@@ -254,6 +260,9 @@ class PhotoSize(Result):
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
 
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
+
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
 
@@ -262,6 +271,7 @@ class PhotoSize(Result):
 
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
+
         self._raw = _raw
     # end def __init__
 
@@ -356,8 +366,11 @@ class Audio(Media):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
     :param duration: Duration of the audio in seconds as defined by sender
     :type  duration: int
@@ -384,7 +397,7 @@ class Audio(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, duration, performer=None, title=None, mime_type=None, file_size=None, thumb=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, duration, performer=None, title=None, mime_type=None, file_size=None, thumb=None, _raw=None):
         """
         This object represents an audio file to be treated as music by the Telegram clients.
 
@@ -393,8 +406,11 @@ class Audio(Media):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
         :param duration: Duration of the audio in seconds as defined by sender
         :type  duration: int
@@ -423,6 +439,9 @@ class Audio(Media):
         super(Audio, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
+
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
 
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
@@ -466,6 +485,7 @@ class Audio(Media):
             array['file_size'] = int(self.file_size)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+
         return array
     # end def to_array
 
@@ -481,6 +501,7 @@ class Audio(Media):
 
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['duration'] = int(array.get('duration'))
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
@@ -546,8 +567,11 @@ class Document(Media):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
 
     Optional keyword parameters:
@@ -568,7 +592,7 @@ class Document(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
         """
         This object represents a general file (as opposed to photos, voice messages and audio files).
 
@@ -577,8 +601,11 @@ class Document(Media):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
 
         Optional keyword parameters:
@@ -603,6 +630,9 @@ class Document(Media):
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
 
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
+
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
 
@@ -614,6 +644,7 @@ class Document(Media):
 
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
+
         self._raw = _raw
     # end def __init__
 
@@ -651,6 +682,7 @@ class Document(Media):
 
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
         data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
@@ -714,8 +746,11 @@ class Video(Media):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
     :param width: Video width as defined by sender
     :type  width: int
@@ -742,7 +777,7 @@ class Video(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, width, height, duration, thumb=None, mime_type=None, file_size=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, width, height, duration, thumb=None, mime_type=None, file_size=None, _raw=None):
         """
         This object represents a video file.
 
@@ -751,8 +786,11 @@ class Video(Media):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
         :param width: Video width as defined by sender
         :type  width: int
@@ -783,6 +821,9 @@ class Video(Media):
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
 
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
+
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
 
@@ -800,6 +841,7 @@ class Video(Media):
 
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
+
         self._raw = _raw
     # end def __init__
 
@@ -837,6 +879,7 @@ class Video(Media):
 
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['duration'] = int(array.get('duration'))
@@ -902,8 +945,11 @@ class Animation(Media):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
     :param width: Video width as defined by sender
     :type  width: int
@@ -933,8 +979,7 @@ class Animation(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, width, height, duration, thumb=None, file_name=None, mime_type=None, file_size=None,
-                 _raw=None):
+    def __init__(self, file_id, file_unique_id, width, height, duration, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
         """
         This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
 
@@ -943,8 +988,11 @@ class Animation(Media):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
         :param width: Video width as defined by sender
         :type  width: int
@@ -978,6 +1026,9 @@ class Animation(Media):
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
 
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
+
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
 
@@ -1000,7 +1051,6 @@ class Animation(Media):
         self.file_size = file_size
 
         self._raw = _raw
-
     # end def __init__
 
     def to_array(self):
@@ -1039,6 +1089,7 @@ class Animation(Media):
 
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['duration'] = int(array.get('duration'))
@@ -1105,8 +1156,11 @@ class Voice(Media):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
     :param duration: Duration of the audio in seconds as defined by sender
     :type  duration: int
@@ -1124,7 +1178,7 @@ class Voice(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, duration, mime_type=None, file_size=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, duration, mime_type=None, file_size=None, _raw=None):
         """
         This object represents a voice note.
 
@@ -1133,8 +1187,11 @@ class Voice(Media):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
         :param duration: Duration of the audio in seconds as defined by sender
         :type  duration: int
@@ -1154,6 +1211,9 @@ class Voice(Media):
         super(Voice, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
+
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
 
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
@@ -1259,8 +1319,11 @@ class VideoNote(Media):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
     :param length: Video width and height (diameter of the video message) as defined by sender
     :type  length: int
@@ -1281,7 +1344,7 @@ class VideoNote(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, length, duration, thumb=None, file_size=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, length, duration, thumb=None, file_size=None, _raw=None):
         """
         This object represents a video message (available in Telegram apps as of v.4.0).
 
@@ -1290,8 +1353,11 @@ class VideoNote(Media):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
         :param length: Video width and height (diameter of the video message) as defined by sender
         :type  length: int
@@ -1315,6 +1381,9 @@ class VideoNote(Media):
 
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
+
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
 
         assert_type_or_raise(length, int, parameter_name="length")
         self.length = length
@@ -1362,6 +1431,7 @@ class VideoNote(Media):
 
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['length'] = int(array.get('length'))
         data['duration'] = int(array.get('duration'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
@@ -1732,7 +1802,7 @@ class Venue(Media):
     :param foursquare_id: Optional. Foursquare identifier of the venue
     :type  foursquare_id: str|unicode
 
-    :param foursquare_type: Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+    :param foursquare_type: Optional. Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1763,7 +1833,7 @@ class Venue(Media):
         :param foursquare_id: Optional. Foursquare identifier of the venue
         :type  foursquare_id: str|unicode
 
-        :param foursquare_type: Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+        :param foursquare_type: Optional. Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
         :type  foursquare_type: str|unicode
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2218,6 +2288,7 @@ class UserProfilePhotos(Result):
         array = super(UserProfilePhotos, self).to_array()
         array['total_count'] = int(self.total_count)  # type int
         array['photos'] = self._as_array(self.photos)  # type list of list of PhotoSize
+
         return array
     # end def to_array
 
@@ -2298,8 +2369,11 @@ class File(Receivable):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
 
     Optional keyword parameters:
@@ -2314,7 +2388,7 @@ class File(Receivable):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, file_size=None, file_path=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, file_size=None, file_path=None, _raw=None):
         """
         This object represents a file ready to be downloaded.
         The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
@@ -2328,8 +2402,11 @@ class File(Receivable):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
 
         Optional keyword parameters:
@@ -2346,6 +2423,9 @@ class File(Receivable):
         super(File, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
+
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
 
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
@@ -2464,8 +2544,14 @@ class ChatPhoto(Result):
     :param small_file_id: File identifier of small (160x160) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed.
     :type  small_file_id: str|unicode
 
+    :param small_file_unique_id: Unique file identifier of small (160x160) chat photo, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  small_file_unique_id: str|unicode
+
     :param big_file_id: File identifier of big (640x640) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed.
     :type  big_file_id: str|unicode
+
+    :param big_file_unique_id: Unique file identifier of big (640x640) chat photo, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  big_file_unique_id: str|unicode
 
 
     Optional keyword parameters:
@@ -2474,7 +2560,7 @@ class ChatPhoto(Result):
     :type  _raw: None | dict
     """
 
-    def __init__(self, small_file_id, big_file_id, _raw=None):
+    def __init__(self, small_file_id, small_file_unique_id, big_file_id, big_file_unique_id, _raw=None):
         """
         This object represents a chat photo.
 
@@ -2486,8 +2572,14 @@ class ChatPhoto(Result):
         :param small_file_id: File identifier of small (160x160) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed.
         :type  small_file_id: str|unicode
 
+        :param small_file_unique_id: Unique file identifier of small (160x160) chat photo, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  small_file_unique_id: str|unicode
+
         :param big_file_id: File identifier of big (640x640) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed.
         :type  big_file_id: str|unicode
+
+        :param big_file_unique_id: Unique file identifier of big (640x640) chat photo, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  big_file_unique_id: str|unicode
 
 
         Optional keyword parameters:
@@ -2499,8 +2591,14 @@ class ChatPhoto(Result):
         assert_type_or_raise(small_file_id, unicode_type, parameter_name="small_file_id")
         self.small_file_id = small_file_id
 
+        assert_type_or_raise(small_file_unique_id, unicode_type, parameter_name="small_file_unique_id")
+        self.small_file_unique_id = small_file_unique_id
+
         assert_type_or_raise(big_file_id, unicode_type, parameter_name="big_file_id")
         self.big_file_id = big_file_id
+
+        assert_type_or_raise(big_file_unique_id, unicode_type, parameter_name="big_file_unique_id")
+        self.big_file_unique_id = big_file_unique_id
 
         self._raw = _raw
     # end def __init__
@@ -2593,8 +2691,11 @@ class Sticker(Media):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
     :param width: Sticker width
     :type  width: int
@@ -2627,7 +2728,7 @@ class Sticker(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, width, height, is_animated, thumb=None, emoji=None, set_name=None, mask_position=None, file_size=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, width, height, is_animated, thumb=None, emoji=None, set_name=None, mask_position=None, file_size=None, _raw=None):
         """
         This object represents a sticker.
 
@@ -2636,8 +2737,11 @@ class Sticker(Media):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
         :param width: Sticker width
         :type  width: int
@@ -2674,6 +2778,9 @@ class Sticker(Media):
 
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
+
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
 
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
@@ -2741,14 +2848,14 @@ class Sticker(Media):
 
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['is_animated'] = bool(array.get('is_animated'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
         data['emoji'] = u(array.get('emoji')) if array.get('emoji') is not None else None
         data['set_name'] = u(array.get('set_name')) if array.get('set_name') is not None else None
-        data['mask_position'] = MaskPosition.from_array(array.get('mask_position')) if array.get(
-            'mask_position') is not None else None
+        data['mask_position'] = MaskPosition.from_array(array.get('mask_position')) if array.get('mask_position') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         return data
     # end def validate_array
