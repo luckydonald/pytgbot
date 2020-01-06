@@ -43,7 +43,7 @@ setup(
         'Operating System :: Unix',
     ],
     # What does your project relate to?
-    keywords='telegram bot api python message send receive python secure fast answer reply image voice picture location contacts typing multi messanger inline quick reply gif image video mp4 mpeg4 sticker file_id',
+    keywords='telegram bot api python message send receive python secure fast answer reply image voice picture location contacts typing multi messanger inline quick reply gif image video mp4 mpeg4 sticker file_id markdown markdownV2',
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     packages=['pytgbot', 'pytgbot.api_types', 'pytgbot.api_types.receivable', 'pytgbot.api_types.sendable'],
