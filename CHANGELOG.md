@@ -1,4 +1,9 @@
 # Changelog
+## Version 4.5.2
+- Fixed failing to merge the `file_unique_id` field into the media constructors.
+
+## Version 4.5.1
+This is a re-release of `4.5.0` as I thought it didn't upload correctly
 ## Version 4.5.0
 - Updated API definitions of v4.5, (December 31th, 2019) with the following changelog:
     - <kbd>(not affected)</kbd> Added support for two new MessageEntity types, underline and strikethrough.
