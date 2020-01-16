@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+{% for import in imports -%}
+{{- import }}
+{% endfor %}
+from ....tools.responses import r_success, JSONableResponse
+from ....constants import TOKEN_VALIDATION
+
+__author__ = 'luckydonald'  # but it's automatically generated.
+
+
+logger = logging.getLogger(__name__)
+if __name__ == '__main__':
+    logging.add_colored_handler(level=logging.DEBUG)
+# end if
+
+
+routes = APIRouter()  # Basically a Blueprint
+
+
+{% for function in functions -%}
+@routes.api_route('/{token}/{{function.api_name}}', methods=['GET', 'POST'], tags=['official'])
+async def {{function.name}}(
+    token: str = TOKEN_VALIDATION,
+    {%- for param in function.parameters %}
+    {{param.name}}: {{param.typehint_optional}} = Query(..., description={{ param.description.__repr__() }}),
+    {%- endfor %}
+    {%- for keyword in function.keywords %}
+    {{keyword.name}}: {{keyword.typehint_optional}} = Query({{ keyword.default }}, description={{ keyword.description.__repr__() }}),
+    {%- endfor %}
+) -> JSONableResponse:
+    """
+    {{ function.description|indent(4*1) }}
+
+    {{function.link}}
+    """
+    from ....main import _get_bot
+    bot = await _get_bot(token)
+    {% if "chat_id" in function.variable_names %}
+    try:
+        entity = await get_entity(bot, chat_id)
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+    {%- endif %}
+
+    result = await bot.{{ function.name }}(
+        {%- for variable in function.variables %}{% if variable.name == 'chat_id' %}
+        entity=entity,
+        {%- else %}
+        {{ variable.name }}={{ variable.name }},
+        {%- endif %}{%- endfor %}
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+{% endfor -%}

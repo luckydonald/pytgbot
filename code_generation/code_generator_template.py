@@ -207,6 +207,11 @@ class Function(ClassOrFunction):
     # end def variables
 
     @property
+    def variable_names(self):
+        return [var.name for var in self.variables]
+    # end def variable_names
+
+    @property
     def name(self):
         return convert_to_underscore(self.api_name)
     # end def name
@@ -351,6 +356,11 @@ class Function(ClassOrFunction):
     def class_variables(self):
         return self.class_parameters + self.class_keywords
     # end def
+
+    @property
+    def variables(self):
+        return self.parameters + self.keywords
+    # end def variables
 # end class Function
 
 
@@ -420,7 +430,15 @@ class Variable(dict):
             return self.types[0].typehint
         # end if
         return (", ".join(t.typehint for t in self.types)).join(("Union[", "]"))
+    # end def
 
+    @property
+    def typehint_optional(self):
+        if self.optional:
+            return self.typehint.join(("Optional[", "]"))
+        # end if
+        return self.typehint
+    # end def
 
     def __repr__(self):
         return (

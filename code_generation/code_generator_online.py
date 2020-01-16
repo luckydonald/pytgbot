@@ -544,6 +544,8 @@ def safe_to_file(folder, results):
     clazzfile_template = get_template("classfile.template")
     teleflask_messages_template = get_template("teleflask_messages_file.template")
     typehints_template = get_template("typehintsfile.template")
+    telegram_bot_api_server_template = get_template("telegram_bot_api_server/funcs.template")
+
     for path, clazz_list in clazzes.items():
         clazz_imports = set()
         for clazz_ in clazz_list:
@@ -579,11 +581,42 @@ def safe_to_file(folder, results):
     if functions:
         txt = bot_template.render(functions=functions)
         render_file_to_disk(functions[0].filepath, txt)
+
+        mkdir_p(path_join(folder, 'telegram_bot_api_server'))
+        imports = set()
+        imports.add(('enum', 'Enum'))
+        imports.add(('typing', 'Union, List, Optional'))
+        imports.add(('fastapi', 'APIRouter, HTTPException'))
+        imports.add(('telethon', 'TelegramClient'))
+        imports.add(('serializer', 'to_web_api, get_entity'))
+        imports.add(('fastapi.params', 'Query'))
+        imports.add(('telethon.tl.types', 'TypeSendMessageAction'))
+        imports.add(('telethon.client.chats', '_ChatAction'))
+        imports.add(('luckydonaldUtils.logger', 'logging'))
+        imports.add(('telethon.tl.functions.messages', 'SetTypingRequest'))
+
+        for function in functions:
+            function: Function
+            for the_import in function.imports:
+                the_import: Import
+                imports.add((the_import.path, the_import.name))
+            # end for
+        # end for
+        # https://stackoverflow.com/a/613218/3423324#how-do-i-sort-a-dictionary-by-value
+        # https://stackoverflow.com/a/4659539/3423324#how-to-sort-by-length-of-string-followed-by-alphabetical-order
+        imports_sorted = ["from " + path + ' import ' + name for path, name in sorted(imports, key=lambda item: (-len(item[0]), item[0], -len(item[1]), item[1]))]
+        # imports_sorted.sort(key=lambda item: (-len(item), item))
+
+        txt = telegram_bot_api_server_template.render(functions=functions, imports=imports_sorted)
+        render_file_to_disk(path_join(folder, 'telegram_bot_api_server', 'funcs.py'), txt)
     # end if
     if message_send_functions:
         txt = teleflask_messages_template.render(functions=message_send_functions)
         render_file_to_disk(message_send_functions[0].filepath, txt)
-        # end if
+    # end if
+    if message_send_functions:
+        txt = teleflask_messages_template.render(functions=message_send_functions)
+        render_file_to_disk(message_send_functions[0].filepath, txt)
     # end if
 
 
