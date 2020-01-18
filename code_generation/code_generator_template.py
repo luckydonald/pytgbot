@@ -443,19 +443,26 @@ class Variable(dict):
     @property
     def typehint_optional_model(self):
         if len(self.types) == 0:
-            return "Any"
+            type_str = "Any"
+        else:
+            wrap_models: Callable[[str], str] = lambda type_str: f'Json[{f"{type_str}Model"!r}]'
+            if len(self.types) == 1:
+                type_str = self.create_model(self.types[0], wrap_models=wrap_models)
+            else:
+                type_str = (
+                    ", ".join(self.create_model(t, wrap_models=wrap_models) for t in self.types)
+                ).join(("Union[", "]"))
+            # end if
         # end if
-        wrap_models: Callable[[str], str] = lambda type_str: f'Json[{f"{type_str}Model"!r}]'
-        if len(self.types) == 1:
-            return self.create_model(self.types[0], self.optional, wrap_models=wrap_models)
+
+        if self.optional:
+            type_str = type_str.join(("Optional[", "]"))
         # end if
-        return (
-            ", ".join(self.create_model(t, self.optional, wrap_models=wrap_models) for t in self.types)
-        ).join(("Union[", "]"))
+        return type_str
     # end def
 
     @staticmethod
-    def create_model(the_type: 'Type', optional: bool, wrap_models: Union[None, Callable[[str], str]] = None):
+    def create_model(the_type: 'Type', wrap_models: Union[None, Callable[[str], str]] = None):
         type_str = the_type.string
         if wrap_models and not the_type.is_builtin:
             # noinspection PyCompatibility
@@ -464,9 +471,6 @@ class Variable(dict):
         for i in range(the_type.is_list):
             type_str = type_str.join(("List[", "]"))
         # end def
-        if optional:
-            type_str = type_str.join(("Optional[", "]"))
-        # end if
         return type_str
     # end def
 

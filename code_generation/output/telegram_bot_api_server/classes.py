@@ -28,6 +28,8 @@ class Json:
 Json = Json()
 
 
+
+
 class UpdateModel(BaseModel):  # Receivable
     """
     This object represents an incoming update.At most one of the optional parameters can be present in any given update.
@@ -578,7 +580,7 @@ class InputMediaVideoModel(BaseModel):  # InputMediaWithThumb
     """
     type: str
     media: str
-    thumb: Union[Optional[Json['InputFileModel']], Optional[str]]
+    thumb: Optional[Union[Json['InputFileModel'], str]]
     caption: Optional[str]
     parse_mode: Optional[str]
     width: Optional[int]
@@ -596,7 +598,7 @@ class InputMediaAnimationModel(BaseModel):  # InputMediaWithThumb
     """
     type: str
     media: str
-    thumb: Union[Optional[Json['InputFileModel']], Optional[str]]
+    thumb: Optional[Union[Json['InputFileModel'], str]]
     caption: Optional[str]
     parse_mode: Optional[str]
     width: Optional[int]
@@ -613,7 +615,7 @@ class InputMediaAudioModel(BaseModel):  # InputMediaWithThumb
     """
     type: str
     media: str
-    thumb: Union[Optional[Json['InputFileModel']], Optional[str]]
+    thumb: Optional[Union[Json['InputFileModel'], str]]
     caption: Optional[str]
     parse_mode: Optional[str]
     duration: Optional[int]
@@ -630,7 +632,7 @@ class InputMediaDocumentModel(BaseModel):  # InputMediaWithThumb
     """
     type: str
     media: str
-    thumb: Union[Optional[Json['InputFileModel']], Optional[str]]
+    thumb: Optional[Union[Json['InputFileModel'], str]]
     caption: Optional[str]
     parse_mode: Optional[str]
 # end class InputMediaDocument
