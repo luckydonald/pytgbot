@@ -3,7 +3,7 @@ import os
 
 from collections import Mapping
 from itertools import chain
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union, Callable
 
 from jinja2 import  Environment, FileSystemLoader
 from jinja2.exceptions import TemplateSyntaxError
@@ -445,18 +445,21 @@ class Variable(dict):
         if len(self.types) == 0:
             return "Any"
         # end if
+        wrap_models: Callable[[str], str] = lambda type_str: repr(f"{type_str}Model")
         if len(self.types) == 1:
-            return self.create_model(self.types[0], self.optional)
+            return self.create_model(self.types[0], self.optional, wrap_models=wrap_models)
         # end if
-        return (", ".join(self.create_model(t, self.optional) for t in self.types)).join(("Union[", "]"))
+        return (
+            ", ".join(self.create_model(t, self.optional, wrap_models=wrap_models) for t in self.types)
+        ).join(("Union[", "]"))
     # end def
 
     @staticmethod
-    def create_model(the_type: 'Type', optional: bool):
+    def create_model(the_type: 'Type', optional: bool, wrap_models: Union[None, Callable[[str], str]] = None):
         type_str = the_type.string
-        if not the_type.is_builtin:
+        if wrap_models and not the_type.is_builtin:
             # noinspection PyCompatibility
-            type_str = repr(f"{type_str}Model")
+            type_str = wrap_models(type_str)
         # end def
         for i in range(the_type.is_list):
             type_str = type_str.join(("List[", "]"))
