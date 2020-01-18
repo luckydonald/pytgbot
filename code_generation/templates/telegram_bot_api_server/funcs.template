@@ -27,10 +27,10 @@ routes = APIRouter()  # Basically a Blueprint
 async def {{function.name}}(
     token: str = TOKEN_VALIDATION,
     {%- for param in function.parameters %}
-    {{param.name}}: {{param.typehint_optional_model_json}} = Query(..., description={{ param.description.__repr__() }}),
+    {{param.name}}: {{param.create_typehint_optional_model(json_mode=True, quote_models=True)}} = Query(..., description={{ param.description.__repr__() }}),
     {%- endfor %}
     {%- for keyword in function.keywords %}
-    {{keyword.name}}: {{keyword.typehint_optional_model_json}} = Query({{ keyword.default }}, description={{ keyword.description.__repr__() }}),
+    {{keyword.name}}: {{keyword.create_typehint_optional_model(json_mode=True, quote_models=True)}} = Query({{ keyword.default }}, description={{ keyword.description.__repr__() }}),
     {%- endfor %}
 ) -> JSONableResponse:
     """
@@ -38,23 +38,24 @@ async def {{function.name}}(
 
     {{function.link}}
     """
-    from ....main import _get_bot
-
     {#-
-      moop: List[TestModel] = Json.parse_obj_as(
+      moop: List[TestModel] = parse_obj_as(
           type_=List[TestModel],
           obj=moop,
       )
     #}
     {%- for variable in function.variables if variable.typehint_has_model %}
-    {{variable.name}}: {{variable.typehint_optional_model}} = Json.parse_obj_as(
-        {{variable.typehint_optional_model}},
+    {{variable.name}}: {{variable.create_typehint_optional_model(json_mode=False, quote_models=False)}} = parse_obj_as(
+        {{variable.create_typehint_optional_model(json_mode=False, quote_models=False)}},
         obj={{variable.name}},
     )
-    {%- endfor %}
+    {%- endfor -%}
+    {#-  #}
 
+    from ....main import _get_bot
     bot = await _get_bot(token)
-    {% if "chat_id" in function.variable_names %}
+    {#  #}
+    {% if "chat_id" in function.variable_names -%}
     try:
         entity = await get_entity(bot, chat_id)
     except BotMethodInvalidError:

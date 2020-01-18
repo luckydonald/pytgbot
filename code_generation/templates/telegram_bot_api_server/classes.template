@@ -23,7 +23,7 @@ class {{ clazz.clazz -}}Model(BaseModel):  # {{ clazz.parent_clazz.string }}
     """
 
     {%- for variable in clazz.variables %}
-    {{ variable.name }}: {{ variable.typehint_optional_model }}
+    {{ variable.name }}: {{ variable.create_typehint_optional_model(json_mode=False, quote_models=True) }}
     {%- endfor %}
 # end class {{ clazz.clazz }}
 {% endfor %}

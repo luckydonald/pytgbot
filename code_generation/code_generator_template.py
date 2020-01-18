@@ -469,11 +469,29 @@ class Variable(dict):
         return self.create_typehint_optional_model(json_mode=True)
     # end def
 
-    def create_typehint_optional_model(self, json_mode=False):
+    def create_typehint_optional_model(self, json_mode: bool = False, quote_models: bool = True):
+        """
+        :param json_mode: If we should wrap the thing in `Json[...]`
+        :param quote_models: If we should wrap models in quotes for resolving them later.
+
+        Examples:
+            - `param.create_typehint_optional_model(json_mode=True, quote_models=True)`:
+              Creates a typehint with Json[...'FooModel'...] type for fastapi query params.
+
+            - `param.create_typehint_optional_model(json_mode=True, quote_models=True)`:
+              Creates a typehint with a quoted 'FooModel' for lazy loading models, i.e. when using in arguments of depending models.
+
+            - `param.create_typehint_optional_model(json_mode=False, quote_models=False)`
+              Creates a typehint without `Json` type, for type annotations of the parsed variable, and e.g. for final validation with `parse_obj_as`.
+        """
         if len(self.types) == 0:
             type_str = "Any"
         else:
-            wrap_models: Callable[[str], str] = lambda type_str: f'{f"{type_str}Model"!r}'
+            if quote_models:
+                wrap_models: Callable[[str], str] = lambda type_str: f'{f"{type_str}Model"!r}'
+            else:
+                wrap_models: Callable[[str], str] = lambda type_str: f'{type_str}Model'
+            # end if
             if len(self.types) == 1:
                 type_str = self.create_model(self.types[0], wrap_models=wrap_models)
             else:
