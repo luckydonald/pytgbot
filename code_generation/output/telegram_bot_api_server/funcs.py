@@ -42,25 +42,31 @@ if __name__ == '__main__':
 routes = APIRouter()  # Basically a Blueprint
 
 
-# workaround for https://github.com/tiangolo/fastapi/issues/884
 FAST_API_ISSUE_884_IS_FIXED = False
 
 
-class Json:
-    """ workaround for https://github.com/tiangolo/fastapi/issues/884 """
+if FAST_API_ISSUE_884_IS_FIXED:
     from pydantic import Json
 
-    def __getitem__(self, item):
-        if FAST_API_ISSUE_884_IS_FIXED:
-            return self.Json[item]
-        else:
-            return self.Json
-        # end if
+    def parse_obj_as(_, obj, *__, **___):
+        """
+        we don't need any additional parsing as fastapi now does that correctly
+        """
+        return obj
     # end def
-# end def
+else:
+    class __JsonWrapper:
+        from pydantic import Json
 
-# workaround for https://github.com/tiangolo/fastapi/issues/884
-Json = Json()
+        def __getitem__(self, item):
+            """ Basically throw away `[Type]` when used like `Json[Type]` """
+            return self.Json
+        # end def
+    # end def
+    Json = __JsonWrapper()  # so Json[Type] does call Json.__getitem__(self, item=Type)
+
+    from pydantic import parse_obj_as
+# end if
 
 
 @routes.api_route('/{token}/getUpdates', methods=['GET', 'POST'], tags=['official'])
