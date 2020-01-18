@@ -37,16 +37,16 @@ class UpdateModel(BaseModel):  # Receivable
     https://core.telegram.org/bots/api#update
     """
     update_id: int
-    message: Optional[Json['MessageModel']]
-    edited_message: Optional[Json['MessageModel']]
-    channel_post: Optional[Json['MessageModel']]
-    edited_channel_post: Optional[Json['MessageModel']]
-    inline_query: Optional[Json['InlineQueryModel']]
-    chosen_inline_result: Optional[Json['ChosenInlineResultModel']]
-    callback_query: Optional[Json['CallbackQueryModel']]
-    shipping_query: Optional[Json['ShippingQueryModel']]
-    pre_checkout_query: Optional[Json['PreCheckoutQueryModel']]
-    poll: Optional[Json['PollModel']]
+    message: Optional['MessageModel']
+    edited_message: Optional['MessageModel']
+    channel_post: Optional['MessageModel']
+    edited_channel_post: Optional['MessageModel']
+    inline_query: Optional['InlineQueryModel']
+    chosen_inline_result: Optional['ChosenInlineResultModel']
+    callback_query: Optional['CallbackQueryModel']
+    shipping_query: Optional['ShippingQueryModel']
+    pre_checkout_query: Optional['PreCheckoutQueryModel']
+    poll: Optional['PollModel']
 # end class Update
 
 
@@ -93,11 +93,11 @@ class ChatModel(BaseModel):  # Peer
     username: Optional[str]
     first_name: Optional[str]
     last_name: Optional[str]
-    photo: Optional[Json['ChatPhotoModel']]
+    photo: Optional['ChatPhotoModel']
     description: Optional[str]
     invite_link: Optional[str]
-    pinned_message: Optional[Json['MessageModel']]
-    permissions: Optional[Json['ChatPermissionsModel']]
+    pinned_message: Optional['MessageModel']
+    permissions: Optional['ChatPermissionsModel']
     slow_mode_delay: Optional[int]
     sticker_set_name: Optional[str]
     can_set_sticker_set: Optional[bool]
@@ -112,51 +112,51 @@ class MessageModel(BaseModel):  # UpdateType
     """
     message_id: int
     date: int
-    chat: Json['ChatModel']
-    from_peer: Optional[Json['UserModel']]
-    forward_from: Optional[Json['UserModel']]
-    forward_from_chat: Optional[Json['ChatModel']]
+    chat: 'ChatModel'
+    from_peer: Optional['UserModel']
+    forward_from: Optional['UserModel']
+    forward_from_chat: Optional['ChatModel']
     forward_from_message_id: Optional[int]
     forward_signature: Optional[str]
     forward_sender_name: Optional[str]
     forward_date: Optional[int]
-    reply_to_message: Optional[Json['MessageModel']]
+    reply_to_message: Optional['MessageModel']
     edit_date: Optional[int]
     media_group_id: Optional[str]
     author_signature: Optional[str]
     text: Optional[str]
-    entities: Optional[List[Json['MessageEntityModel']]]
-    caption_entities: Optional[List[Json['MessageEntityModel']]]
-    audio: Optional[Json['AudioModel']]
-    document: Optional[Json['DocumentModel']]
-    animation: Optional[Json['AnimationModel']]
-    game: Optional[Json['GameModel']]
-    photo: Optional[List[Json['PhotoSizeModel']]]
-    sticker: Optional[Json['StickerModel']]
-    video: Optional[Json['VideoModel']]
-    voice: Optional[Json['VoiceModel']]
-    video_note: Optional[Json['VideoNoteModel']]
+    entities: Optional[List['MessageEntityModel']]
+    caption_entities: Optional[List['MessageEntityModel']]
+    audio: Optional['AudioModel']
+    document: Optional['DocumentModel']
+    animation: Optional['AnimationModel']
+    game: Optional['GameModel']
+    photo: Optional[List['PhotoSizeModel']]
+    sticker: Optional['StickerModel']
+    video: Optional['VideoModel']
+    voice: Optional['VoiceModel']
+    video_note: Optional['VideoNoteModel']
     caption: Optional[str]
-    contact: Optional[Json['ContactModel']]
-    location: Optional[Json['LocationModel']]
-    venue: Optional[Json['VenueModel']]
-    poll: Optional[Json['PollModel']]
-    new_chat_members: Optional[List[Json['UserModel']]]
-    left_chat_member: Optional[Json['UserModel']]
+    contact: Optional['ContactModel']
+    location: Optional['LocationModel']
+    venue: Optional['VenueModel']
+    poll: Optional['PollModel']
+    new_chat_members: Optional[List['UserModel']]
+    left_chat_member: Optional['UserModel']
     new_chat_title: Optional[str]
-    new_chat_photo: Optional[List[Json['PhotoSizeModel']]]
+    new_chat_photo: Optional[List['PhotoSizeModel']]
     delete_chat_photo: Optional[bool]
     group_chat_created: Optional[bool]
     supergroup_chat_created: Optional[bool]
     channel_chat_created: Optional[bool]
     migrate_to_chat_id: Optional[int]
     migrate_from_chat_id: Optional[int]
-    pinned_message: Optional[Json['MessageModel']]
-    invoice: Optional[Json['InvoiceModel']]
-    successful_payment: Optional[Json['SuccessfulPaymentModel']]
+    pinned_message: Optional['MessageModel']
+    invoice: Optional['InvoiceModel']
+    successful_payment: Optional['SuccessfulPaymentModel']
     connected_website: Optional[str]
-    passport_data: Optional[Json['PassportDataModel']]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
+    passport_data: Optional['PassportDataModel']
+    reply_markup: Optional['InlineKeyboardMarkupModel']
 # end class Message
 
 
@@ -170,7 +170,7 @@ class MessageEntityModel(BaseModel):  # Result
     offset: int
     length: int
     url: Optional[str]
-    user: Optional[Json['UserModel']]
+    user: Optional['UserModel']
 # end class MessageEntity
 
 
@@ -201,7 +201,7 @@ class AudioModel(BaseModel):  # Media
     title: Optional[str]
     mime_type: Optional[str]
     file_size: Optional[int]
-    thumb: Optional[Json['PhotoSizeModel']]
+    thumb: Optional['PhotoSizeModel']
 # end class Audio
 
 
@@ -213,7 +213,7 @@ class DocumentModel(BaseModel):  # Media
     """
     file_id: str
     file_unique_id: str
-    thumb: Optional[Json['PhotoSizeModel']]
+    thumb: Optional['PhotoSizeModel']
     file_name: Optional[str]
     mime_type: Optional[str]
     file_size: Optional[int]
@@ -231,7 +231,7 @@ class VideoModel(BaseModel):  # Media
     width: int
     height: int
     duration: int
-    thumb: Optional[Json['PhotoSizeModel']]
+    thumb: Optional['PhotoSizeModel']
     mime_type: Optional[str]
     file_size: Optional[int]
 # end class Video
@@ -248,7 +248,7 @@ class AnimationModel(BaseModel):  # Media
     width: int
     height: int
     duration: int
-    thumb: Optional[Json['PhotoSizeModel']]
+    thumb: Optional['PhotoSizeModel']
     file_name: Optional[str]
     mime_type: Optional[str]
     file_size: Optional[int]
@@ -279,7 +279,7 @@ class VideoNoteModel(BaseModel):  # Media
     file_unique_id: str
     length: int
     duration: int
-    thumb: Optional[Json['PhotoSizeModel']]
+    thumb: Optional['PhotoSizeModel']
     file_size: Optional[int]
 # end class VideoNote
 
@@ -315,7 +315,7 @@ class VenueModel(BaseModel):  # Media
 
     https://core.telegram.org/bots/api#venue
     """
-    location: Json['LocationModel']
+    location: 'LocationModel'
     title: str
     address: str
     foursquare_id: Optional[str]
@@ -342,7 +342,7 @@ class PollModel(BaseModel):  # Media
     """
     id: str
     question: str
-    options: List[Json['PollOptionModel']]
+    options: List['PollOptionModel']
     is_closed: bool
 # end class Poll
 
@@ -354,7 +354,7 @@ class UserProfilePhotosModel(BaseModel):  # Result
     https://core.telegram.org/bots/api#userprofilephotos
     """
     total_count: int
-    photos: List[List[Json['PhotoSizeModel']]]
+    photos: List[List['PhotoSizeModel']]
 # end class UserProfilePhotos
 
 
@@ -379,7 +379,7 @@ class ReplyKeyboardMarkupModel(BaseModel):  # ReplyMarkup
 
     https://core.telegram.org/bots/api#replykeyboardmarkup
     """
-    keyboard: List[List[Json['KeyboardButtonModel']]]
+    keyboard: List[List['KeyboardButtonModel']]
     resize_keyboard: Optional[bool]
     one_time_keyboard: Optional[bool]
     selective: Optional[bool]
@@ -417,7 +417,7 @@ class InlineKeyboardMarkupModel(BaseModel):  # ReplyMarkup
 
     https://core.telegram.org/bots/api#inlinekeyboardmarkup
     """
-    inline_keyboard: List[List[Json['InlineKeyboardButtonModel']]]
+    inline_keyboard: List[List['InlineKeyboardButtonModel']]
 # end class InlineKeyboardMarkup
 
 
@@ -429,11 +429,11 @@ class InlineKeyboardButtonModel(BaseModel):  # Button
     """
     text: str
     url: Optional[str]
-    login_url: Optional[Json['LoginUrlModel']]
+    login_url: Optional['LoginUrlModel']
     callback_data: Optional[str]
     switch_inline_query: Optional[str]
     switch_inline_query_current_chat: Optional[str]
-    callback_game: Optional[Json['CallbackGameModel']]
+    callback_game: Optional['CallbackGameModel']
     pay: Optional[bool]
 # end class InlineKeyboardButton
 
@@ -463,9 +463,9 @@ class CallbackQueryModel(BaseModel):  # UpdateType
     https://core.telegram.org/bots/api#callbackquery
     """
     id: str
-    from_peer: Json['UserModel']
+    from_peer: 'UserModel'
     chat_instance: str
-    message: Optional[Json['MessageModel']]
+    message: Optional['MessageModel']
     inline_message_id: Optional[str]
     data: Optional[str]
     game_short_name: Optional[str]
@@ -509,7 +509,7 @@ class ChatMemberModel(BaseModel):  # Result
 
     https://core.telegram.org/bots/api#chatmember
     """
-    user: Json['UserModel']
+    user: 'UserModel'
     status: str
     custom_title: Optional[str]
     until_date: Optional[int]
@@ -580,7 +580,7 @@ class InputMediaVideoModel(BaseModel):  # InputMediaWithThumb
     """
     type: str
     media: str
-    thumb: Optional[Union[Json['InputFileModel'], str]]
+    thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
     width: Optional[int]
@@ -598,7 +598,7 @@ class InputMediaAnimationModel(BaseModel):  # InputMediaWithThumb
     """
     type: str
     media: str
-    thumb: Optional[Union[Json['InputFileModel'], str]]
+    thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
     width: Optional[int]
@@ -615,7 +615,7 @@ class InputMediaAudioModel(BaseModel):  # InputMediaWithThumb
     """
     type: str
     media: str
-    thumb: Optional[Union[Json['InputFileModel'], str]]
+    thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
     duration: Optional[int]
@@ -632,7 +632,7 @@ class InputMediaDocumentModel(BaseModel):  # InputMediaWithThumb
     """
     type: str
     media: str
-    thumb: Optional[Union[Json['InputFileModel'], str]]
+    thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
 # end class InputMediaDocument
@@ -649,10 +649,10 @@ class StickerModel(BaseModel):  # Media
     width: int
     height: int
     is_animated: bool
-    thumb: Optional[Json['PhotoSizeModel']]
+    thumb: Optional['PhotoSizeModel']
     emoji: Optional[str]
     set_name: Optional[str]
-    mask_position: Optional[Json['MaskPositionModel']]
+    mask_position: Optional['MaskPositionModel']
     file_size: Optional[int]
 # end class Sticker
 
@@ -667,7 +667,7 @@ class StickerSetModel(BaseModel):  # Result
     title: str
     is_animated: bool
     contains_masks: bool
-    stickers: List[Json['StickerModel']]
+    stickers: List['StickerModel']
 # end class StickerSet
 
 
@@ -691,10 +691,10 @@ class InlineQueryModel(BaseModel):  # Result
     https://core.telegram.org/bots/api#inlinequery
     """
     id: str
-    from_peer: Json['UserModel']
+    from_peer: 'UserModel'
     query: str
     offset: str
-    location: Optional[Json['LocationModel']]
+    location: Optional['LocationModel']
 # end class InlineQuery
 
 
@@ -707,8 +707,8 @@ class InlineQueryResultArticleModel(BaseModel):  # InlineQueryResult
     type: str
     id: str
     title: str
-    input_message_content: Json['InputMessageContentModel']
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
+    input_message_content: 'InputMessageContentModel'
+    reply_markup: Optional['InlineKeyboardMarkupModel']
     url: Optional[str]
     hide_url: Optional[bool]
     description: Optional[str]
@@ -734,8 +734,8 @@ class InlineQueryResultPhotoModel(BaseModel):  # InlineQueryResult
     description: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultPhoto
 
 
@@ -755,8 +755,8 @@ class InlineQueryResultGifModel(BaseModel):  # InlineQueryResult
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultGif
 
 
@@ -776,8 +776,8 @@ class InlineQueryResultMpeg4GifModel(BaseModel):  # InlineQueryResult
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultMpeg4Gif
 
 
@@ -801,8 +801,8 @@ class InlineQueryResultVideoModel(BaseModel):  # InlineQueryResult
     video_height: Optional[int]
     video_duration: Optional[int]
     description: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultVideo
 
 
@@ -821,8 +821,8 @@ class InlineQueryResultAudioModel(BaseModel):  # InlineQueryResult
     parse_mode: Optional[str]
     performer: Optional[str]
     audio_duration: Optional[int]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultAudio
 
 
@@ -840,8 +840,8 @@ class InlineQueryResultVoiceModel(BaseModel):  # InlineQueryResult
     caption: Optional[str]
     parse_mode: Optional[str]
     voice_duration: Optional[int]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultVoice
 
 
@@ -860,8 +860,8 @@ class InlineQueryResultDocumentModel(BaseModel):  # InlineQueryResult
     caption: Optional[str]
     parse_mode: Optional[str]
     description: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
     thumb_url: Optional[str]
     thumb_width: Optional[int]
     thumb_height: Optional[int]
@@ -881,8 +881,8 @@ class InlineQueryResultLocationModel(BaseModel):  # InlineQueryResult
     longitude: float
     title: str
     live_period: Optional[int]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
     thumb_url: Optional[str]
     thumb_width: Optional[int]
     thumb_height: Optional[int]
@@ -904,8 +904,8 @@ class InlineQueryResultVenueModel(BaseModel):  # InlineQueryResult
     address: str
     foursquare_id: Optional[str]
     foursquare_type: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
     thumb_url: Optional[str]
     thumb_width: Optional[int]
     thumb_height: Optional[int]
@@ -925,8 +925,8 @@ class InlineQueryResultContactModel(BaseModel):  # InlineQueryResult
     first_name: str
     last_name: Optional[str]
     vcard: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
     thumb_url: Optional[str]
     thumb_width: Optional[int]
     thumb_height: Optional[int]
@@ -943,7 +943,7 @@ class InlineQueryResultGameModel(BaseModel):  # InlineQueryResult
     type: str
     id: str
     game_short_name: str
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
 # end class InlineQueryResultGame
 
 
@@ -960,8 +960,8 @@ class InlineQueryResultCachedPhotoModel(BaseModel):  # InlineQueryCachedResult
     description: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedPhoto
 
 
@@ -977,8 +977,8 @@ class InlineQueryResultCachedGifModel(BaseModel):  # InlineQueryCachedResult
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedGif
 
 
@@ -994,8 +994,8 @@ class InlineQueryResultCachedMpeg4GifModel(BaseModel):  # InlineQueryCachedResul
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedMpeg4Gif
 
 
@@ -1009,8 +1009,8 @@ class InlineQueryResultCachedStickerModel(BaseModel):  # InlineQueryCachedResult
     type: str
     id: str
     sticker_file_id: str
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedSticker
 
 
@@ -1028,8 +1028,8 @@ class InlineQueryResultCachedDocumentModel(BaseModel):  # InlineQueryCachedResul
     description: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedDocument
 
 
@@ -1046,8 +1046,8 @@ class InlineQueryResultCachedVideoModel(BaseModel):  # InlineQueryCachedResult
     description: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedVideo
 
 
@@ -1064,8 +1064,8 @@ class InlineQueryResultCachedVoiceModel(BaseModel):  # InlineQueryCachedResult
     title: str
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedVoice
 
 
@@ -1081,8 +1081,8 @@ class InlineQueryResultCachedAudioModel(BaseModel):  # InlineQueryCachedResult
     audio_file_id: str
     caption: Optional[str]
     parse_mode: Optional[str]
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']]
-    input_message_content: Optional[Json['InputMessageContentModel']]
+    reply_markup: Optional['InlineKeyboardMarkupModel']
+    input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedAudio
 
 
@@ -1146,9 +1146,9 @@ class ChosenInlineResultModel(BaseModel):  # UpdateType
     https://core.telegram.org/bots/api#choseninlineresult
     """
     result_id: str
-    from_peer: Json['UserModel']
+    from_peer: 'UserModel'
     query: str
-    location: Optional[Json['LocationModel']]
+    location: Optional['LocationModel']
     inline_message_id: Optional[str]
 # end class ChosenInlineResult
 
@@ -1202,7 +1202,7 @@ class OrderInfoModel(BaseModel):  # Result
     name: Optional[str]
     phone_number: Optional[str]
     email: Optional[str]
-    shipping_address: Optional[Json['ShippingAddressModel']]
+    shipping_address: Optional['ShippingAddressModel']
 # end class OrderInfo
 
 
@@ -1214,7 +1214,7 @@ class ShippingOptionModel(BaseModel):  # Sendable
     """
     id: str
     title: str
-    prices: List[Json['LabeledPriceModel']]
+    prices: List['LabeledPriceModel']
 # end class ShippingOption
 
 
@@ -1230,7 +1230,7 @@ class SuccessfulPaymentModel(BaseModel):  # Result
     telegram_payment_charge_id: str
     provider_payment_charge_id: str
     shipping_option_id: Optional[str]
-    order_info: Optional[Json['OrderInfoModel']]
+    order_info: Optional['OrderInfoModel']
 # end class SuccessfulPayment
 
 
@@ -1241,9 +1241,9 @@ class ShippingQueryModel(BaseModel):  # UpdateType
     https://core.telegram.org/bots/api#shippingquery
     """
     id: str
-    from_peer: Json['UserModel']
+    from_peer: 'UserModel'
     invoice_payload: str
-    shipping_address: Json['ShippingAddressModel']
+    shipping_address: 'ShippingAddressModel'
 # end class ShippingQuery
 
 
@@ -1254,12 +1254,12 @@ class PreCheckoutQueryModel(BaseModel):  # UpdateType
     https://core.telegram.org/bots/api#precheckoutquery
     """
     id: str
-    from_peer: Json['UserModel']
+    from_peer: 'UserModel'
     currency: str
     total_amount: int
     invoice_payload: str
     shipping_option_id: Optional[str]
-    order_info: Optional[Json['OrderInfoModel']]
+    order_info: Optional['OrderInfoModel']
 # end class PreCheckoutQuery
 
 
@@ -1269,8 +1269,8 @@ class PassportDataModel(BaseModel):  # Result
 
     https://core.telegram.org/bots/api#passportdata
     """
-    data: List[Json['EncryptedPassportElementModel']]
-    credentials: Json['EncryptedCredentialsModel']
+    data: List['EncryptedPassportElementModel']
+    credentials: 'EncryptedCredentialsModel'
 # end class PassportData
 
 
@@ -1298,11 +1298,11 @@ class EncryptedPassportElementModel(BaseModel):  # Result
     data: Optional[str]
     phone_number: Optional[str]
     email: Optional[str]
-    files: Optional[List[Json['PassportFileModel']]]
-    front_side: Optional[Json['PassportFileModel']]
-    reverse_side: Optional[Json['PassportFileModel']]
-    selfie: Optional[Json['PassportFileModel']]
-    translation: Optional[List[Json['PassportFileModel']]]
+    files: Optional[List['PassportFileModel']]
+    front_side: Optional['PassportFileModel']
+    reverse_side: Optional['PassportFileModel']
+    selfie: Optional['PassportFileModel']
+    translation: Optional[List['PassportFileModel']]
 # end class EncryptedPassportElement
 
 
@@ -1444,10 +1444,10 @@ class GameModel(BaseModel):  # Media
     """
     title: str
     description: str
-    photo: List[Json['PhotoSizeModel']]
+    photo: List['PhotoSizeModel']
     text: Optional[str]
-    text_entities: Optional[List[Json['MessageEntityModel']]]
-    animation: Optional[Json['AnimationModel']]
+    text_entities: Optional[List['MessageEntityModel']]
+    animation: Optional['AnimationModel']
 # end class Game
 
 
@@ -1458,6 +1458,6 @@ class GameHighScoreModel(BaseModel):  # Result
     https://core.telegram.org/bots/api#gamehighscore
     """
     position: int
-    user: Json['UserModel']
+    user: 'UserModel'
     score: int
 # end class GameHighScore

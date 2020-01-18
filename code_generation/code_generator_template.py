@@ -441,11 +441,39 @@ class Variable(dict):
     # end def
 
     @property
+    def typehint_has_model(self):
+        for t in self.types:
+            if not t.is_builtin:
+                return True
+            # end if
+        # end for
+        return False
+    # end def
+
+    @property
     def typehint_optional_model(self):
+        """
+        Creates a typehint without Json type.
+        For type annotations of the parsed variable, and for final validation.
+        See https://github.com/tiangolo/fastapi/issues/884.
+        """
+        return self.create_typehint_optional_model(json_mode=False)
+    # end def
+
+    @property
+    def typehint_optional_model_json(self):
+        """
+        Creates a typehint with Json type for fastapi query params.
+        See https://github.com/tiangolo/fastapi/issues/884.
+        """
+        return self.create_typehint_optional_model(json_mode=True)
+    # end def
+
+    def create_typehint_optional_model(self, json_mode=False):
         if len(self.types) == 0:
             type_str = "Any"
         else:
-            wrap_models: Callable[[str], str] = lambda type_str: f'Json[{f"{type_str}Model"!r}]'
+            wrap_models: Callable[[str], str] = lambda type_str: f'{f"{type_str}Model"!r}'
             if len(self.types) == 1:
                 type_str = self.create_model(self.types[0], wrap_models=wrap_models)
             else:
@@ -455,11 +483,16 @@ class Variable(dict):
             # end if
         # end if
 
+        if json_mode and self.typehint_has_model:
+            type_str = type_str.join(("Json[", "]"))
+        # end def
+
         if self.optional:
             type_str = type_str.join(("Optional[", "]"))
         # end if
         return type_str
     # end def
+
 
     @staticmethod
     def create_model(the_type: 'Type', wrap_models: Union[None, Callable[[str], str]] = None):

@@ -45,10 +45,10 @@ Json = Json()
 async def {{function.name}}(
     token: str = TOKEN_VALIDATION,
     {%- for param in function.parameters %}
-    {{param.name}}: {{param.typehint_optional_model}} = Query(..., description={{ param.description.__repr__() }}),
+    {{param.name}}: {{param.typehint_optional_model_json}} = Query(..., description={{ param.description.__repr__() }}),
     {%- endfor %}
     {%- for keyword in function.keywords %}
-    {{keyword.name}}: {{keyword.typehint_optional_model}} = Query({{ keyword.default }}, description={{ keyword.description.__repr__() }}),
+    {{keyword.name}}: {{keyword.typehint_optional_model_json}} = Query({{ keyword.default }}, description={{ keyword.description.__repr__() }}),
     {%- endfor %}
 ) -> JSONableResponse:
     """
