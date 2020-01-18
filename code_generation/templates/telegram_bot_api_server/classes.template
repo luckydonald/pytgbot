@@ -6,6 +6,9 @@ from typing import Any, Union, List, Optional
 
 __author__ = 'luckydonald'
 
+__all__ = [
+   {% for clazz in clazzes %} '{{ clazz.clazz -}}Model',{% endfor %}
+]
 
 {% include 'fastapi_issue_884_workaround.template' %}
 
