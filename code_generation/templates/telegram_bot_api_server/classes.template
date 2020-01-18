@@ -7,6 +7,27 @@ from typing import Any, Union, List, Optional
 __author__ = 'luckydonald'
 
 
+# workaround for https://github.com/tiangolo/fastapi/issues/884
+FAST_API_ISSUE_884_IS_FIXED = False
+
+
+class Json:
+    """ workaround for https://github.com/tiangolo/fastapi/issues/884 """
+    from pydantic import Json
+
+    def __getitem__(self, item):
+        if FAST_API_ISSUE_884_IS_FIXED:
+            return self.Json[item]
+        else:
+            return self.Json
+        # end if
+    # end def
+# end def
+
+# workaround for https://github.com/tiangolo/fastapi/issues/884
+Json = Json()
+
+
 {% for clazz in clazzes %}
 
 class {{ clazz.clazz -}}Model(BaseModel):  # {{ clazz.parent_clazz.string }}

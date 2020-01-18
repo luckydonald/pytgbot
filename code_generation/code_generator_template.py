@@ -445,7 +445,7 @@ class Variable(dict):
         if len(self.types) == 0:
             return "Any"
         # end if
-        wrap_models: Callable[[str], str] = lambda type_str: repr(f"{type_str}Model")
+        wrap_models: Callable[[str], str] = lambda type_str: f'Json[{f"{type_str}Model"!r}]'
         if len(self.types) == 1:
             return self.create_model(self.types[0], self.optional, wrap_models=wrap_models)
         # end if
