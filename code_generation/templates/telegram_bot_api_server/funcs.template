@@ -24,10 +24,10 @@ routes = APIRouter()  # Basically a Blueprint
 async def {{function.name}}(
     token: str = TOKEN_VALIDATION,
     {%- for param in function.parameters %}
-    {{param.name}}: {{param.typehint_optional}} = Query(..., description={{ param.description.__repr__() }}),
+    {{param.name}}: {{param.typehint_optional_model}} = Query(..., description={{ param.description.__repr__() }}),
     {%- endfor %}
     {%- for keyword in function.keywords %}
-    {{keyword.name}}: {{keyword.typehint_optional}} = Query({{ keyword.default }}, description={{ keyword.description.__repr__() }}),
+    {{keyword.name}}: {{keyword.typehint_optional_model}} = Query({{ keyword.default }}, description={{ keyword.description.__repr__() }}),
     {%- endfor %}
 ) -> JSONableResponse:
     """
@@ -40,6 +40,9 @@ async def {{function.name}}(
     {% if "chat_id" in function.variable_names %}
     try:
         entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
     except ValueError:
         raise HTTPException(404, detail="chat not found?")
     # end try

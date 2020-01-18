@@ -511,6 +511,7 @@ def safe_to_file(folder, results):
     functions = []
     message_send_functions = []
     clazzes = {}  # "filepath": [Class, Class, ...]
+    all_the_clazzes = []
 
     # split results into functions and classes
     for result in results:
@@ -523,6 +524,7 @@ def safe_to_file(folder, results):
             if file_path not in clazzes:
                 clazzes[file_path] = []
             clazzes[file_path].append(result)
+            all_the_clazzes.append(result)
         else:
             assert isinstance(result, Function)
             import_path = "pytgbot.bot."
@@ -544,8 +546,15 @@ def safe_to_file(folder, results):
     clazzfile_template = get_template("classfile.template")
     teleflask_messages_template = get_template("teleflask_messages_file.template")
     typehints_template = get_template("typehintsfile.template")
-    telegram_bot_api_server_template = get_template("telegram_bot_api_server/funcs.template")
+    telegram_bot_api_server_funcs_template = get_template("telegram_bot_api_server/funcs.template")
+    telegram_bot_api_server_class_template = get_template("telegram_bot_api_server/classes.template")
 
+    mkdir_p(path_join(folder, 'telegram_bot_api_server'))
+
+    if all_the_clazzes:
+        txt = telegram_bot_api_server_class_template.render(clazzes=all_the_clazzes)
+        render_file_to_disk(path_join(folder, 'telegram_bot_api_server', 'classes.py'), txt)
+    # end if
     for path, clazz_list in clazzes.items():
         clazz_imports = set()
         for clazz_ in clazz_list:
@@ -582,7 +591,6 @@ def safe_to_file(folder, results):
         txt = bot_template.render(functions=functions)
         render_file_to_disk(functions[0].filepath, txt)
 
-        mkdir_p(path_join(folder, 'telegram_bot_api_server'))
         imports = set()
         imports.add(('enum', 'Enum'))
         imports.add(('typing', 'Union, List, Optional'))
@@ -590,6 +598,7 @@ def safe_to_file(folder, results):
         imports.add(('telethon', 'TelegramClient'))
         imports.add(('serializer', 'to_web_api, get_entity'))
         imports.add(('fastapi.params', 'Query'))
+        imports.add(('telethon.errors', 'BotMethodInvalidError'))
         imports.add(('telethon.tl.types', 'TypeSendMessageAction'))
         imports.add(('telethon.client.chats', '_ChatAction'))
         imports.add(('luckydonaldUtils.logger', 'logging'))
@@ -607,7 +616,7 @@ def safe_to_file(folder, results):
         imports_sorted = ["from " + path + ' import ' + name for path, name in sorted(imports, key=lambda item: (-len(item[0]), item[0], -len(item[1]), item[1]))]
         # imports_sorted.sort(key=lambda item: (-len(item), item))
 
-        txt = telegram_bot_api_server_template.render(functions=functions, imports=imports_sorted)
+        txt = telegram_bot_api_server_funcs_template.render(functions=functions, imports=imports_sorted)
         render_file_to_disk(path_join(folder, 'telegram_bot_api_server', 'funcs.py'), txt)
     # end if
     if message_send_functions:

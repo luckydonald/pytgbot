@@ -440,6 +440,33 @@ class Variable(dict):
         return self.typehint
     # end def
 
+    @property
+    def typehint_optional_model(self):
+        if len(self.types) == 0:
+            return "Any"
+        # end if
+        if len(self.types) == 1:
+            return self.create_model(self.types[0], self.optional)
+        # end if
+        return (", ".join(self.create_model(t, self.optional) for t in self.types)).join(("Union[", "]"))
+    # end def
+
+    @staticmethod
+    def create_model(the_type: 'Type', optional: bool):
+        type_str = the_type.string
+        if not the_type.is_builtin:
+            # noinspection PyCompatibility
+            type_str = repr(f"{type_str}Model")
+        # end def
+        for i in range(the_type.is_list):
+            type_str = type_str.join(("List[", "]"))
+        # end def
+        if optional:
+            type_str = type_str.join(("Optional[", "]"))
+        # end if
+        return type_str
+    # end def
+
     def __repr__(self):
         return (
             "Variable("
