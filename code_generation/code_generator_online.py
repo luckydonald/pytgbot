@@ -549,11 +549,11 @@ def safe_to_file(folder, results):
     telegram_bot_api_server_funcs_template = get_template("telegram_bot_api_server/funcs.template")
     telegram_bot_api_server_class_template = get_template("telegram_bot_api_server/classes.template")
 
-    mkdir_p(path_join(folder, 'telegram_bot_api_server'))
+    mkdir_p(path_join(folder, 'telegram_bot_api_server', 'generated'))
 
     if all_the_clazzes:
         txt = telegram_bot_api_server_class_template.render(clazzes=all_the_clazzes)
-        render_file_to_disk(path_join(folder, 'telegram_bot_api_server', 'classes.py'), txt)
+        render_file_to_disk(path_join(folder, 'telegram_bot_api_server', 'generated', 'models.py'), txt)
     # end if
     for path, clazz_list in clazzes.items():
         clazz_imports = set()
@@ -617,7 +617,7 @@ def safe_to_file(folder, results):
         # imports_sorted.sort(key=lambda item: (-len(item), item))
 
         txt = telegram_bot_api_server_funcs_template.render(functions=functions, imports=imports_sorted)
-        render_file_to_disk(path_join(folder, 'telegram_bot_api_server', 'funcs.py'), txt)
+        render_file_to_disk(path_join(folder, 'telegram_bot_api_server', 'generated', 'funcs.py'), txt)
     # end if
     if message_send_functions:
         txt = teleflask_messages_template.render(functions=message_send_functions)

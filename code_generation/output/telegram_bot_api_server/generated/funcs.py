@@ -27,8 +27,9 @@ from fastapi import APIRouter, HTTPException
 from typing import Union, List, Optional
 from enum import Enum
 
-from ....tools.responses import r_success, JSONableResponse
-from ....constants import TOKEN_VALIDATION
+from .....tools.responses import r_success, JSONableResponse
+from .....constants import TOKEN_VALIDATION
+from ..generated.models import *
 
 __author__ = 'luckydonald'  # but it's automatically generated.
 
@@ -86,7 +87,7 @@ async def get_updates(
     https://core.telegram.org/bots/api#getupdates
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -125,7 +126,7 @@ async def set_webhook(
         obj=certificate,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -151,7 +152,7 @@ async def delete_webhook(
     https://core.telegram.org/bots/api#deletewebhook
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -173,7 +174,7 @@ async def get_webhook_info(
     https://core.telegram.org/bots/api#getwebhookinfo
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -195,7 +196,7 @@ async def get_me(
     https://core.telegram.org/bots/api#getme
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -228,7 +229,7 @@ async def send_message(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -268,7 +269,7 @@ async def forward_message(
     https://core.telegram.org/bots/api#forwardmessage
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -316,7 +317,7 @@ async def send_photo(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -376,7 +377,7 @@ async def send_audio(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -436,7 +437,7 @@ async def send_document(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -497,7 +498,7 @@ async def send_video(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -561,7 +562,7 @@ async def send_animation(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -617,7 +618,7 @@ async def send_voice(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -674,7 +675,7 @@ async def send_video_note(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -719,7 +720,7 @@ async def send_media_group(
         obj=media,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -763,7 +764,7 @@ async def send_location(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -809,7 +810,7 @@ async def edit_message_live_location(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -852,7 +853,7 @@ async def stop_message_live_location(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -899,7 +900,7 @@ async def send_venue(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -950,7 +951,7 @@ async def send_contact(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -997,7 +998,7 @@ async def send_poll(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1038,7 +1039,7 @@ async def send_chat_action(
     https://core.telegram.org/bots/api#sendchataction
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1072,7 +1073,7 @@ async def get_user_profile_photos(
     https://core.telegram.org/bots/api#getuserprofilephotos
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -1099,7 +1100,7 @@ async def get_file(
     https://core.telegram.org/bots/api#getfile
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -1125,7 +1126,7 @@ async def kick_chat_member(
     https://core.telegram.org/bots/api#kickchatmember
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1159,7 +1160,7 @@ async def unban_chat_member(
     https://core.telegram.org/bots/api#unbanchatmember
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1198,7 +1199,7 @@ async def restrict_chat_member(
         obj=permissions,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1241,7 +1242,7 @@ async def promote_chat_member(
     https://core.telegram.org/bots/api#promotechatmember
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1283,7 +1284,7 @@ async def set_chat_administrator_custom_title(
     https://core.telegram.org/bots/api#setchatadministratorcustomtitle
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1321,7 +1322,7 @@ async def set_chat_permissions(
         obj=permissions,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1356,7 +1357,7 @@ async def export_chat_invite_link(
     https://core.telegram.org/bots/api#exportchatinvitelink
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1392,7 +1393,7 @@ async def set_chat_photo(
         obj=photo,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1424,7 +1425,7 @@ async def delete_chat_photo(
     https://core.telegram.org/bots/api#deletechatphoto
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1456,7 +1457,7 @@ async def set_chat_title(
     https://core.telegram.org/bots/api#setchattitle
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1489,7 +1490,7 @@ async def set_chat_description(
     https://core.telegram.org/bots/api#setchatdescription
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1523,7 +1524,7 @@ async def pin_chat_message(
     https://core.telegram.org/bots/api#pinchatmessage
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1556,7 +1557,7 @@ async def unpin_chat_message(
     https://core.telegram.org/bots/api#unpinchatmessage
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1587,7 +1588,7 @@ async def leave_chat(
     https://core.telegram.org/bots/api#leavechat
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1618,7 +1619,7 @@ async def get_chat(
     https://core.telegram.org/bots/api#getchat
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1649,7 +1650,7 @@ async def get_chat_administrators(
     https://core.telegram.org/bots/api#getchatadministrators
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1680,7 +1681,7 @@ async def get_chat_members_count(
     https://core.telegram.org/bots/api#getchatmemberscount
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1712,7 +1713,7 @@ async def get_chat_member(
     https://core.telegram.org/bots/api#getchatmember
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1745,7 +1746,7 @@ async def set_chat_sticker_set(
     https://core.telegram.org/bots/api#setchatstickerset
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1777,7 +1778,7 @@ async def delete_chat_sticker_set(
     https://core.telegram.org/bots/api#deletechatstickerset
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1815,7 +1816,7 @@ async def answer_callback_query(
     https://core.telegram.org/bots/api#answercallbackquery
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -1853,7 +1854,7 @@ async def edit_message_text(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1899,7 +1900,7 @@ async def edit_message_caption(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1947,7 +1948,7 @@ async def edit_message_media(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -1989,7 +1990,7 @@ async def edit_message_reply_markup(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -2029,7 +2030,7 @@ async def stop_poll(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -2063,7 +2064,7 @@ async def delete_message(
     https://core.telegram.org/bots/api#deletemessage
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -2107,7 +2108,7 @@ async def send_sticker(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -2142,7 +2143,7 @@ async def get_sticker_set(
     https://core.telegram.org/bots/api#getstickerset
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2171,7 +2172,7 @@ async def upload_sticker_file(
         obj=png_sticker,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2210,7 +2211,7 @@ async def create_new_sticker_set(
         obj=mask_position,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2252,7 +2253,7 @@ async def add_sticker_to_set(
         obj=mask_position,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2281,7 +2282,7 @@ async def set_sticker_position_in_set(
     https://core.telegram.org/bots/api#setstickerpositioninset
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2306,7 +2307,7 @@ async def delete_sticker_from_set(
     https://core.telegram.org/bots/api#deletestickerfromset
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2340,7 +2341,7 @@ async def answer_inline_query(
         obj=results,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2400,7 +2401,7 @@ async def send_invoice(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -2460,7 +2461,7 @@ async def answer_shipping_query(
         obj=shipping_options,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2489,7 +2490,7 @@ async def answer_pre_checkout_query(
     https://core.telegram.org/bots/api#answerprecheckoutquery
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2521,7 +2522,7 @@ async def set_passport_data_errors(
         obj=errors,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     
@@ -2554,7 +2555,7 @@ async def send_game(
         obj=reply_markup,
     )
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -2595,7 +2596,7 @@ async def set_game_score(
     https://core.telegram.org/bots/api#setgamescore
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:
@@ -2638,7 +2639,7 @@ async def get_game_high_scores(
     https://core.telegram.org/bots/api#getgamehighscores
     """
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     
     try:

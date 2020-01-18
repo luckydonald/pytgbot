@@ -4,8 +4,9 @@
 {% for import in imports -%}
 {{- import }}
 {% endfor %}
-from ....tools.responses import r_success, JSONableResponse
-from ....constants import TOKEN_VALIDATION
+from .....tools.responses import r_success, JSONableResponse
+from .....constants import TOKEN_VALIDATION
+from ..generated.models import *
 
 __author__ = 'luckydonald'  # but it's automatically generated.
 
@@ -52,7 +53,7 @@ async def {{function.name}}(
     {%- endfor -%}
     {#-  #}
 
-    from ....main import _get_bot
+    from .....main import _get_bot
     bot = await _get_bot(token)
     {#  #}
     {% if "chat_id" in function.variable_names -%}
