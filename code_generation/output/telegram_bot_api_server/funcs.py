@@ -114,6 +114,10 @@ async def set_webhook(
     https://core.telegram.org/bots/api#setwebhook
     """
     from ....main import _get_bot
+    certificate: Optional['InputFileModel'] = Json.parse_obj_as(
+        Optional['InputFileModel'],
+        obj=certificate,
+    )
 
     bot = await _get_bot(token)
     
@@ -209,6 +213,10 @@ async def send_message(
     https://core.telegram.org/bots/api#sendmessage
     """
     from ....main import _get_bot
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -289,6 +297,14 @@ async def send_photo(
     https://core.telegram.org/bots/api#sendphoto
     """
     from ....main import _get_bot
+    photo: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=photo,
+    )
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -337,6 +353,18 @@ async def send_audio(
     https://core.telegram.org/bots/api#sendaudio
     """
     from ....main import _get_bot
+    audio: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=audio,
+    )
+    thumb: Optional[Union['InputFileModel', str]] = Json.parse_obj_as(
+        Optional[Union['InputFileModel', str]],
+        obj=thumb,
+    )
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -385,6 +413,18 @@ async def send_document(
     https://core.telegram.org/bots/api#senddocument
     """
     from ....main import _get_bot
+    document: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=document,
+    )
+    thumb: Optional[Union['InputFileModel', str]] = Json.parse_obj_as(
+        Optional[Union['InputFileModel', str]],
+        obj=thumb,
+    )
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -434,6 +474,18 @@ async def send_video(
     https://core.telegram.org/bots/api#sendvideo
     """
     from ....main import _get_bot
+    video: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=video,
+    )
+    thumb: Optional[Union['InputFileModel', str]] = Json.parse_obj_as(
+        Optional[Union['InputFileModel', str]],
+        obj=thumb,
+    )
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -486,6 +538,18 @@ async def send_animation(
     https://core.telegram.org/bots/api#sendanimation
     """
     from ....main import _get_bot
+    animation: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=animation,
+    )
+    thumb: Optional[Union['InputFileModel', str]] = Json.parse_obj_as(
+        Optional[Union['InputFileModel', str]],
+        obj=thumb,
+    )
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -534,6 +598,14 @@ async def send_voice(
     https://core.telegram.org/bots/api#sendvoice
     """
     from ....main import _get_bot
+    voice: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=voice,
+    )
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -579,6 +651,18 @@ async def send_video_note(
     https://core.telegram.org/bots/api#sendvideonote
     """
     from ....main import _get_bot
+    video_note: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=video_note,
+    )
+    thumb: Optional[Union['InputFileModel', str]] = Json.parse_obj_as(
+        Optional[Union['InputFileModel', str]],
+        obj=thumb,
+    )
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -620,6 +704,10 @@ async def send_media_group(
     https://core.telegram.org/bots/api#sendmediagroup
     """
     from ....main import _get_bot
+    media: Union[List['InputMediaPhotoModel'], List['InputMediaVideoModel']] = Json.parse_obj_as(
+        Union[List['InputMediaPhotoModel'], List['InputMediaVideoModel']],
+        obj=media,
+    )
 
     bot = await _get_bot(token)
     
@@ -660,6 +748,10 @@ async def send_location(
     https://core.telegram.org/bots/api#sendlocation
     """
     from ....main import _get_bot
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -702,6 +794,10 @@ async def edit_message_live_location(
     https://core.telegram.org/bots/api#editmessagelivelocation
     """
     from ....main import _get_bot
+    reply_markup: Optional['InlineKeyboardMarkupModel'] = Json.parse_obj_as(
+        Optional['InlineKeyboardMarkupModel'],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -741,6 +837,10 @@ async def stop_message_live_location(
     https://core.telegram.org/bots/api#stopmessagelivelocation
     """
     from ....main import _get_bot
+    reply_markup: Optional['InlineKeyboardMarkupModel'] = Json.parse_obj_as(
+        Optional['InlineKeyboardMarkupModel'],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -784,6 +884,10 @@ async def send_venue(
     https://core.telegram.org/bots/api#sendvenue
     """
     from ....main import _get_bot
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -831,6 +935,10 @@ async def send_contact(
     https://core.telegram.org/bots/api#sendcontact
     """
     from ....main import _get_bot
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -874,6 +982,10 @@ async def send_poll(
     https://core.telegram.org/bots/api#sendpoll
     """
     from ....main import _get_bot
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -1069,6 +1181,10 @@ async def restrict_chat_member(
     https://core.telegram.org/bots/api#restrictchatmember
     """
     from ....main import _get_bot
+    permissions: 'ChatPermissionsModel' = Json.parse_obj_as(
+        'ChatPermissionsModel',
+        obj=permissions,
+    )
 
     bot = await _get_bot(token)
     
@@ -1188,6 +1304,10 @@ async def set_chat_permissions(
     https://core.telegram.org/bots/api#setchatpermissions
     """
     from ....main import _get_bot
+    permissions: 'ChatPermissionsModel' = Json.parse_obj_as(
+        'ChatPermissionsModel',
+        obj=permissions,
+    )
 
     bot = await _get_bot(token)
     
@@ -1255,6 +1375,10 @@ async def set_chat_photo(
     https://core.telegram.org/bots/api#setchatphoto
     """
     from ....main import _get_bot
+    photo: 'InputFileModel' = Json.parse_obj_as(
+        'InputFileModel',
+        obj=photo,
+    )
 
     bot = await _get_bot(token)
     
@@ -1711,6 +1835,10 @@ async def edit_message_text(
     https://core.telegram.org/bots/api#editmessagetext
     """
     from ....main import _get_bot
+    reply_markup: Optional['InlineKeyboardMarkupModel'] = Json.parse_obj_as(
+        Optional['InlineKeyboardMarkupModel'],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -1753,6 +1881,10 @@ async def edit_message_caption(
     https://core.telegram.org/bots/api#editmessagecaption
     """
     from ....main import _get_bot
+    reply_markup: Optional['InlineKeyboardMarkupModel'] = Json.parse_obj_as(
+        Optional['InlineKeyboardMarkupModel'],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -1793,6 +1925,14 @@ async def edit_message_media(
     https://core.telegram.org/bots/api#editmessagemedia
     """
     from ....main import _get_bot
+    media: 'InputMediaModel' = Json.parse_obj_as(
+        'InputMediaModel',
+        obj=media,
+    )
+    reply_markup: Optional['InlineKeyboardMarkupModel'] = Json.parse_obj_as(
+        Optional['InlineKeyboardMarkupModel'],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -1831,6 +1971,10 @@ async def edit_message_reply_markup(
     https://core.telegram.org/bots/api#editmessagereplymarkup
     """
     from ....main import _get_bot
+    reply_markup: Optional['InlineKeyboardMarkupModel'] = Json.parse_obj_as(
+        Optional['InlineKeyboardMarkupModel'],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -1867,6 +2011,10 @@ async def stop_poll(
     https://core.telegram.org/bots/api#stoppoll
     """
     from ....main import _get_bot
+    reply_markup: Optional['InlineKeyboardMarkupModel'] = Json.parse_obj_as(
+        Optional['InlineKeyboardMarkupModel'],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -1937,6 +2085,14 @@ async def send_sticker(
     https://core.telegram.org/bots/api#sendsticker
     """
     from ....main import _get_bot
+    sticker: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=sticker,
+    )
+    reply_markup: Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']] = Json.parse_obj_as(
+        Optional[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -1996,6 +2152,10 @@ async def upload_sticker_file(
     https://core.telegram.org/bots/api#uploadstickerfile
     """
     from ....main import _get_bot
+    png_sticker: 'InputFileModel' = Json.parse_obj_as(
+        'InputFileModel',
+        obj=png_sticker,
+    )
 
     bot = await _get_bot(token)
     
@@ -2026,6 +2186,14 @@ async def create_new_sticker_set(
     https://core.telegram.org/bots/api#createnewstickerset
     """
     from ....main import _get_bot
+    png_sticker: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=png_sticker,
+    )
+    mask_position: Optional['MaskPositionModel'] = Json.parse_obj_as(
+        Optional['MaskPositionModel'],
+        obj=mask_position,
+    )
 
     bot = await _get_bot(token)
     
@@ -2059,6 +2227,14 @@ async def add_sticker_to_set(
     https://core.telegram.org/bots/api#addstickertoset
     """
     from ....main import _get_bot
+    png_sticker: Union['InputFileModel', str] = Json.parse_obj_as(
+        Union['InputFileModel', str],
+        obj=png_sticker,
+    )
+    mask_position: Optional['MaskPositionModel'] = Json.parse_obj_as(
+        Optional['MaskPositionModel'],
+        obj=mask_position,
+    )
 
     bot = await _get_bot(token)
     
@@ -2140,6 +2316,10 @@ async def answer_inline_query(
     https://core.telegram.org/bots/api#answerinlinequery
     """
     from ....main import _get_bot
+    results: List['InlineQueryResultModel'] = Json.parse_obj_as(
+        List['InlineQueryResultModel'],
+        obj=results,
+    )
 
     bot = await _get_bot(token)
     
@@ -2191,6 +2371,14 @@ async def send_invoice(
     https://core.telegram.org/bots/api#sendinvoice
     """
     from ....main import _get_bot
+    prices: List['LabeledPriceModel'] = Json.parse_obj_as(
+        List['LabeledPriceModel'],
+        obj=prices,
+    )
+    reply_markup: Optional['InlineKeyboardMarkupModel'] = Json.parse_obj_as(
+        Optional['InlineKeyboardMarkupModel'],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     
@@ -2247,6 +2435,10 @@ async def answer_shipping_query(
     https://core.telegram.org/bots/api#answershippingquery
     """
     from ....main import _get_bot
+    shipping_options: Optional[List['ShippingOptionModel']] = Json.parse_obj_as(
+        Optional[List['ShippingOptionModel']],
+        obj=shipping_options,
+    )
 
     bot = await _get_bot(token)
     
@@ -2302,6 +2494,10 @@ async def set_passport_data_errors(
     https://core.telegram.org/bots/api#setpassportdataerrors
     """
     from ....main import _get_bot
+    errors: List['PassportElementErrorModel'] = Json.parse_obj_as(
+        List['PassportElementErrorModel'],
+        obj=errors,
+    )
 
     bot = await _get_bot(token)
     
@@ -2330,6 +2526,10 @@ async def send_game(
     https://core.telegram.org/bots/api#sendgame
     """
     from ....main import _get_bot
+    reply_markup: Optional['InlineKeyboardMarkupModel'] = Json.parse_obj_as(
+        Optional['InlineKeyboardMarkupModel'],
+        obj=reply_markup,
+    )
 
     bot = await _get_bot(token)
     

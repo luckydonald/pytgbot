@@ -57,6 +57,20 @@ async def {{function.name}}(
     {{function.link}}
     """
     from ....main import _get_bot
+
+    {#-
+      moop: List[TestModel] = Json.parse_obj_as(
+          type_=List[TestModel],
+          obj=moop,
+      )
+    #}
+    {%- for variable in function.variables if variable.typehint_has_model %}
+    {{variable.name}}: {{variable.typehint_optional_model}} = Json.parse_obj_as(
+        {{variable.typehint_optional_model}},
+        obj={{variable.name}},
+    )
+    {%- endfor %}
+
     bot = await _get_bot(token)
     {% if "chat_id" in function.variable_names %}
     try:
