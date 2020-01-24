@@ -981,15 +981,20 @@ async def send_contact(
 @routes.api_route('/{token}/sendPoll', methods=['GET', 'POST'], tags=['official'])
 async def send_poll(
     token: str = TOKEN_VALIDATION,
-    chat_id: Union[int, str] = Query(..., description="Unique identifier for the target chat or username of the target channel (in the format @channelusername). A native poll can't be sent to a private chat."),
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     question: str = Query(..., description='Poll question, 1-255 characters'),
     options: List[str] = Query(..., description='List of answer options, 2-10 strings 1-100 characters each'),
+    is_anonymous: Optional[bool] = Query(None, description='True, if the poll needs to be anonymous, defaults to True'),
+    type: Optional[str] = Query(None, description='Poll type, "quiz" or "regular", defaults to "regular"'),
+    allows_multiple_answers: Optional[bool] = Query(None, description='True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False'),
+    correct_option_id: Optional[int] = Query(None, description='0-based identifier of the correct answer option, required for polls in quiz mode'),
+    is_closed: Optional[bool] = Query(None, description='Pass True, if the poll needs to be immediately closed'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
-    Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+    Use this method to send a native poll. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendpoll
     """
@@ -1014,6 +1019,11 @@ async def send_poll(
         entity=entity,
         question=question,
         options=options,
+        is_anonymous=is_anonymous,
+        type=type,
+        allows_multiple_answers=allows_multiple_answers,
+        correct_option_id=correct_option_id,
+        is_closed=is_closed,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
         reply_markup=reply_markup,
