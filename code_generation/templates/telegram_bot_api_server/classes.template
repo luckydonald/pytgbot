@@ -27,3 +27,8 @@ class {{ clazz.clazz -}}Model(BaseModel):  # {{ clazz.parent_clazz.string }}
     {%- endfor %}
 # end class {{ clazz.clazz }}
 {% endfor %}
+
+# now register all `ForwardRef`s
+{% for clazz in clazzes -%}
+{{ clazz.clazz }}Model.update_forward_refs()
+{% endfor %}
