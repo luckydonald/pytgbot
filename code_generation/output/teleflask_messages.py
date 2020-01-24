@@ -3503,7 +3503,7 @@ class ContactMessage(SendableMessageBase):
 
 class PollMessage(SendableMessageBase):
     """
-    Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+    Use this method to send a native poll. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendpoll
 
@@ -3525,6 +3525,21 @@ class PollMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
+    :param is_anonymous: True, if the poll needs to be anonymous, defaults to True
+    :type  is_anonymous: bool
+    
+    :param type: Poll type, "quiz" or "regular", defaults to "regular"
+    :type  type: str|unicode
+    
+    :param allows_multiple_answers: True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
+    :type  allows_multiple_answers: bool
+    
+    :param correct_option_id: 0-based identifier of the correct answer option, required for polls in quiz mode
+    :type  correct_option_id: int
+    
+    :param is_closed: Pass True, if the poll needs to be immediately closed
+    :type  is_closed: bool
+    
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
@@ -3533,9 +3548,9 @@ class PollMessage(SendableMessageBase):
     
     """
 
-    def __init__(self, question, options, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, reply_markup=None):
+    def __init__(self, question, options, receiver=None, reply_id=DEFAULT_MESSAGE_ID, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, is_closed=None, disable_notification=None, reply_markup=None):
         """
-        Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+        Use this method to send a native poll. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendpoll
 
@@ -3556,6 +3571,21 @@ class PollMessage(SendableMessageBase):
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
+        
+        :param is_anonymous: True, if the poll needs to be anonymous, defaults to True
+        :type  is_anonymous: bool
+        
+        :param type: Poll type, "quiz" or "regular", defaults to "regular"
+        :type  type: str|unicode
+        
+        :param allows_multiple_answers: True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
+        :type  allows_multiple_answers: bool
+        
+        :param correct_option_id: 0-based identifier of the correct answer option, required for polls in quiz mode
+        :type  correct_option_id: int
+        
+        :param is_closed: Pass True, if the poll needs to be immediately closed
+        :type  is_closed: bool
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
@@ -3582,6 +3612,21 @@ class PollMessage(SendableMessageBase):
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
         
+        assert_type_or_raise(is_anonymous, None, bool, parameter_name="is_anonymous")
+        self.is_anonymous = is_anonymous
+        
+        assert_type_or_raise(type, None, unicode_type, parameter_name="type")
+        self.type = type
+        
+        assert_type_or_raise(allows_multiple_answers, None, bool, parameter_name="allows_multiple_answers")
+        self.allows_multiple_answers = allows_multiple_answers
+        
+        assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
+        self.correct_option_id = correct_option_id
+        
+        assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
+        self.is_closed = is_closed
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
         
@@ -3602,7 +3647,7 @@ class PollMessage(SendableMessageBase):
         """
         return sender.send_poll(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            question=self.question, options=self.options, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            question=self.question, options=self.options, chat_id=self.receiver, reply_to_message_id=self.reply_id, is_anonymous=self.is_anonymous, type=self.type, allows_multiple_answers=self.allows_multiple_answers, correct_option_id=self.correct_option_id, is_closed=self.is_closed, disable_notification=self.disable_notification, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -3633,6 +3678,16 @@ class PollMessage(SendableMessageBase):
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
 
+        if self.is_anonymous is not None:
+            array['is_anonymous'] = bool(self.is_anonymous)  # type bool
+        if self.type is not None:
+            array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        if self.allows_multiple_answers is not None:
+            array['allows_multiple_answers'] = bool(self.allows_multiple_answers)  # type bool
+        if self.correct_option_id is not None:
+            array['correct_option_id'] = int(self.correct_option_id)  # type int
+        if self.is_closed is not None:
+            array['is_closed'] = bool(self.is_closed)  # type bool
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
         if self.reply_markup is not None:
@@ -3688,6 +3743,11 @@ class PollMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
         # end if
+        data['is_anonymous'] = bool(array.get('is_anonymous')) if array.get('is_anonymous') is not None else None
+        data['type'] = u(array.get('type')) if array.get('type') is not None else None
+        data['allows_multiple_answers'] = bool(array.get('allows_multiple_answers')) if array.get('allows_multiple_answers') is not None else None
+        data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
+        data['is_closed'] = bool(array.get('is_closed')) if array.get('is_closed') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
@@ -3726,14 +3786,14 @@ class PollMessage(SendableMessageBase):
         """
         Implements `str(pollmessage_instance)`
         """
-        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(pollmessage_instance)`
         """
-        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3741,7 +3801,7 @@ class PollMessage(SendableMessageBase):
         Implements `"key" in pollmessage_instance`
         """
         return (
-            key in ["question", "options", "receiver", "reply_id", "disable_notification", "reply_markup"]
+            key in ["question", "options", "receiver", "reply_id", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id", "is_closed", "disable_notification", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
