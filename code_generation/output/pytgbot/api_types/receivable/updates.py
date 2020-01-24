@@ -51,13 +51,16 @@ class Update(Receivable):
     :type  pre_checkout_query: pytgbot.api_types.receivable.payments.PreCheckoutQuery
     
     :param poll: Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
-    :type  poll: pytgbot.api_types.receivable.media.Poll
+    :type  poll: pytgbot.api_types.receivable.media.poll.Poll
+    
+    :param poll_answer: Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
+    :type  poll_answer: pytgbot.api_types.receivable.media.poll.PollAnswer
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, update_id, message=None, edited_message=None, channel_post=None, edited_channel_post=None, inline_query=None, chosen_inline_result=None, callback_query=None, shipping_query=None, pre_checkout_query=None, poll=None, _raw=None):
+    def __init__(self, update_id, message=None, edited_message=None, channel_post=None, edited_channel_post=None, inline_query=None, chosen_inline_result=None, callback_query=None, shipping_query=None, pre_checkout_query=None, poll=None, poll_answer=None, _raw=None):
         """
         This object represents an incoming update.At most one of the optional parameters can be present in any given update.
 
@@ -100,7 +103,10 @@ class Update(Receivable):
         :type  pre_checkout_query: pytgbot.api_types.receivable.payments.PreCheckoutQuery
         
         :param poll: Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
-        :type  poll: pytgbot.api_types.receivable.media.Poll
+        :type  poll: pytgbot.api_types.receivable.media.poll.Poll
+        
+        :param poll_answer: Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
+        :type  poll_answer: pytgbot.api_types.receivable.media.poll.PollAnswer
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
@@ -108,7 +114,8 @@ class Update(Receivable):
         super(Update, self).__init__()
         from pytgbot.api_types.receivable.inline import ChosenInlineResult
         from pytgbot.api_types.receivable.inline import InlineQuery
-        from pytgbot.api_types.receivable.media import Poll
+        from pytgbot.api_types.receivable.media.poll import Poll
+        from pytgbot.api_types.receivable.media.poll import PollAnswer
         from pytgbot.api_types.receivable.payments import PreCheckoutQuery
         from pytgbot.api_types.receivable.payments import ShippingQuery
         from pytgbot.api_types.receivable.updates import CallbackQuery
@@ -146,6 +153,9 @@ class Update(Receivable):
         
         assert_type_or_raise(poll, None, Poll, parameter_name="poll")
         self.poll = poll
+        
+        assert_type_or_raise(poll_answer, None, PollAnswer, parameter_name="poll_answer")
+        self.poll_answer = poll_answer
 
         self._raw = _raw
     # end def __init__
@@ -189,6 +199,9 @@ class Update(Receivable):
         if self.poll is not None:
             array['poll'] = self.poll.to_array()  # type Poll
 
+        if self.poll_answer is not None:
+            array['poll_answer'] = self.poll_answer.to_array()  # type PollAnswer
+
         return array
     # end def to_array
 
@@ -203,7 +216,8 @@ class Update(Receivable):
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.inline import ChosenInlineResult
         from pytgbot.api_types.receivable.inline import InlineQuery
-        from pytgbot.api_types.receivable.media import Poll
+        from pytgbot.api_types.receivable.media.poll import Poll
+        from pytgbot.api_types.receivable.media.poll import PollAnswer
         from pytgbot.api_types.receivable.payments import PreCheckoutQuery
         from pytgbot.api_types.receivable.payments import ShippingQuery
         from pytgbot.api_types.receivable.updates import CallbackQuery
@@ -221,6 +235,7 @@ class Update(Receivable):
         data['shipping_query'] = ShippingQuery.from_array(array.get('shipping_query')) if array.get('shipping_query') is not None else None
         data['pre_checkout_query'] = PreCheckoutQuery.from_array(array.get('pre_checkout_query')) if array.get('pre_checkout_query') is not None else None
         data['poll'] = Poll.from_array(array.get('poll')) if array.get('poll') is not None else None
+        data['poll_answer'] = PollAnswer.from_array(array.get('poll_answer')) if array.get('poll_answer') is not None else None
         
     # end def validate_array
 
@@ -245,7 +260,7 @@ class Update(Receivable):
         """
         Implements `str(update_instance)`
         """
-        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r})".format(self=self)
+        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r}, poll_answer={self.poll_answer!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -255,7 +270,7 @@ class Update(Receivable):
         if self._raw:
             return "Update.from_array({self._raw})".format(self=self)
         # end if
-        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r})".format(self=self)
+        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r}, poll_answer={self.poll_answer!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -263,7 +278,7 @@ class Update(Receivable):
         Implements `"key" in update_instance`
         """
         return (
-            key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query", "poll"]
+            key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query", "poll", "poll_answer"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -562,7 +577,7 @@ class Message(UpdateType):
     :type  venue: pytgbot.api_types.receivable.media.Venue
     
     :param poll: Optional. Message is a native poll, information about the poll
-    :type  poll: pytgbot.api_types.receivable.media.Poll
+    :type  poll: pytgbot.api_types.receivable.media.poll.Poll
     
     :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
@@ -719,7 +734,7 @@ class Message(UpdateType):
         :type  venue: pytgbot.api_types.receivable.media.Venue
         
         :param poll: Optional. Message is a native poll, information about the poll
-        :type  poll: pytgbot.api_types.receivable.media.Poll
+        :type  poll: pytgbot.api_types.receivable.media.poll.Poll
         
         :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
         :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
@@ -781,12 +796,12 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PhotoSize
-        from pytgbot.api_types.receivable.media import Poll
         from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.media import Venue
         from pytgbot.api_types.receivable.media import Video
         from pytgbot.api_types.receivable.media import VideoNote
         from pytgbot.api_types.receivable.media import Voice
+        from pytgbot.api_types.receivable.media.poll import Poll
         from pytgbot.api_types.receivable.passport import PassportData
         from pytgbot.api_types.receivable.payments import Invoice
         from pytgbot.api_types.receivable.payments import SuccessfulPayment
@@ -1086,12 +1101,12 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PhotoSize
-        from pytgbot.api_types.receivable.media import Poll
         from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.media import Venue
         from pytgbot.api_types.receivable.media import Video
         from pytgbot.api_types.receivable.media import VideoNote
         from pytgbot.api_types.receivable.media import Voice
+        from pytgbot.api_types.receivable.media.poll import Poll
         from pytgbot.api_types.receivable.passport import PassportData
         from pytgbot.api_types.receivable.payments import Invoice
         from pytgbot.api_types.receivable.payments import SuccessfulPayment

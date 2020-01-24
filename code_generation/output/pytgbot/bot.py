@@ -1376,16 +1376,16 @@ class Bot(object):
         return result
     # end def send_contact
     
-    def send_poll(self, chat_id, question, options, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, is_closed=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
-        Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+        Use this method to send a native poll. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendpoll
 
         
         Parameters:
         
-        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername). A native poll can't be sent to a private chat.
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
         :param question: Poll question, 1-255 characters
@@ -1396,6 +1396,21 @@ class Bot(object):
         
         
         Optional keyword parameters:
+        
+        :param is_anonymous: True, if the poll needs to be anonymous, defaults to True
+        :type  is_anonymous: bool
+        
+        :param type: Poll type, "quiz" or "regular", defaults to "regular"
+        :type  type: str|unicode
+        
+        :param allows_multiple_answers: True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
+        :type  allows_multiple_answers: bool
+        
+        :param correct_option_id: 0-based identifier of the correct answer option, required for polls in quiz mode
+        :type  correct_option_id: int
+        
+        :param is_closed: Pass True, if the poll needs to be immediately closed
+        :type  is_closed: bool
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
@@ -1422,13 +1437,23 @@ class Bot(object):
         
         assert_type_or_raise(options, list, parameter_name="options")
         
+        assert_type_or_raise(is_anonymous, None, bool, parameter_name="is_anonymous")
+        
+        assert_type_or_raise(type, None, unicode_type, parameter_name="type")
+        
+        assert_type_or_raise(allows_multiple_answers, None, bool, parameter_name="allows_multiple_answers")
+        
+        assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
+        
+        assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2744,7 +2769,7 @@ class Bot(object):
         Returns:
 
         :return: On success, the stopped Poll with the final results is returned
-        :rtype:  pytgbot.api_types.receivable.media.Poll
+        :rtype:  pytgbot.api_types.receivable.media.poll.Poll
         """
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -2757,7 +2782,7 @@ class Bot(object):
         result = self.do("stopPoll", chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media import Poll
+            from pytgbot.api_types.receivable.media.poll import Poll
             try:
                 return Poll.from_array(result)
             except TgApiParseException:

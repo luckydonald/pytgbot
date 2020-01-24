@@ -36,11 +36,14 @@ class MessageEntity(Result):
     :param user: Optional. For "text_mention" only, the mentioned user
     :type  user: pytgbot.api_types.receivable.peer.User
     
+    :param language: Optional. For "pre" only, the programming language of the entity text
+    :type  language: str|unicode
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, type, offset, length, url=None, user=None, _raw=None):
+    def __init__(self, type, offset, length, url=None, user=None, language=None, _raw=None):
         """
         This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
 
@@ -67,6 +70,9 @@ class MessageEntity(Result):
         :param user: Optional. For "text_mention" only, the mentioned user
         :type  user: pytgbot.api_types.receivable.peer.User
         
+        :param language: Optional. For "pre" only, the programming language of the entity text
+        :type  language: str|unicode
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -87,6 +93,9 @@ class MessageEntity(Result):
         
         assert_type_or_raise(user, None, User, parameter_name="user")
         self.user = user
+        
+        assert_type_or_raise(language, None, unicode_type, parameter_name="language")
+        self.language = language
 
         self._raw = _raw
     # end def __init__
@@ -107,6 +116,8 @@ class MessageEntity(Result):
         if self.user is not None:
             array['user'] = self.user.to_array()  # type User
 
+        if self.language is not None:
+            array['language'] = u(self.language)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -127,6 +138,7 @@ class MessageEntity(Result):
         data['length'] = int(array.get('length'))
         data['url'] = u(array.get('url')) if array.get('url') is not None else None
         data['user'] = User.from_array(array.get('user')) if array.get('user') is not None else None
+        data['language'] = u(array.get('language')) if array.get('language') is not None else None
         
     # end def validate_array
 
@@ -151,7 +163,7 @@ class MessageEntity(Result):
         """
         Implements `str(messageentity_instance)`
         """
-        return "MessageEntity(type={self.type!r}, offset={self.offset!r}, length={self.length!r}, url={self.url!r}, user={self.user!r})".format(self=self)
+        return "MessageEntity(type={self.type!r}, offset={self.offset!r}, length={self.length!r}, url={self.url!r}, user={self.user!r}, language={self.language!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -161,7 +173,7 @@ class MessageEntity(Result):
         if self._raw:
             return "MessageEntity.from_array({self._raw})".format(self=self)
         # end if
-        return "MessageEntity(type={self.type!r}, offset={self.offset!r}, length={self.length!r}, url={self.url!r}, user={self.user!r})".format(self=self)
+        return "MessageEntity(type={self.type!r}, offset={self.offset!r}, length={self.length!r}, url={self.url!r}, user={self.user!r}, language={self.language!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -169,7 +181,7 @@ class MessageEntity(Result):
         Implements `"key" in messageentity_instance`
         """
         return (
-            key in ["type", "offset", "length", "url", "user"]
+            key in ["type", "offset", "length", "url", "user", "language"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1940,289 +1952,6 @@ class Venue(Media):
         )
     # end def __contains__
 # end class Venue
-
-
-class PollOption(Receivable):
-    """
-    This object contains information about one answer option in a poll.
-
-    https://core.telegram.org/bots/api#polloption
-    
-
-    Parameters:
-    
-    :param text: Option text, 1-100 characters
-    :type  text: str|unicode
-    
-    :param voter_count: Number of users that voted for this option
-    :type  voter_count: int
-    
-
-    Optional keyword parameters:
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, text, voter_count, _raw=None):
-        """
-        This object contains information about one answer option in a poll.
-
-        https://core.telegram.org/bots/api#polloption
-        
-
-        Parameters:
-        
-        :param text: Option text, 1-100 characters
-        :type  text: str|unicode
-        
-        :param voter_count: Number of users that voted for this option
-        :type  voter_count: int
-        
-
-        Optional keyword parameters:
-        
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(PollOption, self).__init__()
-        assert_type_or_raise(text, unicode_type, parameter_name="text")
-        self.text = text
-        
-        assert_type_or_raise(voter_count, int, parameter_name="voter_count")
-        self.voter_count = voter_count
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this PollOption to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(PollOption, self).to_array()
-        array['text'] = u(self.text)  # py2: type unicode, py3: type str
-        array['voter_count'] = int(self.voter_count)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the PollOption constructor.
-
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        data = Receivable.validate_array(array)
-        data['text'] = u(array.get('text'))
-        data['voter_count'] = int(array.get('voter_count'))
-        
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new PollOption from a given dictionary.
-
-        :return: new PollOption instance.
-        :rtype: PollOption
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = PollOption.validate_array(array)
-        data['_raw'] = array
-        return PollOption(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(polloption_instance)`
-        """
-        return "PollOption(text={self.text!r}, voter_count={self.voter_count!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(polloption_instance)`
-        """
-        if self._raw:
-            return "PollOption.from_array({self._raw})".format(self=self)
-        # end if
-        return "PollOption(text={self.text!r}, voter_count={self.voter_count!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in polloption_instance`
-        """
-        return (
-            key in ["text", "voter_count"]
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
-# end class PollOption
-
-
-class Poll(Media):
-    """
-    This object contains information about a poll.
-
-    https://core.telegram.org/bots/api#poll
-    
-
-    Parameters:
-    
-    :param id: Unique poll identifier
-    :type  id: str|unicode
-    
-    :param question: Poll question, 1-255 characters
-    :type  question: str|unicode
-    
-    :param options: List of poll options
-    :type  options: list of pytgbot.api_types.receivable.media.PollOption
-    
-    :param is_closed: True, if the poll is closed
-    :type  is_closed: bool
-    
-
-    Optional keyword parameters:
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, id, question, options, is_closed, _raw=None):
-        """
-        This object contains information about a poll.
-
-        https://core.telegram.org/bots/api#poll
-        
-
-        Parameters:
-        
-        :param id: Unique poll identifier
-        :type  id: str|unicode
-        
-        :param question: Poll question, 1-255 characters
-        :type  question: str|unicode
-        
-        :param options: List of poll options
-        :type  options: list of pytgbot.api_types.receivable.media.PollOption
-        
-        :param is_closed: True, if the poll is closed
-        :type  is_closed: bool
-        
-
-        Optional keyword parameters:
-        
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(Poll, self).__init__()
-        from pytgbot.api_types.receivable.media import PollOption
-        
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-        
-        assert_type_or_raise(question, unicode_type, parameter_name="question")
-        self.question = question
-        
-        assert_type_or_raise(options, list, parameter_name="options")
-        self.options = options
-        
-        assert_type_or_raise(is_closed, bool, parameter_name="is_closed")
-        self.is_closed = is_closed
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this Poll to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Poll, self).to_array()
-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
-        array['question'] = u(self.question)  # py2: type unicode, py3: type str
-        array['options'] = self._as_array(self.options)  # type list of PollOption
-
-        array['is_closed'] = bool(self.is_closed)  # type bool
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the Poll constructor.
-
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PollOption
-        
-        data = Media.validate_array(array)
-        data['id'] = u(array.get('id'))
-        data['question'] = u(array.get('question'))
-        data['options'] = PollOption.from_array_list(array.get('options'), list_level=1)
-        data['is_closed'] = bool(array.get('is_closed'))
-        
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new Poll from a given dictionary.
-
-        :return: new Poll instance.
-        :rtype: Poll
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = Poll.validate_array(array)
-        data['_raw'] = array
-        return Poll(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(poll_instance)`
-        """
-        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, is_closed={self.is_closed!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(poll_instance)`
-        """
-        if self._raw:
-            return "Poll.from_array({self._raw})".format(self=self)
-        # end if
-        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, is_closed={self.is_closed!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in poll_instance`
-        """
-        return (
-            key in ["id", "question", "options", "is_closed"]
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
-# end class Poll
 
 
 class UserProfilePhotos(Result):

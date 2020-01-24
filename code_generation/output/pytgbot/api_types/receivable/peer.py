@@ -38,11 +38,20 @@ class User(Peer):
     :param language_code: Optional. IETF language tag of the user's language
     :type  language_code: str|unicode
     
+    :param can_join_groups: Optional. True, if the bot can be invited to groups. Returned only in getMe.
+    :type  can_join_groups: bool
+    
+    :param can_read_all_group_messages: Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+    :type  can_read_all_group_messages: bool
+    
+    :param supports_inline_queries: Optional. True, if the bot supports inline queries. Returned only in getMe.
+    :type  supports_inline_queries: bool
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, is_bot, first_name, last_name=None, username=None, language_code=None, _raw=None):
+    def __init__(self, id, is_bot, first_name, last_name=None, username=None, language_code=None, can_join_groups=None, can_read_all_group_messages=None, supports_inline_queries=None, _raw=None):
         """
         This object represents a Telegram user or bot.
 
@@ -72,6 +81,15 @@ class User(Peer):
         :param language_code: Optional. IETF language tag of the user's language
         :type  language_code: str|unicode
         
+        :param can_join_groups: Optional. True, if the bot can be invited to groups. Returned only in getMe.
+        :type  can_join_groups: bool
+        
+        :param can_read_all_group_messages: Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+        :type  can_read_all_group_messages: bool
+        
+        :param supports_inline_queries: Optional. True, if the bot supports inline queries. Returned only in getMe.
+        :type  supports_inline_queries: bool
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -93,6 +111,15 @@ class User(Peer):
         
         assert_type_or_raise(language_code, None, unicode_type, parameter_name="language_code")
         self.language_code = language_code
+        
+        assert_type_or_raise(can_join_groups, None, bool, parameter_name="can_join_groups")
+        self.can_join_groups = can_join_groups
+        
+        assert_type_or_raise(can_read_all_group_messages, None, bool, parameter_name="can_read_all_group_messages")
+        self.can_read_all_group_messages = can_read_all_group_messages
+        
+        assert_type_or_raise(supports_inline_queries, None, bool, parameter_name="supports_inline_queries")
+        self.supports_inline_queries = supports_inline_queries
 
         self._raw = _raw
     # end def __init__
@@ -114,6 +141,12 @@ class User(Peer):
             array['username'] = u(self.username)  # py2: type unicode, py3: type str
         if self.language_code is not None:
             array['language_code'] = u(self.language_code)  # py2: type unicode, py3: type str
+        if self.can_join_groups is not None:
+            array['can_join_groups'] = bool(self.can_join_groups)  # type bool
+        if self.can_read_all_group_messages is not None:
+            array['can_read_all_group_messages'] = bool(self.can_read_all_group_messages)  # type bool
+        if self.supports_inline_queries is not None:
+            array['supports_inline_queries'] = bool(self.supports_inline_queries)  # type bool
         return array
     # end def to_array
 
@@ -133,6 +166,9 @@ class User(Peer):
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['username'] = u(array.get('username')) if array.get('username') is not None else None
         data['language_code'] = u(array.get('language_code')) if array.get('language_code') is not None else None
+        data['can_join_groups'] = bool(array.get('can_join_groups')) if array.get('can_join_groups') is not None else None
+        data['can_read_all_group_messages'] = bool(array.get('can_read_all_group_messages')) if array.get('can_read_all_group_messages') is not None else None
+        data['supports_inline_queries'] = bool(array.get('supports_inline_queries')) if array.get('supports_inline_queries') is not None else None
         
     # end def validate_array
 
@@ -157,7 +193,7 @@ class User(Peer):
         """
         Implements `str(user_instance)`
         """
-        return "User(id={self.id!r}, is_bot={self.is_bot!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r}, language_code={self.language_code!r})".format(self=self)
+        return "User(id={self.id!r}, is_bot={self.is_bot!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r}, language_code={self.language_code!r}, can_join_groups={self.can_join_groups!r}, can_read_all_group_messages={self.can_read_all_group_messages!r}, supports_inline_queries={self.supports_inline_queries!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -167,7 +203,7 @@ class User(Peer):
         if self._raw:
             return "User.from_array({self._raw})".format(self=self)
         # end if
-        return "User(id={self.id!r}, is_bot={self.is_bot!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r}, language_code={self.language_code!r})".format(self=self)
+        return "User(id={self.id!r}, is_bot={self.is_bot!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, username={self.username!r}, language_code={self.language_code!r}, can_join_groups={self.can_join_groups!r}, can_read_all_group_messages={self.can_read_all_group_messages!r}, supports_inline_queries={self.supports_inline_queries!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -175,7 +211,7 @@ class User(Peer):
         Implements `"key" in user_instance`
         """
         return (
-            key in ["id", "is_bot", "first_name", "last_name", "username", "language_code"]
+            key in ["id", "is_bot", "first_name", "last_name", "username", "language_code", "can_join_groups", "can_read_all_group_messages", "supports_inline_queries"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
