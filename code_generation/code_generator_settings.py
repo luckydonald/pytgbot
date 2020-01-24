@@ -28,9 +28,9 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Video":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Game":                 ("pytgbot.api_types.receivable.media.", "Media", None),
     "Animation":            ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Poll":                 ("pytgbot.api_types.receivable.media.poll.", "Media", None),  # April 14, 2019, Moved for January 23, 2020
-    "PollOption":           ("pytgbot.api_types.receivable.media.poll.", "Receivable", None),  # April 14, 2019, Moved for January 23, 2020
-    "PollAnswer":           ("pytgbot.api_types.receivable.media.poll.", "Receivable", None),  # January 23, 2020
+    "Poll":                 ("pytgbot.api_types.receivable.media.", "Media", None),  # April 14, 2019
+    "PollOption":           ("pytgbot.api_types.receivable.media.", "Receivable", None),  # April 14, 2019
+    "PollAnswer":           ("pytgbot.api_types.receivable.media.", "Receivable", None),  # January 23, 2020
 
     # pytgbot.api_types.receivable.responses.*
 

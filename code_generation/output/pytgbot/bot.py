@@ -2769,7 +2769,7 @@ class Bot(object):
         Returns:
 
         :return: On success, the stopped Poll with the final results is returned
-        :rtype:  pytgbot.api_types.receivable.media.poll.Poll
+        :rtype:  pytgbot.api_types.receivable.media.Poll
         """
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -2782,7 +2782,7 @@ class Bot(object):
         result = self.do("stopPoll", chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media.poll import Poll
+            from pytgbot.api_types.receivable.media import Poll
             try:
                 return Poll.from_array(result)
             except TgApiParseException:

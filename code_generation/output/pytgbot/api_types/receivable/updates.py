@@ -51,10 +51,10 @@ class Update(Receivable):
     :type  pre_checkout_query: pytgbot.api_types.receivable.payments.PreCheckoutQuery
     
     :param poll: Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
-    :type  poll: pytgbot.api_types.receivable.media.poll.Poll
+    :type  poll: pytgbot.api_types.receivable.media.Poll
     
     :param poll_answer: Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
-    :type  poll_answer: pytgbot.api_types.receivable.media.poll.PollAnswer
+    :type  poll_answer: pytgbot.api_types.receivable.media.PollAnswer
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -103,10 +103,10 @@ class Update(Receivable):
         :type  pre_checkout_query: pytgbot.api_types.receivable.payments.PreCheckoutQuery
         
         :param poll: Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
-        :type  poll: pytgbot.api_types.receivable.media.poll.Poll
+        :type  poll: pytgbot.api_types.receivable.media.Poll
         
         :param poll_answer: Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
-        :type  poll_answer: pytgbot.api_types.receivable.media.poll.PollAnswer
+        :type  poll_answer: pytgbot.api_types.receivable.media.PollAnswer
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
@@ -114,8 +114,8 @@ class Update(Receivable):
         super(Update, self).__init__()
         from pytgbot.api_types.receivable.inline import ChosenInlineResult
         from pytgbot.api_types.receivable.inline import InlineQuery
-        from pytgbot.api_types.receivable.media.poll import Poll
-        from pytgbot.api_types.receivable.media.poll import PollAnswer
+        from pytgbot.api_types.receivable.media import Poll
+        from pytgbot.api_types.receivable.media import PollAnswer
         from pytgbot.api_types.receivable.payments import PreCheckoutQuery
         from pytgbot.api_types.receivable.payments import ShippingQuery
         from pytgbot.api_types.receivable.updates import CallbackQuery
@@ -216,8 +216,8 @@ class Update(Receivable):
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.inline import ChosenInlineResult
         from pytgbot.api_types.receivable.inline import InlineQuery
-        from pytgbot.api_types.receivable.media.poll import Poll
-        from pytgbot.api_types.receivable.media.poll import PollAnswer
+        from pytgbot.api_types.receivable.media import Poll
+        from pytgbot.api_types.receivable.media import PollAnswer
         from pytgbot.api_types.receivable.payments import PreCheckoutQuery
         from pytgbot.api_types.receivable.payments import ShippingQuery
         from pytgbot.api_types.receivable.updates import CallbackQuery
@@ -577,7 +577,7 @@ class Message(UpdateType):
     :type  venue: pytgbot.api_types.receivable.media.Venue
     
     :param poll: Optional. Message is a native poll, information about the poll
-    :type  poll: pytgbot.api_types.receivable.media.poll.Poll
+    :type  poll: pytgbot.api_types.receivable.media.Poll
     
     :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
@@ -734,7 +734,7 @@ class Message(UpdateType):
         :type  venue: pytgbot.api_types.receivable.media.Venue
         
         :param poll: Optional. Message is a native poll, information about the poll
-        :type  poll: pytgbot.api_types.receivable.media.poll.Poll
+        :type  poll: pytgbot.api_types.receivable.media.Poll
         
         :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
         :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
@@ -796,12 +796,12 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PhotoSize
+        from pytgbot.api_types.receivable.media import Poll
         from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.media import Venue
         from pytgbot.api_types.receivable.media import Video
         from pytgbot.api_types.receivable.media import VideoNote
         from pytgbot.api_types.receivable.media import Voice
-        from pytgbot.api_types.receivable.media.poll import Poll
         from pytgbot.api_types.receivable.passport import PassportData
         from pytgbot.api_types.receivable.payments import Invoice
         from pytgbot.api_types.receivable.payments import SuccessfulPayment
@@ -1101,12 +1101,12 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.media import Location
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PhotoSize
+        from pytgbot.api_types.receivable.media import Poll
         from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.media import Venue
         from pytgbot.api_types.receivable.media import Video
         from pytgbot.api_types.receivable.media import VideoNote
         from pytgbot.api_types.receivable.media import Voice
-        from pytgbot.api_types.receivable.media.poll import Poll
         from pytgbot.api_types.receivable.passport import PassportData
         from pytgbot.api_types.receivable.payments import Invoice
         from pytgbot.api_types.receivable.payments import SuccessfulPayment
