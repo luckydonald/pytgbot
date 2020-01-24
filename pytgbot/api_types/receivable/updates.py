@@ -219,7 +219,7 @@ class Update(Receivable):
         assert_type_or_raise(array, dict, parameter_name="array")
 
         from ..receivable.inline import InlineQuery, ChosenInlineResult
-        from ..receivable.media import Poll
+        from ..receivable.media import Poll, PollAnswer
         from ..receivable.payments import ShippingQuery, PreCheckoutQuery
 
         data = Receivable.validate_array(array)
@@ -234,6 +234,7 @@ class Update(Receivable):
         data['shipping_query'] = ShippingQuery.from_array(array.get('shipping_query')) if array.get('shipping_query') is not None else None
         data['pre_checkout_query'] = PreCheckoutQuery.from_array(array.get('pre_checkout_query')) if array.get('pre_checkout_query') is not None else None
         data['poll'] = Poll.from_array(array.get('poll')) if array.get('poll') is not None else None
+        data['poll_answer'] = PollAnswer.from_array(array.get('poll_answer')) if array.get('poll_answer') is not None else None
         return data
     # end def validate_array
 
@@ -258,7 +259,7 @@ class Update(Receivable):
         """
         Implements `str(update_instance)`
         """
-        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r})".format(self=self)
+        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r}, poll_answer={self.poll_answer!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -268,7 +269,7 @@ class Update(Receivable):
         if self._raw:
             return "Update.from_array({self._raw})".format(self=self)
         # end if
-        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r})".format(self=self)
+        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r}, poll_answer={self.poll_answer!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -276,7 +277,7 @@ class Update(Receivable):
         Implements `"key" in update_instance`
         """
         return (
-            key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query", "poll"]
+            key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query", "poll", "poll_answer"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

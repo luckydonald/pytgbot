@@ -128,6 +128,7 @@ class MessageEntity(Result):
         data['length'] = int(array.get('length'))
         data['url'] = u(array.get('url')) if array.get('url') is not None else None
         data['user'] = User.from_array(array.get('user')) if array.get('user') is not None else None
+        data['language'] = u(array.get('language')) if array.get('language') is not None else None
         return data
     # end def validate_array
 
@@ -152,7 +153,7 @@ class MessageEntity(Result):
         """
         Implements `str(messageentity_instance)`
         """
-        return "MessageEntity(type={self.type!r}, offset={self.offset!r}, length={self.length!r}, url={self.url!r}, user={self.user!r})".format(self=self)
+        return "MessageEntity(type={self.type!r}, offset={self.offset!r}, length={self.length!r}, url={self.url!r}, user={self.user!r}, language={self.language!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -162,7 +163,7 @@ class MessageEntity(Result):
         if self._raw:
             return "MessageEntity.from_array({self._raw})".format(self=self)
         # end if
-        return "MessageEntity(type={self.type!r}, offset={self.offset!r}, length={self.length!r}, url={self.url!r}, user={self.user!r})".format(self=self)
+        return "MessageEntity(type={self.type!r}, offset={self.offset!r}, length={self.length!r}, url={self.url!r}, user={self.user!r}, language={self.language!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -170,7 +171,7 @@ class MessageEntity(Result):
         Implements `"key" in messageentity_instance`
         """
         return (
-            key in ["type", "offset", "length", "url", "user"]
+            key in ["type", "offset", "length", "url", "user", "language"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2071,6 +2072,149 @@ class PollOption(Receivable):
 # end class PollOption
 
 
+class PollAnswer(Receivable):
+    """
+    This object represents an answer of a user in a non-anonymous poll.
+
+    https://core.telegram.org/bots/api#pollanswer
+
+
+    Parameters:
+
+    :param poll_id: Unique poll identifier
+    :type  poll_id: str|unicode
+
+    :param user: The user, who changed the answer to the poll
+    :type  user: pytgbot.api_types.receivable.peer.User
+
+    :param option_ids: 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
+    :type  option_ids: list of int
+
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, poll_id, user, option_ids, _raw=None):
+        """
+        This object represents an answer of a user in a non-anonymous poll.
+
+        https://core.telegram.org/bots/api#pollanswer
+
+
+        Parameters:
+
+        :param poll_id: Unique poll identifier
+        :type  poll_id: str|unicode
+
+        :param user: The user, who changed the answer to the poll
+        :type  user: pytgbot.api_types.receivable.peer.User
+
+        :param option_ids: 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
+        :type  option_ids: list of int
+
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(PollAnswer, self).__init__()
+        from pytgbot.api_types.receivable.peer import User
+
+        assert_type_or_raise(poll_id, unicode_type, parameter_name="poll_id")
+        self.poll_id = poll_id
+
+        assert_type_or_raise(user, User, parameter_name="user")
+        self.user = user
+
+        assert_type_or_raise(option_ids, list, parameter_name="option_ids")
+        self.option_ids = option_ids
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this PollAnswer to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(PollAnswer, self).to_array()
+        array['poll_id'] = u(self.poll_id)  # py2: type unicode, py3: type str
+        array['user'] = self.user.to_array()  # type User
+        array['option_ids'] = self._as_array(self.option_ids)  # type list of int
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PollAnswer constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.peer import User
+
+        data = Receivable.validate_array(array)
+        data['poll_id'] = u(array.get('poll_id'))
+        data['user'] = User.from_array(array.get('user'))
+        data['option_ids'] = PollAnswer._builtin_from_array_list(required_type=int, value=array.get('option_ids'), list_level=1)
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PollAnswer from a given dictionary.
+
+        :return: new PollAnswer instance.
+        :rtype: PollAnswer
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PollAnswer.validate_array(array)
+        data['_raw'] = array
+        return PollAnswer(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(pollanswer_instance)`
+        """
+        return "PollAnswer(poll_id={self.poll_id!r}, user={self.user!r}, option_ids={self.option_ids!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(pollanswer_instance)`
+        """
+        if self._raw:
+            return "PollAnswer.from_array({self._raw})".format(self=self)
+        # end if
+        return "PollAnswer(poll_id={self.poll_id!r}, user={self.user!r}, option_ids={self.option_ids!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in pollanswer_instance`
+        """
+        return (
+            key in ["poll_id", "user", "option_ids"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class PollAnswer
+
+
 class Poll(Media):
     """
     This object contains information about a poll.
@@ -2089,17 +2233,32 @@ class Poll(Media):
     :param options: List of poll options
     :type  options: list of pytgbot.api_types.receivable.media.PollOption
 
+    :param total_voter_count: Total number of users that voted in the poll
+    :type  total_voter_count: int
+
     :param is_closed: True, if the poll is closed
     :type  is_closed: bool
 
+    :param is_anonymous: True, if the poll is anonymous
+    :type  is_anonymous: bool
+
+    :param type: Poll type, currently can be "regular" or "quiz"
+    :type  type: str|unicode
+
+    :param allows_multiple_answers: True, if the poll allows multiple answers
+    :type  allows_multiple_answers: bool
+
 
     Optional keyword parameters:
+
+    :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
+    :type  correct_option_id: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, question, options, is_closed, _raw=None):
+    def __init__(self, id, question, options, total_voter_count, is_closed, is_anonymous, type, allows_multiple_answers, correct_option_id=None, _raw=None):
         """
         This object contains information about a poll.
 
@@ -2117,16 +2276,32 @@ class Poll(Media):
         :param options: List of poll options
         :type  options: list of pytgbot.api_types.receivable.media.PollOption
 
+        :param total_voter_count: Total number of users that voted in the poll
+        :type  total_voter_count: int
+
         :param is_closed: True, if the poll is closed
         :type  is_closed: bool
 
+        :param is_anonymous: True, if the poll is anonymous
+        :type  is_anonymous: bool
+
+        :param type: Poll type, currently can be "regular" or "quiz"
+        :type  type: str|unicode
+
+        :param allows_multiple_answers: True, if the poll allows multiple answers
+        :type  allows_multiple_answers: bool
+
 
         Optional keyword parameters:
+
+        :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
+        :type  correct_option_id: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Poll, self).__init__()
+        from pytgbot.api_types.receivable.media import PollOption
 
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2137,8 +2312,23 @@ class Poll(Media):
         assert_type_or_raise(options, list, parameter_name="options")
         self.options = options
 
+        assert_type_or_raise(total_voter_count, int, parameter_name="total_voter_count")
+        self.total_voter_count = total_voter_count
+
         assert_type_or_raise(is_closed, bool, parameter_name="is_closed")
         self.is_closed = is_closed
+
+        assert_type_or_raise(is_anonymous, bool, parameter_name="is_anonymous")
+        self.is_anonymous = is_anonymous
+
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
+        self.type = type
+
+        assert_type_or_raise(allows_multiple_answers, bool, parameter_name="allows_multiple_answers")
+        self.allows_multiple_answers = allows_multiple_answers
+
+        assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
+        self.correct_option_id = correct_option_id
 
         self._raw = _raw
     # end def __init__
@@ -2155,7 +2345,13 @@ class Poll(Media):
         array['question'] = u(self.question)  # py2: type unicode, py3: type str
         array['options'] = self._as_array(self.options)  # type list of PollOption
 
+        array['total_voter_count'] = int(self.total_voter_count)  # type int
         array['is_closed'] = bool(self.is_closed)  # type bool
+        array['is_anonymous'] = bool(self.is_anonymous)  # type bool
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['allows_multiple_answers'] = bool(self.allows_multiple_answers)  # type bool
+        if self.correct_option_id is not None:
+            array['correct_option_id'] = int(self.correct_option_id)  # type int
         return array
     # end def to_array
 
@@ -2173,8 +2369,13 @@ class Poll(Media):
         data['id'] = u(array.get('id'))
         data['question'] = u(array.get('question'))
         data['options'] = PollOption.from_array_list(array.get('options'), list_level=1)
+        data['total_voter_count'] = int(array.get('total_voter_count'))
         data['is_closed'] = bool(array.get('is_closed'))
-        return data
+        data['is_anonymous'] = bool(array.get('is_anonymous'))
+        data['type'] = u(array.get('type'))
+        data['allows_multiple_answers'] = bool(array.get('allows_multiple_answers'))
+        data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
+
     # end def validate_array
 
     @staticmethod
@@ -2198,7 +2399,7 @@ class Poll(Media):
         """
         Implements `str(poll_instance)`
         """
-        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, is_closed={self.is_closed!r})".format(self=self)
+        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2208,7 +2409,7 @@ class Poll(Media):
         if self._raw:
             return "Poll.from_array({self._raw})".format(self=self)
         # end if
-        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, is_closed={self.is_closed!r})".format(self=self)
+        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2216,7 +2417,7 @@ class Poll(Media):
         Implements `"key" in poll_instance`
         """
         return (
-            key in ["id", "question", "options", "is_closed"]
+            key in ["id", "question", "options", "total_voter_count", "is_closed", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

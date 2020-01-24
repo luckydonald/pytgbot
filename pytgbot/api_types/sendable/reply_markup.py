@@ -187,10 +187,14 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 class KeyboardButton(Button):
     """
     This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this
-    object to specify text of the button. Optional fields are mutually exclusive.
+    object to specify text of the button.
+
+    Optional fields request_contact, request_location, and request_poll are mutually exclusive.
 
     Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016.
-          Older clients will ignore them.
+          Older clients will receive unsupported message.
+    Note: request_poll option will only work in Telegram versions released after 23 January, 2020.
+          Older clients will receive unsupported message.
 
     https://core.telegram.org/bots/api#keyboardbutton
 
@@ -208,35 +212,42 @@ class KeyboardButton(Button):
 
     :param request_location: Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
     :type  request_location: bool
+
+    :param request_poll: Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
+    :type  request_poll: pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType
     """
 
-    def __init__(self, text, request_contact=None, request_location=None):
+    def __init__(self, text, request_contact=None, request_location=None, request_poll=None):
         """
-        This object represents one button of the reply keyboard. For simple text buttons String can be used instead of
-        this object to specify text of the button. Optional fields are mutually exclusive.
+        This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this
+    object to specify text of the button.
 
-        Note: request_contact and request_location options will only work in Telegram
-              versions released after 9 April, 2016. Older clients will ignore them.
+    Optional fields request_contact, request_location, and request_poll are mutually exclusive.
 
-        https://core.telegram.org/bots/api#keyboardbutton
+    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016.
+          Older clients will receive unsupported message.
+    Note: request_poll option will only work in Telegram versions released after 23 January, 2020.
+          Older clients will receive unsupported message.
+
+    https://core.telegram.org/bots/api#keyboardbutton
 
 
         Parameters:
 
-        :param text: Text of the button. If none of the optional fields are used,
-                     it will be sent as a message when the button is pressed
+        :param text: Text of the button. If none of the optional fields are used, it will be sent as a message when the button is pressed
         :type  text: str|unicode
 
 
         Optional keyword parameters:
 
-        :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button
-                                is pressed. Available in private chats only
+        :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
         :type  request_contact: bool
 
-        :param request_location: Optional. If True, the user's current location will be sent when the button is
-                                 pressed. Available in private chats only
+        :param request_location: Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
         :type  request_location: bool
+
+        :param request_poll: Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
+        :type  request_poll: pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType
         """
         super(KeyboardButton, self).__init__()
         assert_type_or_raise(text, unicode_type, parameter_name="text")
@@ -247,6 +258,9 @@ class KeyboardButton(Button):
 
         assert_type_or_raise(request_location, None, bool, parameter_name="request_location")
         self.request_location = request_location
+
+        assert_type_or_raise(request_poll, None, KeyboardButtonPollType, parameter_name="request_poll")
+        self.request_poll = request_poll
     # end def __init__
 
     def to_array(self):
@@ -262,6 +276,9 @@ class KeyboardButton(Button):
             array['request_contact'] = bool(self.request_contact)  # type bool
         if self.request_location is not None:
             array['request_location'] = bool(self.request_location)  # type bool
+        if self.request_poll is not None:
+            array['request_poll'] = self.request_poll.to_array()  # type KeyboardButtonPollType
+
         return array
     # end def to_array
 
@@ -278,6 +295,7 @@ class KeyboardButton(Button):
         data['text'] = u(array.get('text'))
         data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
         data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
+        data['request_poll'] = KeyboardButtonPollType.from_array(array.get('request_poll')) if array.get('request_poll') is not None else None
         return data
     # end def validate_array
 
@@ -303,7 +321,7 @@ class KeyboardButton(Button):
         """
         Implements `str(keyboardbutton_instance)`
         """
-        return "KeyboardButton(text={self.text!r}, request_contact={self.request_contact!r}, request_location={self.request_location!r})".format(self=self)
+        return "KeyboardButton(text={self.text!r}, request_contact={self.request_contact!r}, request_location={self.request_location!r}, request_poll={self.request_poll!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -313,7 +331,7 @@ class KeyboardButton(Button):
         if self._raw:
             return "KeyboardButton.from_array({self._raw})".format(self=self)
         # end if
-        return "KeyboardButton(text={self.text!r}, request_contact={self.request_contact!r}, request_location={self.request_location!r})".format(self=self)
+        return "KeyboardButton(text={self.text!r}, request_contact={self.request_contact!r}, request_location={self.request_location!r}, request_poll={self.request_poll!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -321,12 +339,118 @@ class KeyboardButton(Button):
         Implements `"key" in keyboardbutton_instance`
         """
         return (
-            key in ["text", "request_contact", "request_location"]
+            key in ["text", "request_contact", "request_location", "request_poll"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
     # end def __contains__
 # end class KeyboardButton
+
+
+class KeyboardButtonPollType(Button):
+    """
+    This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
+
+    https://core.telegram.org/bots/api#keyboardbuttonpolltype
+
+
+    Optional keyword parameters:
+
+    :param type: Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
+    :type  type: str|unicode
+    """
+
+    def __init__(self, type=None):
+        """
+        This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
+
+        https://core.telegram.org/bots/api#keyboardbuttonpolltype
+
+
+        Optional keyword parameters:
+
+        :param type: Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
+        :type  type: str|unicode
+        """
+        super(KeyboardButtonPollType, self).__init__()
+        assert_type_or_raise(type, None, unicode_type, parameter_name="type")
+        self.type = type
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this KeyboardButtonPollType to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(KeyboardButtonPollType, self).to_array()
+        if self.type is not None:
+            array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the KeyboardButtonPollType constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Button.validate_array(array)
+        data['type'] = u(array.get('type')) if array.get('type') is not None else None
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new KeyboardButtonPollType from a given dictionary.
+
+        :return: new KeyboardButtonPollType instance.
+        :rtype: KeyboardButtonPollType
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = KeyboardButtonPollType.validate_array(array)
+        instance = KeyboardButtonPollType(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(keyboardbuttonpolltype_instance)`
+        """
+        return "KeyboardButtonPollType(type={self.type!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(keyboardbuttonpolltype_instance)`
+        """
+        if self._raw:
+            return "KeyboardButtonPollType.from_array({self._raw})".format(self=self)
+        # end if
+        return "KeyboardButtonPollType(type={self.type!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in keyboardbuttonpolltype_instance`
+        """
+        return (
+            key in ["type"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class KeyboardButtonPollType
+
 
 
 class ReplyKeyboardRemove(ReplyMarkup):
