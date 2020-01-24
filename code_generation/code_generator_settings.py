@@ -28,8 +28,9 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Video":                ("pytgbot.api_types.receivable.media.", "Media", None),
     "Game":                 ("pytgbot.api_types.receivable.media.", "Media", None),
     "Animation":            ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Poll":                 ("pytgbot.api_types.receivable.media.", "Media", None),  # April 14, 2019
-    "PollOption":           ("pytgbot.api_types.receivable.media.", "Receivable", None),  # April 14, 2019
+    "Poll":                 ("pytgbot.api_types.receivable.media.poll.", "Media", None),  # April 14, 2019, Moved for January 23, 2020
+    "PollOption":           ("pytgbot.api_types.receivable.media.poll.", "Receivable", None),  # April 14, 2019, Moved for January 23, 2020
+    "PollAnswer":           ("pytgbot.api_types.receivable.media.poll.", "Receivable", None),  # January 23, 2020
 
     # pytgbot.api_types.receivable.responses.*
 
@@ -127,15 +128,16 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InputMediaDocument":           ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
 
     # pytgbot.api_types.sendable.reply_markup.*
-    "Button":               ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
-    "ReplyMarkup":          ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
-    "ReplyKeyboardMarkup":  ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
-    "ReplyKeyboardRemove":  ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
-    "ForceReply":           ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
-    "InlineKeyboardMarkup": ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
-    "KeyboardButton":       ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
-    "InlineKeyboardButton": ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
-    "LoginUrl":             ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),  # May 31, 2019
+    "Button":                 ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
+    "ReplyMarkup":            ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),
+    "ReplyKeyboardMarkup":    ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
+    "ReplyKeyboardRemove":    ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
+    "ForceReply":             ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
+    "InlineKeyboardMarkup":   ("pytgbot.api_types.sendable.reply_markup.", "ReplyMarkup", None),
+    "KeyboardButton":         ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
+    "KeyboardButtonPollType": ("pytgbot.api_types.sendable.reply_markup.", "Button", None),  # January 23, 2020
+    "InlineKeyboardButton":   ("pytgbot.api_types.sendable.reply_markup.", "Button", None),
+    "LoginUrl":               ("pytgbot.api_types.sendable.reply_markup.", "Sendable", None),  # May 31, 2019
 
     # pytgbot.api_types.sendable.payments.*
     "LabeledPrice":     ("pytgbot.api_types.sendable.payments.", "Sendable", None),  # May 18, 2017
@@ -192,7 +194,7 @@ WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters 
 MESSAGE_CLASS_OVERRIDES = {  # Overrides of send function classification for teleflask. More docstring below.
     "MessageMessage": "TextMessage",  # sendMessage, for text
 }
-""" 
+"""
 Overrides of send function classification for teleflask.
 Function "sendMessage" => "Message" will be replaced with "TextMessage".
 """
@@ -202,7 +204,7 @@ TYPE_STRING_OVERRIDES = {  # Overrides function types
     "Array of InputMediaPhoto and InputMediaVideo": "list of InputMediaPhoto | list of InputMediaVideo",  # sendMediaGroup
     "Messages": "list of Message",  # sendMediaGroup
 }
-""" 
+"""
 Overrides of send function classification for teleflask.
 Function "sendMessage" => "Message" will be replaced with "TextMessage".
 """
