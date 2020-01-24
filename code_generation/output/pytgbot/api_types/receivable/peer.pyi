@@ -38,6 +38,15 @@ class User(Peer):
     :param language_code: Optional. IETF language tag of the user's language
     :type  language_code: str|unicode
     
+    :param can_join_groups: Optional. True, if the bot can be invited to groups. Returned only in getMe.
+    :type  can_join_groups: bool
+    
+    :param can_read_all_group_messages: Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+    :type  can_read_all_group_messages: bool
+    
+    :param supports_inline_queries: Optional. True, if the bot supports inline queries. Returned only in getMe.
+    :type  supports_inline_queries: bool
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -47,6 +56,9 @@ class User(Peer):
     last_name: str
     username: str
     language_code: str
+    can_join_groups: bool
+    can_read_all_group_messages: bool
+    supports_inline_queries: bool
 # end class User
 
 class Chat(Peer):

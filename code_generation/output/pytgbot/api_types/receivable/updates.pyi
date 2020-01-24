@@ -51,7 +51,10 @@ class Update(Receivable):
     :type  pre_checkout_query: pytgbot.api_types.receivable.payments.PreCheckoutQuery
     
     :param poll: Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
-    :type  poll: pytgbot.api_types.receivable.media.Poll
+    :type  poll: pytgbot.api_types.receivable.media.poll.Poll
+    
+    :param poll_answer: Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
+    :type  poll_answer: pytgbot.api_types.receivable.media.poll.PollAnswer
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -67,6 +70,7 @@ class Update(Receivable):
     shipping_query: ShippingQuery
     pre_checkout_query: PreCheckoutQuery
     poll: Poll
+    poll_answer: PollAnswer
 # end class Update
 
 class WebhookInfo(Receivable):
@@ -217,7 +221,7 @@ class Message(UpdateType):
     :type  venue: pytgbot.api_types.receivable.media.Venue
     
     :param poll: Optional. Message is a native poll, information about the poll
-    :type  poll: pytgbot.api_types.receivable.media.Poll
+    :type  poll: pytgbot.api_types.receivable.media.poll.Poll
     
     :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User

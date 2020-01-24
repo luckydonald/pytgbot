@@ -41,8 +41,8 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
 class KeyboardButton(Button):
     """
-    This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields are mutually exclusive.
-    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+    This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields request_contact, request_location, and request_poll are mutually exclusive.
+    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will receive unsupported message.Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will receive unsupported message.
 
     https://core.telegram.org/bots/api#keyboardbutton
     
@@ -60,11 +60,30 @@ class KeyboardButton(Button):
     
     :param request_location: Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
     :type  request_location: bool
+    
+    :param request_poll: Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
+    :type  request_poll: pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType
     """
     text: str
     request_contact: bool
     request_location: bool
+    request_poll: KeyboardButtonPollType
 # end class KeyboardButton
+
+class KeyboardButtonPollType(Button):
+    """
+    This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
+
+    https://core.telegram.org/bots/api#keyboardbuttonpolltype
+    
+
+    Optional keyword parameters:
+    
+    :param type: Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
+    :type  type: str|unicode
+    """
+    type: str
+# end class KeyboardButtonPollType
 
 class ReplyKeyboardRemove(ReplyMarkup):
     """

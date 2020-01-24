@@ -36,6 +36,9 @@ class MessageEntity(Result):
     :param user: Optional. For "text_mention" only, the mentioned user
     :type  user: pytgbot.api_types.receivable.peer.User
     
+    :param language: Optional. For "pre" only, the programming language of the entity text
+    :type  language: str|unicode
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -44,6 +47,7 @@ class MessageEntity(Result):
     length: int
     url: str
     user: User
+    language: str
 # end class MessageEntity
 
 class PhotoSize(Result):
@@ -451,64 +455,6 @@ class Venue(Media):
     foursquare_id: str
     foursquare_type: str
 # end class Venue
-
-class PollOption(Receivable):
-    """
-    This object contains information about one answer option in a poll.
-
-    https://core.telegram.org/bots/api#polloption
-    
-
-    Parameters:
-    
-    :param text: Option text, 1-100 characters
-    :type  text: str|unicode
-    
-    :param voter_count: Number of users that voted for this option
-    :type  voter_count: int
-    
-
-    Optional keyword parameters:
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-    text: str
-    voter_count: int
-# end class PollOption
-
-class Poll(Media):
-    """
-    This object contains information about a poll.
-
-    https://core.telegram.org/bots/api#poll
-    
-
-    Parameters:
-    
-    :param id: Unique poll identifier
-    :type  id: str|unicode
-    
-    :param question: Poll question, 1-255 characters
-    :type  question: str|unicode
-    
-    :param options: List of poll options
-    :type  options: list of pytgbot.api_types.receivable.media.PollOption
-    
-    :param is_closed: True, if the poll is closed
-    :type  is_closed: bool
-    
-
-    Optional keyword parameters:
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-    id: str
-    question: str
-    options: List[PollOption]
-    is_closed: bool
-# end class Poll
 
 class UserProfilePhotos(Result):
     """
