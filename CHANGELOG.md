@@ -1,4 +1,30 @@
 # Changelog
+## Version 4.6
+- Added API definitions of v4.4, (July 29th, 2019) with the following changelog:
+    - Supported Polls 2.0.
+    - Added the ability to send non-anonymous, multiple answer, and quiz-style polls: added the parameters `is_anonymous`, `type`, `allows_multiple_answers`, `correct_option_id`, `is_closed` options to the method `sendPoll`.
+    - Added the object `KeyboardButtonPollType` and the field `request_poll` to the object `KeyboardButton`.
+    - Added updates about changes of user answers in non-anonymous polls, represented by the object `PollAnswer` and the field `poll_answer` in the `Update` object.
+    - Added the fields `total_voter_count`, `is_anonymous`, `type`, `allows_multiple_answers`, `correct_option_id` to the `Poll` object.
+    - Bots can now send polls to private chats.
+    - Added more information about the bot in response to the `getMe` request: added the fields `can_join_groups`, `can_read_all_group_messages` and `supports_inline_queries` to the User object.
+    - Added the optional field `language` to the `MessageEntity` object.
+- The new stuff:
+    - New Fields:
+        - `pytgbot.api_types.receivable.media.MessageEntity`: `language`
+        - `pytgbot.api_types.receivable.media.Poll`: `total_voter_count`, `is_closed`, `is_anonymous`, `type`, `allows_multiple_answers` and `correct_option_id`
+        - `pytgbot.api_types.receivable.updates.Update`: `poll_answer`
+        - `pytgbot.api_types.sendable.reply_markup.KeyboardButton`: `request_poll`
+        - `pytgbot.api_types.receivable.peer.User`: `can_join_groups`, `can_read_all_group_messages`, `supports_inline_queries`
+        - `pytgbot.api_types.receivable.peer.Chat`: `slow_mode_delay`
+        - `pytgbot.api_types.receivable.peer.ChatMember`: `custom_title`
+    - New Arguments:
+        - `pytgbot.bot.Bot.get_me`:
+    - New Classes:
+        - `pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType`
+        - `pytgbot.api_types.receivable.media.PollAnswer`
+
+
 ## Version 4.5.2
 - Fixed failing to merge the `file_unique_id` field into the media constructors.
 
