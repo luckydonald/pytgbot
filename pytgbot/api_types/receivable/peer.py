@@ -44,11 +44,20 @@ class User(Peer):
     :param language_code: Optional. IETF language tag of the user's language
     :type  language_code: str|unicode
 
+    :param can_join_groups: Optional. True, if the bot can be invited to groups. Returned only in getMe.
+    :type  can_join_groups: bool
+
+    :param can_read_all_group_messages: Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+    :type  can_read_all_group_messages: bool
+
+    :param supports_inline_queries: Optional. True, if the bot supports inline queries. Returned only in getMe.
+    :type  supports_inline_queries: bool
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, is_bot, first_name, last_name=None, username=None, language_code=None, _raw=None):
+    def __init__(self, id, is_bot, first_name, last_name=None, username=None, language_code=None, can_join_groups=None, can_read_all_group_messages=None, supports_inline_queries=None, _raw=None):
         """
         This object represents a Telegram user or bot.
 
@@ -78,6 +87,15 @@ class User(Peer):
         :param language_code: Optional. IETF language tag of the user's language
         :type  language_code: str|unicode
 
+        :param can_join_groups: Optional. True, if the bot can be invited to groups. Returned only in getMe.
+        :type  can_join_groups: bool
+
+        :param can_read_all_group_messages: Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+        :type  can_read_all_group_messages: bool
+
+        :param supports_inline_queries: Optional. True, if the bot supports inline queries. Returned only in getMe.
+        :type  supports_inline_queries: bool
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -99,6 +117,15 @@ class User(Peer):
 
         assert_type_or_raise(language_code, None, unicode_type, parameter_name="language_code")
         self.language_code = language_code
+
+        assert_type_or_raise(can_join_groups, None, bool, parameter_name="can_join_groups")
+        self.can_join_groups = can_join_groups
+
+        assert_type_or_raise(can_read_all_group_messages, None, bool, parameter_name="can_read_all_group_messages")
+        self.can_read_all_group_messages = can_read_all_group_messages
+
+        assert_type_or_raise(supports_inline_queries, None, bool, parameter_name="supports_inline_queries")
+        self.supports_inline_queries = supports_inline_queries
 
         self._raw = _raw
     # end def __init__
@@ -210,7 +237,7 @@ class Chat(Peer):
     :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
     :type  id: int
 
-    :param type: Type of chat, can be either “private”, “group”, “supergroup” or “channel”
+    :param type: Type of chat, can be either "private", "group", "supergroup" or "channel"
     :type  type: str|unicode
 
 
@@ -243,6 +270,9 @@ class Chat(Peer):
     :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
     :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
+    :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in getChat.
+    :type  slow_mode_delay: int
+
     :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
     :type  sticker_set_name: str|unicode
 
@@ -253,7 +283,7 @@ class Chat(Peer):
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, photo=None, description=None, invite_link=None, pinned_message=None, permissions=None, sticker_set_name=None, can_set_sticker_set=None, _raw=None):
+    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, photo=None, description=None, invite_link=None, pinned_message=None, permissions=None, slow_mode_delay=None, sticker_set_name=None, can_set_sticker_set=None, _raw=None):
         """
         This object represents a chat.
 
@@ -265,7 +295,7 @@ class Chat(Peer):
         :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
         :type  id: int
 
-        :param type: Type of chat, can be either “private”, “group”, “supergroup” or “channel”
+        :param type: Type of chat, can be either "private", "group", "supergroup" or "channel"
         :type  type: str|unicode
 
 
@@ -297,6 +327,9 @@ class Chat(Peer):
 
         :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
         :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
+
+        :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in getChat.
+        :type  slow_mode_delay: int
 
         :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
         :type  sticker_set_name: str|unicode
@@ -344,6 +377,9 @@ class Chat(Peer):
         assert_type_or_raise(permissions, None, ChatPermissions, parameter_name="permissions")
         self.permissions = permissions
 
+        assert_type_or_raise(slow_mode_delay, None, int, parameter_name="slow_mode_delay")
+        self.slow_mode_delay = slow_mode_delay
+
         assert_type_or_raise(sticker_set_name, None, unicode_type, parameter_name="sticker_set_name")
         self.sticker_set_name = sticker_set_name
 
@@ -383,6 +419,8 @@ class Chat(Peer):
         if self.permissions is not None:
             array['permissions'] = self.permissions.to_array()  # type ChatPermissions
 
+        if self.slow_mode_delay is not None:
+            array['slow_mode_delay'] = int(self.slow_mode_delay)  # type int
         if self.sticker_set_name is not None:
             array['sticker_set_name'] = u(self.sticker_set_name)  # py2: type unicode, py3: type str
         if self.can_set_sticker_set is not None:
@@ -479,11 +517,14 @@ class ChatMember(Result):
     :param user: Information about the user
     :type  user: pytgbot.api_types.receivable.peer.User
 
-    :param status: The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
+    :param status: The member's status in the chat. Can be "creator", "administrator", "member", "restricted", "left" or "kicked"
     :type  status: str|unicode
 
 
     Optional keyword parameters:
+
+    :param custom_title: Optional. Owner and administrators only. Custom title for this user
+    :type  custom_title: str|unicode
 
     :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
     :type  until_date: int
@@ -537,7 +578,7 @@ class ChatMember(Result):
     :type  _raw: None | dict
     """
 
-    def __init__(self, user, status, until_date=None, can_be_edited=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_restrict_members=None, can_promote_members=None, can_change_info=None, can_invite_users=None, can_pin_messages=None, is_member=None, can_send_messages=None, can_send_media_messages=None, can_send_polls=None, can_send_other_messages=None, can_add_web_page_previews=None, _raw=None):
+    def __init__(self, user, status, custom_title=None, until_date=None, can_be_edited=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_restrict_members=None, can_promote_members=None, can_change_info=None, can_invite_users=None, can_pin_messages=None, is_member=None, can_send_messages=None, can_send_media_messages=None, can_send_polls=None, can_send_other_messages=None, can_add_web_page_previews=None, _raw=None):
         """
         This object contains information about one member of a chat.
 
@@ -549,11 +590,14 @@ class ChatMember(Result):
         :param user: Information about the user
         :type  user: pytgbot.api_types.receivable.peer.User
 
-        :param status: The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
+        :param status: The member's status in the chat. Can be "creator", "administrator", "member", "restricted", "left" or "kicked"
         :type  status: str|unicode
 
 
         Optional keyword parameters:
+
+        :param custom_title: Optional. Owner and administrators only. Custom title for this user
+        :type  custom_title: str|unicode
 
         :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
         :type  until_date: int
@@ -613,6 +657,9 @@ class ChatMember(Result):
 
         assert_type_or_raise(status, unicode_type, parameter_name="status")
         self.status = status
+
+        assert_type_or_raise(custom_title, None, unicode_type, parameter_name="custom_title")
+        self.custom_title = custom_title
 
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
         self.until_date = until_date
@@ -675,6 +722,8 @@ class ChatMember(Result):
         array = super(ChatMember, self).to_array()
         array['user'] = self.user.to_array()  # type User
         array['status'] = u(self.status)  # py2: type unicode, py3: type str
+        if self.custom_title is not None:
+            array['custom_title'] = u(self.custom_title)  # py2: type unicode, py3: type str
         if self.until_date is not None:
             array['until_date'] = int(self.until_date)  # type int
         if self.can_be_edited is not None:
