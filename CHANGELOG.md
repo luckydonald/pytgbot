@@ -1,7 +1,7 @@
 # Changelog
 ## Version 4.6
-- Added API definitions of v4.4, (July 29th, 2019) with the following changelog:
-    - Supported Polls 2.0.
+- Added API definitions of v4.6, (January 23, 2020) with the following changelog:
+    - Supported [Polls 2.0](https://telegram.org/blog/polls-2-0-vmq).
     - Added the ability to send non-anonymous, multiple answer, and quiz-style polls: added the parameters `is_anonymous`, `type`, `allows_multiple_answers`, `correct_option_id`, `is_closed` options to the method `sendPoll`.
     - Added the object `KeyboardButtonPollType` and the field `request_poll` to the object `KeyboardButton`.
     - Added updates about changes of user answers in non-anonymous polls, represented by the object `PollAnswer` and the field `poll_answer` in the `Update` object.
