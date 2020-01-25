@@ -134,7 +134,7 @@ class Update(Receivable):
         """
         super(Update, self).__init__()
         from ..receivable.inline import InlineQuery, ChosenInlineResult
-        from ..receivable.media.poll import Poll
+        from ..receivable.media import Poll
         from ..receivable.payments import ShippingQuery, PreCheckoutQuery
 
 
