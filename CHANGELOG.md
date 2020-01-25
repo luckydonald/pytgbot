@@ -1,4 +1,7 @@
 # Changelog
+## Version 4.6.1 _(not released yet)_
+- Added `language` to `MessageEntity` for real now.
+
 ## Version 4.6
 - Added API definitions of v4.6, (January 23, 2020) with the following changelog:
     - Supported [Polls 2.0](https://telegram.org/blog/polls-2-0-vmq).

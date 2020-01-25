@@ -38,11 +38,14 @@ class MessageEntity(Result):
     :param user: Optional. For "text_mention" only, the mentioned user
     :type  user: pytgbot.api_types.receivable.peer.User
 
+    :param language: Optional. For "pre" only, the programming language of the entity text
+    :type  language: str|unicode
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, type, offset, length, url=None, user=None, _raw=None):
+    def __init__(self, type, offset, length, url=None, user=None, language=None, _raw=None):
         """
         This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
 
@@ -69,6 +72,9 @@ class MessageEntity(Result):
         :param user: Optional. For "text_mention" only, the mentioned user
         :type  user: pytgbot.api_types.receivable.peer.User
 
+        :param language: Optional. For "pre" only, the programming language of the entity text
+        :type  language: str|unicode
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -90,6 +96,9 @@ class MessageEntity(Result):
         assert_type_or_raise(user, None, User, parameter_name="user")
         self.user = user
 
+        assert_type_or_raise(language, None, unicode_type, parameter_name="language")
+        self.language = language
+
         self._raw = _raw
     # end def __init__
 
@@ -108,6 +117,9 @@ class MessageEntity(Result):
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
         if self.user is not None:
             array['user'] = self.user.to_array()  # type User
+
+        if self.language is not None:
+            array['language'] = u(self.language)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
