@@ -1,6 +1,7 @@
 # Changelog
 ## Version 4.6.1 _(not released yet)_
 - Added `language` to `MessageEntity` for real now.
+- Added `poll_answer` to `Update` as well.
 
 ## Version 4.6
 - Added API definitions of v4.6, (January 23, 2020) with the following changelog:
