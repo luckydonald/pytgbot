@@ -80,11 +80,14 @@ class Update(Receivable):
     :param poll: Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
     :type  poll: pytgbot.api_types.receivable.media.Poll
 
+    :param poll_answer: Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
+    :type  poll_answer: pytgbot.api_types.receivable.media.PollAnswer
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, update_id, message=None, edited_message=None, channel_post=None, edited_channel_post=None, inline_query=None, chosen_inline_result=None, callback_query=None, shipping_query=None, pre_checkout_query=None, poll=None, _raw=None):
+    def __init__(self, update_id, message=None, edited_message=None, channel_post=None, edited_channel_post=None, inline_query=None, chosen_inline_result=None, callback_query=None, shipping_query=None, pre_checkout_query=None, poll=None, poll_answer=None, _raw=None):
         """
         This object represents an incoming update. At most one of the optional parameters can be present in any given update.
 
@@ -129,6 +132,9 @@ class Update(Receivable):
         :param poll: Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
         :type  poll: pytgbot.api_types.receivable.media.Poll
 
+        :param poll_answer: Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
+        :type  poll_answer: pytgbot.api_types.receivable.media.PollAnswer
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -171,6 +177,9 @@ class Update(Receivable):
         assert_type_or_raise(poll, None, Poll, parameter_name="poll")
         self.poll = poll
 
+        assert_type_or_raise(poll_answer, None, PollAnswer, parameter_name="poll_answer")
+        self.poll_answer = poll_answer
+
         self._raw = _raw
     # end def __init__
 
@@ -201,10 +210,10 @@ class Update(Receivable):
             array['shipping_query'] = self.shipping_query.to_array()  # type ShippingQuery
         if self.pre_checkout_query is not None:
             array['pre_checkout_query'] = self.pre_checkout_query.to_array()  # type PreCheckoutQuery
-
         if self.poll is not None:
             array['poll'] = self.poll.to_array()  # type Poll
-
+        if self.poll_answer is not None:
+            array['poll_answer'] = self.poll_answer.to_array()  # type PollAnswer
         return array
     # end def to_array
 
@@ -664,6 +673,9 @@ class Message(UpdateType):
 
         :param forward_signature: Optional. For messages forwarded from channels, signature of the post author if present
         :type  forward_signature: str|unicode
+
+        :param forward_sender_name: Optional. Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
+        :type  forward_sender_name: str|unicode
 
         :param forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
         :type  forward_date: int
