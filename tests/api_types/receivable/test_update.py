@@ -52,22 +52,22 @@ class TestUpdate(TestCase):
 class TestMessage(TestCase):
     def test_1(self):
         data = {
-                "date": 1441645532,
-                "chat": {
-                    "id": 1111101,
-                    "type": "private",
-                    "first_name": "Alfred",
-                    "last_name": "Alfons",
-                },
-                "message_id": 1365,
-                "from": {
-                    "id": 1111101,
-                    "first_name": "Alfred",
-                    "last_name": "Alfons",
-                    "is_bot": False,
-                },
-                "text": "/start"
-            }
+            "date": 1441645532,
+            "chat": {
+                "id": 1111101,
+                "type": "private",
+                "first_name": "Alfred",
+                "last_name": "Alfons",
+            },
+            "message_id": 1365,
+            "from": {
+                "id": 1111101,
+                "first_name": "Alfred",
+                "last_name": "Alfons",
+                "is_bot": False,
+            },
+            "text": "/start"
+        }
         msg = Message.from_array(data)
         self.assertEqual(1441645532, msg.date)
 
@@ -81,4 +81,36 @@ class TestMessage(TestCase):
         self.assertEqual(data, new.to_array(), 'to_array()')
         # self.assertEqual(data, msg, 'compare')
     # end def
+
+
 # end class
+
+
+class TEstUpdate(TestCase):
+    def test_foo_test(self):
+        x = {
+            'message': {
+                'chat': {
+                    'first_name': 'Test User',
+                    'id': 204306969,
+                    'type': 'private',
+                    'username': 'username'
+                },
+                'date': 1582795588,
+                'entities': [
+                    {'length': 6, 'offset': 0, 'type': 'bot_command'}
+                ],
+                'from': {
+                    'first_name': 'Test User',
+                    'id': 204306969,
+                    'is_bot': False,
+                    'language_code': 'en',
+                    'username': 'username'},
+                'message_id': 10816,
+                'text': '/start'
+            },
+            'update_id': 711222445
+        }
+        update = Update.from_array(x)
+    # end def
+# enc class
