@@ -8,7 +8,7 @@ here = path.abspath(path.dirname(__file__))
 long_description = """A Python module that connects to the Telegram bot api, allowing to interact with Telegram users or groups."""
 
 setup(
-    name='pytgbot', version="4.6.1",
+    name='pytgbot', version="4.6.2",
     description='Connect to the Telegram Bot API, receive and send Telegram messages.',
     long_description=long_description,
     # The project's main homepage.
@@ -20,7 +20,7 @@ setup(
     license='GPLv3+',
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 4 - Beta', # 2 - Pre-Alpha, 3 - Alpha, 4 - Beta, 5 - Production/Stable
+        'Development Status :: 4 - Beta',  # 2 - Pre-Alpha, 3 - Alpha, 4 - Beta, 5 - Production/Stable
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
         'Topic :: Communications',
