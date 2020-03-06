@@ -2388,6 +2388,7 @@ class Poll(Media):
         data['allows_multiple_answers'] = bool(array.get('allows_multiple_answers'))
         data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
 
+        return data
     # end def validate_array
 
     @staticmethod
