@@ -527,7 +527,7 @@ def safe_to_file(folder, results):
             all_the_clazzes.append(result)
         else:
             assert isinstance(result, Function)
-            import_path = "pytgbot.bot."
+            import_path = "pytgbot.bot.sync."
             file_path = calc_path_and_create_folders(folder, import_path)
             result.filepath = file_path
             functions.append(result)
