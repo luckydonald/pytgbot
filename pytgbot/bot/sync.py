@@ -2,16 +2,14 @@
 import json
 import re
 
-import requests
-from time import sleep
-from datetime import timedelta
+from datetime import timedelta, datetime
 from DictObject import DictObject
 
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
 from luckydonaldUtils.exceptions import assert_type_or_raise
 
-from ..exceptions import TgApiServerException, TgApiParseException
+from ..exceptions import TgApiServerException, TgApiParseException, TgApiException
 from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types.sendable.inline import InlineQueryResult
 from ..api_types import from_array_list
@@ -103,7 +101,8 @@ class Bot(object):
                  or an empty array if there was an requests.RequestException and error_as_empty is set to True.
         :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
-        from datetime import datetime
+        from time import sleep
+        import requests
 
         assert(offset is None or isinstance(offset, int))
         assert(limit is None or isinstance(limit, int))

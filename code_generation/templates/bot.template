@@ -2,9 +2,7 @@
 import json
 import re
 
-import requests
-from time import sleep
-from datetime import timedelta
+from datetime import timedelta, datetime
 from DictObject import DictObject
 
 from luckydonaldUtils.logger import logging
@@ -37,8 +35,6 @@ class Bot(object):
         :param return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects. Default: `True`
         :type  return_python_objects: bool
         """
-        from datetime import datetime
-
         if api_key is None or not api_key:
             raise ValueError("No api_key given.")
         self.api_key = api_key
