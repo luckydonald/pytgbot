@@ -11,10 +11,10 @@ from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
 from luckydonaldUtils.exceptions import assert_type_or_raise
 
-from .exceptions import TgApiServerException, TgApiParseException
-from .exceptions import TgApiTypeError, TgApiResponseException
-from .api_types.sendable.inline import InlineQueryResult
-from .api_types import from_array_list
+from ..exceptions import TgApiServerException, TgApiParseException
+from ..exceptions import TgApiTypeError, TgApiResponseException
+from ..api_types.sendable.inline import InlineQueryResult
+from ..api_types import from_array_list
 
 
 __author__ = 'luckydonald'
@@ -4203,7 +4203,7 @@ class Bot(object):
 
         :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
         """
-        from .api_types.sendable.files import InputFile
+        from ..api_types.sendable.files import InputFile
         from luckydonaldUtils.encoding import unicode_type
         from luckydonaldUtils.encoding import to_native as n
 
