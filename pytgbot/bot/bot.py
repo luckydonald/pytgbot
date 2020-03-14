@@ -3990,12 +3990,18 @@ class BotBase(object):
         return url, params
     # end def _prepare_request
 
-    def _postprocess_request(self, response, json):
+    def _postprocess_request(self, request, response, json):
         """
         This converts the response to either the response or a parsed :class:`pytgbot.api_types.receivable.Receivable`.
 
-        :param r: the request response
-        :type  r: requests.Response
+        :param request: the request
+        :type request: request.Request|httpx.Request
+
+        :param response: the request response
+        :type  response: requests.Response|httpx.Response
+
+        :param json: the parsed json array
+        :type  json: dict
 
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
@@ -4008,7 +4014,7 @@ class BotBase(object):
         except Exception as e:
             raise TgApiResponseException('Parsing answer as json failed.', response, e)
         # end if
-        res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
+        res["_response"] = response  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
         if self.return_python_objects:
             if res.ok is not True:
@@ -4016,7 +4022,7 @@ class BotBase(object):
                     error_code=res.error_code if "error_code" in res else None,
                     response=res.response if "response" in res else None,
                     description=res.description if "description" in res else None,
-                    request=r.request
+                    request=request
                 )
             # end if not ok
             if "result" not in res:

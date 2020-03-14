@@ -1,5 +1,5 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import re
 
 from datetime import timedelta, datetime
@@ -12,13 +12,13 @@ from .bot import BotBase
 
 
 __author__ = 'luckydonald'
-__all__ = ["SyncBot", "Bot"]
+__all__ = ["AsyncBot", "Bot"]
 
 logger = logging.getLogger(__name__)
 
 
-class SyncBot(BotBase):
-    def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
+class AsyncBot(BotBase):
+    async def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
 
@@ -73,8 +73,8 @@ class SyncBot(BotBase):
                  or an empty array if there was an requests.RequestException and error_as_empty is set to True.
         :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
-        from time import sleep
-        import requests
+        from asyncio import sleep
+        import httpx
 
         assert(offset is None or isinstance(offset, int))
         assert(limit is None or isinstance(limit, int))
@@ -96,11 +96,10 @@ class SyncBot(BotBase):
             # end if
         # end if
         self._last_update = datetime.now()
-        use_long_polling = poll_timeout != 0
         try:
-            result = self.do(
+            result = await self.do(
                 "getUpdates", offset=offset, limit=limit, timeout=poll_timeout, allowed_updates=allowed_updates,
-                use_long_polling=use_long_polling, request_timeout=request_timeout
+                use_long_polling=poll_timeout != 0, request_timeout=request_timeout
             )
             if self.return_python_objects:
                 logger.debug("Trying to parse {data}".format(data=repr(result)))
@@ -116,12 +115,8 @@ class SyncBot(BotBase):
             return result
         except (requests.RequestException, TgApiException) as e:
             if error_as_empty:
-                if not isinstance(e, requests.exceptions.Timeout) or not use_long_polling:
-                    logger.warn(
-                        "Network related error happened in get_updates(), but will be ignored: " + str(e),
-                        exc_info=True
-                    )
-                # end if
+                logger.warn("Network related error happened in get_updates(), but will be ignored: " + str(e),
+                            exc_info=True)
                 self._last_update = datetime.now()
                 return DictObject(result=[], exception=e)
             else:
@@ -130,7 +125,7 @@ class SyncBot(BotBase):
         # end try
     # end def get_updates
 
-    def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
+    async def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.
 
@@ -163,80 +158,26 @@ class SyncBot(BotBase):
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
-        import requests
+        import httpx
 
         url, params = self._prepare_request(command, query)
-        r = requests.post(
-            url, params=params, files=files, stream=use_long_polling,
+        async with httpx.AsyncClient(
             verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
-            timeout=request_timeout
-        )
-        json = r.json()
-        return self._postprocess_request(r, json=json)
-    # end def do
-
-    def _do_fileupload(self, file_param_name, value, _command=None, _file_is_optional=False, **kwargs):
-        """
-        :param file_param_name: For what field the file should be uploaded.
-        :type  file_param_name: str
-
-        :param value: File to send. You can either pass a file_id as String to resend a file
-                      file that is already on the Telegram servers, or upload a new file,
-                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
-                      If `_file_is_optional` is set to `True`, it can also be set to `None`.
-        :type  value: pytgbot.api_types.sendable.files.InputFile | str | None
-
-        :param _command: Overwrite the command to be send.
-                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
-        :type  _command: str|None
-
-        :param _file_is_optional: If the file (`value`) is allowed to be None.
-        :type  _file_is_optional: bool
-
-        :param kwargs: will get json encoded.
-
-        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
-
-        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
-        """
-        from ..api_types.sendable.files import InputFile
-        from luckydonaldUtils.encoding import unicode_type
-        from luckydonaldUtils.encoding import to_native as n
-
-        if value is None and _file_is_optional:
-            # Is None but set optional, so do nothing.
-            pass
-        elif isinstance(value, str):
-            kwargs[file_param_name] = str(value)
-        elif isinstance(value, unicode_type):
-            kwargs[file_param_name] = n(value)
-        elif isinstance(value, InputFile):
-            files = value.get_request_files(file_param_name)
-            if "files" in kwargs and kwargs["files"]:
-                # already are some files there, merge them.
-                assert isinstance(kwargs["files"], dict), \
-                    'The files should be of type dict, but are of type {}.'.format(type(kwargs["files"]))
-                for key in files.keys():
-                    assert key not in kwargs["files"], '{key} would be overwritten!'
-                    kwargs["files"][key] = files[key]
-                # end for
+        ) as client:
+            if use_long_polling:
+                method = client.stream
             else:
-                # no files so far
-                kwargs["files"] = files
+                method = client.request
             # end if
-        else:
-            raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
-                key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
-        # end if
-        if not _command:
-            # command as camelCase  # "voice_note" -> "sendVoiceNote"  # https://stackoverflow.com/a/10984923/3423324
-            command = re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), "send_" + file_param_name)
-        else:
-            command = _command
-        # end def
-        return self.do(command, **kwargs)
-    # end def _do_fileupload
+            r = await method(
+                'POST',
+                url=url, params=params, files=files,
+                timeout=request_timeout
+            )
+        # end with
+        json = r.json()
+        return self._postprocess_request(r.request, r, json=json)
+    # end def do
 # end class Bot
 
-Bot = SyncBot
+Bot = AsyncBot
