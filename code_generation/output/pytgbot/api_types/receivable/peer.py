@@ -169,7 +169,7 @@ class User(Peer):
         data['can_join_groups'] = bool(array.get('can_join_groups')) if array.get('can_join_groups') is not None else None
         data['can_read_all_group_messages'] = bool(array.get('can_read_all_group_messages')) if array.get('can_read_all_group_messages') is not None else None
         data['supports_inline_queries'] = bool(array.get('supports_inline_queries')) if array.get('supports_inline_queries') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -452,7 +452,7 @@ class Chat(Peer):
         data['slow_mode_delay'] = int(array.get('slow_mode_delay')) if array.get('slow_mode_delay') is not None else None
         data['sticker_set_name'] = u(array.get('sticker_set_name')) if array.get('sticker_set_name') is not None else None
         data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -789,7 +789,7 @@ class ChatMember(Result):
         data['can_send_polls'] = bool(array.get('can_send_polls')) if array.get('can_send_polls') is not None else None
         data['can_send_other_messages'] = bool(array.get('can_send_other_messages')) if array.get('can_send_other_messages') is not None else None
         data['can_add_web_page_previews'] = bool(array.get('can_add_web_page_previews')) if array.get('can_add_web_page_previews') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -985,7 +985,7 @@ class ChatPermissions(Result):
         data['can_change_info'] = bool(array.get('can_change_info')) if array.get('can_change_info') is not None else None
         data['can_invite_users'] = bool(array.get('can_invite_users')) if array.get('can_invite_users') is not None else None
         data['can_pin_messages'] = bool(array.get('can_pin_messages')) if array.get('can_pin_messages') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod

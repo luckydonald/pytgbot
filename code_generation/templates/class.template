@@ -118,6 +118,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         # end if
         {%- endif -%}
         {%- endfor -%}
+        return data
         {#- remove empty line  #}
     # end def validate_array
 

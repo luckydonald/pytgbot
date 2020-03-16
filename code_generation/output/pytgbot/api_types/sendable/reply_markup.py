@@ -109,7 +109,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
         data['one_time_keyboard'] = bool(array.get('one_time_keyboard')) if array.get('one_time_keyboard') is not None else None
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -262,7 +262,7 @@ class KeyboardButton(Button):
         data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
         data['request_location'] = bool(array.get('request_location')) if array.get('request_location') is not None else None
         data['request_poll'] = KeyboardButtonPollType.from_array(array.get('request_poll')) if array.get('request_poll') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -367,7 +367,7 @@ class KeyboardButtonPollType(Button):
         assert_type_or_raise(array, dict, parameter_name="array")
         data = Button.validate_array(array)
         data['type'] = u(array.get('type')) if array.get('type') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -489,7 +489,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         data = ReplyMarkup.validate_array(array)
         data['remove_keyboard'] = bool(array.get('remove_keyboard'))
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -606,7 +606,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         
         data = ReplyMarkup.validate_array(array)
         data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -808,7 +808,7 @@ class InlineKeyboardButton(Button):
         data['switch_inline_query_current_chat'] = u(array.get('switch_inline_query_current_chat')) if array.get('switch_inline_query_current_chat') is not None else None
         data['callback_game'] = CallbackGame.from_array(array.get('callback_game')) if array.get('callback_game') is not None else None
         data['pay'] = bool(array.get('pay')) if array.get('pay') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -960,7 +960,7 @@ class LoginUrl(Sendable):
         data['forward_text'] = u(array.get('forward_text')) if array.get('forward_text') is not None else None
         data['bot_username'] = u(array.get('bot_username')) if array.get('bot_username') is not None else None
         data['request_write_access'] = bool(array.get('request_write_access')) if array.get('request_write_access') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1096,7 +1096,7 @@ class ForceReply(ReplyMarkup):
         data = ReplyMarkup.validate_array(array)
         data['force_reply'] = bool(array.get('force_reply'))
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod

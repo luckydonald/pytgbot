@@ -93,7 +93,7 @@ class PassportData(Result):
         data = Result.validate_array(array)
         data['data'] = EncryptedPassportElement.from_array_list(array.get('data'), list_level=1)
         data['credentials'] = EncryptedCredentials.from_array(array.get('credentials'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -243,7 +243,7 @@ class PassportFile(Result):
         data['file_unique_id'] = u(array.get('file_unique_id'))
         data['file_size'] = int(array.get('file_size'))
         data['file_date'] = int(array.get('file_date'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -476,7 +476,7 @@ class EncryptedPassportElement(Result):
         data['reverse_side'] = PassportFile.from_array(array.get('reverse_side')) if array.get('reverse_side') is not None else None
         data['selfie'] = PassportFile.from_array(array.get('selfie')) if array.get('selfie') is not None else None
         data['translation'] = PassportFile.from_array_list(array.get('translation'), list_level=1) if array.get('translation') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -615,7 +615,7 @@ class EncryptedCredentials(Result):
         data['data'] = u(array.get('data'))
         data['hash'] = u(array.get('hash'))
         data['secret'] = u(array.get('secret'))
-        
+        return data
     # end def validate_array
 
     @staticmethod

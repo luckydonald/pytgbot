@@ -193,7 +193,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -440,7 +440,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -687,7 +687,7 @@ class InlineQueryResultGif(InlineQueryResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -934,7 +934,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1207,7 +1207,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1432,7 +1432,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         data['audio_duration'] = int(array.get('audio_duration')) if array.get('audio_duration') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1645,7 +1645,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         data['voice_duration'] = int(array.get('voice_duration')) if array.get('voice_duration') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1905,7 +1905,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2141,7 +2141,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2400,7 +2400,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2637,7 +2637,7 @@ class InlineQueryResultContact(InlineQueryResult):
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
         data['thumb_width'] = int(array.get('thumb_width')) if array.get('thumb_width') is not None else None
         data['thumb_height'] = int(array.get('thumb_height')) if array.get('thumb_height') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2788,7 +2788,7 @@ class InlineQueryResultGame(InlineQueryResult):
         data['id'] = u(array.get('id'))
         data['game_short_name'] = u(array.get('game_short_name'))
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3000,7 +3000,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3200,7 +3200,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3400,7 +3400,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3566,7 +3566,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         data['sticker_file_id'] = u(array.get('sticker_file_id'))
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3779,7 +3779,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3990,7 +3990,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -4191,7 +4191,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -4381,7 +4381,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -4515,7 +4515,7 @@ class InputTextMessageContent(InputMessageContent):
         data['message_text'] = u(array.get('message_text'))
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['disable_web_page_preview'] = bool(array.get('disable_web_page_preview')) if array.get('disable_web_page_preview') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -4648,7 +4648,7 @@ class InputLocationMessageContent(InputMessageContent):
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
         data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -4815,7 +4815,7 @@ class InputVenueMessageContent(InputMessageContent):
         data['address'] = u(array.get('address'))
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -4960,7 +4960,7 @@ class InputContactMessageContent(InputMessageContent):
         data['first_name'] = u(array.get('first_name'))
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod

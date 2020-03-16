@@ -139,7 +139,7 @@ class MessageEntity(Result):
         data['url'] = u(array.get('url')) if array.get('url') is not None else None
         data['user'] = User.from_array(array.get('user')) if array.get('user') is not None else None
         data['language'] = u(array.get('language')) if array.get('language') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -301,7 +301,7 @@ class PhotoSize(Result):
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -505,7 +505,7 @@ class Audio(Media):
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -686,7 +686,7 @@ class Document(Media):
         data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -888,7 +888,7 @@ class Video(Media):
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1102,7 +1102,7 @@ class Animation(Media):
         data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1265,7 +1265,7 @@ class Voice(Media):
         data['duration'] = int(array.get('duration'))
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1444,7 +1444,7 @@ class VideoNote(Media):
         data['duration'] = int(array.get('duration'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1608,7 +1608,7 @@ class Contact(Media):
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['user_id'] = int(array.get('user_id')) if array.get('user_id') is not None else None
         data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1736,7 +1736,7 @@ class Location(Media):
         data = Media.validate_array(array)
         data['longitude'] = float(array.get('longitude'))
         data['latitude'] = float(array.get('latitude'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1904,7 +1904,7 @@ class Venue(Media):
         data['address'] = u(array.get('address'))
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2032,7 +2032,7 @@ class PollOption(Receivable):
         data = Receivable.validate_array(array)
         data['text'] = u(array.get('text'))
         data['voter_count'] = int(array.get('voter_count'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2177,7 +2177,7 @@ class PollAnswer(Receivable):
         data['poll_id'] = u(array.get('poll_id'))
         data['user'] = User.from_array(array.get('user'))
         data['option_ids'] = PollAnswer._builtin_from_array_list(required_type=int, value=array.get('option_ids'), list_level=1)
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2388,7 +2388,7 @@ class Poll(Media):
         data['type'] = u(array.get('type'))
         data['allows_multiple_answers'] = bool(array.get('allows_multiple_answers'))
         data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2521,7 +2521,7 @@ class UserProfilePhotos(Result):
         data = Result.validate_array(array)
         data['total_count'] = int(array.get('total_count'))
         data['photos'] = PhotoSize.from_array_list(array.get('photos'), list_level=2)
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2677,7 +2677,7 @@ class File(Receivable):
         data['file_unique_id'] = u(array.get('file_unique_id'))
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['file_path'] = u(array.get('file_path')) if array.get('file_path') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2827,7 +2827,7 @@ class ChatPhoto(Result):
         data['small_file_unique_id'] = u(array.get('small_file_unique_id'))
         data['big_file_id'] = u(array.get('big_file_id'))
         data['big_file_unique_id'] = u(array.get('big_file_unique_id'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3056,7 +3056,7 @@ class Sticker(Media):
         data['set_name'] = u(array.get('set_name')) if array.get('set_name') is not None else None
         data['mask_position'] = MaskPosition.from_array(array.get('mask_position')) if array.get('mask_position') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -3242,7 +3242,7 @@ class Game(Media):
         data['text'] = u(array.get('text')) if array.get('text') is not None else None
         data['text_entities'] = MessageEntity.from_array_list(array.get('text_entities'), list_level=1) if array.get('text_entities') is not None else None
         data['animation'] = Animation.from_array(array.get('animation')) if array.get('animation') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod

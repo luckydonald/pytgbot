@@ -102,7 +102,7 @@ class InputMediaPhoto(InputMedia):
         data['media'] = u(array.get('media'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -324,7 +324,7 @@ class InputMediaVideo(InputMediaWithThumb):
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['supports_streaming'] = bool(array.get('supports_streaming')) if array.get('supports_streaming') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -534,7 +534,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -744,7 +744,7 @@ class InputMediaAudio(InputMediaWithThumb):
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -918,7 +918,7 @@ class InputMediaDocument(InputMediaWithThumb):
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        
+        return data
     # end def validate_array
 
     @staticmethod

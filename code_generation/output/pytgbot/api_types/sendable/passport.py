@@ -110,7 +110,7 @@ class PassportElementErrorDataField(PassportElementError):
         data['field_name'] = u(array.get('field_name'))
         data['data_hash'] = u(array.get('data_hash'))
         data['message'] = u(array.get('message'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -253,7 +253,7 @@ class PassportElementErrorFrontSide(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -396,7 +396,7 @@ class PassportElementErrorReverseSide(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -539,7 +539,7 @@ class PassportElementErrorSelfie(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -682,7 +682,7 @@ class PassportElementErrorFile(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -826,7 +826,7 @@ class PassportElementErrorFiles(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -969,7 +969,7 @@ class PassportElementErrorTranslationFile(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1113,7 +1113,7 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorTranslationFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
@@ -1256,7 +1256,7 @@ class PassportElementErrorUnspecified(PassportElementError):
         data['type'] = u(array.get('type'))
         data['element_hash'] = u(array.get('element_hash'))
         data['message'] = u(array.get('message'))
-        
+        return data
     # end def validate_array
 
     @staticmethod
