@@ -2178,6 +2178,7 @@ class PollAnswer(Receivable):
         data['poll_id'] = u(array.get('poll_id'))
         data['user'] = User.from_array(array.get('user'))
         data['option_ids'] = PollAnswer._builtin_from_array_list(required_type=int, value=array.get('option_ids'), list_level=1)
+        return data
     # end def validate_array
 
     @staticmethod
@@ -2387,7 +2388,6 @@ class Poll(Media):
         data['type'] = u(array.get('type'))
         data['allows_multiple_answers'] = bool(array.get('allows_multiple_answers'))
         data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
-
         return data
     # end def validate_array
 
