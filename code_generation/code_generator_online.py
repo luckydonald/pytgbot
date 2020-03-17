@@ -527,7 +527,7 @@ def safe_to_file(folder, results):
             all_the_clazzes.append(result)
         else:
             assert isinstance(result, Function)
-            import_path = "pytgbot.bot.sync."
+            import_path = "pytgbot.bot.async."
             file_path = calc_path_and_create_folders(folder, import_path)
             result.filepath = file_path
             functions.append(result)
@@ -588,8 +588,10 @@ def safe_to_file(folder, results):
         # end try
     # end for classes
     if functions:
-        txt = bot_template.render(functions=functions)
-        render_file_to_disk(functions[0].filepath, txt)
+        txt_sync = bot_template.render(functions=functions, is_asyncio=False)
+        render_file_to_disk(functions[0].filepath.replace('async', 'sync'), txt_sync)
+        txt_async = bot_template.render(functions=functions, is_asyncio=True)
+        render_file_to_disk(functions[0].filepath, txt_async)
 
         imports = set()
         imports.add(('enum', 'Enum'))

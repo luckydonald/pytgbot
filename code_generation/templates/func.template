@@ -1,5 +1,5 @@
 {% from "macros.template" import for_args_none, for_type_list_of_full, types_as_assert_tuple, for_args_set %}
-    def {{ function.name }}(self, {{ for_args_none(function.variables) }}):
+    {% if is_asyncio %}async {% endif %}def {{ function.name }}(self, {{ for_args_none(function.variables) }}):
         """
         {% block func_docstring -%}
         {{ function.description|indent(8) }}
@@ -51,7 +51,7 @@
         {% endif %}
         {%- endfor -%}
         {#  #}
-        result = self.do("{{ function.api_name }}", {{ for_args_set(function.variables) }})
+        result = {% if is_asyncio %}await {% endif %}self.do("{{ function.api_name }}", {{ for_args_set(function.variables) }})
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
         {%- for import in function.returns.all_imports %}

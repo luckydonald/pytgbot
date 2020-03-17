@@ -14,14 +14,23 @@ from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types.sendable.inline import InlineQueryResult
 from ..api_types import from_array_list
 
+{% if is_asyncio %}
+# async imports
+from async_property import async_property
+import httpx
+{% else %}
+# sync imports
+import requests
+{% endif %}
+
 
 __author__ = 'luckydonald'
-__all__ = ["Bot"]
+__all__ = ["Bot", "{% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}"]
 
 logger = logging.getLogger(__name__)
 
 
-class Bot(object):
+class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(object):
     _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # you shouldn't change that.
 
     def __init__(self, api_key, return_python_objects=True):
@@ -44,16 +53,19 @@ class Bot(object):
         self._username = None  # will be filled when using the property .id or .username, or when calling ._load_info()
     # end def __init__
 
+    # start of generated functions
     {% for function in functions -%}
     {% include "func.template" -%}
     {#- strip end #}
     {% endfor %}
-    def send_msg(self, *args, **kwargs):
+    # end of generated functions
+
+    {% if is_asyncio %}async {% endif %}def send_msg(self, *args, **kwargs):
         """ alias to :func:`send_message` """
         return self.send_message(*args, **kwargs)
     # end def send_msg
 
-    def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
+    {% if is_asyncio %}async {% endif %}def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.
 
@@ -86,7 +98,9 @@ class Bot(object):
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
-        import requests
+        {% if is_asyncio %}import httpx
+        {% else %}import requests
+        {% endif %}
 
         url, params = self._prepare_request(command, query)
         r = requests.post(url, params=params, files=files, stream=use_long_polling,
@@ -163,7 +177,7 @@ class Bot(object):
         return res
     # end def _postprocess_request
 
-    def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
+    {% if is_asyncio %}async {% endif %}def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
         """
         :param file_param_name: For what field the file should be uploaded.
         :type  file_param_name: str
@@ -203,7 +217,7 @@ class Bot(object):
         else:
             command = _command
         # end def
-        return self.do(command, **kwargs)
+        return {% if is_asyncio %}await {% endif %}self.do(command, **kwargs)
     # end def _do_fileupload
 
     def get_download_url(self, file):
@@ -223,13 +237,13 @@ class Bot(object):
         return file.get_download_url(self.api_key)
     # end def get_download_url
 
-    def _load_info(self):
+    {% if is_asyncio %}async {% endif %}def _load_info(self):
         """
         This functions stores the id and the username of the bot.
         Called by `.username` and `.id` properties.
         :return:
         """
-        myself = self.get_me()
+        myself = {% if is_asyncio %}await {% endif %}self.get_me()
         if self.return_python_objects:
             self._id = myself.id
             self._username = myself.username
@@ -239,24 +253,28 @@ class Bot(object):
         # end if
     # end def
 
-    @property
+    @{% if is_asyncio %}async_property{% else %}property{% endif %}
     def username(self):
         if not self._username:
-            self._load_info()
+            {% if is_asyncio %}await {% endif %}self._load_info()
         # end if
         return self._username
     # end def
 
-    @property
+    @{% if is_asyncio %}async_property{% else %}property{% endif %}
     def id(self):
         if not self._id:
-            self._load_info()
+            {% if is_asyncio %}await {% endif %}self._load_info()
         # end if
         return self._id
     # end def
 
     def __str__(self):
-        return "pytgbot.Bot(username={s.username!r}, id={s.id!r})".format(s=self)
+        username = {% if is_asyncio %}self._username if self._username else "<not loaded>"{% else %}self.username{% endif %}
+        id = {% if is_asyncio %}self._id if self._id else "<not loaded>"{% else %}self.id{% endif %}
+        return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
     # end def
 # end class Bot
 
+# allow importing them as `pytgbot.bot.async.Bot` and `pytgbot.bot.sync.Bot`.
+Bot = {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}

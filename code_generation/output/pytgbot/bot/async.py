@@ -15,18 +15,19 @@ from ..api_types.sendable.inline import InlineQueryResult
 from ..api_types import from_array_list
 
 
-# sync imports
-import requests
+# async imports
+from async_property import async_property
+import httpx
 
 
 
 __author__ = 'luckydonald'
-__all__ = ["Bot", "SyncBot"]
+__all__ = ["Bot", "AsyncBot"]
 
 logger = logging.getLogger(__name__)
 
 
-class SyncBot(object):
+class AsyncBot(object):
     _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # you shouldn't change that.
 
     def __init__(self, api_key, return_python_objects=True):
@@ -51,7 +52,7 @@ class SyncBot(object):
 
     # start of generated functions
     
-    def get_updates(self, offset=None, limit=None, timeout=None, allowed_updates=None):
+    async def get_updates(self, offset=None, limit=None, timeout=None, allowed_updates=None):
         """
         Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
 
@@ -88,7 +89,7 @@ class SyncBot(object):
         
         assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
         
-        result = self.do("getUpdates", offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates)
+        result = await self.do("getUpdates", offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Update
@@ -103,7 +104,7 @@ class SyncBot(object):
         return result
     # end def get_updates
     
-    def set_webhook(self, url, certificate=None, max_connections=None, allowed_updates=None):
+    async def set_webhook(self, url, certificate=None, max_connections=None, allowed_updates=None):
         """
         Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
         If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot‘s token, you can be pretty sure it’s us.
@@ -147,7 +148,7 @@ class SyncBot(object):
         
         assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
         
-        result = self.do("setWebhook", url=url, certificate=certificate, max_connections=max_connections, allowed_updates=allowed_updates)
+        result = await self.do("setWebhook", url=url, certificate=certificate, max_connections=max_connections, allowed_updates=allowed_updates)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -161,7 +162,7 @@ class SyncBot(object):
         return result
     # end def set_webhook
     
-    def delete_webhook(self, ):
+    async def delete_webhook(self, ):
         """
         Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success. Requires no parameters.
 
@@ -174,7 +175,7 @@ class SyncBot(object):
         :rtype:  bool
         """
         
-        result = self.do("deleteWebhook", )
+        result = await self.do("deleteWebhook", )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -188,7 +189,7 @@ class SyncBot(object):
         return result
     # end def delete_webhook
     
-    def get_webhook_info(self, ):
+    async def get_webhook_info(self, ):
         """
         Use this method to get current webhook status. Requires no parameters. On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty.
 
@@ -201,7 +202,7 @@ class SyncBot(object):
         :rtype:  pytgbot.api_types.receivable.updates.WebhookInfo
         """
         
-        result = self.do("getWebhookInfo", )
+        result = await self.do("getWebhookInfo", )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import WebhookInfo
@@ -216,7 +217,7 @@ class SyncBot(object):
         return result
     # end def get_webhook_info
     
-    def get_me(self, ):
+    async def get_me(self, ):
         """
         A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
 
@@ -229,7 +230,7 @@ class SyncBot(object):
         :rtype:  pytgbot.api_types.receivable.peer.User
         """
         
-        result = self.do("getMe", )
+        result = await self.do("getMe", )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.peer import User
@@ -244,7 +245,7 @@ class SyncBot(object):
         return result
     # end def get_me
     
-    def send_message(self, chat_id, text, parse_mode=None, disable_web_page_preview=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_message(self, chat_id, text, parse_mode=None, disable_web_page_preview=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send text messages. On success, the sent Message is returned.
 
@@ -301,7 +302,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode, disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode, disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -316,7 +317,7 @@ class SyncBot(object):
         return result
     # end def send_message
     
-    def forward_message(self, chat_id, from_chat_id, message_id, disable_notification=None):
+    async def forward_message(self, chat_id, from_chat_id, message_id, disable_notification=None):
         """
         Use this method to forward messages of any kind. On success, the sent Message is returned.
 
@@ -353,7 +354,7 @@ class SyncBot(object):
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         
-        result = self.do("forwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, disable_notification=disable_notification)
+        result = await self.do("forwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, disable_notification=disable_notification)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -368,7 +369,7 @@ class SyncBot(object):
         return result
     # end def forward_message
     
-    def send_photo(self, chat_id, photo, caption=None, parse_mode=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_photo(self, chat_id, photo, caption=None, parse_mode=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send photos. On success, the sent Message is returned.
 
@@ -426,7 +427,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendPhoto", chat_id=chat_id, photo=photo, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendPhoto", chat_id=chat_id, photo=photo, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -441,7 +442,7 @@ class SyncBot(object):
         return result
     # end def send_photo
     
-    def send_audio(self, chat_id, audio, caption=None, parse_mode=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_audio(self, chat_id, audio, caption=None, parse_mode=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
         For sending voice messages, use the sendVoice method instead.
@@ -520,7 +521,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendAudio", chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendAudio", chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -535,7 +536,7 @@ class SyncBot(object):
         return result
     # end def send_audio
     
-    def send_document(self, chat_id, document, thumb=None, caption=None, parse_mode=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_document(self, chat_id, document, thumb=None, caption=None, parse_mode=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 
@@ -598,7 +599,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendDocument", chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendDocument", chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -613,7 +614,7 @@ class SyncBot(object):
         return result
     # end def send_document
     
-    def send_video(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_video(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 
@@ -696,7 +697,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendVideo", chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, supports_streaming=supports_streaming, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendVideo", chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, supports_streaming=supports_streaming, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -711,7 +712,7 @@ class SyncBot(object):
         return result
     # end def send_video
     
-    def send_animation(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_animation(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
 
@@ -789,7 +790,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendAnimation", chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendAnimation", chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -804,7 +805,7 @@ class SyncBot(object):
         return result
     # end def send_animation
     
-    def send_voice(self, chat_id, voice, caption=None, parse_mode=None, duration=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_voice(self, chat_id, voice, caption=None, parse_mode=None, duration=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
@@ -867,7 +868,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendVoice", chat_id=chat_id, voice=voice, caption=caption, parse_mode=parse_mode, duration=duration, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendVoice", chat_id=chat_id, voice=voice, caption=caption, parse_mode=parse_mode, duration=duration, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -882,7 +883,7 @@ class SyncBot(object):
         return result
     # end def send_voice
     
-    def send_video_note(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_video_note(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
 
@@ -945,7 +946,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -960,7 +961,7 @@ class SyncBot(object):
         return result
     # end def send_video_note
     
-    def send_media_group(self, chat_id, media, disable_notification=None, reply_to_message_id=None):
+    async def send_media_group(self, chat_id, media, disable_notification=None, reply_to_message_id=None):
         """
         Use this method to send a group of photos or videos as an album. On success, an array of the sent Messages is returned.
 
@@ -1000,7 +1001,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         
-        result = self.do("sendMediaGroup", chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id)
+        result = await self.do("sendMediaGroup", chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1015,7 +1016,7 @@ class SyncBot(object):
         return result
     # end def send_media_group
     
-    def send_location(self, chat_id, latitude, longitude, live_period=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_location(self, chat_id, latitude, longitude, live_period=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send point on the map. On success, the sent Message is returned.
 
@@ -1072,7 +1073,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude, live_period=live_period, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude, live_period=live_period, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1087,7 +1088,7 @@ class SyncBot(object):
         return result
     # end def send_location
     
-    def edit_message_live_location(self, latitude, longitude, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    async def edit_message_live_location(self, latitude, longitude, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
 
@@ -1136,7 +1137,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         
-        result = self.do("editMessageLiveLocation", latitude=latitude, longitude=longitude, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        result = await self.do("editMessageLiveLocation", latitude=latitude, longitude=longitude, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1157,7 +1158,7 @@ class SyncBot(object):
         return result
     # end def edit_message_live_location
     
-    def stop_message_live_location(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    async def stop_message_live_location(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Use this method to stop updating a live location message before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
 
@@ -1193,7 +1194,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         
-        result = self.do("stopMessageLiveLocation", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        result = await self.do("stopMessageLiveLocation", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1214,7 +1215,7 @@ class SyncBot(object):
         return result
     # end def stop_message_live_location
     
-    def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send information about a venue. On success, the sent Message is returned.
 
@@ -1286,7 +1287,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1301,7 +1302,7 @@ class SyncBot(object):
         return result
     # end def send_venue
     
-    def send_contact(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_contact(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send phone contacts. On success, the sent Message is returned.
 
@@ -1363,7 +1364,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendContact", chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendContact", chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1378,7 +1379,7 @@ class SyncBot(object):
         return result
     # end def send_contact
     
-    def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, is_closed=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, is_closed=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send a native poll. On success, the sent Message is returned.
 
@@ -1455,7 +1456,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1470,7 +1471,7 @@ class SyncBot(object):
         return result
     # end def send_poll
     
-    def send_chat_action(self, chat_id, action):
+    async def send_chat_action(self, chat_id, action):
         """
         Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.
 
@@ -1499,7 +1500,7 @@ class SyncBot(object):
         
         assert_type_or_raise(action, unicode_type, parameter_name="action")
         
-        result = self.do("sendChatAction", chat_id=chat_id, action=action)
+        result = await self.do("sendChatAction", chat_id=chat_id, action=action)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1513,7 +1514,7 @@ class SyncBot(object):
         return result
     # end def send_chat_action
     
-    def get_user_profile_photos(self, user_id, offset=None, limit=None):
+    async def get_user_profile_photos(self, user_id, offset=None, limit=None):
         """
         Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
 
@@ -1545,7 +1546,7 @@ class SyncBot(object):
         
         assert_type_or_raise(limit, None, int, parameter_name="limit")
         
-        result = self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
+        result = await self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.media import UserProfilePhotos
@@ -1560,7 +1561,7 @@ class SyncBot(object):
         return result
     # end def get_user_profile_photos
     
-    def get_file(self, file_id):
+    async def get_file(self, file_id):
         """
         Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
         Note: This function may not preserve the original file name and MIME type. You should save the file's MIME type and name (if available) when the File object is received.
@@ -1581,7 +1582,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         
-        result = self.do("getFile", file_id=file_id)
+        result = await self.do("getFile", file_id=file_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.media import File
@@ -1596,7 +1597,7 @@ class SyncBot(object):
         return result
     # end def get_file
     
-    def kick_chat_member(self, chat_id, user_id, until_date=None):
+    async def kick_chat_member(self, chat_id, user_id, until_date=None):
         """
         Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
@@ -1628,7 +1629,7 @@ class SyncBot(object):
         
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
         
-        result = self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date)
+        result = await self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1642,7 +1643,7 @@ class SyncBot(object):
         return result
     # end def kick_chat_member
     
-    def unban_chat_member(self, chat_id, user_id):
+    async def unban_chat_member(self, chat_id, user_id):
         """
         Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns True on success.
 
@@ -1667,7 +1668,7 @@ class SyncBot(object):
         
         assert_type_or_raise(user_id, int, parameter_name="user_id")
         
-        result = self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
+        result = await self.do("unbanChatMember", chat_id=chat_id, user_id=user_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1681,7 +1682,7 @@ class SyncBot(object):
         return result
     # end def unban_chat_member
     
-    def restrict_chat_member(self, chat_id, user_id, permissions, until_date=None):
+    async def restrict_chat_member(self, chat_id, user_id, permissions, until_date=None):
         """
         Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
 
@@ -1720,7 +1721,7 @@ class SyncBot(object):
         
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
         
-        result = self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, permissions=permissions, until_date=until_date)
+        result = await self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, permissions=permissions, until_date=until_date)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1734,7 +1735,7 @@ class SyncBot(object):
         return result
     # end def restrict_chat_member
     
-    def promote_chat_member(self, chat_id, user_id, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None):
+    async def promote_chat_member(self, chat_id, user_id, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None):
         """
         Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
 
@@ -1801,7 +1802,7 @@ class SyncBot(object):
         
         assert_type_or_raise(can_promote_members, None, bool, parameter_name="can_promote_members")
         
-        result = self.do("promoteChatMember", chat_id=chat_id, user_id=user_id, can_change_info=can_change_info, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_invite_users=can_invite_users, can_restrict_members=can_restrict_members, can_pin_messages=can_pin_messages, can_promote_members=can_promote_members)
+        result = await self.do("promoteChatMember", chat_id=chat_id, user_id=user_id, can_change_info=can_change_info, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_invite_users=can_invite_users, can_restrict_members=can_restrict_members, can_pin_messages=can_pin_messages, can_promote_members=can_promote_members)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1815,7 +1816,7 @@ class SyncBot(object):
         return result
     # end def promote_chat_member
     
-    def set_chat_administrator_custom_title(self, chat_id, user_id, custom_title):
+    async def set_chat_administrator_custom_title(self, chat_id, user_id, custom_title):
         """
         Use this method to set a custom title for an administrator in a supergroup promoted by the bot. Returns True on success.
 
@@ -1845,7 +1846,7 @@ class SyncBot(object):
         
         assert_type_or_raise(custom_title, unicode_type, parameter_name="custom_title")
         
-        result = self.do("setChatAdministratorCustomTitle", chat_id=chat_id, user_id=user_id, custom_title=custom_title)
+        result = await self.do("setChatAdministratorCustomTitle", chat_id=chat_id, user_id=user_id, custom_title=custom_title)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1859,7 +1860,7 @@ class SyncBot(object):
         return result
     # end def set_chat_administrator_custom_title
     
-    def set_chat_permissions(self, chat_id, permissions):
+    async def set_chat_permissions(self, chat_id, permissions):
         """
         Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights. Returns True on success.
 
@@ -1886,7 +1887,7 @@ class SyncBot(object):
         
         assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
         
-        result = self.do("setChatPermissions", chat_id=chat_id, permissions=permissions)
+        result = await self.do("setChatPermissions", chat_id=chat_id, permissions=permissions)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1900,7 +1901,7 @@ class SyncBot(object):
         return result
     # end def set_chat_permissions
     
-    def export_chat_invite_link(self, chat_id):
+    async def export_chat_invite_link(self, chat_id):
         """
         Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
 
@@ -1923,7 +1924,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
-        result = self.do("exportChatInviteLink", chat_id=chat_id)
+        result = await self.do("exportChatInviteLink", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1937,7 +1938,7 @@ class SyncBot(object):
         return result
     # end def export_chat_invite_link
     
-    def set_chat_photo(self, chat_id, photo):
+    async def set_chat_photo(self, chat_id, photo):
         """
         Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
@@ -1964,7 +1965,7 @@ class SyncBot(object):
         
         assert_type_or_raise(photo, InputFile, parameter_name="photo")
         
-        result = self.do("setChatPhoto", chat_id=chat_id, photo=photo)
+        result = await self.do("setChatPhoto", chat_id=chat_id, photo=photo)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -1978,7 +1979,7 @@ class SyncBot(object):
         return result
     # end def set_chat_photo
     
-    def delete_chat_photo(self, chat_id):
+    async def delete_chat_photo(self, chat_id):
         """
         Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
@@ -1998,7 +1999,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
-        result = self.do("deleteChatPhoto", chat_id=chat_id)
+        result = await self.do("deleteChatPhoto", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2012,7 +2013,7 @@ class SyncBot(object):
         return result
     # end def delete_chat_photo
     
-    def set_chat_title(self, chat_id, title):
+    async def set_chat_title(self, chat_id, title):
         """
         Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
@@ -2037,7 +2038,7 @@ class SyncBot(object):
         
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         
-        result = self.do("setChatTitle", chat_id=chat_id, title=title)
+        result = await self.do("setChatTitle", chat_id=chat_id, title=title)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2051,7 +2052,7 @@ class SyncBot(object):
         return result
     # end def set_chat_title
     
-    def set_chat_description(self, chat_id, description=None):
+    async def set_chat_description(self, chat_id, description=None):
         """
         Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
@@ -2078,7 +2079,7 @@ class SyncBot(object):
         
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         
-        result = self.do("setChatDescription", chat_id=chat_id, description=description)
+        result = await self.do("setChatDescription", chat_id=chat_id, description=description)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2092,7 +2093,7 @@ class SyncBot(object):
         return result
     # end def set_chat_description
     
-    def pin_chat_message(self, chat_id, message_id, disable_notification=None):
+    async def pin_chat_message(self, chat_id, message_id, disable_notification=None):
         """
         Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
 
@@ -2124,7 +2125,7 @@ class SyncBot(object):
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         
-        result = self.do("pinChatMessage", chat_id=chat_id, message_id=message_id, disable_notification=disable_notification)
+        result = await self.do("pinChatMessage", chat_id=chat_id, message_id=message_id, disable_notification=disable_notification)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2138,7 +2139,7 @@ class SyncBot(object):
         return result
     # end def pin_chat_message
     
-    def unpin_chat_message(self, chat_id):
+    async def unpin_chat_message(self, chat_id):
         """
         Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
 
@@ -2158,7 +2159,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
-        result = self.do("unpinChatMessage", chat_id=chat_id)
+        result = await self.do("unpinChatMessage", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2172,7 +2173,7 @@ class SyncBot(object):
         return result
     # end def unpin_chat_message
     
-    def leave_chat(self, chat_id):
+    async def leave_chat(self, chat_id):
         """
         Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
 
@@ -2192,7 +2193,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
-        result = self.do("leaveChat", chat_id=chat_id)
+        result = await self.do("leaveChat", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2206,7 +2207,7 @@ class SyncBot(object):
         return result
     # end def leave_chat
     
-    def get_chat(self, chat_id):
+    async def get_chat(self, chat_id):
         """
         Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
 
@@ -2226,7 +2227,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
-        result = self.do("getChat", chat_id=chat_id)
+        result = await self.do("getChat", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.peer import Chat
@@ -2241,7 +2242,7 @@ class SyncBot(object):
         return result
     # end def get_chat
     
-    def get_chat_administrators(self, chat_id):
+    async def get_chat_administrators(self, chat_id):
         """
         Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
 
@@ -2261,7 +2262,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
-        result = self.do("getChatAdministrators", chat_id=chat_id)
+        result = await self.do("getChatAdministrators", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.peer import ChatMember
@@ -2276,7 +2277,7 @@ class SyncBot(object):
         return result
     # end def get_chat_administrators
     
-    def get_chat_members_count(self, chat_id):
+    async def get_chat_members_count(self, chat_id):
         """
         Use this method to get the number of members in a chat. Returns Int on success.
 
@@ -2296,7 +2297,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
-        result = self.do("getChatMembersCount", chat_id=chat_id)
+        result = await self.do("getChatMembersCount", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2310,7 +2311,7 @@ class SyncBot(object):
         return result
     # end def get_chat_members_count
     
-    def get_chat_member(self, chat_id, user_id):
+    async def get_chat_member(self, chat_id, user_id):
         """
         Use this method to get information about a member of a chat. Returns a ChatMember object on success.
 
@@ -2335,7 +2336,7 @@ class SyncBot(object):
         
         assert_type_or_raise(user_id, int, parameter_name="user_id")
         
-        result = self.do("getChatMember", chat_id=chat_id, user_id=user_id)
+        result = await self.do("getChatMember", chat_id=chat_id, user_id=user_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.peer import ChatMember
@@ -2350,7 +2351,7 @@ class SyncBot(object):
         return result
     # end def get_chat_member
     
-    def set_chat_sticker_set(self, chat_id, sticker_set_name):
+    async def set_chat_sticker_set(self, chat_id, sticker_set_name):
         """
         Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
 
@@ -2375,7 +2376,7 @@ class SyncBot(object):
         
         assert_type_or_raise(sticker_set_name, unicode_type, parameter_name="sticker_set_name")
         
-        result = self.do("setChatStickerSet", chat_id=chat_id, sticker_set_name=sticker_set_name)
+        result = await self.do("setChatStickerSet", chat_id=chat_id, sticker_set_name=sticker_set_name)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2389,7 +2390,7 @@ class SyncBot(object):
         return result
     # end def set_chat_sticker_set
     
-    def delete_chat_sticker_set(self, chat_id):
+    async def delete_chat_sticker_set(self, chat_id):
         """
         Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
 
@@ -2409,7 +2410,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
-        result = self.do("deleteChatStickerSet", chat_id=chat_id)
+        result = await self.do("deleteChatStickerSet", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2423,7 +2424,7 @@ class SyncBot(object):
         return result
     # end def delete_chat_sticker_set
     
-    def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
+    async def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
         """
         Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
 
@@ -2468,7 +2469,7 @@ class SyncBot(object):
         
         assert_type_or_raise(cache_time, None, int, parameter_name="cache_time")
         
-        result = self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert, url=url, cache_time=cache_time)
+        result = await self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert, url=url, cache_time=cache_time)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2482,7 +2483,7 @@ class SyncBot(object):
         return result
     # end def answer_callback_query
     
-    def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None, disable_web_page_preview=None, reply_markup=None):
+    async def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None, disable_web_page_preview=None, reply_markup=None):
         """
         Use this method to edit text and game messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 
@@ -2536,7 +2537,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         
-        result = self.do("editMessageText", text=text, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, parse_mode=parse_mode, disable_web_page_preview=disable_web_page_preview, reply_markup=reply_markup)
+        result = await self.do("editMessageText", text=text, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, parse_mode=parse_mode, disable_web_page_preview=disable_web_page_preview, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2557,7 +2558,7 @@ class SyncBot(object):
         return result
     # end def edit_message_text
     
-    def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None, parse_mode=None, reply_markup=None):
+    async def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None, parse_mode=None, reply_markup=None):
         """
         Use this method to edit captions of messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 
@@ -2603,7 +2604,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         
-        result = self.do("editMessageCaption", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, caption=caption, parse_mode=parse_mode, reply_markup=reply_markup)
+        result = await self.do("editMessageCaption", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, caption=caption, parse_mode=parse_mode, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2624,7 +2625,7 @@ class SyncBot(object):
         return result
     # end def edit_message_caption
     
-    def edit_message_media(self, media, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    async def edit_message_media(self, media, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
 
@@ -2669,7 +2670,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         
-        result = self.do("editMessageMedia", media=media, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        result = await self.do("editMessageMedia", media=media, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2690,7 +2691,7 @@ class SyncBot(object):
         return result
     # end def edit_message_media
     
-    def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    async def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Use this method to edit only the reply markup of messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 
@@ -2726,7 +2727,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         
-        result = self.do("editMessageReplyMarkup", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        result = await self.do("editMessageReplyMarkup", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2747,7 +2748,7 @@ class SyncBot(object):
         return result
     # end def edit_message_reply_markup
     
-    def stop_poll(self, chat_id, message_id, reply_markup=None):
+    async def stop_poll(self, chat_id, message_id, reply_markup=None):
         """
         Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the final results is returned.
 
@@ -2781,7 +2782,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         
-        result = self.do("stopPoll", chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
+        result = await self.do("stopPoll", chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.media import Poll
@@ -2796,7 +2797,7 @@ class SyncBot(object):
         return result
     # end def stop_poll
     
-    def delete_message(self, chat_id, message_id):
+    async def delete_message(self, chat_id, message_id):
         """
         Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming messages in private chats.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
 
@@ -2821,7 +2822,7 @@ class SyncBot(object):
         
         assert_type_or_raise(message_id, int, parameter_name="message_id")
         
-        result = self.do("deleteMessage", chat_id=chat_id, message_id=message_id)
+        result = await self.do("deleteMessage", chat_id=chat_id, message_id=message_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2835,7 +2836,7 @@ class SyncBot(object):
         return result
     # end def delete_message
     
-    def send_sticker(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_sticker(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
@@ -2883,7 +2884,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendSticker", chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendSticker", chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -2898,7 +2899,7 @@ class SyncBot(object):
         return result
     # end def send_sticker
     
-    def get_sticker_set(self, name):
+    async def get_sticker_set(self, name):
         """
         Use this method to get a sticker set. On success, a StickerSet object is returned.
 
@@ -2918,7 +2919,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(name, unicode_type, parameter_name="name")
         
-        result = self.do("getStickerSet", name=name)
+        result = await self.do("getStickerSet", name=name)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.stickers import StickerSet
@@ -2933,7 +2934,7 @@ class SyncBot(object):
         return result
     # end def get_sticker_set
     
-    def upload_sticker_file(self, user_id, png_sticker):
+    async def upload_sticker_file(self, user_id, png_sticker):
         """
         Use this method to upload a .png file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
 
@@ -2960,7 +2961,7 @@ class SyncBot(object):
         
         assert_type_or_raise(png_sticker, InputFile, parameter_name="png_sticker")
         
-        result = self.do("uploadStickerFile", user_id=user_id, png_sticker=png_sticker)
+        result = await self.do("uploadStickerFile", user_id=user_id, png_sticker=png_sticker)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.media import File
@@ -2975,7 +2976,7 @@ class SyncBot(object):
         return result
     # end def upload_sticker_file
     
-    def create_new_sticker_set(self, user_id, name, title, png_sticker, emojis, contains_masks=None, mask_position=None):
+    async def create_new_sticker_set(self, user_id, name, title, png_sticker, emojis, contains_masks=None, mask_position=None):
         """
         Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns True on success.
 
@@ -3030,7 +3031,7 @@ class SyncBot(object):
         
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
         
-        result = self.do("createNewStickerSet", user_id=user_id, name=name, title=title, png_sticker=png_sticker, emojis=emojis, contains_masks=contains_masks, mask_position=mask_position)
+        result = await self.do("createNewStickerSet", user_id=user_id, name=name, title=title, png_sticker=png_sticker, emojis=emojis, contains_masks=contains_masks, mask_position=mask_position)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3044,7 +3045,7 @@ class SyncBot(object):
         return result
     # end def create_new_sticker_set
     
-    def add_sticker_to_set(self, user_id, name, png_sticker, emojis, mask_position=None):
+    async def add_sticker_to_set(self, user_id, name, png_sticker, emojis, mask_position=None):
         """
         Use this method to add a new sticker to a set created by the bot. Returns True on success.
 
@@ -3089,7 +3090,7 @@ class SyncBot(object):
         
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
         
-        result = self.do("addStickerToSet", user_id=user_id, name=name, png_sticker=png_sticker, emojis=emojis, mask_position=mask_position)
+        result = await self.do("addStickerToSet", user_id=user_id, name=name, png_sticker=png_sticker, emojis=emojis, mask_position=mask_position)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3103,7 +3104,7 @@ class SyncBot(object):
         return result
     # end def add_sticker_to_set
     
-    def set_sticker_position_in_set(self, sticker, position):
+    async def set_sticker_position_in_set(self, sticker, position):
         """
         Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
 
@@ -3128,7 +3129,7 @@ class SyncBot(object):
         
         assert_type_or_raise(position, int, parameter_name="position")
         
-        result = self.do("setStickerPositionInSet", sticker=sticker, position=position)
+        result = await self.do("setStickerPositionInSet", sticker=sticker, position=position)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3142,7 +3143,7 @@ class SyncBot(object):
         return result
     # end def set_sticker_position_in_set
     
-    def delete_sticker_from_set(self, sticker):
+    async def delete_sticker_from_set(self, sticker):
         """
         Use this method to delete a sticker from a set created by the bot. Returns True on success.
 
@@ -3162,7 +3163,7 @@ class SyncBot(object):
         """
         assert_type_or_raise(sticker, unicode_type, parameter_name="sticker")
         
-        result = self.do("deleteStickerFromSet", sticker=sticker)
+        result = await self.do("deleteStickerFromSet", sticker=sticker)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3176,7 +3177,7 @@ class SyncBot(object):
         return result
     # end def delete_sticker_from_set
     
-    def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
+    async def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
         """
         Use this method to send answers to an inline query. On success, True is returned.No more than 50 results per query are allowed.
 
@@ -3230,7 +3231,7 @@ class SyncBot(object):
         
         assert_type_or_raise(switch_pm_parameter, None, unicode_type, parameter_name="switch_pm_parameter")
         
-        result = self.do("answerInlineQuery", inline_query_id=inline_query_id, results=results, cache_time=cache_time, is_personal=is_personal, next_offset=next_offset, switch_pm_text=switch_pm_text, switch_pm_parameter=switch_pm_parameter)
+        result = await self.do("answerInlineQuery", inline_query_id=inline_query_id, results=results, cache_time=cache_time, is_personal=is_personal, next_offset=next_offset, switch_pm_text=switch_pm_text, switch_pm_parameter=switch_pm_parameter)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3244,7 +3245,7 @@ class SyncBot(object):
         return result
     # end def answer_inline_query
     
-    def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send invoices. On success, the sent Message is returned.
 
@@ -3379,7 +3380,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         
-        result = self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -3394,7 +3395,7 @@ class SyncBot(object):
         return result
     # end def send_invoice
     
-    def answer_shipping_query(self, shipping_query_id, ok, shipping_options=None, error_message=None):
+    async def answer_shipping_query(self, shipping_query_id, ok, shipping_options=None, error_message=None):
         """
         If you sent an invoice requesting a shipping address and the parameter is_flexible was specified, the Bot API will send an Update with a shipping_query field to the bot. Use this method to reply to shipping queries. On success, True is returned.
 
@@ -3433,7 +3434,7 @@ class SyncBot(object):
         
         assert_type_or_raise(error_message, None, unicode_type, parameter_name="error_message")
         
-        result = self.do("answerShippingQuery", shipping_query_id=shipping_query_id, ok=ok, shipping_options=shipping_options, error_message=error_message)
+        result = await self.do("answerShippingQuery", shipping_query_id=shipping_query_id, ok=ok, shipping_options=shipping_options, error_message=error_message)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3447,7 +3448,7 @@ class SyncBot(object):
         return result
     # end def answer_shipping_query
     
-    def answer_pre_checkout_query(self, pre_checkout_query_id, ok, error_message=None):
+    async def answer_pre_checkout_query(self, pre_checkout_query_id, ok, error_message=None):
         """
         Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an Update with the field pre_checkout_query. Use this method to respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.
 
@@ -3479,7 +3480,7 @@ class SyncBot(object):
         
         assert_type_or_raise(error_message, None, unicode_type, parameter_name="error_message")
         
-        result = self.do("answerPreCheckoutQuery", pre_checkout_query_id=pre_checkout_query_id, ok=ok, error_message=error_message)
+        result = await self.do("answerPreCheckoutQuery", pre_checkout_query_id=pre_checkout_query_id, ok=ok, error_message=error_message)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3493,7 +3494,7 @@ class SyncBot(object):
         return result
     # end def answer_pre_checkout_query
     
-    def set_passport_data_errors(self, user_id, errors):
+    async def set_passport_data_errors(self, user_id, errors):
         """
         Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success.
         Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
@@ -3521,7 +3522,7 @@ class SyncBot(object):
         
         assert_type_or_raise(errors, list, parameter_name="errors")
         
-        result = self.do("setPassportDataErrors", user_id=user_id, errors=errors)
+        result = await self.do("setPassportDataErrors", user_id=user_id, errors=errors)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3535,7 +3536,7 @@ class SyncBot(object):
         return result
     # end def set_passport_data_errors
     
-    def send_game(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def send_game(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send a game. On success, the sent Message is returned.
 
@@ -3579,7 +3580,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         
-        result = self.do("sendGame", chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = await self.do("sendGame", chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -3594,7 +3595,7 @@ class SyncBot(object):
         return result
     # end def send_game
     
-    def set_game_score(self, user_id, score, force=None, disable_edit_message=None, chat_id=None, message_id=None, inline_message_id=None):
+    async def set_game_score(self, user_id, score, force=None, disable_edit_message=None, chat_id=None, message_id=None, inline_message_id=None):
         """
         Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
 
@@ -3646,7 +3647,7 @@ class SyncBot(object):
         
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
         
-        result = self.do("setGameScore", user_id=user_id, score=score, force=force, disable_edit_message=disable_edit_message, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
+        result = await self.do("setGameScore", user_id=user_id, score=score, force=force, disable_edit_message=disable_edit_message, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -3667,7 +3668,7 @@ class SyncBot(object):
         return result
     # end def set_game_score
     
-    def get_game_high_scores(self, user_id, chat_id=None, message_id=None, inline_message_id=None):
+    async def get_game_high_scores(self, user_id, chat_id=None, message_id=None, inline_message_id=None):
         """
         Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
 
@@ -3707,7 +3708,7 @@ class SyncBot(object):
         
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
         
-        result = self.do("getGameHighScores", user_id=user_id, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
+        result = await self.do("getGameHighScores", user_id=user_id, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.game import GameHighScore
@@ -3724,12 +3725,12 @@ class SyncBot(object):
     
     # end of generated functions
 
-    def send_msg(self, *args, **kwargs):
+    async def send_msg(self, *args, **kwargs):
         """ alias to :func:`send_message` """
         return self.send_message(*args, **kwargs)
     # end def send_msg
 
-    def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
+    async def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.
 
@@ -3762,7 +3763,7 @@ class SyncBot(object):
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
-        import requests
+        import httpx
         
 
         url, params = self._prepare_request(command, query)
@@ -3840,7 +3841,7 @@ class SyncBot(object):
         return res
     # end def _postprocess_request
 
-    def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
+    async def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
         """
         :param file_param_name: For what field the file should be uploaded.
         :type  file_param_name: str
@@ -3880,7 +3881,7 @@ class SyncBot(object):
         else:
             command = _command
         # end def
-        return self.do(command, **kwargs)
+        return await self.do(command, **kwargs)
     # end def _do_fileupload
 
     def get_download_url(self, file):
@@ -3900,13 +3901,13 @@ class SyncBot(object):
         return file.get_download_url(self.api_key)
     # end def get_download_url
 
-    def _load_info(self):
+    async def _load_info(self):
         """
         This functions stores the id and the username of the bot.
         Called by `.username` and `.id` properties.
         :return:
         """
-        myself = self.get_me()
+        myself = await self.get_me()
         if self.return_python_objects:
             self._id = myself.id
             self._username = myself.username
@@ -3916,28 +3917,28 @@ class SyncBot(object):
         # end if
     # end def
 
-    @property
+    @async_property
     def username(self):
         if not self._username:
-            self._load_info()
+            await self._load_info()
         # end if
         return self._username
     # end def
 
-    @property
+    @async_property
     def id(self):
         if not self._id:
-            self._load_info()
+            await self._load_info()
         # end if
         return self._id
     # end def
 
     def __str__(self):
-        username = self.username
-        id = self.id
+        username = self._username if self._username else "<not loaded>"
+        id = self._id if self._id else "<not loaded>"
         return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
     # end def
 # end class Bot
 
 # allow importing them as `pytgbot.bot.async.Bot` and `pytgbot.bot.sync.Bot`.
-Bot = SyncBot
+Bot = AsyncBot
