@@ -75,7 +75,8 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
         parent_clazz = to_type(parent_clazz, "parent class")
     assert isinstance(parent_clazz, Type)
 
-    clazz_object = Clazz(imports=imports,
+    clazz_object = Clazz(
+        imports=imports,
         clazz=clazz, parent_clazz=parent_clazz, link=link, description=description,
         parameters=variables_needed, keywords=variables_optional
     )
@@ -161,9 +162,10 @@ class ClassOrFunction(KwargableObject):
 
 
 class Clazz(ClassOrFunction):
-    def __init__(self, clazz=None, imports=None, parent_clazz=None, link=None, description=None, parameters=None, keywords=None):
+    def __init__(self, clazz=None, import_path=None, imports=None, parent_clazz=None, link=None, description=None, parameters=None, keywords=None):
         super(Clazz, self).__init__()
         self.clazz = clazz
+        self.import_path = import_path if import_path else self.calculate_import_path()
         self.imports = imports if imports else []  # Imports needed by parameters and keywords.
         self.parent_clazz = parent_clazz if parent_clazz is not None else Type("object", is_builtin=True)
         assert(isinstance(parent_clazz, Type))
@@ -178,11 +180,22 @@ class Clazz(ClassOrFunction):
         return self.parameters + self.keywords
     # end def variables
 
+    def calculate_import_path(self):
+        import_path = get_type_path(self.clazz)
+        import_path = import_path.rstrip(".")
+        return import_path
+    # end def
+
+    def calculate_filepath(self, folder: str):
+        from code_generator_online import calc_path_and_create_folders
+        return calc_path_and_create_folders(folder, self.import_path)
+    # end def
+
     def __repr__(self):
         return (
             "Clazz("
-                "clazz={s.clazz!r}, imports={s.imports!r}, parent_clazz={s.parent_clazz!r}, link={s.link!r}, "
-                "description={s.description!r}, parameters={s.parameters!r}, keywords={s.keywords!r}"
+                "clazz={s.clazz!r}, import_path={s.import_path!r}, imports={s.imports!r}, parent_clazz={s.parent_clazz!r}"
+                ", link={s.link!r}, description={s.description!r}, parameters={s.parameters!r}, keywords={s.keywords!r}"
             ")"
         ).format(s=self)
     # end def __repr__

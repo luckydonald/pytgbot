@@ -366,7 +366,9 @@ def load_from_html(folder):
             else:
                 parent_clazz = answer("Parent class name", "TgBotApiObject")
             # end if
-            result = clazz(title, parent_clazz, descr, link, params_string)
+            result = clazz(
+                clazz=title, parent_clazz=parent_clazz, description=descr, link=link, params_string=params_string
+            )
             results.append(result)
         # end if
     # end for
@@ -517,10 +519,9 @@ def safe_to_file(folder, results):
     for result in results:
         assert isinstance(result, (Clazz, Function))
         if isinstance(result, Clazz):
-            import_path = get_type_path(result.clazz)
-            import_path = import_path.rstrip(".")
-            file_path = calc_path_and_create_folders(folder, import_path)
-            result.filepath = file_path
+            result.import_path = result.calculate_import_path()
+            result.filepath = result.calculate_filepath(folder)
+            file_path = result.filepath
             if file_path not in clazzes:
                 clazzes[file_path] = []
             clazzes[file_path].append(result)
@@ -656,10 +657,12 @@ def render_file_to_disk(file, txt):
 # end def
 
 
-def calc_path_and_create_folders(folder, import_path):
+def calc_path_and_create_folders(folder, import_path, create_folder=True):
     """ calculate the path and create the needed folders """
     file_path = abspath(path_join(folder, import_path[:import_path.rfind(".")].replace(".", folder_seperator) + ".py"))
-    mkdir_p(dirname(file_path))
+    if create_folder:
+        mkdir_p(dirname(file_path))
+    # end if
     return file_path
 # end def
 
