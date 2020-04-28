@@ -31,6 +31,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Poll":                 ("pytgbot.api_types.receivable.media.", "Media", None),  # April 14, 2019
     "PollOption":           ("pytgbot.api_types.receivable.media.", "Receivable", None),  # April 14, 2019
     "PollAnswer":           ("pytgbot.api_types.receivable.media.", "Receivable", None),  # January 23, 2020
+    "Dice":                 ("pytgbot.api_types.receivable.media.", "Media", None),  # March 30, 2020
 
     # pytgbot.api_types.receivable.responses.*
 
@@ -40,6 +41,9 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Peer":            ("pytgbot.api_types.receivable.peer.", "Result", None),
     "User":            ("pytgbot.api_types.receivable.peer.", "Peer", None),
     "Chat":            ("pytgbot.api_types.receivable.peer.", "Peer", None),
+
+    # pytgbot.api_types.receivable.command.*
+    "BotCommand":            ("pytgbot.api_types.receivable.command.", "Result", None),
 
     # pytgbot.api_types.receivable.updates.*
     "Update":               ("pytgbot.api_types.receivable.updates.", "Receivable", None),
@@ -171,7 +175,7 @@ WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters 
     "setChatStickerSet":      {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
     "deleteChatStickerSet":   {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
     "setGameScore":           {'return': {'expected': "On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False", 'replace': 'On success, if the message was sent by the bot, returns the edited Message, otherwise returns True'}, 'r_type': {'expected': 'Message or True or force or False', 'replace': 'Message or True'}},
-    "getGameHighScores":      {'return': {'expected': 'This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.', 'replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
+    "getGameHighScores":      {'return': {'expected': 'This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.','replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
     "setPassportDataErrors":  {'return': {'expected': 'The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
     "sendMediaGroup":         {'return': {'expected': 'On success, an array of the sent Messages is returned', 'replace': 'On success, an array of the sent Messages is returned'}, 'r_type': {'expected': 'Messages', 'replace': 'list of Message'}},
     "answerShippingQuery":    {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
