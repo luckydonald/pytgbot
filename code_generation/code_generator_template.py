@@ -175,11 +175,6 @@ class Clazz(ClassOrFunction):
         self.keywords = keywords if keywords else []
     # end def __init__
 
-    @property
-    def variables(self):
-        return self.parameters + self.keywords
-    # end def variables
-
     def calculate_import_path(self):
         import_path = get_type_path(self.clazz)
         import_path = import_path.rstrip(".")
@@ -190,6 +185,11 @@ class Clazz(ClassOrFunction):
         from code_generator_online import calc_path_and_create_folders
         return calc_path_and_create_folders(folder, self.import_path)
     # end def
+
+    @property
+    def variables(self):
+        return self.parameters + self.keywords
+    # end def variables
 
     def __repr__(self):
         return (
