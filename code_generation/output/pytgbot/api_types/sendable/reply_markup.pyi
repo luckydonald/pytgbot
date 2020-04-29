@@ -42,7 +42,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 class KeyboardButton(Button):
     """
     This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields request_contact, request_location, and request_poll are mutually exclusive.
-    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will receive unsupported message.Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will receive unsupported message.
+    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#keyboardbutton
     
@@ -153,7 +153,7 @@ class InlineKeyboardButton(Button):
     :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot‘s username and the specified inline query in the input field. Can be empty, in which case just the bot’s username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it. Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
     :type  switch_inline_query: str|unicode
     
-    :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
+    :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current chat’s input field. Can be empty, in which case only the bot's username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
     :type  switch_inline_query_current_chat: str|unicode
     
     :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.

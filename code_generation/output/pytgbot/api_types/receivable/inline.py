@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from . import updates
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from pytgbot.api_types.receivable import Result
-from pytgbot.api_types.receivable.updates import UpdateType
+from . import Result
+from .updates. import UpdateType
 
 __author__ = 'luckydonald'
 
@@ -23,7 +22,7 @@ class InlineQuery(Result):
     :param from_peer: Sender
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
-    :param query: Text of the query (up to 512 characters)
+    :param query: Text of the query (up to 256 characters)
     :type  query: str|unicode
     
     :param offset: Offset of the results to be returned, can be controlled by the bot
@@ -54,7 +53,7 @@ class InlineQuery(Result):
         :param from_peer: Sender
         :type  from_peer: pytgbot.api_types.receivable.peer.User
         
-        :param query: Text of the query (up to 512 characters)
+        :param query: Text of the query (up to 256 characters)
         :type  query: str|unicode
         
         :param offset: Offset of the results to be returned, can be controlled by the bot

@@ -1,6 +1,7 @@
 # online docs
 bs4
 jinja2
+luckydonaldUtils>=0.77
 
 # linter
 yapf

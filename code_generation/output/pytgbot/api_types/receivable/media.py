@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from . import updates
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from pytgbot.api_types.receivable import Receivable
-from pytgbot.api_types.receivable import Result
-from pytgbot.api_types.receivable.media import Media
+from . import Receivable
+from . import Result
+from . import Media
 
 __author__ = 'luckydonald'
 
@@ -2266,11 +2265,23 @@ class Poll(Media):
     :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
     :type  correct_option_id: int
     
+    :param explanation: Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
+    :type  explanation: str|unicode
+    
+    :param explanation_entities: Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+    :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
+    :param open_period: Optional. Amount of time in seconds the poll will be active after creation
+    :type  open_period: int
+    
+    :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+    :type  close_date: int
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, question, options, total_voter_count, is_closed, is_anonymous, type, allows_multiple_answers, correct_option_id=None, _raw=None):
+    def __init__(self, id, question, options, total_voter_count, is_closed, is_anonymous, type, allows_multiple_answers, correct_option_id=None, explanation=None, explanation_entities=None, open_period=None, close_date=None, _raw=None):
         """
         This object contains information about a poll.
 
@@ -2309,10 +2320,23 @@ class Poll(Media):
         :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
         :type  correct_option_id: int
         
+        :param explanation: Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
+        :type  explanation: str|unicode
+        
+        :param explanation_entities: Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+        :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
+        :param open_period: Optional. Amount of time in seconds the poll will be active after creation
+        :type  open_period: int
+        
+        :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+        :type  close_date: int
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Poll, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PollOption
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
@@ -2341,6 +2365,18 @@ class Poll(Media):
         
         assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
         self.correct_option_id = correct_option_id
+        
+        assert_type_or_raise(explanation, None, unicode_type, parameter_name="explanation")
+        self.explanation = explanation
+        
+        assert_type_or_raise(explanation_entities, None, list, parameter_name="explanation_entities")
+        self.explanation_entities = explanation_entities
+        
+        assert_type_or_raise(open_period, None, int, parameter_name="open_period")
+        self.open_period = open_period
+        
+        assert_type_or_raise(close_date, None, int, parameter_name="close_date")
+        self.close_date = close_date
 
         self._raw = _raw
     # end def __init__
@@ -2364,6 +2400,15 @@ class Poll(Media):
         array['allows_multiple_answers'] = bool(self.allows_multiple_answers)  # type bool
         if self.correct_option_id is not None:
             array['correct_option_id'] = int(self.correct_option_id)  # type int
+        if self.explanation is not None:
+            array['explanation'] = u(self.explanation)  # py2: type unicode, py3: type str
+        if self.explanation_entities is not None:
+            array['explanation_entities'] = self._as_array(self.explanation_entities)  # type list of MessageEntity
+
+        if self.open_period is not None:
+            array['open_period'] = int(self.open_period)  # type int
+        if self.close_date is not None:
+            array['close_date'] = int(self.close_date)  # type int
         return array
     # end def to_array
 
@@ -2376,6 +2421,7 @@ class Poll(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PollOption
         
         data = Media.validate_array(array)
@@ -2388,6 +2434,10 @@ class Poll(Media):
         data['type'] = u(array.get('type'))
         data['allows_multiple_answers'] = bool(array.get('allows_multiple_answers'))
         data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
+        data['explanation'] = u(array.get('explanation')) if array.get('explanation') is not None else None
+        data['explanation_entities'] = MessageEntity.from_array_list(array.get('explanation_entities'), list_level=1) if array.get('explanation_entities') is not None else None
+        data['open_period'] = int(array.get('open_period')) if array.get('open_period') is not None else None
+        data['close_date'] = int(array.get('close_date')) if array.get('close_date') is not None else None
         return data
     # end def validate_array
 
@@ -2412,7 +2462,7 @@ class Poll(Media):
         """
         Implements `str(poll_instance)`
         """
-        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r})".format(self=self)
+        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_entities={self.explanation_entities!r}, open_period={self.open_period!r}, close_date={self.close_date!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2422,7 +2472,7 @@ class Poll(Media):
         if self._raw:
             return "Poll.from_array({self._raw})".format(self=self)
         # end if
-        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r})".format(self=self)
+        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_entities={self.explanation_entities!r}, open_period={self.open_period!r}, close_date={self.close_date!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2430,12 +2480,140 @@ class Poll(Media):
         Implements `"key" in poll_instance`
         """
         return (
-            key in ["id", "question", "options", "total_voter_count", "is_closed", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id"]
+            key in ["id", "question", "options", "total_voter_count", "is_closed", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id", "explanation", "explanation_entities", "open_period", "close_date"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
     # end def __contains__
 # end class Poll
+
+
+class Dice(Media):
+    """
+    This object represents a dice with a random value from 1 to 6 for currently supported base emoji. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+
+    https://core.telegram.org/bots/api#dice
+    
+
+    Parameters:
+    
+    :param emoji: Emoji on which the dice throw animation is based
+    :type  emoji: str|unicode
+    
+    :param value: Value of the dice, 1-6 for currently supported base emoji
+    :type  value: int
+    
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, emoji, value, _raw=None):
+        """
+        This object represents a dice with a random value from 1 to 6 for currently supported base emoji. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+
+        https://core.telegram.org/bots/api#dice
+        
+
+        Parameters:
+        
+        :param emoji: Emoji on which the dice throw animation is based
+        :type  emoji: str|unicode
+        
+        :param value: Value of the dice, 1-6 for currently supported base emoji
+        :type  value: int
+        
+
+        Optional keyword parameters:
+        
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Dice, self).__init__()
+        assert_type_or_raise(emoji, unicode_type, parameter_name="emoji")
+        self.emoji = emoji
+        
+        assert_type_or_raise(value, int, parameter_name="value")
+        self.value = value
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Dice to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Dice, self).to_array()
+        array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
+        array['value'] = int(self.value)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Dice constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Media.validate_array(array)
+        data['emoji'] = u(array.get('emoji'))
+        data['value'] = int(array.get('value'))
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Dice from a given dictionary.
+
+        :return: new Dice instance.
+        :rtype: Dice
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Dice.validate_array(array)
+        data['_raw'] = array
+        return Dice(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(dice_instance)`
+        """
+        return "Dice(emoji={self.emoji!r}, value={self.value!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(dice_instance)`
+        """
+        if self._raw:
+            return "Dice.from_array({self._raw})".format(self=self)
+        # end if
+        return "Dice(emoji={self.emoji!r}, value={self.value!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in dice_instance`
+        """
+        return (
+            key in ["emoji", "value"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Dice
 
 
 class UserProfilePhotos(Result):
@@ -2904,7 +3082,7 @@ class Sticker(Media):
 
     Optional keyword parameters:
     
-    :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
+    :param thumb: Optional. Sticker thumbnail in the .WEBP or .JPG format
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
     
     :param emoji: Optional. Emoji associated with the sticker
@@ -2950,7 +3128,7 @@ class Sticker(Media):
 
         Optional keyword parameters:
         
-        :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
+        :param thumb: Optional. Sticker thumbnail in the .WEBP or .JPG format
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
         
         :param emoji: Optional. Emoji associated with the sticker

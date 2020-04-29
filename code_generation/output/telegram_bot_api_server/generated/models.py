@@ -7,7 +7,7 @@ from typing import Any, Union, List, Optional
 __author__ = 'luckydonald'
 
 __all__ = [
-    'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageEntityModel', 'PhotoSizeModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'AnimationModel', 'VoiceModel', 'VideoNoteModel', 'ContactModel', 'LocationModel', 'VenueModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatMemberModel', 'ChatPermissionsModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
+    'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageEntityModel', 'PhotoSizeModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'AnimationModel', 'VoiceModel', 'VideoNoteModel', 'ContactModel', 'LocationModel', 'VenueModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'DiceModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatMemberModel', 'ChatPermissionsModel', 'BotCommandModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
 ]
 
 FAST_API_ISSUE_884_IS_FIXED = False
@@ -154,6 +154,7 @@ class MessageModel(BaseModel):  # UpdateType
     location: Optional['LocationModel']
     venue: Optional['VenueModel']
     poll: Optional['PollModel']
+    dice: Optional['DiceModel']
     new_chat_members: Optional[List['UserModel']]
     left_chat_member: Optional['UserModel']
     new_chat_title: Optional[str]
@@ -375,7 +376,22 @@ class PollModel(BaseModel):  # Media
     type: str
     allows_multiple_answers: bool
     correct_option_id: Optional[int]
+    explanation: Optional[str]
+    explanation_entities: Optional[List['MessageEntityModel']]
+    open_period: Optional[int]
+    close_date: Optional[int]
 # end class Poll
+
+
+class DiceModel(BaseModel):  # Media
+    """
+    This object represents a dice with a random value from 1 to 6 for currently supported base emoji. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+
+    https://core.telegram.org/bots/api#dice
+    """
+    emoji: str
+    value: int
+# end class Dice
 
 
 class UserProfilePhotosModel(BaseModel):  # Result
@@ -420,7 +436,7 @@ class ReplyKeyboardMarkupModel(BaseModel):  # ReplyMarkup
 class KeyboardButtonModel(BaseModel):  # Button
     """
     This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields request_contact, request_location, and request_poll are mutually exclusive.
-    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will receive unsupported message.Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will receive unsupported message.
+    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#keyboardbutton
     """
@@ -590,6 +606,17 @@ class ChatPermissionsModel(BaseModel):  # Result
 # end class ChatPermissions
 
 
+class BotCommandModel(BaseModel):  # Result
+    """
+    This object represents a bot command.
+
+    https://core.telegram.org/bots/api#botcommand
+    """
+    command: str
+    description: str
+# end class BotCommand
+
+
 class ResponseParametersModel(BaseModel):  # Receivable
     """
     Contains information about why a request was unsuccessful.
@@ -710,6 +737,7 @@ class StickerSetModel(BaseModel):  # Result
     is_animated: bool
     contains_masks: bool
     stickers: List['StickerModel']
+    thumb: Optional['PhotoSizeModel']
 # end class StickerSet
 
 
@@ -870,7 +898,7 @@ class InlineQueryResultAudioModel(BaseModel):  # InlineQueryResult
 
 class InlineQueryResultVoiceModel(BaseModel):  # InlineQueryResult
     """
-    Represents a link to a voice recording in an .ogg container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
+    Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
 
     https://core.telegram.org/bots/api#inlinequeryresultvoice
@@ -1525,6 +1553,7 @@ VenueModel.update_forward_refs()
 PollOptionModel.update_forward_refs()
 PollAnswerModel.update_forward_refs()
 PollModel.update_forward_refs()
+DiceModel.update_forward_refs()
 UserProfilePhotosModel.update_forward_refs()
 FileModel.update_forward_refs()
 ReplyKeyboardMarkupModel.update_forward_refs()
@@ -1539,6 +1568,7 @@ ForceReplyModel.update_forward_refs()
 ChatPhotoModel.update_forward_refs()
 ChatMemberModel.update_forward_refs()
 ChatPermissionsModel.update_forward_refs()
+BotCommandModel.update_forward_refs()
 ResponseParametersModel.update_forward_refs()
 InputMediaPhotoModel.update_forward_refs()
 InputMediaVideoModel.update_forward_refs()

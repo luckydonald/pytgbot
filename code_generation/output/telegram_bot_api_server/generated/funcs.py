@@ -9,6 +9,7 @@ from pytgbot.api_types.sendable.input_media import InputMediaPhoto
 from pytgbot.api_types.sendable.input_media import InputMediaVideo
 from pytgbot.api_types.sendable.input_media import InputMedia
 from pytgbot.api_types.receivable.stickers import MaskPosition
+from pytgbot.api_types.receivable.command import BotCommand
 from pytgbot.api_types.sendable.passport import PassportElementError
 from pytgbot.api_types.sendable.payments import ShippingOption
 from pytgbot.api_types.sendable.payments import LabeledPrice
@@ -74,9 +75,9 @@ else:
 async def get_updates(
     token: str = TOKEN_VALIDATION,
     offset: Optional[int] = Query(None, description='Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.'),
-    limit: Optional[int] = Query(None, description='Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100.'),
+    limit: Optional[int] = Query(None, description='Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100.'),
     timeout: Optional[int] = Query(None, description='Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.'),
-    allowed_updates: Optional[List[str]] = Query(None, description='List the types of updates you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.'),
+    allowed_updates: Optional[List[str]] = Query(None, description='A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.'),
 ) -> JSONableResponse:
     """
     Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
@@ -109,7 +110,7 @@ async def set_webhook(
     url: str = Query(..., description='HTTPS url to send updates to. Use an empty string to remove webhook integration'),
     certificate: Optional[Json['InputFileModel']] = Query(None, description='Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.'),
     max_connections: Optional[int] = Query(None, description='Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s throughput.'),
-    allowed_updates: Optional[List[str]] = Query(None, description='List the types of updates you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.'),
+    allowed_updates: Optional[List[str]] = Query(None, description='A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.'),
 ) -> JSONableResponse:
     """
     Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
@@ -212,8 +213,8 @@ async def get_me(
 async def send_message(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    text: str = Query(..., description='Text of the message to be sent'),
-    parse_mode: Optional[str] = Query(None, description="Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message."),
+    text: str = Query(..., description='Text of the message to be sent, 1-4096 characters after entities parsing'),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the message text. See formatting options for more details.'),
     disable_web_page_preview: Optional[bool] = Query(None, description='Disables link previews for links in this message'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
@@ -297,8 +298,8 @@ async def send_photo(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     photo: Json[Union['InputFileModel', str]] = Query(..., description='Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. More info on Sending Files »'),
-    caption: Optional[str] = Query(None, description='Photo caption (may also be used when resending photos by file_id), 0-1024 characters'),
-    parse_mode: Optional[str] = Query(None, description='Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.'),
+    caption: Optional[str] = Query(None, description='Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing'),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the photo caption. See formatting options for more details.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
@@ -348,8 +349,8 @@ async def send_audio(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     audio: Json[Union['InputFileModel', str]] = Query(..., description='Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
-    caption: Optional[str] = Query(None, description='Audio caption, 0-1024 characters'),
-    parse_mode: Optional[str] = Query(None, description='Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.'),
+    caption: Optional[str] = Query(None, description='Audio caption, 0-1024 characters after entities parsing'),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the audio caption. See formatting options for more details.'),
     duration: Optional[int] = Query(None, description='Duration of the audio in seconds'),
     performer: Optional[str] = Query(None, description='Performer'),
     title: Optional[str] = Query(None, description='Track name'),
@@ -413,8 +414,8 @@ async def send_document(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     document: Json[Union['InputFileModel', str]] = Query(..., description='File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
-    caption: Optional[str] = Query(None, description='Document caption (may also be used when resending documents by file_id), 0-1024 characters'),
-    parse_mode: Optional[str] = Query(None, description='Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.'),
+    caption: Optional[str] = Query(None, description='Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing'),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the document caption. See formatting options for more details.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
@@ -473,8 +474,8 @@ async def send_video(
     width: Optional[int] = Query(None, description='Video width'),
     height: Optional[int] = Query(None, description='Video height'),
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
-    caption: Optional[str] = Query(None, description='Video caption (may also be used when resending videos by file_id), 0-1024 characters'),
-    parse_mode: Optional[str] = Query(None, description='Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.'),
+    caption: Optional[str] = Query(None, description='Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing'),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the video caption. See formatting options for more details.'),
     supports_streaming: Optional[bool] = Query(None, description='Pass True, if the uploaded video is suitable for streaming'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
@@ -538,8 +539,8 @@ async def send_animation(
     width: Optional[int] = Query(None, description='Animation width'),
     height: Optional[int] = Query(None, description='Animation height'),
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
-    caption: Optional[str] = Query(None, description='Animation caption (may also be used when resending animation by file_id), 0-1024 characters'),
-    parse_mode: Optional[str] = Query(None, description='Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.'),
+    caption: Optional[str] = Query(None, description='Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing'),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the animation caption. See formatting options for more details.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
@@ -597,15 +598,15 @@ async def send_voice(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     voice: Json[Union['InputFileModel', str]] = Query(..., description='Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
-    caption: Optional[str] = Query(None, description='Voice message caption, 0-1024 characters'),
-    parse_mode: Optional[str] = Query(None, description='Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.'),
+    caption: Optional[str] = Query(None, description='Voice message caption, 0-1024 characters after entities parsing'),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the voice message caption. See formatting options for more details.'),
     duration: Optional[int] = Query(None, description='Duration of the voice message in seconds'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
-    Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+    Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
     https://core.telegram.org/bots/api#sendvoice
     """
@@ -706,7 +707,7 @@ async def send_video_note(
 async def send_media_group(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    media: Json[Union[List['InputMediaPhotoModel'], List['InputMediaVideoModel']]] = Query(..., description='A JSON-serialized array describing photos and videos to be sent, must include 2–10 items'),
+    media: Json[Union[List['InputMediaPhotoModel'], List['InputMediaVideoModel']]] = Query(..., description='A JSON-serialized array describing photos and videos to be sent, must include 2-10 items'),
     disable_notification: Optional[bool] = Query(None, description='Sends the messages silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the messages are a reply, ID of the original message'),
 ) -> JSONableResponse:
@@ -983,12 +984,16 @@ async def send_poll(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     question: str = Query(..., description='Poll question, 1-255 characters'),
-    options: List[str] = Query(..., description='List of answer options, 2-10 strings 1-100 characters each'),
+    options: List[str] = Query(..., description='A JSON-serialized list of answer options, 2-10 strings 1-100 characters each'),
     is_anonymous: Optional[bool] = Query(None, description='True, if the poll needs to be anonymous, defaults to True'),
     type: Optional[str] = Query(None, description='Poll type, "quiz" or "regular", defaults to "regular"'),
     allows_multiple_answers: Optional[bool] = Query(None, description='True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False'),
     correct_option_id: Optional[int] = Query(None, description='0-based identifier of the correct answer option, required for polls in quiz mode'),
-    is_closed: Optional[bool] = Query(None, description='Pass True, if the poll needs to be immediately closed'),
+    explanation: Optional[str] = Query(None, description='Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing'),
+    explanation_parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the explanation. See formatting options for more details.'),
+    open_period: Optional[int] = Query(None, description="Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date."),
+    close_date: Optional[int] = Query(None, description="Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period."),
+    is_closed: Optional[bool] = Query(None, description='Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
@@ -1023,7 +1028,54 @@ async def send_poll(
         type=type,
         allows_multiple_answers=allows_multiple_answers,
         correct_option_id=correct_option_id,
+        explanation=explanation,
+        explanation_parse_mode=explanation_parse_mode,
+        open_period=open_period,
+        close_date=close_date,
         is_closed=is_closed,
+        disable_notification=disable_notification,
+        reply_to_message_id=reply_to_message_id,
+        reply_markup=reply_markup,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+@routes.api_route('/{token}/sendDice', methods=['GET', 'POST'], tags=['official'])
+async def send_dice(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    emoji: Optional[str] = Query(None, description='Emoji on which the dice throw animation is based. Currently, must be one of "" or "". Defauts to ""'),
+    disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
+    reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
+) -> JSONableResponse:
+    """
+    Use this method to send a dice, which will have a random value from 1 to 6. On success, the sent Message is returned. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+
+    https://core.telegram.org/bots/api#senddice
+    """
+    reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
+        Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]],
+        obj=reply_markup,
+    )
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+    
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.send_dice(
+        entity=entity,
+        emoji=emoji,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
         reply_markup=reply_markup,
@@ -1075,7 +1127,7 @@ async def get_user_profile_photos(
     token: str = TOKEN_VALIDATION,
     user_id: int = Query(..., description='Unique identifier of the target user'),
     offset: Optional[int] = Query(None, description='Sequential number of the first photo to be returned. By default, all photos are returned.'),
-    limit: Optional[int] = Query(None, description='Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.'),
+    limit: Optional[int] = Query(None, description='Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100.'),
 ) -> JSONableResponse:
     """
     Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
@@ -1244,7 +1296,7 @@ async def promote_chat_member(
     can_invite_users: Optional[bool] = Query(None, description='Pass True, if the administrator can invite new users to the chat'),
     can_restrict_members: Optional[bool] = Query(None, description='Pass True, if the administrator can restrict, ban or unban chat members'),
     can_pin_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can pin messages, supergroups only'),
-    can_promote_members: Optional[bool] = Query(None, description='Pass True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)'),
+    can_promote_members: Optional[bool] = Query(None, description='Pass True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)'),
 ) -> JSONableResponse:
     """
     Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
@@ -1361,7 +1413,7 @@ async def export_chat_invite_link(
     """
     Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
 
-    Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink – after this the link will become available to the bot via the getChat method. If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
+    Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink — after this the link will become available to the bot via the getChat method. If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
 
 
     https://core.telegram.org/bots/api#exportchatinvitelink
@@ -1814,7 +1866,7 @@ async def answer_callback_query(
     callback_query_id: str = Query(..., description='Unique identifier for the query to be answered'),
     text: Optional[str] = Query(None, description='Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters'),
     show_alert: Optional[bool] = Query(None, description='If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.'),
-    url: Optional[str] = Query(None, description="URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game – note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter."),
+    url: Optional[str] = Query(None, description="URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game — note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter."),
     cache_time: Optional[int] = Query(None, description='The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.'),
 ) -> JSONableResponse:
     """
@@ -1843,14 +1895,42 @@ async def answer_callback_query(
 # end def
 
 
+@routes.api_route('/{token}/setMyCommands', methods=['GET', 'POST'], tags=['official'])
+async def set_my_commands(
+    token: str = TOKEN_VALIDATION,
+    commands: Json[List['BotCommandModel']] = Query(..., description="A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified."),
+) -> JSONableResponse:
+    """
+    Use this method to change the list of the bot's commands. Returns True on success.
+
+    https://core.telegram.org/bots/api#setmycommands
+    """
+    commands: List[BotCommandModel] = parse_obj_as(
+        List[BotCommandModel],
+        obj=commands,
+    )
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+    
+    
+
+    result = await bot.set_my_commands(
+        commands=commands,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
 @routes.api_route('/{token}/editMessageText', methods=['GET', 'POST'], tags=['official'])
 async def edit_message_text(
     token: str = TOKEN_VALIDATION,
-    text: str = Query(..., description='New text of the message'),
+    text: str = Query(..., description='New text of the message, 1-4096 characters after entities parsing'),
     chat_id: Optional[Union[int, str]] = Query(None, description='Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     message_id: Optional[int] = Query(None, description='Required if inline_message_id is not specified. Identifier of the message to edit'),
     inline_message_id: Optional[str] = Query(None, description='Required if chat_id and message_id are not specified. Identifier of the inline message'),
-    parse_mode: Optional[str] = Query(None, description="Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message."),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the message text. See formatting options for more details.'),
     disable_web_page_preview: Optional[bool] = Query(None, description='Disables link previews for links in this message'),
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for an inline keyboard.'),
 ) -> JSONableResponse:
@@ -1896,8 +1976,8 @@ async def edit_message_caption(
     chat_id: Optional[Union[int, str]] = Query(None, description='Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     message_id: Optional[int] = Query(None, description='Required if inline_message_id is not specified. Identifier of the message to edit'),
     inline_message_id: Optional[str] = Query(None, description='Required if chat_id and message_id are not specified. Identifier of the inline message'),
-    caption: Optional[str] = Query(None, description='New caption of the message'),
-    parse_mode: Optional[str] = Query(None, description='Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.'),
+    caption: Optional[str] = Query(None, description='New caption of the message, 0-1024 characters after entities parsing'),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the message caption. See formatting options for more details.'),
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for an inline keyboard.'),
 ) -> JSONableResponse:
     """
@@ -2069,7 +2149,7 @@ async def delete_message(
     message_id: int = Query(..., description='Identifier of the message to delete'),
 ) -> JSONableResponse:
     """
-    Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming messages in private chats.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
+    Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming messages in private chats.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
 
     https://core.telegram.org/bots/api#deletemessage
     """
@@ -2099,7 +2179,7 @@ async def delete_message(
 async def send_sticker(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    sticker: Json[Union['InputFileModel', str]] = Query(..., description='Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
+    sticker: Json[Union['InputFileModel', str]] = Query(..., description='Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
@@ -2170,10 +2250,10 @@ async def get_sticker_set(
 async def upload_sticker_file(
     token: str = TOKEN_VALIDATION,
     user_id: int = Query(..., description='User identifier of sticker file owner'),
-    png_sticker: Json['InputFileModel'] = Query(..., description='Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. More info on Sending Files »'),
+    png_sticker: Json['InputFileModel'] = Query(..., description='PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. More info on Sending Files »'),
 ) -> JSONableResponse:
     """
-    Use this method to upload a .png file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+    Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
 
     https://core.telegram.org/bots/api#uploadstickerfile
     """
@@ -2202,19 +2282,24 @@ async def create_new_sticker_set(
     user_id: int = Query(..., description='User identifier of created sticker set owner'),
     name: str = Query(..., description='Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can contain only english letters, digits and underscores. Must begin with a letter, can\'t contain consecutive underscores and must end in "_by_<bot username>". <bot_username> is case insensitive. 1-64 characters.'),
     title: str = Query(..., description='Sticker set title, 1-64 characters'),
-    png_sticker: Json[Union['InputFileModel', str]] = Query(..., description='Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     emojis: str = Query(..., description='One or more emoji corresponding to the sticker'),
+    png_sticker: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
+    tgs_sticker: Optional[Json['InputFileModel']] = Query(None, description='TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements'),
     contains_masks: Optional[bool] = Query(None, description='Pass True, if a set of mask stickers should be created'),
     mask_position: Optional[Json['MaskPositionModel']] = Query(None, description='A JSON-serialized object for position where the mask should be placed on faces'),
 ) -> JSONableResponse:
     """
-    Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns True on success.
+    Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker. Returns True on success.
 
     https://core.telegram.org/bots/api#createnewstickerset
     """
-    png_sticker: Union[InputFileModel, str] = parse_obj_as(
-        Union[InputFileModel, str],
+    png_sticker: Optional[Union[InputFileModel, str]] = parse_obj_as(
+        Optional[Union[InputFileModel, str]],
         obj=png_sticker,
+    )
+    tgs_sticker: Optional[InputFileModel] = parse_obj_as(
+        Optional[InputFileModel],
+        obj=tgs_sticker,
     )
     mask_position: Optional[MaskPositionModel] = parse_obj_as(
         Optional[MaskPositionModel],
@@ -2230,8 +2315,9 @@ async def create_new_sticker_set(
         user_id=user_id,
         name=name,
         title=title,
-        png_sticker=png_sticker,
         emojis=emojis,
+        png_sticker=png_sticker,
+        tgs_sticker=tgs_sticker,
         contains_masks=contains_masks,
         mask_position=mask_position,
     )
@@ -2245,18 +2331,23 @@ async def add_sticker_to_set(
     token: str = TOKEN_VALIDATION,
     user_id: int = Query(..., description='User identifier of sticker set owner'),
     name: str = Query(..., description='Sticker set name'),
-    png_sticker: Json[Union['InputFileModel', str]] = Query(..., description='Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
+    png_sticker: Json[Union['InputFileModel', str]] = Query(..., description='PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     emojis: str = Query(..., description='One or more emoji corresponding to the sticker'),
+    tgs_sticker: Optional[Json['InputFileModel']] = Query(None, description='TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements'),
     mask_position: Optional[Json['MaskPositionModel']] = Query(None, description='A JSON-serialized object for position where the mask should be placed on faces'),
 ) -> JSONableResponse:
     """
-    Use this method to add a new sticker to a set created by the bot. Returns True on success.
+    Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
 
     https://core.telegram.org/bots/api#addstickertoset
     """
     png_sticker: Union[InputFileModel, str] = parse_obj_as(
         Union[InputFileModel, str],
         obj=png_sticker,
+    )
+    tgs_sticker: Optional[InputFileModel] = parse_obj_as(
+        Optional[InputFileModel],
+        obj=tgs_sticker,
     )
     mask_position: Optional[MaskPositionModel] = parse_obj_as(
         Optional[MaskPositionModel],
@@ -2273,6 +2364,7 @@ async def add_sticker_to_set(
         name=name,
         png_sticker=png_sticker,
         emojis=emojis,
+        tgs_sticker=tgs_sticker,
         mask_position=mask_position,
     )
     data = await to_web_api(result, bot)
@@ -2287,7 +2379,7 @@ async def set_sticker_position_in_set(
     position: int = Query(..., description='New sticker position in the set, zero-based'),
 ) -> JSONableResponse:
     """
-    Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
+    Use this method to move a sticker in a set created by the bot to a specific position. Returns True on success.
 
     https://core.telegram.org/bots/api#setstickerpositioninset
     """
@@ -2324,6 +2416,38 @@ async def delete_sticker_from_set(
 
     result = await bot.delete_sticker_from_set(
         sticker=sticker,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+@routes.api_route('/{token}/setStickerSetThumb', methods=['GET', 'POST'], tags=['official'])
+async def set_sticker_set_thumb(
+    token: str = TOKEN_VALIDATION,
+    name: str = Query(..., description='Sticker set name'),
+    user_id: int = Query(..., description='User identifier of the sticker set owner'),
+    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description="A PNG image with the thumbnail, must be up to 128 kilobytes in size and have width and height exactly 100px, or a TGS animation with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/animated_stickers#technical-requirements for animated sticker technical requirements. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files ». Animated sticker set thumbnail can't be uploaded via HTTP URL."),
+) -> JSONableResponse:
+    """
+    Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only. Returns True on success.
+
+    https://core.telegram.org/bots/api#setstickersetthumb
+    """
+    thumb: Optional[Union[InputFileModel, str]] = parse_obj_as(
+        Optional[Union[InputFileModel, str]],
+        obj=thumb,
+    )
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+    
+    
+
+    result = await bot.set_sticker_set_thumb(
+        name=name,
+        user_id=user_id,
+        thumb=thumb,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -2380,7 +2504,7 @@ async def send_invoice(
     provider_token: str = Query(..., description='Payments provider token, obtained via Botfather'),
     start_parameter: str = Query(..., description='Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter'),
     currency: str = Query(..., description='Three-letter ISO 4217 currency code, see more on currencies'),
-    prices: Json[List['LabeledPriceModel']] = Query(..., description='Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)'),
+    prices: Json[List['LabeledPriceModel']] = Query(..., description='Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)'),
     provider_data: Optional[str] = Query(None, description='JSON-encoded data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.'),
     photo_url: Optional[str] = Query(None, description='URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.'),
     photo_size: Optional[int] = Query(None, description='Photo size'),
@@ -2641,9 +2765,9 @@ async def get_game_high_scores(
     inline_message_id: Optional[str] = Query(None, description='Required if chat_id and message_id are not specified. Identifier of the inline message'),
 ) -> JSONableResponse:
     """
-    Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
+    Use this method to get data for high score tables. Will return the score of the specified user and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
 
-    This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+    This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
 
 
     https://core.telegram.org/bots/api#getgamehighscores

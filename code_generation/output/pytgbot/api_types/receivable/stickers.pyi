@@ -34,6 +34,9 @@ class StickerSet(Result):
 
     Optional keyword parameters:
     
+    :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
+    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -42,6 +45,7 @@ class StickerSet(Result):
     is_animated: bool
     contains_masks: bool
     stickers: List[Sticker]
+    thumb: PhotoSize
 # end class StickerSet
 
 class MaskPosition(Result):

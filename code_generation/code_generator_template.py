@@ -3,14 +3,14 @@ import os
 
 from collections import Mapping
 from itertools import chain
-from typing import List, Optional, Tuple, Union, Callable
+from typing import List, Optional, Tuple, Union, Callable, Set
 
 from jinja2 import  Environment, FileSystemLoader
 from jinja2.exceptions import TemplateSyntaxError
 
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.decorators import cached
-
+from luckydonaldUtils.imports.relative import relimport
 
 try:
     from code_generator import safe_var_translations, get_type_path, convert_to_underscore
@@ -57,7 +57,7 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     """
     variables_needed = []
     variables_optional = []
-    imports = set()
+    imports: Set[Variable] = set()
     for param in params_string.split("\n"):
         variable = parse_param_types(param)
         # any variable.types has always_is_value => lenght must be 1.
@@ -69,7 +69,7 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
         # end if
         imports.update(variable.all_imports)
     # end for
-    imports = list(imports)
+    imports: List[Variable] = list(imports)
     imports.sort()
     if isinstance(parent_clazz, str):
         parent_clazz = to_type(parent_clazz, "parent class")
@@ -162,7 +162,11 @@ class ClassOrFunction(KwargableObject):
 
 
 class Clazz(ClassOrFunction):
-    def __init__(self, clazz=None, import_path=None, imports=None, parent_clazz=None, link=None, description=None, parameters=None, keywords=None):
+    def __init__(
+        self, clazz: Union[None, str] = None, import_path: Union[None, 'Import'] = None,
+        imports: Union[None, List['Import']]=None,
+        parent_clazz=None, link=None, description=None, parameters=None, keywords=None,
+    ):
         super(Clazz, self).__init__()
         self.clazz = clazz
         self.import_path = import_path if import_path else self.calculate_import_path()
@@ -175,15 +179,14 @@ class Clazz(ClassOrFunction):
         self.keywords = keywords if keywords else []
     # end def __init__
 
-    def calculate_import_path(self):
-        import_path = get_type_path(self.clazz)
-        import_path = import_path.rstrip(".")
+    def calculate_import_path(self) -> 'Import':
+        import_path = get_type_path(self.clazz, as_object=True)
         return import_path
     # end def
 
     def calculate_filepath(self, folder: str):
         from code_generator_online import calc_path_and_create_folders
-        return calc_path_and_create_folders(folder, self.import_path)
+        return calc_path_and_create_folders(folder, self.import_path.path + '.' + self.import_path.name)
     # end def
 
     @property
@@ -203,14 +206,14 @@ class Clazz(ClassOrFunction):
 
 
 class Function(ClassOrFunction):
-    def __init__(self, api_name=None, imports=None, link=None, description=None, returns=None, parameters=None, keywords=None):
+    def __init__(self, api_name=None, imports: List['Import']=None, link=None, description=None, returns=None, parameters: List['Variable']=None, keywords=None):
         super(Function, self).__init__()
         self.api_name = api_name  # api_name
         self.imports = imports if imports else []
         self.link = link
         self.description = description
         self.returns = returns
-        self.parameters: List[Variable] = parameters
+        self.parameters = parameters
         self.keywords = keywords
     # end def __init__
 
@@ -417,7 +420,7 @@ class Variable(dict):
         imports = set()
         for type in self.types:
             if type.import_path:
-                imports.add(Import(type.import_path, type.string))
+                imports.add(Import(type.import_path.rstrip('.'), type.string))
             # end if
         # end for
         return imports
@@ -625,6 +628,14 @@ class Import(dict):
         self.name = name
     # end def __init__
 
+    def relative_import_full(self, base_path: Union[str, 'Import']):
+        if isinstance(base_path, Import):
+            base_path: str = base_path.path
+        # end if
+
+        return relimport(self.full, base_path)
+    # end def
+
     @property
     def full(self):
         """ self.path + "." + self.name """
@@ -642,6 +653,34 @@ class Import(dict):
             # end if
         # end if
     # end def full
+
+    def import_statement(self, base_path: Union[str, None] = None):
+        """
+        :param base_path: If None does absolute import.
+        :return:
+        """
+        if base_path is None:
+            path = self.full
+        else:
+            path = self.relative_import_full(base_path=base_path)
+        # end if
+
+        # using path.rsplit('.') might remove the dot, so gonna slit manually.
+        last_dot_position = path.rfind('.')
+        if last_dot_position == -1:
+            # no dot found.
+            import_path = ''
+            import_name = path
+        else:
+            import_path = path[:last_dot_position + 1]
+            import_name = path[last_dot_position + 1:]
+        # end if
+
+        if import_path:
+            return f'from {import_path} import {import_name}'
+        # end if
+        return f'import {import_name}'
+    # end def
 
     def __str__(self):
         return self.full

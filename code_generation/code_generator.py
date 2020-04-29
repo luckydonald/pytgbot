@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
+from typing import Union
+
+
 try:
+    # from code_generator_template import Import
     from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
 except ImportError:
+    # from .code_generator_template import Import
     from .code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
 # end try
 
@@ -95,12 +100,23 @@ safe_var_translations = {
 }
 
 
-def get_type_path(param_class):
+def get_type_path(param_class, as_object=False) -> Union[str, 'Import']:
+    if not as_object:
+        return get_type_path(param_class=param_class, as_object=True).full
+    # end if
+    try:
+        from code_generator_template import Import
+    except ImportError:
+        from .code_generator_template import Import
+    # end try
+
     param_class = param_class.strip()
     if param_class in CLASS_TYPE_PATHS:
-        return CLASS_TYPE_PATHS[param_class][CLASS_TYPE_PATHS__IMPORT]+param_class
+        return Import(path=CLASS_TYPE_PATHS[param_class][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name=param_class)
     else:
-        return param_class
+        return Import(name=param_class)
+    # end if
+# end def
 
 
 def clazz(clazz, parent_clazz, description, link, params_string, init_super_args=None):

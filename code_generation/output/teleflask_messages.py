@@ -47,7 +47,7 @@ class TextMessage(SendableMessageBase):
     
     Parameters:
     
-    :param text: Text of the message to be sent
+    :param text: Text of the message to be sent, 1-4096 characters after entities parsing
     :type  text: str|unicode
     
     
@@ -59,7 +59,7 @@ class TextMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
-    :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+    :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
     :type  parse_mode: str|unicode
     
     :param disable_web_page_preview: Disables link previews for links in this message
@@ -82,7 +82,7 @@ class TextMessage(SendableMessageBase):
         
         Parameters:
         
-        :param text: Text of the message to be sent
+        :param text: Text of the message to be sent, 1-4096 characters after entities parsing
         :type  text: str|unicode
         
         
@@ -94,7 +94,7 @@ class TextMessage(SendableMessageBase):
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+        :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param disable_web_page_preview: Disables link previews for links in this message
@@ -318,10 +318,10 @@ class PhotoMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
-    :param caption: Photo caption (may also be used when resending photos by file_id), 0-1024 characters
+    :param caption: Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
-    :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -353,10 +353,10 @@ class PhotoMessage(SendableMessageBase):
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
         
-        :param caption: Photo caption (may also be used when resending photos by file_id), 0-1024 characters
+        :param caption: Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -592,10 +592,10 @@ class AudioMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
-    :param caption: Audio caption, 0-1024 characters
+    :param caption: Audio caption, 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
-    :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
     :param duration: Duration of the audio in seconds
@@ -640,10 +640,10 @@ class AudioMessage(SendableMessageBase):
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
         
-        :param caption: Audio caption, 0-1024 characters
+        :param caption: Audio caption, 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param duration: Duration of the audio in seconds
@@ -931,10 +931,10 @@ class DocumentMessage(SendableMessageBase):
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters
+    :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
-    :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -969,10 +969,10 @@ class DocumentMessage(SendableMessageBase):
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters
+        :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1239,10 +1239,10 @@ class VideoMessage(SendableMessageBase):
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters
+    :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
-    :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
     :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
@@ -1289,10 +1289,10 @@ class VideoMessage(SendableMessageBase):
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters
+        :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
@@ -1586,10 +1586,10 @@ class AnimationMessage(SendableMessageBase):
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters
+    :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
-    :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1633,10 +1633,10 @@ class AnimationMessage(SendableMessageBase):
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters
+        :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1890,7 +1890,7 @@ class AnimationMessage(SendableMessageBase):
 
 class VoiceMessage(SendableMessageBase):
     """
-    Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+    Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
     https://core.telegram.org/bots/api#sendvoice
 
@@ -1909,10 +1909,10 @@ class VoiceMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
-    :param caption: Voice message caption, 0-1024 characters
+    :param caption: Voice message caption, 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
-    :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
     :param duration: Duration of the voice message in seconds
@@ -1928,7 +1928,7 @@ class VoiceMessage(SendableMessageBase):
 
     def __init__(self, voice, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, duration=None, disable_notification=None, reply_markup=None):
         """
-        Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+        Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#sendvoice
 
@@ -1947,10 +1947,10 @@ class VoiceMessage(SendableMessageBase):
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
         
-        :param caption: Voice message caption, 0-1024 characters
+        :param caption: Voice message caption, 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param duration: Duration of the voice message in seconds
@@ -2481,7 +2481,7 @@ class MediaGroupMessage(SendableMessageBase):
     
     Parameters:
     
-    :param media: A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
+    :param media: A JSON-serialized array describing photos and videos to be sent, must include 2-10 items
     :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
     
     
@@ -2507,7 +2507,7 @@ class MediaGroupMessage(SendableMessageBase):
         
         Parameters:
         
-        :param media: A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
+        :param media: A JSON-serialized array describing photos and videos to be sent, must include 2-10 items
         :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
@@ -3513,7 +3513,7 @@ class PollMessage(SendableMessageBase):
     :param question: Poll question, 1-255 characters
     :type  question: str|unicode
     
-    :param options: List of answer options, 2-10 strings 1-100 characters each
+    :param options: A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
     :type  options: list of str|unicode
     
     
@@ -3537,7 +3537,19 @@ class PollMessage(SendableMessageBase):
     :param correct_option_id: 0-based identifier of the correct answer option, required for polls in quiz mode
     :type  correct_option_id: int
     
-    :param is_closed: Pass True, if the poll needs to be immediately closed
+    :param explanation: Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
+    :type  explanation: str|unicode
+    
+    :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
+    :type  explanation_parse_mode: str|unicode
+    
+    :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
+    :type  open_period: int
+    
+    :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+    :type  close_date: int
+    
+    :param is_closed: Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
     :type  is_closed: bool
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -3548,7 +3560,7 @@ class PollMessage(SendableMessageBase):
     
     """
 
-    def __init__(self, question, options, receiver=None, reply_id=DEFAULT_MESSAGE_ID, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, is_closed=None, disable_notification=None, reply_markup=None):
+    def __init__(self, question, options, receiver=None, reply_id=DEFAULT_MESSAGE_ID, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_markup=None):
         """
         Use this method to send a native poll. On success, the sent Message is returned.
 
@@ -3560,7 +3572,7 @@ class PollMessage(SendableMessageBase):
         :param question: Poll question, 1-255 characters
         :type  question: str|unicode
         
-        :param options: List of answer options, 2-10 strings 1-100 characters each
+        :param options: A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
         :type  options: list of str|unicode
         
         
@@ -3584,7 +3596,19 @@ class PollMessage(SendableMessageBase):
         :param correct_option_id: 0-based identifier of the correct answer option, required for polls in quiz mode
         :type  correct_option_id: int
         
-        :param is_closed: Pass True, if the poll needs to be immediately closed
+        :param explanation: Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
+        :type  explanation: str|unicode
+        
+        :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
+        :type  explanation_parse_mode: str|unicode
+        
+        :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
+        :type  open_period: int
+        
+        :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+        :type  close_date: int
+        
+        :param is_closed: Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
         :type  is_closed: bool
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -3624,6 +3648,18 @@ class PollMessage(SendableMessageBase):
         assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
         self.correct_option_id = correct_option_id
         
+        assert_type_or_raise(explanation, None, unicode_type, parameter_name="explanation")
+        self.explanation = explanation
+        
+        assert_type_or_raise(explanation_parse_mode, None, unicode_type, parameter_name="explanation_parse_mode")
+        self.explanation_parse_mode = explanation_parse_mode
+        
+        assert_type_or_raise(open_period, None, int, parameter_name="open_period")
+        self.open_period = open_period
+        
+        assert_type_or_raise(close_date, None, int, parameter_name="close_date")
+        self.close_date = close_date
+        
         assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
         self.is_closed = is_closed
         
@@ -3647,7 +3683,7 @@ class PollMessage(SendableMessageBase):
         """
         return sender.send_poll(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            question=self.question, options=self.options, chat_id=self.receiver, reply_to_message_id=self.reply_id, is_anonymous=self.is_anonymous, type=self.type, allows_multiple_answers=self.allows_multiple_answers, correct_option_id=self.correct_option_id, is_closed=self.is_closed, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            question=self.question, options=self.options, chat_id=self.receiver, reply_to_message_id=self.reply_id, is_anonymous=self.is_anonymous, type=self.type, allows_multiple_answers=self.allows_multiple_answers, correct_option_id=self.correct_option_id, explanation=self.explanation, explanation_parse_mode=self.explanation_parse_mode, open_period=self.open_period, close_date=self.close_date, is_closed=self.is_closed, disable_notification=self.disable_notification, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -3686,6 +3722,14 @@ class PollMessage(SendableMessageBase):
             array['allows_multiple_answers'] = bool(self.allows_multiple_answers)  # type bool
         if self.correct_option_id is not None:
             array['correct_option_id'] = int(self.correct_option_id)  # type int
+        if self.explanation is not None:
+            array['explanation'] = u(self.explanation)  # py2: type unicode, py3: type str
+        if self.explanation_parse_mode is not None:
+            array['explanation_parse_mode'] = u(self.explanation_parse_mode)  # py2: type unicode, py3: type str
+        if self.open_period is not None:
+            array['open_period'] = int(self.open_period)  # type int
+        if self.close_date is not None:
+            array['close_date'] = int(self.close_date)  # type int
         if self.is_closed is not None:
             array['is_closed'] = bool(self.is_closed)  # type bool
         if self.disable_notification is not None:
@@ -3747,6 +3791,10 @@ class PollMessage(SendableMessageBase):
         data['type'] = u(array.get('type')) if array.get('type') is not None else None
         data['allows_multiple_answers'] = bool(array.get('allows_multiple_answers')) if array.get('allows_multiple_answers') is not None else None
         data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
+        data['explanation'] = u(array.get('explanation')) if array.get('explanation') is not None else None
+        data['explanation_parse_mode'] = u(array.get('explanation_parse_mode')) if array.get('explanation_parse_mode') is not None else None
+        data['open_period'] = int(array.get('open_period')) if array.get('open_period') is not None else None
+        data['close_date'] = int(array.get('close_date')) if array.get('close_date') is not None else None
         data['is_closed'] = bool(array.get('is_closed')) if array.get('is_closed') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:
@@ -3786,14 +3834,14 @@ class PollMessage(SendableMessageBase):
         """
         Implements `str(pollmessage_instance)`
         """
-        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_parse_mode={self.explanation_parse_mode!r}, open_period={self.open_period!r}, close_date={self.close_date!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(pollmessage_instance)`
         """
-        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_parse_mode={self.explanation_parse_mode!r}, open_period={self.open_period!r}, close_date={self.close_date!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3801,12 +3849,242 @@ class PollMessage(SendableMessageBase):
         Implements `"key" in pollmessage_instance`
         """
         return (
-            key in ["question", "options", "receiver", "reply_id", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id", "is_closed", "disable_notification", "reply_markup"]
+            key in ["question", "options", "receiver", "reply_id", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id", "explanation", "explanation_parse_mode", "open_period", "close_date", "is_closed", "disable_notification", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
     # end def __contains__
 # end class PollMessage
+
+class DiceMessage(SendableMessageBase):
+    """
+    Use this method to send a dice, which will have a random value from 1 to 6. On success, the sent Message is returned. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+
+    https://core.telegram.org/bots/api#senddice
+
+    
+    Optional keyword parameters:
+    
+    :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
+    :type  receiver: None | str|unicode | int
+    
+    :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
+    :type  reply_id: DEFAULT_MESSAGE_ID | int
+    
+    :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "" or "". Defauts to ""
+    :type  emoji: str|unicode
+    
+    :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+    :type  disable_notification: bool
+    
+    :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+    :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+    
+    """
+
+    def __init__(self, receiver=None, reply_id=DEFAULT_MESSAGE_ID, emoji=None, disable_notification=None, reply_markup=None):
+        """
+        Use this method to send a dice, which will have a random value from 1 to 6. On success, the sent Message is returned. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+
+        https://core.telegram.org/bots/api#senddice
+
+        
+        Optional keyword parameters:
+        
+        :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
+        :type  receiver: None | str|unicode | int
+        
+        :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
+        :type  reply_id: DEFAULT_MESSAGE_ID | int
+        
+        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "" or "". Defauts to ""
+        :type  emoji: str|unicode
+        
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
+        
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        
+        """
+        super(DiceMessage, self).__init__()
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
+        self.receiver = receiver
+        
+        assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
+        self.reply_id = reply_id
+        
+        assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
+        self.emoji = emoji
+        
+        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        self.disable_notification = disable_notification
+        
+        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
+        self.reply_markup = reply_markup
+        self._next_msg = None
+    # end def __init__
+
+    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
+    def send(self, sender: PytgbotApiBot):
+        """
+        Send the message via pytgbot.
+
+        :param sender: The bot instance to send with.
+        :type  sender: pytgbot.bot.Bot
+
+        :rtype: PytgbotApiMessage
+        """
+        return sender.send_dice(
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
+            chat_id=self.receiver, reply_to_message_id=self.reply_id, emoji=self.emoji, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+        )
+    # end def send
+
+    def to_array(self):
+        """
+        Serializes this DiceMessage to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(DiceMessage, self).to_array()
+        if self.receiver is not None:
+            if isinstance(self.receiver, None):
+                array['chat_id'] = None
+            elif isinstance(self.receiver, str):
+                array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type strelif isinstance(self.receiver, int):
+                array['chat_id'] = int(self.receiver)  # type intelse:
+                raise TypeError('Unknown type, must be one of None, str, int.')
+            # end if
+
+        if self.reply_id is not None:
+            if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
+                array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_IDelif isinstance(self.reply_id, int):
+                array['reply_to_message_id'] = int(self.reply_id)  # type intelse:
+                raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
+            # end if
+
+        if self.emoji is not None:
+            array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
+        if self.disable_notification is not None:
+            array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.reply_markup is not None:
+            if isinstance(self.reply_markup, InlineKeyboardMarkup):
+                array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+            elif isinstance(self.reply_markup, ReplyKeyboardMarkup):
+                array['reply_markup'] = self.reply_markup.to_array()  # type ReplyKeyboardMarkup
+            elif isinstance(self.reply_markup, ReplyKeyboardRemove):
+                array['reply_markup'] = self.reply_markup.to_array()  # type ReplyKeyboardRemove
+            elif isinstance(self.reply_markup, ForceReply):
+                array['reply_markup'] = self.reply_markup.to_array()  # type ForceReply
+            else:
+                raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply.')
+            # end if
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the DiceMessage constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        
+        data = SendableMessageBase.validate_array(array)
+        if array.get('chat_id') is None:
+            data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
+        elif isinstance(array.get('chat_id'), str):
+            data['receiver'] = u(array.get('chat_id'))
+        elif isinstance(array.get('chat_id'), int):
+            data['receiver'] = int(array.get('chat_id'))
+        else:
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
+        # end if
+        if array.get('reply_to_message_id') is None:
+            data['reply_id'] = None
+        elif isinstance(array.get('reply_to_message_id'), DEFAULT_MESSAGE_ID):
+            data['reply_id'] = DEFAULT_MESSAGE_ID(array.get('reply_to_message_id'))
+        elif isinstance(array.get('reply_to_message_id'), int):
+            data['reply_id'] = int(array.get('reply_to_message_id'))
+        else:
+            raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
+        # end if
+        data['emoji'] = u(array.get('emoji')) if array.get('emoji') is not None else None
+        data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        if array.get('reply_markup') is None:
+            data['reply_markup'] = None
+        elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
+            data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup'))
+        elif isinstance(array.get('reply_markup'), ReplyKeyboardMarkup):
+            data['reply_markup'] = ReplyKeyboardMarkup.from_array(array.get('reply_markup'))
+        elif isinstance(array.get('reply_markup'), ReplyKeyboardRemove):
+            data['reply_markup'] = ReplyKeyboardRemove.from_array(array.get('reply_markup'))
+        elif isinstance(array.get('reply_markup'), ForceReply):
+            data['reply_markup'] = ForceReply.from_array(array.get('reply_markup'))
+        else:
+            raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
+        # end if
+        
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new DiceMessage from a given dictionary.
+
+        :return: new DiceMessage instance.
+        :rtype: DiceMessage
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = DiceMessage.validate_array(array)
+        return DiceMessage(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(dicemessage_instance)`
+        """
+        return "DiceMessage(receiver={self.receiver!r}, reply_id={self.reply_id!r}, emoji={self.emoji!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(dicemessage_instance)`
+        """
+        return "DiceMessage(receiver={self.receiver!r}, reply_id={self.reply_id!r}, emoji={self.emoji!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in dicemessage_instance`
+        """
+        return (
+            key in ["receiver", "reply_id", "emoji", "disable_notification", "reply_markup"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class DiceMessage
 
 class ChatActionMessage(SendableMessageBase):
     """
@@ -3978,7 +4256,7 @@ class StickerMessage(SendableMessageBase):
     
     Parameters:
     
-    :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+    :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
     :type  sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
     
@@ -4007,7 +4285,7 @@ class StickerMessage(SendableMessageBase):
         
         Parameters:
         
-        :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         
@@ -4245,7 +4523,7 @@ class InvoiceMessage(SendableMessageBase):
     :param currency: Three-letter ISO 4217 currency code, see more on currencies
     :type  currency: str|unicode
     
-    :param prices: Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+    :param prices: Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
     :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
     
     
@@ -4328,7 +4606,7 @@ class InvoiceMessage(SendableMessageBase):
         :param currency: Three-letter ISO 4217 currency code, see more on currencies
         :type  currency: str|unicode
         
-        :param prices: Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+        :param prices: Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
         
         

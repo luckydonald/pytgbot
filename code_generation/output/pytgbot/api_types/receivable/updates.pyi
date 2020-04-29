@@ -172,7 +172,7 @@ class Message(UpdateType):
     :param author_signature: Optional. Signature of the post author for messages in channels
     :type  author_signature: str|unicode
     
-    :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
+    :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters
     :type  text: str|unicode
     
     :param entities: Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
@@ -222,6 +222,9 @@ class Message(UpdateType):
     
     :param poll: Optional. Message is a native poll, information about the poll
     :type  poll: pytgbot.api_types.receivable.media.Poll
+    
+    :param dice: Optional. Message is a dice with random value from 1 to 6
+    :type  dice: pytgbot.api_types.receivable.media.Dice
     
     :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
@@ -305,6 +308,7 @@ class Message(UpdateType):
     location: Location
     venue: Venue
     poll: Poll
+    dice: Dice
     new_chat_members: List[User]
     left_chat_member: User
     new_chat_title: str

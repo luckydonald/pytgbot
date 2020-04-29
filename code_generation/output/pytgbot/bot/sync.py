@@ -66,13 +66,13 @@ class SyncBot(object):
         :param offset: Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.
         :type  offset: int
         
-        :param limit: Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100.
+        :param limit: Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100.
         :type  limit: int
         
         :param timeout: Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
         :type  timeout: int
         
-        :param allowed_updates: List the types of updates you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
+        :param allowed_updates: A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
         :type  allowed_updates: list of str|unicode
         
         Returns:
@@ -129,7 +129,7 @@ class SyncBot(object):
         :param max_connections: Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s throughput.
         :type  max_connections: int
         
-        :param allowed_updates: List the types of updates you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
+        :param allowed_updates: A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
         :type  allowed_updates: list of str|unicode
         
         Returns:
@@ -256,13 +256,13 @@ class SyncBot(object):
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
-        :param text: Text of the message to be sent
+        :param text: Text of the message to be sent, 1-4096 characters after entities parsing
         :type  text: str|unicode
         
         
         Optional keyword parameters:
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+        :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param disable_web_page_preview: Disables link previews for links in this message
@@ -386,10 +386,10 @@ class SyncBot(object):
         
         Optional keyword parameters:
         
-        :param caption: Photo caption (may also be used when resending photos by file_id), 0-1024 characters
+        :param caption: Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -460,10 +460,10 @@ class SyncBot(object):
         
         Optional keyword parameters:
         
-        :param caption: Audio caption, 0-1024 characters
+        :param caption: Audio caption, 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param duration: Duration of the audio in seconds
@@ -556,10 +556,10 @@ class SyncBot(object):
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters
+        :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -643,10 +643,10 @@ class SyncBot(object):
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters
+        :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
@@ -741,10 +741,10 @@ class SyncBot(object):
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters
+        :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -806,7 +806,7 @@ class SyncBot(object):
     
     def send_voice(self, chat_id, voice, caption=None, parse_mode=None, duration=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
-        Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+        Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#sendvoice
 
@@ -822,10 +822,10 @@ class SyncBot(object):
         
         Optional keyword parameters:
         
-        :param caption: Voice message caption, 0-1024 characters
+        :param caption: Voice message caption, 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param duration: Duration of the voice message in seconds
@@ -972,7 +972,7 @@ class SyncBot(object):
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
-        :param media: A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
+        :param media: A JSON-serialized array describing photos and videos to be sent, must include 2-10 items
         :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
@@ -1378,7 +1378,7 @@ class SyncBot(object):
         return result
     # end def send_contact
     
-    def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, is_closed=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send a native poll. On success, the sent Message is returned.
 
@@ -1393,7 +1393,7 @@ class SyncBot(object):
         :param question: Poll question, 1-255 characters
         :type  question: str|unicode
         
-        :param options: List of answer options, 2-10 strings 1-100 characters each
+        :param options: A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
         :type  options: list of str|unicode
         
         
@@ -1411,7 +1411,19 @@ class SyncBot(object):
         :param correct_option_id: 0-based identifier of the correct answer option, required for polls in quiz mode
         :type  correct_option_id: int
         
-        :param is_closed: Pass True, if the poll needs to be immediately closed
+        :param explanation: Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
+        :type  explanation: str|unicode
+        
+        :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
+        :type  explanation_parse_mode: str|unicode
+        
+        :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
+        :type  open_period: int
+        
+        :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+        :type  close_date: int
+        
+        :param is_closed: Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
         :type  is_closed: bool
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1447,6 +1459,14 @@ class SyncBot(object):
         
         assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
         
+        assert_type_or_raise(explanation, None, unicode_type, parameter_name="explanation")
+        
+        assert_type_or_raise(explanation_parse_mode, None, unicode_type, parameter_name="explanation_parse_mode")
+        
+        assert_type_or_raise(open_period, None, int, parameter_name="open_period")
+        
+        assert_type_or_raise(close_date, None, int, parameter_name="close_date")
+        
         assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
@@ -1455,7 +1475,7 @@ class SyncBot(object):
         
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
         
-        result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1469,6 +1489,68 @@ class SyncBot(object):
         # end if return_python_objects
         return result
     # end def send_poll
+    
+    def send_dice(self, chat_id, emoji=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+        """
+        Use this method to send a dice, which will have a random value from 1 to 6. On success, the sent Message is returned. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+
+        https://core.telegram.org/bots/api#senddice
+
+        
+        Parameters:
+        
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+        
+        
+        Optional keyword parameters:
+        
+        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "" or "". Defauts to ""
+        :type  emoji: str|unicode
+        
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
+        
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
+        
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+        
+        Returns:
+
+        :return: On success, the sent Message is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message
+        """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        
+        assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
+        
+        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        
+        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
+        
+        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
+        
+        result = self.do("sendDice", chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def send_dice
     
     def send_chat_action(self, chat_id, action):
         """
@@ -1531,7 +1613,7 @@ class SyncBot(object):
         :param offset: Sequential number of the first photo to be returned. By default, all photos are returned.
         :type  offset: int
         
-        :param limit: Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.
+        :param limit: Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100.
         :type  limit: int
         
         Returns:
@@ -1773,7 +1855,7 @@ class SyncBot(object):
         :param can_pin_messages: Pass True, if the administrator can pin messages, supergroups only
         :type  can_pin_messages: bool
         
-        :param can_promote_members: Pass True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
+        :param can_promote_members: Pass True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
         :type  can_promote_members: bool
         
         Returns:
@@ -1904,7 +1986,7 @@ class SyncBot(object):
         """
         Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
 
-        Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink – after this the link will become available to the bot via the getChat method. If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
+        Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink — after this the link will become available to the bot via the getChat method. If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
 
 
         https://core.telegram.org/bots/api#exportchatinvitelink
@@ -2447,7 +2529,7 @@ class SyncBot(object):
         :param show_alert: If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
         :type  show_alert: bool
         
-        :param url: URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game – note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
+        :param url: URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game — note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
         :type  url: str|unicode
         
         :param cache_time: The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.
@@ -2482,6 +2564,42 @@ class SyncBot(object):
         return result
     # end def answer_callback_query
     
+    def set_my_commands(self, commands):
+        """
+        Use this method to change the list of the bot's commands. Returns True on success.
+
+        https://core.telegram.org/bots/api#setmycommands
+
+        
+        Parameters:
+        
+        :param commands: A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
+        :type  commands: list of pytgbot.api_types.receivable.command.BotCommand
+        
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        from pytgbot.api_types.receivable.command import BotCommand
+        
+        assert_type_or_raise(commands, list, parameter_name="commands")
+        
+        result = self.do("setMyCommands", commands=commands)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_my_commands
+    
     def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None, disable_web_page_preview=None, reply_markup=None):
         """
         Use this method to edit text and game messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
@@ -2491,7 +2609,7 @@ class SyncBot(object):
         
         Parameters:
         
-        :param text: New text of the message
+        :param text: New text of the message, 1-4096 characters after entities parsing
         :type  text: str|unicode
         
         
@@ -2506,7 +2624,7 @@ class SyncBot(object):
         :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
         :type  inline_message_id: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+        :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param disable_web_page_preview: Disables link previews for links in this message
@@ -2575,10 +2693,10 @@ class SyncBot(object):
         :param inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
         :type  inline_message_id: str|unicode
         
-        :param caption: New caption of the message
+        :param caption: New caption of the message, 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
         :param reply_markup: A JSON-serialized object for an inline keyboard.
@@ -2798,7 +2916,7 @@ class SyncBot(object):
     
     def delete_message(self, chat_id, message_id):
         """
-        Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming messages in private chats.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
+        Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming messages in private chats.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
 
         https://core.telegram.org/bots/api#deletemessage
 
@@ -2847,7 +2965,7 @@ class SyncBot(object):
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
         
-        :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         
@@ -2935,7 +3053,7 @@ class SyncBot(object):
     
     def upload_sticker_file(self, user_id, png_sticker):
         """
-        Use this method to upload a .png file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+        Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
 
         https://core.telegram.org/bots/api#uploadstickerfile
 
@@ -2945,7 +3063,7 @@ class SyncBot(object):
         :param user_id: User identifier of sticker file owner
         :type  user_id: int
         
-        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. More info on Sending Files »
+        :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. More info on Sending Files »
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile
         
         
@@ -2975,9 +3093,9 @@ class SyncBot(object):
         return result
     # end def upload_sticker_file
     
-    def create_new_sticker_set(self, user_id, name, title, png_sticker, emojis, contains_masks=None, mask_position=None):
+    def create_new_sticker_set(self, user_id, name, title, emojis, png_sticker=None, tgs_sticker=None, contains_masks=None, mask_position=None):
         """
-        Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns True on success.
+        Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker. Returns True on success.
 
         https://core.telegram.org/bots/api#createnewstickerset
 
@@ -2993,14 +3111,17 @@ class SyncBot(object):
         :param title: Sticker set title, 1-64 characters
         :type  title: str|unicode
         
-        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
-        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
         :param emojis: One or more emoji corresponding to the sticker
         :type  emojis: str|unicode
         
         
         Optional keyword parameters:
+        
+        :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
+        
+        :param tgs_sticker: TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        :type  tgs_sticker: pytgbot.api_types.sendable.files.InputFile
         
         :param contains_masks: Pass True, if a set of mask stickers should be created
         :type  contains_masks: bool
@@ -3022,15 +3143,17 @@ class SyncBot(object):
         
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         
-        assert_type_or_raise(png_sticker, (InputFile, unicode_type), parameter_name="png_sticker")
-        
         assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
+        
+        assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
+        
+        assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
         
         assert_type_or_raise(contains_masks, None, bool, parameter_name="contains_masks")
         
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
         
-        result = self.do("createNewStickerSet", user_id=user_id, name=name, title=title, png_sticker=png_sticker, emojis=emojis, contains_masks=contains_masks, mask_position=mask_position)
+        result = self.do("createNewStickerSet", user_id=user_id, name=name, title=title, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, contains_masks=contains_masks, mask_position=mask_position)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3044,9 +3167,9 @@ class SyncBot(object):
         return result
     # end def create_new_sticker_set
     
-    def add_sticker_to_set(self, user_id, name, png_sticker, emojis, mask_position=None):
+    def add_sticker_to_set(self, user_id, name, png_sticker, emojis, tgs_sticker=None, mask_position=None):
         """
-        Use this method to add a new sticker to a set created by the bot. Returns True on success.
+        Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
 
         https://core.telegram.org/bots/api#addstickertoset
 
@@ -3059,7 +3182,7 @@ class SyncBot(object):
         :param name: Sticker set name
         :type  name: str|unicode
         
-        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param emojis: One or more emoji corresponding to the sticker
@@ -3067,6 +3190,9 @@ class SyncBot(object):
         
         
         Optional keyword parameters:
+        
+        :param tgs_sticker: TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        :type  tgs_sticker: pytgbot.api_types.sendable.files.InputFile
         
         :param mask_position: A JSON-serialized object for position where the mask should be placed on faces
         :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
@@ -3087,9 +3213,11 @@ class SyncBot(object):
         
         assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
         
+        assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
+        
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
         
-        result = self.do("addStickerToSet", user_id=user_id, name=name, png_sticker=png_sticker, emojis=emojis, mask_position=mask_position)
+        result = self.do("addStickerToSet", user_id=user_id, name=name, png_sticker=png_sticker, emojis=emojis, tgs_sticker=tgs_sticker, mask_position=mask_position)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3105,7 +3233,7 @@ class SyncBot(object):
     
     def set_sticker_position_in_set(self, sticker, position):
         """
-        Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
+        Use this method to move a sticker in a set created by the bot to a specific position. Returns True on success.
 
         https://core.telegram.org/bots/api#setstickerpositioninset
 
@@ -3175,6 +3303,54 @@ class SyncBot(object):
         # end if return_python_objects
         return result
     # end def delete_sticker_from_set
+    
+    def set_sticker_set_thumb(self, name, user_id, thumb=None):
+        """
+        Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only. Returns True on success.
+
+        https://core.telegram.org/bots/api#setstickersetthumb
+
+        
+        Parameters:
+        
+        :param name: Sticker set name
+        :type  name: str|unicode
+        
+        :param user_id: User identifier of the sticker set owner
+        :type  user_id: int
+        
+        
+        Optional keyword parameters:
+        
+        :param thumb: A PNG image with the thumbnail, must be up to 128 kilobytes in size and have width and height exactly 100px, or a TGS animation with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/animated_stickers#technical-requirements for animated sticker technical requirements. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files ». Animated sticker set thumbnail can't be uploaded via HTTP URL.
+        :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
+        
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        from pytgbot.api_types.sendable.files import InputFile
+        
+        assert_type_or_raise(name, unicode_type, parameter_name="name")
+        
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
+        
+        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
+        
+        result = self.do("setStickerSetThumb", name=name, user_id=user_id, thumb=thumb)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_sticker_set_thumb
     
     def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
         """
@@ -3274,7 +3450,7 @@ class SyncBot(object):
         :param currency: Three-letter ISO 4217 currency code, see more on currencies
         :type  currency: str|unicode
         
-        :param prices: Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+        :param prices: Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
         
         
@@ -3669,9 +3845,9 @@ class SyncBot(object):
     
     def get_game_high_scores(self, user_id, chat_id=None, message_id=None, inline_message_id=None):
         """
-        Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
+        Use this method to get data for high score tables. Will return the score of the specified user and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
 
-        This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+        This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
 
 
         https://core.telegram.org/bots/api#getgamehighscores

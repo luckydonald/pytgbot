@@ -173,7 +173,7 @@ class ChatMember(Result):
     :param can_restrict_members: Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members
     :type  can_restrict_members: bool
     
-    :param can_promote_members: Optional. Administrators only. True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
+    :param can_promote_members: Optional. Administrators only. True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
     :type  can_promote_members: bool
     
     :param can_change_info: Optional. Administrators and restricted only. True, if the user is allowed to change the chat title, photo and other settings

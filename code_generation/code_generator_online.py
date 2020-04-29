@@ -391,8 +391,6 @@ def load_api_definitions():
         results, html_document = load_from_dump(folder)
     # end def
     return folder, html_document, results
-
-
 # end def
 
 
@@ -658,7 +656,15 @@ def render_file_to_disk(file, txt):
 
 
 def calc_path_and_create_folders(folder, import_path, create_folder=True):
-    """ calculate the path and create the needed folders """
+    """
+    calculate the path and create the needed folders
+
+    >>> calc_path_and_create_folders(folder='/somewhere/', import_path='foo.bar.BarClass', create_folder=False)
+    '/somewhere/foo/bar/BarClass'
+
+    :param import_path:  'foo.bar.BarClass'
+    :param folder: base folder where we wanna place 'foo.bar.BarClass' in.
+     """
     file_path = abspath(path_join(folder, import_path[:import_path.rfind(".")].replace(".", folder_seperator) + ".py"))
     if create_folder:
         mkdir_p(dirname(file_path))

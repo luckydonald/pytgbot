@@ -549,6 +549,18 @@ class Poll(Media):
     :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
     :type  correct_option_id: int
     
+    :param explanation: Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
+    :type  explanation: str|unicode
+    
+    :param explanation_entities: Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+    :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
+    :param open_period: Optional. Amount of time in seconds the poll will be active after creation
+    :type  open_period: int
+    
+    :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+    :type  close_date: int
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -561,7 +573,36 @@ class Poll(Media):
     type: str
     allows_multiple_answers: bool
     correct_option_id: int
+    explanation: str
+    explanation_entities: List[MessageEntity]
+    open_period: int
+    close_date: int
 # end class Poll
+
+class Dice(Media):
+    """
+    This object represents a dice with a random value from 1 to 6 for currently supported base emoji. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+
+    https://core.telegram.org/bots/api#dice
+    
+
+    Parameters:
+    
+    :param emoji: Emoji on which the dice throw animation is based
+    :type  emoji: str|unicode
+    
+    :param value: Value of the dice, 1-6 for currently supported base emoji
+    :type  value: int
+    
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    emoji: str
+    value: int
+# end class Dice
 
 class UserProfilePhotos(Result):
     """
@@ -683,7 +724,7 @@ class Sticker(Media):
 
     Optional keyword parameters:
     
-    :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
+    :param thumb: Optional. Sticker thumbnail in the .WEBP or .JPG format
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
     
     :param emoji: Optional. Emoji associated with the sticker
