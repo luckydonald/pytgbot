@@ -25,6 +25,47 @@ except ImportError:
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
 
+
+try:
+    from luckydonaldUtils.imports.representation import path_to_import_text
+    logger.warning('Please remove the old code now that this feature is in luckydonaldUtils.')
+except ImportError:
+    # define manually until I get around to
+    def path_to_import_text(path):
+        """
+        Splits the text and build a nice import statement from it.
+        Note: only well defined import paths are supported. Not something invalid like '..foo.bar.'
+
+        :param path: The path to split.
+        :type  path: str
+
+        :return: The import text, like `from x import y` or `import z`
+        :rtype: str
+        """
+        last_dot_position = path.rfind('.')
+        if last_dot_position == -1:
+            # no dot found.
+            import_path = ''
+            import_name = path
+        else:
+            import_path = path[:last_dot_position + 1]
+            import_name = path[last_dot_position + 1:]
+
+            # handle 'foo.bar.Baz' not resulting in 'foo.bar.', i.e. remove the dot at the end.
+            if import_path.rstrip('.') != '':
+                # e.g. not '....'
+                import_path = import_path.rstrip('.')
+        # end if
+
+        if import_path:
+            return 'from {import_path} import {import_name}'.format(import_path=import_path,
+                                                                    import_name=import_name)
+        # end if
+        return 'import {import_name}'.format(import_name=import_name)
+    # end def
+# end try
+
+
 class RelEnvironment(Environment):
     """
     Override join_path() to enable relative template paths.
@@ -654,7 +695,7 @@ class Import(dict):
         # end if
     # end def full
 
-    def import_statement(self, base_path: Union[str, None] = None):
+    def import_statement_from_file(self, base_path: Union[str, None] = None):
         """
         :param base_path: If None does absolute import.
         :return:
@@ -664,22 +705,7 @@ class Import(dict):
         else:
             path = self.relative_import_full(base_path=base_path)
         # end if
-
-        # using path.rsplit('.') might remove the dot, so gonna slit manually.
-        last_dot_position = path.rfind('.')
-        if last_dot_position == -1:
-            # no dot found.
-            import_path = ''
-            import_name = path
-        else:
-            import_path = path[:last_dot_position + 1]
-            import_name = path[last_dot_position + 1:]
-        # end if
-
-        if import_path:
-            return f'from {import_path} import {import_name}'
-        # end if
-        return f'import {import_name}'
+        return path_to_import_text(path)
     # end def
 
     def __str__(self):

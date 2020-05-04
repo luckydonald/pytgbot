@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
-{% for import in imports -%}
-{{ import.import_statement(clazzes[0].import_path) }}
+{% set file_import_path = clazzes[0].import_path -%}
+{%- for some_import in imports if some_import.path != file_import_path.path -%}
+{{ some_import.import_statement_from_file(file_import_path) }}
 {%- if loop.last %}
 {% endif %}
 {% endfor -%}
