@@ -730,4 +730,26 @@ CUSTOM_CLASSES = {
             "pytgbot.api_types.receivable.sendable.Sendable",
         ],
     ),
+    "pytgbot.api_types.TgBotApiObject": CustomClass(
+        text=[
+            'class Receivable(TgBotApiObject):',
+            '    pass',
+            '# end class Receivable',
+       ],
+        imports=[
+            "pytgbot.api_types.TgBotApiObject",
+        ],
+    ),
+    "pytgbot.api_types.receivable.Result": CustomClass(
+        text=[
+            'class Result(Receivable):',
+            '    def to_array(self):',
+            '        return {}',
+            '    pass',
+            '# end class Result',
+       ],
+        imports=[
+            "pytgbot.api_types.receivable.Receivable",
+        ],
+    ),
 }
