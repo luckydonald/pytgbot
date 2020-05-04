@@ -14,11 +14,11 @@ To learn how to create…">
 
     <link href="/css/bootstrap.min.css?3" rel="stylesheet">
     
-    <link href="/css/telegram.css?187" rel="stylesheet" media="screen">
+    <link href="/css/telegram.css?190" rel="stylesheet" media="screen">
     <style>
     </style>
   </head>
-  <body>
+  <body class="preload">
     <div class="dev_page_wrap">
       <div class="dev_page_head navbar navbar-static-top navbar-tg">
         <div class="navbar-inner">
@@ -4628,7 +4628,7 @@ pre-formatted fixed-width code block written in the Python programming language
 <tr>
 <td>png_sticker</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
-<td>Yes</td>
+<td>Optional</td>
 <td><strong>PNG</strong> image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a <em>file_id</em> as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
@@ -7582,7 +7582,7 @@ pre-formatted fixed-width code block written in the Python programming language
   </div>
 </div>
     </div>
-    <script src="/js/main.js?28"></script>
+    <script src="/js/main.js?29"></script>
     <script src="/js/jquery.min.js?1"></script>
 <script src="/js/bootstrap.min.js"></script>
 
@@ -7595,7 +7595,8 @@ ga('create', 'UA-45099287-4', 'auto');
 ga('set', 'anonymizeIp', true);
 ga('send', 'pageview');initDevPageNav();
 backToTopInit();
+removePreloadInit();
 </script>
   </body>
 </html>
-<!-- page generated in 58.02ms -->
+<!-- page generated in 55.94ms -->
