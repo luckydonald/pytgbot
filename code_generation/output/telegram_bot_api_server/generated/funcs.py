@@ -2331,8 +2331,8 @@ async def add_sticker_to_set(
     token: str = TOKEN_VALIDATION,
     user_id: int = Query(..., description='User identifier of sticker set owner'),
     name: str = Query(..., description='Sticker set name'),
-    png_sticker: Json[Union['InputFileModel', str]] = Query(..., description='PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     emojis: str = Query(..., description='One or more emoji corresponding to the sticker'),
+    png_sticker: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     tgs_sticker: Optional[Json['InputFileModel']] = Query(None, description='TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements'),
     mask_position: Optional[Json['MaskPositionModel']] = Query(None, description='A JSON-serialized object for position where the mask should be placed on faces'),
 ) -> JSONableResponse:
@@ -2341,8 +2341,8 @@ async def add_sticker_to_set(
 
     https://core.telegram.org/bots/api#addstickertoset
     """
-    png_sticker: Union[InputFileModel, str] = parse_obj_as(
-        Union[InputFileModel, str],
+    png_sticker: Optional[Union[InputFileModel, str]] = parse_obj_as(
+        Optional[Union[InputFileModel, str]],
         obj=png_sticker,
     )
     tgs_sticker: Optional[InputFileModel] = parse_obj_as(
@@ -2362,8 +2362,8 @@ async def add_sticker_to_set(
     result = await bot.add_sticker_to_set(
         user_id=user_id,
         name=name,
-        png_sticker=png_sticker,
         emojis=emojis,
+        png_sticker=png_sticker,
         tgs_sticker=tgs_sticker,
         mask_position=mask_position,
     )

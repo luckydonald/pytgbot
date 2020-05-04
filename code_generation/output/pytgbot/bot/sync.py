@@ -3167,7 +3167,7 @@ class SyncBot(object):
         return result
     # end def create_new_sticker_set
     
-    def add_sticker_to_set(self, user_id, name, png_sticker, emojis, tgs_sticker=None, mask_position=None):
+    def add_sticker_to_set(self, user_id, name, emojis, png_sticker=None, tgs_sticker=None, mask_position=None):
         """
         Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
 
@@ -3182,14 +3182,14 @@ class SyncBot(object):
         :param name: Sticker set name
         :type  name: str|unicode
         
-        :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
-        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
         :param emojis: One or more emoji corresponding to the sticker
         :type  emojis: str|unicode
         
         
         Optional keyword parameters:
+        
+        :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
         :param tgs_sticker: TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
         :type  tgs_sticker: pytgbot.api_types.sendable.files.InputFile
@@ -3209,15 +3209,15 @@ class SyncBot(object):
         
         assert_type_or_raise(name, unicode_type, parameter_name="name")
         
-        assert_type_or_raise(png_sticker, (InputFile, unicode_type), parameter_name="png_sticker")
-        
         assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
+        
+        assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
         
         assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
         
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
         
-        result = self.do("addStickerToSet", user_id=user_id, name=name, png_sticker=png_sticker, emojis=emojis, tgs_sticker=tgs_sticker, mask_position=mask_position)
+        result = self.do("addStickerToSet", user_id=user_id, name=name, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, mask_position=mask_position)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
