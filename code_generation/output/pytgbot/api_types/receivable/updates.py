@@ -2,7 +2,6 @@
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Receivable
-from . import UpdateType
 
 __author__ = 'luckydonald'
 
