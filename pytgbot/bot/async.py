@@ -96,6 +96,8 @@ class AsyncBot(BotBase):
             # end if
         # end if
         self._last_update = datetime.now()
+        import requests.exceptions
+        import httpx.exceptions
         try:
             result = await self.do(
                 "getUpdates", offset=offset, limit=limit, timeout=poll_timeout, allowed_updates=allowed_updates,
