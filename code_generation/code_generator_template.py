@@ -27,20 +27,21 @@ logger = logging.getLogger(__name__)
 
 
 try:
-    from luckydonaldUtils.imports.representation import path_to_import_text
+    from luckydonaldUtils.imports.representation import path_to_import_text, split_path
     logger.warning('Please remove the old code now that this feature is in luckydonaldUtils.')
 except ImportError:
-    # define manually until I get around to
-    def path_to_import_text(path):
+    # define those functions manually until I get around to push an update to luckydonaldUtils.
+
+    def split_path(path):
         """
         Splits the text and build a nice import statement from it.
-        Note: only well defined import paths are supported. Not something invalid like '..foo.bar.'
+        Note: only well defined import paths are supported. Not something invalid like '..foo.bar..'.
 
         :param path: The path to split.
         :type  path: str
 
         :return: The import text, like `from x import y` or `import z`
-        :rtype: str
+        :rtype: tuple(str)|Tuple[str, str]
         """
         last_dot_position = path.rfind('.')
         if last_dot_position == -1:
@@ -56,10 +57,25 @@ except ImportError:
                 # e.g. not '....'
                 import_path = import_path.rstrip('.')
         # end if
+        return import_path, import_name
+    # end def
+
+
+    def path_to_import_text(path):
+        """
+        Splits the text and build a nice import statement from it.
+        Note: only well defined import paths are supported. Not something invalid like '..foo.bar.'
+
+        :param path: The path to split.
+        :type  path: str
+
+        :return: The import text, like `from x import y` or `import z`
+        :rtype: str
+        """
+        import_path, import_name = split_path(path)
 
         if import_path:
-            return 'from {import_path} import {import_name}'.format(import_path=import_path,
-                                                                    import_name=import_name)
+            return 'from {import_path} import {import_name}'.format(import_path=import_path, import_name=import_name)
         # end if
         return 'import {import_name}'.format(import_name=import_name)
     # end def
@@ -244,6 +260,13 @@ class Clazz(ClassOrFunction):
         ).format(s=self)
     # end def __repr__
 # end class Clazz
+
+class CustomClazz(Clazz):
+    """
+    Like a class, but contains text.
+    """
+
+
 
 
 class Function(ClassOrFunction):

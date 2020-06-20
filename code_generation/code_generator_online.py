@@ -5,7 +5,9 @@ from luckydonaldUtils.files.basics import mkdir_p  # luckydonaldUtils v0.49+
 from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
 
-from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS
+from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS, CUSTOM_CLASSES, \
+    CustomClass
+from code_generator_template import path_to_import_text, split_path
 from jinja2.exceptions import TemplateError, TemplateSyntaxError
 
 import requests
@@ -540,6 +542,37 @@ def safe_to_file(folder, results):
             # end if
         # end if
     # end for
+    custom_classes = {}  # "filepath": [Class, Class, ...]
+    import_path: str; class_data: CustomClass
+    for import_path, class_data in CUSTOM_CLASSES:
+        import_paath, import_name = split_path(import_path)
+        result = Clazz(
+            clazz=import_name,
+            import_path=Import(path=import_paath, name=import_name),
+            imports=[
+                # ('pytgbot.api_types.receivable', 'Receivable')
+                # -> Import(path='pytgbot.api_types.receivable', name='Receivable')
+                Import(path=imp_tuple[0], name=imp_tuple[1]) for imp_tuple
+                in
+                (
+                    # "pytgbot.api_types.receivable.Receivable"
+                    # -> ('pytgbot.api_types.receivable', 'Receivable')
+                    split_path(imp_str) for imp_str
+                    in class_data.imports
+                )
+            ],
+        )
+        # result.import_path = result.calculate_import_path()
+        result.filepath = result.calculate_filepath(folder)
+        file_path = result.filepath
+        if file_path not in custom_classes:
+            custom_classes[file_path] = []
+        custom_classes[file_path].append(result)
+        # if file_path not in clazzes:
+        #     clazzes[file_path] = []
+        # clazzes[file_path].append(result)
+        # all_the_clazzes.append(result)
+    # end def
 
     bot_template = get_template("bot.template")
     clazzfile_template = get_template("classfile.template")
@@ -565,7 +598,7 @@ def safe_to_file(folder, results):
         clazz_imports.sort()
         is_sendable = ("sendable" in path)
         try:
-            txt = clazzfile_template.render(clazzes=clazz_list, imports=clazz_imports, is_sendable=is_sendable)
+            txt = clazzfile_template.render(clazzes=clazz_list, manual_clazzes=[],imports=clazz_imports, is_sendable=is_sendable)
             txt = txt.replace("\t", "    ")
             render_file_to_disk(path, txt)
         except IOError:
