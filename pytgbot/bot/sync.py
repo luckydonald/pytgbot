@@ -172,7 +172,7 @@ class SyncBot(BotBase):
             timeout=request_timeout
         )
         json = r.json()
-        return self._postprocess_request(r, json=json)
+        return self._postprocess_request(r.request, response=r, json=json)
     # end def do
 
     def _do_fileupload(self, file_param_name, value, _command=None, _file_is_optional=False, **kwargs):
