@@ -390,7 +390,7 @@ class OrderInfo(Result):
         :type  _raw: None | dict
         """
         super(OrderInfo, self).__init__()
-        from pytgbot.api_types.receivable.payments import ShippingAddress
+        from . import ShippingAddress
         
         assert_type_or_raise(name, None, unicode_type, parameter_name="name")
         self.name = name
@@ -436,7 +436,7 @@ class OrderInfo(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.payments import ShippingAddress
+        from . import ShippingAddress
         
         data = Result.validate_array(array)
         data['name'] = u(array.get('name')) if array.get('name') is not None else None
@@ -567,7 +567,7 @@ class SuccessfulPayment(Result):
         :type  _raw: None | dict
         """
         super(SuccessfulPayment, self).__init__()
-        from pytgbot.api_types.receivable.payments import OrderInfo
+        from . import OrderInfo
         
         assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
@@ -623,7 +623,7 @@ class SuccessfulPayment(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.payments import OrderInfo
+        from . import OrderInfo
         
         data = Result.validate_array(array)
         data['currency'] = u(array.get('currency'))
@@ -739,8 +739,8 @@ class ShippingQuery(UpdateType):
         :type  _raw: None | dict
         """
         super(ShippingQuery, self).__init__()
-        from pytgbot.api_types.receivable.payments import ShippingAddress
-        from pytgbot.api_types.receivable.peer import User
+        from . import ShippingAddress
+        from .peer import User
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -783,8 +783,8 @@ class ShippingQuery(UpdateType):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.payments import ShippingAddress
-        from pytgbot.api_types.receivable.peer import User
+        from . import ShippingAddress
+        from .peer import User
         
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
@@ -915,8 +915,8 @@ class PreCheckoutQuery(UpdateType):
         :type  _raw: None | dict
         """
         super(PreCheckoutQuery, self).__init__()
-        from pytgbot.api_types.receivable.payments import OrderInfo
-        from pytgbot.api_types.receivable.peer import User
+        from . import OrderInfo
+        from .peer import User
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -973,8 +973,8 @@ class PreCheckoutQuery(UpdateType):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.payments import OrderInfo
-        from pytgbot.api_types.receivable.peer import User
+        from . import OrderInfo
+        from .peer import User
         
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))

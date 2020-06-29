@@ -38,12 +38,13 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
 
         {%- block imports_block -%}
         {%- if clazz.imports %}
-        {% for import in clazz.imports -%}
-        from {{ import.path }} import {{ import.name }}
+        {% set file_import_path = clazz.import_path -%}
+        {%- for import in clazz.imports -%}
+        {{ import.import_statement_from_file(file_import_path) }}
         {% endfor -%}
         {% endif -%}
         {%- endblock -%}
-        {% for variable in clazz.variables -%}
+        {%- for variable in clazz.variables -%}
         {% if variable.optional %}
         assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
         {% if variable.always_is_value -%}

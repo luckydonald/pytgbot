@@ -56,7 +56,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         :type  selective: bool
         """
         super(ReplyKeyboardMarkup, self).__init__()
-        from pytgbot.api_types.sendable.reply_markup import KeyboardButton
+        from . import KeyboardButton
         
         assert_type_or_raise(keyboard, list, parameter_name="keyboard")
         self.keyboard = keyboard
@@ -99,7 +99,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import KeyboardButton
+        from . import KeyboardButton
         
         data = ReplyMarkup.validate_array(array)
         data['keyboard'] = KeyboardButton.from_array_list(array.get('keyboard'), list_level=2)
@@ -209,7 +209,7 @@ class KeyboardButton(Button):
         :type  request_poll: pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType
         """
         super(KeyboardButton, self).__init__()
-        from pytgbot.api_types.sendable.reply_markup import KeyboardButtonPollType
+        from . import KeyboardButtonPollType
         
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
@@ -252,7 +252,7 @@ class KeyboardButton(Button):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import KeyboardButtonPollType
+        from . import KeyboardButtonPollType
         
         data = Button.validate_array(array)
         data['text'] = u(array.get('text'))
@@ -571,7 +571,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         Optional keyword parameters:
         """
         super(InlineKeyboardMarkup, self).__init__()
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardButton
+        from . import InlineKeyboardButton
         
         assert_type_or_raise(inline_keyboard, list, parameter_name="inline_keyboard")
         self.inline_keyboard = inline_keyboard
@@ -599,7 +599,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardButton
+        from . import InlineKeyboardButton
         
         data = ReplyMarkup.validate_array(array)
         data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
@@ -728,8 +728,8 @@ class InlineKeyboardButton(Button):
         :type  pay: bool
         """
         super(InlineKeyboardButton, self).__init__()
-        from pytgbot.api_types.receivable.updates import CallbackGame
-        from pytgbot.api_types.sendable.reply_markup import LoginUrl
+        from ..receivable.updates import CallbackGame
+        from . import LoginUrl
         
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
@@ -793,8 +793,8 @@ class InlineKeyboardButton(Button):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.updates import CallbackGame
-        from pytgbot.api_types.sendable.reply_markup import LoginUrl
+        from ..receivable.updates import CallbackGame
+        from . import LoginUrl
         
         data = Button.validate_array(array)
         data['text'] = u(array.get('text'))

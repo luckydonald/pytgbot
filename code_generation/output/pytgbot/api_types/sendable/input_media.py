@@ -229,7 +229,7 @@ class InputMediaVideo(InputMediaWithThumb):
         :type  supports_streaming: bool
         """
         super(InputMediaVideo, self).__init__()
-        from pytgbot.api_types.sendable.files import InputFile
+        from .files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -301,7 +301,7 @@ class InputMediaVideo(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.files import InputFile
+        from .files import InputFile
         
         data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -445,7 +445,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         :type  duration: int
         """
         super(InputMediaAnimation, self).__init__()
-        from pytgbot.api_types.sendable.files import InputFile
+        from .files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -512,7 +512,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.files import InputFile
+        from .files import InputFile
         
         data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -655,7 +655,7 @@ class InputMediaAudio(InputMediaWithThumb):
         :type  title: str|unicode
         """
         super(InputMediaAudio, self).__init__()
-        from pytgbot.api_types.sendable.files import InputFile
+        from .files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -722,7 +722,7 @@ class InputMediaAudio(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.files import InputFile
+        from .files import InputFile
         
         data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -847,7 +847,7 @@ class InputMediaDocument(InputMediaWithThumb):
         :type  parse_mode: str|unicode
         """
         super(InputMediaDocument, self).__init__()
-        from pytgbot.api_types.sendable.files import InputFile
+        from .files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -899,7 +899,7 @@ class InputMediaDocument(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.files import InputFile
+        from .files import InputFile
         
         data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))

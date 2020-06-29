@@ -75,7 +75,7 @@ class MessageEntity(Result):
         :type  _raw: None | dict
         """
         super(MessageEntity, self).__init__()
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -128,7 +128,7 @@ class MessageEntity(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
         
         data = Result.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -435,7 +435,7 @@ class Animation(Media):
         :type  _raw: None | dict
         """
         super(Animation, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
@@ -501,7 +501,7 @@ class Animation(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
@@ -643,7 +643,7 @@ class Audio(Media):
         :type  _raw: None | dict
         """
         super(Audio, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
@@ -706,7 +706,7 @@ class Audio(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
@@ -835,7 +835,7 @@ class Document(Media):
         :type  _raw: None | dict
         """
         super(Document, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
@@ -889,7 +889,7 @@ class Document(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
@@ -1028,7 +1028,7 @@ class Video(Media):
         :type  _raw: None | dict
         """
         super(Video, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
@@ -1089,7 +1089,7 @@ class Video(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
@@ -1218,7 +1218,7 @@ class VideoNote(Media):
         :type  _raw: None | dict
         """
         super(VideoNote, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
@@ -1270,7 +1270,7 @@ class VideoNote(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
@@ -1962,7 +1962,7 @@ class PollAnswer(Receivable):
         :type  _raw: None | dict
         """
         super(PollAnswer, self).__init__()
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
         
         assert_type_or_raise(poll_id, unicode_type, parameter_name="poll_id")
         self.poll_id = poll_id
@@ -2001,7 +2001,7 @@ class PollAnswer(Receivable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
         
         data = Receivable.validate_array(array)
         data['poll_id'] = u(array.get('poll_id'))
@@ -2167,8 +2167,8 @@ class Poll(Media):
         :type  _raw: None | dict
         """
         super(Poll, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.receivable.media import PollOption
+        from . import MessageEntity
+        from . import PollOption
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2252,8 +2252,8 @@ class Poll(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.receivable.media import PollOption
+        from . import MessageEntity
+        from . import PollOption
         
         data = Media.validate_array(array)
         data['id'] = u(array.get('id'))
@@ -2509,7 +2509,7 @@ class Venue(Media):
         :type  _raw: None | dict
         """
         super(Venue, self).__init__()
-        from pytgbot.api_types.receivable.media import Location
+        from . import Location
         
         assert_type_or_raise(location, Location, parameter_name="location")
         self.location = location
@@ -2557,7 +2557,7 @@ class Venue(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Location
+        from . import Location
         
         data = Media.validate_array(array)
         data['location'] = Location.from_array(array.get('location'))
@@ -2659,7 +2659,7 @@ class UserProfilePhotos(Result):
         :type  _raw: None | dict
         """
         super(UserProfilePhotos, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         assert_type_or_raise(total_count, int, parameter_name="total_count")
         self.total_count = total_count
@@ -2693,7 +2693,7 @@ class UserProfilePhotos(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import PhotoSize
         
         data = Result.validate_array(array)
         data['total_count'] = int(array.get('total_count'))
@@ -3146,8 +3146,8 @@ class Sticker(Media):
         :type  _raw: None | dict
         """
         super(Sticker, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
-        from pytgbot.api_types.receivable.stickers import MaskPosition
+        from . import PhotoSize
+        from .stickers import MaskPosition
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
@@ -3219,8 +3219,8 @@ class Sticker(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
-        from pytgbot.api_types.receivable.stickers import MaskPosition
+        from . import PhotoSize
+        from .stickers import MaskPosition
         
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
@@ -3351,9 +3351,9 @@ class Game(Media):
         :type  _raw: None | dict
         """
         super(Game, self).__init__()
-        from pytgbot.api_types.receivable.media import Animation
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import Animation
+        from . import MessageEntity
+        from . import PhotoSize
         
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
@@ -3408,9 +3408,9 @@ class Game(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Animation
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.receivable.media import PhotoSize
+        from . import Animation
+        from . import MessageEntity
+        from . import PhotoSize
         
         data = Media.validate_array(array)
         data['title'] = u(array.get('title'))

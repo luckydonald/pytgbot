@@ -333,9 +333,9 @@ class Chat(Peer):
         :type  _raw: None | dict
         """
         super(Chat, self).__init__()
-        from pytgbot.api_types.receivable.media import ChatPhoto
-        from pytgbot.api_types.receivable.peer import ChatPermissions
-        from pytgbot.api_types.receivable.updates import Message
+        from .media import ChatPhoto
+        from . import ChatPermissions
+        from .updates import Message
         
         assert_type_or_raise(id, int, parameter_name="id")
         self.id = id
@@ -431,9 +431,9 @@ class Chat(Peer):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import ChatPhoto
-        from pytgbot.api_types.receivable.peer import ChatPermissions
-        from pytgbot.api_types.receivable.updates import Message
+        from .media import ChatPhoto
+        from . import ChatPermissions
+        from .updates import Message
         
         data = Peer.validate_array(array)
         data['id'] = int(array.get('id'))
@@ -646,7 +646,7 @@ class ChatMember(Result):
         :type  _raw: None | dict
         """
         super(ChatMember, self).__init__()
-        from pytgbot.api_types.receivable.peer import User
+        from . import User
         
         assert_type_or_raise(user, User, parameter_name="user")
         self.user = user
@@ -765,7 +765,7 @@ class ChatMember(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
+        from . import User
         
         data = Result.validate_array(array)
         data['user'] = User.from_array(array.get('user'))

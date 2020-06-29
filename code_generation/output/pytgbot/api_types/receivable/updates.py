@@ -110,14 +110,14 @@ class Update(Receivable):
         :type  _raw: None | dict
         """
         super(Update, self).__init__()
-        from pytgbot.api_types.receivable.inline import ChosenInlineResult
-        from pytgbot.api_types.receivable.inline import InlineQuery
-        from pytgbot.api_types.receivable.media import Poll
-        from pytgbot.api_types.receivable.media import PollAnswer
-        from pytgbot.api_types.receivable.payments import PreCheckoutQuery
-        from pytgbot.api_types.receivable.payments import ShippingQuery
-        from pytgbot.api_types.receivable.updates import CallbackQuery
-        from pytgbot.api_types.receivable.updates import Message
+        from .inline import ChosenInlineResult
+        from .inline import InlineQuery
+        from .media import Poll
+        from .media import PollAnswer
+        from .payments import PreCheckoutQuery
+        from .payments import ShippingQuery
+        from . import CallbackQuery
+        from . import Message
         
         assert_type_or_raise(update_id, int, parameter_name="update_id")
         self.update_id = update_id
@@ -212,14 +212,14 @@ class Update(Receivable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.inline import ChosenInlineResult
-        from pytgbot.api_types.receivable.inline import InlineQuery
-        from pytgbot.api_types.receivable.media import Poll
-        from pytgbot.api_types.receivable.media import PollAnswer
-        from pytgbot.api_types.receivable.payments import PreCheckoutQuery
-        from pytgbot.api_types.receivable.payments import ShippingQuery
-        from pytgbot.api_types.receivable.updates import CallbackQuery
-        from pytgbot.api_types.receivable.updates import Message
+        from .inline import ChosenInlineResult
+        from .inline import InlineQuery
+        from .media import Poll
+        from .media import PollAnswer
+        from .payments import PreCheckoutQuery
+        from .payments import ShippingQuery
+        from . import CallbackQuery
+        from . import Message
         
         data = Receivable.validate_array(array)
         data['update_id'] = int(array.get('update_id'))
@@ -798,28 +798,28 @@ class Message(UpdateType):
         :type  _raw: None | dict
         """
         super(Message, self).__init__()
-        from pytgbot.api_types.receivable.media import Animation
-        from pytgbot.api_types.receivable.media import Audio
-        from pytgbot.api_types.receivable.media import Contact
-        from pytgbot.api_types.receivable.media import Dice
-        from pytgbot.api_types.receivable.media import Document
-        from pytgbot.api_types.receivable.media import Game
-        from pytgbot.api_types.receivable.media import Location
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.receivable.media import PhotoSize
-        from pytgbot.api_types.receivable.media import Poll
-        from pytgbot.api_types.receivable.media import Sticker
-        from pytgbot.api_types.receivable.media import Venue
-        from pytgbot.api_types.receivable.media import Video
-        from pytgbot.api_types.receivable.media import VideoNote
-        from pytgbot.api_types.receivable.media import Voice
-        from pytgbot.api_types.receivable.passport import PassportData
-        from pytgbot.api_types.receivable.payments import Invoice
-        from pytgbot.api_types.receivable.payments import SuccessfulPayment
-        from pytgbot.api_types.receivable.peer import Chat
-        from pytgbot.api_types.receivable.peer import User
-        from pytgbot.api_types.receivable.updates import Message
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from .media import Animation
+        from .media import Audio
+        from .media import Contact
+        from .media import Dice
+        from .media import Document
+        from .media import Game
+        from .media import Location
+        from .media import MessageEntity
+        from .media import PhotoSize
+        from .media import Poll
+        from .media import Sticker
+        from .media import Venue
+        from .media import Video
+        from .media import VideoNote
+        from .media import Voice
+        from .passport import PassportData
+        from .payments import Invoice
+        from .payments import SuccessfulPayment
+        from .peer import Chat
+        from .peer import User
+        from . import Message
+        from ..sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(message_id, int, parameter_name="message_id")
         self.message_id = message_id
@@ -1116,28 +1116,28 @@ class Message(UpdateType):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Animation
-        from pytgbot.api_types.receivable.media import Audio
-        from pytgbot.api_types.receivable.media import Contact
-        from pytgbot.api_types.receivable.media import Dice
-        from pytgbot.api_types.receivable.media import Document
-        from pytgbot.api_types.receivable.media import Game
-        from pytgbot.api_types.receivable.media import Location
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.receivable.media import PhotoSize
-        from pytgbot.api_types.receivable.media import Poll
-        from pytgbot.api_types.receivable.media import Sticker
-        from pytgbot.api_types.receivable.media import Venue
-        from pytgbot.api_types.receivable.media import Video
-        from pytgbot.api_types.receivable.media import VideoNote
-        from pytgbot.api_types.receivable.media import Voice
-        from pytgbot.api_types.receivable.passport import PassportData
-        from pytgbot.api_types.receivable.payments import Invoice
-        from pytgbot.api_types.receivable.payments import SuccessfulPayment
-        from pytgbot.api_types.receivable.peer import Chat
-        from pytgbot.api_types.receivable.peer import User
-        from pytgbot.api_types.receivable.updates import Message
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from .media import Animation
+        from .media import Audio
+        from .media import Contact
+        from .media import Dice
+        from .media import Document
+        from .media import Game
+        from .media import Location
+        from .media import MessageEntity
+        from .media import PhotoSize
+        from .media import Poll
+        from .media import Sticker
+        from .media import Venue
+        from .media import Video
+        from .media import VideoNote
+        from .media import Voice
+        from .passport import PassportData
+        from .payments import Invoice
+        from .payments import SuccessfulPayment
+        from .peer import Chat
+        from .peer import User
+        from . import Message
+        from ..sendable.reply_markup import InlineKeyboardMarkup
         
         data = UpdateType.validate_array(array)
         data['message_id'] = int(array.get('message_id'))
@@ -1317,8 +1317,8 @@ class CallbackQuery(UpdateType):
         :type  _raw: None | dict
         """
         super(CallbackQuery, self).__init__()
-        from pytgbot.api_types.receivable.peer import User
-        from pytgbot.api_types.receivable.updates import Message
+        from .peer import User
+        from . import Message
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1377,8 +1377,8 @@ class CallbackQuery(UpdateType):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
-        from pytgbot.api_types.receivable.updates import Message
+        from .peer import User
+        from . import Message
         
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
