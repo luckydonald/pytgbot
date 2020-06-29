@@ -3,8 +3,10 @@ __all__ = ['Media', 'MessageEntity', 'DownloadableMedia', 'PhotoSize', 'Audio', 
 
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from . import Receivable, Result
+from . import Receivable
+from . import Result
 
+__author__ = 'luckydonald'
 
 class Media(Receivable):
     pass
@@ -79,7 +81,7 @@ class MessageEntity(Result):
         :type  _raw: None | dict
         """
         super(MessageEntity, self).__init__()
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
 
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -132,7 +134,7 @@ class MessageEntity(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
 
         data = Result.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -368,6 +370,217 @@ class PhotoSize(Result):
         )
     # end def __contains__
 # end class PhotoSize
+
+
+class Animation(Media):
+    """
+    This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
+
+    https://core.telegram.org/bots/api#animation
+
+
+    Parameters:
+
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
+    :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
+
+    :param width: Video width as defined by sender
+    :type  width: int
+
+    :param height: Video height as defined by sender
+    :type  height: int
+
+    :param duration: Duration of the video in seconds as defined by sender
+    :type  duration: int
+
+
+    Optional keyword parameters:
+
+    :param thumb: Optional. Animation thumbnail as defined by sender
+    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
+    :param file_name: Optional. Original animation filename as defined by sender
+    :type  file_name: str|unicode
+
+    :param mime_type: Optional. MIME type of the file as defined by sender
+    :type  mime_type: str|unicode
+
+    :param file_size: Optional. File size
+    :type  file_size: int
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, file_id, file_unique_id, width, height, duration, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
+        """
+        This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
+
+        https://core.telegram.org/bots/api#animation
+
+
+        Parameters:
+
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
+        :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
+
+        :param width: Video width as defined by sender
+        :type  width: int
+
+        :param height: Video height as defined by sender
+        :type  height: int
+
+        :param duration: Duration of the video in seconds as defined by sender
+        :type  duration: int
+
+
+        Optional keyword parameters:
+
+        :param thumb: Optional. Animation thumbnail as defined by sender
+        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
+        :param file_name: Optional. Original animation filename as defined by sender
+        :type  file_name: str|unicode
+
+        :param mime_type: Optional. MIME type of the file as defined by sender
+        :type  mime_type: str|unicode
+
+        :param file_size: Optional. File size
+        :type  file_size: int
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Animation, self).__init__()
+
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
+        self.file_id = file_id
+
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
+
+        assert_type_or_raise(width, int, parameter_name="width")
+        self.width = width
+
+        assert_type_or_raise(height, int, parameter_name="height")
+        self.height = height
+
+        assert_type_or_raise(duration, int, parameter_name="duration")
+        self.duration = duration
+
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
+        self.thumb = thumb
+
+        assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
+        self.file_name = file_name
+
+        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
+        self.mime_type = mime_type
+
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        self.file_size = file_size
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Animation to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Animation, self).to_array()
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
+        array['width'] = int(self.width)  # type int
+        array['height'] = int(self.height)  # type int
+        array['duration'] = int(self.duration)  # type int
+        if self.thumb is not None:
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        if self.file_name is not None:
+            array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        if self.mime_type is not None:
+            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        if self.file_size is not None:
+            array['file_size'] = int(self.file_size)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Animation constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = Media.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
+        data['width'] = int(array.get('width'))
+        data['height'] = int(array.get('height'))
+        data['duration'] = int(array.get('duration'))
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Animation from a given dictionary.
+
+        :return: new Animation instance.
+        :rtype: Animation
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Animation.validate_array(array)
+        data['_raw'] = array
+        return Animation(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(animation_instance)`
+        """
+        return "Animation(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(animation_instance)`
+        """
+        if self._raw:
+            return "Animation.from_array({self._raw})".format(self=self)
+        # end if
+        return "Animation(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in animation_instance`
+        """
+        return (
+            key in ["file_id", "file_unique_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Animation
 
 
 class Audio(Media):
@@ -691,7 +904,6 @@ class Document(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
 
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
@@ -949,380 +1161,6 @@ class Video(Media):
 # end class Video
 
 
-class Animation(Media):
-    """
-    This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
-
-    https://core.telegram.org/bots/api#animation
-
-
-    Parameters:
-
-    :param file_id: Identifier for this file, which can be used to download or reuse the file
-    :type  file_id: str|unicode
-
-    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-    :type  file_unique_id: str|unicode
-
-    :param width: Video width as defined by sender
-    :type  width: int
-
-    :param height: Video height as defined by sender
-    :type  height: int
-
-    :param duration: Duration of the video in seconds as defined by sender
-    :type  duration: int
-
-
-    Optional keyword parameters:
-
-    :param thumb: Optional. Animation thumbnail as defined by sender
-    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
-    :param file_name: Optional. Original animation filename as defined by sender
-    :type  file_name: str|unicode
-
-    :param mime_type: Optional. MIME type of the file as defined by sender
-    :type  mime_type: str|unicode
-
-    :param file_size: Optional. File size
-    :type  file_size: int
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, file_id, file_unique_id, width, height, duration, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
-        """
-        This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
-
-        https://core.telegram.org/bots/api#animation
-
-
-        Parameters:
-
-        :param file_id: Identifier for this file, which can be used to download or reuse the file
-        :type  file_id: str|unicode
-
-        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-        :type  file_unique_id: str|unicode
-
-        :param width: Video width as defined by sender
-        :type  width: int
-
-        :param height: Video height as defined by sender
-        :type  height: int
-
-        :param duration: Duration of the video in seconds as defined by sender
-        :type  duration: int
-
-
-        Optional keyword parameters:
-
-        :param thumb: Optional. Animation thumbnail as defined by sender
-        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
-        :param file_name: Optional. Original animation filename as defined by sender
-        :type  file_name: str|unicode
-
-        :param mime_type: Optional. MIME type of the file as defined by sender
-        :type  mime_type: str|unicode
-
-        :param file_size: Optional. File size
-        :type  file_size: int
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(Animation, self).__init__()
-
-        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
-        self.file_id = file_id
-
-        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
-        self.file_unique_id = file_unique_id
-
-        assert_type_or_raise(width, int, parameter_name="width")
-        self.width = width
-
-        assert_type_or_raise(height, int, parameter_name="height")
-        self.height = height
-
-        assert_type_or_raise(duration, int, parameter_name="duration")
-        self.duration = duration
-
-        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
-        self.thumb = thumb
-
-        assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
-        self.file_name = file_name
-
-        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
-        self.mime_type = mime_type
-
-        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
-        self.file_size = file_size
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this Animation to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Animation, self).to_array()
-        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
-        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
-        array['width'] = int(self.width)  # type int
-        array['height'] = int(self.height)  # type int
-        array['duration'] = int(self.duration)  # type int
-        if self.thumb is not None:
-            array['thumb'] = self.thumb.to_array()  # type PhotoSize
-        if self.file_name is not None:
-            array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
-        if self.mime_type is not None:
-            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
-        if self.file_size is not None:
-            array['file_size'] = int(self.file_size)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the Animation constructor.
-
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = Media.validate_array(array)
-        data['file_id'] = u(array.get('file_id'))
-        data['file_unique_id'] = u(array.get('file_unique_id'))
-        data['width'] = int(array.get('width'))
-        data['height'] = int(array.get('height'))
-        data['duration'] = int(array.get('duration'))
-        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
-        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
-        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        return data
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new Animation from a given dictionary.
-
-        :return: new Animation instance.
-        :rtype: Animation
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = Animation.validate_array(array)
-        data['_raw'] = array
-        return Animation(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(animation_instance)`
-        """
-        return "Animation(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(animation_instance)`
-        """
-        if self._raw:
-            return "Animation.from_array({self._raw})".format(self=self)
-        # end if
-        return "Animation(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in animation_instance`
-        """
-        return (
-            key in ["file_id", "file_unique_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"]
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
-# end class Animation
-
-
-class Voice(Media):
-    """
-    This object represents a voice note.
-
-    https://core.telegram.org/bots/api#voice
-
-
-    Parameters:
-
-    :param file_id: Identifier for this file, which can be used to download or reuse the file
-    :type  file_id: str|unicode
-
-    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-    :type  file_unique_id: str|unicode
-
-    :param duration: Duration of the audio in seconds as defined by sender
-    :type  duration: int
-
-
-    Optional keyword parameters:
-
-    :param mime_type: Optional. MIME type of the file as defined by sender
-    :type  mime_type: str|unicode
-
-    :param file_size: Optional. File size
-    :type  file_size: int
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, file_id, file_unique_id, duration, mime_type=None, file_size=None, _raw=None):
-        """
-        This object represents a voice note.
-
-        https://core.telegram.org/bots/api#voice
-
-
-        Parameters:
-
-        :param file_id: Identifier for this file, which can be used to download or reuse the file
-        :type  file_id: str|unicode
-
-        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-        :type  file_unique_id: str|unicode
-
-        :param duration: Duration of the audio in seconds as defined by sender
-        :type  duration: int
-
-
-        Optional keyword parameters:
-
-        :param mime_type: Optional. MIME type of the file as defined by sender
-        :type  mime_type: str|unicode
-
-        :param file_size: Optional. File size
-        :type  file_size: int
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(Voice, self).__init__()
-        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
-        self.file_id = file_id
-
-        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
-        self.file_unique_id = file_unique_id
-
-        assert_type_or_raise(duration, int, parameter_name="duration")
-        self.duration = duration
-
-        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
-        self.mime_type = mime_type
-
-        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
-        self.file_size = file_size
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this Voice to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Voice, self).to_array()
-        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
-        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
-        array['duration'] = int(self.duration)  # type int
-        if self.mime_type is not None:
-            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
-        if self.file_size is not None:
-            array['file_size'] = int(self.file_size)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the Voice constructor.
-
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        data = Media.validate_array(array)
-        data['file_id'] = u(array.get('file_id'))
-        data['file_unique_id'] = u(array.get('file_unique_id'))
-        data['duration'] = int(array.get('duration'))
-        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
-        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
-        return data
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new Voice from a given dictionary.
-
-        :return: new Voice instance.
-        :rtype: Voice
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = Voice.validate_array(array)
-        data['_raw'] = array
-        return Voice(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(voice_instance)`
-        """
-        return "Voice(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(voice_instance)`
-        """
-        if self._raw:
-            return "Voice.from_array({self._raw})".format(self=self)
-        # end if
-        return "Voice(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in voice_instance`
-        """
-        return (
-            key in ["file_id", "file_unique_id", "duration", "mime_type", "file_size"]
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
-# end class Voice
-
-
 class VideoNote(Media):
     """
     This object represents a video message (available in Telegram apps as of v.4.0).
@@ -1499,6 +1337,169 @@ class VideoNote(Media):
 # end class VideoNote
 
 
+class Voice(Media):
+    """
+    This object represents a voice note.
+
+    https://core.telegram.org/bots/api#voice
+
+
+    Parameters:
+
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
+    :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
+
+    :param duration: Duration of the audio in seconds as defined by sender
+    :type  duration: int
+
+
+    Optional keyword parameters:
+
+    :param mime_type: Optional. MIME type of the file as defined by sender
+    :type  mime_type: str|unicode
+
+    :param file_size: Optional. File size
+    :type  file_size: int
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, file_id, file_unique_id, duration, mime_type=None, file_size=None, _raw=None):
+        """
+        This object represents a voice note.
+
+        https://core.telegram.org/bots/api#voice
+
+
+        Parameters:
+
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
+        :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
+
+        :param duration: Duration of the audio in seconds as defined by sender
+        :type  duration: int
+
+
+        Optional keyword parameters:
+
+        :param mime_type: Optional. MIME type of the file as defined by sender
+        :type  mime_type: str|unicode
+
+        :param file_size: Optional. File size
+        :type  file_size: int
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Voice, self).__init__()
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
+        self.file_id = file_id
+
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
+
+        assert_type_or_raise(duration, int, parameter_name="duration")
+        self.duration = duration
+
+        assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
+        self.mime_type = mime_type
+
+        assert_type_or_raise(file_size, None, int, parameter_name="file_size")
+        self.file_size = file_size
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Voice to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Voice, self).to_array()
+        array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
+        array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
+        array['duration'] = int(self.duration)  # type int
+        if self.mime_type is not None:
+            array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        if self.file_size is not None:
+            array['file_size'] = int(self.file_size)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Voice constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Media.validate_array(array)
+        data['file_id'] = u(array.get('file_id'))
+        data['file_unique_id'] = u(array.get('file_unique_id'))
+        data['duration'] = int(array.get('duration'))
+        data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
+        data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Voice from a given dictionary.
+
+        :return: new Voice instance.
+        :rtype: Voice
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Voice.validate_array(array)
+        data['_raw'] = array
+        return Voice(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(voice_instance)`
+        """
+        return "Voice(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(voice_instance)`
+        """
+        if self._raw:
+            return "Voice.from_array({self._raw})".format(self=self)
+        # end if
+        return "Voice(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in voice_instance`
+        """
+        return (
+            key in ["file_id", "file_unique_id", "duration", "mime_type", "file_size"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Voice
+
+
 class Contact(Media):
     """
     This object represents a phone contact.
@@ -1661,6 +1662,672 @@ class Contact(Media):
         )
     # end def __contains__
 # end class Contact
+
+
+class Dice(Media):
+    """
+    This object represents an animated emoji that displays a random value.
+
+    https://core.telegram.org/bots/api#dice
+
+
+    Parameters:
+
+    :param emoji: Emoji on which the dice throw animation is based
+    :type  emoji: str|unicode
+
+    :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" base emoji
+    :type  value: int
+
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, emoji, value, _raw=None):
+        """
+        This object represents an animated emoji that displays a random value.
+
+        https://core.telegram.org/bots/api#dice
+
+
+        Parameters:
+
+        :param emoji: Emoji on which the dice throw animation is based
+        :type  emoji: str|unicode
+
+        :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" base emoji
+        :type  value: int
+
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Dice, self).__init__()
+        assert_type_or_raise(emoji, unicode_type, parameter_name="emoji")
+        self.emoji = emoji
+
+        assert_type_or_raise(value, int, parameter_name="value")
+        self.value = value
+
+        self._raw = _raw
+
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Dice to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Dice, self).to_array()
+        array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
+        array['value'] = int(self.value)  # type int
+        return array
+
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Dice constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Media.validate_array(array)
+        data['emoji'] = u(array.get('emoji'))
+        data['value'] = int(array.get('value'))
+        return data
+
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Dice from a given dictionary.
+
+        :return: new Dice instance.
+        :rtype: Dice
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Dice.validate_array(array)
+        data['_raw'] = array
+        return Dice(**data)
+
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(dice_instance)`
+        """
+        return "Dice(emoji={self.emoji!r}, value={self.value!r})".format(self=self)
+
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(dice_instance)`
+        """
+        if self._raw:
+            return "Dice.from_array({self._raw})".format(self=self)
+        # end if
+        return "Dice(emoji={self.emoji!r}, value={self.value!r})".format(self=self)
+
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in dice_instance`
+        """
+        return (
+            key in ["emoji", "value"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+
+
+# end class Dice
+
+
+class PollOption(Receivable):
+    """
+    This object contains information about one answer option in a poll.
+
+    https://core.telegram.org/bots/api#polloption
+
+
+    Parameters:
+
+    :param text: Option text, 1-100 characters
+    :type  text: str|unicode
+
+    :param voter_count: Number of users that voted for this option
+    :type  voter_count: int
+
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, text, voter_count, _raw=None):
+        """
+        This object contains information about one answer option in a poll.
+
+        https://core.telegram.org/bots/api#polloption
+
+
+        Parameters:
+
+        :param text: Option text, 1-100 characters
+        :type  text: str|unicode
+
+        :param voter_count: Number of users that voted for this option
+        :type  voter_count: int
+
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(PollOption, self).__init__()
+        assert_type_or_raise(text, unicode_type, parameter_name="text")
+        self.text = text
+
+        assert_type_or_raise(voter_count, int, parameter_name="voter_count")
+        self.voter_count = voter_count
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this PollOption to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(PollOption, self).to_array()
+        array['text'] = u(self.text)  # py2: type unicode, py3: type str
+        array['voter_count'] = int(self.voter_count)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PollOption constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Receivable.validate_array(array)
+        data['text'] = u(array.get('text'))
+        data['voter_count'] = int(array.get('voter_count'))
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PollOption from a given dictionary.
+
+        :return: new PollOption instance.
+        :rtype: PollOption
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PollOption.validate_array(array)
+        data['_raw'] = array
+        return PollOption(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(polloption_instance)`
+        """
+        return "PollOption(text={self.text!r}, voter_count={self.voter_count!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(polloption_instance)`
+        """
+        if self._raw:
+            return "PollOption.from_array({self._raw})".format(self=self)
+        # end if
+        return "PollOption(text={self.text!r}, voter_count={self.voter_count!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in polloption_instance`
+        """
+        return (
+            key in ["text", "voter_count"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class PollOption
+
+
+class PollAnswer(Receivable):
+    """
+    This object represents an answer of a user in a non-anonymous poll.
+
+    https://core.telegram.org/bots/api#pollanswer
+
+
+    Parameters:
+
+    :param poll_id: Unique poll identifier
+    :type  poll_id: str|unicode
+
+    :param user: The user, who changed the answer to the poll
+    :type  user: pytgbot.api_types.receivable.peer.User
+
+    :param option_ids: 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
+    :type  option_ids: list of int
+
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, poll_id, user, option_ids, _raw=None):
+        """
+        This object represents an answer of a user in a non-anonymous poll.
+
+        https://core.telegram.org/bots/api#pollanswer
+
+
+        Parameters:
+
+        :param poll_id: Unique poll identifier
+        :type  poll_id: str|unicode
+
+        :param user: The user, who changed the answer to the poll
+        :type  user: pytgbot.api_types.receivable.peer.User
+
+        :param option_ids: 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
+        :type  option_ids: list of int
+
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(PollAnswer, self).__init__()
+        from .peer import User
+
+        assert_type_or_raise(poll_id, unicode_type, parameter_name="poll_id")
+        self.poll_id = poll_id
+
+        assert_type_or_raise(user, User, parameter_name="user")
+        self.user = user
+
+        assert_type_or_raise(option_ids, list, parameter_name="option_ids")
+        self.option_ids = option_ids
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this PollAnswer to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(PollAnswer, self).to_array()
+        array['poll_id'] = u(self.poll_id)  # py2: type unicode, py3: type str
+        array['user'] = self.user.to_array()  # type User
+        array['option_ids'] = self._as_array(self.option_ids)  # type list of int
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PollAnswer constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from .peer import User
+
+        data = Receivable.validate_array(array)
+        data['poll_id'] = u(array.get('poll_id'))
+        data['user'] = User.from_array(array.get('user'))
+        data['option_ids'] = PollAnswer._builtin_from_array_list(required_type=int, value=array.get('option_ids'), list_level=1)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PollAnswer from a given dictionary.
+
+        :return: new PollAnswer instance.
+        :rtype: PollAnswer
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PollAnswer.validate_array(array)
+        data['_raw'] = array
+        return PollAnswer(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(pollanswer_instance)`
+        """
+        return "PollAnswer(poll_id={self.poll_id!r}, user={self.user!r}, option_ids={self.option_ids!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(pollanswer_instance)`
+        """
+        if self._raw:
+            return "PollAnswer.from_array({self._raw})".format(self=self)
+        # end if
+        return "PollAnswer(poll_id={self.poll_id!r}, user={self.user!r}, option_ids={self.option_ids!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in pollanswer_instance`
+        """
+        return (
+            key in ["poll_id", "user", "option_ids"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class PollAnswer
+
+
+class Poll(Media):
+    """
+    This object contains information about a poll.
+
+    https://core.telegram.org/bots/api#poll
+
+
+    Parameters:
+
+    :param id: Unique poll identifier
+    :type  id: str|unicode
+
+    :param question: Poll question, 1-255 characters
+    :type  question: str|unicode
+
+    :param options: List of poll options
+    :type  options: list of pytgbot.api_types.receivable.media.PollOption
+
+    :param total_voter_count: Total number of users that voted in the poll
+    :type  total_voter_count: int
+
+    :param is_closed: True, if the poll is closed
+    :type  is_closed: bool
+
+    :param is_anonymous: True, if the poll is anonymous
+    :type  is_anonymous: bool
+
+    :param type: Poll type, currently can be "regular" or "quiz"
+    :type  type: str|unicode
+
+    :param allows_multiple_answers: True, if the poll allows multiple answers
+    :type  allows_multiple_answers: bool
+
+
+    Optional keyword parameters:
+
+    :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
+    :type  correct_option_id: int
+
+    :param explanation: Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
+    :type  explanation: str|unicode
+
+    :param explanation_entities: Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+    :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+
+    :param open_period: Optional. Amount of time in seconds the poll will be active after creation
+    :type  open_period: int
+
+    :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+    :type  close_date: int
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, id, question, options, total_voter_count, is_closed, is_anonymous, type, allows_multiple_answers, correct_option_id=None, explanation=None, explanation_entities=None, open_period=None, close_date=None, _raw=None):
+        """
+        This object contains information about a poll.
+
+        https://core.telegram.org/bots/api#poll
+
+
+        Parameters:
+
+        :param id: Unique poll identifier
+        :type  id: str|unicode
+
+        :param question: Poll question, 1-255 characters
+        :type  question: str|unicode
+
+        :param options: List of poll options
+        :type  options: list of pytgbot.api_types.receivable.media.PollOption
+
+        :param total_voter_count: Total number of users that voted in the poll
+        :type  total_voter_count: int
+
+        :param is_closed: True, if the poll is closed
+        :type  is_closed: bool
+
+        :param is_anonymous: True, if the poll is anonymous
+        :type  is_anonymous: bool
+
+        :param type: Poll type, currently can be "regular" or "quiz"
+        :type  type: str|unicode
+
+        :param allows_multiple_answers: True, if the poll allows multiple answers
+        :type  allows_multiple_answers: bool
+
+
+        Optional keyword parameters:
+
+        :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
+        :type  correct_option_id: int
+
+        :param explanation: Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
+        :type  explanation: str|unicode
+
+        :param explanation_entities: Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+        :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+
+        :param open_period: Optional. Amount of time in seconds the poll will be active after creation
+        :type  open_period: int
+
+        :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+        :type  close_date: int
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Poll, self).__init__()
+
+        assert_type_or_raise(id, unicode_type, parameter_name="id")
+        self.id = id
+
+        assert_type_or_raise(question, unicode_type, parameter_name="question")
+        self.question = question
+
+        assert_type_or_raise(options, list, parameter_name="options")
+        self.options = options
+
+        assert_type_or_raise(total_voter_count, int, parameter_name="total_voter_count")
+        self.total_voter_count = total_voter_count
+
+        assert_type_or_raise(is_closed, bool, parameter_name="is_closed")
+        self.is_closed = is_closed
+
+        assert_type_or_raise(is_anonymous, bool, parameter_name="is_anonymous")
+        self.is_anonymous = is_anonymous
+
+        assert_type_or_raise(type, unicode_type, parameter_name="type")
+        self.type = type
+
+        assert_type_or_raise(allows_multiple_answers, bool, parameter_name="allows_multiple_answers")
+        self.allows_multiple_answers = allows_multiple_answers
+
+        assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
+        self.correct_option_id = correct_option_id
+
+        assert_type_or_raise(explanation, None, unicode_type, parameter_name="explanation")
+        self.explanation = explanation
+
+        assert_type_or_raise(explanation_entities, None, list, parameter_name="explanation_entities")
+        self.explanation_entities = explanation_entities
+
+        assert_type_or_raise(open_period, None, int, parameter_name="open_period")
+        self.open_period = open_period
+
+        assert_type_or_raise(close_date, None, int, parameter_name="close_date")
+        self.close_date = close_date
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Poll to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Poll, self).to_array()
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
+        array['question'] = u(self.question)  # py2: type unicode, py3: type str
+        array['options'] = self._as_array(self.options)  # type list of PollOption
+
+        array['total_voter_count'] = int(self.total_voter_count)  # type int
+        array['is_closed'] = bool(self.is_closed)  # type bool
+        array['is_anonymous'] = bool(self.is_anonymous)  # type bool
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['allows_multiple_answers'] = bool(self.allows_multiple_answers)  # type bool
+        if self.correct_option_id is not None:
+            array['correct_option_id'] = int(self.correct_option_id)  # type int
+        if self.explanation is not None:
+            array['explanation'] = u(self.explanation)  # py2: type unicode, py3: type str
+        if self.explanation_entities is not None:
+            array['explanation_entities'] = self._as_array(self.explanation_entities)  # type list of MessageEntity
+
+        if self.open_period is not None:
+            array['open_period'] = int(self.open_period)  # type int
+        if self.close_date is not None:
+            array['close_date'] = int(self.close_date)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Poll constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+
+        data = Media.validate_array(array)
+        data['id'] = u(array.get('id'))
+        data['question'] = u(array.get('question'))
+        data['options'] = PollOption.from_array_list(array.get('options'), list_level=1)
+        data['total_voter_count'] = int(array.get('total_voter_count'))
+        data['is_closed'] = bool(array.get('is_closed'))
+        data['is_anonymous'] = bool(array.get('is_anonymous'))
+        data['type'] = u(array.get('type'))
+        data['allows_multiple_answers'] = bool(array.get('allows_multiple_answers'))
+        data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
+        data['explanation'] = u(array.get('explanation')) if array.get('explanation') is not None else None
+        data['explanation_entities'] = MessageEntity.from_array_list(array.get('explanation_entities'), list_level=1) if array.get('explanation_entities') is not None else None
+        data['open_period'] = int(array.get('open_period')) if array.get('open_period') is not None else None
+        data['close_date'] = int(array.get('close_date')) if array.get('close_date') is not None else None
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Poll from a given dictionary.
+
+        :return: new Poll instance.
+        :rtype: Poll
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Poll.validate_array(array)
+        data['_raw'] = array
+        return Poll(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(poll_instance)`
+        """
+        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_entities={self.explanation_entities!r}, open_period={self.open_period!r}, close_date={self.close_date!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(poll_instance)`
+        """
+        if self._raw:
+            return "Poll.from_array({self._raw})".format(self=self)
+        # end if
+        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_entities={self.explanation_entities!r}, open_period={self.open_period!r}, close_date={self.close_date!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in poll_instance`
+        """
+        return (
+            key in ["id", "question", "options", "total_voter_count", "is_closed", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id", "explanation", "explanation_entities", "open_period", "close_date"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Poll
 
 
 class Location(Media):
@@ -1955,487 +2622,6 @@ class Venue(Media):
     # end def __contains__
 # end class Venue
 
-
-class PollOption(Receivable):
-    """
-    This object contains information about one answer option in a poll.
-
-    https://core.telegram.org/bots/api#polloption
-
-
-    Parameters:
-
-    :param text: Option text, 1-100 characters
-    :type  text: str|unicode
-
-    :param voter_count: Number of users that voted for this option
-    :type  voter_count: int
-
-
-    Optional keyword parameters:
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, text, voter_count, _raw=None):
-        """
-        This object contains information about one answer option in a poll.
-
-        https://core.telegram.org/bots/api#polloption
-
-
-        Parameters:
-
-        :param text: Option text, 1-100 characters
-        :type  text: str|unicode
-
-        :param voter_count: Number of users that voted for this option
-        :type  voter_count: int
-
-
-        Optional keyword parameters:
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(PollOption, self).__init__()
-        assert_type_or_raise(text, unicode_type, parameter_name="text")
-        self.text = text
-
-        assert_type_or_raise(voter_count, int, parameter_name="voter_count")
-        self.voter_count = voter_count
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this PollOption to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(PollOption, self).to_array()
-        array['text'] = u(self.text)  # py2: type unicode, py3: type str
-        array['voter_count'] = int(self.voter_count)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the PollOption constructor.
-
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        data = Receivable.validate_array(array)
-        data['text'] = u(array.get('text'))
-        data['voter_count'] = int(array.get('voter_count'))
-        return data
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new PollOption from a given dictionary.
-
-        :return: new PollOption instance.
-        :rtype: PollOption
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = PollOption.validate_array(array)
-        data['_raw'] = array
-        return PollOption(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(polloption_instance)`
-        """
-        return "PollOption(text={self.text!r}, voter_count={self.voter_count!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(polloption_instance)`
-        """
-        if self._raw:
-            return "PollOption.from_array({self._raw})".format(self=self)
-        # end if
-        return "PollOption(text={self.text!r}, voter_count={self.voter_count!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in polloption_instance`
-        """
-        return (
-            key in ["text", "voter_count"]
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
-# end class PollOption
-
-
-class PollAnswer(Receivable):
-    """
-    This object represents an answer of a user in a non-anonymous poll.
-
-    https://core.telegram.org/bots/api#pollanswer
-
-
-    Parameters:
-
-    :param poll_id: Unique poll identifier
-    :type  poll_id: str|unicode
-
-    :param user: The user, who changed the answer to the poll
-    :type  user: pytgbot.api_types.receivable.peer.User
-
-    :param option_ids: 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
-    :type  option_ids: list of int
-
-
-    Optional keyword parameters:
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, poll_id, user, option_ids, _raw=None):
-        """
-        This object represents an answer of a user in a non-anonymous poll.
-
-        https://core.telegram.org/bots/api#pollanswer
-
-
-        Parameters:
-
-        :param poll_id: Unique poll identifier
-        :type  poll_id: str|unicode
-
-        :param user: The user, who changed the answer to the poll
-        :type  user: pytgbot.api_types.receivable.peer.User
-
-        :param option_ids: 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
-        :type  option_ids: list of int
-
-
-        Optional keyword parameters:
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(PollAnswer, self).__init__()
-        from pytgbot.api_types.receivable.peer import User
-
-        assert_type_or_raise(poll_id, unicode_type, parameter_name="poll_id")
-        self.poll_id = poll_id
-
-        assert_type_or_raise(user, User, parameter_name="user")
-        self.user = user
-
-        assert_type_or_raise(option_ids, list, parameter_name="option_ids")
-        self.option_ids = option_ids
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this PollAnswer to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(PollAnswer, self).to_array()
-        array['poll_id'] = u(self.poll_id)  # py2: type unicode, py3: type str
-        array['user'] = self.user.to_array()  # type User
-        array['option_ids'] = self._as_array(self.option_ids)  # type list of int
-
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the PollAnswer constructor.
-
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.peer import User
-
-        data = Receivable.validate_array(array)
-        data['poll_id'] = u(array.get('poll_id'))
-        data['user'] = User.from_array(array.get('user'))
-        data['option_ids'] = PollAnswer._builtin_from_array_list(required_type=int, value=array.get('option_ids'), list_level=1)
-        return data
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new PollAnswer from a given dictionary.
-
-        :return: new PollAnswer instance.
-        :rtype: PollAnswer
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = PollAnswer.validate_array(array)
-        data['_raw'] = array
-        return PollAnswer(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(pollanswer_instance)`
-        """
-        return "PollAnswer(poll_id={self.poll_id!r}, user={self.user!r}, option_ids={self.option_ids!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(pollanswer_instance)`
-        """
-        if self._raw:
-            return "PollAnswer.from_array({self._raw})".format(self=self)
-        # end if
-        return "PollAnswer(poll_id={self.poll_id!r}, user={self.user!r}, option_ids={self.option_ids!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in pollanswer_instance`
-        """
-        return (
-            key in ["poll_id", "user", "option_ids"]
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
-# end class PollAnswer
-
-
-class Poll(Media):
-    """
-    This object contains information about a poll.
-
-    https://core.telegram.org/bots/api#poll
-
-
-    Parameters:
-
-    :param id: Unique poll identifier
-    :type  id: str|unicode
-
-    :param question: Poll question, 1-255 characters
-    :type  question: str|unicode
-
-    :param options: List of poll options
-    :type  options: list of pytgbot.api_types.receivable.media.PollOption
-
-    :param total_voter_count: Total number of users that voted in the poll
-    :type  total_voter_count: int
-
-    :param is_closed: True, if the poll is closed
-    :type  is_closed: bool
-
-    :param is_anonymous: True, if the poll is anonymous
-    :type  is_anonymous: bool
-
-    :param type: Poll type, currently can be "regular" or "quiz"
-    :type  type: str|unicode
-
-    :param allows_multiple_answers: True, if the poll allows multiple answers
-    :type  allows_multiple_answers: bool
-
-
-    Optional keyword parameters:
-
-    :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
-    :type  correct_option_id: int
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, id, question, options, total_voter_count, is_closed, is_anonymous, type, allows_multiple_answers, correct_option_id=None, _raw=None):
-        """
-        This object contains information about a poll.
-
-        https://core.telegram.org/bots/api#poll
-
-
-        Parameters:
-
-        :param id: Unique poll identifier
-        :type  id: str|unicode
-
-        :param question: Poll question, 1-255 characters
-        :type  question: str|unicode
-
-        :param options: List of poll options
-        :type  options: list of pytgbot.api_types.receivable.media.PollOption
-
-        :param total_voter_count: Total number of users that voted in the poll
-        :type  total_voter_count: int
-
-        :param is_closed: True, if the poll is closed
-        :type  is_closed: bool
-
-        :param is_anonymous: True, if the poll is anonymous
-        :type  is_anonymous: bool
-
-        :param type: Poll type, currently can be "regular" or "quiz"
-        :type  type: str|unicode
-
-        :param allows_multiple_answers: True, if the poll allows multiple answers
-        :type  allows_multiple_answers: bool
-
-
-        Optional keyword parameters:
-
-        :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
-        :type  correct_option_id: int
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(Poll, self).__init__()
-        from pytgbot.api_types.receivable.media import PollOption
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
-        assert_type_or_raise(question, unicode_type, parameter_name="question")
-        self.question = question
-
-        assert_type_or_raise(options, list, parameter_name="options")
-        self.options = options
-
-        assert_type_or_raise(total_voter_count, int, parameter_name="total_voter_count")
-        self.total_voter_count = total_voter_count
-
-        assert_type_or_raise(is_closed, bool, parameter_name="is_closed")
-        self.is_closed = is_closed
-
-        assert_type_or_raise(is_anonymous, bool, parameter_name="is_anonymous")
-        self.is_anonymous = is_anonymous
-
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
-
-        assert_type_or_raise(allows_multiple_answers, bool, parameter_name="allows_multiple_answers")
-        self.allows_multiple_answers = allows_multiple_answers
-
-        assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
-        self.correct_option_id = correct_option_id
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self):
-        """
-        Serializes this Poll to a dictionary.
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Poll, self).to_array()
-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
-        array['question'] = u(self.question)  # py2: type unicode, py3: type str
-        array['options'] = self._as_array(self.options)  # type list of PollOption
-
-        array['total_voter_count'] = int(self.total_voter_count)  # type int
-        array['is_closed'] = bool(self.is_closed)  # type bool
-        array['is_anonymous'] = bool(self.is_anonymous)  # type bool
-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
-        array['allows_multiple_answers'] = bool(self.allows_multiple_answers)  # type bool
-        if self.correct_option_id is not None:
-            array['correct_option_id'] = int(self.correct_option_id)  # type int
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the Poll constructor.
-
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-
-        data = Media.validate_array(array)
-        data['id'] = u(array.get('id'))
-        data['question'] = u(array.get('question'))
-        data['options'] = PollOption.from_array_list(array.get('options'), list_level=1)
-        data['total_voter_count'] = int(array.get('total_voter_count'))
-        data['is_closed'] = bool(array.get('is_closed'))
-        data['is_anonymous'] = bool(array.get('is_anonymous'))
-        data['type'] = u(array.get('type'))
-        data['allows_multiple_answers'] = bool(array.get('allows_multiple_answers'))
-        data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
-        return data
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new Poll from a given dictionary.
-
-        :return: new Poll instance.
-        :rtype: Poll
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = Poll.validate_array(array)
-        data['_raw'] = array
-        return Poll(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(poll_instance)`
-        """
-        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(poll_instance)`
-        """
-        if self._raw:
-            return "Poll.from_array({self._raw})".format(self=self)
-        # end if
-        return "Poll(id={self.id!r}, question={self.question!r}, options={self.options!r}, total_voter_count={self.total_voter_count!r}, is_closed={self.is_closed!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in poll_instance`
-        """
-        return (
-            key in ["id", "question", "options", "total_voter_count", "is_closed", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id"]
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
-# end class Poll
 
 
 class UserProfilePhotos(Result):
@@ -2923,7 +3109,7 @@ class Sticker(Media):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
+    :param thumb: Optional. Sticker thumbnail in the .WEBP or .JPG format
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
     :param emoji: Optional. Emoji associated with the sticker
@@ -2969,7 +3155,7 @@ class Sticker(Media):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Sticker thumbnail in the .webp or .jpg format
+        :param thumb: Optional. Sticker thumbnail in the .WEBP or .JPG format
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
         :param emoji: Optional. Emoji associated with the sticker

@@ -29,16 +29,16 @@ class User(Peer):
     :param is_bot: True, if this user is a bot
     :type  is_bot: bool
 
-    :param first_name: User‘s or bot’s first name
+    :param first_name: User's or bot's first name
     :type  first_name: str|unicode
 
 
     Optional keyword parameters:
 
-    :param last_name: Optional. User‘s or bot’s last name
+    :param last_name: Optional. User's or bot's last name
     :type  last_name: str|unicode
 
-    :param username: Optional. User‘s or bot’s username
+    :param username: Optional. User's or bot's username
     :type  username: str|unicode
 
     :param language_code: Optional. IETF language tag of the user's language
@@ -72,16 +72,16 @@ class User(Peer):
         :param is_bot: True, if this user is a bot
         :type  is_bot: bool
 
-        :param first_name: User‘s or bot’s first name
+        :param first_name: User's or bot's first name
         :type  first_name: str|unicode
 
 
         Optional keyword parameters:
 
-        :param last_name: Optional. User‘s or bot’s last name
+        :param last_name: Optional. User's or bot's last name
         :type  last_name: str|unicode
 
-        :param username: Optional. User‘s or bot’s username
+        :param username: Optional. User's or bot's username
         :type  username: str|unicode
 
         :param language_code: Optional. IETF language tag of the user's language
@@ -544,7 +544,7 @@ class ChatMember(Result):
     :param can_restrict_members: Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members
     :type  can_restrict_members: bool
 
-    :param can_promote_members: Optional. Administrators only. True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
+    :param can_promote_members: Optional. Administrators only. True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
     :type  can_promote_members: bool
 
     :param can_change_info: Optional. Administrators and restricted only. True, if the user is allowed to change the chat title, photo and other settings
@@ -617,7 +617,7 @@ class ChatMember(Result):
         :param can_restrict_members: Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members
         :type  can_restrict_members: bool
 
-        :param can_promote_members: Optional. Administrators only. True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
+        :param can_promote_members: Optional. Administrators only. True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
         :type  can_promote_members: bool
 
         :param can_change_info: Optional. Administrators and restricted only. True, if the user is allowed to change the chat title, photo and other settings

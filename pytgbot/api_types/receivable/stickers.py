@@ -3,6 +3,8 @@ from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Result
 
+__author__ = 'luckydonald'
+
 
 class StickerSet(Result):
     """
@@ -31,11 +33,14 @@ class StickerSet(Result):
 
     Optional keyword parameters:
 
+    :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
+    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, name, title, is_animated, contains_masks, stickers, _raw=None):
+    def __init__(self, name, title, is_animated, contains_masks, stickers, thumb=None, _raw=None):
         """
         This object represents a sticker set.
 
@@ -62,10 +67,14 @@ class StickerSet(Result):
 
         Optional keyword parameters:
 
+        :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
+        :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(StickerSet, self).__init__()
+        from .media import PhotoSize
         from .media import Sticker
 
         assert_type_or_raise(name, unicode_type, parameter_name="name")
@@ -83,6 +92,9 @@ class StickerSet(Result):
         assert_type_or_raise(stickers, list, parameter_name="stickers")
         self.stickers = stickers
 
+        assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
+        self.thumb = thumb
+
         self._raw = _raw
     # end def __init__
 
@@ -99,6 +111,10 @@ class StickerSet(Result):
         array['is_animated'] = bool(self.is_animated)  # type bool
         array['contains_masks'] = bool(self.contains_masks)  # type bool
         array['stickers'] = self._as_array(self.stickers)  # type list of Sticker
+
+        if self.thumb is not None:
+            array['thumb'] = self.thumb.to_array()  # type PhotoSize
+
         return array
     # end def to_array
 
@@ -111,6 +127,7 @@ class StickerSet(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from .media import PhotoSize
         from .media import Sticker
 
         data = Result.validate_array(array)
@@ -119,6 +136,7 @@ class StickerSet(Result):
         data['is_animated'] = bool(array.get('is_animated'))
         data['contains_masks'] = bool(array.get('contains_masks'))
         data['stickers'] = Sticker.from_array_list(array.get('stickers'), list_level=1)
+        data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
         return data
     # end def validate_array
 
@@ -143,7 +161,7 @@ class StickerSet(Result):
         """
         Implements `str(stickerset_instance)`
         """
-        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r})".format(self=self)
+        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r}, thumb={self.thumb!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -153,7 +171,7 @@ class StickerSet(Result):
         if self._raw:
             return "StickerSet.from_array({self._raw})".format(self=self)
         # end if
-        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r})".format(self=self)
+        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r}, thumb={self.thumb!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -161,7 +179,7 @@ class StickerSet(Result):
         Implements `"key" in stickerset_instance`
         """
         return (
-            key in ["name", "title", "is_animated", "contains_masks", "stickers"]
+            key in ["name", "title", "is_animated", "contains_masks", "stickers", "thumb"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -178,7 +196,7 @@ class MaskPosition(Result):
 
     Parameters:
 
-    :param point: The part of the face relative to which the mask should be placed. One of “forehead”, “eyes”, “mouth”, or “chin”.
+    :param point: The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin".
     :type  point: str|unicode
 
     :param x_shift: Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.
@@ -206,7 +224,7 @@ class MaskPosition(Result):
 
         Parameters:
 
-        :param point: The part of the face relative to which the mask should be placed. One of “forehead”, “eyes”, “mouth”, or “chin”.
+        :param point: The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin".
         :type  point: str|unicode
 
         :param x_shift: Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.

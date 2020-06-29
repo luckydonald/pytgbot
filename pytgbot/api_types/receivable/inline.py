@@ -2,9 +2,8 @@
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.logger import logging
-
-from ..receivable import Result
-from ..receivable.updates import UpdateType
+from . import Result
+from .updates import UpdateType
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
@@ -25,7 +24,7 @@ class InlineQuery(Result):
     :param from_peer: Sender
     :type  from_peer: pytgbot.api_types.receivable.peer.User
 
-    :param query: Text of the query (up to 512 characters)
+    :param query: Text of the query (up to 256 characters)
     :type  query: str|unicode
 
     :param offset: Offset of the results to be returned, can be controlled by the bot
@@ -56,7 +55,7 @@ class InlineQuery(Result):
         :param from_peer: Sender
         :type  from_peer: pytgbot.api_types.receivable.peer.User
 
-        :param query: Text of the query (up to 512 characters)
+        :param query: Text of the query (up to 256 characters)
         :type  query: str|unicode
 
         :param offset: Offset of the results to be returned, can be controlled by the bot
@@ -72,8 +71,8 @@ class InlineQuery(Result):
         :type  _raw: None | dict
         """
         super(InlineQuery, self).__init__()
-        from pytgbot.api_types.receivable.media import Location
-        from pytgbot.api_types.receivable.peer import User
+        from .media import Location
+        from .peer import User
 
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -115,11 +114,11 @@ class InlineQuery(Result):
         Builds a new array with valid values for the InlineQuery constructor.
 
         :return: new array with valid values
-        :rtype: InlineQuery
+        :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Location
-        from pytgbot.api_types.receivable.peer import User
+        from .media import Location
+        from .peer import User
 
         data = Result.validate_array(array)
         data['id'] = u(array.get('id'))
@@ -241,9 +240,8 @@ class ChosenInlineResult(UpdateType):
         :type  _raw: None | dict
         """
         super(ChosenInlineResult, self).__init__()
-
-        from ..receivable.media import Location
-        from ..receivable.peer import User
+        from .media import Location
+        from .peer import User
 
         assert_type_or_raise(result_id, unicode_type, parameter_name="result_id")
         self.result_id = result_id

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from . import Result
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from . import Result
+
+__author__ = 'luckydonald'
 
 
 class GameHighScore(Result):
@@ -54,7 +56,7 @@ class GameHighScore(Result):
         :type  _raw: None | dict
         """
         super(GameHighScore, self).__init__()
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
 
         assert_type_or_raise(position, int, parameter_name="position")
 
@@ -94,8 +96,7 @@ class GameHighScore(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
 
         data = Result.validate_array(array)
         data['position'] = int(array.get('position'))
