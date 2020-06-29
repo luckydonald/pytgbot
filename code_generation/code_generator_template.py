@@ -7,6 +7,7 @@ from typing import List, Optional, Tuple, Union, Callable, Set
 
 from jinja2 import  Environment, FileSystemLoader
 from jinja2.exceptions import TemplateSyntaxError
+from luckydonaldUtils.exceptions import assert_type_or_raise
 
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.decorators import cached
@@ -229,7 +230,7 @@ class Clazz(ClassOrFunction):
         self.import_path = import_path if import_path else self.calculate_import_path()
         self.imports = imports if imports else []  # Imports needed by parameters and keywords.
         self.parent_clazz = parent_clazz if parent_clazz is not None else Type("object", is_builtin=True)
-        assert(isinstance(parent_clazz, Type))
+        assert_type_or_raise(self.parent_clazz, Type, parameter_name="self.parent_clazz")
         self.link = link
         self.description = description
         self.parameters = parameters if parameters else []

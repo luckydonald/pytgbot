@@ -544,7 +544,7 @@ def safe_to_file(folder, results):
     # end for
     custom_classes = {}  # "filepath": [Class, Class, ...]
     import_path: str; class_data: CustomClass
-    for import_path, class_data in CUSTOM_CLASSES:
+    for import_path, class_data in CUSTOM_CLASSES.items():
         import_paath, import_name = split_path(import_path)
         result = Clazz(
             clazz=import_name,
