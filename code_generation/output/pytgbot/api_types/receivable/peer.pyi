@@ -23,16 +23,16 @@ class User(Peer):
     :param is_bot: True, if this user is a bot
     :type  is_bot: bool
     
-    :param first_name: User‘s or bot’s first name
+    :param first_name: User's or bot's first name
     :type  first_name: str|unicode
     
 
     Optional keyword parameters:
     
-    :param last_name: Optional. User‘s or bot’s last name
+    :param last_name: Optional. User's or bot's last name
     :type  last_name: str|unicode
     
-    :param username: Optional. User‘s or bot’s username
+    :param username: Optional. User's or bot's username
     :type  username: str|unicode
     
     :param language_code: Optional. IETF language tag of the user's language

@@ -87,6 +87,59 @@ class PhotoSize(Result):
     file_size: int
 # end class PhotoSize
 
+class Animation(Media):
+    """
+    This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
+
+    https://core.telegram.org/bots/api#animation
+    
+
+    Parameters:
+    
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
+    :type  file_id: str|unicode
+    
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
+    
+    :param width: Video width as defined by sender
+    :type  width: int
+    
+    :param height: Video height as defined by sender
+    :type  height: int
+    
+    :param duration: Duration of the video in seconds as defined by sender
+    :type  duration: int
+    
+
+    Optional keyword parameters:
+    
+    :param thumb: Optional. Animation thumbnail as defined by sender
+    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+    
+    :param file_name: Optional. Original animation filename as defined by sender
+    :type  file_name: str|unicode
+    
+    :param mime_type: Optional. MIME type of the file as defined by sender
+    :type  mime_type: str|unicode
+    
+    :param file_size: Optional. File size
+    :type  file_size: int
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    file_id: str
+    file_unique_id: str
+    width: int
+    height: int
+    duration: int
+    thumb: PhotoSize
+    file_name: str
+    mime_type: str
+    file_size: int
+# end class Animation
+
 class Audio(Media):
     """
     This object represents an audio file to be treated as music by the Telegram clients.
@@ -226,96 +279,6 @@ class Video(Media):
     file_size: int
 # end class Video
 
-class Animation(Media):
-    """
-    This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
-
-    https://core.telegram.org/bots/api#animation
-    
-
-    Parameters:
-    
-    :param file_id: Identifier for this file, which can be used to download or reuse the file
-    :type  file_id: str|unicode
-    
-    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-    :type  file_unique_id: str|unicode
-    
-    :param width: Video width as defined by sender
-    :type  width: int
-    
-    :param height: Video height as defined by sender
-    :type  height: int
-    
-    :param duration: Duration of the video in seconds as defined by sender
-    :type  duration: int
-    
-
-    Optional keyword parameters:
-    
-    :param thumb: Optional. Animation thumbnail as defined by sender
-    :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-    
-    :param file_name: Optional. Original animation filename as defined by sender
-    :type  file_name: str|unicode
-    
-    :param mime_type: Optional. MIME type of the file as defined by sender
-    :type  mime_type: str|unicode
-    
-    :param file_size: Optional. File size
-    :type  file_size: int
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-    file_id: str
-    file_unique_id: str
-    width: int
-    height: int
-    duration: int
-    thumb: PhotoSize
-    file_name: str
-    mime_type: str
-    file_size: int
-# end class Animation
-
-class Voice(Media):
-    """
-    This object represents a voice note.
-
-    https://core.telegram.org/bots/api#voice
-    
-
-    Parameters:
-    
-    :param file_id: Identifier for this file, which can be used to download or reuse the file
-    :type  file_id: str|unicode
-    
-    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-    :type  file_unique_id: str|unicode
-    
-    :param duration: Duration of the audio in seconds as defined by sender
-    :type  duration: int
-    
-
-    Optional keyword parameters:
-    
-    :param mime_type: Optional. MIME type of the file as defined by sender
-    :type  mime_type: str|unicode
-    
-    :param file_size: Optional. File size
-    :type  file_size: int
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-    file_id: str
-    file_unique_id: str
-    duration: int
-    mime_type: str
-    file_size: int
-# end class Voice
-
 class VideoNote(Media):
     """
     This object represents a video message (available in Telegram apps as of v.4.0).
@@ -357,6 +320,43 @@ class VideoNote(Media):
     file_size: int
 # end class VideoNote
 
+class Voice(Media):
+    """
+    This object represents a voice note.
+
+    https://core.telegram.org/bots/api#voice
+    
+
+    Parameters:
+    
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
+    :type  file_id: str|unicode
+    
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
+    
+    :param duration: Duration of the audio in seconds as defined by sender
+    :type  duration: int
+    
+
+    Optional keyword parameters:
+    
+    :param mime_type: Optional. MIME type of the file as defined by sender
+    :type  mime_type: str|unicode
+    
+    :param file_size: Optional. File size
+    :type  file_size: int
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    file_id: str
+    file_unique_id: str
+    duration: int
+    mime_type: str
+    file_size: int
+# end class Voice
+
 class Contact(Media):
     """
     This object represents a phone contact.
@@ -394,20 +394,20 @@ class Contact(Media):
     vcard: str
 # end class Contact
 
-class Location(Media):
+class Dice(Media):
     """
-    This object represents a point on the map.
+    This object represents an animated emoji that displays a random value.
 
-    https://core.telegram.org/bots/api#location
+    https://core.telegram.org/bots/api#dice
     
 
     Parameters:
     
-    :param longitude: Longitude as defined by sender
-    :type  longitude: float
+    :param emoji: Emoji on which the dice throw animation is based
+    :type  emoji: str|unicode
     
-    :param latitude: Latitude as defined by sender
-    :type  latitude: float
+    :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" base emoji
+    :type  value: int
     
 
     Optional keyword parameters:
@@ -415,46 +415,9 @@ class Location(Media):
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
-    longitude: float
-    latitude: float
-# end class Location
-
-class Venue(Media):
-    """
-    This object represents a venue.
-
-    https://core.telegram.org/bots/api#venue
-    
-
-    Parameters:
-    
-    :param location: Venue location
-    :type  location: pytgbot.api_types.receivable.media.Location
-    
-    :param title: Name of the venue
-    :type  title: str|unicode
-    
-    :param address: Address of the venue
-    :type  address: str|unicode
-    
-
-    Optional keyword parameters:
-    
-    :param foursquare_id: Optional. Foursquare identifier of the venue
-    :type  foursquare_id: str|unicode
-    
-    :param foursquare_type: Optional. Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
-    :type  foursquare_type: str|unicode
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-    location: Location
-    title: str
-    address: str
-    foursquare_id: str
-    foursquare_type: str
-# end class Venue
+    emoji: str
+    value: int
+# end class Dice
 
 class PollOption(Receivable):
     """
@@ -579,20 +542,20 @@ class Poll(Media):
     close_date: int
 # end class Poll
 
-class Dice(Media):
+class Location(Media):
     """
-    This object represents a dice with a random value from 1 to 6 for currently supported base emoji. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+    This object represents a point on the map.
 
-    https://core.telegram.org/bots/api#dice
+    https://core.telegram.org/bots/api#location
     
 
     Parameters:
     
-    :param emoji: Emoji on which the dice throw animation is based
-    :type  emoji: str|unicode
+    :param longitude: Longitude as defined by sender
+    :type  longitude: float
     
-    :param value: Value of the dice, 1-6 for currently supported base emoji
-    :type  value: int
+    :param latitude: Latitude as defined by sender
+    :type  latitude: float
     
 
     Optional keyword parameters:
@@ -600,9 +563,46 @@ class Dice(Media):
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
-    emoji: str
-    value: int
-# end class Dice
+    longitude: float
+    latitude: float
+# end class Location
+
+class Venue(Media):
+    """
+    This object represents a venue.
+
+    https://core.telegram.org/bots/api#venue
+    
+
+    Parameters:
+    
+    :param location: Venue location
+    :type  location: pytgbot.api_types.receivable.media.Location
+    
+    :param title: Name of the venue
+    :type  title: str|unicode
+    
+    :param address: Address of the venue
+    :type  address: str|unicode
+    
+
+    Optional keyword parameters:
+    
+    :param foursquare_id: Optional. Foursquare identifier of the venue
+    :type  foursquare_id: str|unicode
+    
+    :param foursquare_type: Optional. Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
+    :type  foursquare_type: str|unicode
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    location: Location
+    title: str
+    address: str
+    foursquare_id: str
+    foursquare_type: str
+# end class Venue
 
 class UserProfilePhotos(Result):
     """

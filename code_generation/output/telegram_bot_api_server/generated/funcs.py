@@ -109,12 +109,12 @@ async def set_webhook(
     token: str = TOKEN_VALIDATION,
     url: str = Query(..., description='HTTPS url to send updates to. Use an empty string to remove webhook integration'),
     certificate: Optional[Json['InputFileModel']] = Query(None, description='Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.'),
-    max_connections: Optional[int] = Query(None, description='Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s throughput.'),
+    max_connections: Optional[int] = Query(None, description="Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput."),
     allowed_updates: Optional[List[str]] = Query(None, description='A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.'),
 ) -> JSONableResponse:
     """
     Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
-    If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot‘s token, you can be pretty sure it’s us.
+    If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot's token, you can be pretty sure it's us.
 
     Notes1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter. Please upload as InputFile, sending a String will not work.3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
     NEW! If you're having any trouble setting up webhooks, please check out this amazing guide to Webhooks.
@@ -354,7 +354,7 @@ async def send_audio(
     duration: Optional[int] = Query(None, description='Duration of the audio in seconds'),
     performer: Optional[str] = Query(None, description='Performer'),
     title: Optional[str] = Query(None, description='Track name'),
-    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
+    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
@@ -413,7 +413,7 @@ async def send_document(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     document: Json[Union['InputFileModel', str]] = Query(..., description='File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
-    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
+    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the document caption. See formatting options for more details.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
@@ -473,7 +473,7 @@ async def send_video(
     duration: Optional[int] = Query(None, description='Duration of sent video in seconds'),
     width: Optional[int] = Query(None, description='Video width'),
     height: Optional[int] = Query(None, description='Video height'),
-    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
+    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the video caption. See formatting options for more details.'),
     supports_streaming: Optional[bool] = Query(None, description='Pass True, if the uploaded video is suitable for streaming'),
@@ -538,7 +538,7 @@ async def send_animation(
     duration: Optional[int] = Query(None, description='Duration of sent animation in seconds'),
     width: Optional[int] = Query(None, description='Animation width'),
     height: Optional[int] = Query(None, description='Animation height'),
-    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
+    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the animation caption. See formatting options for more details.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
@@ -653,7 +653,7 @@ async def send_video_note(
     video_note: Json[Union['InputFileModel', str]] = Query(..., description='Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More info on Sending Files ». Sending video notes by a URL is currently unsupported'),
     duration: Optional[int] = Query(None, description='Duration of sent video in seconds'),
     length: Optional[int] = Query(None, description='Video width and height, i.e. diameter of the video message'),
-    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
+    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
@@ -1046,13 +1046,13 @@ async def send_poll(
 async def send_dice(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    emoji: Optional[str] = Query(None, description='Emoji on which the dice throw animation is based. Currently, must be one of "" or "". Defauts to ""'),
+    emoji: Optional[str] = Query(None, description='Emoji on which the dice throw animation is based. Currently, must be one of "", "", or "". Dice can have values 1-6 for "" and "", and values 1-5 for "". Defaults to ""'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
-    Use this method to send a dice, which will have a random value from 1 to 6. On success, the sent Message is returned. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+    Use this method to send an animated emoji that will display a random value. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#senddice
     """
@@ -1248,7 +1248,7 @@ async def restrict_chat_member(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)'),
     user_id: int = Query(..., description='Unique identifier of the target user'),
-    permissions: Json['ChatPermissionsModel'] = Query(..., description='New user permissions'),
+    permissions: Json['ChatPermissionsModel'] = Query(..., description='A JSON-serialized object for new user permissions'),
     until_date: Optional[int] = Query(None, description='Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever'),
 ) -> JSONableResponse:
     """
@@ -1581,7 +1581,7 @@ async def pin_chat_message(
     disable_notification: Optional[bool] = Query(None, description='Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels.'),
 ) -> JSONableResponse:
     """
-    Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
+    Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
 
     https://core.telegram.org/bots/api#pinchatmessage
     """
@@ -1614,7 +1614,7 @@ async def unpin_chat_message(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
 ) -> JSONableResponse:
     """
-    Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
+    Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
 
     https://core.telegram.org/bots/api#unpinchatmessage
     """
@@ -2461,9 +2461,9 @@ async def answer_inline_query(
     results: Json[List['InlineQueryResultModel']] = Query(..., description='A JSON-serialized array of results for the inline query'),
     cache_time: Optional[int] = Query(None, description='The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300.'),
     is_personal: Optional[bool] = Query(None, description='Pass True, if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query'),
-    next_offset: Optional[str] = Query(None, description='Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don‘t support pagination. Offset length can’t exceed 64 bytes.'),
+    next_offset: Optional[str] = Query(None, description="Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes."),
     switch_pm_text: Optional[str] = Query(None, description='If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter'),
-    switch_pm_parameter: Optional[str] = Query(None, description="Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities."),
+    switch_pm_parameter: Optional[str] = Query(None, description="Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities."),
 ) -> JSONableResponse:
     """
     Use this method to send answers to an inline query. On success, True is returned.No more than 50 results per query are allowed.
@@ -2505,7 +2505,7 @@ async def send_invoice(
     start_parameter: str = Query(..., description='Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter'),
     currency: str = Query(..., description='Three-letter ISO 4217 currency code, see more on currencies'),
     prices: Json[List['LabeledPriceModel']] = Query(..., description='Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)'),
-    provider_data: Optional[str] = Query(None, description='JSON-encoded data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.'),
+    provider_data: Optional[str] = Query(None, description='A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.'),
     photo_url: Optional[str] = Query(None, description='URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.'),
     photo_size: Optional[int] = Query(None, description='Photo size'),
     photo_width: Optional[int] = Query(None, description='Photo width'),
@@ -2677,7 +2677,7 @@ async def send_game(
     game_short_name: str = Query(..., description='Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
-    reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown. If not empty, the first button must launch the game.'),
+    reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description="A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game."),
 ) -> JSONableResponse:
     """
     Use this method to send a game. On success, the sent Message is returned.

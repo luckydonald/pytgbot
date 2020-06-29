@@ -504,7 +504,7 @@ class InlineQueryResultGif(InlineQueryResult):
     :param gif_url: A valid URL for the GIF file. File size must not exceed 1MB
     :type  gif_url: str|unicode
     
-    :param thumb_url: URL of the static thumbnail for the result (jpeg or gif)
+    :param thumb_url: URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
     :type  thumb_url: str|unicode
     
 
@@ -518,6 +518,9 @@ class InlineQueryResultGif(InlineQueryResult):
     
     :param gif_duration: Optional. Duration of the GIF
     :type  gif_duration: int
+    
+    :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+    :type  thumb_mime_type: str|unicode
     
     :param title: Optional. Title for the result
     :type  title: str|unicode
@@ -535,7 +538,7 @@ class InlineQueryResultGif(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, gif_url, thumb_url, gif_width=None, gif_height=None, gif_duration=None, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, gif_url, thumb_url, gif_width=None, gif_height=None, gif_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -553,7 +556,7 @@ class InlineQueryResultGif(InlineQueryResult):
         :param gif_url: A valid URL for the GIF file. File size must not exceed 1MB
         :type  gif_url: str|unicode
         
-        :param thumb_url: URL of the static thumbnail for the result (jpeg or gif)
+        :param thumb_url: URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
         :type  thumb_url: str|unicode
         
 
@@ -567,6 +570,9 @@ class InlineQueryResultGif(InlineQueryResult):
         
         :param gif_duration: Optional. Duration of the GIF
         :type  gif_duration: int
+        
+        :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+        :type  thumb_mime_type: str|unicode
         
         :param title: Optional. Title for the result
         :type  title: str|unicode
@@ -608,6 +614,9 @@ class InlineQueryResultGif(InlineQueryResult):
         assert_type_or_raise(gif_duration, None, int, parameter_name="gif_duration")
         self.gif_duration = gif_duration
         
+        assert_type_or_raise(thumb_mime_type, None, unicode_type, parameter_name="thumb_mime_type")
+        self.thumb_mime_type = thumb_mime_type
+        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
@@ -642,6 +651,8 @@ class InlineQueryResultGif(InlineQueryResult):
             array['gif_height'] = int(self.gif_height)  # type int
         if self.gif_duration is not None:
             array['gif_duration'] = int(self.gif_duration)  # type int
+        if self.thumb_mime_type is not None:
+            array['thumb_mime_type'] = u(self.thumb_mime_type)  # py2: type unicode, py3: type str
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
@@ -677,6 +688,7 @@ class InlineQueryResultGif(InlineQueryResult):
         data['gif_width'] = int(array.get('gif_width')) if array.get('gif_width') is not None else None
         data['gif_height'] = int(array.get('gif_height')) if array.get('gif_height') is not None else None
         data['gif_duration'] = int(array.get('gif_duration')) if array.get('gif_duration') is not None else None
+        data['thumb_mime_type'] = u(array.get('thumb_mime_type')) if array.get('thumb_mime_type') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
@@ -707,7 +719,7 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         Implements `str(inlinequeryresultgif_instance)`
         """
-        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -717,7 +729,7 @@ class InlineQueryResultGif(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultGif.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -725,7 +737,7 @@ class InlineQueryResultGif(InlineQueryResult):
         Implements `"key" in inlinequeryresultgif_instance`
         """
         return (
-            key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "thumb_mime_type", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -751,7 +763,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :param mpeg4_url: A valid URL for the MP4 file. File size must not exceed 1MB
     :type  mpeg4_url: str|unicode
     
-    :param thumb_url: URL of the static thumbnail (jpeg or gif) for the result
+    :param thumb_url: URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
     :type  thumb_url: str|unicode
     
 
@@ -765,6 +777,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     
     :param mpeg4_duration: Optional. Video duration
     :type  mpeg4_duration: int
+    
+    :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+    :type  thumb_mime_type: str|unicode
     
     :param title: Optional. Title for the result
     :type  title: str|unicode
@@ -782,7 +797,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -800,7 +815,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :param mpeg4_url: A valid URL for the MP4 file. File size must not exceed 1MB
         :type  mpeg4_url: str|unicode
         
-        :param thumb_url: URL of the static thumbnail (jpeg or gif) for the result
+        :param thumb_url: URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
         :type  thumb_url: str|unicode
         
 
@@ -814,6 +829,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         
         :param mpeg4_duration: Optional. Video duration
         :type  mpeg4_duration: int
+        
+        :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+        :type  thumb_mime_type: str|unicode
         
         :param title: Optional. Title for the result
         :type  title: str|unicode
@@ -855,6 +873,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         assert_type_or_raise(mpeg4_duration, None, int, parameter_name="mpeg4_duration")
         self.mpeg4_duration = mpeg4_duration
         
+        assert_type_or_raise(thumb_mime_type, None, unicode_type, parameter_name="thumb_mime_type")
+        self.thumb_mime_type = thumb_mime_type
+        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
@@ -889,6 +910,8 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             array['mpeg4_height'] = int(self.mpeg4_height)  # type int
         if self.mpeg4_duration is not None:
             array['mpeg4_duration'] = int(self.mpeg4_duration)  # type int
+        if self.thumb_mime_type is not None:
+            array['thumb_mime_type'] = u(self.thumb_mime_type)  # py2: type unicode, py3: type str
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
@@ -924,6 +947,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         data['mpeg4_width'] = int(array.get('mpeg4_width')) if array.get('mpeg4_width') is not None else None
         data['mpeg4_height'] = int(array.get('mpeg4_height')) if array.get('mpeg4_height') is not None else None
         data['mpeg4_duration'] = int(array.get('mpeg4_duration')) if array.get('mpeg4_duration') is not None else None
+        data['thumb_mime_type'] = u(array.get('thumb_mime_type')) if array.get('thumb_mime_type') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
@@ -954,7 +978,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         Implements `str(inlinequeryresultmpeg4gif_instance)`
         """
-        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -964,7 +988,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultMpeg4Gif.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -972,7 +996,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         Implements `"key" in inlinequeryresultmpeg4gif_instance`
         """
         return (
-            key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "thumb_mime_type", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

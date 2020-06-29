@@ -15,7 +15,7 @@ class Update(Receivable):
 
     Parameters:
     
-    :param update_id: The update‘s unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you’re using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
+    :param update_id: The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you're using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
     :type  update_id: int
     
 
@@ -67,7 +67,7 @@ class Update(Receivable):
 
         Parameters:
         
-        :param update_id: The update‘s unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you’re using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
+        :param update_id: The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you're using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
         :type  update_id: int
         
 
@@ -517,6 +517,9 @@ class Message(UpdateType):
     :param reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
     :type  reply_to_message: pytgbot.api_types.receivable.updates.Message
     
+    :param via_bot: Optional. Bot through which the message was sent
+    :type  via_bot: pytgbot.api_types.receivable.peer.User
+    
     :param edit_date: Optional. Date the message was last edited in Unix time
     :type  edit_date: int
     
@@ -532,20 +535,14 @@ class Message(UpdateType):
     :param entities: Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
     :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
     
-    :param caption_entities: Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
-    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    :param animation: Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
+    :type  animation: pytgbot.api_types.receivable.media.Animation
     
     :param audio: Optional. Message is an audio file, information about the file
     :type  audio: pytgbot.api_types.receivable.media.Audio
     
     :param document: Optional. Message is a general file, information about the file
     :type  document: pytgbot.api_types.receivable.media.Document
-    
-    :param animation: Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
-    :type  animation: pytgbot.api_types.receivable.media.Animation
-    
-    :param game: Optional. Message is a game, information about the game. More about games »
-    :type  game: pytgbot.api_types.receivable.media.Game
     
     :param photo: Optional. Message is a photo, available sizes of the photo
     :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -556,29 +553,35 @@ class Message(UpdateType):
     :param video: Optional. Message is a video, information about the video
     :type  video: pytgbot.api_types.receivable.media.Video
     
-    :param voice: Optional. Message is a voice message, information about the file
-    :type  voice: pytgbot.api_types.receivable.media.Voice
-    
     :param video_note: Optional. Message is a video note, information about the video message
     :type  video_note: pytgbot.api_types.receivable.media.VideoNote
+    
+    :param voice: Optional. Message is a voice message, information about the file
+    :type  voice: pytgbot.api_types.receivable.media.Voice
     
     :param caption: Optional. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
     :type  caption: str|unicode
     
+    :param caption_entities: Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param contact: Optional. Message is a shared contact, information about the contact
     :type  contact: pytgbot.api_types.receivable.media.Contact
     
-    :param location: Optional. Message is a shared location, information about the location
-    :type  location: pytgbot.api_types.receivable.media.Location
+    :param dice: Optional. Message is a dice with random value from 1 to 6
+    :type  dice: pytgbot.api_types.receivable.media.Dice
     
-    :param venue: Optional. Message is a venue, information about the venue
-    :type  venue: pytgbot.api_types.receivable.media.Venue
+    :param game: Optional. Message is a game, information about the game. More about games »
+    :type  game: pytgbot.api_types.receivable.media.Game
     
     :param poll: Optional. Message is a native poll, information about the poll
     :type  poll: pytgbot.api_types.receivable.media.Poll
     
-    :param dice: Optional. Message is a dice with random value from 1 to 6
-    :type  dice: pytgbot.api_types.receivable.media.Dice
+    :param venue: Optional. Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set
+    :type  venue: pytgbot.api_types.receivable.media.Venue
+    
+    :param location: Optional. Message is a shared location, information about the location
+    :type  location: pytgbot.api_types.receivable.media.Location
     
     :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
@@ -598,10 +601,10 @@ class Message(UpdateType):
     :param group_chat_created: Optional. Service message: the group has been created
     :type  group_chat_created: bool
     
-    :param supergroup_chat_created: Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
+    :param supergroup_chat_created: Optional. Service message: the supergroup has been created. This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
     :type  supergroup_chat_created: bool
     
-    :param channel_chat_created: Optional. Service message: the channel has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
+    :param channel_chat_created: Optional. Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
     :type  channel_chat_created: bool
     
     :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
@@ -632,7 +635,7 @@ class Message(UpdateType):
     :type  _raw: None | dict
     """
 
-    def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_sender_name=None, forward_date=None, reply_to_message=None, edit_date=None, media_group_id=None, author_signature=None, text=None, entities=None, caption_entities=None, audio=None, document=None, animation=None, game=None, photo=None, sticker=None, video=None, voice=None, video_note=None, caption=None, contact=None, location=None, venue=None, poll=None, dice=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, reply_markup=None, _raw=None):
+    def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_sender_name=None, forward_date=None, reply_to_message=None, via_bot=None, edit_date=None, media_group_id=None, author_signature=None, text=None, entities=None, animation=None, audio=None, document=None, photo=None, sticker=None, video=None, video_note=None, voice=None, caption=None, caption_entities=None, contact=None, dice=None, game=None, poll=None, venue=None, location=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, reply_markup=None, _raw=None):
         """
         This object represents a message.
 
@@ -677,6 +680,9 @@ class Message(UpdateType):
         :param reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
         :type  reply_to_message: pytgbot.api_types.receivable.updates.Message
         
+        :param via_bot: Optional. Bot through which the message was sent
+        :type  via_bot: pytgbot.api_types.receivable.peer.User
+        
         :param edit_date: Optional. Date the message was last edited in Unix time
         :type  edit_date: int
         
@@ -692,20 +698,14 @@ class Message(UpdateType):
         :param entities: Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
         
-        :param caption_entities: Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
-        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        :param animation: Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
+        :type  animation: pytgbot.api_types.receivable.media.Animation
         
         :param audio: Optional. Message is an audio file, information about the file
         :type  audio: pytgbot.api_types.receivable.media.Audio
         
         :param document: Optional. Message is a general file, information about the file
         :type  document: pytgbot.api_types.receivable.media.Document
-        
-        :param animation: Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
-        :type  animation: pytgbot.api_types.receivable.media.Animation
-        
-        :param game: Optional. Message is a game, information about the game. More about games »
-        :type  game: pytgbot.api_types.receivable.media.Game
         
         :param photo: Optional. Message is a photo, available sizes of the photo
         :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -716,29 +716,35 @@ class Message(UpdateType):
         :param video: Optional. Message is a video, information about the video
         :type  video: pytgbot.api_types.receivable.media.Video
         
-        :param voice: Optional. Message is a voice message, information about the file
-        :type  voice: pytgbot.api_types.receivable.media.Voice
-        
         :param video_note: Optional. Message is a video note, information about the video message
         :type  video_note: pytgbot.api_types.receivable.media.VideoNote
+        
+        :param voice: Optional. Message is a voice message, information about the file
+        :type  voice: pytgbot.api_types.receivable.media.Voice
         
         :param caption: Optional. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
         :type  caption: str|unicode
         
+        :param caption_entities: Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param contact: Optional. Message is a shared contact, information about the contact
         :type  contact: pytgbot.api_types.receivable.media.Contact
         
-        :param location: Optional. Message is a shared location, information about the location
-        :type  location: pytgbot.api_types.receivable.media.Location
+        :param dice: Optional. Message is a dice with random value from 1 to 6
+        :type  dice: pytgbot.api_types.receivable.media.Dice
         
-        :param venue: Optional. Message is a venue, information about the venue
-        :type  venue: pytgbot.api_types.receivable.media.Venue
+        :param game: Optional. Message is a game, information about the game. More about games »
+        :type  game: pytgbot.api_types.receivable.media.Game
         
         :param poll: Optional. Message is a native poll, information about the poll
         :type  poll: pytgbot.api_types.receivable.media.Poll
         
-        :param dice: Optional. Message is a dice with random value from 1 to 6
-        :type  dice: pytgbot.api_types.receivable.media.Dice
+        :param venue: Optional. Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set
+        :type  venue: pytgbot.api_types.receivable.media.Venue
+        
+        :param location: Optional. Message is a shared location, information about the location
+        :type  location: pytgbot.api_types.receivable.media.Location
         
         :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
         :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
@@ -758,10 +764,10 @@ class Message(UpdateType):
         :param group_chat_created: Optional. Service message: the group has been created
         :type  group_chat_created: bool
         
-        :param supergroup_chat_created: Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
+        :param supergroup_chat_created: Optional. Service message: the supergroup has been created. This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
         :type  supergroup_chat_created: bool
         
-        :param channel_chat_created: Optional. Service message: the channel has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
+        :param channel_chat_created: Optional. Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
         :type  channel_chat_created: bool
         
         :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
@@ -848,6 +854,9 @@ class Message(UpdateType):
         assert_type_or_raise(reply_to_message, None, Message, parameter_name="reply_to_message")
         self.reply_to_message = reply_to_message
         
+        assert_type_or_raise(via_bot, None, User, parameter_name="via_bot")
+        self.via_bot = via_bot
+        
         assert_type_or_raise(edit_date, None, int, parameter_name="edit_date")
         self.edit_date = edit_date
         
@@ -863,20 +872,14 @@ class Message(UpdateType):
         assert_type_or_raise(entities, None, list, parameter_name="entities")
         self.entities = entities
         
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
+        assert_type_or_raise(animation, None, Animation, parameter_name="animation")
+        self.animation = animation
         
         assert_type_or_raise(audio, None, Audio, parameter_name="audio")
         self.audio = audio
         
         assert_type_or_raise(document, None, Document, parameter_name="document")
         self.document = document
-        
-        assert_type_or_raise(animation, None, Animation, parameter_name="animation")
-        self.animation = animation
-        
-        assert_type_or_raise(game, None, Game, parameter_name="game")
-        self.game = game
         
         assert_type_or_raise(photo, None, list, parameter_name="photo")
         self.photo = photo
@@ -887,29 +890,35 @@ class Message(UpdateType):
         assert_type_or_raise(video, None, Video, parameter_name="video")
         self.video = video
         
-        assert_type_or_raise(voice, None, Voice, parameter_name="voice")
-        self.voice = voice
-        
         assert_type_or_raise(video_note, None, VideoNote, parameter_name="video_note")
         self.video_note = video_note
+        
+        assert_type_or_raise(voice, None, Voice, parameter_name="voice")
+        self.voice = voice
         
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
         assert_type_or_raise(contact, None, Contact, parameter_name="contact")
         self.contact = contact
         
-        assert_type_or_raise(location, None, Location, parameter_name="location")
-        self.location = location
+        assert_type_or_raise(dice, None, Dice, parameter_name="dice")
+        self.dice = dice
         
-        assert_type_or_raise(venue, None, Venue, parameter_name="venue")
-        self.venue = venue
+        assert_type_or_raise(game, None, Game, parameter_name="game")
+        self.game = game
         
         assert_type_or_raise(poll, None, Poll, parameter_name="poll")
         self.poll = poll
         
-        assert_type_or_raise(dice, None, Dice, parameter_name="dice")
-        self.dice = dice
+        assert_type_or_raise(venue, None, Venue, parameter_name="venue")
+        self.venue = venue
+        
+        assert_type_or_raise(location, None, Location, parameter_name="location")
+        self.location = location
         
         assert_type_or_raise(new_chat_members, None, list, parameter_name="new_chat_members")
         self.new_chat_members = new_chat_members
@@ -994,6 +1003,9 @@ class Message(UpdateType):
         if self.reply_to_message is not None:
             array['reply_to_message'] = self.reply_to_message.to_array()  # type Message
 
+        if self.via_bot is not None:
+            array['via_bot'] = self.via_bot.to_array()  # type User
+
         if self.edit_date is not None:
             array['edit_date'] = int(self.edit_date)  # type int
         if self.media_group_id is not None:
@@ -1005,20 +1017,14 @@ class Message(UpdateType):
         if self.entities is not None:
             array['entities'] = self._as_array(self.entities)  # type list of MessageEntity
 
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+        if self.animation is not None:
+            array['animation'] = self.animation.to_array()  # type Animation
 
         if self.audio is not None:
             array['audio'] = self.audio.to_array()  # type Audio
 
         if self.document is not None:
             array['document'] = self.document.to_array()  # type Document
-
-        if self.animation is not None:
-            array['animation'] = self.animation.to_array()  # type Animation
-
-        if self.game is not None:
-            array['game'] = self.game.to_array()  # type Game
 
         if self.photo is not None:
             array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
@@ -1029,28 +1035,34 @@ class Message(UpdateType):
         if self.video is not None:
             array['video'] = self.video.to_array()  # type Video
 
-        if self.voice is not None:
-            array['voice'] = self.voice.to_array()  # type Voice
-
         if self.video_note is not None:
             array['video_note'] = self.video_note.to_array()  # type VideoNote
 
+        if self.voice is not None:
+            array['voice'] = self.voice.to_array()  # type Voice
+
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.contact is not None:
             array['contact'] = self.contact.to_array()  # type Contact
 
-        if self.location is not None:
-            array['location'] = self.location.to_array()  # type Location
+        if self.dice is not None:
+            array['dice'] = self.dice.to_array()  # type Dice
 
-        if self.venue is not None:
-            array['venue'] = self.venue.to_array()  # type Venue
+        if self.game is not None:
+            array['game'] = self.game.to_array()  # type Game
 
         if self.poll is not None:
             array['poll'] = self.poll.to_array()  # type Poll
 
-        if self.dice is not None:
-            array['dice'] = self.dice.to_array()  # type Dice
+        if self.venue is not None:
+            array['venue'] = self.venue.to_array()  # type Venue
+
+        if self.location is not None:
+            array['location'] = self.location.to_array()  # type Location
 
         if self.new_chat_members is not None:
             array['new_chat_members'] = self._as_array(self.new_chat_members)  # type list of User
@@ -1139,27 +1151,28 @@ class Message(UpdateType):
         data['forward_sender_name'] = u(array.get('forward_sender_name')) if array.get('forward_sender_name') is not None else None
         data['forward_date'] = int(array.get('forward_date')) if array.get('forward_date') is not None else None
         data['reply_to_message'] = Message.from_array(array.get('reply_to_message')) if array.get('reply_to_message') is not None else None
+        data['via_bot'] = User.from_array(array.get('via_bot')) if array.get('via_bot') is not None else None
         data['edit_date'] = int(array.get('edit_date')) if array.get('edit_date') is not None else None
         data['media_group_id'] = u(array.get('media_group_id')) if array.get('media_group_id') is not None else None
         data['author_signature'] = u(array.get('author_signature')) if array.get('author_signature') is not None else None
         data['text'] = u(array.get('text')) if array.get('text') is not None else None
         data['entities'] = MessageEntity.from_array_list(array.get('entities'), list_level=1) if array.get('entities') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
+        data['animation'] = Animation.from_array(array.get('animation')) if array.get('animation') is not None else None
         data['audio'] = Audio.from_array(array.get('audio')) if array.get('audio') is not None else None
         data['document'] = Document.from_array(array.get('document')) if array.get('document') is not None else None
-        data['animation'] = Animation.from_array(array.get('animation')) if array.get('animation') is not None else None
-        data['game'] = Game.from_array(array.get('game')) if array.get('game') is not None else None
         data['photo'] = PhotoSize.from_array_list(array.get('photo'), list_level=1) if array.get('photo') is not None else None
         data['sticker'] = Sticker.from_array(array.get('sticker')) if array.get('sticker') is not None else None
         data['video'] = Video.from_array(array.get('video')) if array.get('video') is not None else None
-        data['voice'] = Voice.from_array(array.get('voice')) if array.get('voice') is not None else None
         data['video_note'] = VideoNote.from_array(array.get('video_note')) if array.get('video_note') is not None else None
+        data['voice'] = Voice.from_array(array.get('voice')) if array.get('voice') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['contact'] = Contact.from_array(array.get('contact')) if array.get('contact') is not None else None
-        data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
-        data['venue'] = Venue.from_array(array.get('venue')) if array.get('venue') is not None else None
-        data['poll'] = Poll.from_array(array.get('poll')) if array.get('poll') is not None else None
         data['dice'] = Dice.from_array(array.get('dice')) if array.get('dice') is not None else None
+        data['game'] = Game.from_array(array.get('game')) if array.get('game') is not None else None
+        data['poll'] = Poll.from_array(array.get('poll')) if array.get('poll') is not None else None
+        data['venue'] = Venue.from_array(array.get('venue')) if array.get('venue') is not None else None
+        data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
         data['new_chat_members'] = User.from_array_list(array.get('new_chat_members'), list_level=1) if array.get('new_chat_members') is not None else None
         data['left_chat_member'] = User.from_array(array.get('left_chat_member')) if array.get('left_chat_member') is not None else None
         data['new_chat_title'] = u(array.get('new_chat_title')) if array.get('new_chat_title') is not None else None
@@ -1200,7 +1213,7 @@ class Message(UpdateType):
         """
         Implements `str(message_instance)`
         """
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, caption_entities={self.caption_entities!r}, audio={self.audio!r}, document={self.document!r}, animation={self.animation!r}, game={self.game!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, video_note={self.video_note!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, poll={self.poll!r}, dice={self.dice!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1210,7 +1223,7 @@ class Message(UpdateType):
         if self._raw:
             return "Message.from_array({self._raw})".format(self=self)
         # end if
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, caption_entities={self.caption_entities!r}, audio={self.audio!r}, document={self.document!r}, animation={self.animation!r}, game={self.game!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, voice={self.voice!r}, video_note={self.video_note!r}, caption={self.caption!r}, contact={self.contact!r}, location={self.location!r}, venue={self.venue!r}, poll={self.poll!r}, dice={self.dice!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1218,7 +1231,7 @@ class Message(UpdateType):
         Implements `"key" in message_instance`
         """
         return (
-            key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "reply_to_message", "edit_date", "media_group_id", "author_signature", "text", "entities", "caption_entities", "audio", "document", "animation", "game", "photo", "sticker", "video", "voice", "video_note", "caption", "contact", "location", "venue", "poll", "dice", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "reply_markup"]
+            key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "reply_to_message", "via_bot", "edit_date", "media_group_id", "author_signature", "text", "entities", "animation", "audio", "document", "photo", "sticker", "video", "video_note", "voice", "caption", "caption_entities", "contact", "dice", "game", "poll", "venue", "location", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
