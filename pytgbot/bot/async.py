@@ -92,7 +92,7 @@ class AsyncBot(BotBase):
                 if wait != 0:
                     logger.debug("Sleeping {i} seconds.".format(i=wait))
                 # end if
-                sleep(wait)
+                await sleep(wait)
             # end if
         # end if
         self._last_update = datetime.now()
