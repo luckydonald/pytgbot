@@ -44,6 +44,12 @@ Also check the [release section](https://github.com/luckydonald/pytgbot/releases
 pip install pytgbot[sync]==4.9
 ```
 
+##### Using a specific git version
+You have to replace `289ad8c330282cadcb70309e5d08c888ab38a0f3` with the specific commit hash of the version you want.
+```sh
+pip install -e git://github.com/luckydonald/pytgbot.git@289ad8c330282cadcb70309e5d08c888ab38a0f3#egg=pytgbot[sync]
+```
+
 ##### Manually
 ```sh
 git clone -b v4.9 https://github.com/luckydonald/pytgbot.git
@@ -69,6 +75,13 @@ The [latest version](#releases) seems to be version `4.9`. For other releases yo
 ```sh
 pip install -U pytgbot[sync]==4.9
 ```
+
+##### Using a specific git version
+You have to replace `289ad8c330282cadcb70309e5d08c888ab38a0f3` with the specific commit hash of the version you want.
+```sh
+pip install -e git://github.com/luckydonald/pytgbot.git@289ad8c330282cadcb70309e5d08c888ab38a0f3#egg=pytgbot[sync]
+```
+
 
 ##### Manually
 ```sh
