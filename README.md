@@ -36,18 +36,19 @@ Released versions can be found at several locations:
 - and in the git files as regular tags.
 
 #### Latest Stable
-The [latest version](#releases) seems to be version `4.0.2`. For other releases you must adapt the examples below.
+The [latest version](#releases) seems to be version `4.9`. For other releases you must adapt the examples below.
+Also check the [release section](https://github.com/luckydonald/pytgbot/releases), if there are newer versions available.
 
 ##### Python package index (recommended)
 ```sh
-pip install pytgbot==4.0.2
+pip install pytgbot[sync]==4.9
 ```
 
 ##### Manually
 ```sh
-git clone -b v4.0.2 https://github.com/luckydonald/pytgbot.git
+git clone -b v4.9 https://github.com/luckydonald/pytgbot.git
 cd pytgbot
-python setup.py install
+pip install -e .[sync]
 ```
 
 #### Bleeding edge
@@ -59,21 +60,22 @@ python setup.py install
 ```
 
 # Updating
+Note, since version `4`.`9` you have to add `[sync]`.
 
 #### Latest Stable
-The [latest version](#releases) seems to be version `4.0.2`. For other releases you must adapt the examples below.
+The [latest version](#releases) seems to be version `4.9`. For other releases you must adapt the examples below.
 
 ##### Python package index (recommended)
 ```sh
-pip install -U pytgbot==4.0.2
+pip install -U pytgbot[sync]==4.9
 ```
 
 ##### Manually
 ```sh
 cd pytgbot
 git fetch
-git checkout v4.0.2
-python setup.py install
+git checkout v4.9
+pip install -e .[sync]
 ```
 
 #### Bleeding edge
@@ -83,7 +85,7 @@ cd pytgbot
 git fetch
 git checkout master
 git pull
-python setup.py install
+pip install -e .[sync]
 ```
 
 
