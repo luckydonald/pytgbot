@@ -1,6 +1,6 @@
 # Changelog
 ## Version 4.9
-- BREAKING CHANGES:
+- ⚠️ BREAKING CHANGES ⚠️ :
     - `pytgbot` now comes in two flavors, sync and async, making it fit for asyncio.
     - Those need different dependencies, as the favorite web framework for the normal mode is `requests`, but that one isn't suited for asyncio.
     - Therefore you have to now install it as `pytgbot[sync]` instead of just `pytgbot`.
@@ -17,6 +17,7 @@
     - Added the ability to add animated stickers to sets created by the bot by specifying the parameter `tgs_sticker` instead of `png_sticker` in the method `add_sticker_to_set`.
     - Added the field `thumb` to the `StickerSet` object.
     - Added the ability to change thumbnails of sticker sets created by the bot using the method `set_sticker_set_thumb`.
+    
 - Added API definitions of v4.8, (April 24, 2020) with the following changelog:
     - Supported explanations for [Quizzes 2.0](https://telegram.org/blog/400-million#better-quizzes). Add explanations by specifying the parameters explanation and `explanation_parse_mode` in the method `send_poll`.
     - Added the fields `explanation` and `explanation_entities` to the `Poll` object.
@@ -24,10 +25,12 @@
     - Added the fields `open_period` and `close_date` to the `Poll` object.
     - Supported the new darts animation for the dice mini-game. Choose between the default dice animation and darts animation by specifying the parameter `emoji` in the method `send_dice`.
     - Added the field `emoji` to the `Dice` object.
+    
 - Added API definitions of v4.9, (June 4, 2020) with the following changelog:
     - Added the new field `via_bot` to the `Message` object. You can now know which bot was used to send a message.
     - Supported video thumbnails for inline GIF and MPEG4 animations.
     - Supported the new basketball animation for the random dice. Choose between different animations (dice, darts, basketball) by specifying the `emoji` parameter in the method `send_dice`.
+    
 - Minor changes
     - Fixed `get_update` where the time `delta` would easily underflow to being days, making it wait forever.
     - Fixed `get_update` where `error_as_empty=True` and `return_python_objects=True` were not playing well together, and returning the wrong type.
