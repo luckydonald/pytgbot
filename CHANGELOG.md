@@ -1,4 +1,35 @@
 # Changelog
+## Version 4.9
+- BREAKING CHANGES:
+    - `pytgbot` now comes in two flavors, sync and async, making it fit for asyncio.
+    - Those need different dependencies, as the favorite web framework for the normal mode is `requests`, but that one isn't suited for asyncio.
+    - Therefore you have to now install it as `pytgbot[sync]` instead of just `pytgbot`.
+    - Your pip command looks like `pip install pytgbot[sync]`.
+    - If you want to install the async version it's `pytgbot[async]`.
+    - If you just install `pytgbot` (without the version in square brackets), you have to install `requests` for the sync bot or `httpx` for the `async` bot yourself.
+
+- Added API definitions of v4.7, (March 30, 2020) with the following changelog:
+    - Added the method `send_dice` for sending a dice message, which will have a random value from 1 to 6. (Yes, we're aware of the “proper” singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+    - Added the field `dice` to the Message object.
+    - Added the method `get_my_commands` for getting the current list of the bot's commands.
+    - Added the method `set_my_commands` for changing the list of the bot's commands through the Bot API instead of @BotFather.
+    - Added the ability to create animated sticker sets by specifying the parameter `tgs_sticker` instead of `png_sticker` in the method `create_new_sticker_set`.
+    - Added the ability to add animated stickers to sets created by the bot by specifying the parameter `tgs_sticker` instead of `png_sticker` in the method `add_sticker_to_set`.
+    - Added the field `thumb` to the `StickerSet` object.
+    - Added the ability to change thumbnails of sticker sets created by the bot using the method `set_sticker_set_thumb`.
+- Added API definitions of v4.8, (April 24, 2020) with the following changelog:
+    - Supported explanations for [Quizzes 2.0](https://telegram.org/blog/400-million#better-quizzes). Add explanations by specifying the parameters explanation and `explanation_parse_mode` in the method `send_poll`.
+    - Added the fields `explanation` and `explanation_entities` to the `Poll` object.
+    - Supported timed polls that automatically close at a certain date and time. Set up by specifying the parameter `open_period` or `close_date` in the method `send_poll`.
+    - Added the fields `open_period` and `close_date` to the `Poll` object.
+    - Supported the new darts animation for the dice mini-game. Choose between the default dice animation and darts animation by specifying the parameter `emoji` in the method `send_dice`.
+    - Added the field `emoji` to the `Dice` object.
+- Added API definitions of v4.9, (June 4, 2020) with the following changelog:
+    - Added the new field `via_bot` to the `Message` object. You can now know which bot was used to send a message.
+    - Supported video thumbnails for inline GIF and MPEG4 animations.
+    - Supported the new basketball animation for the random dice. Choose between different animations (dice, darts, basketball) by specifying the `emoji` parameter in the method `send_dice`.
+- Minor changes
+
 ## Version 4.6.1 _(not released yet)_
 - Added `language` to `MessageEntity` for real now.
 - Added `poll_answer` to `Update` as well.
@@ -6,7 +37,7 @@
 ## Version 4.6
 - Added API definitions of v4.6, (January 23, 2020) with the following changelog:
     - Supported [Polls 2.0](https://telegram.org/blog/polls-2-0-vmq).
-    - Added the ability to send non-anonymous, multiple answer, and quiz-style polls: added the parameters `is_anonymous`, `type`, `allows_multiple_answers`, `correct_option_id`, `is_closed` options to the method `sendPoll`.
+    - Added the ability to send non-anonymous, multiple answer, and quiz-style polls: added the parameters `is_anonymous`, `type`, `allows_multiple_answers`, `correct_option_id`, `is_closed` options to the method `send_poll`.
     - Added the object `KeyboardButtonPollType` and the field `request_poll` to the object `KeyboardButton`.
     - Added updates about changes of user answers in non-anonymous polls, represented by the object `PollAnswer` and the field `poll_answer` in the `Update` object.
     - Added the fields `total_voter_count`, `is_anonymous`, `type`, `allows_multiple_answers`, `correct_option_id` to the `Poll` object.
