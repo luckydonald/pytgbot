@@ -4,8 +4,9 @@ import json
 import re
 
 from datetime import timedelta, datetime
-from DictObject import DictObject
+from {% if is_asyncio %}asyncio{% else %}time{% endif %} import sleep
 
+from DictObject import DictObject
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
 from luckydonaldUtils.exceptions import assert_type_or_raise
@@ -15,13 +16,16 @@ from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types import from_array_list
 from .bot import BotBase
 
+
+
 {% if is_asyncio %}
 # async imports
 from async_property import async_property
-import httpx
+from httpx.exceptions import HTTPError as GenericRequestException
 {% else %}
 # sync imports
 import requests
+from requests.exceptions import RequestException as GenericRequestException
 {% endif %}
 
 
@@ -37,12 +41,16 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
 
         You can choose to set `error_as_empty` to `True` or `False`.
-        If `error_as_empty` is set to `True`, it will log that exception as warning, and fake an empty result,
+        If `error_as_empty` is set to `True` and the bot's `self.return_python_objects` is `False`, it will log that exception as warning, and fake an empty result,
         intended for use in for loops. In case of such error (and only in such case) it contains an "exception" field.
         Ìt will look like this: `{"result": [], "exception": e}`
         This is useful if you want to use a for loop, but ignore Network related burps.
 
-        If `error_as_empty` is set to `False` however, all `requests.RequestException` exceptions are normally raised.
+        If `error_as_empty` is set to `True` but this time the bot's `self.return_python_objects` is `True` it will not have the exception field but just return a empty list,
+        so your loop expecting a `list` of `Update`s isn't failing.
+        Ìt will look like this: `[]`
+
+        If `error_as_empty` is set to `False` however, all `{% if is_asyncio %}httpx.HTTPError{% else %}requests.RequestException{% endif %}` and `TgApiException` exceptions are normally raised.
 
         :keyword offset: (Optional)	Identifier of the first update to be returned.
                  Must be greater by one than the highest among the identifiers of previously received updates.
@@ -75,20 +83,17 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         :param delta: Wait minimal 'delta' seconds, between requests. Useful in a loop.
         :type  delta: datetime.
 
-        :param error_as_empty: If errors which subclasses `requests.RequestException` will be logged but not raised.
-                 Instead the returned DictObject will contain an "exception" field containing the exception occured,
-                 the "result" field will be an empty list `[]`. Defaults to `False`.
+        :param error_as_empty: If errors occur which subclasses `{% if is_asyncio %}httpx.HTTPError{% else %}requests.RequestException{% endif %}` or `TgApiException`, they  will be logged but not raised.
+                               Instead an empty list will be returned: `[]`. If the bot has `return_python_objects` set to `False`, the returned DictObject will contain an `"exception"` field containing the exception, while the `"result"` field will be an empty list `[]`.
+                               Defaults to `False`.
         :type  error_as_empty: bool
-
 
         Returns:
 
-        :return: An Array of Update objects is returned,
-                 or an empty array if there was an requests.RequestException and error_as_empty is set to True.
+        :return: An Array of `Update` objects is returned,
+                 or an empty array if there was an `{% if is_asyncio %}httpx.HTTPError{% else %}requests.RequestException{% endif %}` and `error_as_empty` is set to `True`.
         :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
-        from {% if is_asyncio %}asyncio{% else %}time{% endif %} import sleep
-        import {% if is_asyncio %}httpx{% else %}requests{% endif %}.exceptions
 
         assert(offset is None or isinstance(offset, int))
         assert(limit is None or isinstance(limit, int))
@@ -120,14 +125,14 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
                 from pytgbot.api_types.receivable.updates import Update
                 try:
                     return Update.from_array_list(result, list_level=1)
-                except TgApiParseException:
+                except TgApiParseException as e:
                     logger.debug("Failed parsing as api_type Update", exc_info=True)
+                    raise e
                 # end try
                 # no valid parsing so far
-                raise TgApiParseException("Could not parse result.")  # See debug log for details!
             # end if return_python_objects
             return result
-        except (requests.RequestException, TgApiException) as e:
+        except (GenericRequestException, TgApiException) as e:
             if error_as_empty:
                 logger.warn(
                     "Network related error happened in get_updates(), but will be ignored: " + str(e),
@@ -146,7 +151,7 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
     # end def get_updates
 
     # start of generated functions
-    {% for function in functions if function.name not in ["do_update"] -%}
+    {% for function in functions if function.name != "do_update" -%}
     {% include "func.template" -%}
     {#- strip end #}
     {% endfor %}
@@ -195,79 +200,29 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         {% endif %}
 
         url, params = self._prepare_request(command, query)
+
+        {% if is_asyncio -%}
         r = requests.post(url, params=params, files=files, stream=use_long_polling,
                           verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
                           timeout=request_timeout)
-        return self._postprocess_request(r)
+        {% else -%}
+        async with httpx.AsyncClient(
+            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+        ) as client:
+            if use_long_polling:
+                method = client.stream
+            else:
+                method = client.request
+            # end if
+            r = await method(
+                'POST',
+                url=url, params=params, files=files,
+                timeout=request_timeout
+            )
+        # end with
+        {% endif -%}
+        return self._postprocess_request(r.request, response=r, json=json)
     # end def do
-
-    def _prepare_request(self, command, query):
-        """
-        Prepares the command url, and converts the query json.
-
-        :param command: The Url command parameter
-        :type  command: str
-
-        :param query: Will get json encoded.
-
-        :return: params and a url, for use with requests etc.
-        """
-        from pytgbot.api_types.sendable import Sendable
-        from pytgbot.api_types import as_array
-        import json
-
-        params = {}
-        for key in query.keys():
-            element = query[key]
-            if element is not None:
-                if isinstance(element, Sendable):
-                    params[key] = json.dumps(as_array(element))
-                else:
-                    params[key] = element
-        url = self._base_url.format(api_key=n(self.api_key), command=n(command))
-        return url, params
-    # end def _prepare_request
-
-    def _postprocess_request(self, r):
-        """
-        This converts the response to either the response or a parsed :class:`pytgbot.api_types.receivable.Receivable`.
-
-        :param r: the request response
-        :type  r: requests.Response
-
-        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
-        """
-        from DictObject import DictObject
-        import requests
-
-        assert isinstance(r, requests.Response)
-
-        try:
-            logger.debug(r.json())
-            res = DictObject.objectify(r.json())
-        except Exception:
-            logger.exception("Parsing answer failed.\nRequest: {r!s}\nContent: {r.content}".format(r=r))
-            raise
-        # end if
-        res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
-        # TG should always return an dict, with at least a status or something.
-        if self.return_python_objects:
-            if res.ok != True:
-                raise TgApiServerException(
-                    error_code=res.error_code if "error_code" in res else None,
-                    response=res.response if "response" in res else None,
-                    description=res.description if "description" in res else None,
-                    request=r.request
-                )
-            # end if not ok
-            if "result" not in res:
-                raise TgApiParseException('Key "result" is missing.')
-            # end if no result
-            return res.result
-        # end if return_python_objects
-        return res
-    # end def _postprocess_request
 
     {% if is_asyncio %}async {% endif %}def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
         """
@@ -311,23 +266,6 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         # end def
         return {% if is_asyncio %}await {% endif %}self.do(command, **kwargs)
     # end def _do_fileupload
-
-    def get_download_url(self, file):
-        """
-        Creates a url to download the file.
-
-        Note: Contains the secret API key, so you should not share this url!
-
-        :param file: The File you want to get the url to download.
-        :type  file: pytgbot.api_types.receivable.media.File
-
-        :return: url
-        :rtype: str
-        """
-        from ..api_types.receivable.media import File
-        assert isinstance(file, File)
-        return file.get_download_url(self.api_key)
-    # end def get_download_url
 
     {% if is_asyncio %}async {% endif %}def _load_info(self):
         """
