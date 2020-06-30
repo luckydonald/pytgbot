@@ -70,6 +70,7 @@ Note, since version `4`.`9` you have to add `[sync]`.
 
 #### Latest Stable
 The [latest version](#releases) seems to be version `4.9`. For other releases you must adapt the examples below.
+Also check the [release section](https://github.com/luckydonald/pytgbot/releases), if there are newer versions available.
 
 ##### Python package index (recommended)
 ```sh
@@ -81,7 +82,6 @@ You have to replace `289ad8c330282cadcb70309e5d08c888ab38a0f3` with the specific
 ```sh
 pip install -e git://github.com/luckydonald/pytgbot.git@289ad8c330282cadcb70309e5d08c888ab38a0f3#egg=pytgbot[sync]
 ```
-
 
 ##### Manually
 ```sh
