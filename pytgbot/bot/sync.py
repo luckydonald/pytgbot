@@ -123,7 +123,11 @@ class SyncBot(BotBase):
                     )
                 # end if
                 self._last_update = datetime.now()
-                return DictObject(result=[], exception=e)
+                if self.return_python_objects:
+                    return []
+                else:
+                    return DictObject(result=[], exception=e)
+                # end if
             else:
                 raise
             # end if

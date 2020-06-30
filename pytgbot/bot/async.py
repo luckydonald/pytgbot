@@ -120,7 +120,11 @@ class AsyncBot(BotBase):
                 logger.warn("Network related error happened in get_updates(), but will be ignored: " + str(e),
                             exc_info=True)
                 self._last_update = datetime.now()
-                return DictObject(result=[], exception=e)
+                if self.return_python_objects:
+                    return []
+                else:
+                    return DictObject(result=[], exception=e)
+                # end if
             else:
                 raise
             # end if

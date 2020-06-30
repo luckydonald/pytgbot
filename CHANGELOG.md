@@ -29,6 +29,7 @@
     - Supported video thumbnails for inline GIF and MPEG4 animations.
     - Supported the new basketball animation for the random dice. Choose between different animations (dice, darts, basketball) by specifying the `emoji` parameter in the method `send_dice`.
 - Minor changes
+    - Fixed `get_update` where `error_as_empty=True` and `return_python_objects=True` were not playing well together, and returning the wrong type.
 
 ## Version 4.6.1 _(not released yet)_
 - Added `language` to `MessageEntity` for real now.
