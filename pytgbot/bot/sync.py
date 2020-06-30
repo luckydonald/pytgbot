@@ -86,7 +86,7 @@ class SyncBot(BotBase):
 
         if delta.total_seconds() > poll_timeout:
             now = datetime.now()
-            if self._last_update - now < delta:
+            if now - self._last_update < delta:
                 wait = ((now - self._last_update) - delta).total_seconds()  # can be 0.2
                 wait = 0 if wait < 0 else wait
                 if wait != 0:
