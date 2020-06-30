@@ -6,7 +6,17 @@ Native python package with a pure Python interface for the [Telegram Bot API](ht
 > The code is generated directly from the API documentation, meaning up-to-date code is a matter of minutes.
 
 # Recent changes
- - Updated official API changes of [`Bot API 4`.`6` (January 23, 2020)](https://core.telegram.org/bots/api-changelog#december-31-2010)
+ - ⚠️ BREAKING CHANGES ⚠️ :
+    - `pytgbot` now comes in two flavors, sync and async, making it fit for asyncio.
+    - Those need different dependencies, as the favorite web framework for the normal mode is `requests`, but that one isn't suited for asyncio.
+    - Therefore you have to now install it as `pytgbot[sync]` instead of just `pytgbot`.
+    - Your pip command looks like `pip install pytgbot[sync]`.
+    - If you want to install the async version it's `pytgbot[async]`.
+    - If you just install `pytgbot` (without the version in square brackets), you have to install `requests` for the sync bot or `httpx` for the `async` bot yourself.
+ - Added API definitions of v4.7, (March 30, 2020) with the following changelog:
+ - Added API definitions of v4.8, (April 24, 2020) with the following changelog:
+ - Added API definitions of v4.9, (June 4, 2020) with the following changelog:
+ - Fixed `get_update` where the time `delta` would easily underflow to being days, making it wait forever, and `error_as_empty=True` and `return_python_objects=True` were not playing well together, and returning the wrong type.
  - [And more...](CHANGELOG.md)
 
  [Older changes...](CHANGELOG.md)
