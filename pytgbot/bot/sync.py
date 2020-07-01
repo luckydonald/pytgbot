@@ -10,14 +10,16 @@ from luckydonaldUtils.logger import logging
 from ..exceptions import TgApiParseException, TgApiException, TgApiTypeError
 from .bot import BotBase
 
+from time import sleep
+import requests
 
 __author__ = 'luckydonald'
-__all__ = ["SyncBot", "Bot"]
+__all__ = ["SyncBot", "Bot", "SyncBotBase"]
 
 logger = logging.getLogger(__name__)
 
 
-class SyncBot(BotBase):
+class SyncBotBase(BotBase):
     def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
@@ -73,9 +75,6 @@ class SyncBot(BotBase):
                  or an empty array if there was an requests.RequestException and error_as_empty is set to True.
         :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
-        from time import sleep
-        import requests
-
         assert(offset is None or isinstance(offset, int))
         assert(limit is None or isinstance(limit, int))
         assert(poll_timeout is None or isinstance(poll_timeout, int))
@@ -204,43 +203,45 @@ class SyncBot(BotBase):
 
         :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
         """
-        from ..api_types.sendable.files import InputFile
-        from luckydonaldUtils.encoding import unicode_type
-        from luckydonaldUtils.encoding import to_native as n
-
-        if value is None and _file_is_optional:
-            # Is None but set optional, so do nothing.
-            pass
-        elif isinstance(value, str):
-            kwargs[file_param_name] = str(value)
-        elif isinstance(value, unicode_type):
-            kwargs[file_param_name] = n(value)
-        elif isinstance(value, InputFile):
-            files = value.get_request_files(file_param_name)
-            if "files" in kwargs and kwargs["files"]:
-                # already are some files there, merge them.
-                assert isinstance(kwargs["files"], dict), \
-                    'The files should be of type dict, but are of type {}.'.format(type(kwargs["files"]))
-                for key in files.keys():
-                    assert key not in kwargs["files"], '{key} would be overwritten!'
-                    kwargs["files"][key] = files[key]
-                # end for
-            else:
-                # no files so far
-                kwargs["files"] = files
-            # end if
-        else:
-            raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
-                key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
-        # end if
-        if not _command:
-            # command as camelCase  # "voice_note" -> "sendVoiceNote"  # https://stackoverflow.com/a/10984923/3423324
-            command = re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), "send_" + file_param_name)
-        else:
-            command = _command
-        # end def
+        command = self._prepare_fileupload(_command, _file_is_optional, file_param_name, kwargs, value)
         return self.do(command, **kwargs)
     # end def _do_fileupload
+
+    def _load_info(self):
+        """
+        This functions stores the id and the username of the bot.
+        Called by `.username` and `.id` properties.
+        :return:
+        """
+        myself = self.get_me()
+        if self.return_python_objects:
+            self._id = myself.id
+            self._username = myself.username
+        else:
+            self._id = myself["result"]["id"]
+            self._username = myself["result"]["username"]
+        # end if
+    # end def
+
+    @property
+    def username(self):
+        if not self._username:
+            self._load_info()
+        # end if
+        return self._username
+    # end def
+
+    @property
+    def id(self):
+        if not self._id:
+            self._load_info()
+        # end if
+        return self._id
+    # end def
+
+    def __str__(self):
+        return "{s.__class__.__name__}(username={s.username!r}, id={s.id!r})".format(s=self)
+    # end def
 # end class Bot
 
 Bot = SyncBot

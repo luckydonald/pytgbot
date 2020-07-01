@@ -6,29 +6,41 @@ from datetime import timedelta, datetime
 from DictObject import DictObject
 
 from luckydonaldUtils.logger import logging
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
+from luckydonaldUtils.exceptions import assert_type_or_raise
 
-from ..exceptions import TgApiParseException, TgApiException, TgApiTypeError
+from ..exceptions import TgApiServerException, TgApiParseException
+from ..exceptions import TgApiTypeError, TgApiResponseException
+from ..api_types import from_array_list
+
+from ..exceptions import TgApiParseException, TgApiException
 from .bot import BotBase
 
+from httpx.exceptions import HTTPError as GenericRequestException
+from async_property import async_property
 
 __author__ = 'luckydonald'
-__all__ = ["AsyncBot", "Bot"]
+__all__ = ["Bot", "AsyncBot", "AsyncBotBase"]
 
 logger = logging.getLogger(__name__)
 
 
-class AsyncBot(BotBase):
+class AsyncBotBase(BotBase):
     async def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
 
         You can choose to set `error_as_empty` to `True` or `False`.
-        If `error_as_empty` is set to `True`, it will log that exception as warning, and fake an empty result,
+        If `error_as_empty` is set to `True` and the bot's `self.return_python_objects` is `False`, it will log that exception as warning, and fake an empty result,
         intended for use in for loops. In case of such error (and only in such case) it contains an "exception" field.
         Ìt will look like this: `{"result": [], "exception": e}`
         This is useful if you want to use a for loop, but ignore Network related burps.
 
-        If `error_as_empty` is set to `False` however, all `requests.RequestException` exceptions are normally raised.
+        If `error_as_empty` is set to `True` but this time the bot's `self.return_python_objects` is `True` it will not have the exception field but just return a empty list,
+        so your loop expecting a `list` of `Update`s isn't failing.
+        Ìt will look like this: `[]`
+
+        If `error_as_empty` is set to `False` however, all `httpx.HTTPError` and `TgApiException` exceptions are normally raised.
 
         :keyword offset: (Optional)	Identifier of the first update to be returned.
                  Must be greater by one than the highest among the identifiers of previously received updates.
@@ -61,20 +73,18 @@ class AsyncBot(BotBase):
         :param delta: Wait minimal 'delta' seconds, between requests. Useful in a loop.
         :type  delta: datetime.
 
-        :param error_as_empty: If errors which subclasses `requests.RequestException` will be logged but not raised.
-                 Instead the returned DictObject will contain an "exception" field containing the exception occured,
-                 the "result" field will be an empty list `[]`. Defaults to `False`.
+        :param error_as_empty: If errors occur which subclasses `httpx.HTTPError` or `TgApiException`, they  will be logged but not raised.
+                               Instead an empty list will be returned: `[]`. If the bot has `return_python_objects` set to `False`, the returned DictObject will contain an `"exception"` field containing the exception, while the `"result"` field will be an empty list `[]`.
+                               Defaults to `False`.
         :type  error_as_empty: bool
 
 
         Returns:
 
-        :return: An Array of Update objects is returned,
-                 or an empty array if there was an requests.RequestException and error_as_empty is set to True.
+        :return: An Array of `Update` objects is returned,
+                 or an empty array if there was an `httpx.HTTPError` and `error_as_empty` is set to `True`.
         :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
-        from asyncio import sleep
-        import httpx
 
         assert(offset is None or isinstance(offset, int))
         assert(limit is None or isinstance(limit, int))
@@ -96,7 +106,6 @@ class AsyncBot(BotBase):
             # end if
         # end if
         self._last_update = datetime.now()
-        import requests.exceptions
         import httpx.exceptions
         try:
             result = await self.do(
@@ -115,10 +124,12 @@ class AsyncBot(BotBase):
                 raise TgApiParseException("Could not parse result.")  # See debug log for details!
             # end if return_python_objects
             return result
-        except (requests.RequestException, TgApiException) as e:
+        except (httpx.RequestException, TgApiException) as e:
             if error_as_empty:
-                logger.warn("Network related error happened in get_updates(), but will be ignored: " + str(e),
-                            exc_info=True)
+                logger.warn(
+                    "Network related error happened in get_updates(), but will be ignored: " + str(e),
+                    exc_info=True
+                )
                 self._last_update = datetime.now()
                 if self.return_python_objects:
                     return []
@@ -184,6 +195,61 @@ class AsyncBot(BotBase):
         json = r.json()
         return self._postprocess_request(r.request, r, json=json)
     # end def do
+
+    def _do_fileupload(self, file_param_name, value, _command=None, _file_is_optional=False, **kwargs):
+        """
+        :param file_param_name: For what field the file should be uploaded.
+        :type  file_param_name: str
+
+        :param value: File to send. You can either pass a file_id as String to resend a file
+                      file that is already on the Telegram servers, or upload a new file,
+                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
+                      If `_file_is_optional` is set to `True`, it can also be set to `None`.
+        :type  value: pytgbot.api_types.sendable.files.InputFile | str | None
+
+        :param _command: Overwrite the command to be send.
+                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
+        :type  _command: str|None
+
+        :param _file_is_optional: If the file (`value`) is allowed to be None.
+        :type  _file_is_optional: bool
+
+        :param kwargs: will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+
+        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
+        """
+        command = self._prepare_fileupload(_command, _file_is_optional, file_param_name, kwargs, value)
+        return await self.do(command, **kwargs)
+    # end def _do_fileupload
+
+    async def _load_info(self):
+        """
+        This functions stores the id and the username of the bot.
+        Called by `.username` and `.id` properties.
+        :return:
+        """
+        myself = await self.get_me()
+        if self.return_python_objects:
+            self._id = myself.id
+            self._username = myself.username
+        else:
+            self._id = myself["result"]["id"]
+            self._username = myself["result"]["username"]
+        # end if
+    # end def
+
+    @async_property
+    async def username(self):
+        return self._username
+    # end def
+
+    @async_property
+    async def id(self):
+        return self._id
+    # end def
 # end class Bot
 
 Bot = AsyncBot

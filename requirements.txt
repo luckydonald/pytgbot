@@ -9,3 +9,5 @@ black
 
 # publish
 twine
+
+async-property==0.2.1
