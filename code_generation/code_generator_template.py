@@ -130,7 +130,7 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     imports: List[Variable] = list(imports)
     imports.sort()
     if isinstance(parent_clazz, str):
-        parent_clazz = to_type(parent_clazz, "parent class")
+        parent_clazz = to_type(parent_clazz, "parent class", int_is_unix_timestamp=False)
     assert isinstance(parent_clazz, Type)
 
     clazz_object = Clazz(
@@ -166,7 +166,7 @@ def func(command, description, link, params_string, returns="On success, the sen
     # end if
     imports = list(imports)
     imports.sort()
-    returns = Variable(types=as_types(return_type, variable_name="return type"), description=returns)
+    returns = Variable(types=as_types(return_type, variable_name="return type", int_is_unix_timestamp=False), description=returns)
     func_object = Function(
         imports=imports, api_name=command, link=link, description=description, returns=returns,
         parameters=variables_needed, keywords=variables_optional
@@ -836,12 +836,13 @@ def parse_param_types(param) -> Variable:
 
     param_types = table[1]
     # ## " String or Boolean "
-    variable.types = as_types(param_types, variable.api_name)
+    is_unix_timestamp = "unix" in variable.description.lower()
+    variable.types = as_types(param_types, variable.api_name, int_is_unix_timestamp=is_unix_timestamp)
     return variable
 # end def
 
 
-def as_types(types_string, variable_name):
+def as_types(types_string, variable_name, int_is_unix_timestamp: bool):
     # ## types_string = "String or Boolean"  or  [Type(str), Type(bool)]
 
     if isinstance(types_string, list):
@@ -878,19 +879,20 @@ def as_types(types_string, variable_name):
     the_types = types_string.split("|")
     types = []
     for t in the_types:
-        var_type = to_type(t.strip(), variable_name=variable_name)
+        var_type = to_type(t.strip(), variable_name=variable_name, int_is_unix_timestamp=int_is_unix_timestamp)
         types.append(var_type)
     # end for
     return types
 # end def
 
 
-def to_type(type_string, variable_name) -> Type:
+def to_type(type_string, variable_name, int_is_unix_timestamp: bool) -> Type:
     """
     Returns a :class:`Type` object of a given type name. Lookup is done via :var:`code_generator_settings.CLASS_TYPE_PATHS`
 
     :param type_string: The type as string. E.g "bool". Need to be valid python.
     :param variable_name: Only for logging, if an unrecognized type is found.
+    :param int_is_unix_timestamp: if we encounter an `int`, should we instead assume a `datetime`?
     :return: a :class:`Type` instance
     :rtype: Type
     """
@@ -912,7 +914,11 @@ def to_type(type_string, variable_name) -> Type:
         var_type.string = "bool"
         var_type.always_is_value = "True"
     # end if
-    if var_type.string in ["int", "bool", "float", "object", "None", "str"]:
+    if var_type.string == "int" and int_is_unix_timestamp:
+        var_type.is_builtin = False
+        var_type.string = "datetime"
+        var_type.import_path = "datetime"  # from datetime import datetime
+    elif var_type.string in ["int", "bool", "float", "object", "None", "str"]:
         var_type.is_builtin = True
     elif var_type.string == "unicode_type":
         var_type.string = "unicode_type"

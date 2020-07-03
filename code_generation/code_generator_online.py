@@ -321,7 +321,7 @@ def load_from_html(folder):
                     default_returns[0] = [x for x in descr.split(".") if "return" in x.lower()][0].strip()
                     seems_valid = len(default_returns[0].split(".")) == 1
                     default_returns[1] = " or ".join(type_strings) if type_strings else "Message"
-                    default_returns[1] = as_types(default_returns[1], "returns")
+                    default_returns[1] = as_types(default_returns[1], "returns", int_is_unix_timestamp=False)
                 else:
                     default_returns = ["On success, True is returned", "True"]
                 # end if "return" in description
@@ -352,7 +352,7 @@ def load_from_html(folder):
                 returns     = answer("Textual description what the function returns", default_returns[0])
                 return_type = answer("Return type", default_returns[1])
                 if isinstance(return_type, str):
-                    return_type = as_types(return_type, "return type")
+                    return_type = as_types(return_type, "return type", int_is_unix_timestamp=False)
                 # end if
             else:
                 returns = default_returns[0]

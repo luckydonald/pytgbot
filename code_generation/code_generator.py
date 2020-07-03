@@ -315,7 +315,7 @@ def command_line_input():
         params_string = "--"
         params_strings = []
         while params_string != "":
-            params_string = answer("Parameters (sepereated by tabs, and new lines)\nParameters	Type	Description", "")
+            params_string = answer("Parameters (separated by tabs, and new lines)\nParameters	Type	Description", "")
             if params_string and not params_string.strip() == "":
                 params_strings.append(params_string)
             # end if
