@@ -35,8 +35,8 @@ __all__ = ["Bot", "{% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}"]
 logger = logging.getLogger(__name__)
 
 
-class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
-    {% if is_asyncio %}async {% endif %}def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
+class {% if is_asyncio %}AsyncBotBase{% else %}SyncBotBase{% endif %}(BotBase):
+    async def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
 
@@ -50,7 +50,7 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         so your loop expecting a `list` of `Update`s isn't failing.
         Ìt will look like this: `[]`
 
-        If `error_as_empty` is set to `False` however, all `{% if is_asyncio %}httpx.HTTPError{% else %}requests.RequestException{% endif %}` and `TgApiException` exceptions are normally raised.
+        If `error_as_empty` is set to `False` however, all `httpx.HTTPError` and `TgApiException` exceptions are normally raised.
 
         :keyword offset: (Optional)	Identifier of the first update to be returned.
                  Must be greater by one than the highest among the identifiers of previously received updates.
@@ -83,15 +83,16 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         :param delta: Wait minimal 'delta' seconds, between requests. Useful in a loop.
         :type  delta: datetime.
 
-        :param error_as_empty: If errors occur which subclasses `{% if is_asyncio %}httpx.HTTPError{% else %}requests.RequestException{% endif %}` or `TgApiException`, they  will be logged but not raised.
+        :param error_as_empty: If errors occur which subclasses `httpx.HTTPError` or `TgApiException`, they  will be logged but not raised.
                                Instead an empty list will be returned: `[]`. If the bot has `return_python_objects` set to `False`, the returned DictObject will contain an `"exception"` field containing the exception, while the `"result"` field will be an empty list `[]`.
                                Defaults to `False`.
         :type  error_as_empty: bool
 
+
         Returns:
 
         :return: An Array of `Update` objects is returned,
-                 or an empty array if there was an `{% if is_asyncio %}httpx.HTTPError{% else %}requests.RequestException{% endif %}` and `error_as_empty` is set to `True`.
+                 or an empty array if there was an `httpx.HTTPError` and `error_as_empty` is set to `True`.
         :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
 
@@ -111,12 +112,13 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
                 if wait != 0:
                     logger.debug("Sleeping {i} seconds.".format(i=wait))
                 # end if
-                {% if is_asyncio %}await {% endif %}sleep(wait)
+                await sleep(wait)
             # end if
         # end if
         self._last_update = datetime.now()
+        import httpx.exceptions
         try:
-            result = {% if is_asyncio %}await {% endif %}self.do(
+            result = await self.do(
                 "getUpdates", offset=offset, limit=limit, timeout=poll_timeout, allowed_updates=allowed_updates,
                 use_long_polling=poll_timeout != 0, request_timeout=request_timeout
             )
@@ -125,14 +127,14 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
                 from pytgbot.api_types.receivable.updates import Update
                 try:
                     return Update.from_array_list(result, list_level=1)
-                except TgApiParseException as e:
+                except TgApiParseException:
                     logger.debug("Failed parsing as api_type Update", exc_info=True)
-                    raise e
                 # end try
                 # no valid parsing so far
+                raise TgApiParseException("Could not parse result.")  # See debug log for details!
             # end if return_python_objects
             return result
-        except (GenericRequestException, TgApiException) as e:
+        except (httpx.RequestException, TgApiException) as e:
             if error_as_empty:
                 logger.warn(
                     "Network related error happened in get_updates(), but will be ignored: " + str(e),
@@ -150,6 +152,118 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         # end try
     # end def get_updates
 
+    async def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
+        """
+        Send a request to the api.
+
+        If the bot is set to return the json objects, it will look like this:
+
+        ```json
+        {
+            "ok": bool,
+            "result": {...},
+            # optionally present:
+            "description": "human-readable description of the result",
+            "error_code": int
+        }
+        ```
+
+        :param command: The Url command parameter
+        :type  command: str
+
+        :param request_timeout: When the request should time out. Default: `None`
+        :type  request_timeout: int
+
+        :param files: if it needs to send files.
+
+        :param use_long_polling: if it should use long polling. Default: `False`
+                                (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
+        :type  use_long_polling: bool
+
+        :param query: all the other `**kwargs` will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        """
+        import httpx
+
+        url, params = self._prepare_request(command, query)
+        async with httpx.AsyncClient(
+            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+        ) as client:
+            if use_long_polling:
+                method = client.stream
+            else:
+                method = client.request
+            # end if
+            r = await method(
+                'POST',
+                url=url, params=params, files=files,
+                timeout=request_timeout
+            )
+        # end with
+        json = r.json()
+        return self._postprocess_request(r.request, r, json=json)
+    # end def do
+
+    def _do_fileupload(self, file_param_name, value, _command=None, _file_is_optional=False, **kwargs):
+        """
+        :param file_param_name: For what field the file should be uploaded.
+        :type  file_param_name: str
+
+        :param value: File to send. You can either pass a file_id as String to resend a file
+                      file that is already on the Telegram servers, or upload a new file,
+                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
+                      If `_file_is_optional` is set to `True`, it can also be set to `None`.
+        :type  value: pytgbot.api_types.sendable.files.InputFile | str | None
+
+        :param _command: Overwrite the command to be send.
+                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
+        :type  _command: str|None
+
+        :param _file_is_optional: If the file (`value`) is allowed to be None.
+        :type  _file_is_optional: bool
+
+        :param kwargs: will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+
+        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
+        """
+        command = self._prepare_fileupload(_command, _file_is_optional, file_param_name, kwargs, value)
+        return await self.do(command, **kwargs)
+    # end def _do_fileupload
+
+    async def _load_info(self):
+        """
+        This functions stores the id and the username of the bot.
+        Called by `.username` and `.id` properties.
+        :return:
+        """
+        myself = await self.get_me()
+        if self.return_python_objects:
+            self._id = myself.id
+            self._username = myself.username
+        else:
+            self._id = myself["result"]["id"]
+            self._username = myself["result"]["username"]
+        # end if
+    # end def
+
+    @async_property
+    async def username(self):
+        return self._username
+    # end def
+
+    @async_property
+    async def id(self):
+        return self._id
+    # end def
+# end class {% if is_asyncio %}AsyncBotBase{% else %}SyncBotBase{% endif %}
+
+
+class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}({% if is_asyncio %}AsyncBotBase{% else %}SyncBotBase{% endif %}):
     # start of generated functions
     {% for function in functions if function.name != "do_update" -%}
     {% include "func.template" -%}
@@ -304,7 +418,7 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         id = {% if is_asyncio %}self._id if self._id else "<not loaded>"{% else %}self.id{% endif %}
         return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
     # end def
-# end class Bot
+# end class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}
 
 # allow importing them as `pytgbot.bot.async.Bot` and `pytgbot.bot.sync.Bot`.
 Bot = {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}
