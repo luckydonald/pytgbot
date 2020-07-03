@@ -209,7 +209,7 @@ class ChatMember(Result):
     user: User
     status: str
     custom_title: str
-    until_date: datetime
+    until_date: datetime.datetime
     can_be_edited: bool
     can_post_messages: bool
     can_edit_messages: bool

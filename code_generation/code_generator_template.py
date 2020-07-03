@@ -916,8 +916,8 @@ def to_type(type_string, variable_name, int_is_unix_timestamp: bool) -> Type:
     # end if
     if var_type.string == "int" and int_is_unix_timestamp:
         var_type.is_builtin = False
-        var_type.string = "datetime"
-        var_type.import_path = "datetime"  # from datetime import datetime
+        var_type.string = "datetime.datetime"
+        var_type.import_path = ""  # import datetime
     elif var_type.string in ["int", "bool", "float", "object", "None", "str"]:
         var_type.is_builtin = True
     elif var_type.string == "unicode_type":

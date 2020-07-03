@@ -646,7 +646,6 @@ class ChatMember(Result):
         :type  _raw: None | dict
         """
         super(ChatMember, self).__init__()
-        from ....datetime import datetime
         from . import User
         
         assert_type_or_raise(user, User, parameter_name="user")
@@ -658,7 +657,7 @@ class ChatMember(Result):
         assert_type_or_raise(custom_title, None, unicode_type, parameter_name="custom_title")
         self.custom_title = custom_title
         
-        assert_type_or_raise(until_date, None, datetime, parameter_name="until_date")
+        assert_type_or_raise(until_date, None, datetime.datetime, parameter_name="until_date")
         self.until_date = until_date
         
         assert_type_or_raise(can_be_edited, None, bool, parameter_name="can_be_edited")
@@ -723,7 +722,7 @@ class ChatMember(Result):
         if self.custom_title is not None:
             array['custom_title'] = u(self.custom_title)  # py2: type unicode, py3: type str
         if self.until_date is not None:
-            array['until_date'] = self.until_date.to_array()  # type datetime
+            array['until_date'] = self.until_date.to_array()  # type datetime.datetime
 
         if self.can_be_edited is not None:
             array['can_be_edited'] = bool(self.can_be_edited)  # type bool
@@ -767,14 +766,13 @@ class ChatMember(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from ....datetime import datetime
         from . import User
         
         data = Result.validate_array(array)
         data['user'] = User.from_array(array.get('user'))
         data['status'] = u(array.get('status'))
         data['custom_title'] = u(array.get('custom_title')) if array.get('custom_title') is not None else None
-        data['until_date'] = datetime.from_array(array.get('until_date')) if array.get('until_date') is not None else None
+        data['until_date'] = datetime.datetime.from_array(array.get('until_date')) if array.get('until_date') is not None else None
         data['can_be_edited'] = bool(array.get('can_be_edited')) if array.get('can_be_edited') is not None else None
         data['can_post_messages'] = bool(array.get('can_post_messages')) if array.get('can_post_messages') is not None else None
         data['can_edit_messages'] = bool(array.get('can_edit_messages')) if array.get('can_edit_messages') is not None else None

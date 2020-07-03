@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+from datetime import datetime, timezone
 from json import dumps as _json_dumps
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 # NOTE: `from . import receivable` import at the bottom of this file
@@ -132,6 +133,8 @@ def from_array_list(required_type, result, list_level, is_builtin):
             return required_type(result)
         elif isinstance(required_type, unicode_type):  # handle str, so emojis work for py2.
             return u(result)
+        elif isinstance(required_type, datetime):  # handle datetime decoding.
+            return datetime.utcfromtimestamp(result).replace(tzinfo=timezone.utc)
         else:
             import ast
             logger.warn("Trying parsing with ast.literal_eval()...")

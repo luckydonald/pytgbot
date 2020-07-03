@@ -358,8 +358,6 @@ class WebhookInfo(Receivable):
         :type  _raw: None | dict
         """
         super(WebhookInfo, self).__init__()
-        from ....datetime import datetime
-        
         assert_type_or_raise(url, unicode_type, parameter_name="url")
         self.url = url
         
@@ -369,7 +367,7 @@ class WebhookInfo(Receivable):
         assert_type_or_raise(pending_update_count, int, parameter_name="pending_update_count")
         self.pending_update_count = pending_update_count
         
-        assert_type_or_raise(last_error_date, None, datetime, parameter_name="last_error_date")
+        assert_type_or_raise(last_error_date, None, datetime.datetime, parameter_name="last_error_date")
         self.last_error_date = last_error_date
         
         assert_type_or_raise(last_error_message, None, unicode_type, parameter_name="last_error_message")
@@ -396,7 +394,7 @@ class WebhookInfo(Receivable):
         array['has_custom_certificate'] = bool(self.has_custom_certificate)  # type bool
         array['pending_update_count'] = int(self.pending_update_count)  # type int
         if self.last_error_date is not None:
-            array['last_error_date'] = self.last_error_date.to_array()  # type datetime
+            array['last_error_date'] = self.last_error_date.to_array()  # type datetime.datetime
 
         if self.last_error_message is not None:
             array['last_error_message'] = u(self.last_error_message)  # py2: type unicode, py3: type str
@@ -417,13 +415,11 @@ class WebhookInfo(Receivable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from ....datetime import datetime
-        
         data = Receivable.validate_array(array)
         data['url'] = u(array.get('url'))
         data['has_custom_certificate'] = bool(array.get('has_custom_certificate'))
         data['pending_update_count'] = int(array.get('pending_update_count'))
-        data['last_error_date'] = datetime.from_array(array.get('last_error_date')) if array.get('last_error_date') is not None else None
+        data['last_error_date'] = datetime.datetime.from_array(array.get('last_error_date')) if array.get('last_error_date') is not None else None
         data['last_error_message'] = u(array.get('last_error_message')) if array.get('last_error_message') is not None else None
         data['max_connections'] = int(array.get('max_connections')) if array.get('max_connections') is not None else None
         data['allowed_updates'] = WebhookInfo._builtin_from_array_list(required_type=unicode_type, value=array.get('allowed_updates'), list_level=1) if array.get('allowed_updates') is not None else None
@@ -803,7 +799,6 @@ class Message(UpdateType):
         :type  _raw: None | dict
         """
         super(Message, self).__init__()
-        from ....datetime import datetime
         from .media import Animation
         from .media import Audio
         from .media import Contact
@@ -830,7 +825,7 @@ class Message(UpdateType):
         assert_type_or_raise(message_id, int, parameter_name="message_id")
         self.message_id = message_id
         
-        assert_type_or_raise(date, datetime, parameter_name="date")
+        assert_type_or_raise(date, datetime.datetime, parameter_name="date")
         self.date = date
         
         assert_type_or_raise(chat, Chat, parameter_name="chat")
@@ -854,7 +849,7 @@ class Message(UpdateType):
         assert_type_or_raise(forward_sender_name, None, unicode_type, parameter_name="forward_sender_name")
         self.forward_sender_name = forward_sender_name
         
-        assert_type_or_raise(forward_date, None, datetime, parameter_name="forward_date")
+        assert_type_or_raise(forward_date, None, datetime.datetime, parameter_name="forward_date")
         self.forward_date = forward_date
         
         assert_type_or_raise(reply_to_message, None, Message, parameter_name="reply_to_message")
@@ -863,7 +858,7 @@ class Message(UpdateType):
         assert_type_or_raise(via_bot, None, User, parameter_name="via_bot")
         self.via_bot = via_bot
         
-        assert_type_or_raise(edit_date, None, datetime, parameter_name="edit_date")
+        assert_type_or_raise(edit_date, None, datetime.datetime, parameter_name="edit_date")
         self.edit_date = edit_date
         
         assert_type_or_raise(media_group_id, None, unicode_type, parameter_name="media_group_id")
@@ -986,7 +981,7 @@ class Message(UpdateType):
         """
         array = super(Message, self).to_array()
         array['message_id'] = int(self.message_id)  # type int
-        array['date'] = self.date.to_array()  # type datetime
+        array['date'] = self.date.to_array()  # type datetime.datetime
 
         array['chat'] = self.chat.to_array()  # type Chat
 
@@ -1006,7 +1001,7 @@ class Message(UpdateType):
         if self.forward_sender_name is not None:
             array['forward_sender_name'] = u(self.forward_sender_name)  # py2: type unicode, py3: type str
         if self.forward_date is not None:
-            array['forward_date'] = self.forward_date.to_array()  # type datetime
+            array['forward_date'] = self.forward_date.to_array()  # type datetime.datetime
 
         if self.reply_to_message is not None:
             array['reply_to_message'] = self.reply_to_message.to_array()  # type Message
@@ -1015,7 +1010,7 @@ class Message(UpdateType):
             array['via_bot'] = self.via_bot.to_array()  # type User
 
         if self.edit_date is not None:
-            array['edit_date'] = self.edit_date.to_array()  # type datetime
+            array['edit_date'] = self.edit_date.to_array()  # type datetime.datetime
 
         if self.media_group_id is not None:
             array['media_group_id'] = u(self.media_group_id)  # py2: type unicode, py3: type str
@@ -1125,7 +1120,6 @@ class Message(UpdateType):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from ....datetime import datetime
         from .media import Animation
         from .media import Audio
         from .media import Contact
@@ -1151,7 +1145,7 @@ class Message(UpdateType):
         
         data = UpdateType.validate_array(array)
         data['message_id'] = int(array.get('message_id'))
-        data['date'] = datetime.from_array(array.get('date'))
+        data['date'] = datetime.datetime.from_array(array.get('date'))
         data['chat'] = Chat.from_array(array.get('chat'))
         data['from_peer'] = User.from_array(array.get('from')) if array.get('from') is not None else None
         data['forward_from'] = User.from_array(array.get('forward_from')) if array.get('forward_from') is not None else None
@@ -1159,10 +1153,10 @@ class Message(UpdateType):
         data['forward_from_message_id'] = int(array.get('forward_from_message_id')) if array.get('forward_from_message_id') is not None else None
         data['forward_signature'] = u(array.get('forward_signature')) if array.get('forward_signature') is not None else None
         data['forward_sender_name'] = u(array.get('forward_sender_name')) if array.get('forward_sender_name') is not None else None
-        data['forward_date'] = datetime.from_array(array.get('forward_date')) if array.get('forward_date') is not None else None
+        data['forward_date'] = datetime.datetime.from_array(array.get('forward_date')) if array.get('forward_date') is not None else None
         data['reply_to_message'] = Message.from_array(array.get('reply_to_message')) if array.get('reply_to_message') is not None else None
         data['via_bot'] = User.from_array(array.get('via_bot')) if array.get('via_bot') is not None else None
-        data['edit_date'] = datetime.from_array(array.get('edit_date')) if array.get('edit_date') is not None else None
+        data['edit_date'] = datetime.datetime.from_array(array.get('edit_date')) if array.get('edit_date') is not None else None
         data['media_group_id'] = u(array.get('media_group_id')) if array.get('media_group_id') is not None else None
         data['author_signature'] = u(array.get('author_signature')) if array.get('author_signature') is not None else None
         data['text'] = u(array.get('text')) if array.get('text') is not None else None

@@ -62,7 +62,7 @@ class PassportFile(Result):
     file_id: str
     file_unique_id: str
     file_size: int
-    file_date: datetime
+    file_date: datetime.datetime
 # end class PassportFile
 
 class EncryptedPassportElement(Result):

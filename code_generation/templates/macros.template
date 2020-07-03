@@ -84,6 +84,12 @@ array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {
         {% else -%}
         data['{{ variable.name }}'] = u(array.get('{{ variable.api_name }}')){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
         {% endif -%}
+        {% elif var_type.string == 'datetime.datetime' %}
+        {% if var_type.is_list > 0 -%}
+        data['{{ variable.name }}'] = {{ clazz_name }}._builtin_from_array_list(required_type=datetime.datetime, value=array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% else -%}
+        data['{{ variable.name }}'] = datetime.datetime.utcfromtimestamp(array.get('{{ variable.api_name }}')).replace(tzinfo=datetime.timezone.utc){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% endif -%}
         {% else -%}
         {% if var_type.is_list > 0 -%}
         data['{{ variable.name }}'] = {{ clazz_name }}._builtin_from_array_list(required_type={{ var_type.string }}, value=array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
