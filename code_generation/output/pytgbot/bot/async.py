@@ -31,7 +31,7 @@ __all__ = ["Bot", "AsyncBot"]
 logger = logging.getLogger(__name__)
 
 
-class AsyncBot(BotBase):
+class AsyncBotBase(BotBase):
     async def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
@@ -84,6 +84,7 @@ class AsyncBot(BotBase):
                                Defaults to `False`.
         :type  error_as_empty: bool
 
+
         Returns:
 
         :return: An Array of `Update` objects is returned,
@@ -111,6 +112,7 @@ class AsyncBot(BotBase):
             # end if
         # end if
         self._last_update = datetime.now()
+        import httpx.exceptions
         try:
             result = await self.do(
                 "getUpdates", offset=offset, limit=limit, timeout=poll_timeout, allowed_updates=allowed_updates,
@@ -121,14 +123,14 @@ class AsyncBot(BotBase):
                 from pytgbot.api_types.receivable.updates import Update
                 try:
                     return Update.from_array_list(result, list_level=1)
-                except TgApiParseException as e:
+                except TgApiParseException:
                     logger.debug("Failed parsing as api_type Update", exc_info=True)
-                    raise e
                 # end try
                 # no valid parsing so far
+                raise TgApiParseException("Could not parse result.")  # See debug log for details!
             # end if return_python_objects
             return result
-        except (GenericRequestException, TgApiException) as e:
+        except (httpx.RequestException, TgApiException) as e:
             if error_as_empty:
                 logger.warn(
                     "Network related error happened in get_updates(), but will be ignored: " + str(e),
@@ -146,6 +148,118 @@ class AsyncBot(BotBase):
         # end try
     # end def get_updates
 
+    async def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
+        """
+        Send a request to the api.
+
+        If the bot is set to return the json objects, it will look like this:
+
+        ```json
+        {
+            "ok": bool,
+            "result": {...},
+            # optionally present:
+            "description": "human-readable description of the result",
+            "error_code": int
+        }
+        ```
+
+        :param command: The Url command parameter
+        :type  command: str
+
+        :param request_timeout: When the request should time out. Default: `None`
+        :type  request_timeout: int
+
+        :param files: if it needs to send files.
+
+        :param use_long_polling: if it should use long polling. Default: `False`
+                                (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
+        :type  use_long_polling: bool
+
+        :param query: all the other `**kwargs` will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        """
+        import httpx
+
+        url, params = self._prepare_request(command, query)
+        async with httpx.AsyncClient(
+            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+        ) as client:
+            if use_long_polling:
+                method = client.stream
+            else:
+                method = client.request
+            # end if
+            r = await method(
+                'POST',
+                url=url, params=params, files=files,
+                timeout=request_timeout
+            )
+        # end with
+        json = r.json()
+        return self._postprocess_request(r.request, r, json=json)
+    # end def do
+
+    def _do_fileupload(self, file_param_name, value, _command=None, _file_is_optional=False, **kwargs):
+        """
+        :param file_param_name: For what field the file should be uploaded.
+        :type  file_param_name: str
+
+        :param value: File to send. You can either pass a file_id as String to resend a file
+                      file that is already on the Telegram servers, or upload a new file,
+                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
+                      If `_file_is_optional` is set to `True`, it can also be set to `None`.
+        :type  value: pytgbot.api_types.sendable.files.InputFile | str | None
+
+        :param _command: Overwrite the command to be send.
+                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
+        :type  _command: str|None
+
+        :param _file_is_optional: If the file (`value`) is allowed to be None.
+        :type  _file_is_optional: bool
+
+        :param kwargs: will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+
+        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
+        """
+        command = self._prepare_fileupload(_command, _file_is_optional, file_param_name, kwargs, value)
+        return await self.do(command, **kwargs)
+    # end def _do_fileupload
+
+    async def _load_info(self):
+        """
+        This functions stores the id and the username of the bot.
+        Called by `.username` and `.id` properties.
+        :return:
+        """
+        myself = await self.get_me()
+        if self.return_python_objects:
+            self._id = myself.id
+            self._username = myself.username
+        else:
+            self._id = myself["result"]["id"]
+            self._username = myself["result"]["username"]
+        # end if
+    # end def
+
+    @async_property
+    async def username(self):
+        return self._username
+    # end def
+
+    @async_property
+    async def id(self):
+        return self._id
+    # end def
+# end class AsyncBotBase
+
+
+class AsyncBot(AsyncBotBase):
     # start of generated functions
     
     async def get_updates(self, offset=None, limit=None, timeout=None, allowed_updates=None):
@@ -1518,7 +1632,7 @@ class AsyncBot(BotBase):
         :type  open_period: int
         
         :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
-        :type  close_date: int
+        :type  close_date: datetime.datetime
         
         :param is_closed: Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
         :type  is_closed: bool
@@ -1537,6 +1651,7 @@ class AsyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from datetime import datetime
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
@@ -1562,7 +1677,7 @@ class AsyncBot(BotBase):
         
         assert_type_or_raise(open_period, None, int, parameter_name="open_period")
         
-        assert_type_or_raise(close_date, None, int, parameter_name="close_date")
+        assert_type_or_raise(close_date, None, datetime, parameter_name="close_date")
         
         assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
         
@@ -1794,18 +1909,20 @@ class AsyncBot(BotBase):
         Optional keyword parameters:
         
         :param until_date: Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever
-        :type  until_date: int
+        :type  until_date: datetime.datetime
         
         Returns:
 
         :return: Returns True on success
         :rtype:  bool
         """
+        from datetime import datetime
+        
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
         assert_type_or_raise(user_id, int, parameter_name="user_id")
         
-        assert_type_or_raise(until_date, None, int, parameter_name="until_date")
+        assert_type_or_raise(until_date, None, datetime, parameter_name="until_date")
         
         result = await self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date)
         if self.return_python_objects:
@@ -1882,13 +1999,14 @@ class AsyncBot(BotBase):
         Optional keyword parameters:
         
         :param until_date: Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
-        :type  until_date: int
+        :type  until_date: datetime.datetime
         
         Returns:
 
         :return: Returns True on success
         :rtype:  bool
         """
+        from datetime import datetime
         from pytgbot.api_types.receivable.peer import ChatPermissions
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
@@ -1897,7 +2015,7 @@ class AsyncBot(BotBase):
         
         assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
         
-        assert_type_or_raise(until_date, None, int, parameter_name="until_date")
+        assert_type_or_raise(until_date, None, datetime, parameter_name="until_date")
         
         result = await self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, permissions=permissions, until_date=until_date)
         if self.return_python_objects:
@@ -4126,7 +4244,7 @@ class AsyncBot(BotBase):
         id = self._id if self._id else "<not loaded>"
         return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
     # end def
-# end class Bot
+# end class AsyncBot
 
 # allow importing them as `pytgbot.bot.async.Bot` and `pytgbot.bot.sync.Bot`.
 Bot = AsyncBot
