@@ -2106,7 +2106,7 @@ class Poll(Media):
     :type  open_period: int
     
     :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
-    :type  close_date: int
+    :type  close_date: datetime.datetime
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -2161,12 +2161,13 @@ class Poll(Media):
         :type  open_period: int
         
         :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
-        :type  close_date: int
+        :type  close_date: datetime.datetime
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Poll, self).__init__()
+        from ....datetime import datetime
         from . import MessageEntity
         from . import PollOption
         
@@ -2206,7 +2207,7 @@ class Poll(Media):
         assert_type_or_raise(open_period, None, int, parameter_name="open_period")
         self.open_period = open_period
         
-        assert_type_or_raise(close_date, None, int, parameter_name="close_date")
+        assert_type_or_raise(close_date, None, datetime, parameter_name="close_date")
         self.close_date = close_date
 
         self._raw = _raw
@@ -2239,7 +2240,8 @@ class Poll(Media):
         if self.open_period is not None:
             array['open_period'] = int(self.open_period)  # type int
         if self.close_date is not None:
-            array['close_date'] = int(self.close_date)  # type int
+            array['close_date'] = self.close_date.to_array()  # type datetime
+
         return array
     # end def to_array
 
@@ -2252,6 +2254,7 @@ class Poll(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from ....datetime import datetime
         from . import MessageEntity
         from . import PollOption
         
@@ -2268,7 +2271,7 @@ class Poll(Media):
         data['explanation'] = u(array.get('explanation')) if array.get('explanation') is not None else None
         data['explanation_entities'] = MessageEntity.from_array_list(array.get('explanation_entities'), list_level=1) if array.get('explanation_entities') is not None else None
         data['open_period'] = int(array.get('open_period')) if array.get('open_period') is not None else None
-        data['close_date'] = int(array.get('close_date')) if array.get('close_date') is not None else None
+        data['close_date'] = datetime.from_array(array.get('close_date')) if array.get('close_date') is not None else None
         return data
     # end def validate_array
 

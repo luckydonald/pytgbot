@@ -95,7 +95,7 @@ class WebhookInfo(Receivable):
     Optional keyword parameters:
     
     :param last_error_date: Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
-    :type  last_error_date: int
+    :type  last_error_date: datetime.datetime
     
     :param last_error_message: Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
     :type  last_error_message: str|unicode
@@ -112,7 +112,7 @@ class WebhookInfo(Receivable):
     url: str
     has_custom_certificate: bool
     pending_update_count: int
-    last_error_date: int
+    last_error_date: datetime
     last_error_message: str
     max_connections: int
     allowed_updates: List[str]
@@ -131,7 +131,7 @@ class Message(UpdateType):
     :type  message_id: int
     
     :param date: Date the message was sent in Unix time
-    :type  date: int
+    :type  date: datetime.datetime
     
     :param chat: Conversation the message belongs to
     :type  chat: pytgbot.api_types.receivable.peer.Chat
@@ -158,7 +158,7 @@ class Message(UpdateType):
     :type  forward_sender_name: str|unicode
     
     :param forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
-    :type  forward_date: int
+    :type  forward_date: datetime.datetime
     
     :param reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
     :type  reply_to_message: pytgbot.api_types.receivable.updates.Message
@@ -167,7 +167,7 @@ class Message(UpdateType):
     :type  via_bot: pytgbot.api_types.receivable.peer.User
     
     :param edit_date: Optional. Date the message was last edited in Unix time
-    :type  edit_date: int
+    :type  edit_date: datetime.datetime
     
     :param media_group_id: Optional. The unique identifier of a media message group this message belongs to
     :type  media_group_id: str|unicode
@@ -281,7 +281,7 @@ class Message(UpdateType):
     :type  _raw: None | dict
     """
     message_id: int
-    date: int
+    date: datetime
     chat: Chat
     from_peer: User
     forward_from: User
@@ -289,10 +289,10 @@ class Message(UpdateType):
     forward_from_message_id: int
     forward_signature: str
     forward_sender_name: str
-    forward_date: int
+    forward_date: datetime
     reply_to_message: Message
     via_bot: User
-    edit_date: int
+    edit_date: datetime
     media_group_id: str
     author_signature: str
     text: str

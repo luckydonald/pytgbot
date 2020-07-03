@@ -3547,7 +3547,7 @@ class PollMessage(SendableMessageBase):
     :type  open_period: int
     
     :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
-    :type  close_date: int
+    :type  close_date: datetime.datetime
     
     :param is_closed: Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
     :type  is_closed: bool
@@ -3606,7 +3606,7 @@ class PollMessage(SendableMessageBase):
         :type  open_period: int
         
         :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
-        :type  close_date: int
+        :type  close_date: datetime.datetime
         
         :param is_closed: Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
         :type  is_closed: bool
@@ -3619,6 +3619,7 @@ class PollMessage(SendableMessageBase):
         
         """
         super(PollMessage, self).__init__()
+        from datetime import datetime
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
@@ -3657,7 +3658,7 @@ class PollMessage(SendableMessageBase):
         assert_type_or_raise(open_period, None, int, parameter_name="open_period")
         self.open_period = open_period
         
-        assert_type_or_raise(close_date, None, int, parameter_name="close_date")
+        assert_type_or_raise(close_date, None, datetime, parameter_name="close_date")
         self.close_date = close_date
         
         assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
@@ -3729,7 +3730,8 @@ class PollMessage(SendableMessageBase):
         if self.open_period is not None:
             array['open_period'] = int(self.open_period)  # type int
         if self.close_date is not None:
-            array['close_date'] = int(self.close_date)  # type int
+            array['close_date'] = self.close_date.to_array()  # type datetime
+
         if self.is_closed is not None:
             array['is_closed'] = bool(self.is_closed)  # type bool
         if self.disable_notification is not None:
@@ -3759,6 +3761,7 @@ class PollMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from datetime import datetime
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
@@ -3794,7 +3797,7 @@ class PollMessage(SendableMessageBase):
         data['explanation'] = u(array.get('explanation')) if array.get('explanation') is not None else None
         data['explanation_parse_mode'] = u(array.get('explanation_parse_mode')) if array.get('explanation_parse_mode') is not None else None
         data['open_period'] = int(array.get('open_period')) if array.get('open_period') is not None else None
-        data['close_date'] = int(array.get('close_date')) if array.get('close_date') is not None else None
+        data['close_date'] = datetime.from_array(array.get('close_date')) if array.get('close_date') is not None else None
         data['is_closed'] = bool(array.get('is_closed')) if array.get('is_closed') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         if array.get('reply_markup') is None:

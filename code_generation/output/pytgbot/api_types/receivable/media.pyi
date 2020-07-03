@@ -522,7 +522,7 @@ class Poll(Media):
     :type  open_period: int
     
     :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
-    :type  close_date: int
+    :type  close_date: datetime.datetime
     
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
@@ -539,7 +539,7 @@ class Poll(Media):
     explanation: str
     explanation_entities: List[MessageEntity]
     open_period: int
-    close_date: int
+    close_date: datetime
 # end class Poll
 
 class Location(Media):

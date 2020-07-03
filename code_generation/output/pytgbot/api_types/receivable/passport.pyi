@@ -51,7 +51,7 @@ class PassportFile(Result):
     :type  file_size: int
     
     :param file_date: Unix time when the file was uploaded
-    :type  file_date: int
+    :type  file_date: datetime.datetime
     
 
     Optional keyword parameters:
@@ -62,7 +62,7 @@ class PassportFile(Result):
     file_id: str
     file_unique_id: str
     file_size: int
-    file_date: int
+    file_date: datetime
 # end class PassportFile
 
 class EncryptedPassportElement(Result):

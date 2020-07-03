@@ -161,7 +161,7 @@ class PassportFile(Result):
     :type  file_size: int
     
     :param file_date: Unix time when the file was uploaded
-    :type  file_date: int
+    :type  file_date: datetime.datetime
     
 
     Optional keyword parameters:
@@ -189,7 +189,7 @@ class PassportFile(Result):
         :type  file_size: int
         
         :param file_date: Unix time when the file was uploaded
-        :type  file_date: int
+        :type  file_date: datetime.datetime
         
 
         Optional keyword parameters:
@@ -198,6 +198,8 @@ class PassportFile(Result):
         :type  _raw: None | dict
         """
         super(PassportFile, self).__init__()
+        from ....datetime import datetime
+        
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         
@@ -207,7 +209,7 @@ class PassportFile(Result):
         assert_type_or_raise(file_size, int, parameter_name="file_size")
         self.file_size = file_size
         
-        assert_type_or_raise(file_date, int, parameter_name="file_date")
+        assert_type_or_raise(file_date, datetime, parameter_name="file_date")
         self.file_date = file_date
 
         self._raw = _raw
@@ -224,7 +226,8 @@ class PassportFile(Result):
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['file_size'] = int(self.file_size)  # type int
-        array['file_date'] = int(self.file_date)  # type int
+        array['file_date'] = self.file_date.to_array()  # type datetime
+
         return array
     # end def to_array
 
@@ -237,11 +240,13 @@ class PassportFile(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from ....datetime import datetime
+        
         data = Result.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
         data['file_size'] = int(array.get('file_size'))
-        data['file_date'] = int(array.get('file_date'))
+        data['file_date'] = datetime.from_array(array.get('file_date'))
         return data
     # end def validate_array
 

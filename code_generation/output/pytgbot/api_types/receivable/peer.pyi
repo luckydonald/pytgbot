@@ -156,7 +156,7 @@ class ChatMember(Result):
     :type  custom_title: str|unicode
     
     :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
-    :type  until_date: int
+    :type  until_date: datetime.datetime
     
     :param can_be_edited: Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
     :type  can_be_edited: bool
@@ -209,7 +209,7 @@ class ChatMember(Result):
     user: User
     status: str
     custom_title: str
-    until_date: int
+    until_date: datetime
     can_be_edited: bool
     can_post_messages: bool
     can_edit_messages: bool

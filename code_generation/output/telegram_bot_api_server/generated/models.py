@@ -69,7 +69,7 @@ class WebhookInfoModel(BaseModel):  # Receivable
     url: str
     has_custom_certificate: bool
     pending_update_count: int
-    last_error_date: Optional[int]
+    last_error_date: Optional['datetimeModel']
     last_error_message: Optional[str]
     max_connections: Optional[int]
     allowed_updates: Optional[List[str]]
@@ -124,7 +124,7 @@ class MessageModel(BaseModel):  # UpdateType
     https://core.telegram.org/bots/api#message
     """
     message_id: int
-    date: int
+    date: 'datetimeModel'
     chat: 'ChatModel'
     from_peer: Optional['UserModel']
     forward_from: Optional['UserModel']
@@ -132,10 +132,10 @@ class MessageModel(BaseModel):  # UpdateType
     forward_from_message_id: Optional[int]
     forward_signature: Optional[str]
     forward_sender_name: Optional[str]
-    forward_date: Optional[int]
+    forward_date: Optional['datetimeModel']
     reply_to_message: Optional['MessageModel']
     via_bot: Optional['UserModel']
-    edit_date: Optional[int]
+    edit_date: Optional['datetimeModel']
     media_group_id: Optional[str]
     author_signature: Optional[str]
     text: Optional[str]
@@ -366,7 +366,7 @@ class PollModel(BaseModel):  # Media
     explanation: Optional[str]
     explanation_entities: Optional[List['MessageEntityModel']]
     open_period: Optional[int]
-    close_date: Optional[int]
+    close_date: Optional['datetimeModel']
 # end class Poll
 
 
@@ -571,7 +571,7 @@ class ChatMemberModel(BaseModel):  # Result
     user: 'UserModel'
     status: str
     custom_title: Optional[str]
-    until_date: Optional[int]
+    until_date: Optional['datetimeModel']
     can_be_edited: Optional[bool]
     can_post_messages: Optional[bool]
     can_edit_messages: Optional[bool]
@@ -1356,7 +1356,7 @@ class PassportFileModel(BaseModel):  # Result
     file_id: str
     file_unique_id: str
     file_size: int
-    file_date: int
+    file_date: 'datetimeModel'
 # end class PassportFile
 
 
