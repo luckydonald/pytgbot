@@ -64,6 +64,8 @@ array['{{ variable.api_name }}'] = self._as_array(self.{{ variable.name }})  # t
 {% if var_type.is_builtin -%}
 {%- if var_type.string == 'str' -%}
 array['{{ variable.api_name }}'] = u(self.{{ variable.name }})  # py2: type unicode, py3: type str
+{%- elif var_type.string == 'datetime.datetime' -%}
+array['{{ variable.api_name }}'] = self.{{ variable.name }}.timestamp()
 {%- elif var_type.string == 'None' -%}
 array['{{ variable.api_name }}'] = None
 {% else -%}
