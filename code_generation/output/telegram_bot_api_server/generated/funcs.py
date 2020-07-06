@@ -23,6 +23,7 @@ from telethon.tl.types import TypeSendMessageAction
 from telethon.errors import BotMethodInvalidError
 from fastapi.params import Query
 from serializer import to_web_api, get_entity
+from datetime import datetime
 from telethon import TelegramClient
 from fastapi import APIRouter, HTTPException
 from typing import Union, List, Optional
@@ -992,7 +993,7 @@ async def send_poll(
     explanation: Optional[str] = Query(None, description='Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing'),
     explanation_parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the explanation. See formatting options for more details.'),
     open_period: Optional[int] = Query(None, description="Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date."),
-    close_date: Optional[Json['datetime.datetimeModel']] = Query(None, description="Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period."),
+    close_date: Optional[Json['datetimeModel']] = Query(None, description="Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period."),
     is_closed: Optional[bool] = Query(None, description='Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
@@ -1003,8 +1004,8 @@ async def send_poll(
 
     https://core.telegram.org/bots/api#sendpoll
     """
-    close_date: Optional[datetime.datetimeModel] = parse_obj_as(
-        Optional[datetime.datetimeModel],
+    close_date: Optional[datetimeModel] = parse_obj_as(
+        Optional[datetimeModel],
         obj=close_date,
     )
     reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
@@ -1184,15 +1185,15 @@ async def kick_chat_member(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target group or username of the target supergroup or channel (in the format @channelusername)'),
     user_id: int = Query(..., description='Unique identifier of the target user'),
-    until_date: Optional[Json['datetime.datetimeModel']] = Query(None, description='Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever'),
+    until_date: Optional[Json['datetimeModel']] = Query(None, description='Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever'),
 ) -> JSONableResponse:
     """
     Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
     https://core.telegram.org/bots/api#kickchatmember
     """
-    until_date: Optional[datetime.datetimeModel] = parse_obj_as(
-        Optional[datetime.datetimeModel],
+    until_date: Optional[datetimeModel] = parse_obj_as(
+        Optional[datetimeModel],
         obj=until_date,
     )
 
@@ -1257,7 +1258,7 @@ async def restrict_chat_member(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)'),
     user_id: int = Query(..., description='Unique identifier of the target user'),
     permissions: Json['ChatPermissionsModel'] = Query(..., description='A JSON-serialized object for new user permissions'),
-    until_date: Optional[Json['datetime.datetimeModel']] = Query(None, description='Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever'),
+    until_date: Optional[Json['datetimeModel']] = Query(None, description='Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever'),
 ) -> JSONableResponse:
     """
     Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
@@ -1268,8 +1269,8 @@ async def restrict_chat_member(
         ChatPermissionsModel,
         obj=permissions,
     )
-    until_date: Optional[datetime.datetimeModel] = parse_obj_as(
-        Optional[datetime.datetimeModel],
+    until_date: Optional[datetimeModel] = parse_obj_as(
+        Optional[datetimeModel],
         obj=until_date,
     )
 

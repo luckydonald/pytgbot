@@ -1651,6 +1651,7 @@ class AsyncBot(AsyncBotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
+        from datetime import datetime
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
@@ -1676,7 +1677,7 @@ class AsyncBot(AsyncBotBase):
         
         assert_type_or_raise(open_period, None, int, parameter_name="open_period")
         
-        assert_type_or_raise(close_date, None, datetime.datetime, parameter_name="close_date")
+        assert_type_or_raise(close_date, None, datetime, parameter_name="close_date")
         
         assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
         
@@ -1915,11 +1916,13 @@ class AsyncBot(AsyncBotBase):
         :return: Returns True on success
         :rtype:  bool
         """
+        from datetime import datetime
+        
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         
         assert_type_or_raise(user_id, int, parameter_name="user_id")
         
-        assert_type_or_raise(until_date, None, datetime.datetime, parameter_name="until_date")
+        assert_type_or_raise(until_date, None, datetime, parameter_name="until_date")
         
         result = await self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date)
         if self.return_python_objects:
@@ -2003,6 +2006,7 @@ class AsyncBot(AsyncBotBase):
         :return: Returns True on success
         :rtype:  bool
         """
+        from datetime import datetime
         from pytgbot.api_types.receivable.peer import ChatPermissions
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
@@ -2011,7 +2015,7 @@ class AsyncBot(AsyncBotBase):
         
         assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
         
-        assert_type_or_raise(until_date, None, datetime.datetime, parameter_name="until_date")
+        assert_type_or_raise(until_date, None, datetime, parameter_name="until_date")
         
         result = await self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, permissions=permissions, until_date=until_date)
         if self.return_python_objects:

@@ -112,7 +112,7 @@ class WebhookInfo(Receivable):
     url: str
     has_custom_certificate: bool
     pending_update_count: int
-    last_error_date: datetime.datetime
+    last_error_date: datetime
     last_error_message: str
     max_connections: int
     allowed_updates: List[str]
@@ -281,7 +281,7 @@ class Message(UpdateType):
     :type  _raw: None | dict
     """
     message_id: int
-    date: datetime.datetime
+    date: datetime
     chat: Chat
     from_peer: User
     forward_from: User
@@ -289,10 +289,10 @@ class Message(UpdateType):
     forward_from_message_id: int
     forward_signature: str
     forward_sender_name: str
-    forward_date: datetime.datetime
+    forward_date: datetime
     reply_to_message: Message
     via_bot: User
-    edit_date: datetime.datetime
+    edit_date: datetime
     media_group_id: str
     author_signature: str
     text: str

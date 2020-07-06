@@ -539,7 +539,7 @@ class Poll(Media):
     explanation: str
     explanation_entities: List[MessageEntity]
     open_period: int
-    close_date: datetime.datetime
+    close_date: datetime
 # end class Poll
 
 class Location(Media):
