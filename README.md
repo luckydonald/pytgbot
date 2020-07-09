@@ -26,16 +26,16 @@ Released versions can be found at several locations:
 - and in the git files as regular tags.
 
 #### Latest Stable
-The [latest version](#releases) seems to be version `4.0.2`. For other releases you must adapt the examples below.
+The [latest version](#releases) seems to be version `4.6.3`. For other releases you must adapt the examples below.
 
 ##### Python package index (recommended)
 ```sh
-pip install pytgbot==4.0.2
+pip install pytgbot==4.6.3
 ```
 
 ##### Manually
 ```sh
-git clone -b v4.0.2 https://github.com/luckydonald/pytgbot.git
+git clone -b v4.6.3 https://github.com/luckydonald/pytgbot.git
 cd pytgbot
 python setup.py install
 ```
@@ -51,18 +51,18 @@ python setup.py install
 # Updating
 
 #### Latest Stable
-The [latest version](#releases) seems to be version `4.0.2`. For other releases you must adapt the examples below.
+The [latest version](#releases) seems to be version `4.6.3`. For other releases you must adapt the examples below.
 
 ##### Python package index (recommended)
 ```sh
-pip install -U pytgbot==4.0.2
+pip install -U pytgbot==4.6.3
 ```
 
 ##### Manually
 ```sh
 cd pytgbot
 git fetch
-git checkout v4.0.2
+git checkout v4.6.3
 python setup.py install
 ```
 
