@@ -109,7 +109,7 @@ class BotBase(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..api_types.sendable.files import InputFile
 
         assert_type_or_raise(url, unicode_type, parameter_name="url")
 
@@ -175,7 +175,7 @@ class BotBase(object):
         result = self.do("getWebhookInfo")
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import WebhookInfo
+            from ..api_types.receivable.updates import WebhookInfo
             try:
                 return WebhookInfo.from_array(result)
             except TgApiParseException:
@@ -203,7 +203,7 @@ class BotBase(object):
         result = self.do("getMe")
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.peer import User
+            from ..api_types.receivable.peer import User
             try:
                 return User.from_array(result)
             except TgApiParseException:
@@ -259,10 +259,10 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -283,7 +283,7 @@ class BotBase(object):
             reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -340,7 +340,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -401,11 +401,11 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.files import InputFile
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -428,7 +428,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -502,11 +502,11 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.files import InputFile
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -535,7 +535,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -597,11 +597,11 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.files import InputFile
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -626,7 +626,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -702,11 +702,11 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.files import InputFile
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -740,7 +740,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -813,11 +813,11 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.files import InputFile
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -848,7 +848,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -917,11 +917,11 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.files import InputFile
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -946,7 +946,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -999,11 +999,11 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.files import InputFile
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -1028,7 +1028,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -1070,7 +1070,7 @@ class BotBase(object):
         :rtype:  Messages
         """
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        from pytgbot.api_types.sendable.input_media import InputMediaPhoto, InputMediaVideo
+        from ..api_types.sendable.input_media import InputMediaPhoto, InputMediaVideo
 
         files = {}
         new_media = []
@@ -1100,7 +1100,7 @@ class BotBase(object):
             if not isinstance(result, list):
                 raise TgApiParseException("Could not parse result als list.")  # See debug log for details!
             # end if
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             return [Message.from_array(msg) for msg in result]  # parse them all as Message.
             raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
@@ -1149,10 +1149,10 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -1173,7 +1173,7 @@ class BotBase(object):
                          reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -1220,7 +1220,7 @@ class BotBase(object):
         :return: On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(latitude, float, parameter_name="latitude")
 
@@ -1237,7 +1237,7 @@ class BotBase(object):
         result = self.do("editMessageLiveLocation", latitude=latitude, longitude=longitude, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -1280,7 +1280,7 @@ class BotBase(object):
         :return: On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
 
@@ -1293,7 +1293,7 @@ class BotBase(object):
         result = self.do("stopMessageLiveLocation", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -1362,10 +1362,10 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -1393,7 +1393,7 @@ class BotBase(object):
                          reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -1450,10 +1450,10 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -1477,7 +1477,7 @@ class BotBase(object):
                      reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -1551,10 +1551,10 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -1589,7 +1589,7 @@ class BotBase(object):
         result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -1633,10 +1633,10 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -1651,7 +1651,7 @@ class BotBase(object):
         result = self.do("sendDice", chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -1750,7 +1750,7 @@ class BotBase(object):
         result = self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media import UserProfilePhotos
+            from ..api_types.receivable.media import UserProfilePhotos
             try:
                 return UserProfilePhotos.from_array(result)
             except TgApiParseException:
@@ -1796,7 +1796,7 @@ class BotBase(object):
         result = self.do("getFile", file_id=file_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media import File
+            from ..api_types.receivable.media import File
             try:
                 return File.from_array(result)
             except TgApiParseException:
@@ -1935,7 +1935,7 @@ class BotBase(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.receivable.peer import ChatPermissions
+        from ..api_types.receivable.peer import ChatPermissions
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
         assert_type_or_raise(user_id, int, parameter_name="user_id")
@@ -2104,7 +2104,7 @@ class BotBase(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.receivable.peer import ChatPermissions
+        from ..api_types.receivable.peer import ChatPermissions
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -2182,7 +2182,7 @@ class BotBase(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..api_types.sendable.files import InputFile
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -2465,7 +2465,7 @@ class BotBase(object):
         result = self.do("getChat", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.peer import Chat
+            from ..api_types.receivable.peer import Chat
             try:
                 return Chat.from_array(result)
             except TgApiParseException:
@@ -2506,7 +2506,7 @@ class BotBase(object):
         result = self.do("getChatAdministrators", chat_id=chat_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.peer import ChatMember
+            from ..api_types.receivable.peer import ChatMember
             try:
                 return ChatMember.from_array_list(result, list_level=1)
             except TgApiParseException:
@@ -2582,7 +2582,7 @@ class BotBase(object):
         result = self.do("getChatMember", chat_id=chat_id, user_id=user_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.peer import ChatMember
+            from ..api_types.receivable.peer import ChatMember
             try:
                 return ChatMember.from_array(result)
             except TgApiParseException:
@@ -2747,7 +2747,7 @@ class BotBase(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.receivable.command import BotCommand
+        from ..api_types.receivable.command import BotCommand
 
         assert_type_or_raise(commands, list, parameter_name="commands")
 
@@ -2809,7 +2809,7 @@ class BotBase(object):
                  otherwise True is returned
         :rtype: pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(text, unicode_type, parameter_name="text")
 
@@ -2830,7 +2830,7 @@ class BotBase(object):
                        disable_web_page_preview=disable_web_page_preview, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -2885,7 +2885,7 @@ class BotBase(object):
                  otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
 
@@ -2904,7 +2904,7 @@ class BotBase(object):
                          reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -2958,8 +2958,8 @@ class BotBase(object):
         :return: On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.input_media import InputMedia
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.input_media import InputMedia
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(media, InputMedia, parameter_name="media")
         new_media, files = media.get_request_data('littlepip', full_data=True)
@@ -2979,7 +2979,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -3025,7 +3025,7 @@ class BotBase(object):
         :return: On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
 
@@ -3041,7 +3041,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -3084,7 +3084,7 @@ class BotBase(object):
         :return: On success, the stopped Poll with the final results is returned
         :rtype:  pytgbot.api_types.receivable.media.Poll
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -3095,7 +3095,7 @@ class BotBase(object):
         result = self.do("stopPoll", chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media import Poll
+            from ..api_types.receivable.media import Poll
             try:
                 return Poll.from_array(result)
             except TgApiParseException:
@@ -3192,11 +3192,11 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+        from ..api_types.sendable.files import InputFile
+        from ..api_types.sendable.reply_markup import ForceReply
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
@@ -3214,7 +3214,7 @@ class BotBase(object):
         )
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -3249,7 +3249,7 @@ class BotBase(object):
         result = self.do("getStickerSet", name=name)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.stickers import StickerSet
+            from ..api_types.receivable.stickers import StickerSet
             try:
                 return StickerSet.from_array(result)
             except TgApiParseException:
@@ -3282,7 +3282,7 @@ class BotBase(object):
         :return: Returns the uploaded File on success
         :rtype: pytgbot.api_types.receivable.media.File
         """
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..api_types.sendable.files import InputFile
 
         assert_type_or_raise(user_id, int, parameter_name="user_id")
 
@@ -3291,7 +3291,7 @@ class BotBase(object):
         result = self.do("uploadStickerFile", user_id=user_id, png_sticker=png_sticker)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media import File
+            from ..api_types.receivable.media import File
             try:
                 return File.from_array(result)
             except TgApiParseException:
@@ -3344,8 +3344,8 @@ class BotBase(object):
         :return: Returns True on success
         :rtype: bool
         """
-        from pytgbot.api_types.receivable.stickers import MaskPosition
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..api_types.receivable.stickers import MaskPosition
+        from ..api_types.sendable.files import InputFile
 
         assert_type_or_raise(user_id, int, parameter_name="user_id")
 
@@ -3412,8 +3412,8 @@ class BotBase(object):
         :return: Returns True on success
         :rtype: bool
         """
-        from pytgbot.api_types.receivable.stickers import MaskPosition
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..api_types.receivable.stickers import MaskPosition
+        from ..api_types.sendable.files import InputFile
 
         assert_type_or_raise(user_id, int, parameter_name="user_id")
 
@@ -3540,7 +3540,7 @@ class BotBase(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..api_types.sendable.files import InputFile
 
         assert_type_or_raise(name, unicode_type, parameter_name="name")
 
@@ -3761,8 +3761,8 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.payments import LabeledPrice
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.payments import LabeledPrice
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(chat_id, int, parameter_name="chat_id")
 
@@ -3822,7 +3822,7 @@ class BotBase(object):
                          reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -3863,7 +3863,7 @@ class BotBase(object):
         :return: On success, True is returned
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.payments import ShippingOption
+        from ..api_types.sendable.payments import ShippingOption
 
         assert_type_or_raise(shipping_query_id, unicode_type, parameter_name="shipping_query_id")
 
@@ -3955,7 +3955,7 @@ class BotBase(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.passport import PassportElementError
+        from ..api_types.sendable.passport import PassportElementError
 
         assert_type_or_raise(user_id, int, parameter_name="user_id")
 
@@ -4008,7 +4008,7 @@ class BotBase(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(chat_id, int, parameter_name="chat_id")
 
@@ -4023,7 +4023,7 @@ class BotBase(object):
         result = self.do("sendGame", chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -4094,7 +4094,7 @@ class BotBase(object):
         result = self.do("setGameScore", user_id=user_id, score=score, force=force, disable_edit_message=disable_edit_message, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
+            from ..api_types.receivable.updates import Message
             try:
                 return Message.from_array(result)
             except TgApiParseException:
@@ -4154,7 +4154,7 @@ class BotBase(object):
         result = self.do("getGameHighScores", user_id=user_id, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.game import GameHighScore
+            from ..api_types.receivable.game import GameHighScore
             try:
                 return GameHighScore.from_array_list(result, list_level=1)
             except TgApiParseException:
@@ -4184,8 +4184,8 @@ class BotBase(object):
 
         :return: params and a url, for use with requests etc.
         """
-        from pytgbot.api_types.sendable import Sendable
-        from pytgbot.api_types import as_array
+        from ..api_types.sendable import Sendable
+        from ..api_types import as_array
         import json
 
         params = {}
