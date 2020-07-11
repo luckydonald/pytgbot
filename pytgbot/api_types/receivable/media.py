@@ -1663,6 +1663,134 @@ class Contact(Media):
 # end class Contact
 
 
+class Dice(Media):
+    """
+    This object represents an animated emoji that displays a random value.
+
+    https://core.telegram.org/bots/api#dice
+
+
+    Parameters:
+
+    :param emoji: Emoji on which the dice throw animation is based
+    :type  emoji: str|unicode
+
+    :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" base emoji
+    :type  value: int
+
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, emoji, value, _raw=None):
+        """
+        This object represents an animated emoji that displays a random value.
+
+        https://core.telegram.org/bots/api#dice
+
+
+        Parameters:
+
+        :param emoji: Emoji on which the dice throw animation is based
+        :type  emoji: str|unicode
+
+        :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" base emoji
+        :type  value: int
+
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(Dice, self).__init__()
+        assert_type_or_raise(emoji, unicode_type, parameter_name="emoji")
+        self.emoji = emoji
+
+        assert_type_or_raise(value, int, parameter_name="value")
+        self.value = value
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Dice to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Dice, self).to_array()
+        array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
+        array['value'] = int(self.value)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Dice constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Media.validate_array(array)
+        data['emoji'] = u(array.get('emoji'))
+        data['value'] = int(array.get('value'))
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Dice from a given dictionary.
+
+        :return: new Dice instance.
+        :rtype: Dice
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Dice.validate_array(array)
+        data['_raw'] = array
+        return Dice(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(dice_instance)`
+        """
+        return "Dice(emoji={self.emoji!r}, value={self.value!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(dice_instance)`
+        """
+        if self._raw:
+            return "Dice.from_array({self._raw})".format(self=self)
+        # end if
+        return "Dice(emoji={self.emoji!r}, value={self.value!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in dice_instance`
+        """
+        return (
+            key in ["emoji", "value"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Dice
+
+
 class Location(Media):
     """
     This object represents a point on the map.
