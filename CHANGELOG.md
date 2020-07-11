@@ -1,8 +1,10 @@
 # Changelog
 
-## Version 4.9 (Not released yet)
+## Version 4.9
+- Make exceptions inherit from Exception and not BaseException.
 - Added Updates from the Bot API 4.9, including:
     - Added StickerSet.thumb.
+    - Added Dice
     - Shifting around of argument order in Message.
     - Also adds Message.via_bot, Message.dice.
     - Added InlineQueryResultGif
