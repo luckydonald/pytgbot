@@ -1,5 +1,17 @@
 # Changelog
-## Version 4.6.1 _(not released yet)_
+
+## Version 4.9
+- Added Updates from the Bot API 4.9, including:
+    - Added StickerSet.thumb.
+    - Shifting around of argument order in Message.
+    - Also adds Message.via_bot, Message.dice.
+    - Added InlineQueryResultGif
+    .thumb_mime_type.
+    - Added InlineQueryResultMpeg4Gif.thumb_mime_type.
+    - Added Bot.set_sticker_set_thumb(…)
+    - Added Bot.get_my_commands(…)
+
+## Version 4.6.1
 - Added `language` to `MessageEntity` for real now.
 - Added `poll_answer` to `Update` as well.
 
