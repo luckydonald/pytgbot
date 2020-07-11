@@ -2739,7 +2739,7 @@ class BotBase(object):
         Parameters:
 
         :param commands: A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
-        :type  commands: list of pytgbot.api_types.receivable.command.BotCommand
+        :type  commands: list of pytgbot.api_types.sendable.command.BotCommand
 
 
         Returns:
@@ -2765,6 +2765,34 @@ class BotBase(object):
         return result
     # end def set_my_commands
 
+    def get_my_commands(self):
+        """
+        Use this method to get the current list of the bot's commands. Requires no parameters. Returns Array of BotCommand on success.
+
+        https://core.telegram.org/bots/api#getmycommands
+
+
+        Returns:
+
+        :return: Returns Array of BotCommand on success
+        :rtype:  list of pytgbot.api_types.sendable.command.BotCommand
+        """
+
+        result = self.do("getMyCommands", )
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.sendable.command import BotCommand
+            try:
+                return BotCommand.from_array_list(result, list_level=1)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type BotCommand", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def get_my_commands
+
     def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None,
                           disable_web_page_preview=None, reply_markup=None):
         """
@@ -2776,7 +2804,7 @@ class BotBase(object):
 
         Parameters:
 
-        :param text: New text of the message
+        :param text: New text of the message, 1-4096 characters after entities parsing
         :type  text: str|unicode
 
 
@@ -2793,7 +2821,7 @@ class BotBase(object):
                                     Identifier of the inline message
         :type  inline_message_id: str|unicode
 
-        :param parse_mode: Send "Markdown" or "HTML", if you want Telegram apps to show bold, italic, fixed-width text
+        :param parse_mode: Send "Markdown", "MarkdownV2" or "HTML", if you want Telegram apps to show bold, italic, fixed-width text
                              or inline URLs in your bot's message.
         :type  parse_mode: str|unicode
 
