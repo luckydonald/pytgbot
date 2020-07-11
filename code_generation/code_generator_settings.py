@@ -43,7 +43,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Chat":            ("pytgbot.api_types.receivable.peer.", "Peer", None),
 
     # pytgbot.api_types.receivable.command.*
-    "BotCommand":            ("pytgbot.api_types.receivable.command.", "Result", None),
+    "BotCommand":            ("pytgbot.api_types.sendable.command.", "Sendable", None),
 
     # pytgbot.api_types.receivable.updates.*
     "Update":               ("pytgbot.api_types.receivable.updates.", "Receivable", None),

@@ -24,9 +24,6 @@ class BotCommand(Result):
     
 
     Optional keyword parameters:
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
     """
     command: str
     description: str
