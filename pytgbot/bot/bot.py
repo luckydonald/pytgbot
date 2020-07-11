@@ -2747,7 +2747,7 @@ class BotBase(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from ..api_types.receivable.command import BotCommand
+        from ..api_types.sendable.command import BotCommand
 
         assert_type_or_raise(commands, list, parameter_name="commands")
 
