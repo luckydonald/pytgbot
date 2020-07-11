@@ -1,5 +1,5 @@
 # pytgbot - Telegram Bot API [`4`.`6`](https://core.telegram.org/bots/api)
-### Version [4.6.3 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
+### Version [4.9.0 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
 ###### Python module to access the telegram bot api.
 
 Native python package with a pure Python interface for the [Telegram Bot API](https://core.telegram.org/bots).
@@ -26,16 +26,16 @@ Released versions can be found at several locations:
 - and in the git files as regular tags.
 
 #### Latest Stable
-The [latest version](#releases) seems to be version `4.6.3`. For other releases you must adapt the examples below.
+The [latest version](#releases) seems to be version `4.9.0`. For other releases you must adapt the examples below.
 
 ##### Python package index (recommended)
 ```sh
-pip install pytgbot==4.6.3
+pip install pytgbot==4.9.0
 ```
 
 ##### Manually
 ```sh
-git clone -b v4.6.3 https://github.com/luckydonald/pytgbot.git
+git clone -b v4.9.0 https://github.com/luckydonald/pytgbot.git
 cd pytgbot
 python setup.py install
 ```
@@ -51,18 +51,18 @@ python setup.py install
 # Updating
 
 #### Latest Stable
-The [latest version](#releases) seems to be version `4.6.3`. For other releases you must adapt the examples below.
+The [latest version](#releases) seems to be version `4.9.0`. For other releases you must adapt the examples below.
 
 ##### Python package index (recommended)
 ```sh
-pip install -U pytgbot==4.6.3
+pip install -U pytgbot==4.9.0
 ```
 
 ##### Manually
 ```sh
 cd pytgbot
 git fetch
-git checkout v4.6.3
+git checkout v4.9.0
 python setup.py install
 ```
 
