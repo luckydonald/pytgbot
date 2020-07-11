@@ -147,7 +147,7 @@ class InlineQueryResultGif(InlineQueryResult):
     :param gif_url: A valid URL for the GIF file. File size must not exceed 1MB
     :type  gif_url: str|unicode
     
-    :param thumb_url: URL of the static thumbnail for the result (jpeg or gif)
+    :param thumb_url: URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
     :type  thumb_url: str|unicode
     
 
@@ -161,6 +161,9 @@ class InlineQueryResultGif(InlineQueryResult):
     
     :param gif_duration: Optional. Duration of the GIF
     :type  gif_duration: int
+    
+    :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+    :type  thumb_mime_type: str|unicode
     
     :param title: Optional. Title for the result
     :type  title: str|unicode
@@ -184,6 +187,7 @@ class InlineQueryResultGif(InlineQueryResult):
     gif_width: int
     gif_height: int
     gif_duration: int
+    thumb_mime_type: str
     title: str
     caption: str
     parse_mode: str
@@ -209,7 +213,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :param mpeg4_url: A valid URL for the MP4 file. File size must not exceed 1MB
     :type  mpeg4_url: str|unicode
     
-    :param thumb_url: URL of the static thumbnail (jpeg or gif) for the result
+    :param thumb_url: URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
     :type  thumb_url: str|unicode
     
 
@@ -223,6 +227,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     
     :param mpeg4_duration: Optional. Video duration
     :type  mpeg4_duration: int
+    
+    :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+    :type  thumb_mime_type: str|unicode
     
     :param title: Optional. Title for the result
     :type  title: str|unicode
@@ -246,6 +253,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     mpeg4_width: int
     mpeg4_height: int
     mpeg4_duration: int
+    thumb_mime_type: str
     title: str
     caption: str
     parse_mode: str

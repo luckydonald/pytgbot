@@ -17,7 +17,7 @@ class Update(Receivable):
 
     Parameters:
     
-    :param update_id: The update‘s unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you’re using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
+    :param update_id: The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you're using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
     :type  update_id: int
     
 
@@ -163,6 +163,9 @@ class Message(UpdateType):
     :param reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
     :type  reply_to_message: pytgbot.api_types.receivable.updates.Message
     
+    :param via_bot: Optional. Bot through which the message was sent
+    :type  via_bot: pytgbot.api_types.receivable.peer.User
+    
     :param edit_date: Optional. Date the message was last edited in Unix time
     :type  edit_date: int
     
@@ -178,20 +181,14 @@ class Message(UpdateType):
     :param entities: Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
     :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
     
-    :param caption_entities: Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
-    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    :param animation: Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
+    :type  animation: pytgbot.api_types.receivable.media.Animation
     
     :param audio: Optional. Message is an audio file, information about the file
     :type  audio: pytgbot.api_types.receivable.media.Audio
     
     :param document: Optional. Message is a general file, information about the file
     :type  document: pytgbot.api_types.receivable.media.Document
-    
-    :param animation: Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
-    :type  animation: pytgbot.api_types.receivable.media.Animation
-    
-    :param game: Optional. Message is a game, information about the game. More about games »
-    :type  game: pytgbot.api_types.receivable.media.Game
     
     :param photo: Optional. Message is a photo, available sizes of the photo
     :type  photo: list of pytgbot.api_types.receivable.media.PhotoSize
@@ -202,29 +199,35 @@ class Message(UpdateType):
     :param video: Optional. Message is a video, information about the video
     :type  video: pytgbot.api_types.receivable.media.Video
     
-    :param voice: Optional. Message is a voice message, information about the file
-    :type  voice: pytgbot.api_types.receivable.media.Voice
-    
     :param video_note: Optional. Message is a video note, information about the video message
     :type  video_note: pytgbot.api_types.receivable.media.VideoNote
+    
+    :param voice: Optional. Message is a voice message, information about the file
+    :type  voice: pytgbot.api_types.receivable.media.Voice
     
     :param caption: Optional. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
     :type  caption: str|unicode
     
+    :param caption_entities: Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param contact: Optional. Message is a shared contact, information about the contact
     :type  contact: pytgbot.api_types.receivable.media.Contact
     
-    :param location: Optional. Message is a shared location, information about the location
-    :type  location: pytgbot.api_types.receivable.media.Location
+    :param dice: Optional. Message is a dice with random value from 1 to 6
+    :type  dice: pytgbot.api_types.receivable.media.Dice
     
-    :param venue: Optional. Message is a venue, information about the venue
-    :type  venue: pytgbot.api_types.receivable.media.Venue
+    :param game: Optional. Message is a game, information about the game. More about games »
+    :type  game: pytgbot.api_types.receivable.media.Game
     
     :param poll: Optional. Message is a native poll, information about the poll
     :type  poll: pytgbot.api_types.receivable.media.Poll
     
-    :param dice: Optional. Message is a dice with random value from 1 to 6
-    :type  dice: pytgbot.api_types.receivable.media.Dice
+    :param venue: Optional. Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set
+    :type  venue: pytgbot.api_types.receivable.media.Venue
+    
+    :param location: Optional. Message is a shared location, information about the location
+    :type  location: pytgbot.api_types.receivable.media.Location
     
     :param new_chat_members: Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     :type  new_chat_members: list of pytgbot.api_types.receivable.peer.User
@@ -244,10 +247,10 @@ class Message(UpdateType):
     :param group_chat_created: Optional. Service message: the group has been created
     :type  group_chat_created: bool
     
-    :param supergroup_chat_created: Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
+    :param supergroup_chat_created: Optional. Service message: the supergroup has been created. This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
     :type  supergroup_chat_created: bool
     
-    :param channel_chat_created: Optional. Service message: the channel has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
+    :param channel_chat_created: Optional. Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
     :type  channel_chat_created: bool
     
     :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
@@ -288,27 +291,28 @@ class Message(UpdateType):
     forward_sender_name: str
     forward_date: int
     reply_to_message: Message
+    via_bot: User
     edit_date: int
     media_group_id: str
     author_signature: str
     text: str
     entities: List[MessageEntity]
-    caption_entities: List[MessageEntity]
+    animation: Animation
     audio: Audio
     document: Document
-    animation: Animation
-    game: Game
     photo: List[PhotoSize]
     sticker: Sticker
     video: Video
-    voice: Voice
     video_note: VideoNote
+    voice: Voice
     caption: str
+    caption_entities: List[MessageEntity]
     contact: Contact
-    location: Location
-    venue: Venue
-    poll: Poll
     dice: Dice
+    game: Game
+    poll: Poll
+    venue: Venue
+    location: Location
     new_chat_members: List[User]
     left_chat_member: User
     new_chat_title: str

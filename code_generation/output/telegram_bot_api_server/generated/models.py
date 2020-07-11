@@ -7,7 +7,7 @@ from typing import Any, Union, List, Optional
 __author__ = 'luckydonald'
 
 __all__ = [
-    'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageEntityModel', 'PhotoSizeModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'AnimationModel', 'VoiceModel', 'VideoNoteModel', 'ContactModel', 'LocationModel', 'VenueModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'DiceModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatMemberModel', 'ChatPermissionsModel', 'BotCommandModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
+    'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatMemberModel', 'ChatPermissionsModel', 'BotCommandModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
 ]
 
 FAST_API_ISSUE_884_IS_FIXED = False
@@ -134,27 +134,28 @@ class MessageModel(BaseModel):  # UpdateType
     forward_sender_name: Optional[str]
     forward_date: Optional[int]
     reply_to_message: Optional['MessageModel']
+    via_bot: Optional['UserModel']
     edit_date: Optional[int]
     media_group_id: Optional[str]
     author_signature: Optional[str]
     text: Optional[str]
     entities: Optional[List['MessageEntityModel']]
-    caption_entities: Optional[List['MessageEntityModel']]
+    animation: Optional['AnimationModel']
     audio: Optional['AudioModel']
     document: Optional['DocumentModel']
-    animation: Optional['AnimationModel']
-    game: Optional['GameModel']
     photo: Optional[List['PhotoSizeModel']]
     sticker: Optional['StickerModel']
     video: Optional['VideoModel']
-    voice: Optional['VoiceModel']
     video_note: Optional['VideoNoteModel']
+    voice: Optional['VoiceModel']
     caption: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     contact: Optional['ContactModel']
-    location: Optional['LocationModel']
-    venue: Optional['VenueModel']
-    poll: Optional['PollModel']
     dice: Optional['DiceModel']
+    game: Optional['GameModel']
+    poll: Optional['PollModel']
+    venue: Optional['VenueModel']
+    location: Optional['LocationModel']
     new_chat_members: Optional[List['UserModel']]
     left_chat_member: Optional['UserModel']
     new_chat_title: Optional[str]
@@ -201,6 +202,24 @@ class PhotoSizeModel(BaseModel):  # Result
     height: int
     file_size: Optional[int]
 # end class PhotoSize
+
+
+class AnimationModel(BaseModel):  # Media
+    """
+    This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
+
+    https://core.telegram.org/bots/api#animation
+    """
+    file_id: str
+    file_unique_id: str
+    width: int
+    height: int
+    duration: int
+    thumb: Optional['PhotoSizeModel']
+    file_name: Optional[str]
+    mime_type: Optional[str]
+    file_size: Optional[int]
+# end class Animation
 
 
 class AudioModel(BaseModel):  # Media
@@ -252,22 +271,19 @@ class VideoModel(BaseModel):  # Media
 # end class Video
 
 
-class AnimationModel(BaseModel):  # Media
+class VideoNoteModel(BaseModel):  # Media
     """
-    This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
+    This object represents a video message (available in Telegram apps as of v.4.0).
 
-    https://core.telegram.org/bots/api#animation
+    https://core.telegram.org/bots/api#videonote
     """
     file_id: str
     file_unique_id: str
-    width: int
-    height: int
+    length: int
     duration: int
     thumb: Optional['PhotoSizeModel']
-    file_name: Optional[str]
-    mime_type: Optional[str]
     file_size: Optional[int]
-# end class Animation
+# end class VideoNote
 
 
 class VoiceModel(BaseModel):  # Media
@@ -284,21 +300,6 @@ class VoiceModel(BaseModel):  # Media
 # end class Voice
 
 
-class VideoNoteModel(BaseModel):  # Media
-    """
-    This object represents a video message (available in Telegram apps as of v.4.0).
-
-    https://core.telegram.org/bots/api#videonote
-    """
-    file_id: str
-    file_unique_id: str
-    length: int
-    duration: int
-    thumb: Optional['PhotoSizeModel']
-    file_size: Optional[int]
-# end class VideoNote
-
-
 class ContactModel(BaseModel):  # Media
     """
     This object represents a phone contact.
@@ -313,29 +314,15 @@ class ContactModel(BaseModel):  # Media
 # end class Contact
 
 
-class LocationModel(BaseModel):  # Media
+class DiceModel(BaseModel):  # Media
     """
-    This object represents a point on the map.
+    This object represents an animated emoji that displays a random value.
 
-    https://core.telegram.org/bots/api#location
+    https://core.telegram.org/bots/api#dice
     """
-    longitude: float
-    latitude: float
-# end class Location
-
-
-class VenueModel(BaseModel):  # Media
-    """
-    This object represents a venue.
-
-    https://core.telegram.org/bots/api#venue
-    """
-    location: 'LocationModel'
-    title: str
-    address: str
-    foursquare_id: Optional[str]
-    foursquare_type: Optional[str]
-# end class Venue
+    emoji: str
+    value: int
+# end class Dice
 
 
 class PollOptionModel(BaseModel):  # Receivable
@@ -383,15 +370,29 @@ class PollModel(BaseModel):  # Media
 # end class Poll
 
 
-class DiceModel(BaseModel):  # Media
+class LocationModel(BaseModel):  # Media
     """
-    This object represents a dice with a random value from 1 to 6 for currently supported base emoji. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+    This object represents a point on the map.
 
-    https://core.telegram.org/bots/api#dice
+    https://core.telegram.org/bots/api#location
     """
-    emoji: str
-    value: int
-# end class Dice
+    longitude: float
+    latitude: float
+# end class Location
+
+
+class VenueModel(BaseModel):  # Media
+    """
+    This object represents a venue.
+
+    https://core.telegram.org/bots/api#venue
+    """
+    location: 'LocationModel'
+    title: str
+    address: str
+    foursquare_id: Optional[str]
+    foursquare_type: Optional[str]
+# end class Venue
 
 
 class UserProfilePhotosModel(BaseModel):  # Result
@@ -532,14 +533,14 @@ class CallbackQueryModel(BaseModel):  # UpdateType
 
 class ForceReplyModel(BaseModel):  # ReplyMarkup
     """
-    Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot‘s message and tapped ’Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
+    Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
 
     Example: A poll bot for groups runs in privacy mode (only receives commands, replies to its messages and mentions). There could be two ways to create a new poll:
 
     Explain the user how to send a command with parameters (e.g. /newpoll question answer1 answer2). May be appealing for hardcore users but lacks modern day polish.
-    Guide the user through a step-by-step process. ‘Please send me your question’, ‘Cool, now let’s add the first answer option‘, ’Great. Keep adding answer options, then send /done when you‘re ready’.
+    Guide the user through a step-by-step process. 'Please send me your question', 'Cool, now let's add the first answer option', 'Great. Keep adding answer options, then send /done when you're ready'.
 
-    The last option is definitely more attractive. And if you use ForceReply in your bot‘s questions, it will receive the user’s answers even if it only receives replies, commands and mentions — without any extra work for the user.
+    The last option is definitely more attractive. And if you use ForceReply in your bot's questions, it will receive the user's answers even if it only receives replies, commands and mentions — without any extra work for the user.
 
     https://core.telegram.org/bots/api#forcereply
     """
@@ -606,7 +607,7 @@ class ChatPermissionsModel(BaseModel):  # Result
 # end class ChatPermissions
 
 
-class BotCommandModel(BaseModel):  # Result
+class BotCommandModel(BaseModel):  # Sendable
     """
     This object represents a bot command.
 
@@ -822,6 +823,7 @@ class InlineQueryResultGifModel(BaseModel):  # InlineQueryResult
     gif_width: Optional[int]
     gif_height: Optional[int]
     gif_duration: Optional[int]
+    thumb_mime_type: Optional[str]
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
@@ -843,6 +845,7 @@ class InlineQueryResultMpeg4GifModel(BaseModel):  # InlineQueryResult
     mpeg4_width: Optional[int]
     mpeg4_height: Optional[int]
     mpeg4_duration: Optional[int]
+    thumb_mime_type: Optional[str]
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
@@ -1541,19 +1544,19 @@ ChatModel.update_forward_refs()
 MessageModel.update_forward_refs()
 MessageEntityModel.update_forward_refs()
 PhotoSizeModel.update_forward_refs()
+AnimationModel.update_forward_refs()
 AudioModel.update_forward_refs()
 DocumentModel.update_forward_refs()
 VideoModel.update_forward_refs()
-AnimationModel.update_forward_refs()
-VoiceModel.update_forward_refs()
 VideoNoteModel.update_forward_refs()
+VoiceModel.update_forward_refs()
 ContactModel.update_forward_refs()
-LocationModel.update_forward_refs()
-VenueModel.update_forward_refs()
+DiceModel.update_forward_refs()
 PollOptionModel.update_forward_refs()
 PollAnswerModel.update_forward_refs()
 PollModel.update_forward_refs()
-DiceModel.update_forward_refs()
+LocationModel.update_forward_refs()
+VenueModel.update_forward_refs()
 UserProfilePhotosModel.update_forward_refs()
 FileModel.update_forward_refs()
 ReplyKeyboardMarkupModel.update_forward_refs()

@@ -2,12 +2,12 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
-from pytgbot.api_types.receivable import Result
+from pytgbot.api_types.sendable import Sendable
 
 __author__ = 'luckydonald'
 
 
-class BotCommand(Result):
+class BotCommand(Sendable):
     """
     This object represents a bot command.
 
