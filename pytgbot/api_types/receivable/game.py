@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from . import Result
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from . import Result
+
+__author__ = 'luckydonald'
 
 
 class GameHighScore(Result):

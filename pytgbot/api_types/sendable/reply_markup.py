@@ -191,10 +191,8 @@ class KeyboardButton(Button):
 
     Optional fields request_contact, request_location, and request_poll are mutually exclusive.
 
-    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016.
-          Older clients will receive unsupported message.
-    Note: request_poll option will only work in Telegram versions released after 23 January, 2020.
-          Older clients will receive unsupported message.
+    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
+    Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#keyboardbutton
 
@@ -224,10 +222,8 @@ class KeyboardButton(Button):
 
     Optional fields request_contact, request_location, and request_poll are mutually exclusive.
 
-    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016.
-          Older clients will receive unsupported message.
-    Note: request_poll option will only work in Telegram versions released after 23 January, 2020.
-          Older clients will receive unsupported message.
+        Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
+        Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#keyboardbutton
 

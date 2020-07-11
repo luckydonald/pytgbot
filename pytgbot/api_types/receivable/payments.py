@@ -4,6 +4,8 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Result
 from .updates import UpdateType
 
+__author__ = 'luckydonald'
+
 
 class Invoice(Result):
     """

@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from ..receivable import Result
+from . import Sendable
 
 __author__ = 'luckydonald'
 
 
-class BotCommand(Result):
+class BotCommand(Sendable):
     """
     This object represents a bot command.
 
     https://core.telegram.org/bots/api#botcommand
-    
+
 
     Parameters:
-    
+
     :param command: Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
     :type  command: str|unicode
-    
+
     :param description: Description of the command, 3-256 characters.
     :type  description: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -30,23 +30,23 @@ class BotCommand(Result):
         This object represents a bot command.
 
         https://core.telegram.org/bots/api#botcommand
-        
+
 
         Parameters:
-        
+
         :param command: Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
         :type  command: str|unicode
-        
+
         :param description: Description of the command, 3-256 characters.
         :type  description: str|unicode
-        
+
 
         Optional keyword parameters:
         """
         super(BotCommand, self).__init__()
         assert_type_or_raise(command, unicode_type, parameter_name="command")
         self.command = command
-        
+
         assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
     # end def __init__
@@ -73,7 +73,7 @@ class BotCommand(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        data = Result.validate_array(array)
+        data = Sendable.validate_array(array)
         data['command'] = u(array.get('command'))
         data['description'] = u(array.get('description'))
         return data
