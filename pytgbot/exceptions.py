@@ -5,7 +5,7 @@ __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
 
 
-class TgApiException(BaseException):
+class TgApiException(Exception):
     """
     Base Class for all exceptions.
     """
