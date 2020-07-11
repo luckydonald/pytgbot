@@ -1489,7 +1489,7 @@ class BotBase(object):
         return result
     # end def send_contact
 
-    def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, is_closed=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
         """
         Use this method to send a native poll. On success, the sent Message is returned.
 
@@ -1522,7 +1522,19 @@ class BotBase(object):
         :param correct_option_id: 0-based identifier of the correct answer option, required for polls in quiz mode
         :type  correct_option_id: int
 
-        :param is_closed: Pass True, if the poll needs to be immediately closed
+        :param explanation: Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
+        :type  explanation: str|unicode
+
+        :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
+        :type  explanation_parse_mode: str|unicode
+
+        :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
+        :type  open_period: int
+
+        :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+        :type  close_date: int
+
+        :param is_closed: Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
         :type  is_closed: bool
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1558,6 +1570,14 @@ class BotBase(object):
 
         assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
 
+        assert_type_or_raise(explanation, None, unicode_type, parameter_name="explanation")
+
+        assert_type_or_raise(explanation_parse_mode, None, unicode_type, parameter_name="explanation_parse_mode")
+
+        assert_type_or_raise(open_period, None, int, parameter_name="open_period")
+
+        assert_type_or_raise(close_date, None, int, parameter_name="close_date")
+
         assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
 
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
@@ -1566,7 +1586,7 @@ class BotBase(object):
 
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
 
-        result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             from pytgbot.api_types.receivable.updates import Message
@@ -1580,6 +1600,68 @@ class BotBase(object):
         # end if return_python_objects
         return result
     # end def send_poll
+
+    def send_dice(self, chat_id, emoji=None, disable_notification=None, reply_to_message_id=None, reply_markup=None):
+        """
+        Use this method to send a dice, which will have a random value from 1 to 6. On success, the sent Message is returned. (Yes, we're aware of the "proper" singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
+
+        https://core.telegram.org/bots/api#senddice
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+
+        Optional keyword parameters:
+
+        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "" or "". Defauts to ""
+        :type  emoji: str|unicode
+
+        :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
+        :type  disable_notification: bool
+
+        :param reply_to_message_id: If the message is a reply, ID of the original message
+        :type  reply_to_message_id: int
+
+        :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
+
+        Returns:
+
+        :return: On success, the sent Message is returned
+        :rtype:  pytgbot.api_types.receivable.updates.Message
+        """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
+        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+
+        assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
+
+        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+
+        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
+
+        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
+
+        result = self.do("sendDice", chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.updates import Message
+            try:
+                return Message.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Message", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def send_dice
 
     def send_chat_action(self, chat_id, action):
         """
@@ -1606,7 +1688,7 @@ class BotBase(object):
         :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive:
                         "typing" for text messages, "upload_photo" for photos,
                         "record_video" or "upload_video" for videos, "record_audio" or "upload_audio" for audio files,
-                        "upload_document" for general files, "find_location" for location data.
+                        "upload_document" for general files, "find_location" for location data, "record_video_note" or "upload_video_note" for video notes.
         :type  action: str|unicode
 
 
@@ -1824,9 +1906,9 @@ class BotBase(object):
         return result
     # end def unban_chat_member
 
-    def restrict_chat_member(self, chat_id, user_id, until_date=None, can_send_messages=None, can_send_media_messages=None, can_send_other_messages=None, can_add_web_page_previews=None):
+    def restrict_chat_member(self, chat_id, user_id, permissions, until_date=None):
         """
-        Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from a user. Returns True on success.
+        Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
 
         https://core.telegram.org/bots/api#restrictchatmember
 
@@ -1839,44 +1921,30 @@ class BotBase(object):
         :param user_id: Unique identifier of the target user
         :type  user_id: int
 
+        :param permissions: New user permissions
+        :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
+
 
         Optional keyword parameters:
 
         :param until_date: Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
         :type  until_date: int
 
-        :param can_send_messages: Pass True, if the user can send text messages, contacts, locations and venues
-        :type  can_send_messages: bool
-
-        :param can_send_media_messages: Pass True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
-        :type  can_send_media_messages: bool
-
-        :param can_send_other_messages: Pass True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
-        :type  can_send_other_messages: bool
-
-        :param can_add_web_page_previews: Pass True, if the user may add web page previews to their messages, implies can_send_media_messages
-        :type  can_add_web_page_previews: bool
-
         Returns:
 
         :return: Returns True on success
         :rtype:  bool
         """
+        from pytgbot.api_types.receivable.peer import ChatPermissions
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
 
         assert_type_or_raise(user_id, int, parameter_name="user_id")
 
+        assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
+
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
 
-        assert_type_or_raise(can_send_messages, None, bool, parameter_name="can_send_messages")
-
-        assert_type_or_raise(can_send_media_messages, None, bool, parameter_name="can_send_media_messages")
-
-        assert_type_or_raise(can_send_other_messages, None, bool, parameter_name="can_send_other_messages")
-
-        assert_type_or_raise(can_add_web_page_previews, None, bool, parameter_name="can_add_web_page_previews")
-
-        result = self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date, can_send_messages=can_send_messages, can_send_media_messages=can_send_media_messages, can_send_other_messages=can_send_other_messages, can_add_web_page_previews=can_add_web_page_previews)
+        result = self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, permissions=permissions, until_date=until_date)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -2097,8 +2165,6 @@ class BotBase(object):
         """
         Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
-        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
-
         https://core.telegram.org/bots/api#setchatphoto
 
 
@@ -2176,8 +2242,6 @@ class BotBase(object):
         """
         Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
-        Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
-
         https://core.telegram.org/bots/api#setchattitle
 
 
@@ -2215,7 +2279,7 @@ class BotBase(object):
 
     def set_chat_description(self, chat_id, description=None):
         """
-        Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+        Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
         https://core.telegram.org/bots/api#setchatdescription
 
@@ -2256,7 +2320,7 @@ class BotBase(object):
 
     def pin_chat_message(self, chat_id, message_id, disable_notification=None):
         """
-        Use this method to pin a message in a supergroup or a channel.
+        Use this method to pin a message in a group, a supergroup, or a channel.
         The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right
         in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
 
@@ -2266,7 +2330,7 @@ class BotBase(object):
 
         Parameters:
 
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup/cannel (in the format @username)
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
 
         :param message_id: Identifier of a message to pin
@@ -2305,7 +2369,7 @@ class BotBase(object):
 
     def unpin_chat_message(self, chat_id):
         """
-        Use this method to unpin a message in a supergroup or a channel.
+        Use this method to unpin a message in a group, a supergroup, or a channel.
         The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right
         in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
 
@@ -2314,7 +2378,7 @@ class BotBase(object):
 
         Parameters:
 
-        :param chat_id: Unique identifier for the target chat or username of the target supergroup/channel (in the format @username)
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
 
 
@@ -2665,6 +2729,42 @@ class BotBase(object):
         return result
     # end def answer_callback_query
 
+    def set_my_commands(self, commands):
+        """
+        Use this method to change the list of the bot's commands. Returns True on success.
+
+        https://core.telegram.org/bots/api#setmycommands
+
+
+        Parameters:
+
+        :param commands: A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
+        :type  commands: list of pytgbot.api_types.receivable.command.BotCommand
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        from pytgbot.api_types.receivable.command import BotCommand
+
+        assert_type_or_raise(commands, list, parameter_name="commands")
+
+        result = self.do("setMyCommands", commands=commands)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_my_commands
+
     def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None,
                           disable_web_page_preview=None, reply_markup=None):
         """
@@ -2763,17 +2863,17 @@ class BotBase(object):
                           username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
 
-        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :param message_id: Required if inline_message_id is not specified. Identifier of the message to edit
         :type  message_id: int
 
         :param inline_message_id: Required if chat_id and message_id are not specified.
                                     Identifier of the inline message
         :type  inline_message_id: str|unicode
 
-        :param caption: New caption of the message
+        :param caption: New caption of the message, 0-1024 characters after entities parsing
         :type  caption: str|unicode
 
-        :param parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        :param parse_mode: Mode for parsing entities in the message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
         :param reply_markup: A JSON-serialized object for an inline keyboard.
@@ -2843,7 +2943,7 @@ class BotBase(object):
                           username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
 
-        :param message_id: Required if inline_message_id is not specified. Identifier of the sent message
+        :param message_id: Required if inline_message_id is not specified. Identifier of the message to edit
         :type  message_id: int
 
         :param inline_message_id: Required if chat_id and message_id are not specified.
@@ -2958,10 +3058,60 @@ class BotBase(object):
         return result
     # end def edit_message_reply_markup
 
+    def stop_poll(self, chat_id, message_id, reply_markup=None):
+        """
+        Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the final results is returned.
+
+        https://core.telegram.org/bots/api#stoppoll
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param message_id: Identifier of the original message with the poll
+        :type  message_id: int
+
+
+        Optional keyword parameters:
+
+        :param reply_markup: A JSON-serialized object for a new message inline keyboard.
+        :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+
+        Returns:
+
+        :return: On success, the stopped Poll with the final results is returned
+        :rtype:  pytgbot.api_types.receivable.media.Poll
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+
+        assert_type_or_raise(message_id, int, parameter_name="message_id")
+
+        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
+
+        result = self.do("stopPoll", chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            from pytgbot.api_types.receivable.media import Poll
+            try:
+                return Poll.from_array(result)
+            except TgApiParseException:
+                logger.debug("Failed parsing as api_type Poll", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def stop_poll
+
     def delete_message(self, chat_id, message_id):
         """
         Use this method to delete a message, including service messages, with the following limitations:
         - A message can only be deleted if it was sent less than 48 hours ago.
+        - A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.
         - Bots can delete outgoing messages in private chats, groups, and supergroups.
         - Bots granted `can_post_messages` permissions can delete outgoing messages in channels.
         - If the bot is an administrator of a group, it can delete any message there.
@@ -3005,7 +3155,7 @@ class BotBase(object):
 
     def send_sticker(self, chat_id, sticker, disable_notification=False, reply_to_message_id=None, reply_markup=None):
         """
-        Use this method to send .webp stickers. On success, the sent Message is returned.
+        Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendsticker
 
@@ -3113,7 +3263,7 @@ class BotBase(object):
 
     def upload_sticker_file(self, user_id, png_sticker):
         """
-        Use this method to upload a .png file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+        Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
 
         https://core.telegram.org/bots/api#uploadstickerfile
 
@@ -3123,7 +3273,7 @@ class BotBase(object):
         :param user_id: User identifier of sticker file owner
         :type  user_id: int
 
-        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px.
+        :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px.
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile
 
 
@@ -3153,9 +3303,9 @@ class BotBase(object):
         return result
     # end def upload_sticker_file
 
-    def create_new_sticker_set(self, user_id, name, title, png_sticker, emojis, contains_masks=None, mask_position=None):
+    def create_new_sticker_set(self, user_id, name, title, emojis, png_sticker=None, tgs_sticker=None, contains_masks=None, mask_position=None):
         """
-        Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns True on success.
+        Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker. Returns True on success.
 
         https://core.telegram.org/bots/api#createnewstickerset
 
@@ -3171,14 +3321,17 @@ class BotBase(object):
         :param title: Sticker set title, 1-64 characters
         :type  title: str|unicode
 
-        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
-        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
-
         :param emojis: One or more emoji corresponding to the sticker
         :type  emojis: str|unicode
 
 
         Optional keyword parameters:
+
+        :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
+
+        :param tgs_sticker: TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        :type  tgs_sticker: pytgbot.api_types.sendable.files.InputFile
 
         :param contains_masks: Pass True, if a set of mask stickers should be created
         :type  contains_masks: bool
@@ -3200,15 +3353,17 @@ class BotBase(object):
 
         assert_type_or_raise(title, unicode_type, parameter_name="title")
 
-        assert_type_or_raise(png_sticker, (InputFile, unicode_type), parameter_name="png_sticker")
-
         assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
+
+        assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
+
+        assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
 
         assert_type_or_raise(contains_masks, None, bool, parameter_name="contains_masks")
 
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
 
-        result = self.do("createNewStickerSet", user_id=user_id, name=name, title=title, png_sticker=png_sticker, emojis=emojis, contains_masks=contains_masks, mask_position=mask_position)
+        result = self.do("createNewStickerSet", user_id=user_id, name=name, title=title, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, contains_masks=contains_masks, mask_position=mask_position)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3222,9 +3377,9 @@ class BotBase(object):
         return result
     # end def create_new_sticker_set
 
-    def add_sticker_to_set(self, user_id, name, png_sticker, emojis, mask_position=None):
+    def add_sticker_to_set(self, user_id, name, emojis, png_sticker=None, tgs_sticker=None, mask_position=None):
         """
-        Use this method to add a new sticker to a set created by the bot. Returns True on success.
+        Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
 
         https://core.telegram.org/bots/api#addstickertoset
 
@@ -3237,14 +3392,17 @@ class BotBase(object):
         :param name: Sticker set name
         :type  name: str|unicode
 
-        :param png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
-        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
-
         :param emojis: One or more emoji corresponding to the sticker
         :type  emojis: str|unicode
 
 
         Optional keyword parameters:
+
+        :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
+        :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
+
+        :param tgs_sticker: TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        :type  tgs_sticker: pytgbot.api_types.sendable.files.InputFile
 
         :param mask_position: A JSON-serialized object for position where the mask should be placed on faces
         :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
@@ -3261,13 +3419,15 @@ class BotBase(object):
 
         assert_type_or_raise(name, unicode_type, parameter_name="name")
 
-        assert_type_or_raise(png_sticker, (InputFile, unicode_type), parameter_name="png_sticker")
-
         assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
+
+        assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
+
+        assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
 
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
 
-        result = self.do("addStickerToSet", user_id=user_id, name=name, png_sticker=png_sticker, emojis=emojis, mask_position=mask_position)
+        result = self.do("addStickerToSet", user_id=user_id, name=name, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, mask_position=mask_position)
         if self.return_python_objects:
             logger.debug("Trying to parse {data}".format(data=repr(result)))
             try:
@@ -3353,6 +3513,54 @@ class BotBase(object):
         # end if return_python_objects
         return result
     # end def delete_sticker_from_set
+
+    def set_sticker_set_thumb(self, name, user_id, thumb=None):
+        """
+        Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only. Returns True on success.
+
+        https://core.telegram.org/bots/api#setstickersetthumb
+
+
+        Parameters:
+
+        :param name: Sticker set name
+        :type  name: str|unicode
+
+        :param user_id: User identifier of the sticker set owner
+        :type  user_id: int
+
+
+        Optional keyword parameters:
+
+        :param thumb: A PNG image with the thumbnail, must be up to 128 kilobytes in size and have width and height exactly 100px, or a TGS animation with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/animated_stickers#technical-requirements for animated sticker technical requirements. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files ». Animated sticker set thumbnail can't be uploaded via HTTP URL.
+        :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        from pytgbot.api_types.sendable.files import InputFile
+
+        assert_type_or_raise(name, unicode_type, parameter_name="name")
+
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
+
+        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
+
+        result = self.do("setStickerSetThumb", name=name, user_id=user_id, thumb=thumb)
+        if self.return_python_objects:
+            logger.debug("Trying to parse {data}".format(data=repr(result)))
+            try:
+                return from_array_list(bool, result, list_level=0, is_builtin=True)
+            except TgApiParseException:
+                logger.debug("Failed parsing as primitive bool", exc_info=True)
+            # end try
+            # no valid parsing so far
+            raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def set_sticker_set_thumb
 
     def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None,
                             switch_pm_text=None, switch_pm_parameter=None):
@@ -3958,6 +4166,8 @@ class BotBase(object):
         return result
     # end def get_game_high_scores
 
+    # end of generated functions
+
     def send_msg(self, *args, **kwargs):
         """ alias to :func:`send_message` """
         return self.send_message(*args, **kwargs)
@@ -4108,7 +4318,7 @@ class BotBase(object):
         :return: url
         :rtype: str
         """
-        from pytgbot.api_types.receivable.media import File
+        from ..api_types.receivable.media import File
         assert isinstance(file, File)
         return file.get_download_url(self.api_key)
     # end def get_download_url
