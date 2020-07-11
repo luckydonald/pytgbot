@@ -180,6 +180,7 @@ WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters 
     "sendMediaGroup":         {'return': {'expected': 'On success, an array of the sent Messages is returned', 'replace': 'On success, an array of the sent Messages is returned'}, 'r_type': {'expected': 'Messages', 'replace': 'list of Message'}},
     "answerShippingQuery":    {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
     "answerPreCheckoutQuery": {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
+    "getMyCommands":          {'return': {'expected': 'Returns Array of BotCommand on success', 'replace': 'On success, an array of the commands is returned'}, 'r_type': {'expected': 'Array of BotCommand', 'replace': 'list of BotCommand'}},
 }
 """
 Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
