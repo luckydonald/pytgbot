@@ -47,7 +47,7 @@ setup(
     keywords='telegram bot api python message send receive python secure fast answer reply image voice picture location contacts typing multi messanger inline quick reply gif image video mp4 mpeg4 sticker file_id markdown markdownV2',
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=['pytgbot', 'pytgbot.api_types', 'pytgbot.api_types.receivable', 'pytgbot.api_types.sendable'],
+    packages=['pytgbot', 'pytgbot.api_types', 'pytgbot.api_types.receivable', 'pytgbot.api_types.sendable', 'pytgbot.bot'],
               # find_packages(exclude=['contrib', 'docs', 'tests*']),
     # List run-time dependencies here. These will be installed by pip when your
     # project is installed. For an analysis of "install_requires" vs pip's
