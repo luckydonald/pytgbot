@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 4.9.1
+- Fixed `pytgbot.bot` not being part of the pip release.
+
 ## Version 4.9
 - Make exceptions inherit from Exception and not BaseException.
 - Added Updates from the Bot API 4.9, including:
