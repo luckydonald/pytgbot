@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 4.9
+## Version 4.9 (Not released yet)
 - Added Updates from the Bot API 4.9, including:
     - Added StickerSet.thumb.
     - Shifting around of argument order in Message.
