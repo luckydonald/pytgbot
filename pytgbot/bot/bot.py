@@ -4220,10 +4220,13 @@ class BotBase(object):
         for key in query.keys():
             element = query[key]
             if element is not None:
-                if isinstance(element, Sendable):
-                    params[key] = json.dumps(as_array(element))
-                else:
+                if isinstance(element, (str, int, float, bool)):
                     params[key] = element
+                else:
+                    params[key] = json.dumps(as_array(element))
+                # end if
+            # end if
+        # end for
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
         return url, params
     # end def _prepare_request
