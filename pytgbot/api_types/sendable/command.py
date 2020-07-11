@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from . import Result
+from ..receivable import Result
 
 __author__ = 'luckydonald'
 
@@ -23,12 +23,9 @@ class BotCommand(Result):
     
 
     Optional keyword parameters:
-    
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
     """
 
-    def __init__(self, command, description, _raw=None):
+    def __init__(self, command, description):
         """
         This object represents a bot command.
 
@@ -45,9 +42,6 @@ class BotCommand(Result):
         
 
         Optional keyword parameters:
-        
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
         """
         super(BotCommand, self).__init__()
         assert_type_or_raise(command, unicode_type, parameter_name="command")
@@ -55,8 +49,6 @@ class BotCommand(Result):
         
         assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
-
-        self._raw = _raw
     # end def __init__
 
     def to_array(self):
@@ -100,8 +92,9 @@ class BotCommand(Result):
         # end if
 
         data = BotCommand.validate_array(array)
-        data['_raw'] = array
-        return BotCommand(**data)
+        instance = BotCommand(**data)
+        instance._raw = array
+        return instance
     # end def from_array
 
     def __str__(self):
