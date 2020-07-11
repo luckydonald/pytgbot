@@ -163,6 +163,7 @@ class AsyncBot(BotBase):
         import httpx
 
         url, params = self._prepare_request(command, query)
+        logger.debug('Sending async request to url {url!r} with params: {params!r}'.format(url=url, params=params))
         async with httpx.AsyncClient(
             verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
         ) as client:

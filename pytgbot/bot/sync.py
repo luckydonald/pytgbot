@@ -166,6 +166,7 @@ class SyncBot(BotBase):
         import requests
 
         url, params = self._prepare_request(command, query)
+        logger.debug('Sending sync request to url {url!r} with params: {params!r}'.format(url=url, params=params))
         r = requests.post(
             url, params=params, files=files, stream=use_long_polling,
             verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
