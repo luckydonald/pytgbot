@@ -809,7 +809,7 @@ class Message(UpdateType):
         super(Message, self).__init__()
         from ..receivable.peer import User, Chat
         from ..receivable.media import Audio, Contact, Document, Game, Location, Sticker, Venue, Video, Voice, VideoNote
-        from ..receivable.media import Animation, Poll
+        from ..receivable.media import Animation, Poll, Dice
         from ..receivable.payments import Invoice, SuccessfulPayment
         from ..receivable.passport import PassportData
         from ..sendable.reply_markup import InlineKeyboardMarkup
@@ -1102,7 +1102,7 @@ class Message(UpdateType):
 
         from ..receivable.peer import User, Chat
         from ..receivable.media import Animation, Audio, Contact, Document, Game, Location, MessageEntity, PhotoSize
-        from ..receivable.media import Sticker, Venue, Video, VideoNote, Voice, Poll
+        from ..receivable.media import Sticker, Venue, Video, VideoNote, Voice, Poll, Dice
         from ..receivable.payments import Invoice, SuccessfulPayment
         from ..receivable.passport import PassportData
         from ..sendable.reply_markup import InlineKeyboardMarkup
