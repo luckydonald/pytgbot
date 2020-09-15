@@ -4260,9 +4260,9 @@ class BotBase(object):
         if self.return_python_objects:
             if res.ok is not True:
                 raise TgApiServerException(
-                    error_code=res.error_code if "error_code" in res else None,
-                    response=res.response if "response" in res else None,
-                    description=res.description if "description" in res else None,
+                    error_code=res.error_code if "error_code" in res or hasattr(res, "error_code") else None,
+                    response=res.response if "response" in res or hasattr(res, "response") else None,
+                    description=res.description if "description" in res or hasattr(res, "description") else None,
                     request=request
                 )
             # end if not ok
