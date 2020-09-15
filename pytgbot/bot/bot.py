@@ -4255,7 +4255,6 @@ class BotBase(object):
         except Exception as e:
             raise TgApiResponseException('Parsing answer as json failed.', response, e)
         # end if
-        res["_response"] = response  # TODO: does this failes on json lists? Does TG does that?
         # TG should always return an dict, with at least a status or something.
         if self.return_python_objects:
             if res.ok is not True:
@@ -4271,6 +4270,7 @@ class BotBase(object):
             # end if no result
             return res.result
         # end if return_python_objects
+        res["_response"] = response  # TODO: does this failes on json lists? Does TG does that?
         return res
     # end def _postprocess_request
 
