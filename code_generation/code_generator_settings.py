@@ -229,7 +229,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.media.Media"] = CustomClass(
         imports=[
             Import("pytgbot.api_types.receivable", "Receivable"),
         ],
-        parent_clazz='Receivable',
+        parent_clazz=Type(
+            string='Receivable',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable",
+            description=None
+        ),
         link=None,
         description='parent class for all receivable media.'
     ),
@@ -246,7 +253,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.peer.Peer"] = CustomClass(
         imports=[
             Import("pytgbot.api_types.receivable", "Result"),
         ],
-        parent_clazz='Result',
+        parent_clazz=Type(
+            string='Result',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable",
+            description=None
+        ),
         link=None,
         description='parent class for both users and chats.'
     ),
@@ -263,7 +277,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.UpdateType"] = CustomClass(
         imports=[
             Import("pytgbot.api_types.receivable", "Result"),
         ],
-        parent_clazz='Receivable',
+        parent_clazz=Type(
+            string='Receivable',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable",
+            description=None
+        ),
         link=None,
         description=(
             'All extending classes are an property of the Update type.\n'
@@ -283,7 +304,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.CallbackGame"] = CustomClas
         imports=[
             Import("pytgbot.api_types.receivable.updates", "UpdateType"),
         ],
-        parent_clazz='UpdateType',
+        parent_clazz=Type(
+            string='UpdateType',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.updates",
+            description=None
+        ),
         link='https://core.telegram.org/bots/api#callbackgame',
         description='A placeholder, currently holds no information. Use BotFather to set up your game.',
     ),
@@ -307,7 +335,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InlineQueryResult"]
         imports=[
             Import("pytgbot.api_types.receivable.sendable", "Sendable"),
         ],
-        parent_clazz='Sendable',
+        parent_clazz=Type(
+            string='Sendable',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable",
+            description=None
+        ),
         link='https://core.telegram.org/bots/api#inlinequeryresult',
         description=(
             'This object represents one result of an inline query.\n'
@@ -344,7 +379,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InlineQueryCachedRe
         imports=[
             Import("pytgbot.api_types.receivable.sendable.inline", "InlineQueryResult"),
         ],
-        parent_clazz='InlineQueryResult',
+        parent_clazz=Type(
+            string='InlineQueryResult',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable.inline",
+            description=None
+        ),
         link=None,
         description=(
             'Parent class of all those cached inline results.'
@@ -363,7 +405,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InputMessageContent
         imports=[
             Import("pytgbot.api_types.receivable.sendable", "Sendable"),
         ],
-        parent_clazz='InlineQueryResult',
+        parent_clazz=Type(
+            string='InlineQueryResult',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable",
+            description=None
+        ),
         link=None,
         description=(
             'Parent class of all those input message content.'
@@ -382,7 +431,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
         imports=[
             Import("pytgbot.api_types.receivable.sendable", "Sendable"),
         ],
-        parent_clazz='InlineQueryResult',
+        parent_clazz=Type(
+            string='InlineQueryResult',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable",
+            description=None
+        ),
         link='https://core.telegram.org/bots/api#inputmedia',
         description=(
             'This object represents the content of a media message to be sent.'
@@ -630,7 +686,14 @@ clazz=Clazz(
         imports=[
             Import("pytgbot.api_types.receivable.sendable.input_media", "InputMedia"),
         ],
-        parent_clazz='InputMedia',
+        parent_clazz=Type(
+            string='InputMedia',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable.input_media",
+            description=None
+        ),
         link='https://core.telegram.org/bots/api#inputmedia',
         description=(
             'This object represents the content of a media message to be sent.'
@@ -801,7 +864,14 @@ clazz=Clazz(
         imports=[
             Import("pytgbot.api_types.receivable.sendable.input_media", "InputMediaWithThumb"),
         ],
-        parent_clazz='InputMediaWithThumb',
+        parent_clazz=Type(
+            string='InputMediaWithThumb',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable.input_media",
+            description=None
+        ),
         link='https://core.telegram.org/bots/api#inputmedia',
         description=(
             'This object represents the content of a media message to be sent.'
@@ -821,6 +891,7 @@ clazz=Clazz(
             ),
         ],
     ),
+    body=None,
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaVideolike"] = CustomClass(
@@ -830,7 +901,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaVide
         imports=[
             Import("pytgbot.api_types.receivable.sendable.input_media", "InputMediaPlayable"),
         ],
-        parent_clazz='InputMediaPlayable',
+        parent_clazz=Type(
+            string='InputMediaPlayable',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable.input_media",
+            description=None
+        ),
         link='https://core.telegram.org/bots/api#inputmedia',
         description=(
             'This object represents the content of a media message to be sent.'
@@ -861,6 +939,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaVide
             ),
         ],
     ),
+    body=None,
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.passport.PassportElementError"] = CustomClass(
@@ -870,7 +949,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.passport.PassportElementEr
         imports=[
             Import("pytgbot.api_types.receivable.sendable", "Sendable"),
         ],
-        parent_clazz='Sendable',
+        parent_clazz=Type(
+            string='Sendable',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable",
+            description=None
+        ),
         link='https://core.telegram.org/bots/api#inputmedia',
         description=(
             'This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user.'
@@ -892,7 +978,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.Button"] = Cu
         imports=[
             Import("pytgbot.api_types.receivable.sendable", "Sendable"),
         ],
-        parent_clazz='Sendable',
+        parent_clazz=Type(
+            string='Sendable',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable",
+            description=None
+        ),
         link=None,
         description=(
             'Class for grouping KeyboardButton, KeyboardButtonPollType and InlineKeyboardButton.'
@@ -916,7 +1009,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.ReplyMarkup"]
         imports=[
             Import("pytgbot.api_types.receivable.sendable", "Sendable"),
         ],
-        parent_clazz='Sendable',
+        parent_clazz=Type(
+            string='Sendable',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable.sendable",
+            description=None
+        ),
         link=None,
         description=(
             'Class for grouping ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup and ForceReply.'
@@ -939,7 +1039,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClass(
         imports=[
             Import("pytgbot.api_types", "TgBotApiObject"),
         ],
-        parent_clazz='TgBotApiObject',
+        parent_clazz=Type(
+            string='TgBotApiObject',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types",
+            description=None
+        ),
         link=None,
         description=(
             'Base class for all classes for stuff which telegram sends us.'
@@ -961,7 +1068,14 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClass(
         imports=[
             Import("pytgbot.api_types.receivable", "Receivable"),
         ],
-        parent_clazz='Receivable',
+        parent_clazz=Type(
+            string='Receivable',
+            is_builtin=False,
+            always_is_value=None,
+            is_list=0,
+            import_path="pytgbot.api_types.receivable",
+            description=None
+        ),
         link=None,
         description=(
             'Base class for all classes for stuff which we get back after we called a telegram method.'
@@ -976,7 +1090,4 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClass(
         '    pass',
         # end class Result
    ],
-    imports=[
-        "pytgbot.api_types.receivable.Receivable",
-    ],
 )
