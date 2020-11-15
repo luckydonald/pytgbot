@@ -690,8 +690,8 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
     description=(
         'This object represents the content of a media message to be sent.'
     ),
-    parameters=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].clazz.parameters,
-    keywords=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].clazz.keywords + [
+    parameters=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].parameters,
+    keywords=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].keywords + [
         Variable(
             api_name='thumb',
             name='thumb',
@@ -866,8 +866,8 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlay
     description=(
         'This object represents the content of a media message to be sent.'
     ),
-    parameters=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].clazz.parameters,
-    keywords=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].clazz.keywords + [
+    parameters=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].parameters,
+    keywords=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].keywords + [
         Variable(
             api_name='duration',
             name='duration',
@@ -901,8 +901,8 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaVide
     description=(
         'This object represents the content of a media message to be sent.'
     ),
-    parameters=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"].clazz.parameters,
-    keywords=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"].clazz.parameters + [
+    parameters=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"].parameters,
+    keywords=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"].keywords + [
         Variable(
             api_name='width',
             name='width',
