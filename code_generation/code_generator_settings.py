@@ -951,7 +951,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClass(
         imports=[
             Import("pytgbot.api_types", "TgBotApiObject"),
         ],
-        parent_clazz='object',
+        parent_clazz='TgBotApiObject',
         link=None,
         description=(
             'Base class for all classes for stuff which telegram sends us.'
