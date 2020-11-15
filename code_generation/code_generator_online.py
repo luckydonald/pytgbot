@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from code_generator import get_type_path
 from code_generator_template import clazz, func, get_template, as_types
-from code_generator_classes import Clazz, Function, Variable, Type, Import
+from code_generator_classes import Clazz, Function, Variable, Type, Import, CustomClass
 from luckydonaldUtils.files.basics import mkdir_p  # luckydonaldUtils v0.49+
 from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
 
-from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS, CUSTOM_CLASSES, \
-    CustomClass
+from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS, CUSTOM_CLASSES
 from code_generator_template import path_to_import_text, split_path
 from jinja2.exceptions import TemplateError, TemplateSyntaxError
 

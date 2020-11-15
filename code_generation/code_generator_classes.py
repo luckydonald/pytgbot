@@ -98,13 +98,6 @@ class Clazz(ClassOrFunction):
 # end class Clazz
 
 
-class CustomClazz(Clazz):
-    """
-    Like a class, but contains text.
-    """
-# end class CustomClazz
-
-
 class Function(ClassOrFunction):
     def __init__(self, api_name=None, imports: List['Import']=None, link=None, description=None, returns=None, parameters: List['Variable']=None, keywords=None):
         super(Function, self).__init__()
@@ -636,3 +629,16 @@ class Import(dict):
         ).format(s=self)
     # end def __repr__
 # end class Import
+
+
+class CustomClass(object):
+    def __init__(self, clazz: Clazz, body: List[str]):
+        """
+        Like a class, but contains text.
+        :param text: str[]
+        :param imports: str[]
+        """
+        self.clazz = clazz
+        self.body = body
+    # end def
+# end class

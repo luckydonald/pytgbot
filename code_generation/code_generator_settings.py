@@ -217,20 +217,8 @@ Overrides of send function classification for teleflask.
 Function "sendMessage" => "Message" will be replaced with "TextMessage".
 """
 
-from .code_generator_classes import Clazz, Variable, Type, Import
-from typing import List, Dict
-
-
-class CustomClass(object):
-    def __init__(self, clazz: Clazz, body: List[str]):
-        """
-        :param text: str[]
-        :param imports: str[]
-        """
-        self.clazz: Clazz = clazz
-        self.body: List[str] = body
-    # end def
-# end class
+from code_generator_classes import Clazz, Variable, Type, Import, CustomClass
+from typing import Dict
 
 
 CUSTOM_CLASSES: Dict[str, CustomClass] = {}
