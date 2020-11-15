@@ -8,17 +8,10 @@ from jinja2.exceptions import TemplateSyntaxError
 
 from luckydonaldUtils.logger import logging
 
-try:
-    from code_generator import safe_var_translations
-    from code_generator_classes import Clazz, Function, Variable, Type
-    from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
-    from code_generator_settings import TYPE_STRING_OVERRIDES
-except ImportError:
-    from .code_generator import safe_var_translations
-    from .code_generator_classes import Clazz, Function, Variable, Type
-    from .code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
-    from .code_generator_settings import TYPE_STRING_OVERRIDES
-# end if
+from code_generator import safe_var_translations
+from code_generator_classes import Clazz, Function, Variable, Type
+from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
+from code_generator_settings import TYPE_STRING_OVERRIDES
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)

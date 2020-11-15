@@ -2,13 +2,8 @@
 from typing import Union
 
 
-try:
-    # from code_generator_template import Import
-    from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
-except ImportError:
-    # from .code_generator_template import Import
-    from .code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
-# end try
+# from code_generator_template import Import
+from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
 
 
 __author__ = 'luckydonald'

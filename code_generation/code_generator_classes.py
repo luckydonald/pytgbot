@@ -5,9 +5,8 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.functions import cached
 from luckydonaldUtils.imports.relative import relimport
 
-from code_generator import get_type_path, convert_to_underscore
+
 from code_generator_settings import MESSAGE_CLASS_OVERRIDES
-from code_generator_template import path_to_import_text
 
 
 class KwargableObject(Mapping):
@@ -62,7 +61,7 @@ class Clazz(ClassOrFunction):
     ):
         super(Clazz, self).__init__()
         self.clazz = clazz
-        self.import_path = import_path if import_path else self.calculate_import_path()
+        self.import_path = import_path if import_path is not None else self.calculate_import_path()
         self.imports = imports if imports else []  # Imports needed by parameters and keywords.
         self.parent_clazz = parent_clazz if parent_clazz is not None else Type("object", is_builtin=True)
         assert_type_or_raise(self.parent_clazz, Type, parameter_name="self.parent_clazz")
@@ -73,6 +72,7 @@ class Clazz(ClassOrFunction):
     # end def __init__
 
     def calculate_import_path(self) -> 'Import':
+        from code_generator import get_type_path
         import_path = get_type_path(self.clazz, as_object=True)
         return import_path
     # end def
@@ -122,6 +122,7 @@ class Function(ClassOrFunction):
 
     @property
     def name(self):
+        from code_generator import convert_to_underscore
         return convert_to_underscore(self.api_name)
     # end def name
 
@@ -557,6 +558,7 @@ class Import(dict):
         else:
             path = self.relative_import_full(base_path=base_path)
         # end if
+        from code_generator_template import path_to_import_text
         return path_to_import_text(path)
     # end def
 
