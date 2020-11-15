@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from code_generator import get_type_path
 from code_generator_template import clazz, func, get_template, as_types
-from code_generator_classes import Clazz, Function, Variable, Type, Import, CustomClass
+from code_generator_classes import Clazz, Function, Variable, Type, Import, CustomClazz
 from luckydonaldUtils.files.basics import mkdir_p  # luckydonaldUtils v0.49+
 from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
@@ -517,7 +517,7 @@ def safe_to_file(folder, results):
     custom_classes = {}  # "filepath": [Class, Class, ...]
     for import_path, class_data in CUSTOM_CLASSES.items():
         import_path: str
-        class_data: CustomClass
+        class_data: CustomClazz
 
         import_path_prefix, import_name = split_path(import_path)
         result = Clazz(

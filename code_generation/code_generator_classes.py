@@ -55,9 +55,15 @@ class ClassOrFunction(KwargableObject):
 
 class Clazz(ClassOrFunction):
     def __init__(
-        self, clazz: Union[None, str] = None, import_path: Union[None, 'Import'] = None,
-        imports: Union[None, List['Import']]=None,
-        parent_clazz=None, link=None, description=None, parameters=None, keywords=None,
+        self,
+        clazz: Union[None, str] = None,
+        import_path: Union[None, 'Import'] = None,
+        imports: Union[None, List['Import']] = None,
+        parent_clazz: Union[None, 'Type'] = None,
+        link: Union[None, str] = None,
+        description: Union[None, str] = None,
+        parameters: Union[None, List['Variable']] = None,
+        keywords: Union[None, List['Variable']] = None,
     ):
         super(Clazz, self).__init__()
         self.clazz = clazz
@@ -633,14 +639,25 @@ class Import(dict):
 # end class Import
 
 
-class CustomClass(object):
-    def __init__(self, clazz: Clazz, body: List[str]):
+class CustomClazz(Clazz):
+    def __init__(
+        self,
+        clazz: Union[None, str] = None,
+        import_path: Union[None, 'Import'] = None,
+        imports: Union[None, List['Import']] = None,
+        parent_clazz: Union[None, 'Type'] = None,
+        link: Union[None, str] = None,
+        description: Union[None, str] = None,
+        parameters: Union[None, List['Variable']] = None,
+        keywords: Union[None, List['Variable']] = None,
+        body: Union[None, List[str]] = None,
+    ):
         """
         Like a class, but contains text.
         :param text: str[]
         :param imports: str[]
         """
-        self.clazz = clazz
-        self.body = body
+        super().__init__(clazz, import_path, imports, parent_clazz, link, description, parameters, keywords)
+        self.body = body if body else []
     # end def
 # end class
