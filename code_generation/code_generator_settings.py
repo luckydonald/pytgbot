@@ -217,7 +217,7 @@ Overrides of send function classification for teleflask.
 Function "sendMessage" => "Message" will be replaced with "TextMessage".
 """
 
-from code_generator_classes import Clazz, Variable, Type, Import, CustomClazz
+from code_generator_classes import Clazz, Variable, Type, Import, CustomClazz, ReplacementBody
 from typing import Dict
 
 
@@ -225,62 +225,73 @@ CUSTOM_CLASSES: Dict[str, CustomClazz] = {}
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.media.Media"] = CustomClazz(
     clazz='Media',
-    import_path=Import(path='pytgbot.api_types.receivable', name='Media'),
+    import_path=Import(path=CLASS_TYPE_PATHS["Media"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Media"),
     imports=[
-        Import("pytgbot.api_types.receivable", "Receivable"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Media"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["Media"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='Receivable',
+        string=CLASS_TYPE_PATHS["Media"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Media"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link=None,
     description='parent class for all receivable media.',
-    body=[
-        # class BlahBlah(object):
-        'pass',
-        # end class
-    ],
+    body=ReplacementBody(
+        all=[
+            'pass',
+        ],
+        init=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.peer.Peer"] = CustomClazz(
     clazz='Peer',
-    import_path=Import(path='pytgbot.api_types.receivable', name='Peer'),
+    import_path=Import(path=CLASS_TYPE_PATHS["Peer"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Peer"),
     imports=[
-        Import("pytgbot.api_types.receivable", "Result"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Peer"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["Peer"][CLASS_TYPE_PATHS__PARENT],
+        ),
     ],
     parent_clazz=Type(
-        string='Result',
+        string=CLASS_TYPE_PATHS["Peer"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Peer"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link=None,
     description='parent class for both users and chats.',
-    body=[
-        # class BlahBlah(object):
-        'pass',
-        # end class
-    ],
+    body=ReplacementBody(
+        all=[
+            'pass',
+        ],
+        init=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.UpdateType"] = CustomClazz(
     clazz='UpdateType',
-    import_path=Import(path='pytgbot.api_types.receivable', name='Media'),
+    import_path=Import(path=CLASS_TYPE_PATHS["UpdateType"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="UpdateType"),
     imports=[
-        Import("pytgbot.api_types.receivable", "Result"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["UpdateType"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["UpdateType"][CLASS_TYPE_PATHS__PARENT],
+        ),
     ],
     parent_clazz=Type(
-        string='Receivable',
+        string=CLASS_TYPE_PATHS["UpdateType"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["UpdateType"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link=None,
@@ -288,55 +299,69 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.UpdateType"] = CustomClazz(
         'All extending classes are an property of the Update type.\n'
         'Like Message: Update.message'
     ),
-    body=[
-        # class BlahBlah(object):
-        'pass',
-        # end class
-    ],
+    body=ReplacementBody(
+        all=[
+            'pass',
+        ],
+        init=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.CallbackGame"] = CustomClazz(
-    clazz='CallbackGame',
-    import_path=Import(path='pytgbot.api_types.receivable.updates', name='CallbackGame'),
+    clazz="CallbackGame",
+    import_path=Import(path=CLASS_TYPE_PATHS["CallbackGame"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="CallbackGame"),
     imports=[
-        Import("pytgbot.api_types.receivable.updates", "UpdateType"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["CallbackGame"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["CallbackGame"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='UpdateType',
+        string=CLASS_TYPE_PATHS["CallbackGame"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.updates",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["CallbackGame"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link='https://core.telegram.org/bots/api#callbackgame',
     description='A placeholder, currently holds no information. Use BotFather to set up your game.',
-    body=[
-        # class BlahBlah(object):
-        'def to_array(self):',
-        '    return {}',
-        '# end def',
-        '',
-        '@staticmethod',
-        'def validate_array(array):',
-        '    return {}',
-        '# end def',
-        # end class
-    ],
+    body=ReplacementBody(
+        all=[],
+        init=[],
+        to_array=[
+            'def to_array(self):',
+            '    return {}',
+            '# end def',
+        ],
+        validate_array=[
+            '@staticmethod',
+            'def validate_array(array):',
+            '    return {}',
+            '# end def',
+        ],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InlineQueryResult"] = CustomClazz(
     clazz='InlineQueryResult',
-    import_path=Import(path='pytgbot.api_types.receivable.sendable.inline', name='InlineQueryResult'),
+    import_path=Import(path=CLASS_TYPE_PATHS["InlineQueryResult"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="InlineQueryResult"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable", "Sendable"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InlineQueryResult"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["InlineQueryResult"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='Sendable',
+        string=CLASS_TYPE_PATHS["InlineQueryResult"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InlineQueryResult"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link='https://core.telegram.org/bots/api#inlinequeryresult',
@@ -345,91 +370,120 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InlineQueryResult"]
         '\n'
         'Telegram clients currently support results of 20 types.'
     ),
-    body=[
-        # class BlahBlah(object):
-        'def __init__(self, id, type):',
-        '    assert_type_or_raise(id, unicode_type, int, parameter_name="id")',
-        '    if not isinstance(id, unicode_type):',
-        '        id = u(id)',
-        '    assert(isinstance(id, unicode_type))',
-        '    self.id = id',
-        '',
-        '    self.type = type',
-        '    super(InlineQueryResult, self).__init__()',
-        '# end def',
-        '',
-        'def to_array(self):',
-        '    return {',
-        '        "type": u(self.type),',
-        '        "id": u(self.id),',
-        '    }',
-        '# end def to_array',
-        # end class
-    ],
+    body=ReplacementBody(
+        all=[],
+        init=[
+            'def __init__(self, id, type):',
+            '    assert_type_or_raise(id, unicode_type, int, parameter_name="id")',
+            '    if not isinstance(id, unicode_type):',
+            '        id = u(id)',
+            '    assert(isinstance(id, unicode_type))',
+            '    self.id = id',
+            '    self.type = type',
+            '    super(InlineQueryResult, self).__init__()',
+            '# end def',
+        ],
+        to_array=[
+            'def to_array(self):',
+            '    return {',
+            '        "type": u(self.type),',
+            '        "id": u(self.id),',
+            '    }',
+            '# end def to_array',
+        ],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InlineQueryCachedResult"] = CustomClazz(
     clazz='InlineQueryCachedResult',
-    import_path=Import(path='pytgbot.api_types.receivable.sendable.inline', name='InlineQueryCachedResult'),
+    import_path=Import(path=CLASS_TYPE_PATHS["InlineQueryCachedResult"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="InlineQueryCachedResult"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable.inline", "InlineQueryResult"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InlineQueryCachedResult"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["InlineQueryCachedResult"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='InlineQueryResult',
+        string=CLASS_TYPE_PATHS["InlineQueryCachedResult"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable.inline",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InlineQueryCachedResult"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link=None,
     description=(
         'Parent class of all those cached inline results.'
     ),
-    body=[
-        # class BlahBlah(object):
-        'pass',
-        # end class
-    ],
+    body=ReplacementBody(
+        all=[
+            'pass',
+        ],
+        init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InputMessageContent"] = CustomClazz(
-    clazz='InlineQueryCachedResult',
-    import_path=Import(path='pytgbot.api_types.receivable.sendable.inline', name='InputMessageContent'),
+    clazz='InputMessageContent',
+    import_path=Import(path=CLASS_TYPE_PATHS["InputMessageContent"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="InputMessageContent"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable", "Sendable"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMessageContent"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["InputMessageContent"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='InlineQueryResult',
+        string=CLASS_TYPE_PATHS["InputMessageContent"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMessageContent"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link=None,
     description=(
         'Parent class of all those input message content.'
     ),
-    body=[
-        # class BlahBlah(object):
-        'pass',
-        # end class
-    ],
+    body=ReplacementBody(
+        all=[
+            'pass',
+        ],
+        init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] = CustomClazz(
-    clazz='InputMedia',
-    import_path=Import(path='pytgbot.api_types.receivable.sendable.input_media', name='InputMedia'),
+    clazz="InputMedia",
+    import_path=Import(path=CLASS_TYPE_PATHS["InputMedia"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="InputMedia"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable", "Sendable"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMedia"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["InputMedia"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='InlineQueryResult',
+        string=CLASS_TYPE_PATHS["InputMedia"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMedia"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link='https://core.telegram.org/bots/api#inputmedia',
@@ -463,11 +517,11 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
     keywords=[
         Variable(
             api_name='caption',
-             name='caption',
-             pytg_name=None,
-             types=[
+            name='caption',
+            pytg_name=None,
+            types=[
                 Type(string='str', is_builtin=True, always_is_value=None, is_list=0, import_path=None, description=None),
-             ],
+            ],
             optional=True,
             default=None,
             description='Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing',
@@ -495,28 +549,9 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             description='Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode'
         ),
     ],
-    body=[
-        # class BlahBlah(object):
-         '    """',
-            'This object represents the content of a media message to be sent.',
-            '',
-            'https://core.telegram.org/bots/api#inputmedia',
-            '',
-            '',
-            'Parameters:',
-            '',
-            ':param type: Type of the result',
-            ':type  type: str|unicode',
-            '',
-            ':param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »',
-            ':type  media: str|unicode',
-            '',
-            'Optional keyword parameters:',
-            '',
-            ':param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.',
-            ':type  parse_mode: str|unicode',
-            '"""',
-            '',
+    body=ReplacementBody(
+        all=[],
+        init=[
             'def __init__(self, type, media, caption=None, parse_mode=None):',
             '    """',
             '    This object represents the content of a media message to be sent.',
@@ -555,7 +590,8 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             '    assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")',
             '    self.parse_mode = parse_mode',
             '# end def __init__',
-            '',
+        ],
+        to_array=[
             'def to_array(self):',
             '    """',
             '    Serializes this InputMediaPhoto to a dictionary.',
@@ -575,7 +611,8 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             '    # end if',
             '    return array',
             '# end def to_array',
-            '',
+        ],
+        validate_array=[
             '@staticmethod',
             'def validate_array(array):',
             '    """',
@@ -592,7 +629,8 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             '    data[\'parse_mode\'] = u(array.get(\'parse_mode\')) if array.get(\'parse_mode\') is not None else None',
             '    return data',
             '# end def validate_array',
-            '',
+        ],
+        from_array=[
             '@staticmethod',
             'def from_array(array):',
             '    """',
@@ -610,14 +648,16 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             '    instance._raw = array',
             '    return instance',
             '# end def from_array',
-            '',
+        ],
+        str=[
             'def __str__(self):',
             '    """',
             '    Implements `str(inputmediaphoto_instance)`',
             '    """',
             '    return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
             '# end def __str__',
-            '',
+        ],
+        repr=[
             'def __repr__(self):',
             '    """',
             '    Implements `repr(inputmedia_instance)`',
@@ -627,7 +667,8 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             '    # end if',
             '    return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
             '# end def __repr__',
-            '',
+        ],
+        contains=[
             'def __contains__(self, key):',
             '    """',
             '    Implements `"key" in inputmedia_instance`',
@@ -638,7 +679,8 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             '        and bool(getattr(self, key, None))',
             '    )',
             '# end def __contains__',
-            '',
+        ],
+        after=[
             'def get_request_data(self, var_name, full_data=False):',
             '    """',
             '    :param var_name:',
@@ -668,22 +710,25 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             '        return media, None',
             '    # end if',
             '# end def get_inputfile_data',
-        # end class
-    ],
+        ],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"] = CustomClazz(
-    clazz='InputMediaWithThumb',
-    import_path=Import(path='pytgbot.api_types.receivable.sendable.input_media', name='InputMediaWithThumb'),
+    clazz="InputMediaWithThumb",
+    import_path=Import(path=CLASS_TYPE_PATHS["InputMediaWithThumb"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="InputMediaWithThumb"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable.input_media", "InputMedia"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMediaWithThumb"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["InputMediaWithThumb"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='InputMedia',
+        string=CLASS_TYPE_PATHS["InputMediaWithThumb"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable.input_media",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMediaWithThumb"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link='https://core.telegram.org/bots/api#inputmedia',
@@ -703,163 +748,175 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
             description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file.'
         ),
     ],
-    body=[
-        'def __init__(self, type, media, thumb, caption=None, parse_mode=None):',
-        '    """',
-        '    Represents a media with thumb field to be sent.',
-        '',
-        '',
-        '    Parameters:',
-        '',
-        '    :param type: Type of the result, must be photo',
-        '    :type  type: str|unicode',
-        '',
-        '    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »',
-        '    :type  media: str|unicode',
-        '',
-        '    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file',
-        '    :type  thumb: InputFile | str|unicode',
-        '',
-        '',
-        '    Optional keyword parameters:',
-        '',
-        '    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters',
-        '    :type  caption: str|unicode',
-        '',
-        '    :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.',
-        '    :type  parse_mode: str|unicode',
-        '    """',
-        '    super(InputMediaWithThumb, self).__init__(type, media, caption, parse_mode)',
-        '    assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")',
-        '    self.thumb = thumb',
-        '# end def',
-        '',
-        'def get_request_data(self, var_name, full_data=False):',
-        '    """',
-        '    :param var_name:',
-        '    :param full_data: If you want `.to_array()` with this data, ready to be sent.',
-        '    :return: A tuple of `to_array()` dict and the files (:py:func:`InputFile.get_request_files()`).',
-        '             Files can be None, if no file was given, but an url or existing `file_id`.',
-        '',
-        '             If `self.media` is an `InputFile` however,',
-        '             the first tuple element (either the string, or the dict\'s `[\'media\']` if `full_data=True`),',
-        '             will be set to `attach://{var_name}_media` automatically.',
-        '             If `self.thumb` is an `InputFile` however, the first tuple element\'s `[\'thumb\']`, will be set to `attach://{var_name}_thumb` automatically.',
-        '    """',
-        '    if not full_data:',
-        '        raise ArithmeticError(\'we have a thumbnail, please use `full_data=True`.\')',
-        '    # end if',
-        '    file = {}',
-        '    data, file_to_add = super(InputMediaWithThumb, self).get_request_data(var_name, full_data=True)',
-        '    if file_to_add:',
-        '        file.update(file_to_add)',
-        '    # end if',
-        '    data[\'thumb\'], file_to_add = self.get_inputfile_data(self.thumb, var_name, suffix=\'_thumb\')',
-        '    if data[\'thumb\'] is None:',
-        '        del data[\'thumb\']  # having `\'thumb\': null` in the json produces errors.',
-        '    # end if',
-        '    if file_to_add:',
-        '        file.update(file_to_add)',
-        '    # end if',
-        '    return data, (file or None)',
-        '    # end if',
-        '# end def',
-        '',
-        'def to_array(self):',
-        '    """',
-        '    Serializes this InputMediaPhoto to a dictionary.',
-        '',
-        '    :return: dictionary representation of this object.',
-        '    :rtype: dict',
-        '    """',
-        '    array = super(InputMediaWithThumb, self).to_array()',
-        '    # \'type\' is handled by superclass',
-        '    array[\'media\'] = u(self.media)  # py2: type unicode, py3: type str',
-        '    if self.caption is not None:',
-        '        array[\'caption\'] = u(self.caption)  # py2: type unicode, py3: type str',
-        '    if self.parse_mode is not None:',
-        '        array[\'parse_mode\'] = u(self.parse_mode)  # py2: type unicode, py3: type str',
-        '    return array',
-        '# end def to_array',
-        '',
-        '@staticmethod',
-        'def validate_array(array):',
-        '    """',
-        '    Builds a new array with valid values for the InputMediaPhoto constructor.',
-        '',
-        '    :return: new array with valid values',
-        '    :rtype: dict',
-        '    """',
-        '    assert_type_or_raise(array, dict, parameter_name="array")',
-        '    data = InputMedia.validate_array(array)',
-        '    # \'type\' is handled by the superclass.',
-        '    data[\'media\'] = u(array.get(\'media\'))',
-        '    data[\'caption\'] = u(array.get(\'caption\')) if array.get(\'caption\') is not None else None',
-        '    data[\'parse_mode\'] = u(array.get(\'parse_mode\')) if array.get(\'parse_mode\') is not None else None',
-        '    return data',
-        '# end def validate_array',
-        '',
-        '@staticmethod',
-        'def from_array(array):',
-        '    """',
-        '    Deserialize a new InputMediaWithThumb from a given dictionary.',
-        '',
-        '    :return: new InputMediaWithThumb instance.',
-        '    :rtype: InputMediaWithThumb',
-        '    """',
-        '    if not array:  # None or {}',
-        '        return None',
-        '    # end if',
-        '',
-        '    data = InputMediaWithThumb.validate_array(array)',
-        '    instance = InputMediaWithThumb(**data)',
-        '    instance._raw = array',
-        '    return instance',
-        '# end def from_array',
-        '',
-        'def __str__(self):',
-        '    """',
-        '    Implements `str(inputmediawiththumb_instance)`',
-        '    """',
-        '    return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
-        '# end def __str__',
-        '',
-        'def __repr__(self):',
-        '    """',
-        '    Implements `repr(inputmediawiththumb_instance)`',
-        '    """',
-        '    if self._raw:',
-        '        return "InputMediaWithThumb.from_array({self._raw})".format(self=self)',
-        '    # end if',
-        '    return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
-        '# end def __repr__',
-        '',
-        'def __contains__(self, key):',
-        '    """',
-        '    Implements `"key" in inputmediawiththumb_instance`',
-        '    """',
-        '    return (',
-        '        key in ["type", "media", "caption", "parse_mode"]',
-        '        and hasattr(self, key)',
-        '        and bool(getattr(self, key, None))',
-        '    )',
-        '# end def __contains__',
-    ],
+    body=ReplacementBody(
+        all=[
+            'def get_request_data(self, var_name, full_data=False):',
+            '    """',
+            '    :param var_name:',
+            '    :param full_data: If you want `.to_array()` with this data, ready to be sent.',
+            '    :return: A tuple of `to_array()` dict and the files (:py:func:`InputFile.get_request_files()`).',
+            '             Files can be None, if no file was given, but an url or existing `file_id`.',
+            '',
+            '             If `self.media` is an `InputFile` however,',
+            '             the first tuple element (either the string, or the dict\'s `[\'media\']` if `full_data=True`),',
+            '             will be set to `attach://{var_name}_media` automatically.',
+            '             If `self.thumb` is an `InputFile` however, the first tuple element\'s `[\'thumb\']`, will be set to `attach://{var_name}_thumb` automatically.',
+            '    """',
+            '    if not full_data:',
+            '        raise ArithmeticError(\'we have a thumbnail, please use `full_data=True`.\')',
+            '    # end if',
+            '    file = {}',
+            '    data, file_to_add = super(InputMediaWithThumb, self).get_request_data(var_name, full_data=True)',
+            '    if file_to_add:',
+            '        file.update(file_to_add)',
+            '    # end if',
+            '    data[\'thumb\'], file_to_add = self.get_inputfile_data(self.thumb, var_name, suffix=\'_thumb\')',
+            '    if data[\'thumb\'] is None:',
+            '        del data[\'thumb\']  # having `\'thumb\': null` in the json produces errors.',
+            '    # end if',
+            '    if file_to_add:',
+            '        file.update(file_to_add)',
+            '    # end if',
+            '    return data, (file or None)',
+            '    # end if',
+            '# end def',
+            '',
+            'def to_array(self):',
+            '    """',
+            '    Serializes this InputMediaPhoto to a dictionary.',
+            '',
+            '    :return: dictionary representation of this object.',
+            '    :rtype: dict',
+            '    """',
+            '    array = super(InputMediaWithThumb, self).to_array()',
+            '    # \'type\' is handled by superclass',
+            '    array[\'media\'] = u(self.media)  # py2: type unicode, py3: type str',
+            '    if self.caption is not None:',
+            '        array[\'caption\'] = u(self.caption)  # py2: type unicode, py3: type str',
+            '    if self.parse_mode is not None:',
+            '        array[\'parse_mode\'] = u(self.parse_mode)  # py2: type unicode, py3: type str',
+            '    return array',
+            '# end def to_array',
+            '',
+            '@staticmethod',
+            'def validate_array(array):',
+            '    """',
+            '    Builds a new array with valid values for the InputMediaPhoto constructor.',
+            '',
+            '    :return: new array with valid values',
+            '    :rtype: dict',
+            '    """',
+            '    assert_type_or_raise(array, dict, parameter_name="array")',
+            '    data = InputMedia.validate_array(array)',
+            '    # \'type\' is handled by the superclass.',
+            '    data[\'media\'] = u(array.get(\'media\'))',
+            '    data[\'caption\'] = u(array.get(\'caption\')) if array.get(\'caption\') is not None else None',
+            '    data[\'parse_mode\'] = u(array.get(\'parse_mode\')) if array.get(\'parse_mode\') is not None else None',
+            '    return data',
+            '# end def validate_array',
+            '',
+            '@staticmethod',
+            'def from_array(array):',
+            '    """',
+            '    Deserialize a new InputMediaWithThumb from a given dictionary.',
+            '',
+            '    :return: new InputMediaWithThumb instance.',
+            '    :rtype: InputMediaWithThumb',
+            '    """',
+            '    if not array:  # None or {}',
+            '        return None',
+            '    # end if',
+            '',
+            '    data = InputMediaWithThumb.validate_array(array)',
+            '    instance = InputMediaWithThumb(**data)',
+            '    instance._raw = array',
+            '    return instance',
+            '# end def from_array',
+            '',
+            'def __str__(self):',
+            '    """',
+            '    Implements `str(inputmediawiththumb_instance)`',
+            '    """',
+            '    return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
+            '# end def __str__',
+            '',
+            'def __repr__(self):',
+            '    """',
+            '    Implements `repr(inputmediawiththumb_instance)`',
+            '    """',
+            '    if self._raw:',
+            '        return "InputMediaWithThumb.from_array({self._raw})".format(self=self)',
+            '    # end if',
+            '    return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
+            '# end def __repr__',
+            '',
+            'def __contains__(self, key):',
+            '    """',
+            '    Implements `"key" in inputmediawiththumb_instance`',
+            '    """',
+            '    return (',
+            '        key in ["type", "media", "caption", "parse_mode"]',
+            '        and hasattr(self, key)',
+            '        and bool(getattr(self, key, None))',
+            '    )',
+            '# end def __contains__',
+        ],
+        init=[
+            'def __init__(self, type, media, thumb, caption=None, parse_mode=None):',
+            '    """',
+            '    Represents a media with thumb field to be sent.',
+            '',
+            '',
+            '    Parameters:',
+            '',
+            '    :param type: Type of the result, must be photo',
+            '    :type  type: str|unicode',
+            '',
+            '    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »',
+            '    :type  media: str|unicode',
+            '',
+            '    :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file',
+            '    :type  thumb: InputFile | str|unicode',
+            '',
+            '',
+            '    Optional keyword parameters:',
+            '',
+            '    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters',
+            '    :type  caption: str|unicode',
+            '',
+            '    :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.',
+            '    :type  parse_mode: str|unicode',
+            '    """',
+            '    super(InputMediaWithThumb, self).__init__(type, media, caption, parse_mode)',
+            '    assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")',
+            '    self.thumb = thumb',
+            '# end def',
+        ],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )
 
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"] = CustomClazz(
-    clazz='InputMediaPlayable',
-    import_path=Import(path='pytgbot.api_types.receivable.sendable.input_media', name='InputMediaPlayable'),
+    clazz="InputMediaPlayable",
+    import_path=Import(path=CLASS_TYPE_PATHS["InputMediaPlayable"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="InputMediaPlayable"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable.input_media", "InputMediaWithThumb"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMediaPlayable"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["InputMediaPlayable"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='InputMediaWithThumb',
+        string=CLASS_TYPE_PATHS["InputMediaPlayable"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable.input_media",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMediaPlayable"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link='https://core.telegram.org/bots/api#inputmedia',
@@ -885,16 +942,19 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlay
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaVideolike"] = CustomClazz(
     clazz='InputMediaVideolike',
-    import_path=Import(path='pytgbot.api_types.receivable.sendable.input_media', name='InputMediaVideolike'),
+    import_path=Import(path=CLASS_TYPE_PATHS["InputMediaVideolike"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="InputMediaVideolike"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable.input_media", "InputMediaPlayable"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMediaVideolike"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["InputMediaVideolike"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='InputMediaPlayable',
+        string=CLASS_TYPE_PATHS["InputMediaVideolike"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable.input_media",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMediaVideolike"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link='https://core.telegram.org/bots/api#inputmedia',
@@ -931,16 +991,19 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaVide
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.passport.PassportElementError"] = CustomClazz(
     clazz='PassportElementError',
-    import_path=Import('pytgbot.api_types.receivable.sendable.passport', 'PassportElementError'),
+    import_path=Import(path=CLASS_TYPE_PATHS["PassportElementError"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="PassportElementError"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable", "Sendable"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["PassportElementError"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["PassportElementError"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='Sendable',
+        string=CLASS_TYPE_PATHS["PassportElementError"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["PassportElementError"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link='https://core.telegram.org/bots/api#inputmedia',
@@ -949,25 +1012,35 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.passport.PassportElementEr
     ),
     parameters=[],
     keywords=[],
-    body=[
-        # class PassportElementError(Sendable):
-        'pass',
-        # end class PassportElementError'
-    ],
+    body=ReplacementBody(
+        all=[
+            'pass',
+        ],
+        init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.Button"] = CustomClazz(
     clazz='Button',
-    import_path=Import('pytgbot.api_types.receivable.sendable.reply_markup', 'Button'),
+    import_path=Import(path=CLASS_TYPE_PATHS["Button"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Button"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable", "Sendable"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Button"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["Button"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='Sendable',
+        string=CLASS_TYPE_PATHS["Button"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Button"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link=None,
@@ -976,27 +1049,37 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.Button"] = Cu
     ),
     parameters=[],
     keywords=[],
-    body=[
-        # class Button(Sendable):
-        'def __init__(self):',
-        '    super(Button, self).__init__()',
-        '# end def __init__',
-        # end class Button
-    ],
+    body=ReplacementBody(
+        all=[],
+        init=[
+            'def __init__(self):',
+            '    super(Button, self).__init__()',
+            '# end def __init__',
+        ],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.ReplyMarkup"] = CustomClazz(
     clazz='ReplyMarkup',
-    import_path=Import("pytgbot.api_types.receivable.sendable.reply_markup", "ReplyMarkup"),
+    import_path=Import(path=CLASS_TYPE_PATHS["ReplyMarkup"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="ReplyMarkup"),
     imports=[
-        Import("pytgbot.api_types.receivable.sendable", "Sendable"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["ReplyMarkup"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["ReplyMarkup"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='Sendable',
+        string=CLASS_TYPE_PATHS["ReplyMarkup"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable.sendable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["ReplyMarkup"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link=None,
@@ -1005,27 +1088,37 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.ReplyMarkup"]
     ),
     parameters=[],
     keywords=[],
-    body=[
-        # class ReplyMarkup(Sendable):
-        'def __init__(self):',
-        '    super(ReplyMarkup, self).__init__()',
-        '# end def __init__',
-        # end class ReplyMarkup'
-   ],
+    body=ReplacementBody(
+        all=[],
+        init=[
+            'def __init__(self):',
+            '    super(ReplyMarkup, self).__init__()',
+            '# end def __init__',
+        ],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClazz(
     clazz='Receivable',
-    import_path=Import("pytgbot.api_types", "Receivable"),
+    import_path=Import(path=CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Receivable"),
     imports=[
-        Import("pytgbot.api_types", "TgBotApiObject"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='TgBotApiObject',
+        string=CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link=None,
@@ -1034,25 +1127,35 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClazz(
     ),
     parameters=[],
     keywords=[],
-    body=[
-        # class Receivable(TgBotApiObject)
-        'pass',
-        # end class Receivable
-    ],
+    body=ReplacementBody(
+        all=[
+            'pass',
+        ],
+        init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClazz(
     clazz='Result',
-    import_path=Import("pytgbot.api_types.receivable", "Result"),
+    import_path=Import(path=CLASS_TYPE_PATHS["Result"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Result"),
     imports=[
-        Import("pytgbot.api_types.receivable", "Receivable"),
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Result"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["Result"][CLASS_TYPE_PATHS__PARENT]
+        ),
     ],
     parent_clazz=Type(
-        string='Receivable',
+        string=CLASS_TYPE_PATHS["Result"][CLASS_TYPE_PATHS__PARENT],
         is_builtin=False,
         always_is_value=None,
         is_list=0,
-        import_path="pytgbot.api_types.receivable",
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Result"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
         description=None
     ),
     link=None,
@@ -1061,11 +1164,18 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClazz(
     ),
     parameters=[],
     keywords=[],
-    body=[
-        # class Result(Receivable):
-        '    def to_array(self):',
-        '        return {}',
-        '    pass',
-        # end class Result
-   ],
+    body=ReplacementBody(
+        all=[],
+        init=[],
+        to_array=[
+            'def to_array(self):',
+            '    return {}',
+            'pass',
+        ],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+    ),
 )

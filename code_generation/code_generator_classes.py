@@ -650,7 +650,7 @@ class CustomClazz(Clazz):
         description: Union[None, str] = None,
         parameters: Union[None, List['Variable']] = None,
         keywords: Union[None, List['Variable']] = None,
-        body: Union[None, List[str]] = None,
+        body: Union[None, 'ReplacementBody'] = None,
     ):
         """
         Like a class, but contains text.
@@ -658,6 +658,32 @@ class CustomClazz(Clazz):
         :param imports: str[]
         """
         super().__init__(clazz, import_path, imports, parent_clazz, link, description, parameters, keywords)
-        self.body = body if body else []
+        assert_type_or_raise(body, ReplacementBody, None, parameter_name='body')
+        self.body = body if body else ReplacementBody()
+    # end def
+# end class
+
+
+class ReplacementBody(object):
+    # noinspection PyShadowingBuiltins
+    def __init__(
+        self,
+        all: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+        init: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+        to_array: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+        validate_array: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+        from_array: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+        str: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+        repr: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+        contains: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+    ):
+        self.all = all
+        self.init = init
+        self.to_array = to_array
+        self.validate_array = validate_array
+        self.from_array = from_array
+        self.str = str
+        self.repr = repr
+        self.contains = contains
     # end def
 # end class
