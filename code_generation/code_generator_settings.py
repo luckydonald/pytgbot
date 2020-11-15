@@ -243,10 +243,17 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.media.Media"] = CustomClazz(
     link=None,
     description='parent class for all receivable media.',
     body=ReplacementBody(
-        all=[
+        before=[
             'pass',
         ],
         init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+        after=[],
     ),
 )
 
@@ -270,10 +277,17 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.peer.Peer"] = CustomClazz(
     link=None,
     description='parent class for both users and chats.',
     body=ReplacementBody(
-        all=[
+        before=[
             'pass',
         ],
         init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+        after=[],
     ),
 )
 
@@ -300,10 +314,17 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.UpdateType"] = CustomClazz(
         'Like Message: Update.message'
     ),
     body=ReplacementBody(
-        all=[
+        before=[
             'pass',
         ],
         init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+        after=[],
     ),
 )
 
@@ -327,7 +348,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.CallbackGame"] = CustomClaz
     link='https://core.telegram.org/bots/api#callbackgame',
     description='A placeholder, currently holds no information. Use BotFather to set up your game.',
     body=ReplacementBody(
-        all=[],
+        before=[],
         init=[],
         to_array=[
             'def to_array(self):',
@@ -344,6 +365,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.CallbackGame"] = CustomClaz
         str=[],
         repr=[],
         contains=[],
+        after=[],
     ),
 )
 
@@ -371,7 +393,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InlineQueryResult"]
         'Telegram clients currently support results of 20 types.'
     ),
     body=ReplacementBody(
-        all=[],
+        before=[],
         init=[
             'def __init__(self, id, type):',
             '    assert_type_or_raise(id, unicode_type, int, parameter_name="id")',
@@ -396,6 +418,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InlineQueryResult"]
         str=[],
         repr=[],
         contains=[],
+        after=[],
     ),
 )
 
@@ -421,7 +444,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InlineQueryCachedRe
         'Parent class of all those cached inline results.'
     ),
     body=ReplacementBody(
-        all=[
+        before=[
             'pass',
         ],
         init=[],
@@ -431,6 +454,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InlineQueryCachedRe
         str=[],
         repr=[],
         contains=[],
+        after=[],
     ),
 )
 
@@ -456,7 +480,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InputMessageContent
         'Parent class of all those input message content.'
     ),
     body=ReplacementBody(
-        all=[
+        before=[
             'pass',
         ],
         init=[],
@@ -550,7 +574,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
         ),
     ],
     body=ReplacementBody(
-        all=[],
+        before=[],
         init=[
             'def __init__(self, type, media, caption=None, parse_mode=None):',
             '    """',
@@ -749,7 +773,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
         ),
     ],
     body=ReplacementBody(
-        all=[
+        before=[
             'def get_request_data(self, var_name, full_data=False):',
             '    """',
             '    :param var_name:',
@@ -780,86 +804,6 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
             '    return data, (file or None)',
             '    # end if',
             '# end def',
-            '',
-            'def to_array(self):',
-            '    """',
-            '    Serializes this InputMediaPhoto to a dictionary.',
-            '',
-            '    :return: dictionary representation of this object.',
-            '    :rtype: dict',
-            '    """',
-            '    array = super(InputMediaWithThumb, self).to_array()',
-            '    # \'type\' is handled by superclass',
-            '    array[\'media\'] = u(self.media)  # py2: type unicode, py3: type str',
-            '    if self.caption is not None:',
-            '        array[\'caption\'] = u(self.caption)  # py2: type unicode, py3: type str',
-            '    if self.parse_mode is not None:',
-            '        array[\'parse_mode\'] = u(self.parse_mode)  # py2: type unicode, py3: type str',
-            '    return array',
-            '# end def to_array',
-            '',
-            '@staticmethod',
-            'def validate_array(array):',
-            '    """',
-            '    Builds a new array with valid values for the InputMediaPhoto constructor.',
-            '',
-            '    :return: new array with valid values',
-            '    :rtype: dict',
-            '    """',
-            '    assert_type_or_raise(array, dict, parameter_name="array")',
-            '    data = InputMedia.validate_array(array)',
-            '    # \'type\' is handled by the superclass.',
-            '    data[\'media\'] = u(array.get(\'media\'))',
-            '    data[\'caption\'] = u(array.get(\'caption\')) if array.get(\'caption\') is not None else None',
-            '    data[\'parse_mode\'] = u(array.get(\'parse_mode\')) if array.get(\'parse_mode\') is not None else None',
-            '    return data',
-            '# end def validate_array',
-            '',
-            '@staticmethod',
-            'def from_array(array):',
-            '    """',
-            '    Deserialize a new InputMediaWithThumb from a given dictionary.',
-            '',
-            '    :return: new InputMediaWithThumb instance.',
-            '    :rtype: InputMediaWithThumb',
-            '    """',
-            '    if not array:  # None or {}',
-            '        return None',
-            '    # end if',
-            '',
-            '    data = InputMediaWithThumb.validate_array(array)',
-            '    instance = InputMediaWithThumb(**data)',
-            '    instance._raw = array',
-            '    return instance',
-            '# end def from_array',
-            '',
-            'def __str__(self):',
-            '    """',
-            '    Implements `str(inputmediawiththumb_instance)`',
-            '    """',
-            '    return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
-            '# end def __str__',
-            '',
-            'def __repr__(self):',
-            '    """',
-            '    Implements `repr(inputmediawiththumb_instance)`',
-            '    """',
-            '    if self._raw:',
-            '        return "InputMediaWithThumb.from_array({self._raw})".format(self=self)',
-            '    # end if',
-            '    return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
-            '# end def __repr__',
-            '',
-            'def __contains__(self, key):',
-            '    """',
-            '    Implements `"key" in inputmediawiththumb_instance`',
-            '    """',
-            '    return (',
-            '        key in ["type", "media", "caption", "parse_mode"]',
-            '        and hasattr(self, key)',
-            '        and bool(getattr(self, key, None))',
-            '    )',
-            '# end def __contains__',
         ],
         init=[
             'def __init__(self, type, media, thumb, caption=None, parse_mode=None):',
@@ -892,12 +836,95 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
             '    self.thumb = thumb',
             '# end def',
         ],
-        to_array=[],
-        validate_array=[],
-        from_array=[],
-        str=[],
-        repr=[],
-        contains=[],
+        to_array=[
+            'def to_array(self):',
+            '    """',
+            '    Serializes this InputMediaPhoto to a dictionary.',
+            '',
+            '    :return: dictionary representation of this object.',
+            '    :rtype: dict',
+            '    """',
+            '    array = super(InputMediaWithThumb, self).to_array()',
+            '    # \'type\' is handled by superclass',
+            '    array[\'media\'] = u(self.media)  # py2: type unicode, py3: type str',
+            '    if self.caption is not None:',
+            '        array[\'caption\'] = u(self.caption)  # py2: type unicode, py3: type str',
+            '    if self.parse_mode is not None:',
+            '        array[\'parse_mode\'] = u(self.parse_mode)  # py2: type unicode, py3: type str',
+            '    return array',
+            '# end def to_array',
+        ],
+        validate_array=[
+            '@staticmethod',
+            'def validate_array(array):',
+            '    """',
+            '    Builds a new array with valid values for the InputMediaPhoto constructor.',
+            '',
+            '    :return: new array with valid values',
+            '    :rtype: dict',
+            '    """',
+            '    assert_type_or_raise(array, dict, parameter_name="array")',
+            '    data = InputMedia.validate_array(array)',
+            '    # \'type\' is handled by the superclass.',
+            '    data[\'media\'] = u(array.get(\'media\'))',
+            '    data[\'caption\'] = u(array.get(\'caption\')) if array.get(\'caption\') is not None else None',
+            '    data[\'parse_mode\'] = u(array.get(\'parse_mode\')) if array.get(\'parse_mode\') is not None else None',
+            '    return data',
+            '# end def validate_array',
+
+        ],
+        from_array=[
+            '@staticmethod',
+            'def from_array(array):',
+            '    """',
+            '    Deserialize a new InputMediaWithThumb from a given dictionary.',
+            '',
+            '    :return: new InputMediaWithThumb instance.',
+            '    :rtype: InputMediaWithThumb',
+            '    """',
+            '    if not array:  # None or {}',
+            '        return None',
+            '    # end if',
+            '',
+            '    data = InputMediaWithThumb.validate_array(array)',
+            '    instance = InputMediaWithThumb(**data)',
+            '    instance._raw = array',
+            '    return instance',
+            '# end def from_array',
+
+        ],
+        str=[
+            'def __str__(self):',
+            '    """',
+            '    Implements `str(inputmediawiththumb_instance)`',
+            '    """',
+            '    return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
+            '# end def __str__',
+        ],
+        repr=[
+            'def __repr__(self):',
+            '    """',
+            '    Implements `repr(inputmediawiththumb_instance)`',
+            '    """',
+            '    if self._raw:',
+            '        return "InputMediaWithThumb.from_array({self._raw})".format(self=self)',
+            '    # end if',
+            '    return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)',
+            '# end def __repr__',
+        ],
+        contains=[
+            'def __contains__(self, key):',
+            '    """',
+            '    Implements `"key" in inputmediawiththumb_instance`',
+            '    """',
+            '    return (',
+            '        key in ["type", "media", "caption", "parse_mode"]',
+            '        and hasattr(self, key)',
+            '        and bool(getattr(self, key, None))',
+            '    )',
+            '# end def __contains__',
+        ],
+        after=[],
     ),
 )
 
@@ -1013,7 +1040,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.passport.PassportElementEr
     parameters=[],
     keywords=[],
     body=ReplacementBody(
-        all=[
+        before=[
             'pass',
         ],
         init=[],
@@ -1023,6 +1050,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.passport.PassportElementEr
         str=[],
         repr=[],
         contains=[],
+        after=[],
     ),
 )
 
@@ -1050,7 +1078,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.Button"] = Cu
     parameters=[],
     keywords=[],
     body=ReplacementBody(
-        all=[],
+        before=[],
         init=[
             'def __init__(self):',
             '    super(Button, self).__init__()',
@@ -1062,6 +1090,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.Button"] = Cu
         str=[],
         repr=[],
         contains=[],
+        after=[],
     ),
 )
 
@@ -1089,7 +1118,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.ReplyMarkup"]
     parameters=[],
     keywords=[],
     body=ReplacementBody(
-        all=[],
+        before=[],
         init=[
             'def __init__(self):',
             '    super(ReplyMarkup, self).__init__()',
@@ -1101,6 +1130,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.ReplyMarkup"]
         str=[],
         repr=[],
         contains=[],
+        after=[],
     ),
 )
 
@@ -1128,7 +1158,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClazz(
     parameters=[],
     keywords=[],
     body=ReplacementBody(
-        all=[
+        before=[
             'pass',
         ],
         init=[],
@@ -1138,6 +1168,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClazz(
         str=[],
         repr=[],
         contains=[],
+        after=[],
     ),
 )
 
@@ -1165,7 +1196,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClazz(
     parameters=[],
     keywords=[],
     body=ReplacementBody(
-        all=[],
+        before=[],
         init=[],
         to_array=[
             'def to_array(self):',
@@ -1177,5 +1208,6 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClazz(
         str=[],
         repr=[],
         contains=[],
+        after=[],
     ),
 )

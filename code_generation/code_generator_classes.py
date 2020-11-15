@@ -668,7 +668,7 @@ class ReplacementBody(object):
     # noinspection PyShadowingBuiltins
     def __init__(
         self,
-        all: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+        before: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
         init: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
         to_array: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
         validate_array: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
@@ -676,8 +676,9 @@ class ReplacementBody(object):
         str: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
         repr: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
         contains: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
+        after: Union[None, List[str]] = None,  # None: keep, empty list: remove, filled list: print every line
     ):
-        self.all = all
+        self.before = before
         self.init = init
         self.to_array = to_array
         self.validate_array = validate_array
@@ -685,5 +686,6 @@ class ReplacementBody(object):
         self.str = str
         self.repr = repr
         self.contains = contains
+        self.after = after
     # end def
 # end class
