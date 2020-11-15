@@ -1,7 +1,177 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from .... import object
+
 __author__ = 'luckydonald'
+
+
+class InputMedia(object):
+    
+
+    def __init__(self, ):
+        
+        super(InputMedia, self).__init__()
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this InputMedia to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(InputMedia, self).to_array()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputMedia constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+        data = object.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMedia from a given dictionary.
+
+        :return: new InputMedia instance.
+        :rtype: InputMedia
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMedia.validate_array(array)
+        instance = InputMedia(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inputmedia_instance)`
+        """
+        return "InputMedia()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(inputmedia_instance)`
+        """
+        if self._raw:
+            return "InputMedia.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputMedia()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inputmedia_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class InputMedia
+
+
+class InputMediaWithThumb(object):
+    
+
+    def __init__(self, ):
+        
+        super(InputMediaWithThumb, self).__init__()
+        from pytgbot.api_types.receivable.sendable.input_media import InputMedia
+        
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this InputMediaWithThumb to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(InputMediaWithThumb, self).to_array()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputMediaWithThumb constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.sendable.input_media import InputMedia
+        
+        data = object.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMediaWithThumb from a given dictionary.
+
+        :return: new InputMediaWithThumb instance.
+        :rtype: InputMediaWithThumb
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMediaWithThumb.validate_array(array)
+        instance = InputMediaWithThumb(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inputmediawiththumb_instance)`
+        """
+        return "InputMediaWithThumb()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(inputmediawiththumb_instance)`
+        """
+        if self._raw:
+            return "InputMediaWithThumb.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputMediaWithThumb()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inputmediawiththumb_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class InputMediaWithThumb
 
 
 class InputMediaPhoto(InputMedia):

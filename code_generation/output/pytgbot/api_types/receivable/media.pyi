@@ -2,12 +2,17 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
+from None import object
 from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.media import Media
 
 __author__ = 'luckydonald'
 
+
+class Media(object):
+    
+# end class Media
 
 class MessageEntity(Result):
     """

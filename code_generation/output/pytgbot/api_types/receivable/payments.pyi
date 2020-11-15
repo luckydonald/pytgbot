@@ -91,7 +91,6 @@ class OrderInfo(Result):
     This object represents information about an order.
 
     https://core.telegram.org/bots/api#orderinfo
-    
 
     Optional keyword parameters:
     

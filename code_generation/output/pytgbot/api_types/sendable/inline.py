@@ -1,7 +1,261 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from .... import object
+
 __author__ = 'luckydonald'
+
+
+class InlineQueryResult(object):
+    
+
+    def __init__(self, ):
+        
+        super(InlineQueryResult, self).__init__()
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this InlineQueryResult to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(InlineQueryResult, self).to_array()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InlineQueryResult constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+        data = object.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryResult from a given dictionary.
+
+        :return: new InlineQueryResult instance.
+        :rtype: InlineQueryResult
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryResult.validate_array(array)
+        instance = InlineQueryResult(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inlinequeryresult_instance)`
+        """
+        return "InlineQueryResult()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(inlinequeryresult_instance)`
+        """
+        if self._raw:
+            return "InlineQueryResult.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryResult()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inlinequeryresult_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class InlineQueryResult
+
+
+class InlineQueryCachedResult(object):
+    
+
+    def __init__(self, ):
+        
+        super(InlineQueryCachedResult, self).__init__()
+        from pytgbot.api_types.receivable.sendable.inline import InlineQueryResult
+        
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this InlineQueryCachedResult to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(InlineQueryCachedResult, self).to_array()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InlineQueryCachedResult constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.sendable.inline import InlineQueryResult
+        
+        data = object.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InlineQueryCachedResult from a given dictionary.
+
+        :return: new InlineQueryCachedResult instance.
+        :rtype: InlineQueryCachedResult
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InlineQueryCachedResult.validate_array(array)
+        instance = InlineQueryCachedResult(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inlinequerycachedresult_instance)`
+        """
+        return "InlineQueryCachedResult()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(inlinequerycachedresult_instance)`
+        """
+        if self._raw:
+            return "InlineQueryCachedResult.from_array({self._raw})".format(self=self)
+        # end if
+        return "InlineQueryCachedResult()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inlinequerycachedresult_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class InlineQueryCachedResult
+
+
+class InputMessageContent(object):
+    
+
+    def __init__(self, ):
+        
+        super(InputMessageContent, self).__init__()
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this InputMessageContent to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(InputMessageContent, self).to_array()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputMessageContent constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+        data = object.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputMessageContent from a given dictionary.
+
+        :return: new InputMessageContent instance.
+        :rtype: InputMessageContent
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputMessageContent.validate_array(array)
+        instance = InputMessageContent(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inputmessagecontent_instance)`
+        """
+        return "InputMessageContent()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(inputmessagecontent_instance)`
+        """
+        if self._raw:
+            return "InputMessageContent.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputMessageContent()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inputmessagecontent_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class InputMessageContent
 
 
 class InlineQueryResultArticle(InlineQueryResult):

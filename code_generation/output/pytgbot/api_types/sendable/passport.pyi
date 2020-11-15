@@ -2,10 +2,15 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
+from None import object
 from pytgbot.api_types.sendable.passport import PassportElementError
 
 __author__ = 'luckydonald'
 
+
+class PassportElementError(object):
+    
+# end class PassportElementError
 
 class PassportElementErrorDataField(PassportElementError):
     """

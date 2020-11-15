@@ -1,10 +1,96 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from .... import object
 from . import Receivable
 from . import Result
 
 __author__ = 'luckydonald'
+
+
+class Media(object):
+    
+
+    def __init__(self, , _raw=None):
+        
+        super(Media, self).__init__()
+        from pytgbot.api_types.receivable import Receivable
+        
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Media to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Media, self).to_array()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Media constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable import Receivable
+        
+        data = object.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Media from a given dictionary.
+
+        :return: new Media instance.
+        :rtype: Media
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Media.validate_array(array)
+        data['_raw'] = array
+        return Media(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(media_instance)`
+        """
+        return "Media()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(media_instance)`
+        """
+        if self._raw:
+            return "Media.from_array({self._raw})".format(self=self)
+        # end if
+        return "Media()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in media_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Media
 
 
 class MessageEntity(Result):

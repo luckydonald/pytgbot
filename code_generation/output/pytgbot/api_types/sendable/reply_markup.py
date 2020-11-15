@@ -1,9 +1,178 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from .... import object
 from . import Sendable
 
 __author__ = 'luckydonald'
+
+
+class Button(object):
+    
+
+    def __init__(self, ):
+        
+        super(Button, self).__init__()
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this Button to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(Button, self).to_array()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the Button constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+        data = object.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new Button from a given dictionary.
+
+        :return: new Button instance.
+        :rtype: Button
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = Button.validate_array(array)
+        instance = Button(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(button_instance)`
+        """
+        return "Button()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(button_instance)`
+        """
+        if self._raw:
+            return "Button.from_array({self._raw})".format(self=self)
+        # end if
+        return "Button()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in button_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class Button
+
+
+class ReplyMarkup(object):
+    
+
+    def __init__(self, ):
+        
+        super(ReplyMarkup, self).__init__()
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this ReplyMarkup to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(ReplyMarkup, self).to_array()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ReplyMarkup constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+        data = object.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new ReplyMarkup from a given dictionary.
+
+        :return: new ReplyMarkup instance.
+        :rtype: ReplyMarkup
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = ReplyMarkup.validate_array(array)
+        instance = ReplyMarkup(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(replymarkup_instance)`
+        """
+        return "ReplyMarkup()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(replymarkup_instance)`
+        """
+        if self._raw:
+            return "ReplyMarkup.from_array({self._raw})".format(self=self)
+        # end if
+        return "ReplyMarkup()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in replymarkup_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class ReplyMarkup
 
 
 class ReplyKeyboardMarkup(ReplyMarkup):
@@ -315,7 +484,6 @@ class KeyboardButtonPollType(Button):
     This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
 
     https://core.telegram.org/bots/api#keyboardbuttonpolltype
-    
 
     Optional keyword parameters:
     
@@ -328,7 +496,6 @@ class KeyboardButtonPollType(Button):
         This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
 
         https://core.telegram.org/bots/api#keyboardbuttonpolltype
-        
 
         Optional keyword parameters:
         

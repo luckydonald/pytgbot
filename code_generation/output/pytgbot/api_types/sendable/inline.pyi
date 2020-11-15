@@ -2,12 +2,25 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
+from None import object
 from pytgbot.api_types.sendable.inline import InlineQueryCachedResult
 from pytgbot.api_types.sendable.inline import InlineQueryResult
 from pytgbot.api_types.sendable.inline import InputMessageContent
 
 __author__ = 'luckydonald'
 
+
+class InlineQueryResult(object):
+    
+# end class InlineQueryResult
+
+class InlineQueryCachedResult(object):
+    
+# end class InlineQueryCachedResult
+
+class InputMessageContent(object):
+    
+# end class InputMessageContent
 
 class InlineQueryResultArticle(InlineQueryResult):
     """

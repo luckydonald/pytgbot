@@ -2,11 +2,20 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
+from None import object
 from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable.updates import UpdateType
 
 __author__ = 'luckydonald'
 
+
+class UpdateType(object):
+    
+# end class UpdateType
+
+class CallbackGame(object):
+    
+# end class CallbackGame
 
 class Update(Receivable):
     """
@@ -395,7 +404,6 @@ class ResponseParameters(Receivable):
     Contains information about why a request was unsuccessful.
 
     https://core.telegram.org/bots/api#responseparameters
-    
 
     Optional keyword parameters:
     

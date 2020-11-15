@@ -2,12 +2,21 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
+from None import object
 from pytgbot.api_types.sendable import Sendable
 from pytgbot.api_types.sendable.reply_markup import Button
 from pytgbot.api_types.sendable.reply_markup import ReplyMarkup
 
 __author__ = 'luckydonald'
 
+
+class Button(object):
+    
+# end class Button
+
+class ReplyMarkup(object):
+    
+# end class ReplyMarkup
 
 class ReplyKeyboardMarkup(ReplyMarkup):
     """
@@ -75,7 +84,6 @@ class KeyboardButtonPollType(Button):
     This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
 
     https://core.telegram.org/bots/api#keyboardbuttonpolltype
-    
 
     Optional keyword parameters:
     

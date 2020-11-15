@@ -2,11 +2,16 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
+from None import object
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.peer import Peer
 
 __author__ = 'luckydonald'
 
+
+class Peer(object):
+    
+# end class Peer
 
 class User(Peer):
     """
@@ -248,7 +253,6 @@ class ChatPermissions(Result):
     Describes actions that a non-administrator user is allowed to take in a chat.
 
     https://core.telegram.org/bots/api#chatpermissions
-    
 
     Optional keyword parameters:
     

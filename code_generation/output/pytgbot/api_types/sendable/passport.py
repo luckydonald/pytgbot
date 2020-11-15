@@ -1,7 +1,93 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from .... import object
+
 __author__ = 'luckydonald'
+
+
+class PassportElementError(object):
+    
+
+    def __init__(self, ):
+        
+        super(PassportElementError, self).__init__()
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this PassportElementError to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(PassportElementError, self).to_array()
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the PassportElementError constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.sendable import Sendable
+        
+        data = object.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new PassportElementError from a given dictionary.
+
+        :return: new PassportElementError instance.
+        :rtype: PassportElementError
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = PassportElementError.validate_array(array)
+        instance = PassportElementError(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(passportelementerror_instance)`
+        """
+        return "PassportElementError()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(passportelementerror_instance)`
+        """
+        if self._raw:
+            return "PassportElementError.from_array({self._raw})".format(self=self)
+        # end if
+        return "PassportElementError()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in passportelementerror_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class PassportElementError
 
 
 class PassportElementErrorDataField(PassportElementError):

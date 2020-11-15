@@ -2,11 +2,20 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
+from None import object
 from pytgbot.api_types.sendable.input_media import InputMedia
 from pytgbot.api_types.sendable.input_media import InputMediaWithThumb
 
 __author__ = 'luckydonald'
 
+
+class InputMedia(object):
+    
+# end class InputMedia
+
+class InputMediaWithThumb(object):
+    
+# end class InputMediaWithThumb
 
 class InputMediaPhoto(InputMedia):
     """
