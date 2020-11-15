@@ -515,12 +515,14 @@ def safe_to_file(folder, results):
     clazzes = {}  # "filepath": [Class, Class, ...]
     all_the_clazzes = []
     custom_classes = {}  # "filepath": [Class, Class, ...]
-    import_path: str; class_data: CustomClass
     for import_path, class_data in CUSTOM_CLASSES.items():
-        import_paath, import_name = split_path(import_path)
+        import_path: str
+        class_data: CustomClass
+
+        import_path_prefix, import_name = split_path(import_path)
         result = Clazz(
             clazz=import_name,
-            import_path=Import(path=import_paath, name=import_name),
+            import_path=Import(path=import_path_prefix, name=import_name),
             imports=[
                 # ('pytgbot.api_types.receivable', 'Receivable')
                 # -> Import(path='pytgbot.api_types.receivable', name='Receivable')
@@ -533,6 +535,11 @@ def safe_to_file(folder, results):
                     in class_data.imports
                 )
             ],
+            parent_clazz=None,
+            link=None,
+            description=None,
+            parameters=None,
+            keywords=None,
         )
         # result.import_path = result.calculate_import_path()
         result.filepath = result.calculate_filepath(folder)
@@ -540,10 +547,10 @@ def safe_to_file(folder, results):
         if file_path not in custom_classes:
             custom_classes[file_path] = []
         custom_classes[file_path].append(result)
-        # if file_path not in clazzes:
-        #     clazzes[file_path] = []
-        # clazzes[file_path].append(result)
-        # all_the_clazzes.append(result)
+        if file_path not in clazzes:
+            clazzes[file_path] = []
+        clazzes[file_path].append(result)
+        all_the_clazzes.append(result)
     # end def
 
     # split results into functions and classes
