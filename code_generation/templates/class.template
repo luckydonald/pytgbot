@@ -4,20 +4,20 @@
 
 
 class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
-    """
+    {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
     {% block class_docstring -%}
-    {{ clazz.description.strip()|indent }}
+    {%- if clazz.description %}{{ clazz.description.strip()|indent }}{% endif %}{%- if clazz.description and clazz.link %}
 
-    {{clazz.link}}
+    {% endif %}{% if clazz.link %}{{ clazz.link }}{% endif %}{%- if (clazz.description or clazz.link) and clazz.parameters %}
     {# first line -#}
-    {%- if clazz.parameters %}
+    {% endif %}{%- if clazz.parameters %}
 
     Parameters:
     {% for param in clazz.parameters %}
     :param {{ param.name }}: {{ param.description }}
     :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
     {% endfor -%}
-    {%- endif -%}
+    {%- endif -%}{# {%- if (clazz.description or clazz.link or clazz.parameters) and clazz.keywords %} #}
     {#- {%- if clazz.keywords %} #}
 
     Optional keyword parameters:
@@ -28,12 +28,12 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     {% endif -%}{%- endblock -%}
-    """
+    """{% endif %}
 
     def __init__(self, {{ for_args_none(clazz.variables) }}{% if not is_sendable %}, _raw=None{% endif %}):
-        """
+        {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
         {{ self.class_docstring()|indent -}}
-        """
+        """{% endif %}
         super({{ clazz.clazz }}, self).__init__()
 
         {%- block imports_block -%}

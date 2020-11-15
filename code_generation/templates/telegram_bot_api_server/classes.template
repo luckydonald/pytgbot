@@ -14,13 +14,16 @@ __all__ = [
 
 
 {% for clazz in clazzes %}
+{%- if clazz.clazz.clazz %}{% set custom_clazz = clazz %}{% set clazz = custom_clazz.clazz %}{% else %}{% set custom_clazz = None %}{% endif %}
 
 class {{ clazz.clazz -}}Model(BaseModel):  # {{ clazz.parent_clazz.string }}
+    {%- if clazz.description or clazz.link -%}
     """
-    {{ clazz.description.strip()|indent }}
+    {%- if clazz.description %}{{ clazz.description.strip()|indent }}{% endif %}{%- if clazz.description and clazz.link %}
 
-    {{clazz.link}}
+    {% endif %}{% if clazz.link %}{{ clazz.link }}{% endif %}
     """
+    {% endif %}
 
     {%- for variable in clazz.variables %}
     {{ variable.name }}: {{ variable.create_typehint_optional_model(json_mode=False, quote_models=True) }}
