@@ -7,7 +7,7 @@ from typing import Any, Union, List, Optional
 __author__ = 'luckydonald'
 
 __all__ = [
-    'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatMemberModel', 'ChatPermissionsModel', 'BotCommandModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
+    'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageIdModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'ProximityAlertTriggeredModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatMemberModel', 'ChatPermissionsModel', 'ChatLocationModel', 'BotCommandModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
 ]
 
 FAST_API_ISSUE_884_IS_FIXED = False
@@ -69,6 +69,7 @@ class WebhookInfoModel(BaseModel):  # Receivable
     url: str
     has_custom_certificate: bool
     pending_update_count: int
+    ip_address: Optional[str]
     last_error_date: Optional[int]
     last_error_message: Optional[str]
     max_connections: Optional[int]
@@ -107,6 +108,7 @@ class ChatModel(BaseModel):  # Peer
     first_name: Optional[str]
     last_name: Optional[str]
     photo: Optional['ChatPhotoModel']
+    bio: Optional[str]
     description: Optional[str]
     invite_link: Optional[str]
     pinned_message: Optional['MessageModel']
@@ -114,6 +116,8 @@ class ChatModel(BaseModel):  # Peer
     slow_mode_delay: Optional[int]
     sticker_set_name: Optional[str]
     can_set_sticker_set: Optional[bool]
+    linked_chat_id: Optional[int]
+    location: Optional['ChatLocationModel']
 # end class Chat
 
 
@@ -127,6 +131,7 @@ class MessageModel(BaseModel):  # UpdateType
     date: int
     chat: 'ChatModel'
     from_peer: Optional['UserModel']
+    sender_chat: Optional['ChatModel']
     forward_from: Optional['UserModel']
     forward_from_chat: Optional['ChatModel']
     forward_from_message_id: Optional[int]
@@ -171,8 +176,19 @@ class MessageModel(BaseModel):  # UpdateType
     successful_payment: Optional['SuccessfulPaymentModel']
     connected_website: Optional[str]
     passport_data: Optional['PassportDataModel']
+    proximity_alert_triggered: Optional['ProximityAlertTriggeredModel']
     reply_markup: Optional['InlineKeyboardMarkupModel']
 # end class Message
+
+
+class MessageIdModel(BaseModel):  # Result
+    """
+    This object represents a unique message identifier.
+
+    https://core.telegram.org/bots/api#messageid
+    """
+    message_id: int
+# end class MessageId
 
 
 class MessageEntityModel(BaseModel):  # Result
@@ -233,6 +249,7 @@ class AudioModel(BaseModel):  # Media
     duration: int
     performer: Optional[str]
     title: Optional[str]
+    file_name: Optional[str]
     mime_type: Optional[str]
     file_size: Optional[int]
     thumb: Optional['PhotoSizeModel']
@@ -266,6 +283,7 @@ class VideoModel(BaseModel):  # Media
     height: int
     duration: int
     thumb: Optional['PhotoSizeModel']
+    file_name: Optional[str]
     mime_type: Optional[str]
     file_size: Optional[int]
 # end class Video
@@ -378,6 +396,10 @@ class LocationModel(BaseModel):  # Media
     """
     longitude: float
     latitude: float
+    horizontal_accuracy: Optional[float]
+    live_period: Optional[int]
+    heading: Optional[int]
+    proximity_alert_radius: Optional[int]
 # end class Location
 
 
@@ -392,7 +414,21 @@ class VenueModel(BaseModel):  # Media
     address: str
     foursquare_id: Optional[str]
     foursquare_type: Optional[str]
+    google_place_id: Optional[str]
+    google_place_type: Optional[str]
 # end class Venue
+
+
+class ProximityAlertTriggeredModel(BaseModel):  # Media
+    """
+    This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
+
+    https://core.telegram.org/bots/api#proximityalerttriggered
+    """
+    traveler: 'UserModel'
+    watcher: 'UserModel'
+    distance: int
+# end class ProximityAlertTriggered
 
 
 class UserProfilePhotosModel(BaseModel):  # Result
@@ -571,7 +607,7 @@ class ChatMemberModel(BaseModel):  # Result
     user: 'UserModel'
     status: str
     custom_title: Optional[str]
-    until_date: Optional[int]
+    is_anonymous: Optional[bool]
     can_be_edited: Optional[bool]
     can_post_messages: Optional[bool]
     can_edit_messages: Optional[bool]
@@ -587,6 +623,7 @@ class ChatMemberModel(BaseModel):  # Result
     can_send_polls: Optional[bool]
     can_send_other_messages: Optional[bool]
     can_add_web_page_previews: Optional[bool]
+    until_date: Optional[int]
 # end class ChatMember
 
 
@@ -605,6 +642,17 @@ class ChatPermissionsModel(BaseModel):  # Result
     can_invite_users: Optional[bool]
     can_pin_messages: Optional[bool]
 # end class ChatPermissions
+
+
+class ChatLocationModel(BaseModel):  # Result
+    """
+    Represents a location to which a chat is connected.
+
+    https://core.telegram.org/bots/api#chatlocation
+    """
+    location: 'LocationModel'
+    address: str
+# end class ChatLocation
 
 
 class BotCommandModel(BaseModel):  # Sendable
@@ -639,6 +687,7 @@ class InputMediaPhotoModel(BaseModel):  # InputMedia
     media: str
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
 # end class InputMediaPhoto
 
 
@@ -653,6 +702,7 @@ class InputMediaVideoModel(BaseModel):  # InputMediaWithThumb
     thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     width: Optional[int]
     height: Optional[int]
     duration: Optional[int]
@@ -671,6 +721,7 @@ class InputMediaAnimationModel(BaseModel):  # InputMediaWithThumb
     thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     width: Optional[int]
     height: Optional[int]
     duration: Optional[int]
@@ -688,6 +739,7 @@ class InputMediaAudioModel(BaseModel):  # InputMediaWithThumb
     thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     duration: Optional[int]
     performer: Optional[str]
     title: Optional[str]
@@ -705,6 +757,8 @@ class InputMediaDocumentModel(BaseModel):  # InputMediaWithThumb
     thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
+    disable_content_type_detection: Optional[bool]
 # end class InputMediaDocument
 
 
@@ -805,6 +859,7 @@ class InlineQueryResultPhotoModel(BaseModel):  # InlineQueryResult
     description: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultPhoto
@@ -827,6 +882,7 @@ class InlineQueryResultGifModel(BaseModel):  # InlineQueryResult
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultGif
@@ -849,6 +905,7 @@ class InlineQueryResultMpeg4GifModel(BaseModel):  # InlineQueryResult
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultMpeg4Gif
@@ -870,6 +927,7 @@ class InlineQueryResultVideoModel(BaseModel):  # InlineQueryResult
     title: str
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     video_width: Optional[int]
     video_height: Optional[int]
     video_duration: Optional[int]
@@ -892,6 +950,7 @@ class InlineQueryResultAudioModel(BaseModel):  # InlineQueryResult
     title: str
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     performer: Optional[str]
     audio_duration: Optional[int]
     reply_markup: Optional['InlineKeyboardMarkupModel']
@@ -912,6 +971,7 @@ class InlineQueryResultVoiceModel(BaseModel):  # InlineQueryResult
     title: str
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     voice_duration: Optional[int]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
@@ -932,6 +992,7 @@ class InlineQueryResultDocumentModel(BaseModel):  # InlineQueryResult
     mime_type: str
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     description: Optional[str]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
@@ -953,7 +1014,10 @@ class InlineQueryResultLocationModel(BaseModel):  # InlineQueryResult
     latitude: float
     longitude: float
     title: str
+    horizontal_accuracy: Optional[float]
     live_period: Optional[int]
+    heading: Optional[int]
+    proximity_alert_radius: Optional[int]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
     thumb_url: Optional[str]
@@ -977,6 +1041,8 @@ class InlineQueryResultVenueModel(BaseModel):  # InlineQueryResult
     address: str
     foursquare_id: Optional[str]
     foursquare_type: Optional[str]
+    google_place_id: Optional[str]
+    google_place_type: Optional[str]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
     thumb_url: Optional[str]
@@ -1033,6 +1099,7 @@ class InlineQueryResultCachedPhotoModel(BaseModel):  # InlineQueryCachedResult
     description: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedPhoto
@@ -1050,6 +1117,7 @@ class InlineQueryResultCachedGifModel(BaseModel):  # InlineQueryCachedResult
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedGif
@@ -1067,6 +1135,7 @@ class InlineQueryResultCachedMpeg4GifModel(BaseModel):  # InlineQueryCachedResul
     title: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedMpeg4Gif
@@ -1101,6 +1170,7 @@ class InlineQueryResultCachedDocumentModel(BaseModel):  # InlineQueryCachedResul
     description: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedDocument
@@ -1119,6 +1189,7 @@ class InlineQueryResultCachedVideoModel(BaseModel):  # InlineQueryCachedResult
     description: Optional[str]
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedVideo
@@ -1137,6 +1208,7 @@ class InlineQueryResultCachedVoiceModel(BaseModel):  # InlineQueryCachedResult
     title: str
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedVoice
@@ -1154,6 +1226,7 @@ class InlineQueryResultCachedAudioModel(BaseModel):  # InlineQueryCachedResult
     audio_file_id: str
     caption: Optional[str]
     parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
     reply_markup: Optional['InlineKeyboardMarkupModel']
     input_message_content: Optional['InputMessageContentModel']
 # end class InlineQueryResultCachedAudio
@@ -1167,6 +1240,7 @@ class InputTextMessageContentModel(BaseModel):  # InputMessageContent
     """
     message_text: str
     parse_mode: Optional[str]
+    entities: Optional[List['MessageEntityModel']]
     disable_web_page_preview: Optional[bool]
 # end class InputTextMessageContent
 
@@ -1179,7 +1253,10 @@ class InputLocationMessageContentModel(BaseModel):  # InputMessageContent
     """
     latitude: float
     longitude: float
+    horizontal_accuracy: Optional[float]
     live_period: Optional[int]
+    heading: Optional[int]
+    proximity_alert_radius: Optional[int]
 # end class InputLocationMessageContent
 
 
@@ -1195,6 +1272,8 @@ class InputVenueMessageContentModel(BaseModel):  # InputMessageContent
     address: str
     foursquare_id: Optional[str]
     foursquare_type: Optional[str]
+    google_place_id: Optional[str]
+    google_place_type: Optional[str]
 # end class InputVenueMessageContent
 
 
@@ -1542,6 +1621,7 @@ WebhookInfoModel.update_forward_refs()
 UserModel.update_forward_refs()
 ChatModel.update_forward_refs()
 MessageModel.update_forward_refs()
+MessageIdModel.update_forward_refs()
 MessageEntityModel.update_forward_refs()
 PhotoSizeModel.update_forward_refs()
 AnimationModel.update_forward_refs()
@@ -1557,6 +1637,7 @@ PollAnswerModel.update_forward_refs()
 PollModel.update_forward_refs()
 LocationModel.update_forward_refs()
 VenueModel.update_forward_refs()
+ProximityAlertTriggeredModel.update_forward_refs()
 UserProfilePhotosModel.update_forward_refs()
 FileModel.update_forward_refs()
 ReplyKeyboardMarkupModel.update_forward_refs()
@@ -1571,6 +1652,7 @@ ForceReplyModel.update_forward_refs()
 ChatPhotoModel.update_forward_refs()
 ChatMemberModel.update_forward_refs()
 ChatPermissionsModel.update_forward_refs()
+ChatLocationModel.update_forward_refs()
 BotCommandModel.update_forward_refs()
 ResponseParametersModel.update_forward_refs()
 InputMediaPhotoModel.update_forward_refs()

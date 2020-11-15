@@ -305,6 +305,9 @@ class WebhookInfo(Receivable):
 
     Optional keyword parameters:
     
+    :param ip_address: Optional. Currently used webhook IP address
+    :type  ip_address: str|unicode
+    
     :param last_error_date: Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
     :type  last_error_date: int
     
@@ -321,7 +324,7 @@ class WebhookInfo(Receivable):
     :type  _raw: None | dict
     """
 
-    def __init__(self, url, has_custom_certificate, pending_update_count, last_error_date=None, last_error_message=None, max_connections=None, allowed_updates=None, _raw=None):
+    def __init__(self, url, has_custom_certificate, pending_update_count, ip_address=None, last_error_date=None, last_error_message=None, max_connections=None, allowed_updates=None, _raw=None):
         """
         Contains information about the current status of a webhook.
 
@@ -341,6 +344,9 @@ class WebhookInfo(Receivable):
         
 
         Optional keyword parameters:
+        
+        :param ip_address: Optional. Currently used webhook IP address
+        :type  ip_address: str|unicode
         
         :param last_error_date: Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
         :type  last_error_date: int
@@ -366,6 +372,9 @@ class WebhookInfo(Receivable):
         
         assert_type_or_raise(pending_update_count, int, parameter_name="pending_update_count")
         self.pending_update_count = pending_update_count
+        
+        assert_type_or_raise(ip_address, None, unicode_type, parameter_name="ip_address")
+        self.ip_address = ip_address
         
         assert_type_or_raise(last_error_date, None, int, parameter_name="last_error_date")
         self.last_error_date = last_error_date
@@ -393,6 +402,8 @@ class WebhookInfo(Receivable):
         array['url'] = u(self.url)  # py2: type unicode, py3: type str
         array['has_custom_certificate'] = bool(self.has_custom_certificate)  # type bool
         array['pending_update_count'] = int(self.pending_update_count)  # type int
+        if self.ip_address is not None:
+            array['ip_address'] = u(self.ip_address)  # py2: type unicode, py3: type str
         if self.last_error_date is not None:
             array['last_error_date'] = int(self.last_error_date)  # type int
         if self.last_error_message is not None:
@@ -418,6 +429,7 @@ class WebhookInfo(Receivable):
         data['url'] = u(array.get('url'))
         data['has_custom_certificate'] = bool(array.get('has_custom_certificate'))
         data['pending_update_count'] = int(array.get('pending_update_count'))
+        data['ip_address'] = u(array.get('ip_address')) if array.get('ip_address') is not None else None
         data['last_error_date'] = int(array.get('last_error_date')) if array.get('last_error_date') is not None else None
         data['last_error_message'] = u(array.get('last_error_message')) if array.get('last_error_message') is not None else None
         data['max_connections'] = int(array.get('max_connections')) if array.get('max_connections') is not None else None
@@ -446,7 +458,7 @@ class WebhookInfo(Receivable):
         """
         Implements `str(webhookinfo_instance)`
         """
-        return "WebhookInfo(url={self.url!r}, has_custom_certificate={self.has_custom_certificate!r}, pending_update_count={self.pending_update_count!r}, last_error_date={self.last_error_date!r}, last_error_message={self.last_error_message!r}, max_connections={self.max_connections!r}, allowed_updates={self.allowed_updates!r})".format(self=self)
+        return "WebhookInfo(url={self.url!r}, has_custom_certificate={self.has_custom_certificate!r}, pending_update_count={self.pending_update_count!r}, ip_address={self.ip_address!r}, last_error_date={self.last_error_date!r}, last_error_message={self.last_error_message!r}, max_connections={self.max_connections!r}, allowed_updates={self.allowed_updates!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -456,7 +468,7 @@ class WebhookInfo(Receivable):
         if self._raw:
             return "WebhookInfo.from_array({self._raw})".format(self=self)
         # end if
-        return "WebhookInfo(url={self.url!r}, has_custom_certificate={self.has_custom_certificate!r}, pending_update_count={self.pending_update_count!r}, last_error_date={self.last_error_date!r}, last_error_message={self.last_error_message!r}, max_connections={self.max_connections!r}, allowed_updates={self.allowed_updates!r})".format(self=self)
+        return "WebhookInfo(url={self.url!r}, has_custom_certificate={self.has_custom_certificate!r}, pending_update_count={self.pending_update_count!r}, ip_address={self.ip_address!r}, last_error_date={self.last_error_date!r}, last_error_message={self.last_error_message!r}, max_connections={self.max_connections!r}, allowed_updates={self.allowed_updates!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -464,7 +476,7 @@ class WebhookInfo(Receivable):
         Implements `"key" in webhookinfo_instance`
         """
         return (
-            key in ["url", "has_custom_certificate", "pending_update_count", "last_error_date", "last_error_message", "max_connections", "allowed_updates"]
+            key in ["url", "has_custom_certificate", "pending_update_count", "ip_address", "last_error_date", "last_error_message", "max_connections", "allowed_updates"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -496,10 +508,13 @@ class Message(UpdateType):
     :param from_peer: Optional. Sender, empty for messages sent to channels
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
+    :param sender_chat: Optional. Sender of the message, sent on behalf of a chat. The channel itself for channel messages. The supergroup itself for messages from anonymous group administrators. The linked channel for messages automatically forwarded to the discussion group
+    :type  sender_chat: pytgbot.api_types.receivable.peer.Chat
+    
     :param forward_from: Optional. For forwarded messages, sender of the original message
     :type  forward_from: pytgbot.api_types.receivable.peer.User
     
-    :param forward_from_chat: Optional. For messages forwarded from channels, information about the original channel
+    :param forward_from_chat: Optional. For messages forwarded from channels or from anonymous administrators, information about the original sender chat
     :type  forward_from_chat: pytgbot.api_types.receivable.peer.Chat
     
     :param forward_from_message_id: Optional. For messages forwarded from channels, identifier of the original message in the channel
@@ -526,7 +541,7 @@ class Message(UpdateType):
     :param media_group_id: Optional. The unique identifier of a media message group this message belongs to
     :type  media_group_id: str|unicode
     
-    :param author_signature: Optional. Signature of the post author for messages in channels
+    :param author_signature: Optional. Signature of the post author for messages in channels, or the custom title of an anonymous group administrator
     :type  author_signature: str|unicode
     
     :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters
@@ -628,6 +643,9 @@ class Message(UpdateType):
     :param passport_data: Optional. Telegram Passport data
     :type  passport_data: pytgbot.api_types.receivable.passport.PassportData
     
+    :param proximity_alert_triggered: Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
+    :type  proximity_alert_triggered: pytgbot.api_types.receivable.media.ProximityAlertTriggered
+    
     :param reply_markup: Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -635,7 +653,7 @@ class Message(UpdateType):
     :type  _raw: None | dict
     """
 
-    def __init__(self, message_id, date, chat, from_peer=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_sender_name=None, forward_date=None, reply_to_message=None, via_bot=None, edit_date=None, media_group_id=None, author_signature=None, text=None, entities=None, animation=None, audio=None, document=None, photo=None, sticker=None, video=None, video_note=None, voice=None, caption=None, caption_entities=None, contact=None, dice=None, game=None, poll=None, venue=None, location=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, reply_markup=None, _raw=None):
+    def __init__(self, message_id, date, chat, from_peer=None, sender_chat=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_sender_name=None, forward_date=None, reply_to_message=None, via_bot=None, edit_date=None, media_group_id=None, author_signature=None, text=None, entities=None, animation=None, audio=None, document=None, photo=None, sticker=None, video=None, video_note=None, voice=None, caption=None, caption_entities=None, contact=None, dice=None, game=None, poll=None, venue=None, location=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, proximity_alert_triggered=None, reply_markup=None, _raw=None):
         """
         This object represents a message.
 
@@ -659,10 +677,13 @@ class Message(UpdateType):
         :param from_peer: Optional. Sender, empty for messages sent to channels
         :type  from_peer: pytgbot.api_types.receivable.peer.User
         
+        :param sender_chat: Optional. Sender of the message, sent on behalf of a chat. The channel itself for channel messages. The supergroup itself for messages from anonymous group administrators. The linked channel for messages automatically forwarded to the discussion group
+        :type  sender_chat: pytgbot.api_types.receivable.peer.Chat
+        
         :param forward_from: Optional. For forwarded messages, sender of the original message
         :type  forward_from: pytgbot.api_types.receivable.peer.User
         
-        :param forward_from_chat: Optional. For messages forwarded from channels, information about the original channel
+        :param forward_from_chat: Optional. For messages forwarded from channels or from anonymous administrators, information about the original sender chat
         :type  forward_from_chat: pytgbot.api_types.receivable.peer.Chat
         
         :param forward_from_message_id: Optional. For messages forwarded from channels, identifier of the original message in the channel
@@ -689,7 +710,7 @@ class Message(UpdateType):
         :param media_group_id: Optional. The unique identifier of a media message group this message belongs to
         :type  media_group_id: str|unicode
         
-        :param author_signature: Optional. Signature of the post author for messages in channels
+        :param author_signature: Optional. Signature of the post author for messages in channels, or the custom title of an anonymous group administrator
         :type  author_signature: str|unicode
         
         :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters
@@ -791,6 +812,9 @@ class Message(UpdateType):
         :param passport_data: Optional. Telegram Passport data
         :type  passport_data: pytgbot.api_types.receivable.passport.PassportData
         
+        :param proximity_alert_triggered: Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
+        :type  proximity_alert_triggered: pytgbot.api_types.receivable.media.ProximityAlertTriggered
+        
         :param reply_markup: Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -808,6 +832,7 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PhotoSize
         from pytgbot.api_types.receivable.media import Poll
+        from pytgbot.api_types.receivable.media import ProximityAlertTriggered
         from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.media import Venue
         from pytgbot.api_types.receivable.media import Video
@@ -832,6 +857,9 @@ class Message(UpdateType):
         
         assert_type_or_raise(from_peer, None, User, parameter_name="from_peer")
         self.from_peer = from_peer
+        
+        assert_type_or_raise(sender_chat, None, Chat, parameter_name="sender_chat")
+        self.sender_chat = sender_chat
         
         assert_type_or_raise(forward_from, None, User, parameter_name="forward_from")
         self.forward_from = forward_from
@@ -965,6 +993,9 @@ class Message(UpdateType):
         assert_type_or_raise(passport_data, None, PassportData, parameter_name="passport_data")
         self.passport_data = passport_data
         
+        assert_type_or_raise(proximity_alert_triggered, None, ProximityAlertTriggered, parameter_name="proximity_alert_triggered")
+        self.proximity_alert_triggered = proximity_alert_triggered
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
 
@@ -985,6 +1016,9 @@ class Message(UpdateType):
 
         if self.from_peer is not None:
             array['from'] = self.from_peer.to_array()  # type User
+
+        if self.sender_chat is not None:
+            array['sender_chat'] = self.sender_chat.to_array()  # type Chat
 
         if self.forward_from is not None:
             array['forward_from'] = self.forward_from.to_array()  # type User
@@ -1101,6 +1135,9 @@ class Message(UpdateType):
         if self.passport_data is not None:
             array['passport_data'] = self.passport_data.to_array()  # type PassportData
 
+        if self.proximity_alert_triggered is not None:
+            array['proximity_alert_triggered'] = self.proximity_alert_triggered.to_array()  # type ProximityAlertTriggered
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -1126,6 +1163,7 @@ class Message(UpdateType):
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.receivable.media import PhotoSize
         from pytgbot.api_types.receivable.media import Poll
+        from pytgbot.api_types.receivable.media import ProximityAlertTriggered
         from pytgbot.api_types.receivable.media import Sticker
         from pytgbot.api_types.receivable.media import Venue
         from pytgbot.api_types.receivable.media import Video
@@ -1144,6 +1182,7 @@ class Message(UpdateType):
         data['date'] = int(array.get('date'))
         data['chat'] = Chat.from_array(array.get('chat'))
         data['from_peer'] = User.from_array(array.get('from')) if array.get('from') is not None else None
+        data['sender_chat'] = Chat.from_array(array.get('sender_chat')) if array.get('sender_chat') is not None else None
         data['forward_from'] = User.from_array(array.get('forward_from')) if array.get('forward_from') is not None else None
         data['forward_from_chat'] = Chat.from_array(array.get('forward_from_chat')) if array.get('forward_from_chat') is not None else None
         data['forward_from_message_id'] = int(array.get('forward_from_message_id')) if array.get('forward_from_message_id') is not None else None
@@ -1188,6 +1227,7 @@ class Message(UpdateType):
         data['successful_payment'] = SuccessfulPayment.from_array(array.get('successful_payment')) if array.get('successful_payment') is not None else None
         data['connected_website'] = u(array.get('connected_website')) if array.get('connected_website') is not None else None
         data['passport_data'] = PassportData.from_array(array.get('passport_data')) if array.get('passport_data') is not None else None
+        data['proximity_alert_triggered'] = ProximityAlertTriggered.from_array(array.get('proximity_alert_triggered')) if array.get('proximity_alert_triggered') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         return data
     # end def validate_array
@@ -1213,7 +1253,7 @@ class Message(UpdateType):
         """
         Implements `str(message_instance)`
         """
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1223,7 +1263,7 @@ class Message(UpdateType):
         if self._raw:
             return "Message.from_array({self._raw})".format(self=self)
         # end if
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1231,7 +1271,7 @@ class Message(UpdateType):
         Implements `"key" in message_instance`
         """
         return (
-            key in ["message_id", "date", "chat", "from_peer", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "reply_to_message", "via_bot", "edit_date", "media_group_id", "author_signature", "text", "entities", "animation", "audio", "document", "photo", "sticker", "video", "video_note", "voice", "caption", "caption_entities", "contact", "dice", "game", "poll", "venue", "location", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "reply_markup"]
+            key in ["message_id", "date", "chat", "from_peer", "sender_chat", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "reply_to_message", "via_bot", "edit_date", "media_group_id", "author_signature", "text", "entities", "animation", "audio", "document", "photo", "sticker", "video", "video_note", "voice", "caption", "caption_entities", "contact", "dice", "game", "poll", "venue", "location", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "proximity_alert_triggered", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

@@ -590,6 +590,9 @@ class Audio(Media):
     :param title: Optional. Title of the audio as defined by sender or by audio tags
     :type  title: str|unicode
     
+    :param file_name: Optional. Original filename as defined by sender
+    :type  file_name: str|unicode
+    
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
     
@@ -603,7 +606,7 @@ class Audio(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, file_unique_id, duration, performer=None, title=None, mime_type=None, file_size=None, thumb=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, duration, performer=None, title=None, file_name=None, mime_type=None, file_size=None, thumb=None, _raw=None):
         """
         This object represents an audio file to be treated as music by the Telegram clients.
 
@@ -629,6 +632,9 @@ class Audio(Media):
         
         :param title: Optional. Title of the audio as defined by sender or by audio tags
         :type  title: str|unicode
+        
+        :param file_name: Optional. Original filename as defined by sender
+        :type  file_name: str|unicode
         
         :param mime_type: Optional. MIME type of the file as defined by sender
         :type  mime_type: str|unicode
@@ -660,6 +666,9 @@ class Audio(Media):
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
         
+        assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
+        self.file_name = file_name
+        
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
         
@@ -687,6 +696,8 @@ class Audio(Media):
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        if self.file_name is not None:
+            array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         if self.file_size is not None:
@@ -714,6 +725,7 @@ class Audio(Media):
         data['duration'] = int(array.get('duration'))
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
+        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
@@ -741,7 +753,7 @@ class Audio(Media):
         """
         Implements `str(audio_instance)`
         """
-        return "Audio(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r}, thumb={self.thumb!r})".format(self=self)
+        return "Audio(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r}, thumb={self.thumb!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -751,7 +763,7 @@ class Audio(Media):
         if self._raw:
             return "Audio.from_array({self._raw})".format(self=self)
         # end if
-        return "Audio(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r}, thumb={self.thumb!r})".format(self=self)
+        return "Audio(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r}, thumb={self.thumb!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -759,7 +771,7 @@ class Audio(Media):
         Implements `"key" in audio_instance`
         """
         return (
-            key in ["file_id", "file_unique_id", "duration", "performer", "title", "mime_type", "file_size", "thumb"]
+            key in ["file_id", "file_unique_id", "duration", "performer", "title", "file_name", "mime_type", "file_size", "thumb"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -978,6 +990,9 @@ class Video(Media):
     :param thumb: Optional. Video thumbnail
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
     
+    :param file_name: Optional. Original filename as defined by sender
+    :type  file_name: str|unicode
+    
     :param mime_type: Optional. Mime type of a file as defined by sender
     :type  mime_type: str|unicode
     
@@ -988,7 +1003,7 @@ class Video(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, file_unique_id, width, height, duration, thumb=None, mime_type=None, file_size=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, width, height, duration, thumb=None, file_name=None, mime_type=None, file_size=None, _raw=None):
         """
         This object represents a video file.
 
@@ -1017,6 +1032,9 @@ class Video(Media):
         
         :param thumb: Optional. Video thumbnail
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
+        
+        :param file_name: Optional. Original filename as defined by sender
+        :type  file_name: str|unicode
         
         :param mime_type: Optional. Mime type of a file as defined by sender
         :type  mime_type: str|unicode
@@ -1048,6 +1066,9 @@ class Video(Media):
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
         
+        assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
+        self.file_name = file_name
+        
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
         
@@ -1073,6 +1094,8 @@ class Video(Media):
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
 
+        if self.file_name is not None:
+            array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         if self.file_size is not None:
@@ -1098,6 +1121,7 @@ class Video(Media):
         data['height'] = int(array.get('height'))
         data['duration'] = int(array.get('duration'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
+        data['file_name'] = u(array.get('file_name')) if array.get('file_name') is not None else None
         data['mime_type'] = u(array.get('mime_type')) if array.get('mime_type') is not None else None
         data['file_size'] = int(array.get('file_size')) if array.get('file_size') is not None else None
         return data
@@ -1124,7 +1148,7 @@ class Video(Media):
         """
         Implements `str(video_instance)`
         """
-        return "Video(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+        return "Video(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1134,7 +1158,7 @@ class Video(Media):
         if self._raw:
             return "Video.from_array({self._raw})".format(self=self)
         # end if
-        return "Video(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
+        return "Video(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, thumb={self.thumb!r}, file_name={self.file_name!r}, mime_type={self.mime_type!r}, file_size={self.file_size!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1142,7 +1166,7 @@ class Video(Media):
         Implements `"key" in video_instance`
         """
         return (
-            key in ["file_id", "file_unique_id", "width", "height", "duration", "thumb", "mime_type", "file_size"]
+            key in ["file_id", "file_unique_id", "width", "height", "duration", "thumb", "file_name", "mime_type", "file_size"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1668,7 +1692,7 @@ class Dice(Media):
     :param emoji: Emoji on which the dice throw animation is based
     :type  emoji: str|unicode
     
-    :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" base emoji
+    :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" and "" base emoji, 1-64 for "" base emoji
     :type  value: int
     
 
@@ -1690,7 +1714,7 @@ class Dice(Media):
         :param emoji: Emoji on which the dice throw animation is based
         :type  emoji: str|unicode
         
-        :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" base emoji
+        :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" and "" base emoji, 1-64 for "" base emoji
         :type  value: int
         
 
@@ -2337,11 +2361,23 @@ class Location(Media):
 
     Optional keyword parameters:
     
+    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+    :type  horizontal_accuracy: float
+    
+    :param live_period: Optional. Time relative to the message sending date, during which the location can be updated, in seconds. For active live locations only.
+    :type  live_period: int
+    
+    :param heading: Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.
+    :type  heading: int
+    
+    :param proximity_alert_radius: Optional. Maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only.
+    :type  proximity_alert_radius: int
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, longitude, latitude, _raw=None):
+    def __init__(self, longitude, latitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, _raw=None):
         """
         This object represents a point on the map.
 
@@ -2359,6 +2395,18 @@ class Location(Media):
 
         Optional keyword parameters:
         
+        :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+        :type  horizontal_accuracy: float
+        
+        :param live_period: Optional. Time relative to the message sending date, during which the location can be updated, in seconds. For active live locations only.
+        :type  live_period: int
+        
+        :param heading: Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.
+        :type  heading: int
+        
+        :param proximity_alert_radius: Optional. Maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only.
+        :type  proximity_alert_radius: int
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -2368,6 +2416,18 @@ class Location(Media):
         
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
+        
+        assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
+        self.horizontal_accuracy = horizontal_accuracy
+        
+        assert_type_or_raise(live_period, None, int, parameter_name="live_period")
+        self.live_period = live_period
+        
+        assert_type_or_raise(heading, None, int, parameter_name="heading")
+        self.heading = heading
+        
+        assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
+        self.proximity_alert_radius = proximity_alert_radius
 
         self._raw = _raw
     # end def __init__
@@ -2382,6 +2442,14 @@ class Location(Media):
         array = super(Location, self).to_array()
         array['longitude'] = float(self.longitude)  # type float
         array['latitude'] = float(self.latitude)  # type float
+        if self.horizontal_accuracy is not None:
+            array['horizontal_accuracy'] = float(self.horizontal_accuracy)  # type float
+        if self.live_period is not None:
+            array['live_period'] = int(self.live_period)  # type int
+        if self.heading is not None:
+            array['heading'] = int(self.heading)  # type int
+        if self.proximity_alert_radius is not None:
+            array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
         return array
     # end def to_array
 
@@ -2397,6 +2465,10 @@ class Location(Media):
         data = Media.validate_array(array)
         data['longitude'] = float(array.get('longitude'))
         data['latitude'] = float(array.get('latitude'))
+        data['horizontal_accuracy'] = float(array.get('horizontal_accuracy')) if array.get('horizontal_accuracy') is not None else None
+        data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
+        data['heading'] = int(array.get('heading')) if array.get('heading') is not None else None
+        data['proximity_alert_radius'] = int(array.get('proximity_alert_radius')) if array.get('proximity_alert_radius') is not None else None
         return data
     # end def validate_array
 
@@ -2421,7 +2493,7 @@ class Location(Media):
         """
         Implements `str(location_instance)`
         """
-        return "Location(longitude={self.longitude!r}, latitude={self.latitude!r})".format(self=self)
+        return "Location(longitude={self.longitude!r}, latitude={self.latitude!r}, horizontal_accuracy={self.horizontal_accuracy!r}, live_period={self.live_period!r}, heading={self.heading!r}, proximity_alert_radius={self.proximity_alert_radius!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2431,7 +2503,7 @@ class Location(Media):
         if self._raw:
             return "Location.from_array({self._raw})".format(self=self)
         # end if
-        return "Location(longitude={self.longitude!r}, latitude={self.latitude!r})".format(self=self)
+        return "Location(longitude={self.longitude!r}, latitude={self.latitude!r}, horizontal_accuracy={self.horizontal_accuracy!r}, live_period={self.live_period!r}, heading={self.heading!r}, proximity_alert_radius={self.proximity_alert_radius!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2439,7 +2511,7 @@ class Location(Media):
         Implements `"key" in location_instance`
         """
         return (
-            key in ["longitude", "latitude"]
+            key in ["longitude", "latitude", "horizontal_accuracy", "live_period", "heading", "proximity_alert_radius"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2456,7 +2528,7 @@ class Venue(Media):
 
     Parameters:
     
-    :param location: Venue location
+    :param location: Venue location. Can't be a live location
     :type  location: pytgbot.api_types.receivable.media.Location
     
     :param title: Name of the venue
@@ -2474,11 +2546,17 @@ class Venue(Media):
     :param foursquare_type: Optional. Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
     
+    :param google_place_id: Optional. Google Places identifier of the venue
+    :type  google_place_id: str|unicode
+    
+    :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+    :type  google_place_type: str|unicode
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, location, title, address, foursquare_id=None, foursquare_type=None, _raw=None):
+    def __init__(self, location, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, _raw=None):
         """
         This object represents a venue.
 
@@ -2487,7 +2565,7 @@ class Venue(Media):
 
         Parameters:
         
-        :param location: Venue location
+        :param location: Venue location. Can't be a live location
         :type  location: pytgbot.api_types.receivable.media.Location
         
         :param title: Name of the venue
@@ -2504,6 +2582,12 @@ class Venue(Media):
         
         :param foursquare_type: Optional. Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
         :type  foursquare_type: str|unicode
+        
+        :param google_place_id: Optional. Google Places identifier of the venue
+        :type  google_place_id: str|unicode
+        
+        :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+        :type  google_place_type: str|unicode
         
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
@@ -2525,6 +2609,12 @@ class Venue(Media):
         
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
+        
+        assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
+        self.google_place_id = google_place_id
+        
+        assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
+        self.google_place_type = google_place_type
 
         self._raw = _raw
     # end def __init__
@@ -2545,6 +2635,10 @@ class Venue(Media):
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+        if self.google_place_id is not None:
+            array['google_place_id'] = u(self.google_place_id)  # py2: type unicode, py3: type str
+        if self.google_place_type is not None:
+            array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -2565,6 +2659,8 @@ class Venue(Media):
         data['address'] = u(array.get('address'))
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
+        data['google_place_id'] = u(array.get('google_place_id')) if array.get('google_place_id') is not None else None
+        data['google_place_type'] = u(array.get('google_place_type')) if array.get('google_place_type') is not None else None
         return data
     # end def validate_array
 
@@ -2589,7 +2685,7 @@ class Venue(Media):
         """
         Implements `str(venue_instance)`
         """
-        return "Venue(location={self.location!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r})".format(self=self)
+        return "Venue(location={self.location!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, google_place_id={self.google_place_id!r}, google_place_type={self.google_place_type!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2599,7 +2695,7 @@ class Venue(Media):
         if self._raw:
             return "Venue.from_array({self._raw})".format(self=self)
         # end if
-        return "Venue(location={self.location!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r})".format(self=self)
+        return "Venue(location={self.location!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, google_place_id={self.google_place_id!r}, google_place_type={self.google_place_type!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2607,12 +2703,157 @@ class Venue(Media):
         Implements `"key" in venue_instance`
         """
         return (
-            key in ["location", "title", "address", "foursquare_id", "foursquare_type"]
+            key in ["location", "title", "address", "foursquare_id", "foursquare_type", "google_place_id", "google_place_type"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
     # end def __contains__
 # end class Venue
+
+
+class ProximityAlertTriggered(Media):
+    """
+    This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
+
+    https://core.telegram.org/bots/api#proximityalerttriggered
+    
+
+    Parameters:
+    
+    :param traveler: User that triggered the alert
+    :type  traveler: pytgbot.api_types.receivable.peer.User
+    
+    :param watcher: User that set the alert
+    :type  watcher: pytgbot.api_types.receivable.peer.User
+    
+    :param distance: The distance between the users
+    :type  distance: int
+    
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, traveler, watcher, distance, _raw=None):
+        """
+        This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
+
+        https://core.telegram.org/bots/api#proximityalerttriggered
+        
+
+        Parameters:
+        
+        :param traveler: User that triggered the alert
+        :type  traveler: pytgbot.api_types.receivable.peer.User
+        
+        :param watcher: User that set the alert
+        :type  watcher: pytgbot.api_types.receivable.peer.User
+        
+        :param distance: The distance between the users
+        :type  distance: int
+        
+
+        Optional keyword parameters:
+        
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(ProximityAlertTriggered, self).__init__()
+        from pytgbot.api_types.receivable.peer import User
+        
+        assert_type_or_raise(traveler, User, parameter_name="traveler")
+        self.traveler = traveler
+        
+        assert_type_or_raise(watcher, User, parameter_name="watcher")
+        self.watcher = watcher
+        
+        assert_type_or_raise(distance, int, parameter_name="distance")
+        self.distance = distance
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this ProximityAlertTriggered to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(ProximityAlertTriggered, self).to_array()
+        array['traveler'] = self.traveler.to_array()  # type User
+
+        array['watcher'] = self.watcher.to_array()  # type User
+
+        array['distance'] = int(self.distance)  # type int
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ProximityAlertTriggered constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.peer import User
+        
+        data = Media.validate_array(array)
+        data['traveler'] = User.from_array(array.get('traveler'))
+        data['watcher'] = User.from_array(array.get('watcher'))
+        data['distance'] = int(array.get('distance'))
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new ProximityAlertTriggered from a given dictionary.
+
+        :return: new ProximityAlertTriggered instance.
+        :rtype: ProximityAlertTriggered
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = ProximityAlertTriggered.validate_array(array)
+        data['_raw'] = array
+        return ProximityAlertTriggered(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(proximityalerttriggered_instance)`
+        """
+        return "ProximityAlertTriggered(traveler={self.traveler!r}, watcher={self.watcher!r}, distance={self.distance!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(proximityalerttriggered_instance)`
+        """
+        if self._raw:
+            return "ProximityAlertTriggered.from_array({self._raw})".format(self=self)
+        # end if
+        return "ProximityAlertTriggered(traveler={self.traveler!r}, watcher={self.watcher!r}, distance={self.distance!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in proximityalerttriggered_instance`
+        """
+        return (
+            key in ["traveler", "watcher", "distance"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class ProximityAlertTriggered
 
 
 class UserProfilePhotos(Result):

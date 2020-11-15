@@ -94,13 +94,16 @@ class Chat(Peer):
     :param photo: Optional. Chat photo. Returned only in getChat.
     :type  photo: pytgbot.api_types.receivable.media.ChatPhoto
     
+    :param bio: Optional. Bio of the other party in a private chat. Returned only in getChat.
+    :type  bio: str|unicode
+    
     :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
     :type  description: str|unicode
     
     :param invite_link: Optional. Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
     :type  invite_link: str|unicode
     
-    :param pinned_message: Optional. Pinned message, for groups, supergroups and channels. Returned only in getChat.
+    :param pinned_message: Optional. The most recent pinned message (by sending date). Returned only in getChat.
     :type  pinned_message: pytgbot.api_types.receivable.updates.Message
     
     :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
@@ -115,6 +118,12 @@ class Chat(Peer):
     :param can_set_sticker_set: Optional. True, if the bot can change the group sticker set. Returned only in getChat.
     :type  can_set_sticker_set: bool
     
+    :param linked_chat_id: Optional. Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa; for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier. Returned only in getChat.
+    :type  linked_chat_id: int
+    
+    :param location: Optional. For supergroups, the location to which the supergroup is connected. Returned only in getChat.
+    :type  location: pytgbot.api_types.receivable.peer.ChatLocation
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -125,6 +134,7 @@ class Chat(Peer):
     first_name: str
     last_name: str
     photo: ChatPhoto
+    bio: str
     description: str
     invite_link: str
     pinned_message: Message
@@ -132,6 +142,8 @@ class Chat(Peer):
     slow_mode_delay: int
     sticker_set_name: str
     can_set_sticker_set: bool
+    linked_chat_id: int
+    location: ChatLocation
 # end class Chat
 
 class ChatMember(Result):
@@ -155,8 +167,8 @@ class ChatMember(Result):
     :param custom_title: Optional. Owner and administrators only. Custom title for this user
     :type  custom_title: str|unicode
     
-    :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
-    :type  until_date: int
+    :param is_anonymous: Optional. Owner and administrators only. True, if the user's presence in the chat is hidden
+    :type  is_anonymous: bool
     
     :param can_be_edited: Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
     :type  can_be_edited: bool
@@ -203,13 +215,16 @@ class ChatMember(Result):
     :param can_add_web_page_previews: Optional. Restricted only. True, if the user is allowed to add web page previews to their messages
     :type  can_add_web_page_previews: bool
     
+    :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
+    :type  until_date: int
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
     user: User
     status: str
     custom_title: str
-    until_date: int
+    is_anonymous: bool
     can_be_edited: bool
     can_post_messages: bool
     can_edit_messages: bool
@@ -225,6 +240,7 @@ class ChatMember(Result):
     can_send_polls: bool
     can_send_other_messages: bool
     can_add_web_page_previews: bool
+    until_date: int
 # end class ChatMember
 
 class ChatPermissions(Result):
@@ -272,3 +288,28 @@ class ChatPermissions(Result):
     can_invite_users: bool
     can_pin_messages: bool
 # end class ChatPermissions
+
+class ChatLocation(Result):
+    """
+    Represents a location to which a chat is connected.
+
+    https://core.telegram.org/bots/api#chatlocation
+    
+
+    Parameters:
+    
+    :param location: The location to which the supergroup is connected. Can't be a live location.
+    :type  location: pytgbot.api_types.receivable.media.Location
+    
+    :param address: Location address; 1-64 characters, as defined by the chat owner
+    :type  address: str|unicode
+    
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    location: Location
+    address: str
+# end class ChatLocation

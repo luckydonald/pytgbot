@@ -27,9 +27,12 @@ class InputMediaPhoto(InputMedia):
     
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
+    
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
-    def __init__(self, type, media, caption=None, parse_mode=None):
+    def __init__(self, type, media, caption=None, parse_mode=None, caption_entities=None):
         """
         Represents a photo to be sent.
 
@@ -52,8 +55,13 @@ class InputMediaPhoto(InputMedia):
         
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
+        
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaPhoto, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
+        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         
@@ -65,6 +73,9 @@ class InputMediaPhoto(InputMedia):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
     # end def __init__
 
     def to_array(self):
@@ -81,6 +92,9 @@ class InputMediaPhoto(InputMedia):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         return array
     # end def to_array
 
@@ -93,11 +107,14 @@ class InputMediaPhoto(InputMedia):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
+        
         data = InputMedia.validate_array(array)
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         return data
     # end def validate_array
 
@@ -123,7 +140,7 @@ class InputMediaPhoto(InputMedia):
         """
         Implements `str(inputmediaphoto_instance)`
         """
-        return "InputMediaPhoto(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+        return "InputMediaPhoto(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -133,7 +150,7 @@ class InputMediaPhoto(InputMedia):
         if self._raw:
             return "InputMediaPhoto.from_array({self._raw})".format(self=self)
         # end if
-        return "InputMediaPhoto(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+        return "InputMediaPhoto(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -141,7 +158,7 @@ class InputMediaPhoto(InputMedia):
         Implements `"key" in inputmediaphoto_instance`
         """
         return (
-            key in ["type", "media", "caption", "parse_mode"]
+            key in ["type", "media", "caption", "parse_mode", "caption_entities"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -176,6 +193,9 @@ class InputMediaVideo(InputMediaWithThumb):
     :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param width: Optional. Video width
     :type  width: int
     
@@ -189,7 +209,7 @@ class InputMediaVideo(InputMediaWithThumb):
     :type  supports_streaming: bool
     """
 
-    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, width=None, height=None, duration=None, supports_streaming=None):
+    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, width=None, height=None, duration=None, supports_streaming=None):
         """
         Represents a video to be sent.
 
@@ -216,6 +236,9 @@ class InputMediaVideo(InputMediaWithThumb):
         :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param width: Optional. Video width
         :type  width: int
         
@@ -229,6 +252,7 @@ class InputMediaVideo(InputMediaWithThumb):
         :type  supports_streaming: bool
         """
         super(InputMediaVideo, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -245,6 +269,9 @@ class InputMediaVideo(InputMediaWithThumb):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
@@ -281,6 +308,9 @@ class InputMediaVideo(InputMediaWithThumb):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.width is not None:
             array['width'] = int(self.width)  # type int
         if self.height is not None:
@@ -301,6 +331,7 @@ class InputMediaVideo(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         
         data = InputMediaWithThumb.validate_array(array)
@@ -316,6 +347,7 @@ class InputMediaVideo(InputMediaWithThumb):
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
@@ -345,7 +377,7 @@ class InputMediaVideo(InputMediaWithThumb):
         """
         Implements `str(inputmediavideo_instance)`
         """
-        return "InputMediaVideo(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, supports_streaming={self.supports_streaming!r})".format(self=self)
+        return "InputMediaVideo(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, supports_streaming={self.supports_streaming!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -355,7 +387,7 @@ class InputMediaVideo(InputMediaWithThumb):
         if self._raw:
             return "InputMediaVideo.from_array({self._raw})".format(self=self)
         # end if
-        return "InputMediaVideo(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, supports_streaming={self.supports_streaming!r})".format(self=self)
+        return "InputMediaVideo(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r}, supports_streaming={self.supports_streaming!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -363,7 +395,7 @@ class InputMediaVideo(InputMediaWithThumb):
         Implements `"key" in inputmediavideo_instance`
         """
         return (
-            key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration", "supports_streaming"]
+            key in ["type", "media", "thumb", "caption", "parse_mode", "caption_entities", "width", "height", "duration", "supports_streaming"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -398,6 +430,9 @@ class InputMediaAnimation(InputMediaWithThumb):
     :param parse_mode: Optional. Mode for parsing entities in the animation caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param width: Optional. Animation width
     :type  width: int
     
@@ -408,7 +443,7 @@ class InputMediaAnimation(InputMediaWithThumb):
     :type  duration: int
     """
 
-    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, width=None, height=None, duration=None):
+    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, width=None, height=None, duration=None):
         """
         Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 
@@ -435,6 +470,9 @@ class InputMediaAnimation(InputMediaWithThumb):
         :param parse_mode: Optional. Mode for parsing entities in the animation caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param width: Optional. Animation width
         :type  width: int
         
@@ -445,6 +483,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         :type  duration: int
         """
         super(InputMediaAnimation, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -461,6 +500,9 @@ class InputMediaAnimation(InputMediaWithThumb):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
@@ -494,6 +536,9 @@ class InputMediaAnimation(InputMediaWithThumb):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.width is not None:
             array['width'] = int(self.width)  # type int
         if self.height is not None:
@@ -512,6 +557,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         
         data = InputMediaWithThumb.validate_array(array)
@@ -527,6 +573,7 @@ class InputMediaAnimation(InputMediaWithThumb):
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
@@ -555,7 +602,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         """
         Implements `str(inputmediaanimation_instance)`
         """
-        return "InputMediaAnimation(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r})".format(self=self)
+        return "InputMediaAnimation(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -565,7 +612,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         if self._raw:
             return "InputMediaAnimation.from_array({self._raw})".format(self=self)
         # end if
-        return "InputMediaAnimation(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r})".format(self=self)
+        return "InputMediaAnimation(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, width={self.width!r}, height={self.height!r}, duration={self.duration!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -573,7 +620,7 @@ class InputMediaAnimation(InputMediaWithThumb):
         Implements `"key" in inputmediaanimation_instance`
         """
         return (
-            key in ["type", "media", "thumb", "caption", "parse_mode", "width", "height", "duration"]
+            key in ["type", "media", "thumb", "caption", "parse_mode", "caption_entities", "width", "height", "duration"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -608,6 +655,9 @@ class InputMediaAudio(InputMediaWithThumb):
     :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param duration: Optional. Duration of the audio in seconds
     :type  duration: int
     
@@ -618,7 +668,7 @@ class InputMediaAudio(InputMediaWithThumb):
     :type  title: str|unicode
     """
 
-    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, duration=None, performer=None, title=None):
+    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None):
         """
         Represents an audio file to be treated as music to be sent.
 
@@ -645,6 +695,9 @@ class InputMediaAudio(InputMediaWithThumb):
         :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param duration: Optional. Duration of the audio in seconds
         :type  duration: int
         
@@ -655,6 +708,7 @@ class InputMediaAudio(InputMediaWithThumb):
         :type  title: str|unicode
         """
         super(InputMediaAudio, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -671,6 +725,9 @@ class InputMediaAudio(InputMediaWithThumb):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
@@ -704,6 +761,9 @@ class InputMediaAudio(InputMediaWithThumb):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
@@ -722,6 +782,7 @@ class InputMediaAudio(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         
         data = InputMediaWithThumb.validate_array(array)
@@ -737,6 +798,7 @@ class InputMediaAudio(InputMediaWithThumb):
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
@@ -765,7 +827,7 @@ class InputMediaAudio(InputMediaWithThumb):
         """
         Implements `str(inputmediaaudio_instance)`
         """
-        return "InputMediaAudio(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r})".format(self=self)
+        return "InputMediaAudio(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -775,7 +837,7 @@ class InputMediaAudio(InputMediaWithThumb):
         if self._raw:
             return "InputMediaAudio.from_array({self._raw})".format(self=self)
         # end if
-        return "InputMediaAudio(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r})".format(self=self)
+        return "InputMediaAudio(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -783,7 +845,7 @@ class InputMediaAudio(InputMediaWithThumb):
         Implements `"key" in inputmediaaudio_instance`
         """
         return (
-            key in ["type", "media", "thumb", "caption", "parse_mode", "duration", "performer", "title"]
+            key in ["type", "media", "thumb", "caption", "parse_mode", "caption_entities", "duration", "performer", "title"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -817,9 +879,15 @@ class InputMediaDocument(InputMediaWithThumb):
     
     :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
+    
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
+    :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
+    :type  disable_content_type_detection: bool
     """
 
-    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None):
+    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None):
         """
         Represents a general file to be sent.
 
@@ -845,8 +913,15 @@ class InputMediaDocument(InputMediaWithThumb):
         
         :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
+        
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
+        :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
+        :type  disable_content_type_detection: bool
         """
         super(InputMediaDocument, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -863,6 +938,12 @@ class InputMediaDocument(InputMediaWithThumb):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
+        assert_type_or_raise(disable_content_type_detection, None, bool, parameter_name="disable_content_type_detection")
+        self.disable_content_type_detection = disable_content_type_detection
     # end def __init__
 
     def to_array(self):
@@ -887,6 +968,11 @@ class InputMediaDocument(InputMediaWithThumb):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
+        if self.disable_content_type_detection is not None:
+            array['disable_content_type_detection'] = bool(self.disable_content_type_detection)  # type bool
         return array
     # end def to_array
 
@@ -899,6 +985,7 @@ class InputMediaDocument(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         
         data = InputMediaWithThumb.validate_array(array)
@@ -914,6 +1001,8 @@ class InputMediaDocument(InputMediaWithThumb):
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
+        data['disable_content_type_detection'] = bool(array.get('disable_content_type_detection')) if array.get('disable_content_type_detection') is not None else None
         return data
     # end def validate_array
 
@@ -939,7 +1028,7 @@ class InputMediaDocument(InputMediaWithThumb):
         """
         Implements `str(inputmediadocument_instance)`
         """
-        return "InputMediaDocument(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+        return "InputMediaDocument(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, disable_content_type_detection={self.disable_content_type_detection!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -949,7 +1038,7 @@ class InputMediaDocument(InputMediaWithThumb):
         if self._raw:
             return "InputMediaDocument.from_array({self._raw})".format(self=self)
         # end if
-        return "InputMediaDocument(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+        return "InputMediaDocument(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, disable_content_type_detection={self.disable_content_type_detection!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -957,7 +1046,7 @@ class InputMediaDocument(InputMediaWithThumb):
         Implements `"key" in inputmediadocument_instance`
         """
         return (
-            key in ["type", "media", "thumb", "caption", "parse_mode"]
+            key in ["type", "media", "thumb", "caption", "parse_mode", "caption_entities", "disable_content_type_detection"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

@@ -281,6 +281,9 @@ class InlineQueryResultPhoto(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -288,7 +291,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, photo_url, thumb_url, photo_width=None, photo_height=None, title=None, description=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, photo_url, thumb_url, photo_width=None, photo_height=None, title=None, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
@@ -330,6 +333,9 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -337,6 +343,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultPhoto, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -370,6 +377,9 @@ class InlineQueryResultPhoto(InlineQueryResult):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         
@@ -401,6 +411,9 @@ class InlineQueryResultPhoto(InlineQueryResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -419,6 +432,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -433,6 +447,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -460,7 +475,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         Implements `str(inlinequeryresultphoto_instance)`
         """
-        return "InlineQueryResultPhoto(type={self.type!r}, id={self.id!r}, photo_url={self.photo_url!r}, thumb_url={self.thumb_url!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultPhoto(type={self.type!r}, id={self.id!r}, photo_url={self.photo_url!r}, thumb_url={self.thumb_url!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -470,7 +485,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultPhoto.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultPhoto(type={self.type!r}, id={self.id!r}, photo_url={self.photo_url!r}, thumb_url={self.thumb_url!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultPhoto(type={self.type!r}, id={self.id!r}, photo_url={self.photo_url!r}, thumb_url={self.thumb_url!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -478,7 +493,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         Implements `"key" in inlinequeryresultphoto_instance`
         """
         return (
-            key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "photo_url", "thumb_url", "photo_width", "photo_height", "title", "description", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -531,6 +546,9 @@ class InlineQueryResultGif(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -538,7 +556,7 @@ class InlineQueryResultGif(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, gif_url, thumb_url, gif_width=None, gif_height=None, gif_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, gif_url, thumb_url, gif_width=None, gif_height=None, gif_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -583,6 +601,9 @@ class InlineQueryResultGif(InlineQueryResult):
         :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -590,6 +611,7 @@ class InlineQueryResultGif(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultGif, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -626,6 +648,9 @@ class InlineQueryResultGif(InlineQueryResult):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         
@@ -659,6 +684,9 @@ class InlineQueryResultGif(InlineQueryResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -677,6 +705,7 @@ class InlineQueryResultGif(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -692,6 +721,7 @@ class InlineQueryResultGif(InlineQueryResult):
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -719,7 +749,7 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         Implements `str(inlinequeryresultgif_instance)`
         """
-        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -729,7 +759,7 @@ class InlineQueryResultGif(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultGif.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultGif(type={self.type!r}, id={self.id!r}, gif_url={self.gif_url!r}, thumb_url={self.thumb_url!r}, gif_width={self.gif_width!r}, gif_height={self.gif_height!r}, gif_duration={self.gif_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -737,7 +767,7 @@ class InlineQueryResultGif(InlineQueryResult):
         Implements `"key" in inlinequeryresultgif_instance`
         """
         return (
-            key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "thumb_mime_type", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "gif_url", "thumb_url", "gif_width", "gif_height", "gif_duration", "thumb_mime_type", "title", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -790,6 +820,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -797,7 +830,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -842,6 +875,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -849,6 +885,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultMpeg4Gif, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -885,6 +922,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         
@@ -918,6 +958,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -936,6 +979,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -951,6 +995,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -978,7 +1023,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         Implements `str(inlinequeryresultmpeg4gif_instance)`
         """
-        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -988,7 +1033,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultMpeg4Gif.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_url={self.mpeg4_url!r}, thumb_url={self.thumb_url!r}, mpeg4_width={self.mpeg4_width!r}, mpeg4_height={self.mpeg4_height!r}, mpeg4_duration={self.mpeg4_duration!r}, thumb_mime_type={self.thumb_mime_type!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -996,7 +1041,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         Implements `"key" in inlinequeryresultmpeg4gif_instance`
         """
         return (
-            key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "thumb_mime_type", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "mpeg4_url", "thumb_url", "mpeg4_width", "mpeg4_height", "mpeg4_duration", "thumb_mime_type", "title", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1042,6 +1087,9 @@ class InlineQueryResultVideo(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param video_width: Optional. Video width
     :type  video_width: int
     
@@ -1061,7 +1109,7 @@ class InlineQueryResultVideo(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, video_url, mime_type, thumb_url, title, caption=None, parse_mode=None, video_width=None, video_height=None, video_duration=None, description=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, video_url, mime_type, thumb_url, title, caption=None, parse_mode=None, caption_entities=None, video_width=None, video_height=None, video_duration=None, description=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
@@ -1099,6 +1147,9 @@ class InlineQueryResultVideo(InlineQueryResult):
         :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param video_width: Optional. Video width
         :type  video_width: int
         
@@ -1118,6 +1169,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultVideo, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1144,6 +1196,9 @@ class InlineQueryResultVideo(InlineQueryResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(video_width, None, int, parameter_name="video_width")
         self.video_width = video_width
@@ -1182,6 +1237,9 @@ class InlineQueryResultVideo(InlineQueryResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.video_width is not None:
             array['video_width'] = int(self.video_width)  # type int
         if self.video_height is not None:
@@ -1208,6 +1266,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1220,6 +1279,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         data['title'] = u(array.get('title'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['video_width'] = int(array.get('video_width')) if array.get('video_width') is not None else None
         data['video_height'] = int(array.get('video_height')) if array.get('video_height') is not None else None
         data['video_duration'] = int(array.get('video_duration')) if array.get('video_duration') is not None else None
@@ -1251,7 +1311,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         Implements `str(inlinequeryresultvideo_instance)`
         """
-        return "InlineQueryResultVideo(type={self.type!r}, id={self.id!r}, video_url={self.video_url!r}, mime_type={self.mime_type!r}, thumb_url={self.thumb_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, video_width={self.video_width!r}, video_height={self.video_height!r}, video_duration={self.video_duration!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultVideo(type={self.type!r}, id={self.id!r}, video_url={self.video_url!r}, mime_type={self.mime_type!r}, thumb_url={self.thumb_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, video_width={self.video_width!r}, video_height={self.video_height!r}, video_duration={self.video_duration!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1261,7 +1321,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultVideo.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultVideo(type={self.type!r}, id={self.id!r}, video_url={self.video_url!r}, mime_type={self.mime_type!r}, thumb_url={self.thumb_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, video_width={self.video_width!r}, video_height={self.video_height!r}, video_duration={self.video_duration!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultVideo(type={self.type!r}, id={self.id!r}, video_url={self.video_url!r}, mime_type={self.mime_type!r}, thumb_url={self.thumb_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, video_width={self.video_width!r}, video_height={self.video_height!r}, video_duration={self.video_duration!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1269,7 +1329,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         Implements `"key" in inlinequeryresultvideo_instance`
         """
         return (
-            key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "parse_mode", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"]
+            key in ["type", "id", "video_url", "mime_type", "thumb_url", "title", "caption", "parse_mode", "caption_entities", "video_width", "video_height", "video_duration", "description", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1308,6 +1368,9 @@ class InlineQueryResultAudio(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param performer: Optional. Performer
     :type  performer: str|unicode
     
@@ -1321,7 +1384,7 @@ class InlineQueryResultAudio(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, audio_url, title, caption=None, parse_mode=None, performer=None, audio_duration=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, audio_url, title, caption=None, parse_mode=None, caption_entities=None, performer=None, audio_duration=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -1352,6 +1415,9 @@ class InlineQueryResultAudio(InlineQueryResult):
         :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param performer: Optional. Performer
         :type  performer: str|unicode
         
@@ -1365,6 +1431,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultAudio, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1385,6 +1452,9 @@ class InlineQueryResultAudio(InlineQueryResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
@@ -1415,6 +1485,9 @@ class InlineQueryResultAudio(InlineQueryResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
         if self.audio_duration is not None:
@@ -1437,6 +1510,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1447,6 +1521,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         data['title'] = u(array.get('title'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
         data['audio_duration'] = int(array.get('audio_duration')) if array.get('audio_duration') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
@@ -1476,7 +1551,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         Implements `str(inlinequeryresultaudio_instance)`
         """
-        return "InlineQueryResultAudio(type={self.type!r}, id={self.id!r}, audio_url={self.audio_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, performer={self.performer!r}, audio_duration={self.audio_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultAudio(type={self.type!r}, id={self.id!r}, audio_url={self.audio_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, performer={self.performer!r}, audio_duration={self.audio_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1486,7 +1561,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultAudio.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultAudio(type={self.type!r}, id={self.id!r}, audio_url={self.audio_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, performer={self.performer!r}, audio_duration={self.audio_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultAudio(type={self.type!r}, id={self.id!r}, audio_url={self.audio_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, performer={self.performer!r}, audio_duration={self.audio_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1494,7 +1569,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         Implements `"key" in inlinequeryresultaudio_instance`
         """
         return (
-            key in ["type", "id", "audio_url", "title", "caption", "parse_mode", "performer", "audio_duration", "reply_markup", "input_message_content"]
+            key in ["type", "id", "audio_url", "title", "caption", "parse_mode", "caption_entities", "performer", "audio_duration", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1533,6 +1608,9 @@ class InlineQueryResultVoice(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param voice_duration: Optional. Recording duration in seconds
     :type  voice_duration: int
     
@@ -1543,7 +1621,7 @@ class InlineQueryResultVoice(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, voice_url, title, caption=None, parse_mode=None, voice_duration=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, voice_url, title, caption=None, parse_mode=None, caption_entities=None, voice_duration=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -1574,6 +1652,9 @@ class InlineQueryResultVoice(InlineQueryResult):
         :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param voice_duration: Optional. Recording duration in seconds
         :type  voice_duration: int
         
@@ -1584,6 +1665,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultVoice, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1604,6 +1686,9 @@ class InlineQueryResultVoice(InlineQueryResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(voice_duration, None, int, parameter_name="voice_duration")
         self.voice_duration = voice_duration
@@ -1631,6 +1716,9 @@ class InlineQueryResultVoice(InlineQueryResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.voice_duration is not None:
             array['voice_duration'] = int(self.voice_duration)  # type int
         if self.reply_markup is not None:
@@ -1651,6 +1739,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1661,6 +1750,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         data['title'] = u(array.get('title'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['voice_duration'] = int(array.get('voice_duration')) if array.get('voice_duration') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
@@ -1689,7 +1779,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         Implements `str(inlinequeryresultvoice_instance)`
         """
-        return "InlineQueryResultVoice(type={self.type!r}, id={self.id!r}, voice_url={self.voice_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, voice_duration={self.voice_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultVoice(type={self.type!r}, id={self.id!r}, voice_url={self.voice_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, voice_duration={self.voice_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1699,7 +1789,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultVoice.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultVoice(type={self.type!r}, id={self.id!r}, voice_url={self.voice_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, voice_duration={self.voice_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultVoice(type={self.type!r}, id={self.id!r}, voice_url={self.voice_url!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, voice_duration={self.voice_duration!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1707,7 +1797,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         Implements `"key" in inlinequeryresultvoice_instance`
         """
         return (
-            key in ["type", "id", "voice_url", "title", "caption", "parse_mode", "voice_duration", "reply_markup", "input_message_content"]
+            key in ["type", "id", "voice_url", "title", "caption", "parse_mode", "caption_entities", "voice_duration", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1749,6 +1839,9 @@ class InlineQueryResultDocument(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param description: Optional. Short description of the result
     :type  description: str|unicode
     
@@ -1768,7 +1861,7 @@ class InlineQueryResultDocument(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, title, document_url, mime_type, caption=None, parse_mode=None, description=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, type, id, title, document_url, mime_type, caption=None, parse_mode=None, caption_entities=None, description=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -1802,6 +1895,9 @@ class InlineQueryResultDocument(InlineQueryResult):
         :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param description: Optional. Short description of the result
         :type  description: str|unicode
         
@@ -1821,6 +1917,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultDocument, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1844,6 +1941,9 @@ class InlineQueryResultDocument(InlineQueryResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
@@ -1881,6 +1981,9 @@ class InlineQueryResultDocument(InlineQueryResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
@@ -1907,6 +2010,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -1918,6 +2022,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         data['mime_type'] = u(array.get('mime_type'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
@@ -1949,7 +2054,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         Implements `str(inlinequeryresultdocument_instance)`
         """
-        return "InlineQueryResultDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_url={self.document_url!r}, mime_type={self.mime_type!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_url={self.document_url!r}, mime_type={self.mime_type!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1959,7 +2064,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultDocument.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_url={self.document_url!r}, mime_type={self.mime_type!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_url={self.document_url!r}, mime_type={self.mime_type!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, description={self.description!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1967,7 +2072,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         Implements `"key" in inlinequeryresultdocument_instance`
         """
         return (
-            key in ["type", "id", "title", "document_url", "mime_type", "caption", "parse_mode", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+            key in ["type", "id", "title", "document_url", "mime_type", "caption", "parse_mode", "caption_entities", "description", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2003,8 +2108,17 @@ class InlineQueryResultLocation(InlineQueryResult):
 
     Optional keyword parameters:
     
+    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+    :type  horizontal_accuracy: float
+    
     :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
     :type  live_period: int
+    
+    :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+    :type  heading: int
+    
+    :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+    :type  proximity_alert_radius: int
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2022,7 +2136,7 @@ class InlineQueryResultLocation(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, latitude, longitude, title, live_period=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, type, id, latitude, longitude, title, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -2050,8 +2164,17 @@ class InlineQueryResultLocation(InlineQueryResult):
 
         Optional keyword parameters:
         
+        :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+        :type  horizontal_accuracy: float
+        
         :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
         :type  live_period: int
+        
+        :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+        :type  heading: int
+        
+        :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+        :type  proximity_alert_radius: int
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2087,8 +2210,17 @@ class InlineQueryResultLocation(InlineQueryResult):
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         
+        assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
+        self.horizontal_accuracy = horizontal_accuracy
+        
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
         self.live_period = live_period
+        
+        assert_type_or_raise(heading, None, int, parameter_name="heading")
+        self.heading = heading
+        
+        assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
+        self.proximity_alert_radius = proximity_alert_radius
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -2119,8 +2251,14 @@ class InlineQueryResultLocation(InlineQueryResult):
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        if self.horizontal_accuracy is not None:
+            array['horizontal_accuracy'] = float(self.horizontal_accuracy)  # type float
         if self.live_period is not None:
             array['live_period'] = int(self.live_period)  # type int
+        if self.heading is not None:
+            array['heading'] = int(self.heading)  # type int
+        if self.proximity_alert_radius is not None:
+            array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -2154,7 +2292,10 @@ class InlineQueryResultLocation(InlineQueryResult):
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
         data['title'] = u(array.get('title'))
+        data['horizontal_accuracy'] = float(array.get('horizontal_accuracy')) if array.get('horizontal_accuracy') is not None else None
         data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
+        data['heading'] = int(array.get('heading')) if array.get('heading') is not None else None
+        data['proximity_alert_radius'] = int(array.get('proximity_alert_radius')) if array.get('proximity_alert_radius') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
@@ -2185,7 +2326,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         Implements `str(inlinequeryresultlocation_instance)`
         """
-        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, live_period={self.live_period!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, horizontal_accuracy={self.horizontal_accuracy!r}, live_period={self.live_period!r}, heading={self.heading!r}, proximity_alert_radius={self.proximity_alert_radius!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2195,7 +2336,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultLocation.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, live_period={self.live_period!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultLocation(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, horizontal_accuracy={self.horizontal_accuracy!r}, live_period={self.live_period!r}, heading={self.heading!r}, proximity_alert_radius={self.proximity_alert_radius!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2203,7 +2344,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         Implements `"key" in inlinequeryresultlocation_instance`
         """
         return (
-            key in ["type", "id", "latitude", "longitude", "title", "live_period", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+            key in ["type", "id", "latitude", "longitude", "title", "horizontal_accuracy", "live_period", "heading", "proximity_alert_radius", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2248,6 +2389,12 @@ class InlineQueryResultVenue(InlineQueryResult):
     :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
     
+    :param google_place_id: Optional. Google Places identifier of the venue
+    :type  google_place_id: str|unicode
+    
+    :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+    :type  google_place_type: str|unicode
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -2264,7 +2411,7 @@ class InlineQueryResultVenue(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, type, id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -2300,6 +2447,12 @@ class InlineQueryResultVenue(InlineQueryResult):
         
         :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
         :type  foursquare_type: str|unicode
+        
+        :param google_place_id: Optional. Google Places identifier of the venue
+        :type  google_place_id: str|unicode
+        
+        :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+        :type  google_place_type: str|unicode
         
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -2344,6 +2497,12 @@ class InlineQueryResultVenue(InlineQueryResult):
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
         
+        assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
+        self.google_place_id = google_place_id
+        
+        assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
+        self.google_place_type = google_place_type
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         
@@ -2378,6 +2537,10 @@ class InlineQueryResultVenue(InlineQueryResult):
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+        if self.google_place_id is not None:
+            array['google_place_id'] = u(self.google_place_id)  # py2: type unicode, py3: type str
+        if self.google_place_type is not None:
+            array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -2414,6 +2577,8 @@ class InlineQueryResultVenue(InlineQueryResult):
         data['address'] = u(array.get('address'))
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
+        data['google_place_id'] = u(array.get('google_place_id')) if array.get('google_place_id') is not None else None
+        data['google_place_type'] = u(array.get('google_place_type')) if array.get('google_place_type') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         data['thumb_url'] = u(array.get('thumb_url')) if array.get('thumb_url') is not None else None
@@ -2444,7 +2609,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         Implements `str(inlinequeryresultvenue_instance)`
         """
-        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, google_place_id={self.google_place_id!r}, google_place_type={self.google_place_type!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -2454,7 +2619,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         if self._raw:
             return "InlineQueryResultVenue.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
+        return "InlineQueryResultVenue(type={self.type!r}, id={self.id!r}, latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, google_place_id={self.google_place_id!r}, google_place_type={self.google_place_type!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r}, thumb_url={self.thumb_url!r}, thumb_width={self.thumb_width!r}, thumb_height={self.thumb_height!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2462,7 +2627,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         Implements `"key" in inlinequeryresultvenue_instance`
         """
         return (
-            key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
+            key in ["type", "id", "latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "google_place_id", "google_place_type", "reply_markup", "input_message_content", "thumb_url", "thumb_width", "thumb_height"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2891,6 +3056,9 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -2898,7 +3066,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, photo_file_id, title=None, description=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, photo_file_id, title=None, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
@@ -2931,6 +3099,9 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -2938,6 +3109,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedPhoto, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -2961,6 +3133,9 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -2988,6 +3163,9 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3006,6 +3184,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3017,6 +3196,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -3044,7 +3224,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedphoto_instance)`
         """
-        return "InlineQueryResultCachedPhoto(type={self.type!r}, id={self.id!r}, photo_file_id={self.photo_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedPhoto(type={self.type!r}, id={self.id!r}, photo_file_id={self.photo_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -3054,7 +3234,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         if self._raw:
             return "InlineQueryResultCachedPhoto.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultCachedPhoto(type={self.type!r}, id={self.id!r}, photo_file_id={self.photo_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedPhoto(type={self.type!r}, id={self.id!r}, photo_file_id={self.photo_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3062,7 +3242,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         Implements `"key" in inlinequeryresultcachedphoto_instance`
         """
         return (
-            key in ["type", "id", "photo_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "photo_file_id", "title", "description", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -3100,6 +3280,9 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -3107,7 +3290,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, gif_file_id, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, gif_file_id, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
 
@@ -3137,6 +3320,9 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -3144,6 +3330,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedGif, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3164,6 +3351,9 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -3189,6 +3379,9 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3207,6 +3400,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3217,6 +3411,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -3244,7 +3439,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedgif_instance)`
         """
-        return "InlineQueryResultCachedGif(type={self.type!r}, id={self.id!r}, gif_file_id={self.gif_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedGif(type={self.type!r}, id={self.id!r}, gif_file_id={self.gif_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -3254,7 +3449,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         if self._raw:
             return "InlineQueryResultCachedGif.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultCachedGif(type={self.type!r}, id={self.id!r}, gif_file_id={self.gif_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedGif(type={self.type!r}, id={self.id!r}, gif_file_id={self.gif_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3262,7 +3457,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         Implements `"key" in inlinequeryresultcachedgif_instance`
         """
         return (
-            key in ["type", "id", "gif_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "gif_file_id", "title", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -3300,6 +3495,9 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -3307,7 +3505,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, mpeg4_file_id, title=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, mpeg4_file_id, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -3337,6 +3535,9 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -3344,6 +3545,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedMpeg4Gif, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3364,6 +3566,9 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -3389,6 +3594,9 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3407,6 +3615,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3417,6 +3626,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -3444,7 +3654,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedmpeg4gif_instance)`
         """
-        return "InlineQueryResultCachedMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_file_id={self.mpeg4_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_file_id={self.mpeg4_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -3454,7 +3664,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         if self._raw:
             return "InlineQueryResultCachedMpeg4Gif.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultCachedMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_file_id={self.mpeg4_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedMpeg4Gif(type={self.type!r}, id={self.id!r}, mpeg4_file_id={self.mpeg4_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3462,7 +3672,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         Implements `"key" in inlinequeryresultcachedmpeg4gif_instance`
         """
         return (
-            key in ["type", "id", "mpeg4_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "mpeg4_file_id", "title", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -3670,6 +3880,9 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -3677,7 +3890,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, title, document_file_id, description=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, title, document_file_id, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -3711,6 +3924,9 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -3718,6 +3934,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedDocument, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3741,6 +3958,9 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -3767,6 +3987,9 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3785,6 +4008,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3796,6 +4020,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -3823,7 +4048,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcacheddocument_instance)`
         """
-        return "InlineQueryResultCachedDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_file_id={self.document_file_id!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_file_id={self.document_file_id!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -3833,7 +4058,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         if self._raw:
             return "InlineQueryResultCachedDocument.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultCachedDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_file_id={self.document_file_id!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedDocument(type={self.type!r}, id={self.id!r}, title={self.title!r}, document_file_id={self.document_file_id!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3841,7 +4066,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         Implements `"key" in inlinequeryresultcacheddocument_instance`
         """
         return (
-            key in ["type", "id", "title", "document_file_id", "description", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "title", "document_file_id", "description", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -3882,6 +4107,9 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -3889,7 +4117,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, video_file_id, title, description=None, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, video_file_id, title, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
@@ -3922,6 +4150,9 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -3929,6 +4160,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedVideo, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -3952,6 +4184,9 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -3978,6 +4213,9 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -3996,6 +4234,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -4007,6 +4246,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -4034,7 +4274,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedvideo_instance)`
         """
-        return "InlineQueryResultCachedVideo(type={self.type!r}, id={self.id!r}, video_file_id={self.video_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedVideo(type={self.type!r}, id={self.id!r}, video_file_id={self.video_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -4044,7 +4284,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         if self._raw:
             return "InlineQueryResultCachedVideo.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultCachedVideo(type={self.type!r}, id={self.id!r}, video_file_id={self.video_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedVideo(type={self.type!r}, id={self.id!r}, video_file_id={self.video_file_id!r}, title={self.title!r}, description={self.description!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -4052,7 +4292,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         Implements `"key" in inlinequeryresultcachedvideo_instance`
         """
         return (
-            key in ["type", "id", "video_file_id", "title", "description", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "video_file_id", "title", "description", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -4091,6 +4331,9 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -4098,7 +4341,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, voice_file_id, title, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, voice_file_id, title, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -4129,6 +4372,9 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -4136,6 +4382,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedVoice, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -4156,6 +4403,9 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -4180,6 +4430,9 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -4198,6 +4451,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -4208,6 +4462,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         data['title'] = u(array.get('title'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -4235,7 +4490,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedvoice_instance)`
         """
-        return "InlineQueryResultCachedVoice(type={self.type!r}, id={self.id!r}, voice_file_id={self.voice_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedVoice(type={self.type!r}, id={self.id!r}, voice_file_id={self.voice_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -4245,7 +4500,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         if self._raw:
             return "InlineQueryResultCachedVoice.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultCachedVoice(type={self.type!r}, id={self.id!r}, voice_file_id={self.voice_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedVoice(type={self.type!r}, id={self.id!r}, voice_file_id={self.voice_file_id!r}, title={self.title!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -4253,7 +4508,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         Implements `"key" in inlinequeryresultcachedvoice_instance`
         """
         return (
-            key in ["type", "id", "voice_file_id", "title", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "voice_file_id", "title", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -4289,6 +4544,9 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -4296,7 +4554,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, audio_file_id, caption=None, parse_mode=None, reply_markup=None, input_message_content=None):
+    def __init__(self, type, id, audio_file_id, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -4324,6 +4582,9 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param reply_markup: Optional. Inline keyboard attached to the message
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -4331,6 +4592,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedAudio, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -4348,6 +4610,9 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -4371,6 +4636,9 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -4389,6 +4657,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.inline import InputMessageContent
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
@@ -4398,6 +4667,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         data['audio_file_id'] = u(array.get('audio_file_id'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
         return data
@@ -4425,7 +4695,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         Implements `str(inlinequeryresultcachedaudio_instance)`
         """
-        return "InlineQueryResultCachedAudio(type={self.type!r}, id={self.id!r}, audio_file_id={self.audio_file_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedAudio(type={self.type!r}, id={self.id!r}, audio_file_id={self.audio_file_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -4435,7 +4705,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         if self._raw:
             return "InlineQueryResultCachedAudio.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQueryResultCachedAudio(type={self.type!r}, id={self.id!r}, audio_file_id={self.audio_file_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
+        return "InlineQueryResultCachedAudio(type={self.type!r}, id={self.id!r}, audio_file_id={self.audio_file_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, reply_markup={self.reply_markup!r}, input_message_content={self.input_message_content!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -4443,7 +4713,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         Implements `"key" in inlinequeryresultcachedaudio_instance`
         """
         return (
-            key in ["type", "id", "audio_file_id", "caption", "parse_mode", "reply_markup", "input_message_content"]
+            key in ["type", "id", "audio_file_id", "caption", "parse_mode", "caption_entities", "reply_markup", "input_message_content"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -4469,11 +4739,14 @@ class InputTextMessageContent(InputMessageContent):
     :param parse_mode: Optional. Mode for parsing entities in the message text. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param entities: Optional. List of special entities that appear in message text, which can be specified instead of parse_mode
+    :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
     :type  disable_web_page_preview: bool
     """
 
-    def __init__(self, message_text, parse_mode=None, disable_web_page_preview=None):
+    def __init__(self, message_text, parse_mode=None, entities=None, disable_web_page_preview=None):
         """
         Represents the content of a text message to be sent as the result of an inline query.
 
@@ -4491,15 +4764,23 @@ class InputTextMessageContent(InputMessageContent):
         :param parse_mode: Optional. Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param entities: Optional. List of special entities that appear in message text, which can be specified instead of parse_mode
+        :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
         :type  disable_web_page_preview: bool
         """
         super(InputTextMessageContent, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
+        
         assert_type_or_raise(message_text, unicode_type, parameter_name="message_text")
         self.message_text = message_text
         
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        
+        assert_type_or_raise(entities, None, list, parameter_name="entities")
+        self.entities = entities
         
         assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
         self.disable_web_page_preview = disable_web_page_preview
@@ -4516,6 +4797,9 @@ class InputTextMessageContent(InputMessageContent):
         array['message_text'] = u(self.message_text)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.entities is not None:
+            array['entities'] = self._as_array(self.entities)  # type list of MessageEntity
+
         if self.disable_web_page_preview is not None:
             array['disable_web_page_preview'] = bool(self.disable_web_page_preview)  # type bool
         return array
@@ -4530,9 +4814,12 @@ class InputTextMessageContent(InputMessageContent):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
+        
         data = InputMessageContent.validate_array(array)
         data['message_text'] = u(array.get('message_text'))
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['entities'] = MessageEntity.from_array_list(array.get('entities'), list_level=1) if array.get('entities') is not None else None
         data['disable_web_page_preview'] = bool(array.get('disable_web_page_preview')) if array.get('disable_web_page_preview') is not None else None
         return data
     # end def validate_array
@@ -4559,7 +4846,7 @@ class InputTextMessageContent(InputMessageContent):
         """
         Implements `str(inputtextmessagecontent_instance)`
         """
-        return "InputTextMessageContent(message_text={self.message_text!r}, parse_mode={self.parse_mode!r}, disable_web_page_preview={self.disable_web_page_preview!r})".format(self=self)
+        return "InputTextMessageContent(message_text={self.message_text!r}, parse_mode={self.parse_mode!r}, entities={self.entities!r}, disable_web_page_preview={self.disable_web_page_preview!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -4569,7 +4856,7 @@ class InputTextMessageContent(InputMessageContent):
         if self._raw:
             return "InputTextMessageContent.from_array({self._raw})".format(self=self)
         # end if
-        return "InputTextMessageContent(message_text={self.message_text!r}, parse_mode={self.parse_mode!r}, disable_web_page_preview={self.disable_web_page_preview!r})".format(self=self)
+        return "InputTextMessageContent(message_text={self.message_text!r}, parse_mode={self.parse_mode!r}, entities={self.entities!r}, disable_web_page_preview={self.disable_web_page_preview!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -4577,7 +4864,7 @@ class InputTextMessageContent(InputMessageContent):
         Implements `"key" in inputtextmessagecontent_instance`
         """
         return (
-            key in ["message_text", "parse_mode", "disable_web_page_preview"]
+            key in ["message_text", "parse_mode", "entities", "disable_web_page_preview"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -4603,11 +4890,20 @@ class InputLocationMessageContent(InputMessageContent):
 
     Optional keyword parameters:
     
+    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+    :type  horizontal_accuracy: float
+    
     :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
     :type  live_period: int
+    
+    :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+    :type  heading: int
+    
+    :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+    :type  proximity_alert_radius: int
     """
 
-    def __init__(self, latitude, longitude, live_period=None):
+    def __init__(self, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None):
         """
         Represents the content of a location message to be sent as the result of an inline query.
 
@@ -4625,8 +4921,17 @@ class InputLocationMessageContent(InputMessageContent):
 
         Optional keyword parameters:
         
+        :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+        :type  horizontal_accuracy: float
+        
         :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
         :type  live_period: int
+        
+        :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+        :type  heading: int
+        
+        :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+        :type  proximity_alert_radius: int
         """
         super(InputLocationMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
@@ -4635,8 +4940,17 @@ class InputLocationMessageContent(InputMessageContent):
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
         
+        assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
+        self.horizontal_accuracy = horizontal_accuracy
+        
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
         self.live_period = live_period
+        
+        assert_type_or_raise(heading, None, int, parameter_name="heading")
+        self.heading = heading
+        
+        assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
+        self.proximity_alert_radius = proximity_alert_radius
     # end def __init__
 
     def to_array(self):
@@ -4649,8 +4963,14 @@ class InputLocationMessageContent(InputMessageContent):
         array = super(InputLocationMessageContent, self).to_array()
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
+        if self.horizontal_accuracy is not None:
+            array['horizontal_accuracy'] = float(self.horizontal_accuracy)  # type float
         if self.live_period is not None:
             array['live_period'] = int(self.live_period)  # type int
+        if self.heading is not None:
+            array['heading'] = int(self.heading)  # type int
+        if self.proximity_alert_radius is not None:
+            array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
         return array
     # end def to_array
 
@@ -4666,7 +4986,10 @@ class InputLocationMessageContent(InputMessageContent):
         data = InputMessageContent.validate_array(array)
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
+        data['horizontal_accuracy'] = float(array.get('horizontal_accuracy')) if array.get('horizontal_accuracy') is not None else None
         data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
+        data['heading'] = int(array.get('heading')) if array.get('heading') is not None else None
+        data['proximity_alert_radius'] = int(array.get('proximity_alert_radius')) if array.get('proximity_alert_radius') is not None else None
         return data
     # end def validate_array
 
@@ -4692,7 +5015,7 @@ class InputLocationMessageContent(InputMessageContent):
         """
         Implements `str(inputlocationmessagecontent_instance)`
         """
-        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, live_period={self.live_period!r})".format(self=self)
+        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, horizontal_accuracy={self.horizontal_accuracy!r}, live_period={self.live_period!r}, heading={self.heading!r}, proximity_alert_radius={self.proximity_alert_radius!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -4702,7 +5025,7 @@ class InputLocationMessageContent(InputMessageContent):
         if self._raw:
             return "InputLocationMessageContent.from_array({self._raw})".format(self=self)
         # end if
-        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, live_period={self.live_period!r})".format(self=self)
+        return "InputLocationMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, horizontal_accuracy={self.horizontal_accuracy!r}, live_period={self.live_period!r}, heading={self.heading!r}, proximity_alert_radius={self.proximity_alert_radius!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -4710,7 +5033,7 @@ class InputLocationMessageContent(InputMessageContent):
         Implements `"key" in inputlocationmessagecontent_instance`
         """
         return (
-            key in ["latitude", "longitude", "live_period"]
+            key in ["latitude", "longitude", "horizontal_accuracy", "live_period", "heading", "proximity_alert_radius"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -4747,9 +5070,15 @@ class InputVenueMessageContent(InputMessageContent):
     
     :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
+    
+    :param google_place_id: Optional. Google Places identifier of the venue
+    :type  google_place_id: str|unicode
+    
+    :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+    :type  google_place_type: str|unicode
     """
 
-    def __init__(self, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None):
+    def __init__(self, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None):
         """
         Represents the content of a venue message to be sent as the result of an inline query.
 
@@ -4778,6 +5107,12 @@ class InputVenueMessageContent(InputMessageContent):
         
         :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
         :type  foursquare_type: str|unicode
+        
+        :param google_place_id: Optional. Google Places identifier of the venue
+        :type  google_place_id: str|unicode
+        
+        :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+        :type  google_place_type: str|unicode
         """
         super(InputVenueMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
@@ -4797,6 +5132,12 @@ class InputVenueMessageContent(InputMessageContent):
         
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
+        
+        assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
+        self.google_place_id = google_place_id
+        
+        assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
+        self.google_place_type = google_place_type
     # end def __init__
 
     def to_array(self):
@@ -4815,6 +5156,10 @@ class InputVenueMessageContent(InputMessageContent):
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+        if self.google_place_id is not None:
+            array['google_place_id'] = u(self.google_place_id)  # py2: type unicode, py3: type str
+        if self.google_place_type is not None:
+            array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
@@ -4834,6 +5179,8 @@ class InputVenueMessageContent(InputMessageContent):
         data['address'] = u(array.get('address'))
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
+        data['google_place_id'] = u(array.get('google_place_id')) if array.get('google_place_id') is not None else None
+        data['google_place_type'] = u(array.get('google_place_type')) if array.get('google_place_type') is not None else None
         return data
     # end def validate_array
 
@@ -4859,7 +5206,7 @@ class InputVenueMessageContent(InputMessageContent):
         """
         Implements `str(inputvenuemessagecontent_instance)`
         """
-        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r})".format(self=self)
+        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, google_place_id={self.google_place_id!r}, google_place_type={self.google_place_type!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -4869,7 +5216,7 @@ class InputVenueMessageContent(InputMessageContent):
         if self._raw:
             return "InputVenueMessageContent.from_array({self._raw})".format(self=self)
         # end if
-        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r})".format(self=self)
+        return "InputVenueMessageContent(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, google_place_id={self.google_place_id!r}, google_place_type={self.google_place_type!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -4877,7 +5224,7 @@ class InputVenueMessageContent(InputMessageContent):
         Implements `"key" in inputvenuemessagecontent_instance`
         """
         return (
-            key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type"]
+            key in ["latitude", "longitude", "title", "address", "foursquare_id", "foursquare_type", "google_place_id", "google_place_type"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

@@ -11,32 +11,35 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Result":               ("pytgbot.api_types.receivable.", "Receivable", None),
 
     # pytgbot.api_types.receivable.media.*
-    "MessageEntity":        ("pytgbot.api_types.receivable.media.", "Result", None),
-    "PhotoSize":            ("pytgbot.api_types.receivable.media.", "Result", None),
-    "UserProfilePhotos":    ("pytgbot.api_types.receivable.media.", "Result", None),
-    "ChatPhoto":            ("pytgbot.api_types.receivable.media.", "Result", None),
-    "Media":                ("pytgbot.api_types.receivable.media.", "Receivable", None),
-    "File":                 ("pytgbot.api_types.receivable.media.", "Receivable", None),
-    "Voice":                ("pytgbot.api_types.receivable.media.", "Media", None),
-    "VideoNote":            ("pytgbot.api_types.receivable.media.", "Media", None),  # May 18, 2017
-    "Contact":              ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Location":             ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Venue":                ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Audio":                ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Document":             ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Sticker":              ("pytgbot.api_types.receivable.media.", "Media", None),  # Moved July 21, 2017
-    "Video":                ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Game":                 ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Animation":            ("pytgbot.api_types.receivable.media.", "Media", None),
-    "Poll":                 ("pytgbot.api_types.receivable.media.", "Media", None),  # April 14, 2019
-    "PollOption":           ("pytgbot.api_types.receivable.media.", "Receivable", None),  # April 14, 2019
-    "PollAnswer":           ("pytgbot.api_types.receivable.media.", "Receivable", None),  # January 23, 2020
-    "Dice":                 ("pytgbot.api_types.receivable.media.", "Media", None),  # March 30, 2020
+    "MessageEntity":            ("pytgbot.api_types.receivable.media.", "Result", None),
+    "PhotoSize":                ("pytgbot.api_types.receivable.media.", "Result", None),
+    "UserProfilePhotos":        ("pytgbot.api_types.receivable.media.", "Result", None),
+    "ChatPhoto":                ("pytgbot.api_types.receivable.media.", "Result", None),
+    "Media":                    ("pytgbot.api_types.receivable.media.", "Receivable", None),
+    "File":                     ("pytgbot.api_types.receivable.media.", "Receivable", None),
+    "Voice":                    ("pytgbot.api_types.receivable.media.", "Media", None),
+    "VideoNote":                ("pytgbot.api_types.receivable.media.", "Media", None),  # May 18, 2017
+    "Contact":                  ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Location":                 ("pytgbot.api_types.receivable.media.", "Media", None),
+    "ProximityAlertTriggered":  ("pytgbot.api_types.receivable.media.", "Media", None),  # November 4, 2020
+    "Venue":                    ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Audio":                    ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Document":                 ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Sticker":                  ("pytgbot.api_types.receivable.media.", "Media", None),  # Moved July 21, 2017
+    "Video":                    ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Game":                     ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Animation":                ("pytgbot.api_types.receivable.media.", "Media", None),
+    "Poll":                     ("pytgbot.api_types.receivable.media.", "Media", None),  # April 14, 2019
+    "PollOption":               ("pytgbot.api_types.receivable.media.", "Receivable", None),  # April 14, 2019
+    "PollAnswer":               ("pytgbot.api_types.receivable.media.", "Receivable", None),  # January 23, 2020
+    "Dice":                     ("pytgbot.api_types.receivable.media.", "Media", None),  # March 30, 2020
 
     # pytgbot.api_types.receivable.responses.*
+    "MessageId":       ("pytgbot.api_types.receivable.responses.", "Result", None),  # July 29, 2019
 
     # pytgbot.api_types.receivable.peer.*
     "ChatPermissions": ("pytgbot.api_types.receivable.peer.", "Result", None),  # July 29, 2019
+    "ChatLocation":    ("pytgbot.api_types.receivable.peer.", "Result", None),  # November 4, 2020
     "ChatMember":      ("pytgbot.api_types.receivable.peer.", "Result", None),
     "Peer":            ("pytgbot.api_types.receivable.peer.", "Result", None),
     "User":            ("pytgbot.api_types.receivable.peer.", "Peer", None),

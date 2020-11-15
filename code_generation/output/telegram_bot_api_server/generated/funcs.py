@@ -5,13 +5,13 @@ from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
 from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 from pytgbot.api_types.sendable.reply_markup import ForceReply
-from pytgbot.api_types.sendable.input_media import InputMediaPhoto
 from pytgbot.api_types.sendable.input_media import InputMediaVideo
 from pytgbot.api_types.sendable.input_media import InputMedia
 from pytgbot.api_types.receivable.stickers import MaskPosition
 from pytgbot.api_types.sendable.passport import PassportElementError
 from pytgbot.api_types.sendable.payments import ShippingOption
 from pytgbot.api_types.sendable.payments import LabeledPrice
+from pytgbot.api_types.receivable.media import MessageEntity
 from pytgbot.api_types.sendable.command import BotCommand
 from pytgbot.api_types.receivable.peer import ChatPermissions
 from pytgbot.api_types.sendable.inline import InlineQueryResult
@@ -109,8 +109,10 @@ async def set_webhook(
     token: str = TOKEN_VALIDATION,
     url: str = Query(..., description='HTTPS url to send updates to. Use an empty string to remove webhook integration'),
     certificate: Optional[Json['InputFileModel']] = Query(None, description='Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.'),
+    ip_address: Optional[str] = Query(None, description='The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS'),
     max_connections: Optional[int] = Query(None, description="Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput."),
     allowed_updates: Optional[List[str]] = Query(None, description='A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.'),
+    drop_pending_updates: Optional[bool] = Query(None, description='Pass True to drop all pending updates'),
 ) -> JSONableResponse:
     """
     Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
@@ -135,8 +137,10 @@ async def set_webhook(
     result = await bot.set_webhook(
         url=url,
         certificate=certificate,
+        ip_address=ip_address,
         max_connections=max_connections,
         allowed_updates=allowed_updates,
+        drop_pending_updates=drop_pending_updates,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -146,9 +150,10 @@ async def set_webhook(
 @routes.api_route('/{token}/deleteWebhook', methods=['GET', 'POST'], tags=['official'])
 async def delete_webhook(
     token: str = TOKEN_VALIDATION,
+    drop_pending_updates: Optional[bool] = Query(None, description='Pass True to drop all pending updates'),
 ) -> JSONableResponse:
     """
-    Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success. Requires no parameters.
+    Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success.
 
     https://core.telegram.org/bots/api#deletewebhook
     """
@@ -159,6 +164,7 @@ async def delete_webhook(
     
 
     result = await bot.delete_webhook(
+        drop_pending_updates=drop_pending_updates,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -215,9 +221,11 @@ async def send_message(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     text: str = Query(..., description='Text of the message to be sent, 1-4096 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the message text. See formatting options for more details.'),
+    entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in message text, which can be specified instead of parse_mode'),
     disable_web_page_preview: Optional[bool] = Query(None, description='Disables link previews for links in this message'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -225,6 +233,10 @@ async def send_message(
 
     https://core.telegram.org/bots/api#sendmessage
     """
+    entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=entities,
+    )
     reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
         Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]],
         obj=reply_markup,
@@ -246,9 +258,11 @@ async def send_message(
         entity=entity,
         text=text,
         parse_mode=parse_mode,
+        entities=entities,
         disable_web_page_preview=disable_web_page_preview,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -293,6 +307,63 @@ async def forward_message(
 # end def
 
 
+@routes.api_route('/{token}/copyMessage', methods=['GET', 'POST'], tags=['official'])
+async def copy_message(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    from_chat_id: Union[int, str] = Query(..., description='Unique identifier for the chat where the original message was sent (or channel username in the format @channelusername)'),
+    message_id: int = Query(..., description='Message identifier in the chat specified in from_chat_id'),
+    caption: Optional[str] = Query(None, description='New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept'),
+    parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the new caption. See formatting options for more details.'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the new caption, which can be specified instead of parse_mode'),
+    disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
+    reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
+    reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
+) -> JSONableResponse:
+    """
+    Use this method to copy messages of any kind. The method is analogous to the method forwardMessages, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
+
+    https://core.telegram.org/bots/api#copymessage
+    """
+    caption_entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=caption_entities,
+    )
+    reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
+        Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]],
+        obj=reply_markup,
+    )
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+    
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.copy_message(
+        entity=entity,
+        from_chat_id=from_chat_id,
+        message_id=message_id,
+        caption=caption,
+        parse_mode=parse_mode,
+        caption_entities=caption_entities,
+        disable_notification=disable_notification,
+        reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
+        reply_markup=reply_markup,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
 @routes.api_route('/{token}/sendPhoto', methods=['GET', 'POST'], tags=['official'])
 async def send_photo(
     token: str = TOKEN_VALIDATION,
@@ -300,8 +371,10 @@ async def send_photo(
     photo: Json[Union['InputFileModel', str]] = Query(..., description='Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the photo caption. See formatting options for more details.'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -312,6 +385,10 @@ async def send_photo(
     photo: Union[InputFileModel, str] = parse_obj_as(
         Union[InputFileModel, str],
         obj=photo,
+    )
+    caption_entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=caption_entities,
     )
     reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
         Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]],
@@ -335,8 +412,10 @@ async def send_photo(
         photo=photo,
         caption=caption,
         parse_mode=parse_mode,
+        caption_entities=caption_entities,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -351,12 +430,14 @@ async def send_audio(
     audio: Json[Union['InputFileModel', str]] = Query(..., description='Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Audio caption, 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the audio caption. See formatting options for more details.'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
     duration: Optional[int] = Query(None, description='Duration of the audio in seconds'),
     performer: Optional[str] = Query(None, description='Performer'),
     title: Optional[str] = Query(None, description='Track name'),
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -368,6 +449,10 @@ async def send_audio(
     audio: Union[InputFileModel, str] = parse_obj_as(
         Union[InputFileModel, str],
         obj=audio,
+    )
+    caption_entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=caption_entities,
     )
     thumb: Optional[Union[InputFileModel, str]] = parse_obj_as(
         Optional[Union[InputFileModel, str]],
@@ -395,12 +480,14 @@ async def send_audio(
         audio=audio,
         caption=caption,
         parse_mode=parse_mode,
+        caption_entities=caption_entities,
         duration=duration,
         performer=performer,
         title=title,
         thumb=thumb,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -416,8 +503,11 @@ async def send_document(
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the document caption. See formatting options for more details.'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
+    disable_content_type_detection: Optional[bool] = Query(None, description='Disables automatic server-side content type detection for files uploaded using multipart/form-data'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -432,6 +522,10 @@ async def send_document(
     thumb: Optional[Union[InputFileModel, str]] = parse_obj_as(
         Optional[Union[InputFileModel, str]],
         obj=thumb,
+    )
+    caption_entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=caption_entities,
     )
     reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
         Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]],
@@ -456,8 +550,11 @@ async def send_document(
         thumb=thumb,
         caption=caption,
         parse_mode=parse_mode,
+        caption_entities=caption_entities,
+        disable_content_type_detection=disable_content_type_detection,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -476,9 +573,11 @@ async def send_video(
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the video caption. See formatting options for more details.'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
     supports_streaming: Optional[bool] = Query(None, description='Pass True, if the uploaded video is suitable for streaming'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -493,6 +592,10 @@ async def send_video(
     thumb: Optional[Union[InputFileModel, str]] = parse_obj_as(
         Optional[Union[InputFileModel, str]],
         obj=thumb,
+    )
+    caption_entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=caption_entities,
     )
     reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
         Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]],
@@ -520,9 +623,11 @@ async def send_video(
         thumb=thumb,
         caption=caption,
         parse_mode=parse_mode,
+        caption_entities=caption_entities,
         supports_streaming=supports_streaming,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -541,8 +646,10 @@ async def send_animation(
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the animation caption. See formatting options for more details.'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -557,6 +664,10 @@ async def send_animation(
     thumb: Optional[Union[InputFileModel, str]] = parse_obj_as(
         Optional[Union[InputFileModel, str]],
         obj=thumb,
+    )
+    caption_entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=caption_entities,
     )
     reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
         Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]],
@@ -584,8 +695,10 @@ async def send_animation(
         thumb=thumb,
         caption=caption,
         parse_mode=parse_mode,
+        caption_entities=caption_entities,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -600,9 +713,11 @@ async def send_voice(
     voice: Json[Union['InputFileModel', str]] = Query(..., description='Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Voice message caption, 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the voice message caption. See formatting options for more details.'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
     duration: Optional[int] = Query(None, description='Duration of the voice message in seconds'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -613,6 +728,10 @@ async def send_voice(
     voice: Union[InputFileModel, str] = parse_obj_as(
         Union[InputFileModel, str],
         obj=voice,
+    )
+    caption_entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=caption_entities,
     )
     reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
         Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]],
@@ -636,9 +755,11 @@ async def send_voice(
         voice=voice,
         caption=caption,
         parse_mode=parse_mode,
+        caption_entities=caption_entities,
         duration=duration,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -656,6 +777,7 @@ async def send_video_note(
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -696,6 +818,7 @@ async def send_video_note(
         thumb=thumb,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -707,17 +830,18 @@ async def send_video_note(
 async def send_media_group(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    media: Json[Union[List['InputMediaPhotoModel'], List['InputMediaVideoModel']]] = Query(..., description='A JSON-serialized array describing photos and videos to be sent, must include 2-10 items'),
-    disable_notification: Optional[bool] = Query(None, description='Sends the messages silently. Users will receive a notification with no sound.'),
+    media: Json[Union[List['InputMediaAudio, InputMediaDocument, InputMediaPhotoModel'], 'InputMediaVideoModel']] = Query(..., description='A JSON-serialized array describing messages to be sent, must include 2-10 items'),
+    disable_notification: Optional[bool] = Query(None, description='Sends messages silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the messages are a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
 ) -> JSONableResponse:
     """
-    Use this method to send a group of photos or videos as an album. On success, an array of the sent Messages is returned.
+    Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
 
     https://core.telegram.org/bots/api#sendmediagroup
     """
-    media: Union[List[InputMediaPhotoModel], List[InputMediaVideoModel]] = parse_obj_as(
-        Union[List[InputMediaPhotoModel], List[InputMediaVideoModel]],
+    media: Union[List[InputMediaAudio, InputMediaDocument, InputMediaPhotoModel], InputMediaVideoModel] = parse_obj_as(
+        Union[List[InputMediaAudio, InputMediaDocument, InputMediaPhotoModel], InputMediaVideoModel],
         obj=media,
     )
 
@@ -738,6 +862,7 @@ async def send_media_group(
         media=media,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -750,9 +875,13 @@ async def send_location(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     latitude: float = Query(..., description='Latitude of the location'),
     longitude: float = Query(..., description='Longitude of the location'),
+    horizontal_accuracy: Optional[float] = Query(None, description='The radius of uncertainty for the location, measured in meters; 0-1500'),
     live_period: Optional[int] = Query(None, description='Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.'),
+    heading: Optional[int] = Query(None, description='For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.'),
+    proximity_alert_radius: Optional[int] = Query(None, description='For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -781,9 +910,13 @@ async def send_location(
         entity=entity,
         latitude=latitude,
         longitude=longitude,
+        horizontal_accuracy=horizontal_accuracy,
         live_period=live_period,
+        heading=heading,
+        proximity_alert_radius=proximity_alert_radius,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -799,10 +932,13 @@ async def edit_message_live_location(
     chat_id: Optional[Union[int, str]] = Query(None, description='Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     message_id: Optional[int] = Query(None, description='Required if inline_message_id is not specified. Identifier of the message to edit'),
     inline_message_id: Optional[str] = Query(None, description='Required if chat_id and message_id are not specified. Identifier of the inline message'),
+    horizontal_accuracy: Optional[float] = Query(None, description='The radius of uncertainty for the location, measured in meters; 0-1500'),
+    heading: Optional[int] = Query(None, description='Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.'),
+    proximity_alert_radius: Optional[int] = Query(None, description='Maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.'),
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for a new inline keyboard.'),
 ) -> JSONableResponse:
     """
-    Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+    Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
 
     https://core.telegram.org/bots/api#editmessagelivelocation
     """
@@ -829,6 +965,9 @@ async def edit_message_live_location(
         entity=entity,
         message_id=message_id,
         inline_message_id=inline_message_id,
+        horizontal_accuracy=horizontal_accuracy,
+        heading=heading,
+        proximity_alert_radius=proximity_alert_radius,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -887,8 +1026,11 @@ async def send_venue(
     address: str = Query(..., description='Address of the venue'),
     foursquare_id: Optional[str] = Query(None, description='Foursquare identifier of the venue'),
     foursquare_type: Optional[str] = Query(None, description='Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)'),
+    google_place_id: Optional[str] = Query(None, description='Google Places identifier of the venue'),
+    google_place_type: Optional[str] = Query(None, description='Google Places type of the venue. (See supported types.)'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -921,8 +1063,11 @@ async def send_venue(
         address=address,
         foursquare_id=foursquare_id,
         foursquare_type=foursquare_type,
+        google_place_id=google_place_id,
+        google_place_type=google_place_type,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -940,6 +1085,7 @@ async def send_contact(
     vcard: Optional[str] = Query(None, description='Additional data about the contact in the form of a vCard, 0-2048 bytes'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -972,6 +1118,7 @@ async def send_contact(
         vcard=vcard,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -983,7 +1130,7 @@ async def send_contact(
 async def send_poll(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    question: str = Query(..., description='Poll question, 1-255 characters'),
+    question: str = Query(..., description='Poll question, 1-300 characters'),
     options: List[str] = Query(..., description='A JSON-serialized list of answer options, 2-10 strings 1-100 characters each'),
     is_anonymous: Optional[bool] = Query(None, description='True, if the poll needs to be anonymous, defaults to True'),
     type: Optional[str] = Query(None, description='Poll type, "quiz" or "regular", defaults to "regular"'),
@@ -991,11 +1138,13 @@ async def send_poll(
     correct_option_id: Optional[int] = Query(None, description='0-based identifier of the correct answer option, required for polls in quiz mode'),
     explanation: Optional[str] = Query(None, description='Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing'),
     explanation_parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the explanation. See formatting options for more details.'),
+    explanation_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the poll explanation, which can be specified instead of parse_mode'),
     open_period: Optional[int] = Query(None, description="Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date."),
     close_date: Optional[int] = Query(None, description="Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period."),
     is_closed: Optional[bool] = Query(None, description='Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -1003,6 +1152,10 @@ async def send_poll(
 
     https://core.telegram.org/bots/api#sendpoll
     """
+    explanation_entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=explanation_entities,
+    )
     reply_markup: Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]] = parse_obj_as(
         Optional[Union[InlineKeyboardMarkupModel, ReplyKeyboardMarkupModel, ReplyKeyboardRemoveModel, ForceReplyModel]],
         obj=reply_markup,
@@ -1030,11 +1183,13 @@ async def send_poll(
         correct_option_id=correct_option_id,
         explanation=explanation,
         explanation_parse_mode=explanation_parse_mode,
+        explanation_entities=explanation_entities,
         open_period=open_period,
         close_date=close_date,
         is_closed=is_closed,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -1046,9 +1201,10 @@ async def send_poll(
 async def send_dice(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    emoji: Optional[str] = Query(None, description='Emoji on which the dice throw animation is based. Currently, must be one of "", "", or "". Dice can have values 1-6 for "" and "", and values 1-5 for "". Defaults to ""'),
+    emoji: Optional[str] = Query(None, description='Emoji on which the dice throw animation is based. Currently, must be one of "", "", "", "", or "". Dice can have values 1-6 for "" and "", values 1-5 for "" and "", and values 1-64 for "". Defaults to ""'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -1078,6 +1234,7 @@ async def send_dice(
         emoji=emoji,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -1215,9 +1372,10 @@ async def unban_chat_member(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target group or username of the target supergroup or channel (in the format @username)'),
     user_id: int = Query(..., description='Unique identifier of the target user'),
+    only_if_banned: Optional[bool] = Query(None, description='Do nothing if the user is not banned'),
 ) -> JSONableResponse:
     """
-    Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns True on success.
+    Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. By default, this method guarantees that after the call the user is not a member of the chat, but will be able to join it. So if the user is a member of the chat they will also be removed from the chat. If you don't want this, use the parameter only_if_banned. Returns True on success.
 
     https://core.telegram.org/bots/api#unbanchatmember
     """
@@ -1237,6 +1395,7 @@ async def unban_chat_member(
     result = await bot.unban_chat_member(
         entity=entity,
         user_id=user_id,
+        only_if_banned=only_if_banned,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -1289,6 +1448,7 @@ async def promote_chat_member(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     user_id: int = Query(..., description='Unique identifier of the target user'),
+    is_anonymous: Optional[bool] = Query(None, description="Pass True, if the administrator's presence in the chat is hidden"),
     can_change_info: Optional[bool] = Query(None, description='Pass True, if the administrator can change chat title, photo and other settings'),
     can_post_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can create channel posts, channels only'),
     can_edit_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can edit messages of other users and can pin messages, channels only'),
@@ -1319,6 +1479,7 @@ async def promote_chat_member(
     result = await bot.promote_chat_member(
         entity=entity,
         user_id=user_id,
+        is_anonymous=is_anonymous,
         can_change_info=can_change_info,
         can_post_messages=can_post_messages,
         can_edit_messages=can_edit_messages,
@@ -1578,10 +1739,10 @@ async def pin_chat_message(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     message_id: int = Query(..., description='Identifier of a message to pin'),
-    disable_notification: Optional[bool] = Query(None, description='Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels.'),
+    disable_notification: Optional[bool] = Query(None, description='Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats.'),
 ) -> JSONableResponse:
     """
-    Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
+    Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
 
     https://core.telegram.org/bots/api#pinchatmessage
     """
@@ -1612,9 +1773,10 @@ async def pin_chat_message(
 async def unpin_chat_message(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    message_id: Optional[int] = Query(None, description='Identifier of a message to unpin. If not specified, the most recent pinned message (by sending date) will be unpinned.'),
 ) -> JSONableResponse:
     """
-    Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
+    Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
 
     https://core.telegram.org/bots/api#unpinchatmessage
     """
@@ -1632,6 +1794,38 @@ async def unpin_chat_message(
     # end try
 
     result = await bot.unpin_chat_message(
+        entity=entity,
+        message_id=message_id,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+@routes.api_route('/{token}/unpinAllChatMessages', methods=['GET', 'POST'], tags=['official'])
+async def unpin_all_chat_messages(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+) -> JSONableResponse:
+    """
+    Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+
+    https://core.telegram.org/bots/api#unpinallchatmessages
+    """
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+    
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.unpin_all_chat_messages(
         entity=entity,
     )
     data = await to_web_api(result, bot)
@@ -1953,14 +2147,19 @@ async def edit_message_text(
     message_id: Optional[int] = Query(None, description='Required if inline_message_id is not specified. Identifier of the message to edit'),
     inline_message_id: Optional[str] = Query(None, description='Required if chat_id and message_id are not specified. Identifier of the inline message'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the message text. See formatting options for more details.'),
+    entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in message text, which can be specified instead of parse_mode'),
     disable_web_page_preview: Optional[bool] = Query(None, description='Disables link previews for links in this message'),
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for an inline keyboard.'),
 ) -> JSONableResponse:
     """
-    Use this method to edit text and game messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+    Use this method to edit text and game messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
 
     https://core.telegram.org/bots/api#editmessagetext
     """
+    entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=entities,
+    )
     reply_markup: Optional[InlineKeyboardMarkupModel] = parse_obj_as(
         Optional[InlineKeyboardMarkupModel],
         obj=reply_markup,
@@ -1984,6 +2183,7 @@ async def edit_message_text(
         message_id=message_id,
         inline_message_id=inline_message_id,
         parse_mode=parse_mode,
+        entities=entities,
         disable_web_page_preview=disable_web_page_preview,
         reply_markup=reply_markup,
     )
@@ -2000,13 +2200,18 @@ async def edit_message_caption(
     inline_message_id: Optional[str] = Query(None, description='Required if chat_id and message_id are not specified. Identifier of the inline message'),
     caption: Optional[str] = Query(None, description='New caption of the message, 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the message caption. See formatting options for more details.'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for an inline keyboard.'),
 ) -> JSONableResponse:
     """
-    Use this method to edit captions of messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+    Use this method to edit captions of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
 
     https://core.telegram.org/bots/api#editmessagecaption
     """
+    caption_entities: Optional[List[MessageEntityModel]] = parse_obj_as(
+        Optional[List[MessageEntityModel]],
+        obj=caption_entities,
+    )
     reply_markup: Optional[InlineKeyboardMarkupModel] = parse_obj_as(
         Optional[InlineKeyboardMarkupModel],
         obj=reply_markup,
@@ -2030,6 +2235,7 @@ async def edit_message_caption(
         inline_message_id=inline_message_id,
         caption=caption,
         parse_mode=parse_mode,
+        caption_entities=caption_entities,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -2047,7 +2253,7 @@ async def edit_message_media(
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for a new inline keyboard.'),
 ) -> JSONableResponse:
     """
-    Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+    Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded. Use a previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
 
     https://core.telegram.org/bots/api#editmessagemedia
     """
@@ -2093,7 +2299,7 @@ async def edit_message_reply_markup(
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for an inline keyboard.'),
 ) -> JSONableResponse:
     """
-    Use this method to edit only the reply markup of messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+    Use this method to edit only the reply markup of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
 
     https://core.telegram.org/bots/api#editmessagereplymarkup
     """
@@ -2204,6 +2410,7 @@ async def send_sticker(
     sticker: Json[Union['InputFileModel', str]] = Query(..., description='Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
@@ -2237,6 +2444,7 @@ async def send_sticker(
         sticker=sticker,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -2541,6 +2749,7 @@ async def send_invoice(
     is_flexible: Optional[bool] = Query(None, description='Pass True, if the final price depends on the shipping method'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description="A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button."),
 ) -> JSONableResponse:
     """
@@ -2592,6 +2801,7 @@ async def send_invoice(
         is_flexible=is_flexible,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)
@@ -2699,6 +2909,7 @@ async def send_game(
     game_short_name: str = Query(..., description='Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
+    allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description="A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game."),
 ) -> JSONableResponse:
     """
@@ -2728,6 +2939,7 @@ async def send_game(
         game_short_name=game_short_name,
         disable_notification=disable_notification,
         reply_to_message_id=reply_to_message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
         reply_markup=reply_markup,
     )
     data = await to_web_api(result, bot)

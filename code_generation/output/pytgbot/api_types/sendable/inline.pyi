@@ -109,6 +109,9 @@ class InlineQueryResultPhoto(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -125,6 +128,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
     description: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultPhoto
@@ -174,6 +178,9 @@ class InlineQueryResultGif(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -191,6 +198,7 @@ class InlineQueryResultGif(InlineQueryResult):
     title: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultGif
@@ -240,6 +248,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -257,6 +268,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     title: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultMpeg4Gif
@@ -299,6 +311,9 @@ class InlineQueryResultVideo(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param video_width: Optional. Video width
     :type  video_width: int
     
@@ -325,6 +340,7 @@ class InlineQueryResultVideo(InlineQueryResult):
     title: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     video_width: int
     video_height: int
     video_duration: int
@@ -364,6 +380,9 @@ class InlineQueryResultAudio(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param performer: Optional. Performer
     :type  performer: str|unicode
     
@@ -382,6 +401,7 @@ class InlineQueryResultAudio(InlineQueryResult):
     title: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     performer: str
     audio_duration: int
     reply_markup: InlineKeyboardMarkup
@@ -419,6 +439,9 @@ class InlineQueryResultVoice(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param voice_duration: Optional. Recording duration in seconds
     :type  voice_duration: int
     
@@ -434,6 +457,7 @@ class InlineQueryResultVoice(InlineQueryResult):
     title: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     voice_duration: int
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
@@ -473,6 +497,9 @@ class InlineQueryResultDocument(InlineQueryResult):
     :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param description: Optional. Short description of the result
     :type  description: str|unicode
     
@@ -498,6 +525,7 @@ class InlineQueryResultDocument(InlineQueryResult):
     mime_type: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     description: str
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
@@ -534,8 +562,17 @@ class InlineQueryResultLocation(InlineQueryResult):
 
     Optional keyword parameters:
     
+    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+    :type  horizontal_accuracy: float
+    
     :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
     :type  live_period: int
+    
+    :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+    :type  heading: int
+    
+    :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+    :type  proximity_alert_radius: int
     
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -557,7 +594,10 @@ class InlineQueryResultLocation(InlineQueryResult):
     latitude: float
     longitude: float
     title: str
+    horizontal_accuracy: float
     live_period: int
+    heading: int
+    proximity_alert_radius: int
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
     thumb_url: str
@@ -602,6 +642,12 @@ class InlineQueryResultVenue(InlineQueryResult):
     :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
     
+    :param google_place_id: Optional. Google Places identifier of the venue
+    :type  google_place_id: str|unicode
+    
+    :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+    :type  google_place_type: str|unicode
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -625,6 +671,8 @@ class InlineQueryResultVenue(InlineQueryResult):
     address: str
     foursquare_id: str
     foursquare_type: str
+    google_place_id: str
+    google_place_type: str
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
     thumb_url: str
@@ -755,6 +803,9 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -768,6 +819,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     description: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedPhoto
@@ -802,6 +854,9 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -814,6 +869,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     title: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedGif
@@ -848,6 +904,9 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -860,6 +919,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     title: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedMpeg4Gif
@@ -933,6 +993,9 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -946,6 +1009,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     description: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedDocument
@@ -983,6 +1047,9 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -996,6 +1063,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     description: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedVideo
@@ -1031,6 +1099,9 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -1043,6 +1114,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     title: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedVoice
@@ -1075,6 +1147,9 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param reply_markup: Optional. Inline keyboard attached to the message
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -1086,6 +1161,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     audio_file_id: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     reply_markup: InlineKeyboardMarkup
     input_message_content: InputMessageContent
 # end class InlineQueryResultCachedAudio
@@ -1108,11 +1184,15 @@ class InputTextMessageContent(InputMessageContent):
     :param parse_mode: Optional. Mode for parsing entities in the message text. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param entities: Optional. List of special entities that appear in message text, which can be specified instead of parse_mode
+    :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
     :type  disable_web_page_preview: bool
     """
     message_text: str
     parse_mode: str
+    entities: List[MessageEntity]
     disable_web_page_preview: bool
 # end class InputTextMessageContent
 
@@ -1134,12 +1214,24 @@ class InputLocationMessageContent(InputMessageContent):
 
     Optional keyword parameters:
     
+    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+    :type  horizontal_accuracy: float
+    
     :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
     :type  live_period: int
+    
+    :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+    :type  heading: int
+    
+    :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+    :type  proximity_alert_radius: int
     """
     latitude: float
     longitude: float
+    horizontal_accuracy: float
     live_period: int
+    heading: int
+    proximity_alert_radius: int
 # end class InputLocationMessageContent
 
 class InputVenueMessageContent(InputMessageContent):
@@ -1171,6 +1263,12 @@ class InputVenueMessageContent(InputMessageContent):
     
     :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
+    
+    :param google_place_id: Optional. Google Places identifier of the venue
+    :type  google_place_id: str|unicode
+    
+    :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+    :type  google_place_type: str|unicode
     """
     latitude: float
     longitude: float
@@ -1178,6 +1276,8 @@ class InputVenueMessageContent(InputMessageContent):
     address: str
     foursquare_id: str
     foursquare_type: str
+    google_place_id: str
+    google_place_type: str
 # end class InputVenueMessageContent
 
 class InputContactMessageContent(InputMessageContent):

@@ -31,11 +31,15 @@ class InputMediaPhoto(InputMedia):
     
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
+    
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
     type: str
     media: str
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
 # end class InputMediaPhoto
 
 class InputMediaVideo(InputMediaWithThumb):
@@ -65,6 +69,9 @@ class InputMediaVideo(InputMediaWithThumb):
     :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param width: Optional. Video width
     :type  width: int
     
@@ -82,6 +89,7 @@ class InputMediaVideo(InputMediaWithThumb):
     thumb: Union[InputFile, str]
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     width: int
     height: int
     duration: int
@@ -115,6 +123,9 @@ class InputMediaAnimation(InputMediaWithThumb):
     :param parse_mode: Optional. Mode for parsing entities in the animation caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param width: Optional. Animation width
     :type  width: int
     
@@ -129,6 +140,7 @@ class InputMediaAnimation(InputMediaWithThumb):
     thumb: Union[InputFile, str]
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     width: int
     height: int
     duration: int
@@ -161,6 +173,9 @@ class InputMediaAudio(InputMediaWithThumb):
     :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param duration: Optional. Duration of the audio in seconds
     :type  duration: int
     
@@ -175,6 +190,7 @@ class InputMediaAudio(InputMediaWithThumb):
     thumb: Union[InputFile, str]
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
     duration: int
     performer: str
     title: str
@@ -206,10 +222,18 @@ class InputMediaDocument(InputMediaWithThumb):
     
     :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
+    
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
+    :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
+    :type  disable_content_type_detection: bool
     """
     type: str
     media: str
     thumb: Union[InputFile, str]
     caption: str
     parse_mode: str
+    caption_entities: List[MessageEntity]
+    disable_content_type_detection: bool
 # end class InputMediaDocument

@@ -62,18 +62,24 @@ class TextMessage(SendableMessageBase):
     :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
+    :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param disable_web_page_preview: Disables link previews for links in this message
     :type  disable_web_page_preview: bool
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, text, receiver=None, reply_id=DEFAULT_MESSAGE_ID, parse_mode=None, disable_web_page_preview=None, disable_notification=None, reply_markup=None):
+    def __init__(self, text, receiver=None, reply_id=DEFAULT_MESSAGE_ID, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send text messages. On success, the sent Message is returned.
 
@@ -97,17 +103,24 @@ class TextMessage(SendableMessageBase):
         :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
+        :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param disable_web_page_preview: Disables link previews for links in this message
         :type  disable_web_page_preview: bool
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
         
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
+        
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         """
         super(TextMessage, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
@@ -125,11 +138,17 @@ class TextMessage(SendableMessageBase):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(entities, None, list, parameter_name="entities")
+        self.entities = entities
+        
         assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
         self.disable_web_page_preview = disable_web_page_preview
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -148,7 +167,7 @@ class TextMessage(SendableMessageBase):
         """
         return sender.send_message(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            text=self.text, chat_id=self.receiver, reply_to_message_id=self.reply_id, parse_mode=self.parse_mode, disable_web_page_preview=self.disable_web_page_preview, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            text=self.text, chat_id=self.receiver, reply_to_message_id=self.reply_id, parse_mode=self.parse_mode, entities=self.entities, disable_web_page_preview=self.disable_web_page_preview, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -179,10 +198,15 @@ class TextMessage(SendableMessageBase):
 
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.entities is not None:
+            array['entities'] = self._as_array(self.entities)  # type list of MessageEntity
+
         if self.disable_web_page_preview is not None:
             array['disable_web_page_preview'] = bool(self.disable_web_page_preview)  # type bool
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -208,6 +232,7 @@ class TextMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
@@ -236,8 +261,10 @@ class TextMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
         # end if
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['entities'] = MessageEntity.from_array_list(array.get('entities'), list_level=1) if array.get('entities') is not None else None
         data['disable_web_page_preview'] = bool(array.get('disable_web_page_preview')) if array.get('disable_web_page_preview') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -275,14 +302,14 @@ class TextMessage(SendableMessageBase):
         """
         Implements `str(textmessage_instance)`
         """
-        return "TextMessage(text={self.text!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, parse_mode={self.parse_mode!r}, disable_web_page_preview={self.disable_web_page_preview!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "TextMessage(text={self.text!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, parse_mode={self.parse_mode!r}, entities={self.entities!r}, disable_web_page_preview={self.disable_web_page_preview!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(textmessage_instance)`
         """
-        return "TextMessage(text={self.text!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, parse_mode={self.parse_mode!r}, disable_web_page_preview={self.disable_web_page_preview!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "TextMessage(text={self.text!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, parse_mode={self.parse_mode!r}, entities={self.entities!r}, disable_web_page_preview={self.disable_web_page_preview!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -290,7 +317,7 @@ class TextMessage(SendableMessageBase):
         Implements `"key" in textmessage_instance`
         """
         return (
-            key in ["text", "receiver", "reply_id", "parse_mode", "disable_web_page_preview", "disable_notification", "reply_markup"]
+            key in ["text", "receiver", "reply_id", "parse_mode", "entities", "disable_web_page_preview", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -324,15 +351,21 @@ class PhotoMessage(SendableMessageBase):
     :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
+    
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, photo, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, disable_notification=None, reply_markup=None):
+    def __init__(self, photo, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send photos. On success, the sent Message is returned.
 
@@ -359,14 +392,21 @@ class PhotoMessage(SendableMessageBase):
         :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+        
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
         
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         """
         super(PhotoMessage, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -388,8 +428,14 @@ class PhotoMessage(SendableMessageBase):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -408,7 +454,7 @@ class PhotoMessage(SendableMessageBase):
         """
         return sender.send_photo(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            photo=self.photo, chat_id=self.receiver, reply_to_message_id=self.reply_id, caption=self.caption, parse_mode=self.parse_mode, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            photo=self.photo, chat_id=self.receiver, reply_to_message_id=self.reply_id, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -447,8 +493,13 @@ class PhotoMessage(SendableMessageBase):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -474,6 +525,7 @@ class PhotoMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -510,7 +562,9 @@ class PhotoMessage(SendableMessageBase):
         # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -548,14 +602,14 @@ class PhotoMessage(SendableMessageBase):
         """
         Implements `str(photomessage_instance)`
         """
-        return "PhotoMessage(photo={self.photo!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "PhotoMessage(photo={self.photo!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(photomessage_instance)`
         """
-        return "PhotoMessage(photo={self.photo!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "PhotoMessage(photo={self.photo!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -563,7 +617,7 @@ class PhotoMessage(SendableMessageBase):
         Implements `"key" in photomessage_instance`
         """
         return (
-            key in ["photo", "receiver", "reply_id", "caption", "parse_mode", "disable_notification", "reply_markup"]
+            key in ["photo", "receiver", "reply_id", "caption", "parse_mode", "caption_entities", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -598,6 +652,9 @@ class AudioMessage(SendableMessageBase):
     :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param duration: Duration of the audio in seconds
     :type  duration: int
     
@@ -613,12 +670,15 @@ class AudioMessage(SendableMessageBase):
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, audio, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_markup=None):
+    def __init__(self, audio, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
             For sending voice messages, use the sendVoice method instead.
@@ -646,6 +706,9 @@ class AudioMessage(SendableMessageBase):
         :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param duration: Duration of the audio in seconds
         :type  duration: int
         
@@ -661,11 +724,15 @@ class AudioMessage(SendableMessageBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
         
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
+        
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         """
         super(AudioMessage, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -687,6 +754,9 @@ class AudioMessage(SendableMessageBase):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
         
@@ -701,6 +771,9 @@ class AudioMessage(SendableMessageBase):
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -719,7 +792,7 @@ class AudioMessage(SendableMessageBase):
         """
         return sender.send_audio(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            audio=self.audio, chat_id=self.receiver, reply_to_message_id=self.reply_id, caption=self.caption, parse_mode=self.parse_mode, duration=self.duration, performer=self.performer, title=self.title, thumb=self.thumb, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            audio=self.audio, chat_id=self.receiver, reply_to_message_id=self.reply_id, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, duration=self.duration, performer=self.performer, title=self.title, thumb=self.thumb, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -758,6 +831,9 @@ class AudioMessage(SendableMessageBase):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
@@ -774,6 +850,8 @@ class AudioMessage(SendableMessageBase):
 
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -799,6 +877,7 @@ class AudioMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -835,6 +914,7 @@ class AudioMessage(SendableMessageBase):
         # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
@@ -848,6 +928,7 @@ class AudioMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end if
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -885,14 +966,14 @@ class AudioMessage(SendableMessageBase):
         """
         Implements `str(audiomessage_instance)`
         """
-        return "AudioMessage(audio={self.audio!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, thumb={self.thumb!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "AudioMessage(audio={self.audio!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, thumb={self.thumb!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(audiomessage_instance)`
         """
-        return "AudioMessage(audio={self.audio!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, thumb={self.thumb!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "AudioMessage(audio={self.audio!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, duration={self.duration!r}, performer={self.performer!r}, title={self.title!r}, thumb={self.thumb!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -900,7 +981,7 @@ class AudioMessage(SendableMessageBase):
         Implements `"key" in audiomessage_instance`
         """
         return (
-            key in ["audio", "receiver", "reply_id", "caption", "parse_mode", "duration", "performer", "title", "thumb", "disable_notification", "reply_markup"]
+            key in ["audio", "receiver", "reply_id", "caption", "parse_mode", "caption_entities", "duration", "performer", "title", "thumb", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -937,15 +1018,24 @@ class DocumentMessage(SendableMessageBase):
     :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
+    :param disable_content_type_detection: Disables automatic server-side content type detection for files uploaded using multipart/form-data
+    :type  disable_content_type_detection: bool
+    
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
+    
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, document, receiver=None, reply_id=DEFAULT_MESSAGE_ID, thumb=None, caption=None, parse_mode=None, disable_notification=None, reply_markup=None):
+    def __init__(self, document, receiver=None, reply_id=DEFAULT_MESSAGE_ID, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 
@@ -975,14 +1065,24 @@ class DocumentMessage(SendableMessageBase):
         :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
+        :param disable_content_type_detection: Disables automatic server-side content type detection for files uploaded using multipart/form-data
+        :type  disable_content_type_detection: bool
+        
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+        
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
         
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         """
         super(DocumentMessage, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1007,8 +1107,17 @@ class DocumentMessage(SendableMessageBase):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
+        assert_type_or_raise(disable_content_type_detection, None, bool, parameter_name="disable_content_type_detection")
+        self.disable_content_type_detection = disable_content_type_detection
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -1027,7 +1136,7 @@ class DocumentMessage(SendableMessageBase):
         """
         return sender.send_document(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            document=self.document, chat_id=self.receiver, reply_to_message_id=self.reply_id, thumb=self.thumb, caption=self.caption, parse_mode=self.parse_mode, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            document=self.document, chat_id=self.receiver, reply_to_message_id=self.reply_id, thumb=self.thumb, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, disable_content_type_detection=self.disable_content_type_detection, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -1074,8 +1183,15 @@ class DocumentMessage(SendableMessageBase):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
+        if self.disable_content_type_detection is not None:
+            array['disable_content_type_detection'] = bool(self.disable_content_type_detection)  # type bool
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -1101,6 +1217,7 @@ class DocumentMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1146,7 +1263,10 @@ class DocumentMessage(SendableMessageBase):
         # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
+        data['disable_content_type_detection'] = bool(array.get('disable_content_type_detection')) if array.get('disable_content_type_detection') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -1184,14 +1304,14 @@ class DocumentMessage(SendableMessageBase):
         """
         Implements `str(documentmessage_instance)`
         """
-        return "DocumentMessage(document={self.document!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "DocumentMessage(document={self.document!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, disable_content_type_detection={self.disable_content_type_detection!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(documentmessage_instance)`
         """
-        return "DocumentMessage(document={self.document!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "DocumentMessage(document={self.document!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, disable_content_type_detection={self.disable_content_type_detection!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1199,7 +1319,7 @@ class DocumentMessage(SendableMessageBase):
         Implements `"key" in documentmessage_instance`
         """
         return (
-            key in ["document", "receiver", "reply_id", "thumb", "caption", "parse_mode", "disable_notification", "reply_markup"]
+            key in ["document", "receiver", "reply_id", "thumb", "caption", "parse_mode", "caption_entities", "disable_content_type_detection", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1245,18 +1365,24 @@ class VideoMessage(SendableMessageBase):
     :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
     :type  supports_streaming: bool
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, video, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, supports_streaming=None, disable_notification=None, reply_markup=None):
+    def __init__(self, video, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 
@@ -1295,17 +1421,24 @@ class VideoMessage(SendableMessageBase):
         :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
         :type  supports_streaming: bool
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
         
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
+        
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         """
         super(VideoMessage, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1339,11 +1472,17 @@ class VideoMessage(SendableMessageBase):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
         assert_type_or_raise(supports_streaming, None, bool, parameter_name="supports_streaming")
         self.supports_streaming = supports_streaming
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -1362,7 +1501,7 @@ class VideoMessage(SendableMessageBase):
         """
         return sender.send_video(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            video=self.video, chat_id=self.receiver, reply_to_message_id=self.reply_id, duration=self.duration, width=self.width, height=self.height, thumb=self.thumb, caption=self.caption, parse_mode=self.parse_mode, supports_streaming=self.supports_streaming, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            video=self.video, chat_id=self.receiver, reply_to_message_id=self.reply_id, duration=self.duration, width=self.width, height=self.height, thumb=self.thumb, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, supports_streaming=self.supports_streaming, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -1415,10 +1554,15 @@ class VideoMessage(SendableMessageBase):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.supports_streaming is not None:
             array['supports_streaming'] = bool(self.supports_streaming)  # type bool
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -1444,6 +1588,7 @@ class VideoMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1492,8 +1637,10 @@ class VideoMessage(SendableMessageBase):
         # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['supports_streaming'] = bool(array.get('supports_streaming')) if array.get('supports_streaming') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -1531,14 +1678,14 @@ class VideoMessage(SendableMessageBase):
         """
         Implements `str(videomessage_instance)`
         """
-        return "VideoMessage(video={self.video!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, supports_streaming={self.supports_streaming!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "VideoMessage(video={self.video!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, supports_streaming={self.supports_streaming!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(videomessage_instance)`
         """
-        return "VideoMessage(video={self.video!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, supports_streaming={self.supports_streaming!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "VideoMessage(video={self.video!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, supports_streaming={self.supports_streaming!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1546,7 +1693,7 @@ class VideoMessage(SendableMessageBase):
         Implements `"key" in videomessage_instance`
         """
         return (
-            key in ["video", "receiver", "reply_id", "duration", "width", "height", "thumb", "caption", "parse_mode", "supports_streaming", "disable_notification", "reply_markup"]
+            key in ["video", "receiver", "reply_id", "duration", "width", "height", "thumb", "caption", "parse_mode", "caption_entities", "supports_streaming", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1592,15 +1739,21 @@ class AnimationMessage(SendableMessageBase):
     :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
+    
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, animation, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, disable_notification=None, reply_markup=None):
+    def __init__(self, animation, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
 
@@ -1639,14 +1792,21 @@ class AnimationMessage(SendableMessageBase):
         :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+        
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
         
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         """
         super(AnimationMessage, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1680,8 +1840,14 @@ class AnimationMessage(SendableMessageBase):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -1700,7 +1866,7 @@ class AnimationMessage(SendableMessageBase):
         """
         return sender.send_animation(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            animation=self.animation, chat_id=self.receiver, reply_to_message_id=self.reply_id, duration=self.duration, width=self.width, height=self.height, thumb=self.thumb, caption=self.caption, parse_mode=self.parse_mode, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            animation=self.animation, chat_id=self.receiver, reply_to_message_id=self.reply_id, duration=self.duration, width=self.width, height=self.height, thumb=self.thumb, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -1753,8 +1919,13 @@ class AnimationMessage(SendableMessageBase):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -1780,6 +1951,7 @@ class AnimationMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1828,7 +2000,9 @@ class AnimationMessage(SendableMessageBase):
         # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -1866,14 +2040,14 @@ class AnimationMessage(SendableMessageBase):
         """
         Implements `str(animationmessage_instance)`
         """
-        return "AnimationMessage(animation={self.animation!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "AnimationMessage(animation={self.animation!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(animationmessage_instance)`
         """
-        return "AnimationMessage(animation={self.animation!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "AnimationMessage(animation={self.animation!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, width={self.width!r}, height={self.height!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1881,7 +2055,7 @@ class AnimationMessage(SendableMessageBase):
         Implements `"key" in animationmessage_instance`
         """
         return (
-            key in ["animation", "receiver", "reply_id", "duration", "width", "height", "thumb", "caption", "parse_mode", "disable_notification", "reply_markup"]
+            key in ["animation", "receiver", "reply_id", "duration", "width", "height", "thumb", "caption", "parse_mode", "caption_entities", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1915,18 +2089,24 @@ class VoiceMessage(SendableMessageBase):
     :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
     :type  parse_mode: str|unicode
     
+    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param duration: Duration of the voice message in seconds
     :type  duration: int
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, voice, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, duration=None, disable_notification=None, reply_markup=None):
+    def __init__(self, voice, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
@@ -1953,17 +2133,24 @@ class VoiceMessage(SendableMessageBase):
         :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
         
+        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param duration: Duration of the voice message in seconds
         :type  duration: int
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
         
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
+        
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         """
         super(VoiceMessage, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1985,11 +2172,17 @@ class VoiceMessage(SendableMessageBase):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
         
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
+        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -2008,7 +2201,7 @@ class VoiceMessage(SendableMessageBase):
         """
         return sender.send_voice(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            voice=self.voice, chat_id=self.receiver, reply_to_message_id=self.reply_id, caption=self.caption, parse_mode=self.parse_mode, duration=self.duration, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            voice=self.voice, chat_id=self.receiver, reply_to_message_id=self.reply_id, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, duration=self.duration, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -2047,10 +2240,15 @@ class VoiceMessage(SendableMessageBase):
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -2076,6 +2274,7 @@ class VoiceMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -2112,8 +2311,10 @@ class VoiceMessage(SendableMessageBase):
         # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -2151,14 +2352,14 @@ class VoiceMessage(SendableMessageBase):
         """
         Implements `str(voicemessage_instance)`
         """
-        return "VoiceMessage(voice={self.voice!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, duration={self.duration!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "VoiceMessage(voice={self.voice!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, duration={self.duration!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(voicemessage_instance)`
         """
-        return "VoiceMessage(voice={self.voice!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, duration={self.duration!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "VoiceMessage(voice={self.voice!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r}, duration={self.duration!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2166,7 +2367,7 @@ class VoiceMessage(SendableMessageBase):
         Implements `"key" in voicemessage_instance`
         """
         return (
-            key in ["voice", "receiver", "reply_id", "caption", "parse_mode", "duration", "disable_notification", "reply_markup"]
+            key in ["voice", "receiver", "reply_id", "caption", "parse_mode", "caption_entities", "duration", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2206,12 +2407,15 @@ class VideoNoteMessage(SendableMessageBase):
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, video_note, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, length=None, thumb=None, disable_notification=None, reply_markup=None):
+    def __init__(self, video_note, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, length=None, thumb=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
 
@@ -2243,6 +2447,9 @@ class VideoNoteMessage(SendableMessageBase):
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+        
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
         
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
@@ -2276,6 +2483,9 @@ class VideoNoteMessage(SendableMessageBase):
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
         
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         self._next_msg = None
@@ -2293,7 +2503,7 @@ class VideoNoteMessage(SendableMessageBase):
         """
         return sender.send_video_note(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            video_note=self.video_note, chat_id=self.receiver, reply_to_message_id=self.reply_id, duration=self.duration, length=self.length, thumb=self.thumb, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            video_note=self.video_note, chat_id=self.receiver, reply_to_message_id=self.reply_id, duration=self.duration, length=self.length, thumb=self.thumb, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -2342,6 +2552,8 @@ class VideoNoteMessage(SendableMessageBase):
 
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -2413,6 +2625,7 @@ class VideoNoteMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
         # end if
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -2450,14 +2663,14 @@ class VideoNoteMessage(SendableMessageBase):
         """
         Implements `str(videonotemessage_instance)`
         """
-        return "VideoNoteMessage(video_note={self.video_note!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, length={self.length!r}, thumb={self.thumb!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "VideoNoteMessage(video_note={self.video_note!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, length={self.length!r}, thumb={self.thumb!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(videonotemessage_instance)`
         """
-        return "VideoNoteMessage(video_note={self.video_note!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, length={self.length!r}, thumb={self.thumb!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "VideoNoteMessage(video_note={self.video_note!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, duration={self.duration!r}, length={self.length!r}, thumb={self.thumb!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2465,7 +2678,7 @@ class VideoNoteMessage(SendableMessageBase):
         Implements `"key" in videonotemessage_instance`
         """
         return (
-            key in ["video_note", "receiver", "reply_id", "duration", "length", "thumb", "disable_notification", "reply_markup"]
+            key in ["video_note", "receiver", "reply_id", "duration", "length", "thumb", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2474,15 +2687,15 @@ class VideoNoteMessage(SendableMessageBase):
 
 class MediaGroupMessage(SendableMessageBase):
     """
-    Use this method to send a group of photos or videos as an album. On success, an array of the sent Messages is returned.
+    Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
 
     https://core.telegram.org/bots/api#sendmediagroup
 
     
     Parameters:
     
-    :param media: A JSON-serialized array describing photos and videos to be sent, must include 2-10 items
-    :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
+    :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
+    :type  media: list of InputMediaAudio, InputMediaDocument, InputMediaPhoto | pytgbot.api_types.sendable.input_media.InputMediaVideo
     
     
     Optional keyword parameters:
@@ -2493,22 +2706,25 @@ class MediaGroupMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
-    :param disable_notification: Sends the messages silently. Users will receive a notification with no sound.
+    :param disable_notification: Sends messages silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
+    
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
     
     """
 
-    def __init__(self, media, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None):
+    def __init__(self, media, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, allow_sending_without_reply=None):
         """
-        Use this method to send a group of photos or videos as an album. On success, an array of the sent Messages is returned.
+        Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
 
         https://core.telegram.org/bots/api#sendmediagroup
 
         
         Parameters:
         
-        :param media: A JSON-serialized array describing photos and videos to be sent, must include 2-10 items
-        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
+        :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
+        :type  media: list of InputMediaAudio, InputMediaDocument, InputMediaPhoto | pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
         Optional keyword parameters:
@@ -2519,15 +2735,17 @@ class MediaGroupMessage(SendableMessageBase):
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
         
-        :param disable_notification: Sends the messages silently. Users will receive a notification with no sound.
+        :param disable_notification: Sends messages silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+        
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
         
         """
         super(MediaGroupMessage, self).__init__()
-        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
         from pytgbot.api_types.sendable.input_media import InputMediaVideo
         
-        assert_type_or_raise(media, list, list, parameter_name="media")
+        assert_type_or_raise(media, list, InputMediaVideo, parameter_name="media")
         self.media = media
         
         assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
@@ -2538,6 +2756,9 @@ class MediaGroupMessage(SendableMessageBase):
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         self._next_msg = None
     # end def __init__
 
@@ -2553,7 +2774,7 @@ class MediaGroupMessage(SendableMessageBase):
         """
         return sender.send_media_group(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            media=self.media, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification
+            media=self.media, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply
         )
     # end def send
 
@@ -2565,12 +2786,12 @@ class MediaGroupMessage(SendableMessageBase):
         :rtype: dict
         """
         array = super(MediaGroupMessage, self).to_array()
-        if isinstance(self.media, InputMediaPhoto):
-            array['media'] = self._as_array(self.media)  # type list of InputMediaPhoto | list of InputMediaVideo
+        if isinstance(self.media, InputMediaAudio, InputMediaDocument, InputMediaPhoto):
+            array['media'] = self._as_array(self.media)  # type list of InputMediaAudio, InputMediaDocument, InputMediaPhoto | InputMediaVideo
         elif isinstance(self.media, InputMediaVideo):
-            array['media'] = self._as_array(self.media)  # type list of InputMediaPhoto | list of InputMediaVideo
+            array['media'] = self.media.to_array()  # type InputMediaVideo
         else:
-            raise TypeError('Unknown type, must be one of InputMediaPhoto, InputMediaVideo.')
+            raise TypeError('Unknown type, must be one of InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo.')
         # end if
 
         if self.receiver is not None:
@@ -2591,6 +2812,8 @@ class MediaGroupMessage(SendableMessageBase):
 
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         return array
     # end def to_array
 
@@ -2603,16 +2826,15 @@ class MediaGroupMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
         from pytgbot.api_types.sendable.input_media import InputMediaVideo
         
         data = SendableMessageBase.validate_array(array)
-        if isinstance(array.get('media'), InputMediaPhoto):
-            data['media'] = InputMediaPhoto.from_array_list(array.get('media'), list_level=1)
+        if isinstance(array.get('media'), InputMediaAudio, InputMediaDocument, InputMediaPhoto):
+            data['media'] = InputMediaAudio, InputMediaDocument, InputMediaPhoto.from_array_list(array.get('media'), list_level=1)
         elif isinstance(array.get('media'), InputMediaVideo):
-            data['media'] = InputMediaVideo.from_array_list(array.get('media'), list_level=1)
+            data['media'] = InputMediaVideo.from_array(array.get('media'))
         else:
-            raise TypeError('Unknown type, must be one of InputMediaPhoto, InputMediaVideo.')
+            raise TypeError('Unknown type, must be one of InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo.')
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
@@ -2635,6 +2857,7 @@ class MediaGroupMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
         # end if
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         
         return data
     # end def validate_array
@@ -2659,14 +2882,14 @@ class MediaGroupMessage(SendableMessageBase):
         """
         Implements `str(mediagroupmessage_instance)`
         """
-        return "MediaGroupMessage(media={self.media!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r})".format(self=self)
+        return "MediaGroupMessage(media={self.media!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(mediagroupmessage_instance)`
         """
-        return "MediaGroupMessage(media={self.media!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r})".format(self=self)
+        return "MediaGroupMessage(media={self.media!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2674,7 +2897,7 @@ class MediaGroupMessage(SendableMessageBase):
         Implements `"key" in mediagroupmessage_instance`
         """
         return (
-            key in ["media", "receiver", "reply_id", "disable_notification"]
+            key in ["media", "receiver", "reply_id", "disable_notification", "allow_sending_without_reply"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2705,18 +2928,30 @@ class LocationMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
+    :param horizontal_accuracy: The radius of uncertainty for the location, measured in meters; 0-1500
+    :type  horizontal_accuracy: float
+    
     :param live_period: Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
     :type  live_period: int
     
+    :param heading: For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+    :type  heading: int
+    
+    :param proximity_alert_radius: For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+    :type  proximity_alert_radius: int
+    
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
+    
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, latitude, longitude, receiver=None, reply_id=DEFAULT_MESSAGE_ID, live_period=None, disable_notification=None, reply_markup=None):
+    def __init__(self, latitude, longitude, receiver=None, reply_id=DEFAULT_MESSAGE_ID, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send point on the map. On success, the sent Message is returned.
 
@@ -2740,11 +2975,23 @@ class LocationMessage(SendableMessageBase):
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
         
+        :param horizontal_accuracy: The radius of uncertainty for the location, measured in meters; 0-1500
+        :type  horizontal_accuracy: float
+        
         :param live_period: Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
         :type  live_period: int
         
+        :param heading: For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+        :type  heading: int
+        
+        :param proximity_alert_radius: For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+        :type  proximity_alert_radius: int
+        
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+        
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
         
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
@@ -2768,11 +3015,23 @@ class LocationMessage(SendableMessageBase):
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
         
+        assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
+        self.horizontal_accuracy = horizontal_accuracy
+        
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
         self.live_period = live_period
         
+        assert_type_or_raise(heading, None, int, parameter_name="heading")
+        self.heading = heading
+        
+        assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
+        self.proximity_alert_radius = proximity_alert_radius
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -2791,7 +3050,7 @@ class LocationMessage(SendableMessageBase):
         """
         return sender.send_location(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            latitude=self.latitude, longitude=self.longitude, chat_id=self.receiver, reply_to_message_id=self.reply_id, live_period=self.live_period, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            latitude=self.latitude, longitude=self.longitude, chat_id=self.receiver, reply_to_message_id=self.reply_id, horizontal_accuracy=self.horizontal_accuracy, live_period=self.live_period, heading=self.heading, proximity_alert_radius=self.proximity_alert_radius, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -2821,10 +3080,18 @@ class LocationMessage(SendableMessageBase):
                 raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
             # end if
 
+        if self.horizontal_accuracy is not None:
+            array['horizontal_accuracy'] = float(self.horizontal_accuracy)  # type float
         if self.live_period is not None:
             array['live_period'] = int(self.live_period)  # type int
+        if self.heading is not None:
+            array['heading'] = int(self.heading)  # type int
+        if self.proximity_alert_radius is not None:
+            array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -2878,8 +3145,12 @@ class LocationMessage(SendableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
         # end if
+        data['horizontal_accuracy'] = float(array.get('horizontal_accuracy')) if array.get('horizontal_accuracy') is not None else None
         data['live_period'] = int(array.get('live_period')) if array.get('live_period') is not None else None
+        data['heading'] = int(array.get('heading')) if array.get('heading') is not None else None
+        data['proximity_alert_radius'] = int(array.get('proximity_alert_radius')) if array.get('proximity_alert_radius') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -2917,14 +3188,14 @@ class LocationMessage(SendableMessageBase):
         """
         Implements `str(locationmessage_instance)`
         """
-        return "LocationMessage(latitude={self.latitude!r}, longitude={self.longitude!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, live_period={self.live_period!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "LocationMessage(latitude={self.latitude!r}, longitude={self.longitude!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, horizontal_accuracy={self.horizontal_accuracy!r}, live_period={self.live_period!r}, heading={self.heading!r}, proximity_alert_radius={self.proximity_alert_radius!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(locationmessage_instance)`
         """
-        return "LocationMessage(latitude={self.latitude!r}, longitude={self.longitude!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, live_period={self.live_period!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "LocationMessage(latitude={self.latitude!r}, longitude={self.longitude!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, horizontal_accuracy={self.horizontal_accuracy!r}, live_period={self.live_period!r}, heading={self.heading!r}, proximity_alert_radius={self.proximity_alert_radius!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -2932,7 +3203,7 @@ class LocationMessage(SendableMessageBase):
         Implements `"key" in locationmessage_instance`
         """
         return (
-            key in ["latitude", "longitude", "receiver", "reply_id", "live_period", "disable_notification", "reply_markup"]
+            key in ["latitude", "longitude", "receiver", "reply_id", "horizontal_accuracy", "live_period", "heading", "proximity_alert_radius", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2975,15 +3246,24 @@ class VenueMessage(SendableMessageBase):
     :param foursquare_type: Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
     
+    :param google_place_id: Google Places identifier of the venue
+    :type  google_place_id: str|unicode
+    
+    :param google_place_type: Google Places type of the venue. (See supported types.)
+    :type  google_place_type: str|unicode
+    
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
+    
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, latitude, longitude, title, address, receiver=None, reply_id=DEFAULT_MESSAGE_ID, foursquare_id=None, foursquare_type=None, disable_notification=None, reply_markup=None):
+    def __init__(self, latitude, longitude, title, address, receiver=None, reply_id=DEFAULT_MESSAGE_ID, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send information about a venue. On success, the sent Message is returned.
 
@@ -3019,8 +3299,17 @@ class VenueMessage(SendableMessageBase):
         :param foursquare_type: Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
         :type  foursquare_type: str|unicode
         
+        :param google_place_id: Google Places identifier of the venue
+        :type  google_place_id: str|unicode
+        
+        :param google_place_type: Google Places type of the venue. (See supported types.)
+        :type  google_place_type: str|unicode
+        
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+        
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
         
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
@@ -3056,8 +3345,17 @@ class VenueMessage(SendableMessageBase):
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
         
+        assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
+        self.google_place_id = google_place_id
+        
+        assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
+        self.google_place_type = google_place_type
+        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -3076,7 +3374,7 @@ class VenueMessage(SendableMessageBase):
         """
         return sender.send_venue(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            latitude=self.latitude, longitude=self.longitude, title=self.title, address=self.address, chat_id=self.receiver, reply_to_message_id=self.reply_id, foursquare_id=self.foursquare_id, foursquare_type=self.foursquare_type, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            latitude=self.latitude, longitude=self.longitude, title=self.title, address=self.address, chat_id=self.receiver, reply_to_message_id=self.reply_id, foursquare_id=self.foursquare_id, foursquare_type=self.foursquare_type, google_place_id=self.google_place_id, google_place_type=self.google_place_type, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -3112,8 +3410,14 @@ class VenueMessage(SendableMessageBase):
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+        if self.google_place_id is not None:
+            array['google_place_id'] = u(self.google_place_id)  # py2: type unicode, py3: type str
+        if self.google_place_type is not None:
+            array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -3171,7 +3475,10 @@ class VenueMessage(SendableMessageBase):
         # end if
         data['foursquare_id'] = u(array.get('foursquare_id')) if array.get('foursquare_id') is not None else None
         data['foursquare_type'] = u(array.get('foursquare_type')) if array.get('foursquare_type') is not None else None
+        data['google_place_id'] = u(array.get('google_place_id')) if array.get('google_place_id') is not None else None
+        data['google_place_type'] = u(array.get('google_place_type')) if array.get('google_place_type') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -3209,14 +3516,14 @@ class VenueMessage(SendableMessageBase):
         """
         Implements `str(venuemessage_instance)`
         """
-        return "VenueMessage(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "VenueMessage(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, google_place_id={self.google_place_id!r}, google_place_type={self.google_place_type!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(venuemessage_instance)`
         """
-        return "VenueMessage(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "VenueMessage(latitude={self.latitude!r}, longitude={self.longitude!r}, title={self.title!r}, address={self.address!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, foursquare_id={self.foursquare_id!r}, foursquare_type={self.foursquare_type!r}, google_place_id={self.google_place_id!r}, google_place_type={self.google_place_type!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3224,7 +3531,7 @@ class VenueMessage(SendableMessageBase):
         Implements `"key" in venuemessage_instance`
         """
         return (
-            key in ["latitude", "longitude", "title", "address", "receiver", "reply_id", "foursquare_id", "foursquare_type", "disable_notification", "reply_markup"]
+            key in ["latitude", "longitude", "title", "address", "receiver", "reply_id", "foursquare_id", "foursquare_type", "google_place_id", "google_place_type", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -3264,12 +3571,15 @@ class ContactMessage(SendableMessageBase):
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, phone_number, first_name, receiver=None, reply_id=DEFAULT_MESSAGE_ID, last_name=None, vcard=None, disable_notification=None, reply_markup=None):
+    def __init__(self, phone_number, first_name, receiver=None, reply_id=DEFAULT_MESSAGE_ID, last_name=None, vcard=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send phone contacts. On success, the sent Message is returned.
 
@@ -3302,6 +3612,9 @@ class ContactMessage(SendableMessageBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
         
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
+        
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
@@ -3333,6 +3646,9 @@ class ContactMessage(SendableMessageBase):
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
         
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         self._next_msg = None
@@ -3350,7 +3666,7 @@ class ContactMessage(SendableMessageBase):
         """
         return sender.send_contact(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            phone_number=self.phone_number, first_name=self.first_name, chat_id=self.receiver, reply_to_message_id=self.reply_id, last_name=self.last_name, vcard=self.vcard, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            phone_number=self.phone_number, first_name=self.first_name, chat_id=self.receiver, reply_to_message_id=self.reply_id, last_name=self.last_name, vcard=self.vcard, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -3386,6 +3702,8 @@ class ContactMessage(SendableMessageBase):
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -3442,6 +3760,7 @@ class ContactMessage(SendableMessageBase):
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['vcard'] = u(array.get('vcard')) if array.get('vcard') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -3479,14 +3798,14 @@ class ContactMessage(SendableMessageBase):
         """
         Implements `str(contactmessage_instance)`
         """
-        return "ContactMessage(phone_number={self.phone_number!r}, first_name={self.first_name!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, last_name={self.last_name!r}, vcard={self.vcard!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "ContactMessage(phone_number={self.phone_number!r}, first_name={self.first_name!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, last_name={self.last_name!r}, vcard={self.vcard!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(contactmessage_instance)`
         """
-        return "ContactMessage(phone_number={self.phone_number!r}, first_name={self.first_name!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, last_name={self.last_name!r}, vcard={self.vcard!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "ContactMessage(phone_number={self.phone_number!r}, first_name={self.first_name!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, last_name={self.last_name!r}, vcard={self.vcard!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3494,7 +3813,7 @@ class ContactMessage(SendableMessageBase):
         Implements `"key" in contactmessage_instance`
         """
         return (
-            key in ["phone_number", "first_name", "receiver", "reply_id", "last_name", "vcard", "disable_notification", "reply_markup"]
+            key in ["phone_number", "first_name", "receiver", "reply_id", "last_name", "vcard", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -3510,7 +3829,7 @@ class PollMessage(SendableMessageBase):
     
     Parameters:
     
-    :param question: Poll question, 1-255 characters
+    :param question: Poll question, 1-300 characters
     :type  question: str|unicode
     
     :param options: A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
@@ -3543,6 +3862,9 @@ class PollMessage(SendableMessageBase):
     :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
     :type  explanation_parse_mode: str|unicode
     
+    :param explanation_entities: List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
+    :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+    
     :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
     :type  open_period: int
     
@@ -3555,12 +3877,15 @@ class PollMessage(SendableMessageBase):
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, question, options, receiver=None, reply_id=DEFAULT_MESSAGE_ID, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_markup=None):
+    def __init__(self, question, options, receiver=None, reply_id=DEFAULT_MESSAGE_ID, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send a native poll. On success, the sent Message is returned.
 
@@ -3569,7 +3894,7 @@ class PollMessage(SendableMessageBase):
         
         Parameters:
         
-        :param question: Poll question, 1-255 characters
+        :param question: Poll question, 1-300 characters
         :type  question: str|unicode
         
         :param options: A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
@@ -3602,6 +3927,9 @@ class PollMessage(SendableMessageBase):
         :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
         :type  explanation_parse_mode: str|unicode
         
+        :param explanation_entities: List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
+        :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
+        
         :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
         :type  open_period: int
         
@@ -3614,11 +3942,15 @@ class PollMessage(SendableMessageBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
         
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
+        
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
         
         """
         super(PollMessage, self).__init__()
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
@@ -3654,6 +3986,9 @@ class PollMessage(SendableMessageBase):
         assert_type_or_raise(explanation_parse_mode, None, unicode_type, parameter_name="explanation_parse_mode")
         self.explanation_parse_mode = explanation_parse_mode
         
+        assert_type_or_raise(explanation_entities, None, list, parameter_name="explanation_entities")
+        self.explanation_entities = explanation_entities
+        
         assert_type_or_raise(open_period, None, int, parameter_name="open_period")
         self.open_period = open_period
         
@@ -3665,6 +4000,9 @@ class PollMessage(SendableMessageBase):
         
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
+        
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
         
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
@@ -3683,7 +4021,7 @@ class PollMessage(SendableMessageBase):
         """
         return sender.send_poll(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            question=self.question, options=self.options, chat_id=self.receiver, reply_to_message_id=self.reply_id, is_anonymous=self.is_anonymous, type=self.type, allows_multiple_answers=self.allows_multiple_answers, correct_option_id=self.correct_option_id, explanation=self.explanation, explanation_parse_mode=self.explanation_parse_mode, open_period=self.open_period, close_date=self.close_date, is_closed=self.is_closed, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            question=self.question, options=self.options, chat_id=self.receiver, reply_to_message_id=self.reply_id, is_anonymous=self.is_anonymous, type=self.type, allows_multiple_answers=self.allows_multiple_answers, correct_option_id=self.correct_option_id, explanation=self.explanation, explanation_parse_mode=self.explanation_parse_mode, explanation_entities=self.explanation_entities, open_period=self.open_period, close_date=self.close_date, is_closed=self.is_closed, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -3726,6 +4064,9 @@ class PollMessage(SendableMessageBase):
             array['explanation'] = u(self.explanation)  # py2: type unicode, py3: type str
         if self.explanation_parse_mode is not None:
             array['explanation_parse_mode'] = u(self.explanation_parse_mode)  # py2: type unicode, py3: type str
+        if self.explanation_entities is not None:
+            array['explanation_entities'] = self._as_array(self.explanation_entities)  # type list of MessageEntity
+
         if self.open_period is not None:
             array['open_period'] = int(self.open_period)  # type int
         if self.close_date is not None:
@@ -3734,6 +4075,8 @@ class PollMessage(SendableMessageBase):
             array['is_closed'] = bool(self.is_closed)  # type bool
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -3759,6 +4102,7 @@ class PollMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
@@ -3793,10 +4137,12 @@ class PollMessage(SendableMessageBase):
         data['correct_option_id'] = int(array.get('correct_option_id')) if array.get('correct_option_id') is not None else None
         data['explanation'] = u(array.get('explanation')) if array.get('explanation') is not None else None
         data['explanation_parse_mode'] = u(array.get('explanation_parse_mode')) if array.get('explanation_parse_mode') is not None else None
+        data['explanation_entities'] = MessageEntity.from_array_list(array.get('explanation_entities'), list_level=1) if array.get('explanation_entities') is not None else None
         data['open_period'] = int(array.get('open_period')) if array.get('open_period') is not None else None
         data['close_date'] = int(array.get('close_date')) if array.get('close_date') is not None else None
         data['is_closed'] = bool(array.get('is_closed')) if array.get('is_closed') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -3834,14 +4180,14 @@ class PollMessage(SendableMessageBase):
         """
         Implements `str(pollmessage_instance)`
         """
-        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_parse_mode={self.explanation_parse_mode!r}, open_period={self.open_period!r}, close_date={self.close_date!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_parse_mode={self.explanation_parse_mode!r}, explanation_entities={self.explanation_entities!r}, open_period={self.open_period!r}, close_date={self.close_date!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(pollmessage_instance)`
         """
-        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_parse_mode={self.explanation_parse_mode!r}, open_period={self.open_period!r}, close_date={self.close_date!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "PollMessage(question={self.question!r}, options={self.options!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, is_anonymous={self.is_anonymous!r}, type={self.type!r}, allows_multiple_answers={self.allows_multiple_answers!r}, correct_option_id={self.correct_option_id!r}, explanation={self.explanation!r}, explanation_parse_mode={self.explanation_parse_mode!r}, explanation_entities={self.explanation_entities!r}, open_period={self.open_period!r}, close_date={self.close_date!r}, is_closed={self.is_closed!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3849,7 +4195,7 @@ class PollMessage(SendableMessageBase):
         Implements `"key" in pollmessage_instance`
         """
         return (
-            key in ["question", "options", "receiver", "reply_id", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id", "explanation", "explanation_parse_mode", "open_period", "close_date", "is_closed", "disable_notification", "reply_markup"]
+            key in ["question", "options", "receiver", "reply_id", "is_anonymous", "type", "allows_multiple_answers", "correct_option_id", "explanation", "explanation_parse_mode", "explanation_entities", "open_period", "close_date", "is_closed", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -3871,18 +4217,21 @@ class DiceMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
-    :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "", "", or "". Dice can have values 1-6 for "" and "", and values 1-5 for "". Defaults to ""
+    :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "", "", "", "", or "". Dice can have values 1-6 for "" and "", values 1-5 for "" and "", and values 1-64 for "". Defaults to ""
     :type  emoji: str|unicode
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
+    
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, receiver=None, reply_id=DEFAULT_MESSAGE_ID, emoji=None, disable_notification=None, reply_markup=None):
+    def __init__(self, receiver=None, reply_id=DEFAULT_MESSAGE_ID, emoji=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send an animated emoji that will display a random value. On success, the sent Message is returned.
 
@@ -3897,11 +4246,14 @@ class DiceMessage(SendableMessageBase):
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
         
-        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "", "", or "". Dice can have values 1-6 for "" and "", and values 1-5 for "". Defaults to ""
+        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "", "", "", "", or "". Dice can have values 1-6 for "" and "", values 1-5 for "" and "", and values 1-64 for "". Defaults to ""
         :type  emoji: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+        
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
         
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
@@ -3925,6 +4277,9 @@ class DiceMessage(SendableMessageBase):
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
         
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         self._next_msg = None
@@ -3942,7 +4297,7 @@ class DiceMessage(SendableMessageBase):
         """
         return sender.send_dice(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            chat_id=self.receiver, reply_to_message_id=self.reply_id, emoji=self.emoji, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            chat_id=self.receiver, reply_to_message_id=self.reply_id, emoji=self.emoji, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -3974,6 +4329,8 @@ class DiceMessage(SendableMessageBase):
             array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -4027,6 +4384,7 @@ class DiceMessage(SendableMessageBase):
         # end if
         data['emoji'] = u(array.get('emoji')) if array.get('emoji') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -4064,14 +4422,14 @@ class DiceMessage(SendableMessageBase):
         """
         Implements `str(dicemessage_instance)`
         """
-        return "DiceMessage(receiver={self.receiver!r}, reply_id={self.reply_id!r}, emoji={self.emoji!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "DiceMessage(receiver={self.receiver!r}, reply_id={self.reply_id!r}, emoji={self.emoji!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(dicemessage_instance)`
         """
-        return "DiceMessage(receiver={self.receiver!r}, reply_id={self.reply_id!r}, emoji={self.emoji!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "DiceMessage(receiver={self.receiver!r}, reply_id={self.reply_id!r}, emoji={self.emoji!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -4079,7 +4437,7 @@ class DiceMessage(SendableMessageBase):
         Implements `"key" in dicemessage_instance`
         """
         return (
-            key in ["receiver", "reply_id", "emoji", "disable_notification", "reply_markup"]
+            key in ["receiver", "reply_id", "emoji", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -4271,12 +4629,15 @@ class StickerMessage(SendableMessageBase):
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     
     """
 
-    def __init__(self, sticker, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, reply_markup=None):
+    def __init__(self, sticker, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
@@ -4299,6 +4660,9 @@ class StickerMessage(SendableMessageBase):
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+        
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
         
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
@@ -4323,6 +4687,9 @@ class StickerMessage(SendableMessageBase):
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
         
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         self._next_msg = None
@@ -4340,7 +4707,7 @@ class StickerMessage(SendableMessageBase):
         """
         return sender.send_sticker(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            sticker=self.sticker, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            sticker=self.sticker, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -4377,6 +4744,8 @@ class StickerMessage(SendableMessageBase):
 
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             if isinstance(self.reply_markup, InlineKeyboardMarkup):
                 array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
@@ -4437,6 +4806,7 @@ class StickerMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
         # end if
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         if array.get('reply_markup') is None:
             data['reply_markup'] = None
         elif isinstance(array.get('reply_markup'), InlineKeyboardMarkup):
@@ -4474,14 +4844,14 @@ class StickerMessage(SendableMessageBase):
         """
         Implements `str(stickermessage_instance)`
         """
-        return "StickerMessage(sticker={self.sticker!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "StickerMessage(sticker={self.sticker!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(stickermessage_instance)`
         """
-        return "StickerMessage(sticker={self.sticker!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "StickerMessage(sticker={self.sticker!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -4489,7 +4859,7 @@ class StickerMessage(SendableMessageBase):
         Implements `"key" in stickermessage_instance`
         """
         return (
-            key in ["sticker", "receiver", "reply_id", "disable_notification", "reply_markup"]
+            key in ["sticker", "receiver", "reply_id", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -4574,12 +4944,15 @@ class InvoiceMessage(SendableMessageBase):
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
     """
 
-    def __init__(self, title, description, payload, provider_token, start_parameter, currency, prices, receiver=None, reply_id=DEFAULT_MESSAGE_ID, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_markup=None):
+    def __init__(self, title, description, payload, provider_token, start_parameter, currency, prices, receiver=None, reply_id=DEFAULT_MESSAGE_ID, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send invoices. On success, the sent Message is returned.
 
@@ -4657,6 +5030,9 @@ class InvoiceMessage(SendableMessageBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
         
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
+        
         :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -4731,6 +5107,9 @@ class InvoiceMessage(SendableMessageBase):
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
         
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         self._next_msg = None
@@ -4748,7 +5127,7 @@ class InvoiceMessage(SendableMessageBase):
         """
         return sender.send_invoice(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            title=self.title, description=self.description, payload=self.payload, provider_token=self.provider_token, start_parameter=self.start_parameter, currency=self.currency, prices=self.prices, chat_id=self.receiver, reply_to_message_id=self.reply_id, provider_data=self.provider_data, photo_url=self.photo_url, photo_size=self.photo_size, photo_width=self.photo_width, photo_height=self.photo_height, need_name=self.need_name, need_phone_number=self.need_phone_number, need_email=self.need_email, need_shipping_address=self.need_shipping_address, send_phone_number_to_provider=self.send_phone_number_to_provider, send_email_to_provider=self.send_email_to_provider, is_flexible=self.is_flexible, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            title=self.title, description=self.description, payload=self.payload, provider_token=self.provider_token, start_parameter=self.start_parameter, currency=self.currency, prices=self.prices, chat_id=self.receiver, reply_to_message_id=self.reply_id, provider_data=self.provider_data, photo_url=self.photo_url, photo_size=self.photo_size, photo_width=self.photo_width, photo_height=self.photo_height, need_name=self.need_name, need_phone_number=self.need_phone_number, need_email=self.need_email, need_shipping_address=self.need_shipping_address, send_phone_number_to_provider=self.send_phone_number_to_provider, send_email_to_provider=self.send_email_to_provider, is_flexible=self.is_flexible, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -4810,6 +5189,8 @@ class InvoiceMessage(SendableMessageBase):
             array['is_flexible'] = bool(self.is_flexible)  # type bool
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -4869,6 +5250,7 @@ class InvoiceMessage(SendableMessageBase):
         data['send_email_to_provider'] = bool(array.get('send_email_to_provider')) if array.get('send_email_to_provider') is not None else None
         data['is_flexible'] = bool(array.get('is_flexible')) if array.get('is_flexible') is not None else None
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         
         return data
@@ -4894,14 +5276,14 @@ class InvoiceMessage(SendableMessageBase):
         """
         Implements `str(invoicemessage_instance)`
         """
-        return "InvoiceMessage(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, start_parameter={self.start_parameter!r}, currency={self.currency!r}, prices={self.prices!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "InvoiceMessage(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, start_parameter={self.start_parameter!r}, currency={self.currency!r}, prices={self.prices!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(invoicemessage_instance)`
         """
-        return "InvoiceMessage(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, start_parameter={self.start_parameter!r}, currency={self.currency!r}, prices={self.prices!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "InvoiceMessage(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, start_parameter={self.start_parameter!r}, currency={self.currency!r}, prices={self.prices!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -4909,7 +5291,7 @@ class InvoiceMessage(SendableMessageBase):
         Implements `"key" in invoicemessage_instance`
         """
         return (
-            key in ["title", "description", "payload", "provider_token", "start_parameter", "currency", "prices", "receiver", "reply_id", "provider_data", "photo_url", "photo_size", "photo_width", "photo_height", "need_name", "need_phone_number", "need_email", "need_shipping_address", "send_phone_number_to_provider", "send_email_to_provider", "is_flexible", "disable_notification", "reply_markup"]
+            key in ["title", "description", "payload", "provider_token", "start_parameter", "currency", "prices", "receiver", "reply_id", "provider_data", "photo_url", "photo_size", "photo_width", "photo_height", "need_name", "need_phone_number", "need_email", "need_shipping_address", "send_phone_number_to_provider", "send_email_to_provider", "is_flexible", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -4940,12 +5322,15 @@ class GameMessage(SendableMessageBase):
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
     
+    :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+    :type  allow_sending_without_reply: bool
+    
     :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
     """
 
-    def __init__(self, game_short_name, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, reply_markup=None):
+    def __init__(self, game_short_name, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send a game. On success, the sent Message is returned.
 
@@ -4969,6 +5354,9 @@ class GameMessage(SendableMessageBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
         
+        :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
+        :type  allow_sending_without_reply: bool
+        
         :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         
@@ -4988,6 +5376,9 @@ class GameMessage(SendableMessageBase):
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         self.disable_notification = disable_notification
         
+        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
+        self.allow_sending_without_reply = allow_sending_without_reply
+        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
         self._next_msg = None
@@ -5005,7 +5396,7 @@ class GameMessage(SendableMessageBase):
         """
         return sender.send_game(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            game_short_name=self.game_short_name, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, reply_markup=self.reply_markup
+            game_short_name=self.game_short_name, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
         )
     # end def send
 
@@ -5036,6 +5427,8 @@ class GameMessage(SendableMessageBase):
 
         if self.disable_notification is not None:
             array['disable_notification'] = bool(self.disable_notification)  # type bool
+        if self.allow_sending_without_reply is not None:
+            array['allow_sending_without_reply'] = bool(self.allow_sending_without_reply)  # type bool
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
 
@@ -5076,6 +5469,7 @@ class GameMessage(SendableMessageBase):
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
         # end if
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
+        data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         
         return data
@@ -5101,14 +5495,14 @@ class GameMessage(SendableMessageBase):
         """
         Implements `str(gamemessage_instance)`
         """
-        return "GameMessage(game_short_name={self.game_short_name!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "GameMessage(game_short_name={self.game_short_name!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(gamemessage_instance)`
         """
-        return "GameMessage(game_short_name={self.game_short_name!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "GameMessage(game_short_name={self.game_short_name!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -5116,7 +5510,7 @@ class GameMessage(SendableMessageBase):
         Implements `"key" in gamemessage_instance`
         """
         return (
-            key in ["game_short_name", "receiver", "reply_id", "disable_notification", "reply_markup"]
+            key in ["game_short_name", "receiver", "reply_id", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

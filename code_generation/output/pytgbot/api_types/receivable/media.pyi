@@ -167,6 +167,9 @@ class Audio(Media):
     :param title: Optional. Title of the audio as defined by sender or by audio tags
     :type  title: str|unicode
     
+    :param file_name: Optional. Original filename as defined by sender
+    :type  file_name: str|unicode
+    
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
     
@@ -184,6 +187,7 @@ class Audio(Media):
     duration: int
     performer: str
     title: str
+    file_name: str
     mime_type: str
     file_size: int
     thumb: PhotoSize
@@ -260,6 +264,9 @@ class Video(Media):
     :param thumb: Optional. Video thumbnail
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
     
+    :param file_name: Optional. Original filename as defined by sender
+    :type  file_name: str|unicode
+    
     :param mime_type: Optional. Mime type of a file as defined by sender
     :type  mime_type: str|unicode
     
@@ -275,6 +282,7 @@ class Video(Media):
     height: int
     duration: int
     thumb: PhotoSize
+    file_name: str
     mime_type: str
     file_size: int
 # end class Video
@@ -406,7 +414,7 @@ class Dice(Media):
     :param emoji: Emoji on which the dice throw animation is based
     :type  emoji: str|unicode
     
-    :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" base emoji
+    :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" and "" base emoji, 1-64 for "" base emoji
     :type  value: int
     
 
@@ -560,11 +568,27 @@ class Location(Media):
 
     Optional keyword parameters:
     
+    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+    :type  horizontal_accuracy: float
+    
+    :param live_period: Optional. Time relative to the message sending date, during which the location can be updated, in seconds. For active live locations only.
+    :type  live_period: int
+    
+    :param heading: Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.
+    :type  heading: int
+    
+    :param proximity_alert_radius: Optional. Maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only.
+    :type  proximity_alert_radius: int
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
     longitude: float
     latitude: float
+    horizontal_accuracy: float
+    live_period: int
+    heading: int
+    proximity_alert_radius: int
 # end class Location
 
 class Venue(Media):
@@ -576,7 +600,7 @@ class Venue(Media):
 
     Parameters:
     
-    :param location: Venue location
+    :param location: Venue location. Can't be a live location
     :type  location: pytgbot.api_types.receivable.media.Location
     
     :param title: Name of the venue
@@ -594,6 +618,12 @@ class Venue(Media):
     :param foursquare_type: Optional. Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
     
+    :param google_place_id: Optional. Google Places identifier of the venue
+    :type  google_place_id: str|unicode
+    
+    :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+    :type  google_place_type: str|unicode
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -602,7 +632,38 @@ class Venue(Media):
     address: str
     foursquare_id: str
     foursquare_type: str
+    google_place_id: str
+    google_place_type: str
 # end class Venue
+
+class ProximityAlertTriggered(Media):
+    """
+    This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
+
+    https://core.telegram.org/bots/api#proximityalerttriggered
+    
+
+    Parameters:
+    
+    :param traveler: User that triggered the alert
+    :type  traveler: pytgbot.api_types.receivable.peer.User
+    
+    :param watcher: User that set the alert
+    :type  watcher: pytgbot.api_types.receivable.peer.User
+    
+    :param distance: The distance between the users
+    :type  distance: int
+    
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    traveler: User
+    watcher: User
+    distance: int
+# end class ProximityAlertTriggered
 
 class UserProfilePhotos(Result):
     """

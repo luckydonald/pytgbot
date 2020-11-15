@@ -94,6 +94,9 @@ class WebhookInfo(Receivable):
 
     Optional keyword parameters:
     
+    :param ip_address: Optional. Currently used webhook IP address
+    :type  ip_address: str|unicode
+    
     :param last_error_date: Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
     :type  last_error_date: int
     
@@ -112,6 +115,7 @@ class WebhookInfo(Receivable):
     url: str
     has_custom_certificate: bool
     pending_update_count: int
+    ip_address: str
     last_error_date: int
     last_error_message: str
     max_connections: int
@@ -142,10 +146,13 @@ class Message(UpdateType):
     :param from_peer: Optional. Sender, empty for messages sent to channels
     :type  from_peer: pytgbot.api_types.receivable.peer.User
     
+    :param sender_chat: Optional. Sender of the message, sent on behalf of a chat. The channel itself for channel messages. The supergroup itself for messages from anonymous group administrators. The linked channel for messages automatically forwarded to the discussion group
+    :type  sender_chat: pytgbot.api_types.receivable.peer.Chat
+    
     :param forward_from: Optional. For forwarded messages, sender of the original message
     :type  forward_from: pytgbot.api_types.receivable.peer.User
     
-    :param forward_from_chat: Optional. For messages forwarded from channels, information about the original channel
+    :param forward_from_chat: Optional. For messages forwarded from channels or from anonymous administrators, information about the original sender chat
     :type  forward_from_chat: pytgbot.api_types.receivable.peer.Chat
     
     :param forward_from_message_id: Optional. For messages forwarded from channels, identifier of the original message in the channel
@@ -172,7 +179,7 @@ class Message(UpdateType):
     :param media_group_id: Optional. The unique identifier of a media message group this message belongs to
     :type  media_group_id: str|unicode
     
-    :param author_signature: Optional. Signature of the post author for messages in channels
+    :param author_signature: Optional. Signature of the post author for messages in channels, or the custom title of an anonymous group administrator
     :type  author_signature: str|unicode
     
     :param text: Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters
@@ -274,6 +281,9 @@ class Message(UpdateType):
     :param passport_data: Optional. Telegram Passport data
     :type  passport_data: pytgbot.api_types.receivable.passport.PassportData
     
+    :param proximity_alert_triggered: Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
+    :type  proximity_alert_triggered: pytgbot.api_types.receivable.media.ProximityAlertTriggered
+    
     :param reply_markup: Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     
@@ -284,6 +294,7 @@ class Message(UpdateType):
     date: int
     chat: Chat
     from_peer: User
+    sender_chat: Chat
     forward_from: User
     forward_from_chat: Chat
     forward_from_message_id: int
@@ -328,6 +339,7 @@ class Message(UpdateType):
     successful_payment: SuccessfulPayment
     connected_website: str
     passport_data: PassportData
+    proximity_alert_triggered: ProximityAlertTriggered
     reply_markup: InlineKeyboardMarkup
 # end class Message
 

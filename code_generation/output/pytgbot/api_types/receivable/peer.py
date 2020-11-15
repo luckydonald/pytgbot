@@ -250,13 +250,16 @@ class Chat(Peer):
     :param photo: Optional. Chat photo. Returned only in getChat.
     :type  photo: pytgbot.api_types.receivable.media.ChatPhoto
     
+    :param bio: Optional. Bio of the other party in a private chat. Returned only in getChat.
+    :type  bio: str|unicode
+    
     :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
     :type  description: str|unicode
     
     :param invite_link: Optional. Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
     :type  invite_link: str|unicode
     
-    :param pinned_message: Optional. Pinned message, for groups, supergroups and channels. Returned only in getChat.
+    :param pinned_message: Optional. The most recent pinned message (by sending date). Returned only in getChat.
     :type  pinned_message: pytgbot.api_types.receivable.updates.Message
     
     :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
@@ -271,11 +274,17 @@ class Chat(Peer):
     :param can_set_sticker_set: Optional. True, if the bot can change the group sticker set. Returned only in getChat.
     :type  can_set_sticker_set: bool
     
+    :param linked_chat_id: Optional. Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa; for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier. Returned only in getChat.
+    :type  linked_chat_id: int
+    
+    :param location: Optional. For supergroups, the location to which the supergroup is connected. Returned only in getChat.
+    :type  location: pytgbot.api_types.receivable.peer.ChatLocation
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, photo=None, description=None, invite_link=None, pinned_message=None, permissions=None, slow_mode_delay=None, sticker_set_name=None, can_set_sticker_set=None, _raw=None):
+    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, photo=None, bio=None, description=None, invite_link=None, pinned_message=None, permissions=None, slow_mode_delay=None, sticker_set_name=None, can_set_sticker_set=None, linked_chat_id=None, location=None, _raw=None):
         """
         This object represents a chat.
 
@@ -308,13 +317,16 @@ class Chat(Peer):
         :param photo: Optional. Chat photo. Returned only in getChat.
         :type  photo: pytgbot.api_types.receivable.media.ChatPhoto
         
+        :param bio: Optional. Bio of the other party in a private chat. Returned only in getChat.
+        :type  bio: str|unicode
+        
         :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
         :type  description: str|unicode
         
         :param invite_link: Optional. Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
         :type  invite_link: str|unicode
         
-        :param pinned_message: Optional. Pinned message, for groups, supergroups and channels. Returned only in getChat.
+        :param pinned_message: Optional. The most recent pinned message (by sending date). Returned only in getChat.
         :type  pinned_message: pytgbot.api_types.receivable.updates.Message
         
         :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
@@ -329,11 +341,18 @@ class Chat(Peer):
         :param can_set_sticker_set: Optional. True, if the bot can change the group sticker set. Returned only in getChat.
         :type  can_set_sticker_set: bool
         
+        :param linked_chat_id: Optional. Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa; for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier. Returned only in getChat.
+        :type  linked_chat_id: int
+        
+        :param location: Optional. For supergroups, the location to which the supergroup is connected. Returned only in getChat.
+        :type  location: pytgbot.api_types.receivable.peer.ChatLocation
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(Chat, self).__init__()
         from pytgbot.api_types.receivable.media import ChatPhoto
+        from pytgbot.api_types.receivable.peer import ChatLocation
         from pytgbot.api_types.receivable.peer import ChatPermissions
         from pytgbot.api_types.receivable.updates import Message
         
@@ -358,6 +377,9 @@ class Chat(Peer):
         assert_type_or_raise(photo, None, ChatPhoto, parameter_name="photo")
         self.photo = photo
         
+        assert_type_or_raise(bio, None, unicode_type, parameter_name="bio")
+        self.bio = bio
+        
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
         
@@ -378,6 +400,12 @@ class Chat(Peer):
         
         assert_type_or_raise(can_set_sticker_set, None, bool, parameter_name="can_set_sticker_set")
         self.can_set_sticker_set = can_set_sticker_set
+        
+        assert_type_or_raise(linked_chat_id, None, int, parameter_name="linked_chat_id")
+        self.linked_chat_id = linked_chat_id
+        
+        assert_type_or_raise(location, None, ChatLocation, parameter_name="location")
+        self.location = location
 
         self._raw = _raw
     # end def __init__
@@ -403,6 +431,8 @@ class Chat(Peer):
         if self.photo is not None:
             array['photo'] = self.photo.to_array()  # type ChatPhoto
 
+        if self.bio is not None:
+            array['bio'] = u(self.bio)  # py2: type unicode, py3: type str
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
         if self.invite_link is not None:
@@ -419,6 +449,11 @@ class Chat(Peer):
             array['sticker_set_name'] = u(self.sticker_set_name)  # py2: type unicode, py3: type str
         if self.can_set_sticker_set is not None:
             array['can_set_sticker_set'] = bool(self.can_set_sticker_set)  # type bool
+        if self.linked_chat_id is not None:
+            array['linked_chat_id'] = int(self.linked_chat_id)  # type int
+        if self.location is not None:
+            array['location'] = self.location.to_array()  # type ChatLocation
+
         return array
     # end def to_array
 
@@ -432,6 +467,7 @@ class Chat(Peer):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from pytgbot.api_types.receivable.media import ChatPhoto
+        from pytgbot.api_types.receivable.peer import ChatLocation
         from pytgbot.api_types.receivable.peer import ChatPermissions
         from pytgbot.api_types.receivable.updates import Message
         
@@ -443,6 +479,7 @@ class Chat(Peer):
         data['first_name'] = u(array.get('first_name')) if array.get('first_name') is not None else None
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['photo'] = ChatPhoto.from_array(array.get('photo')) if array.get('photo') is not None else None
+        data['bio'] = u(array.get('bio')) if array.get('bio') is not None else None
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['invite_link'] = u(array.get('invite_link')) if array.get('invite_link') is not None else None
         data['pinned_message'] = Message.from_array(array.get('pinned_message')) if array.get('pinned_message') is not None else None
@@ -450,6 +487,8 @@ class Chat(Peer):
         data['slow_mode_delay'] = int(array.get('slow_mode_delay')) if array.get('slow_mode_delay') is not None else None
         data['sticker_set_name'] = u(array.get('sticker_set_name')) if array.get('sticker_set_name') is not None else None
         data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
+        data['linked_chat_id'] = int(array.get('linked_chat_id')) if array.get('linked_chat_id') is not None else None
+        data['location'] = ChatLocation.from_array(array.get('location')) if array.get('location') is not None else None
         return data
     # end def validate_array
 
@@ -474,7 +513,7 @@ class Chat(Peer):
         """
         Implements `str(chat_instance)`
         """
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, bio={self.bio!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r}, linked_chat_id={self.linked_chat_id!r}, location={self.location!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -484,7 +523,7 @@ class Chat(Peer):
         if self._raw:
             return "Chat.from_array({self._raw})".format(self=self)
         # end if
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, bio={self.bio!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r}, linked_chat_id={self.linked_chat_id!r}, location={self.location!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -492,7 +531,7 @@ class Chat(Peer):
         Implements `"key" in chat_instance`
         """
         return (
-            key in ["id", "type", "title", "username", "first_name", "last_name", "photo", "description", "invite_link", "pinned_message", "permissions", "slow_mode_delay", "sticker_set_name", "can_set_sticker_set"]
+            key in ["id", "type", "title", "username", "first_name", "last_name", "photo", "bio", "description", "invite_link", "pinned_message", "permissions", "slow_mode_delay", "sticker_set_name", "can_set_sticker_set", "linked_chat_id", "location"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -521,8 +560,8 @@ class ChatMember(Result):
     :param custom_title: Optional. Owner and administrators only. Custom title for this user
     :type  custom_title: str|unicode
     
-    :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
-    :type  until_date: int
+    :param is_anonymous: Optional. Owner and administrators only. True, if the user's presence in the chat is hidden
+    :type  is_anonymous: bool
     
     :param can_be_edited: Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
     :type  can_be_edited: bool
@@ -569,11 +608,14 @@ class ChatMember(Result):
     :param can_add_web_page_previews: Optional. Restricted only. True, if the user is allowed to add web page previews to their messages
     :type  can_add_web_page_previews: bool
     
+    :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
+    :type  until_date: int
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, user, status, custom_title=None, until_date=None, can_be_edited=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_restrict_members=None, can_promote_members=None, can_change_info=None, can_invite_users=None, can_pin_messages=None, is_member=None, can_send_messages=None, can_send_media_messages=None, can_send_polls=None, can_send_other_messages=None, can_add_web_page_previews=None, _raw=None):
+    def __init__(self, user, status, custom_title=None, is_anonymous=None, can_be_edited=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_restrict_members=None, can_promote_members=None, can_change_info=None, can_invite_users=None, can_pin_messages=None, is_member=None, can_send_messages=None, can_send_media_messages=None, can_send_polls=None, can_send_other_messages=None, can_add_web_page_previews=None, until_date=None, _raw=None):
         """
         This object contains information about one member of a chat.
 
@@ -594,8 +636,8 @@ class ChatMember(Result):
         :param custom_title: Optional. Owner and administrators only. Custom title for this user
         :type  custom_title: str|unicode
         
-        :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
-        :type  until_date: int
+        :param is_anonymous: Optional. Owner and administrators only. True, if the user's presence in the chat is hidden
+        :type  is_anonymous: bool
         
         :param can_be_edited: Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
         :type  can_be_edited: bool
@@ -642,6 +684,9 @@ class ChatMember(Result):
         :param can_add_web_page_previews: Optional. Restricted only. True, if the user is allowed to add web page previews to their messages
         :type  can_add_web_page_previews: bool
         
+        :param until_date: Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
+        :type  until_date: int
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -657,8 +702,8 @@ class ChatMember(Result):
         assert_type_or_raise(custom_title, None, unicode_type, parameter_name="custom_title")
         self.custom_title = custom_title
         
-        assert_type_or_raise(until_date, None, int, parameter_name="until_date")
-        self.until_date = until_date
+        assert_type_or_raise(is_anonymous, None, bool, parameter_name="is_anonymous")
+        self.is_anonymous = is_anonymous
         
         assert_type_or_raise(can_be_edited, None, bool, parameter_name="can_be_edited")
         self.can_be_edited = can_be_edited
@@ -704,6 +749,9 @@ class ChatMember(Result):
         
         assert_type_or_raise(can_add_web_page_previews, None, bool, parameter_name="can_add_web_page_previews")
         self.can_add_web_page_previews = can_add_web_page_previews
+        
+        assert_type_or_raise(until_date, None, int, parameter_name="until_date")
+        self.until_date = until_date
 
         self._raw = _raw
     # end def __init__
@@ -721,8 +769,8 @@ class ChatMember(Result):
         array['status'] = u(self.status)  # py2: type unicode, py3: type str
         if self.custom_title is not None:
             array['custom_title'] = u(self.custom_title)  # py2: type unicode, py3: type str
-        if self.until_date is not None:
-            array['until_date'] = int(self.until_date)  # type int
+        if self.is_anonymous is not None:
+            array['is_anonymous'] = bool(self.is_anonymous)  # type bool
         if self.can_be_edited is not None:
             array['can_be_edited'] = bool(self.can_be_edited)  # type bool
         if self.can_post_messages is not None:
@@ -753,6 +801,8 @@ class ChatMember(Result):
             array['can_send_other_messages'] = bool(self.can_send_other_messages)  # type bool
         if self.can_add_web_page_previews is not None:
             array['can_add_web_page_previews'] = bool(self.can_add_web_page_previews)  # type bool
+        if self.until_date is not None:
+            array['until_date'] = int(self.until_date)  # type int
         return array
     # end def to_array
 
@@ -771,7 +821,7 @@ class ChatMember(Result):
         data['user'] = User.from_array(array.get('user'))
         data['status'] = u(array.get('status'))
         data['custom_title'] = u(array.get('custom_title')) if array.get('custom_title') is not None else None
-        data['until_date'] = int(array.get('until_date')) if array.get('until_date') is not None else None
+        data['is_anonymous'] = bool(array.get('is_anonymous')) if array.get('is_anonymous') is not None else None
         data['can_be_edited'] = bool(array.get('can_be_edited')) if array.get('can_be_edited') is not None else None
         data['can_post_messages'] = bool(array.get('can_post_messages')) if array.get('can_post_messages') is not None else None
         data['can_edit_messages'] = bool(array.get('can_edit_messages')) if array.get('can_edit_messages') is not None else None
@@ -787,6 +837,7 @@ class ChatMember(Result):
         data['can_send_polls'] = bool(array.get('can_send_polls')) if array.get('can_send_polls') is not None else None
         data['can_send_other_messages'] = bool(array.get('can_send_other_messages')) if array.get('can_send_other_messages') is not None else None
         data['can_add_web_page_previews'] = bool(array.get('can_add_web_page_previews')) if array.get('can_add_web_page_previews') is not None else None
+        data['until_date'] = int(array.get('until_date')) if array.get('until_date') is not None else None
         return data
     # end def validate_array
 
@@ -811,7 +862,7 @@ class ChatMember(Result):
         """
         Implements `str(chatmember_instance)`
         """
-        return "ChatMember(user={self.user!r}, status={self.status!r}, custom_title={self.custom_title!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
+        return "ChatMember(user={self.user!r}, status={self.status!r}, custom_title={self.custom_title!r}, is_anonymous={self.is_anonymous!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r}, until_date={self.until_date!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -821,7 +872,7 @@ class ChatMember(Result):
         if self._raw:
             return "ChatMember.from_array({self._raw})".format(self=self)
         # end if
-        return "ChatMember(user={self.user!r}, status={self.status!r}, custom_title={self.custom_title!r}, until_date={self.until_date!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r})".format(self=self)
+        return "ChatMember(user={self.user!r}, status={self.status!r}, custom_title={self.custom_title!r}, is_anonymous={self.is_anonymous!r}, can_be_edited={self.can_be_edited!r}, can_post_messages={self.can_post_messages!r}, can_edit_messages={self.can_edit_messages!r}, can_delete_messages={self.can_delete_messages!r}, can_restrict_members={self.can_restrict_members!r}, can_promote_members={self.can_promote_members!r}, can_change_info={self.can_change_info!r}, can_invite_users={self.can_invite_users!r}, can_pin_messages={self.can_pin_messages!r}, is_member={self.is_member!r}, can_send_messages={self.can_send_messages!r}, can_send_media_messages={self.can_send_media_messages!r}, can_send_polls={self.can_send_polls!r}, can_send_other_messages={self.can_send_other_messages!r}, can_add_web_page_previews={self.can_add_web_page_previews!r}, until_date={self.until_date!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -829,7 +880,7 @@ class ChatMember(Result):
         Implements `"key" in chatmember_instance`
         """
         return (
-            key in ["user", "status", "custom_title", "until_date", "can_be_edited", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_restrict_members", "can_promote_members", "can_change_info", "can_invite_users", "can_pin_messages", "is_member", "can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews"]
+            key in ["user", "status", "custom_title", "is_anonymous", "can_be_edited", "can_post_messages", "can_edit_messages", "can_delete_messages", "can_restrict_members", "can_promote_members", "can_change_info", "can_invite_users", "can_pin_messages", "is_member", "can_send_messages", "can_send_media_messages", "can_send_polls", "can_send_other_messages", "can_add_web_page_previews", "until_date"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1031,4 +1082,137 @@ class ChatPermissions(Result):
         )
     # end def __contains__
 # end class ChatPermissions
+
+
+class ChatLocation(Result):
+    """
+    Represents a location to which a chat is connected.
+
+    https://core.telegram.org/bots/api#chatlocation
+    
+
+    Parameters:
+    
+    :param location: The location to which the supergroup is connected. Can't be a live location.
+    :type  location: pytgbot.api_types.receivable.media.Location
+    
+    :param address: Location address; 1-64 characters, as defined by the chat owner
+    :type  address: str|unicode
+    
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, location, address, _raw=None):
+        """
+        Represents a location to which a chat is connected.
+
+        https://core.telegram.org/bots/api#chatlocation
+        
+
+        Parameters:
+        
+        :param location: The location to which the supergroup is connected. Can't be a live location.
+        :type  location: pytgbot.api_types.receivable.media.Location
+        
+        :param address: Location address; 1-64 characters, as defined by the chat owner
+        :type  address: str|unicode
+        
+
+        Optional keyword parameters:
+        
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(ChatLocation, self).__init__()
+        from pytgbot.api_types.receivable.media import Location
+        
+        assert_type_or_raise(location, Location, parameter_name="location")
+        self.location = location
+        
+        assert_type_or_raise(address, unicode_type, parameter_name="address")
+        self.address = address
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self):
+        """
+        Serializes this ChatLocation to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(ChatLocation, self).to_array()
+        array['location'] = self.location.to_array()  # type Location
+
+        array['address'] = u(self.address)  # py2: type unicode, py3: type str
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ChatLocation constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.receivable.media import Location
+        
+        data = Result.validate_array(array)
+        data['location'] = Location.from_array(array.get('location'))
+        data['address'] = u(array.get('address'))
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new ChatLocation from a given dictionary.
+
+        :return: new ChatLocation instance.
+        :rtype: ChatLocation
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = ChatLocation.validate_array(array)
+        data['_raw'] = array
+        return ChatLocation(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(chatlocation_instance)`
+        """
+        return "ChatLocation(location={self.location!r}, address={self.address!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(chatlocation_instance)`
+        """
+        if self._raw:
+            return "ChatLocation.from_array({self._raw})".format(self=self)
+        # end if
+        return "ChatLocation(location={self.location!r}, address={self.address!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in chatlocation_instance`
+        """
+        return (
+            key in ["location", "address"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class ChatLocation
 
