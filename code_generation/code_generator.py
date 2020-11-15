@@ -105,9 +105,9 @@ def get_type_path(param_class, as_object=False) -> Union[str, 'Import']:
         return get_type_path(param_class=param_class, as_object=True).full
     # end if
     try:
-        from code_generator_template import Import
+        from code_generator_classes import Import
     except ImportError:
-        from .code_generator_template import Import
+        from .code_generator_classes import Import
     # end try
 
     param_class = param_class.strip()

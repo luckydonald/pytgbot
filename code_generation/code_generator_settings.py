@@ -217,7 +217,7 @@ Overrides of send function classification for teleflask.
 Function "sendMessage" => "Message" will be replaced with "TextMessage".
 """
 
-from .code_generator_template import Clazz, Import, Variable, Type
+from .code_generator_classes import Clazz, Variable, Type, Import
 from typing import List, Dict
 
 

@@ -1,5 +1,5 @@
 from code_generator_online import load_api_definitions
-from code_generator_template import Function
+from code_generator_classes import Function
 from itertools import permutations
 
 folder, html_document, results = load_api_definitions()
