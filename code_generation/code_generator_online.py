@@ -514,34 +514,6 @@ def safe_to_file(folder, results):
     message_send_functions = []
     clazzes = {}  # "filepath": [Class, Class, ...]
     all_the_clazzes = []
-
-    # split results into functions and classes
-    for result in results:
-        assert isinstance(result, (Clazz, Function))
-        if isinstance(result, Clazz):
-            result.import_path = result.calculate_import_path()
-            result.filepath = result.calculate_filepath(folder)
-            file_path = result.filepath
-            if file_path not in clazzes:
-                clazzes[file_path] = []
-            clazzes[file_path].append(result)
-            all_the_clazzes.append(result)
-        else:
-            assert isinstance(result, Function)
-            import_path = "pytgbot.bot.async."
-            file_path = calc_path_and_create_folders(folder, import_path)
-            result.filepath = file_path
-            functions.append(result)
-
-            if result.name.startswith('send_'):
-                import_path = "teleflask_messages."
-                file_path = calc_path_and_create_folders(folder, import_path)
-                result2 = safe_eval(repr(result), SAVE_VALUES)  # serialize + unserialize = deepcopy
-                result2.filepath = file_path
-                message_send_functions.append(result2)
-            # end if
-        # end if
-    # end for
     custom_classes = {}  # "filepath": [Class, Class, ...]
     import_path: str; class_data: CustomClass
     for import_path, class_data in CUSTOM_CLASSES.items():
@@ -573,6 +545,34 @@ def safe_to_file(folder, results):
         # clazzes[file_path].append(result)
         # all_the_clazzes.append(result)
     # end def
+
+    # split results into functions and classes
+    for result in results:
+        assert isinstance(result, (Clazz, Function))
+        if isinstance(result, Clazz):
+            result.import_path = result.calculate_import_path()
+            result.filepath = result.calculate_filepath(folder)
+            file_path = result.filepath
+            if file_path not in clazzes:
+                clazzes[file_path] = []
+            clazzes[file_path].append(result)
+            all_the_clazzes.append(result)
+        else:
+            assert isinstance(result, Function)
+            import_path = "pytgbot.bot.async."
+            file_path = calc_path_and_create_folders(folder, import_path)
+            result.filepath = file_path
+            functions.append(result)
+
+            if result.name.startswith('send_'):
+                import_path = "teleflask_messages."
+                file_path = calc_path_and_create_folders(folder, import_path)
+                result2 = safe_eval(repr(result), SAVE_VALUES)  # serialize + unserialize = deepcopy
+                result2.filepath = file_path
+                message_send_functions.append(result2)
+            # end if
+        # end if
+    # end for
 
     bot_template = get_template("bot.template")
     clazzfile_template = get_template("classfile.template")
