@@ -269,14 +269,12 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(offset, None, int, parameter_name="offset")
+        """
         
+        assert_type_or_raise(offset, None, int, parameter_name="offset")
         assert_type_or_raise(limit, None, int, parameter_name="limit")
-        
         assert_type_or_raise(timeout, None, int, parameter_name="timeout")
-        
         assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
-        
         return self.do("getUpdates", offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates)
     # end def _get_updates__make_request
 
@@ -334,20 +332,15 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.files import InputFile
+        """
+        from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(url, unicode_type, parameter_name="url")
-        
         assert_type_or_raise(certificate, None, InputFile, parameter_name="certificate")
-        
         assert_type_or_raise(ip_address, None, unicode_type, parameter_name="ip_address")
-        
         assert_type_or_raise(max_connections, None, int, parameter_name="max_connections")
-        
         assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
-        
         assert_type_or_raise(drop_pending_updates, None, bool, parameter_name="drop_pending_updates")
-        
         return self.do("setWebhook", url=url, certificate=certificate, ip_address=ip_address, max_connections=max_connections, allowed_updates=allowed_updates, drop_pending_updates=drop_pending_updates)
     # end def _set_webhook__make_request
 
@@ -386,8 +379,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(drop_pending_updates, None, bool, parameter_name="drop_pending_updates")
+        """
         
+        assert_type_or_raise(drop_pending_updates, None, bool, parameter_name="drop_pending_updates")
         return self.do("deleteWebhook", drop_pending_updates=drop_pending_updates)
     # end def _delete_webhook__make_request
 
@@ -422,6 +416,7 @@ class BotBase(object):
         :return: the decoded json
         :rtype:  dict|list|bool
         """
+        
         return self.do("getWebhookInfo", )
     # end def _get_webhook_info__make_request
 
@@ -457,6 +452,7 @@ class BotBase(object):
         :return: the decoded json
         :rtype:  dict|list|bool
         """
+        
         return self.do("getMe", )
     # end def _get_me__make_request
 
@@ -492,6 +488,7 @@ class BotBase(object):
         :return: the decoded json
         :rtype:  dict|list|bool
         """
+        
         return self.do("logOut", )
     # end def _log_out__make_request
 
@@ -557,30 +554,22 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(text, unicode_type, parameter_name="text")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(entities, None, list, parameter_name="entities")
-        
         assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_message__make_request
 
@@ -632,14 +621,12 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(from_chat_id, (int, unicode_type), parameter_name="from_chat_id")
-        
         assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         return self.do("forwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, disable_notification=disable_notification)
     # end def _forward_message__make_request
 
@@ -709,32 +696,23 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(from_chat_id, (int, unicode_type), parameter_name="from_chat_id")
-        
         assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("copyMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _copy_message__make_request
 
@@ -801,7 +779,8 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -809,23 +788,14 @@ class BotBase(object):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(photo, (InputFile, unicode_type), parameter_name="photo")
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendPhoto", chat_id=chat_id, photo=photo, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_photo__make_request
 
@@ -904,7 +874,8 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -912,31 +883,18 @@ class BotBase(object):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(audio, (InputFile, unicode_type), parameter_name="audio")
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
-        
         assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendAudio", chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_audio__make_request
 
@@ -1009,7 +967,8 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1017,27 +976,16 @@ class BotBase(object):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(document, (InputFile, unicode_type), parameter_name="document")
-        
         assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
         assert_type_or_raise(disable_content_type_detection, None, bool, parameter_name="disable_content_type_detection")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendDocument", chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_content_type_detection=disable_content_type_detection, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_document__make_request
 
@@ -1119,7 +1067,8 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1127,33 +1076,19 @@ class BotBase(object):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(video, (InputFile, unicode_type), parameter_name="video")
-        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
         assert_type_or_raise(width, None, int, parameter_name="width")
-        
         assert_type_or_raise(height, None, int, parameter_name="height")
-        
         assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
         assert_type_or_raise(supports_streaming, None, bool, parameter_name="supports_streaming")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendVideo", chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, supports_streaming=supports_streaming, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_video__make_request
 
@@ -1232,7 +1167,8 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1240,31 +1176,18 @@ class BotBase(object):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(animation, (InputFile, unicode_type), parameter_name="animation")
-        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
         assert_type_or_raise(width, None, int, parameter_name="width")
-        
         assert_type_or_raise(height, None, int, parameter_name="height")
-        
         assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendAnimation", chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_animation__make_request
 
@@ -1334,7 +1257,8 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
@@ -1342,25 +1266,15 @@ class BotBase(object):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(voice, (InputFile, unicode_type), parameter_name="voice")
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendVoice", chat_id=chat_id, voice=voice, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_voice__make_request
 
@@ -1427,30 +1341,22 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.files import InputFile
+        """
+        from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(video_note, (InputFile, unicode_type), parameter_name="video_note")
-        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
         assert_type_or_raise(length, None, int, parameter_name="length")
-        
         assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_video_note__make_request
 
@@ -1505,18 +1411,14 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.input_media import InputMediaVideo
+        """
+        from pytgbot.api_types.sendable.input_media import InputMediaVideo
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(media, (list, InputMediaVideo), parameter_name="media")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         return self.do("sendMediaGroup", chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply)
     # end def _send_media_group__make_request
 
@@ -1589,33 +1491,23 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.reply_markup import ForceReply
+        """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
         assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
         assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
-        
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
-        
         assert_type_or_raise(heading, None, int, parameter_name="heading")
-        
         assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude, horizontal_accuracy=horizontal_accuracy, live_period=live_period, heading=heading, proximity_alert_radius=proximity_alert_radius, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_location__make_request
 
@@ -1682,26 +1574,18 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
         assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
         assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
-        
         assert_type_or_raise(heading, None, int, parameter_name="heading")
-        
         assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         return self.do("editMessageLiveLocation", latitude=latitude, longitude=longitude, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, horizontal_accuracy=horizontal_accuracy, heading=heading, proximity_alert_radius=proximity_alert_radius, reply_markup=reply_markup)
     # end def _edit_message_live_location__make_request
 
@@ -1756,16 +1640,13 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         return self.do("stopMessageLiveLocation", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
     # end def _stop_message_live_location__make_request
 
@@ -1850,37 +1731,25 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.reply_markup import ForceReply
+        """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
         assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
-        
         assert_type_or_raise(address, unicode_type, parameter_name="address")
-        
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
-        
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
-        
         assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
-        
         assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, google_place_id=google_place_id, google_place_type=google_place_type, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_venue__make_request
 
@@ -1947,29 +1816,21 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.reply_markup import ForceReply
+        """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
-        
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
-        
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
-        
         assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendContact", chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_contact__make_request
 
@@ -2060,46 +1921,30 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(question, unicode_type, parameter_name="question")
-        
         assert_type_or_raise(options, list, parameter_name="options")
-        
         assert_type_or_raise(is_anonymous, None, bool, parameter_name="is_anonymous")
-        
         assert_type_or_raise(type, None, unicode_type, parameter_name="type")
-        
         assert_type_or_raise(allows_multiple_answers, None, bool, parameter_name="allows_multiple_answers")
-        
         assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
-        
         assert_type_or_raise(explanation, None, unicode_type, parameter_name="explanation")
-        
         assert_type_or_raise(explanation_parse_mode, None, unicode_type, parameter_name="explanation_parse_mode")
-        
         assert_type_or_raise(explanation_entities, None, list, parameter_name="explanation_entities")
-        
         assert_type_or_raise(open_period, None, int, parameter_name="open_period")
-        
         assert_type_or_raise(close_date, None, int, parameter_name="close_date")
-        
         assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, explanation_entities=explanation_entities, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_poll__make_request
 
@@ -2157,23 +2002,18 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.reply_markup import ForceReply
+        """
+        from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendDice", chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_dice__make_request
 
@@ -2217,10 +2057,10 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(action, unicode_type, parameter_name="action")
-        
         return self.do("sendChatAction", chat_id=chat_id, action=action)
     # end def _send_chat_action__make_request
 
@@ -2268,12 +2108,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(user_id, int, parameter_name="user_id")
+        """
         
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
         assert_type_or_raise(offset, None, int, parameter_name="offset")
-        
         assert_type_or_raise(limit, None, int, parameter_name="limit")
-        
         return self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
     # end def _get_user_profile_photos__make_request
 
@@ -2314,8 +2153,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
+        """
         
+        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         return self.do("getFile", file_id=file_id)
     # end def _get_file__make_request
 
@@ -2364,12 +2204,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
-        
         return self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date)
     # end def _kick_chat_member__make_request
 
@@ -2417,12 +2256,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(only_if_banned, None, bool, parameter_name="only_if_banned")
-        
         return self.do("unbanChatMember", chat_id=chat_id, user_id=user_id, only_if_banned=only_if_banned)
     # end def _unban_chat_member__make_request
 
@@ -2473,16 +2311,13 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.peer import ChatPermissions
+        """
+        from pytgbot.api_types.receivable.peer import ChatPermissions
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
-        
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
-        
         return self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, permissions=permissions, until_date=until_date)
     # end def _restrict_chat_member__make_request
 
@@ -2554,28 +2389,19 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(is_anonymous, None, bool, parameter_name="is_anonymous")
-        
         assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
-        
         assert_type_or_raise(can_post_messages, None, bool, parameter_name="can_post_messages")
-        
         assert_type_or_raise(can_edit_messages, None, bool, parameter_name="can_edit_messages")
-        
         assert_type_or_raise(can_delete_messages, None, bool, parameter_name="can_delete_messages")
-        
         assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
-        
         assert_type_or_raise(can_restrict_members, None, bool, parameter_name="can_restrict_members")
-        
         assert_type_or_raise(can_pin_messages, None, bool, parameter_name="can_pin_messages")
-        
         assert_type_or_raise(can_promote_members, None, bool, parameter_name="can_promote_members")
-        
         return self.do("promoteChatMember", chat_id=chat_id, user_id=user_id, is_anonymous=is_anonymous, can_change_info=can_change_info, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_invite_users=can_invite_users, can_restrict_members=can_restrict_members, can_pin_messages=can_pin_messages, can_promote_members=can_promote_members)
     # end def _promote_chat_member__make_request
 
@@ -2621,12 +2447,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(custom_title, unicode_type, parameter_name="custom_title")
-        
         return self.do("setChatAdministratorCustomTitle", chat_id=chat_id, user_id=user_id, custom_title=custom_title)
     # end def _set_chat_administrator_custom_title__make_request
 
@@ -2669,12 +2494,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.peer import ChatPermissions
+        """
+        from pytgbot.api_types.receivable.peer import ChatPermissions
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
-        
         return self.do("setChatPermissions", chat_id=chat_id, permissions=permissions)
     # end def _set_chat_permissions__make_request
 
@@ -2714,8 +2538,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         return self.do("exportChatInviteLink", chat_id=chat_id)
     # end def _export_chat_invite_link__make_request
 
@@ -2758,12 +2583,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.files import InputFile
+        """
+        from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(photo, InputFile, parameter_name="photo")
-        
         return self.do("setChatPhoto", chat_id=chat_id, photo=photo)
     # end def _set_chat_photo__make_request
 
@@ -2803,8 +2627,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         return self.do("deleteChatPhoto", chat_id=chat_id)
     # end def _delete_chat_photo__make_request
 
@@ -2847,10 +2672,10 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(title, unicode_type, parameter_name="title")
-        
         return self.do("setChatTitle", chat_id=chat_id, title=title)
     # end def _set_chat_title__make_request
 
@@ -2895,10 +2720,10 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
-        
         return self.do("setChatDescription", chat_id=chat_id, description=description)
     # end def _set_chat_description__make_request
 
@@ -2946,12 +2771,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         return self.do("pinChatMessage", chat_id=chat_id, message_id=message_id, disable_notification=disable_notification)
     # end def _pin_chat_message__make_request
 
@@ -2996,10 +2820,10 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
         return self.do("unpinChatMessage", chat_id=chat_id, message_id=message_id)
     # end def _unpin_chat_message__make_request
 
@@ -3039,8 +2863,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         return self.do("unpinAllChatMessages", chat_id=chat_id)
     # end def _unpin_all_chat_messages__make_request
 
@@ -3080,8 +2905,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         return self.do("leaveChat", chat_id=chat_id)
     # end def _leave_chat__make_request
 
@@ -3121,8 +2947,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         return self.do("getChat", chat_id=chat_id)
     # end def _get_chat__make_request
 
@@ -3163,8 +2990,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         return self.do("getChatAdministrators", chat_id=chat_id)
     # end def _get_chat_administrators__make_request
 
@@ -3205,8 +3033,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         return self.do("getChatMembersCount", chat_id=chat_id)
     # end def _get_chat_members_count__make_request
 
@@ -3249,10 +3078,10 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         return self.do("getChatMember", chat_id=chat_id, user_id=user_id)
     # end def _get_chat_member__make_request
 
@@ -3296,10 +3125,10 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(sticker_set_name, unicode_type, parameter_name="sticker_set_name")
-        
         return self.do("setChatStickerSet", chat_id=chat_id, sticker_set_name=sticker_set_name)
     # end def _set_chat_sticker_set__make_request
 
@@ -3339,8 +3168,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         return self.do("deleteChatStickerSet", chat_id=chat_id)
     # end def _delete_chat_sticker_set__make_request
 
@@ -3394,16 +3224,13 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(callback_query_id, unicode_type, parameter_name="callback_query_id")
+        """
         
+        assert_type_or_raise(callback_query_id, unicode_type, parameter_name="callback_query_id")
         assert_type_or_raise(text, None, unicode_type, parameter_name="text")
-        
         assert_type_or_raise(show_alert, None, bool, parameter_name="show_alert")
-        
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
-        
         assert_type_or_raise(cache_time, None, int, parameter_name="cache_time")
-        
         return self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert, url=url, cache_time=cache_time)
     # end def _answer_callback_query__make_request
 
@@ -3443,10 +3270,10 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.command import BotCommand
+        """
+        from pytgbot.api_types.sendable.command import BotCommand
         
         assert_type_or_raise(commands, list, parameter_name="commands")
-        
         return self.do("setMyCommands", commands=commands)
     # end def _set_my_commands__make_request
 
@@ -3481,6 +3308,7 @@ class BotBase(object):
         :return: the decoded json
         :rtype:  dict|list|bool
         """
+        
         return self.do("getMyCommands", )
     # end def _get_my_commands__make_request
 
@@ -3544,25 +3372,18 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(text, unicode_type, parameter_name="text")
-        
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(entities, None, list, parameter_name="entities")
-        
         assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         return self.do("editMessageText", text=text, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, reply_markup=reply_markup)
     # end def _edit_message_text__make_request
 
@@ -3626,23 +3447,17 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.media import MessageEntity
+        """
+        from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         return self.do("editMessageCaption", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, reply_markup=reply_markup)
     # end def _edit_message_caption__make_request
 
@@ -3703,19 +3518,15 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.input_media import InputMedia
+        """
+        from pytgbot.api_types.sendable.input_media import InputMedia
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(media, InputMedia, parameter_name="media")
-        
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         return self.do("editMessageMedia", media=media, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
     # end def _edit_message_media__make_request
 
@@ -3770,16 +3581,13 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         return self.do("editMessageReplyMarkup", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
     # end def _edit_message_reply_markup__make_request
 
@@ -3834,14 +3642,12 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         return self.do("stopPoll", chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
     # end def _stop_poll__make_request
 
@@ -3885,10 +3691,10 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        """
         
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
         return self.do("deleteMessage", chat_id=chat_id, message_id=message_id)
     # end def _delete_message__make_request
 
@@ -3945,24 +3751,19 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.files import InputFile
+        """
+        from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
         assert_type_or_raise(sticker, (InputFile, unicode_type), parameter_name="sticker")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
         return self.do("sendSticker", chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_sticker__make_request
 
@@ -4003,8 +3804,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(name, unicode_type, parameter_name="name")
+        """
         
+        assert_type_or_raise(name, unicode_type, parameter_name="name")
         return self.do("getStickerSet", name=name)
     # end def _get_sticker_set__make_request
 
@@ -4048,12 +3850,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.files import InputFile
+        """
+        from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(png_sticker, InputFile, parameter_name="png_sticker")
-        
         return self.do("uploadStickerFile", user_id=user_id, png_sticker=png_sticker)
     # end def _upload_sticker_file__make_request
 
@@ -4117,25 +3918,18 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.stickers import MaskPosition
+        """
+        from pytgbot.api_types.receivable.stickers import MaskPosition
         from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(name, unicode_type, parameter_name="name")
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
-        
         assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
-        
         assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
-        
         assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
-        
         assert_type_or_raise(contains_masks, None, bool, parameter_name="contains_masks")
-        
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
-        
         return self.do("createNewStickerSet", user_id=user_id, name=name, title=title, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, contains_masks=contains_masks, mask_position=mask_position)
     # end def _create_new_sticker_set__make_request
 
@@ -4192,21 +3986,16 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.receivable.stickers import MaskPosition
+        """
+        from pytgbot.api_types.receivable.stickers import MaskPosition
         from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(name, unicode_type, parameter_name="name")
-        
         assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
-        
         assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
-        
         assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
-        
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
-        
         return self.do("addStickerToSet", user_id=user_id, name=name, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, mask_position=mask_position)
     # end def _add_sticker_to_set__make_request
 
@@ -4249,10 +4038,10 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(sticker, unicode_type, parameter_name="sticker")
+        """
         
+        assert_type_or_raise(sticker, unicode_type, parameter_name="sticker")
         assert_type_or_raise(position, int, parameter_name="position")
-        
         return self.do("setStickerPositionInSet", sticker=sticker, position=position)
     # end def _set_sticker_position_in_set__make_request
 
@@ -4292,8 +4081,9 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(sticker, unicode_type, parameter_name="sticker")
+        """
         
+        assert_type_or_raise(sticker, unicode_type, parameter_name="sticker")
         return self.do("deleteStickerFromSet", sticker=sticker)
     # end def _delete_sticker_from_set__make_request
 
@@ -4341,14 +4131,12 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.files import InputFile
+        """
+        from pytgbot.api_types.sendable.files import InputFile
         
         assert_type_or_raise(name, unicode_type, parameter_name="name")
-        
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
         return self.do("setStickerSetThumb", name=name, user_id=user_id, thumb=thumb)
     # end def _set_sticker_set_thumb__make_request
 
@@ -4408,22 +4196,16 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.inline import InlineQueryResult
+        """
+        from pytgbot.api_types.sendable.inline import InlineQueryResult
         
         assert_type_or_raise(inline_query_id, unicode_type, parameter_name="inline_query_id")
-        
         assert_type_or_raise(results, list, parameter_name="results")
-        
         assert_type_or_raise(cache_time, None, int, parameter_name="cache_time")
-        
         assert_type_or_raise(is_personal, None, bool, parameter_name="is_personal")
-        
         assert_type_or_raise(next_offset, None, unicode_type, parameter_name="next_offset")
-        
         assert_type_or_raise(switch_pm_text, None, unicode_type, parameter_name="switch_pm_text")
-        
         assert_type_or_raise(switch_pm_parameter, None, unicode_type, parameter_name="switch_pm_parameter")
-        
         return self.do("answerInlineQuery", inline_query_id=inline_query_id, results=results, cache_time=cache_time, is_personal=is_personal, next_offset=next_offset, switch_pm_text=switch_pm_text, switch_pm_parameter=switch_pm_parameter)
     # end def _answer_inline_query__make_request
 
@@ -4534,57 +4316,34 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.payments import LabeledPrice
+        """
+        from pytgbot.api_types.sendable.payments import LabeledPrice
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(chat_id, int, parameter_name="chat_id")
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
-        
         assert_type_or_raise(description, unicode_type, parameter_name="description")
-        
         assert_type_or_raise(payload, unicode_type, parameter_name="payload")
-        
         assert_type_or_raise(provider_token, unicode_type, parameter_name="provider_token")
-        
         assert_type_or_raise(start_parameter, unicode_type, parameter_name="start_parameter")
-        
         assert_type_or_raise(currency, unicode_type, parameter_name="currency")
-        
         assert_type_or_raise(prices, list, parameter_name="prices")
-        
         assert_type_or_raise(provider_data, None, unicode_type, parameter_name="provider_data")
-        
         assert_type_or_raise(photo_url, None, unicode_type, parameter_name="photo_url")
-        
         assert_type_or_raise(photo_size, None, int, parameter_name="photo_size")
-        
         assert_type_or_raise(photo_width, None, int, parameter_name="photo_width")
-        
         assert_type_or_raise(photo_height, None, int, parameter_name="photo_height")
-        
         assert_type_or_raise(need_name, None, bool, parameter_name="need_name")
-        
         assert_type_or_raise(need_phone_number, None, bool, parameter_name="need_phone_number")
-        
         assert_type_or_raise(need_email, None, bool, parameter_name="need_email")
-        
         assert_type_or_raise(need_shipping_address, None, bool, parameter_name="need_shipping_address")
-        
         assert_type_or_raise(send_phone_number_to_provider, None, bool, parameter_name="send_phone_number_to_provider")
-        
         assert_type_or_raise(send_email_to_provider, None, bool, parameter_name="send_email_to_provider")
-        
         assert_type_or_raise(is_flexible, None, bool, parameter_name="is_flexible")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         return self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_invoice__make_request
 
@@ -4636,16 +4395,13 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.payments import ShippingOption
+        """
+        from pytgbot.api_types.sendable.payments import ShippingOption
         
         assert_type_or_raise(shipping_query_id, unicode_type, parameter_name="shipping_query_id")
-        
         assert_type_or_raise(ok, bool, parameter_name="ok")
-        
         assert_type_or_raise(shipping_options, None, list, parameter_name="shipping_options")
-        
         assert_type_or_raise(error_message, None, unicode_type, parameter_name="error_message")
-        
         return self.do("answerShippingQuery", shipping_query_id=shipping_query_id, ok=ok, shipping_options=shipping_options, error_message=error_message)
     # end def _answer_shipping_query__make_request
 
@@ -4693,12 +4449,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(pre_checkout_query_id, unicode_type, parameter_name="pre_checkout_query_id")
+        """
         
+        assert_type_or_raise(pre_checkout_query_id, unicode_type, parameter_name="pre_checkout_query_id")
         assert_type_or_raise(ok, bool, parameter_name="ok")
-        
         assert_type_or_raise(error_message, None, unicode_type, parameter_name="error_message")
-        
         return self.do("answerPreCheckoutQuery", pre_checkout_query_id=pre_checkout_query_id, ok=ok, error_message=error_message)
     # end def _answer_pre_checkout_query__make_request
 
@@ -4741,12 +4496,11 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.passport import PassportElementError
+        """
+        from pytgbot.api_types.sendable.passport import PassportElementError
         
         assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
         assert_type_or_raise(errors, list, parameter_name="errors")
-        
         return self.do("setPassportDataErrors", user_id=user_id, errors=errors)
     # end def _set_passport_data_errors__make_request
 
@@ -4803,20 +4557,15 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        """
+        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(chat_id, int, parameter_name="chat_id")
-        
         assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
-        
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
         return self.do("sendGame", chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_game__make_request
 
@@ -4877,20 +4626,15 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(user_id, int, parameter_name="user_id")
+        """
         
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
         assert_type_or_raise(score, int, parameter_name="score")
-        
         assert_type_or_raise(force, None, bool, parameter_name="force")
-        
         assert_type_or_raise(disable_edit_message, None, bool, parameter_name="disable_edit_message")
-        
         assert_type_or_raise(chat_id, None, int, parameter_name="chat_id")
-        
         assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
         return self.do("setGameScore", user_id=user_id, score=score, force=force, disable_edit_message=disable_edit_message, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
     # end def _set_game_score__make_request
 
@@ -4948,14 +4692,12 @@ class BotBase(object):
         
         :return: the decoded json
         :rtype:  dict|list|bool
-        """assert_type_or_raise(user_id, int, parameter_name="user_id")
+        """
         
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
         assert_type_or_raise(chat_id, None, int, parameter_name="chat_id")
-        
         assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
         return self.do("getGameHighScores", user_id=user_id, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
     # end def _get_game_high_scores__make_request
 

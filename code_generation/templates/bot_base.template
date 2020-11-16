@@ -269,28 +269,22 @@ class BotBase(object):
 
         :return: the decoded json
         :rtype:  dict|list|bool
-        """
-        {%- for import in function.imports -%}
-        from {{ import.path }} import {{ import.name }}
-        {%- if loop.last %}
-        {% endif %}
-        {% endfor -%}
-
-        {%- for variable in function.variables -%}
-        {% if variable.optional -%}
-        assert_type_or_raise({{ variable.name }}, None, {{ types_as_assert_tuple(variable) }}, parameter_name="{{ variable.name }}")
-        {% else -%}
-        assert_type_or_raise({{ variable.name }}, {{ types_as_assert_tuple(variable) }}, parameter_name="{{ variable.name }}")
-        {% endif -%}
-        {%- if variable.always_is_value -%}
+        """{#
+        #}{% for import in function.imports %}
+        from {{ import.path }} import {{ import.name }}{#
+        #}{% endfor %}
+        {% for variable in function.variables %}{#
+        #}{% if variable.optional %}
+        assert_type_or_raise({{ variable.name }}, None, {{ types_as_assert_tuple(variable) }}, parameter_name="{{ variable.name }}"){#
+        #}{% else %}
+        assert_type_or_raise({{ variable.name }}, {{ types_as_assert_tuple(variable) }}, parameter_name="{{ variable.name }}"){#
+        #}{% endif %}{#
+        #}{% if variable.always_is_value %}
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
             raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
-        # end if
-        {%- endif -%}
-        {%- if not loop.last %}
-        {% endif %}
-        {%- endfor -%}
-        {#  #}
+        # end if{#
+        #}{% endif %}{#
+        #}{% endfor %}
         return self.do("{{ function.api_name }}", {{ for_args_set(function.variables) }})
     # end def _{{ function.name }}__make_request
 
