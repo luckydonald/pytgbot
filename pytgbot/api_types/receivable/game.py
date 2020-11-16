@@ -59,31 +59,35 @@ class GameHighScore(Result):
         from .peer import User
 
         assert_type_or_raise(position, int, parameter_name="position")
-
         self.position = position
-
         assert_type_or_raise(user, User, parameter_name="user")
-
         self.user = user
-
         assert_type_or_raise(score, int, parameter_name="score")
-
         self.score = score
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this GameHighScore to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(GameHighScore, self).to_array()
+
         array['position'] = int(self.position)  # type int
         array['user'] = self.user.to_array()  # type User
         array['score'] = int(self.score)  # type int
+
         return array
     # end def to_array
 

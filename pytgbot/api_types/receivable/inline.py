@@ -74,35 +74,42 @@ class InlineQuery(Result):
 
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
         self.from_peer = from_peer
-
         assert_type_or_raise(query, unicode_type, parameter_name="query")
         self.query = query
-
         assert_type_or_raise(offset, unicode_type, parameter_name="offset")
         self.offset = offset
-
         assert_type_or_raise(location, None, Location, parameter_name="location")
         self.location = location
+
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQuery to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQuery, self).to_array()
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
         array['offset'] = u(self.offset)  # py2: type unicode, py3: type str
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
+        # end if
+
         return array
     # end def to_array
 
@@ -243,36 +250,44 @@ class ChosenInlineResult(UpdateType):
 
         assert_type_or_raise(result_id, unicode_type, parameter_name="result_id")
         self.result_id = result_id
-
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
         self.from_peer = from_peer
-
         assert_type_or_raise(query, unicode_type, parameter_name="query")
         self.query = query
-
         assert_type_or_raise(location, None, Location, parameter_name="location")
         self.location = location
-
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
         self.inline_message_id = inline_message_id
+
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ChosenInlineResult to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(ChosenInlineResult, self).to_array()
+
         array['result_id'] = u(self.result_id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
+        # end if
         if self.inline_message_id is not None:
             array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -342,3 +357,4 @@ class ChosenInlineResult(UpdateType):
         )
     # end def __contains__
 # end class ChosenInlineResult
+

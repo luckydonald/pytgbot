@@ -95,43 +95,49 @@ class MessageEntity(Result):
 
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-
         assert_type_or_raise(offset, int, parameter_name="offset")
         self.offset = offset
-
         assert_type_or_raise(length, int, parameter_name="length")
         self.length = length
-
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
-
         assert_type_or_raise(user, None, User, parameter_name="user")
         self.user = user
-
         assert_type_or_raise(language, None, unicode_type, parameter_name="language")
         self.language = language
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this MessageEntity to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(MessageEntity, self).to_array()
+
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['offset'] = int(self.offset)  # type int
         array['length'] = int(self.length)  # type int
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
+        # end if
         if self.user is not None:
             array['user'] = self.user.to_array()  # type User
-
+        # end if
         if self.language is not None:
             array['language'] = u(self.language)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -284,36 +290,42 @@ class PhotoSize(Result):
         super(PhotoSize, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PhotoSize to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PhotoSize, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -471,42 +483,42 @@ class Animation(Media):
 
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-
         assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
-
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Animation to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Animation, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
@@ -514,12 +526,17 @@ class Animation(Media):
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        # end if
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -679,59 +696,66 @@ class Audio(Media):
         :type  _raw: None | dict
         """
         super(Audio, self).__init__()
+
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
-
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
-
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
-
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Audio to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Audio, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
+        # end if
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        # end if
 
         return array
     # end def to_array
@@ -877,43 +901,51 @@ class Document(Media):
 
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-
         assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
-
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Document to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Document, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        # end if
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -1073,42 +1105,42 @@ class Video(Media):
 
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-
         assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
-
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Video to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Video, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
@@ -1116,13 +1148,17 @@ class Video(Media):
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
-
+        # end if
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -1267,39 +1303,43 @@ class VideoNote(Media):
 
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(length, int, parameter_name="length")
         self.length = length
-
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this VideoNote to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(VideoNote, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['length'] = int(self.length)  # type int
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         return array
@@ -1436,37 +1476,44 @@ class Voice(Media):
         super(Voice, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Voice to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Voice, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['duration'] = int(self.duration)  # type int
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -1599,38 +1646,46 @@ class Contact(Media):
         super(Contact, self).__init__()
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
-
         assert_type_or_raise(user_id, None, int, parameter_name="user_id")
         self.user_id = user_id
-
         assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
         self.vcard = vcard
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Contact to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Contact, self).to_array()
+
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+        # end if
         if self.user_id is not None:
             array['user_id'] = int(self.user_id)  # type int
+        # end if
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -1752,16 +1807,25 @@ class Dice(Media):
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Dice to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Dice, self).to_array()
+
         array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
         array['value'] = int(self.value)  # type int
+
         return array
     # end def to_array
 
@@ -1873,23 +1937,31 @@ class PollOption(Receivable):
         super(PollOption, self).__init__()
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
-
         assert_type_or_raise(voter_count, int, parameter_name="voter_count")
         self.voter_count = voter_count
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PollOption to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PollOption, self).to_array()
+
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         array['voter_count'] = int(self.voter_count)  # type int
+
         return array
     # end def to_array
 
@@ -2009,24 +2081,30 @@ class PollAnswer(Receivable):
 
         assert_type_or_raise(poll_id, unicode_type, parameter_name="poll_id")
         self.poll_id = poll_id
-
         assert_type_or_raise(user, User, parameter_name="user")
         self.user = user
-
         assert_type_or_raise(option_ids, list, parameter_name="option_ids")
         self.option_ids = option_ids
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PollAnswer to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PollAnswer, self).to_array()
+
         array['poll_id'] = u(self.poll_id)  # py2: type unicode, py3: type str
         array['user'] = self.user.to_array()  # type User
         array['option_ids'] = self._as_array(self.option_ids)  # type list of int
@@ -2212,58 +2290,53 @@ class Poll(Media):
 
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-
         assert_type_or_raise(question, unicode_type, parameter_name="question")
         self.question = question
-
         assert_type_or_raise(options, list, parameter_name="options")
         self.options = options
-
         assert_type_or_raise(total_voter_count, int, parameter_name="total_voter_count")
         self.total_voter_count = total_voter_count
-
         assert_type_or_raise(is_closed, bool, parameter_name="is_closed")
         self.is_closed = is_closed
-
         assert_type_or_raise(is_anonymous, bool, parameter_name="is_anonymous")
         self.is_anonymous = is_anonymous
-
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-
         assert_type_or_raise(allows_multiple_answers, bool, parameter_name="allows_multiple_answers")
         self.allows_multiple_answers = allows_multiple_answers
-
         assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
         self.correct_option_id = correct_option_id
-
         assert_type_or_raise(explanation, None, unicode_type, parameter_name="explanation")
         self.explanation = explanation
-
         assert_type_or_raise(explanation_entities, None, list, parameter_name="explanation_entities")
         self.explanation_entities = explanation_entities
-
         assert_type_or_raise(open_period, None, int, parameter_name="open_period")
         self.open_period = open_period
-
         assert_type_or_raise(close_date, None, int, parameter_name="close_date")
         self.close_date = close_date
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Poll to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Poll, self).to_array()
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['question'] = u(self.question)  # py2: type unicode, py3: type str
         array['options'] = self._as_array(self.options)  # type list of PollOption
-
         array['total_voter_count'] = int(self.total_voter_count)  # type int
         array['is_closed'] = bool(self.is_closed)  # type bool
         array['is_anonymous'] = bool(self.is_anonymous)  # type bool
@@ -2271,14 +2344,20 @@ class Poll(Media):
         array['allows_multiple_answers'] = bool(self.allows_multiple_answers)  # type bool
         if self.correct_option_id is not None:
             array['correct_option_id'] = int(self.correct_option_id)  # type int
+        # end if
         if self.explanation is not None:
             array['explanation'] = u(self.explanation)  # py2: type unicode, py3: type str
+        # end if
         if self.explanation_entities is not None:
             array['explanation_entities'] = self._as_array(self.explanation_entities)  # type list of MessageEntity
+        # end if
         if self.open_period is not None:
             array['open_period'] = int(self.open_period)  # type int
+        # end if
         if self.close_date is not None:
             array['close_date'] = int(self.close_date)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -2426,43 +2505,51 @@ class Location(Media):
         super(Location, self).__init__()
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-
         assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
         self.horizontal_accuracy = horizontal_accuracy
-
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
         self.live_period = live_period
-
         assert_type_or_raise(heading, None, int, parameter_name="heading")
         self.heading = heading
-
         assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
         self.proximity_alert_radius = proximity_alert_radius
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Location to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Location, self).to_array()
+
         array['longitude'] = float(self.longitude)  # type float
         array['latitude'] = float(self.latitude)  # type float
         if self.horizontal_accuracy is not None:
             array['horizontal_accuracy'] = float(self.horizontal_accuracy)  # type float
+        # end if
         if self.live_period is not None:
             array['live_period'] = int(self.live_period)  # type int
+        # end if
         if self.heading is not None:
             array['heading'] = int(self.heading)  # type int
+        # end if
         if self.proximity_alert_radius is not None:
             array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -2609,47 +2696,54 @@ class Venue(Media):
 
         assert_type_or_raise(location, Location, parameter_name="location")
         self.location = location
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
-
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
-
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
-
         assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
         self.google_place_id = google_place_id
-
         assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
         self.google_place_type = google_place_type
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Venue to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Venue, self).to_array()
+
         array['location'] = self.location.to_array()  # type Location
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
+        # end if
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+        # end if
         if self.google_place_id is not None:
             array['google_place_id'] = u(self.google_place_id)  # py2: type unicode, py3: type str
+        # end if
         if self.google_place_type is not None:
             array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -2775,29 +2869,34 @@ class ProximityAlertTriggered(Media):
 
         assert_type_or_raise(traveler, User, parameter_name="traveler")
         self.traveler = traveler
-
         assert_type_or_raise(watcher, User, parameter_name="watcher")
         self.watcher = watcher
-
         assert_type_or_raise(distance, int, parameter_name="distance")
         self.distance = distance
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ProximityAlertTriggered to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(ProximityAlertTriggered, self).to_array()
+
         array['traveler'] = self.traveler.to_array()  # type User
-
         array['watcher'] = self.watcher.to_array()  # type User
-
         array['distance'] = int(self.distance)  # type int
+
         return array
     # end def to_array
 
@@ -2913,21 +3012,28 @@ class UserProfilePhotos(Result):
 
         assert_type_or_raise(total_count, int, parameter_name="total_count")
         self.total_count = total_count
-
         assert_type_or_raise(photos, list, parameter_name="photos")
         self.photos = photos
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this UserProfilePhotos to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(UserProfilePhotos, self).to_array()
+
         array['total_count'] = int(self.total_count)  # type int
         array['photos'] = self._as_array(self.photos)  # type list of list of PhotoSize
 
@@ -3065,13 +3171,10 @@ class File(Receivable):
         super(File, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
-
         assert_type_or_raise(file_path, None, unicode_type, parameter_name="file_path")
         self.file_path = file_path
 
@@ -3093,20 +3196,31 @@ class File(Receivable):
         return "https://api.telegram.org/file/bot{token}/{file_path}".format(token=token, file_path=self.file_path)
     # end def get_download_url
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this File to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(File, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
         if self.file_path is not None:
             array['file_path'] = u(self.file_path)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -3232,31 +3346,37 @@ class ChatPhoto(Result):
         super(ChatPhoto, self).__init__()
         assert_type_or_raise(small_file_id, unicode_type, parameter_name="small_file_id")
         self.small_file_id = small_file_id
-
         assert_type_or_raise(small_file_unique_id, unicode_type, parameter_name="small_file_unique_id")
         self.small_file_unique_id = small_file_unique_id
-
         assert_type_or_raise(big_file_id, unicode_type, parameter_name="big_file_id")
         self.big_file_id = big_file_id
-
         assert_type_or_raise(big_file_unique_id, unicode_type, parameter_name="big_file_unique_id")
         self.big_file_unique_id = big_file_unique_id
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ChatPhoto to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(ChatPhoto, self).to_array()
+
         array['small_file_id'] = u(self.small_file_id)  # py2: type unicode, py3: type str
         array['small_file_unique_id'] = u(self.small_file_unique_id)  # py2: type unicode, py3: type str
         array['big_file_id'] = u(self.big_file_id)  # py2: type unicode, py3: type str
         array['big_file_unique_id'] = u(self.big_file_unique_id)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -3420,45 +3540,44 @@ class Sticker(Media):
 
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-
         assert_type_or_raise(is_animated, bool, parameter_name="is_animated")
         self.is_animated = is_animated
-
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-
         assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
         self.emoji = emoji
-
         assert_type_or_raise(set_name, None, unicode_type, parameter_name="set_name")
         self.set_name = set_name
-
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
         self.mask_position = mask_position
-
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Sticker to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Sticker, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
@@ -3466,14 +3585,20 @@ class Sticker(Media):
         array['is_animated'] = bool(self.is_animated)  # type bool
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        # end if
         if self.emoji is not None:
             array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
+        # end if
         if self.set_name is not None:
             array['set_name'] = u(self.set_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mask_position is not None:
             array['mask_position'] = self.mask_position.to_array()  # type MaskPosition
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -3620,42 +3745,49 @@ class Game(Media):
 
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
-
         assert_type_or_raise(photo, list, parameter_name="photo")
         self.photo = photo
-
         assert_type_or_raise(text, None, unicode_type, parameter_name="text")
         self.text = text
-
         assert_type_or_raise(text_entities, None, list, parameter_name="text_entities")
         self.text_entities = text_entities
-
         assert_type_or_raise(animation, None, Animation, parameter_name="animation")
         self.animation = animation
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this Game to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(Game, self).to_array()
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
         array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
         if self.text is not None:
             array['text'] = u(self.text)  # py2: type unicode, py3: type str
+        # end if
         if self.text_entities is not None:
             array['text_entities'] = self._as_array(self.text_entities)  # type list of MessageEntity
+        # end if
         if self.animation is not None:
             array['animation'] = self.animation.to_array()  # type Animation
+        # end if
+
         return array
     # end def to_array
 
