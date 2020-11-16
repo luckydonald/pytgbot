@@ -2,7 +2,6 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
-from None import object
 from pytgbot.api_types.sendable import Sendable
 from pytgbot.api_types.sendable.reply_markup import Button
 from pytgbot.api_types.sendable.reply_markup import ReplyMarkup
@@ -10,12 +9,20 @@ from pytgbot.api_types.sendable.reply_markup import ReplyMarkup
 __author__ = 'luckydonald'
 
 
-class Button(object):
-    
+class Button(Sendable):
+    """
+    Class for grouping KeyboardButton, KeyboardButtonPollType and InlineKeyboardButton.
+
+    Optional keyword parameters:
+    """
 # end class Button
 
-class ReplyMarkup(object):
-    
+class ReplyMarkup(Sendable):
+    """
+    Class for grouping ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup and ForceReply.
+
+    Optional keyword parameters:
+    """
 # end class ReplyMarkup
 
 class ReplyKeyboardMarkup(ReplyMarkup):

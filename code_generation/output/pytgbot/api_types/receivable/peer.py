@@ -1,94 +1,34 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from .... import object
 from . import Result
 
 __author__ = 'luckydonald'
 
 
-class Peer(object):
+class Peer(Result):
+    """
+    parent class for both users and chats.
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
     
 
-    def __init__(self, , _raw=None):
-        
-        super(Peer, self).__init__()
-        from pytgbot.api_types.receivable import Result
-        
+    
 
-        self._raw = _raw
-    # end def __init__
+    
 
-    def to_array(self):
-        """
-        Serializes this Peer to a dictionary.
+    
 
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        array = super(Peer, self).to_array()
-        return array
-    # end def to_array
+    
 
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the Peer constructor.
+    
 
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable import Result
-        
-        data = object.validate_array(array)
-        return data
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new Peer from a given dictionary.
-
-        :return: new Peer instance.
-        :rtype: Peer
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = Peer.validate_array(array)
-        data['_raw'] = array
-        return Peer(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(peer_instance)`
-        """
-        return "Peer()".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(peer_instance)`
-        """
-        if self._raw:
-            return "Peer.from_array({self._raw})".format(self=self)
-        # end if
-        return "Peer()".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in peer_instance`
-        """
-        return (
-            key in []
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
+    
 # end class Peer
 
 

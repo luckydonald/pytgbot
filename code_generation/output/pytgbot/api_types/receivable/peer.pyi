@@ -2,15 +2,21 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
-from None import object
 from pytgbot.api_types.receivable import Result
 from pytgbot.api_types.receivable.peer import Peer
 
 __author__ = 'luckydonald'
 
 
-class Peer(object):
+class Peer(Result):
+    """
+    parent class for both users and chats.
+
+    Optional keyword parameters:
     
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
 # end class Peer
 
 class User(Peer):

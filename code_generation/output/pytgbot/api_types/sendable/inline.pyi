@@ -2,7 +2,7 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
-from None import object
+from pytgbot.api_types.sendable import Sendable
 from pytgbot.api_types.sendable.inline import InlineQueryCachedResult
 from pytgbot.api_types.sendable.inline import InlineQueryResult
 from pytgbot.api_types.sendable.inline import InputMessageContent
@@ -10,16 +10,32 @@ from pytgbot.api_types.sendable.inline import InputMessageContent
 __author__ = 'luckydonald'
 
 
-class InlineQueryResult(object):
-    
+class InlineQueryResult(Sendable):
+    """
+    This object represents one result of an inline query.
+
+    Telegram clients currently support results of 20 types.
+
+    https://core.telegram.org/bots/api#inlinequeryresult
+
+    Optional keyword parameters:
+    """
 # end class InlineQueryResult
 
-class InlineQueryCachedResult(object):
-    
+class InlineQueryCachedResult(InlineQueryResult):
+    """
+    Parent class of all those cached inline results.
+
+    Optional keyword parameters:
+    """
 # end class InlineQueryCachedResult
 
-class InputMessageContent(object):
-    
+class InputMessageContent(Sendable):
+    """
+    Parent class of all those input message content.
+
+    Optional keyword parameters:
+    """
 # end class InputMessageContent
 
 class InlineQueryResultArticle(InlineQueryResult):

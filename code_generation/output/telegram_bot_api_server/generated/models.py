@@ -7,7 +7,7 @@ from typing import Any, Union, List, Optional
 __author__ = 'luckydonald'
 
 __all__ = [
-    'MediaModel', 'PeerModel', 'UpdateTypeModel', 'CallbackGameModel', 'InlineQueryResultModel', 'InlineQueryCachedResultModel', 'InputMessageContentModel', 'InputMediaModel', 'InputMediaWithThumbModel', 'PassportElementErrorModel', 'ButtonModel', 'ReplyMarkupModel', 'TgBotApiObjectModel', 'ResultModel', 'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageIdModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'ProximityAlertTriggeredModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatMemberModel', 'ChatPermissionsModel', 'ChatLocationModel', 'BotCommandModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
+    'MediaModel', 'PeerModel', 'UpdateTypeModel', 'CallbackGameModel', 'InlineQueryResultModel', 'InlineQueryCachedResultModel', 'InputMessageContentModel', 'InputMediaModel', 'InputMediaWithThumbModel', 'InputMediaPlayableModel', 'InputMediaVideolikeModel', 'PassportElementErrorModel', 'ButtonModel', 'ReplyMarkupModel', 'ReceivableModel', 'ResultModel', 'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageIdModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'ProximityAlertTriggeredModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatMemberModel', 'ChatPermissionsModel', 'ChatLocationModel', 'BotCommandModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
 ]
 
 FAST_API_ISSUE_884_IS_FIXED = False
@@ -39,59 +39,143 @@ else:
 
 
 
-class MediaModel(BaseModel):  # object
+class MediaModel(BaseModel):  # Receivable"""parent class for all receivable media.
+    """
+    
 # end class Media
 
 
-class PeerModel(BaseModel):  # object
+class PeerModel(BaseModel):  # Result"""parent class for both users and chats.
+    """
+    
 # end class Peer
 
 
-class UpdateTypeModel(BaseModel):  # object
+class UpdateTypeModel(BaseModel):  # Receivable"""All extending classes are an property of the Update type.
+    Like Message: Update.message
+    """
+    
 # end class UpdateType
 
 
-class CallbackGameModel(BaseModel):  # object
+class CallbackGameModel(BaseModel):  # UpdateType"""A placeholder, currently holds no information. Use BotFather to set up your game.
+
+    https://core.telegram.org/bots/api#callbackgame
+    """
+    
 # end class CallbackGame
 
 
-class InlineQueryResultModel(BaseModel):  # object
+class InlineQueryResultModel(BaseModel):  # Sendable"""This object represents one result of an inline query.
+
+    Telegram clients currently support results of 20 types.
+
+    https://core.telegram.org/bots/api#inlinequeryresult
+    """
+    
 # end class InlineQueryResult
 
 
-class InlineQueryCachedResultModel(BaseModel):  # object
+class InlineQueryCachedResultModel(BaseModel):  # InlineQueryResult"""Parent class of all those cached inline results.
+    """
+    
 # end class InlineQueryCachedResult
 
 
-class InputMessageContentModel(BaseModel):  # object
+class InputMessageContentModel(BaseModel):  # Sendable"""Parent class of all those input message content.
+    """
+    
 # end class InputMessageContent
 
 
-class InputMediaModel(BaseModel):  # object
+class InputMediaModel(BaseModel):  # Sendable"""This object represents the content of a media message to be sent.
+
+    https://core.telegram.org/bots/api#inputmedia
+    """
+    
+    type: str
+    media: str
+    caption: Optional[str]
+    parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
 # end class InputMedia
 
 
-class InputMediaWithThumbModel(BaseModel):  # object
+class InputMediaWithThumbModel(BaseModel):  # InputMedia"""This object represents the content of a media message to be sent.
+
+    https://core.telegram.org/bots/api#inputmedia
+    """
+    
+    type: str
+    media: str
+    caption: Optional[str]
+    parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
+    thumb: Union['InputFileModel', str]
 # end class InputMediaWithThumb
 
 
-class PassportElementErrorModel(BaseModel):  # object
+class InputMediaPlayableModel(BaseModel):  # InputMediaWithThumb"""This object represents the content of a media message to be sent.
+
+    https://core.telegram.org/bots/api#inputmedia
+    """
+    
+    type: str
+    media: str
+    caption: Optional[str]
+    parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
+    thumb: Union['InputFileModel', str]
+    duration: Optional[int]
+# end class InputMediaPlayable
+
+
+class InputMediaVideolikeModel(BaseModel):  # InputMediaPlayable"""This object represents the content of a media message to be sent.
+
+    https://core.telegram.org/bots/api#inputmedia
+    """
+    
+    type: str
+    media: str
+    caption: Optional[str]
+    parse_mode: Optional[str]
+    caption_entities: Optional[List['MessageEntityModel']]
+    thumb: Union['InputFileModel', str]
+    duration: Optional[int]
+    width: Optional[int]
+    height: Optional[int]
+# end class InputMediaVideolike
+
+
+class PassportElementErrorModel(BaseModel):  # Sendable"""This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user.
+
+    https://core.telegram.org/bots/api#inputmedia
+    """
+    
 # end class PassportElementError
 
 
-class ButtonModel(BaseModel):  # object
+class ButtonModel(BaseModel):  # Sendable"""Class for grouping KeyboardButton, KeyboardButtonPollType and InlineKeyboardButton.
+    """
+    
 # end class Button
 
 
-class ReplyMarkupModel(BaseModel):  # object
+class ReplyMarkupModel(BaseModel):  # Sendable"""Class for grouping ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup and ForceReply.
+    """
+    
 # end class ReplyMarkup
 
 
-class TgBotApiObjectModel(BaseModel):  # object
-# end class TgBotApiObject
+class ReceivableModel(BaseModel):  # TgBotApiObject"""Base class for all classes for stuff which telegram sends us.
+    """
+    
+# end class Receivable
 
 
-class ResultModel(BaseModel):  # object
+class ResultModel(BaseModel):  # Receivable"""Base class for all classes for stuff which we get back after we called a telegram method.
+    """
+    
 # end class Result
 
 
@@ -707,7 +791,7 @@ class InputMediaPhotoModel(BaseModel):  # InputMedia"""Represents a photo to be 
 # end class InputMediaPhoto
 
 
-class InputMediaVideoModel(BaseModel):  # InputMediaWithThumb"""Represents a video to be sent.
+class InputMediaVideoModel(BaseModel):  # InputMediaVideolike"""Represents a video to be sent.
 
     https://core.telegram.org/bots/api#inputmediavideo
     """
@@ -725,7 +809,7 @@ class InputMediaVideoModel(BaseModel):  # InputMediaWithThumb"""Represents a vid
 # end class InputMediaVideo
 
 
-class InputMediaAnimationModel(BaseModel):  # InputMediaWithThumb"""Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
+class InputMediaAnimationModel(BaseModel):  # InputMediaVideolike"""Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 
     https://core.telegram.org/bots/api#inputmediaanimation
     """
@@ -742,7 +826,7 @@ class InputMediaAnimationModel(BaseModel):  # InputMediaWithThumb"""Represents a
 # end class InputMediaAnimation
 
 
-class InputMediaAudioModel(BaseModel):  # InputMediaWithThumb"""Represents an audio file to be treated as music to be sent.
+class InputMediaAudioModel(BaseModel):  # InputMediaPlayable"""Represents an audio file to be treated as music to be sent.
 
     https://core.telegram.org/bots/api#inputmediaaudio
     """
@@ -1585,10 +1669,12 @@ InlineQueryCachedResultModel.update_forward_refs()
 InputMessageContentModel.update_forward_refs()
 InputMediaModel.update_forward_refs()
 InputMediaWithThumbModel.update_forward_refs()
+InputMediaPlayableModel.update_forward_refs()
+InputMediaVideolikeModel.update_forward_refs()
 PassportElementErrorModel.update_forward_refs()
 ButtonModel.update_forward_refs()
 ReplyMarkupModel.update_forward_refs()
-TgBotApiObjectModel.update_forward_refs()
+ReceivableModel.update_forward_refs()
 ResultModel.update_forward_refs()
 UpdateModel.update_forward_refs()
 WebhookInfoModel.update_forward_refs()

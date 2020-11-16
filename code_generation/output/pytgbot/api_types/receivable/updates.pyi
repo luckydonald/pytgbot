@@ -2,19 +2,35 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
-from None import object
 from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable.updates import UpdateType
 
 __author__ = 'luckydonald'
 
 
-class UpdateType(object):
+class UpdateType(Receivable):
+    """
+    All extending classes are an property of the Update type.
+    Like Message: Update.message
+
+    Optional keyword parameters:
     
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
 # end class UpdateType
 
-class CallbackGame(object):
+class CallbackGame(UpdateType):
+    """
+    A placeholder, currently holds no information. Use BotFather to set up your game.
+
+    https://core.telegram.org/bots/api#callbackgame
+
+    Optional keyword parameters:
     
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
 # end class CallbackGame
 
 class Update(Receivable):
