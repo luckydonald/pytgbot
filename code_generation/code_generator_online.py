@@ -24,8 +24,20 @@ from os.path import abspath, dirname, join as path_join, sep as folder_seperator
 from luckydonaldUtils.interactions import safe_eval, NoBuiltins
 
 __author__ = "luckydonald"
-logging.add_colored_handler(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+
+from logging import LogRecord
+
+
+def log_filter(record: LogRecord):
+    if f'{record.name}.{record.funcName}' == 'luckydonaldUtils.functions.wrapper':
+        return False
+    return True
+# end def
+
+
+root_logger = logging.add_colored_handler(level=logging.DEBUG, filter=log_filter)
 
 
 FILE_HEADER = "# -*- coding: utf-8 -*-\n"
