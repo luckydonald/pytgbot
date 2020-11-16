@@ -11,7 +11,6 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from ..exceptions import TgApiServerException, TgApiParseException
 from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types.sendable.inline import InlineQueryResult
-from ..api_types.sendable.files import InputFile
 from ..api_types import from_array_list
 
 from .base import BotBase
@@ -62,17 +61,18 @@ class AsyncBot(BotBase):
         """
         This functions stores the id and the username of the bot.
         Called by `.username` and `.id` properties.
+
+        This function is synchronous.
+        In fact, `AsyncBot` uses `SyncBot` to load those.
         :return:
         """
-        myself = await self.get_me()
-        if self.return_python_objects:
-            self._id = myself.id
-            self._username = myself.username
-        else:
-            self._id = myself["result"]["id"]
-            self._username = myself["result"]["username"]
-        # end if
+        
+        from .syncrounous import SyncBot
+        bot = SyncBot(api_key=self.api_key, return_python_objects=True)
+        myself = bot.get_me()
+        self._me = myself
     # end def
+
     async def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.

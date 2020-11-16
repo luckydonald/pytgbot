@@ -44,17 +44,26 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         """
         This functions stores the id and the username of the bot.
         Called by `.username` and `.id` properties.
+
+        This function is synchronous.
+        In fact, `AsyncBot` uses `SyncBot` to load those.
         :return:
         """
-        myself = {% if is_asyncio %}await {% endif %}self.get_me()
+        {% if is_asyncio %}
+        from .syncrounous import SyncBot
+        bot = SyncBot(api_key=self.api_key, return_python_objects=True)
+        myself = bot.get_me()
+        self._me = myself{#
+        #}{% else %}
         if self.return_python_objects:
-            self._id = myself.id
-            self._username = myself.username
+            self._me = myself
         else:
-            self._id = myself["result"]["id"]
-            self._username = myself["result"]["username"]
-        # end if
+            from ..api_types.receivable.peer import User
+            self._me = User.from_array(myself["result"])
+        # end if{#
+        #}{% endif %}
     # end def
+
     {% if is_asyncio %}async {% endif %}def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.
