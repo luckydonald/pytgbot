@@ -129,9 +129,11 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InputMedia":                   ("pytgbot.api_types.sendable.input_media.", "Sendable", None),
     "InputMediaPhoto":              ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
     "InputMediaWithThumb":          ("pytgbot.api_types.sendable.input_media.", "InputMedia", None),
-    "InputMediaVideo":              ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
-    "InputMediaAnimation":          ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
-    "InputMediaAudio":              ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
+    "InputMediaPlayable":           ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
+    "InputMediaVideolike":           ("pytgbot.api_types.sendable.input_media.", "InputMediaPlayable", None),
+    "InputMediaVideo":              ("pytgbot.api_types.sendable.input_media.", "InputMediaVideolike", None),
+    "InputMediaAnimation":          ("pytgbot.api_types.sendable.input_media.", "InputMediaVideolike", None),
+    "InputMediaAudio":              ("pytgbot.api_types.sendable.input_media.", "InputMediaPlayable", None),
     "InputMediaDocument":           ("pytgbot.api_types.sendable.input_media.", "InputMediaWithThumb", None),
 
     # pytgbot.api_types.sendable.reply_markup.*
@@ -178,7 +180,7 @@ WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters 
     "setChatStickerSet":      {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
     "deleteChatStickerSet":   {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
     "setGameScore":           {'return': {'expected': "On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False", 'replace': 'On success, if the message was sent by the bot, returns the edited Message, otherwise returns True'}, 'r_type': {'expected': 'Message or True or force or False', 'replace': 'Message or True'}},
-    "getGameHighScores":      {'return': {'expected': 'This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.','replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
+    "getGameHighScores":      {'return': {'expected': 'This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.', 'replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
     "setPassportDataErrors":  {'return': {'expected': 'The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
     "sendMediaGroup":         {'return': {'expected': 'On success, an array of the sent Messages is returned', 'replace': 'On success, an array of the sent Messages is returned'}, 'r_type': {'expected': 'Messages', 'replace': 'list of Message'}},
     "answerShippingQuery":    {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
@@ -490,6 +492,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.inline.InputMessageContent
         str=[],
         repr=[],
         contains=[],
+        after=[],
     ),
 )
 
@@ -927,6 +930,9 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
         after=[],
     ),
 )
+# CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].body=ReplacementBody(
+#     before=[], init=None, to_array=None, validate_array=None, from_array=None, str=None, repr=None, contains=None,
+# )
 
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"] = CustomClazz(
