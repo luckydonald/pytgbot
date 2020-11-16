@@ -5,7 +5,7 @@ from typing import Any, Union, List
 __author__ = 'luckydonald'
 
 
-class Result(object):
+class TgBotApiObject(object):
     """
     Base class for every api object class.
 
@@ -14,4 +14,4 @@ class Result(object):
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
-# end class Result
+# end class TgBotApiObject

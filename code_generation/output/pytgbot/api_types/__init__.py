@@ -4,7 +4,7 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 __author__ = 'luckydonald'
 
 
-class Result(object):
+class TgBotApiObject(object):
     """
     Base class for every api object class.
 
@@ -83,5 +83,5 @@ class Result(object):
             self._raw = None
         # end if
     # end def
-# end class Result
+# end class TgBotApiObject
 
