@@ -4,7 +4,7 @@
 
 
 class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
-    {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
+    {% set needs_space = False %}{% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
     {% block class_docstring -%}
     {%- if clazz.description %}{{ clazz.description.strip()|indent }}{% endif %}{%- if clazz.description and clazz.link %}
 
@@ -28,10 +28,14 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     {% endif -%}{%- endblock -%}
-    """{% endif %}
+    """{% set needs_space = True %}{% endif %}{% if needs_space and (clazz.body and clazz.body.before != []) %}
 
-    {% if clazz.body and clazz.body.init != None %}{% for line in clazz.body.init %}
-    {{ line }}{% endfor %}{% else %}{#
+    {% endif %}{% if clazz.body and clazz.body.before != None %}{% for line in clazz.body.before %}{% set needs_space = True %}{% if not loop.first %}
+    {% endif %}{{ line }}{% endfor %}{% else %}{#
+    #}{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.init != []) %}
+
+    {% endif %}{% if clazz.body and clazz.body.init != None %}{% for line in clazz.body.init %}{% set needs_space = True %}{% if not loop.first %}
+    {% endif %}{{ line }}{% endfor %}{% else %}{#
     #}def __init__(self{%- for variable in clazz.variables %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% else %}{{ variable.default if variable.default is string else fix_type_docs(variable.default) }}{% endif %}{% endif %}{%- endfor %}{% if not is_sendable %}, _raw=None{% endif %}):
         {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
         {{ self.class_docstring()|indent -}}
@@ -68,10 +72,10 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
 
         self._raw = _raw{% endif %}{# not is_sendable #}
     {# force line tabs -#}
-    # end def __init__{% endif %}
+    # end def __init__{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.to_array != []) %}
 
-    {% if clazz.body and clazz.body.array != None %}{% for line in clazz.body.array %}
-    {{ line }}{% endfor %}{% else %}{#
+    {% endif %}{% if clazz.body and clazz.body.to_array != None %}{% for line in clazz.body.to_array %}{% set needs_space = True %}{% if not loop.first %}
+    {% endif %}{{ line }}{% endfor %}{% else %}{#
     #}def to_array(self):
         """
         Serializes this {{ clazz.clazz }} to a dictionary.
@@ -89,10 +93,10 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% endif -%}
         {% endfor -%}
         return array
-    # end def to_array{% endif %}
+    # end def to_array{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.validate_array != []) %}
 
-    {% if clazz.body and clazz.body.validate_array != None %}{% for line in clazz.body.validate_array %}
-    {{ line }}{% endfor %}{% else %}{#
+    {% endif %}{% if clazz.body and clazz.body.validate_array != None %}{% for line in clazz.body.validate_array %}{% set needs_space = True %}{% if not loop.first %}
+    {% endif %}{{ line }}{% endfor %}{% else %}{#
     #}@staticmethod
     def validate_array(array):
         """
@@ -126,10 +130,10 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {%- endfor -%}
         return data
         {#- remove empty line  #}
-    # end def validate_array{% endif %}
+    # end def validate_array{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.from_array != []) %}
 
-    {% if clazz.body and clazz.body.from_array != None %}{% for line in clazz.body.from_array %}
-    {{ line }}{% endfor %}{% else %}{#
+    {% endif %}{% if clazz.body and clazz.body.from_array != None %}{% for line in clazz.body.from_array %}{% set needs_space = True %}{% if not loop.first %}
+    {% endif %}{{ line }}{% endfor %}{% else %}{#
     #}@staticmethod
     def from_array(array):
         """
@@ -149,19 +153,19 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         instance = {{ clazz.clazz }}(**data)
         instance._raw = array
         return instance{% endif %}
-    # end def from_array{% endif %}
+    # end def from_array{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.str != []) %}
 
-    {% if clazz.body and clazz.body.str != None %}{% for line in clazz.body.str %}
-    {{ line }}{% endfor %}{% else %}{#
+    {% endif %}{% if clazz.body and clazz.body.str != None %}{% for line in clazz.body.str %}{% set needs_space = True %}{% if not loop.first %}
+    {% endif %}{{ line }}{% endfor %}{% else %}{#
     #}def __str__(self):
         """
         Implements `str({{ clazz.clazz|lower }}_instance)`
         """
         return "{{ clazz.clazz }}({{ for_args_format_repr(clazz.variables) }})".format(self=self)
-    # end def __str__{% endif %}
+    # end def __str__{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.repr != []) %}
 
-    {% if clazz.body and clazz.body.repr != None %}{% for line in clazz.body.repr %}
-    {{ line }}{% endfor %}{% else %}{#
+    {% endif %}{% if clazz.body and clazz.body.repr != None %}{% for line in clazz.body.repr %}{% set needs_space = True %}{% if not loop.first %}
+    {% endif %}{{ line }}{% endfor %}{% else %}{#
     #}def __repr__(self):
         """
         Implements `repr({{ clazz.clazz|lower }}_instance)`
@@ -170,10 +174,10 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
             return "{{ clazz.clazz }}.from_array({self._raw})".format(self=self)
         # end if
         return "{{ clazz.clazz }}({{ for_args_format_repr(clazz.variables) }})".format(self=self)
-    # end def __repr__{% endif %}
+    # end def __repr__{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.contains != []) %}
 
-    {% if clazz.body and clazz.body.contains != None %}{% for line in clazz.body.contains %}
-    {{ line }}{% endfor %}{% else %}{#
+    {% endif %}{% if clazz.body and clazz.body.contains != None %}{% for line in clazz.body.contains %}{% set needs_space = True %}{% if not loop.first %}
+    {% endif %}{{ line }}{% endfor %}{% else %}{#
     #}def __contains__(self, key):
         """
         Implements `"key" in {{ clazz.clazz|lower }}_instance`
@@ -183,5 +187,9 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
-    # end def __contains__{% endif %}
+    # end def __contains__{% set needs_space = True %}{% endif %}{% if needs_space and (clazz.body and clazz.body.after != []) %}
+
+    {% endif %}{% if clazz.body and clazz.body.after != None %}{% for line in clazz.body.after %}{% set needs_space = True %}{% if not loop.first %}
+    {% endif %}{{ line }}{% endfor %}{% else %}{#
+    #}{% set needs_space = True %}{% endif %}
 # end class {{ clazz.clazz }}
