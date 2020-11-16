@@ -45,7 +45,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {%- block imports_block -%}
         {%- if clazz.imports %}
         {% for import in clazz.imports -%}
-        from {{ import.path }} import {{ import.name }}
+        {{ import.import_statement_from_file(clazz.import_path) }}
         {% endfor -%}
         {% endif -%}
         {%- endblock -%}
