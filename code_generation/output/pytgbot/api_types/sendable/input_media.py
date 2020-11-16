@@ -619,14 +619,16 @@ class InputMediaVideolike(InputMediaPlayable):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaVideolike, self).__init__(type, media, thumb, duration, width, height, caption, parse_mode, caption_entities)
+        super(InputMediaVideolike, self).__init__(type, media, thumb, duration, caption, parse_mode, caption_entities)
         
         # 'type' is set by InputMediaPlayable base class
         # 'media' is set by InputMediaPlayable base class
         # 'thumb' is set by InputMediaPlayable base class
         # 'duration' is set by InputMediaPlayable base class
-        # 'width' is set by InputMediaPlayable base class
-        # 'height' is set by InputMediaPlayable base class
+        assert_type_or_raise(width, None, int, parameter_name="width")
+        self.width = width
+        assert_type_or_raise(height, None, int, parameter_name="height")
+        self.height = height
         # 'caption' is set by InputMediaPlayable base class
         # 'parse_mode' is set by InputMediaPlayable base class
         # 'caption_entities' is set by InputMediaPlayable base class
@@ -645,8 +647,12 @@ class InputMediaVideolike(InputMediaPlayable):
         # 'media' given by superclass
         # 'thumb' given by superclass
         # 'duration' given by superclass
-        # 'width' given by superclass
-        # 'height' given by superclass
+        if self.width is not None:
+            array['width'] = int(self.width)  # type int
+        # end if
+        if self.height is not None:
+            array['height'] = int(self.height)  # type int
+        # end if
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
         # 'caption_entities' given by superclass
