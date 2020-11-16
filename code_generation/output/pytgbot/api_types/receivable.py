@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
+from . import TgBotApiObject
+
+__author__ = 'luckydonald'
+
+
+class Receivable(TgBotApiObject):
+    """
+    Base class for all classes for stuff which telegram sends us.
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    pass
+# end class Receivable
+
+
+class Result(Receivable):
+    """
+    Base class for all classes for stuff which we get back after we called a telegram method.
+
+    Optional keyword parameters:
+    
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def to_array(self):
+        return {}
+    pass
+# end class Result
+
