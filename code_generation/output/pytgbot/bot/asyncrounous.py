@@ -4,7 +4,6 @@ import re
 
 from datetime import timedelta, datetime
 from DictObject import DictObject
-
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
 from luckydonaldUtils.exceptions import assert_type_or_raise
@@ -12,6 +11,7 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from ..exceptions import TgApiServerException, TgApiParseException
 from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types.sendable.inline import InlineQueryResult
+from ..api_types.sendable.files import InputFile
 from ..api_types import from_array_list
 
 from .base import BotBase
@@ -19,6 +19,7 @@ from .base import BotBase
 
 # async imports
 from async_property import async_property
+from typing import Union, Optional, List, Any
 import httpx
 
 
@@ -57,6 +58,21 @@ logger = logging.getLogger(__name__)
 
 
 class AsyncBot(BotBase):
+    async def _load_info(self):
+        """
+        This functions stores the id and the username of the bot.
+        Called by `.username` and `.id` properties.
+        :return:
+        """
+        myself = await self.get_me()
+        if self.return_python_objects:
+            self._id = myself.id
+            self._username = myself.username
+        else:
+            self._id = myself["result"]["id"]
+            self._username = myself["result"]["username"]
+        # end if
+    # end def
     async def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.
@@ -133,9 +149,6 @@ class AsyncBot(BotBase):
 
         :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
         """
-        from ..api_types.sendable.files import InputFile
-        from luckydonaldUtils.encoding import unicode_type
-        from luckydonaldUtils.encoding import to_native as n
 
         if isinstance(value, str):
             kwargs[file_param_name] = str(value)
@@ -163,9 +176,15 @@ class AsyncBot(BotBase):
 
     # start of generated functions
     
-    async def get_updates(self, offset=None, limit=None, timeout=None, allowed_updates=None):
+    async def get_updates(self, offset: Optional[int] = None, limit: Optional[int] = None, timeout: Optional[int] = None, allowed_updates: Optional[List[str]] = None) -> List[Update]:
         """
-        Internal function for making the request to the API's getUpdates endpoint.
+        Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
+
+Notes1. This method will not work if an outgoing webhook is set up.2. In order to avoid getting duplicate updates, recalculate offset after each server response.
+
+
+        https://core.telegram.org/bots/api#getupdates
+
 
         
         Optional keyword parameters:
@@ -191,9 +210,17 @@ class AsyncBot(BotBase):
         return self._get_updates__process_result(result)
     # end def get_updates
     
-    async def set_webhook(self, url, certificate=None, ip_address=None, max_connections=None, allowed_updates=None, drop_pending_updates=None):
+    async def set_webhook(self, url: str, certificate: Optional[InputFile] = None, ip_address: Optional[str] = None, max_connections: Optional[int] = None, allowed_updates: Optional[List[str]] = None, drop_pending_updates: Optional[bool] = None) -> bool:
         """
-        Internal function for making the request to the API's setWebhook endpoint.
+        Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
+If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot's token, you can be pretty sure it's us.
+
+Notes1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter. Please upload as InputFile, sending a String will not work.3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
+NEW! If you're having any trouble setting up webhooks, please check out this amazing guide to Webhooks.
+
+
+        https://core.telegram.org/bots/api#setwebhook
+
 
         
         Parameters:
@@ -228,9 +255,12 @@ class AsyncBot(BotBase):
         return self._set_webhook__process_result(result)
     # end def set_webhook
     
-    async def delete_webhook(self, drop_pending_updates=None):
+    async def delete_webhook(self, drop_pending_updates: Optional[bool] = None) -> bool:
         """
-        Internal function for making the request to the API's deleteWebhook endpoint.
+        Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success.
+
+        https://core.telegram.org/bots/api#deletewebhook
+
 
         
         Optional keyword parameters:
@@ -247,9 +277,12 @@ class AsyncBot(BotBase):
         return self._delete_webhook__process_result(result)
     # end def delete_webhook
     
-    async def get_webhook_info(self):
+    async def get_webhook_info(self) -> WebhookInfo:
         """
-        Internal function for making the request to the API's getWebhookInfo endpoint.
+        Use this method to get current webhook status. Requires no parameters. On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty.
+
+        https://core.telegram.org/bots/api#getwebhookinfo
+
 
         
         Returns:
@@ -261,9 +294,12 @@ class AsyncBot(BotBase):
         return self._get_webhook_info__process_result(result)
     # end def get_webhook_info
     
-    async def get_me(self):
+    async def get_me(self) -> User:
         """
-        Internal function for making the request to the API's getMe endpoint.
+        A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
+
+        https://core.telegram.org/bots/api#getme
+
 
         
         Returns:
@@ -275,9 +311,12 @@ class AsyncBot(BotBase):
         return self._get_me__process_result(result)
     # end def get_me
     
-    async def log_out(self):
+    async def log_out(self) -> bool:
         """
-        Internal function for making the request to the API's logOut endpoint.
+        Use this method to log out from the cloud Bot API server before launching the bot locally. You must log out the bot before running it locally, otherwise there is no guarantee that the bot will receive updates. After a successful call, you can immediately log in on a local server, but will not be able to log in back to the cloud Bot API server for 10 minutes. Returns True on success. Requires no parameters.
+
+        https://core.telegram.org/bots/api#logout
+
 
         
         Returns:
@@ -289,9 +328,12 @@ class AsyncBot(BotBase):
         return self._log_out__process_result(result)
     # end def log_out
     
-    async def send_message(self, chat_id, text, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_message(self, chat_id: Union[int, str], text: str, parse_mode: Optional[str] = None, entities: Optional[List[MessageEntity]] = None, disable_web_page_preview: Optional[bool] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendMessage endpoint.
+        Use this method to send text messages. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendmessage
+
 
         
         Parameters:
@@ -335,9 +377,12 @@ class AsyncBot(BotBase):
         return self._send_message__process_result(result)
     # end def send_message
     
-    async def forward_message(self, chat_id, from_chat_id, message_id, disable_notification=None):
+    async def forward_message(self, chat_id: Union[int, str], from_chat_id: Union[int, str], message_id: int, disable_notification: Optional[bool] = None) -> Message:
         """
-        Internal function for making the request to the API's forwardMessage endpoint.
+        Use this method to forward messages of any kind. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#forwardmessage
+
 
         
         Parameters:
@@ -366,9 +411,12 @@ class AsyncBot(BotBase):
         return self._forward_message__process_result(result)
     # end def forward_message
     
-    async def copy_message(self, chat_id, from_chat_id, message_id, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def copy_message(self, chat_id: Union[int, str], from_chat_id: Union[int, str], message_id: int, caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> MessageId:
         """
-        Internal function for making the request to the API's copyMessage endpoint.
+        Use this method to copy messages of any kind. The method is analogous to the method forwardMessages, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
+
+        https://core.telegram.org/bots/api#copymessage
+
 
         
         Parameters:
@@ -415,9 +463,12 @@ class AsyncBot(BotBase):
         return self._copy_message__process_result(result)
     # end def copy_message
     
-    async def send_photo(self, chat_id, photo, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_photo(self, chat_id: Union[int, str], photo: Union[InputFile, str], caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendPhoto endpoint.
+        Use this method to send photos. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendphoto
+
 
         
         Parameters:
@@ -461,9 +512,13 @@ class AsyncBot(BotBase):
         return self._send_photo__process_result(result)
     # end def send_photo
     
-    async def send_audio(self, chat_id, audio, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_audio(self, chat_id: Union[int, str], audio: Union[InputFile, str], caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, duration: Optional[int] = None, performer: Optional[str] = None, title: Optional[str] = None, thumb: Optional[Union[InputFile, str]] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendAudio endpoint.
+        Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
+For sending voice messages, use the sendVoice method instead.
+
+        https://core.telegram.org/bots/api#sendaudio
+
 
         
         Parameters:
@@ -519,9 +574,12 @@ class AsyncBot(BotBase):
         return self._send_audio__process_result(result)
     # end def send_audio
     
-    async def send_document(self, chat_id, document, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_document(self, chat_id: Union[int, str], document: Union[InputFile, str], thumb: Optional[Union[InputFile, str]] = None, caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, disable_content_type_detection: Optional[bool] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendDocument endpoint.
+        Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
+
+        https://core.telegram.org/bots/api#senddocument
+
 
         
         Parameters:
@@ -571,9 +629,12 @@ class AsyncBot(BotBase):
         return self._send_document__process_result(result)
     # end def send_document
     
-    async def send_video(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_video(self, chat_id: Union[int, str], video: Union[InputFile, str], duration: Optional[int] = None, width: Optional[int] = None, height: Optional[int] = None, thumb: Optional[Union[InputFile, str]] = None, caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, supports_streaming: Optional[bool] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendVideo endpoint.
+        Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
+
+        https://core.telegram.org/bots/api#sendvideo
+
 
         
         Parameters:
@@ -632,9 +693,12 @@ class AsyncBot(BotBase):
         return self._send_video__process_result(result)
     # end def send_video
     
-    async def send_animation(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_animation(self, chat_id: Union[int, str], animation: Union[InputFile, str], duration: Optional[int] = None, width: Optional[int] = None, height: Optional[int] = None, thumb: Optional[Union[InputFile, str]] = None, caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendAnimation endpoint.
+        Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
+
+        https://core.telegram.org/bots/api#sendanimation
+
 
         
         Parameters:
@@ -690,9 +754,12 @@ class AsyncBot(BotBase):
         return self._send_animation__process_result(result)
     # end def send_animation
     
-    async def send_voice(self, chat_id, voice, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_voice(self, chat_id: Union[int, str], voice: Union[InputFile, str], caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, duration: Optional[int] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendVoice endpoint.
+        Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+
+        https://core.telegram.org/bots/api#sendvoice
+
 
         
         Parameters:
@@ -739,9 +806,12 @@ class AsyncBot(BotBase):
         return self._send_voice__process_result(result)
     # end def send_voice
     
-    async def send_video_note(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_video_note(self, chat_id: Union[int, str], video_note: Union[InputFile, str], duration: Optional[int] = None, length: Optional[int] = None, thumb: Optional[Union[InputFile, str]] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendVideoNote endpoint.
+        As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendvideonote
+
 
         
         Parameters:
@@ -785,9 +855,12 @@ class AsyncBot(BotBase):
         return self._send_video_note__process_result(result)
     # end def send_video_note
     
-    async def send_media_group(self, chat_id, media, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None):
+    async def send_media_group(self, chat_id: Union[int, str], media: Union[List[InputMediaAudio, InputMediaDocument, InputMediaPhoto], InputMediaVideo], disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None) -> List[Message]:
         """
-        Internal function for making the request to the API's sendMediaGroup endpoint.
+        Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
+
+        https://core.telegram.org/bots/api#sendmediagroup
+
 
         
         Parameters:
@@ -819,9 +892,12 @@ class AsyncBot(BotBase):
         return self._send_media_group__process_result(result)
     # end def send_media_group
     
-    async def send_location(self, chat_id, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_location(self, chat_id: Union[int, str], latitude: float, longitude: float, horizontal_accuracy: Optional[float] = None, live_period: Optional[int] = None, heading: Optional[int] = None, proximity_alert_radius: Optional[int] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendLocation endpoint.
+        Use this method to send point on the map. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendlocation
+
 
         
         Parameters:
@@ -871,9 +947,12 @@ class AsyncBot(BotBase):
         return self._send_location__process_result(result)
     # end def send_location
     
-    async def edit_message_live_location(self, latitude, longitude, chat_id=None, message_id=None, inline_message_id=None, horizontal_accuracy=None, heading=None, proximity_alert_radius=None, reply_markup=None):
+    async def edit_message_live_location(self, latitude: float, longitude: float, chat_id: Optional[Union[int, str]] = None, message_id: Optional[int] = None, inline_message_id: Optional[str] = None, horizontal_accuracy: Optional[float] = None, heading: Optional[int] = None, proximity_alert_radius: Optional[int] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Union[Message, bool]:
         """
-        Internal function for making the request to the API's editMessageLiveLocation endpoint.
+        Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#editmessagelivelocation
+
 
         
         Parameters:
@@ -917,9 +996,12 @@ class AsyncBot(BotBase):
         return self._edit_message_live_location__process_result(result)
     # end def edit_message_live_location
     
-    async def stop_message_live_location(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    async def stop_message_live_location(self, chat_id: Optional[Union[int, str]] = None, message_id: Optional[int] = None, inline_message_id: Optional[str] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Union[Message, bool]:
         """
-        Internal function for making the request to the API's stopMessageLiveLocation endpoint.
+        Use this method to stop updating a live location message before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#stopmessagelivelocation
+
 
         
         Optional keyword parameters:
@@ -945,9 +1027,12 @@ class AsyncBot(BotBase):
         return self._stop_message_live_location__process_result(result)
     # end def stop_message_live_location
     
-    async def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_venue(self, chat_id: Union[int, str], latitude: float, longitude: float, title: str, address: str, foursquare_id: Optional[str] = None, foursquare_type: Optional[str] = None, google_place_id: Optional[str] = None, google_place_type: Optional[str] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendVenue endpoint.
+        Use this method to send information about a venue. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendvenue
+
 
         
         Parameters:
@@ -1003,9 +1088,12 @@ class AsyncBot(BotBase):
         return self._send_venue__process_result(result)
     # end def send_venue
     
-    async def send_contact(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_contact(self, chat_id: Union[int, str], phone_number: str, first_name: str, last_name: Optional[str] = None, vcard: Optional[str] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendContact endpoint.
+        Use this method to send phone contacts. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendcontact
+
 
         
         Parameters:
@@ -1049,9 +1137,12 @@ class AsyncBot(BotBase):
         return self._send_contact__process_result(result)
     # end def send_contact
     
-    async def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_poll(self, chat_id: Union[int, str], question: str, options: List[str], is_anonymous: Optional[bool] = None, type: Optional[str] = None, allows_multiple_answers: Optional[bool] = None, correct_option_id: Optional[int] = None, explanation: Optional[str] = None, explanation_parse_mode: Optional[str] = None, explanation_entities: Optional[List[MessageEntity]] = None, open_period: Optional[int] = None, close_date: Optional[int] = None, is_closed: Optional[bool] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendPoll endpoint.
+        Use this method to send a native poll. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendpoll
+
 
         
         Parameters:
@@ -1119,9 +1210,12 @@ class AsyncBot(BotBase):
         return self._send_poll__process_result(result)
     # end def send_poll
     
-    async def send_dice(self, chat_id, emoji=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_dice(self, chat_id: Union[int, str], emoji: Optional[str] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendDice endpoint.
+        Use this method to send an animated emoji that will display a random value. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#senddice
+
 
         
         Parameters:
@@ -1156,9 +1250,16 @@ class AsyncBot(BotBase):
         return self._send_dice__process_result(result)
     # end def send_dice
     
-    async def send_chat_action(self, chat_id, action):
+    async def send_chat_action(self, chat_id: Union[int, str], action: str) -> bool:
         """
-        Internal function for making the request to the API's sendChatAction endpoint.
+        Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.
+
+Example: The ImageBot needs some time to process a request and upload the image. Instead of sending a text message along the lines of "Retrieving image, please wait…", the bot may use sendChatAction with action = upload_photo. The user will see a "sending photo" status for the bot.
+
+We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
+
+        https://core.telegram.org/bots/api#sendchataction
+
 
         
         Parameters:
@@ -1179,9 +1280,12 @@ class AsyncBot(BotBase):
         return self._send_chat_action__process_result(result)
     # end def send_chat_action
     
-    async def get_user_profile_photos(self, user_id, offset=None, limit=None):
+    async def get_user_profile_photos(self, user_id: int, offset: Optional[int] = None, limit: Optional[int] = None) -> UserProfilePhotos:
         """
-        Internal function for making the request to the API's getUserProfilePhotos endpoint.
+        Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
+
+        https://core.telegram.org/bots/api#getuserprofilephotos
+
 
         
         Parameters:
@@ -1207,9 +1311,13 @@ class AsyncBot(BotBase):
         return self._get_user_profile_photos__process_result(result)
     # end def get_user_profile_photos
     
-    async def get_file(self, file_id):
+    async def get_file(self, file_id: str) -> File:
         """
-        Internal function for making the request to the API's getFile endpoint.
+        Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
+Note: This function may not preserve the original file name and MIME type. You should save the file's MIME type and name (if available) when the File object is received.
+
+        https://core.telegram.org/bots/api#getfile
+
 
         
         Parameters:
@@ -1227,9 +1335,12 @@ class AsyncBot(BotBase):
         return self._get_file__process_result(result)
     # end def get_file
     
-    async def kick_chat_member(self, chat_id, user_id, until_date=None):
+    async def kick_chat_member(self, chat_id: Union[int, str], user_id: int, until_date: Optional[int] = None) -> bool:
         """
-        Internal function for making the request to the API's kickChatMember endpoint.
+        Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#kickchatmember
+
 
         
         Parameters:
@@ -1255,9 +1366,12 @@ class AsyncBot(BotBase):
         return self._kick_chat_member__process_result(result)
     # end def kick_chat_member
     
-    async def unban_chat_member(self, chat_id, user_id, only_if_banned=None):
+    async def unban_chat_member(self, chat_id: Union[int, str], user_id: int, only_if_banned: Optional[bool] = None) -> bool:
         """
-        Internal function for making the request to the API's unbanChatMember endpoint.
+        Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. By default, this method guarantees that after the call the user is not a member of the chat, but will be able to join it. So if the user is a member of the chat they will also be removed from the chat. If you don't want this, use the parameter only_if_banned. Returns True on success.
+
+        https://core.telegram.org/bots/api#unbanchatmember
+
 
         
         Parameters:
@@ -1283,9 +1397,12 @@ class AsyncBot(BotBase):
         return self._unban_chat_member__process_result(result)
     # end def unban_chat_member
     
-    async def restrict_chat_member(self, chat_id, user_id, permissions, until_date=None):
+    async def restrict_chat_member(self, chat_id: Union[int, str], user_id: int, permissions: ChatPermissions, until_date: Optional[int] = None) -> bool:
         """
-        Internal function for making the request to the API's restrictChatMember endpoint.
+        Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
+
+        https://core.telegram.org/bots/api#restrictchatmember
+
 
         
         Parameters:
@@ -1314,9 +1431,12 @@ class AsyncBot(BotBase):
         return self._restrict_chat_member__process_result(result)
     # end def restrict_chat_member
     
-    async def promote_chat_member(self, chat_id, user_id, is_anonymous=None, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None):
+    async def promote_chat_member(self, chat_id: Union[int, str], user_id: int, is_anonymous: Optional[bool] = None, can_change_info: Optional[bool] = None, can_post_messages: Optional[bool] = None, can_edit_messages: Optional[bool] = None, can_delete_messages: Optional[bool] = None, can_invite_users: Optional[bool] = None, can_restrict_members: Optional[bool] = None, can_pin_messages: Optional[bool] = None, can_promote_members: Optional[bool] = None) -> bool:
         """
-        Internal function for making the request to the API's promoteChatMember endpoint.
+        Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
+
+        https://core.telegram.org/bots/api#promotechatmember
+
 
         
         Parameters:
@@ -1366,9 +1486,12 @@ class AsyncBot(BotBase):
         return self._promote_chat_member__process_result(result)
     # end def promote_chat_member
     
-    async def set_chat_administrator_custom_title(self, chat_id, user_id, custom_title):
+    async def set_chat_administrator_custom_title(self, chat_id: Union[int, str], user_id: int, custom_title: str) -> bool:
         """
-        Internal function for making the request to the API's setChatAdministratorCustomTitle endpoint.
+        Use this method to set a custom title for an administrator in a supergroup promoted by the bot. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatadministratorcustomtitle
+
 
         
         Parameters:
@@ -1392,9 +1515,12 @@ class AsyncBot(BotBase):
         return self._set_chat_administrator_custom_title__process_result(result)
     # end def set_chat_administrator_custom_title
     
-    async def set_chat_permissions(self, chat_id, permissions):
+    async def set_chat_permissions(self, chat_id: Union[int, str], permissions: ChatPermissions) -> bool:
         """
-        Internal function for making the request to the API's setChatPermissions endpoint.
+        Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatpermissions
+
 
         
         Parameters:
@@ -1415,9 +1541,15 @@ class AsyncBot(BotBase):
         return self._set_chat_permissions__process_result(result)
     # end def set_chat_permissions
     
-    async def export_chat_invite_link(self, chat_id):
+    async def export_chat_invite_link(self, chat_id: Union[int, str]) -> str:
         """
-        Internal function for making the request to the API's exportChatInviteLink endpoint.
+        Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
+
+Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink — after this the link will become available to the bot via the getChat method. If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
+
+
+        https://core.telegram.org/bots/api#exportchatinvitelink
+
 
         
         Parameters:
@@ -1435,9 +1567,12 @@ class AsyncBot(BotBase):
         return self._export_chat_invite_link__process_result(result)
     # end def export_chat_invite_link
     
-    async def set_chat_photo(self, chat_id, photo):
+    async def set_chat_photo(self, chat_id: Union[int, str], photo: InputFile) -> bool:
         """
-        Internal function for making the request to the API's setChatPhoto endpoint.
+        Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatphoto
+
 
         
         Parameters:
@@ -1458,9 +1593,12 @@ class AsyncBot(BotBase):
         return self._set_chat_photo__process_result(result)
     # end def set_chat_photo
     
-    async def delete_chat_photo(self, chat_id):
+    async def delete_chat_photo(self, chat_id: Union[int, str]) -> bool:
         """
-        Internal function for making the request to the API's deleteChatPhoto endpoint.
+        Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#deletechatphoto
+
 
         
         Parameters:
@@ -1478,9 +1616,12 @@ class AsyncBot(BotBase):
         return self._delete_chat_photo__process_result(result)
     # end def delete_chat_photo
     
-    async def set_chat_title(self, chat_id, title):
+    async def set_chat_title(self, chat_id: Union[int, str], title: str) -> bool:
         """
-        Internal function for making the request to the API's setChatTitle endpoint.
+        Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchattitle
+
 
         
         Parameters:
@@ -1501,9 +1642,12 @@ class AsyncBot(BotBase):
         return self._set_chat_title__process_result(result)
     # end def set_chat_title
     
-    async def set_chat_description(self, chat_id, description=None):
+    async def set_chat_description(self, chat_id: Union[int, str], description: Optional[str] = None) -> bool:
         """
-        Internal function for making the request to the API's setChatDescription endpoint.
+        Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatdescription
+
 
         
         Parameters:
@@ -1526,9 +1670,12 @@ class AsyncBot(BotBase):
         return self._set_chat_description__process_result(result)
     # end def set_chat_description
     
-    async def pin_chat_message(self, chat_id, message_id, disable_notification=None):
+    async def pin_chat_message(self, chat_id: Union[int, str], message_id: int, disable_notification: Optional[bool] = None) -> bool:
         """
-        Internal function for making the request to the API's pinChatMessage endpoint.
+        Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+
+        https://core.telegram.org/bots/api#pinchatmessage
+
 
         
         Parameters:
@@ -1554,9 +1701,12 @@ class AsyncBot(BotBase):
         return self._pin_chat_message__process_result(result)
     # end def pin_chat_message
     
-    async def unpin_chat_message(self, chat_id, message_id=None):
+    async def unpin_chat_message(self, chat_id: Union[int, str], message_id: Optional[int] = None) -> bool:
         """
-        Internal function for making the request to the API's unpinChatMessage endpoint.
+        Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+
+        https://core.telegram.org/bots/api#unpinchatmessage
+
 
         
         Parameters:
@@ -1579,9 +1729,12 @@ class AsyncBot(BotBase):
         return self._unpin_chat_message__process_result(result)
     # end def unpin_chat_message
     
-    async def unpin_all_chat_messages(self, chat_id):
+    async def unpin_all_chat_messages(self, chat_id: Union[int, str]) -> bool:
         """
-        Internal function for making the request to the API's unpinAllChatMessages endpoint.
+        Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+
+        https://core.telegram.org/bots/api#unpinallchatmessages
+
 
         
         Parameters:
@@ -1599,9 +1752,12 @@ class AsyncBot(BotBase):
         return self._unpin_all_chat_messages__process_result(result)
     # end def unpin_all_chat_messages
     
-    async def leave_chat(self, chat_id):
+    async def leave_chat(self, chat_id: Union[int, str]) -> bool:
         """
-        Internal function for making the request to the API's leaveChat endpoint.
+        Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
+
+        https://core.telegram.org/bots/api#leavechat
+
 
         
         Parameters:
@@ -1619,9 +1775,12 @@ class AsyncBot(BotBase):
         return self._leave_chat__process_result(result)
     # end def leave_chat
     
-    async def get_chat(self, chat_id):
+    async def get_chat(self, chat_id: Union[int, str]) -> Chat:
         """
-        Internal function for making the request to the API's getChat endpoint.
+        Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+
+        https://core.telegram.org/bots/api#getchat
+
 
         
         Parameters:
@@ -1639,9 +1798,12 @@ class AsyncBot(BotBase):
         return self._get_chat__process_result(result)
     # end def get_chat
     
-    async def get_chat_administrators(self, chat_id):
+    async def get_chat_administrators(self, chat_id: Union[int, str]) -> List[ChatMember]:
         """
-        Internal function for making the request to the API's getChatAdministrators endpoint.
+        Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
+
+        https://core.telegram.org/bots/api#getchatadministrators
+
 
         
         Parameters:
@@ -1659,9 +1821,12 @@ class AsyncBot(BotBase):
         return self._get_chat_administrators__process_result(result)
     # end def get_chat_administrators
     
-    async def get_chat_members_count(self, chat_id):
+    async def get_chat_members_count(self, chat_id: Union[int, str]) -> int:
         """
-        Internal function for making the request to the API's getChatMembersCount endpoint.
+        Use this method to get the number of members in a chat. Returns Int on success.
+
+        https://core.telegram.org/bots/api#getchatmemberscount
+
 
         
         Parameters:
@@ -1679,9 +1844,12 @@ class AsyncBot(BotBase):
         return self._get_chat_members_count__process_result(result)
     # end def get_chat_members_count
     
-    async def get_chat_member(self, chat_id, user_id):
+    async def get_chat_member(self, chat_id: Union[int, str], user_id: int) -> ChatMember:
         """
-        Internal function for making the request to the API's getChatMember endpoint.
+        Use this method to get information about a member of a chat. Returns a ChatMember object on success.
+
+        https://core.telegram.org/bots/api#getchatmember
+
 
         
         Parameters:
@@ -1702,9 +1870,12 @@ class AsyncBot(BotBase):
         return self._get_chat_member__process_result(result)
     # end def get_chat_member
     
-    async def set_chat_sticker_set(self, chat_id, sticker_set_name):
+    async def set_chat_sticker_set(self, chat_id: Union[int, str], sticker_set_name: str) -> bool:
         """
-        Internal function for making the request to the API's setChatStickerSet endpoint.
+        Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
+
+        https://core.telegram.org/bots/api#setchatstickerset
+
 
         
         Parameters:
@@ -1725,9 +1896,12 @@ class AsyncBot(BotBase):
         return self._set_chat_sticker_set__process_result(result)
     # end def set_chat_sticker_set
     
-    async def delete_chat_sticker_set(self, chat_id):
+    async def delete_chat_sticker_set(self, chat_id: Union[int, str]) -> bool:
         """
-        Internal function for making the request to the API's deleteChatStickerSet endpoint.
+        Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
+
+        https://core.telegram.org/bots/api#deletechatstickerset
+
 
         
         Parameters:
@@ -1745,9 +1919,15 @@ class AsyncBot(BotBase):
         return self._delete_chat_sticker_set__process_result(result)
     # end def delete_chat_sticker_set
     
-    async def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
+    async def answer_callback_query(self, callback_query_id: str, text: Optional[str] = None, show_alert: Optional[bool] = None, url: Optional[str] = None, cache_time: Optional[int] = None) -> bool:
         """
-        Internal function for making the request to the API's answerCallbackQuery endpoint.
+        Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
+
+Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via @Botfather and accept the terms. Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
+
+
+        https://core.telegram.org/bots/api#answercallbackquery
+
 
         
         Parameters:
@@ -1779,9 +1959,12 @@ class AsyncBot(BotBase):
         return self._answer_callback_query__process_result(result)
     # end def answer_callback_query
     
-    async def set_my_commands(self, commands):
+    async def set_my_commands(self, commands: List[BotCommand]) -> bool:
         """
-        Internal function for making the request to the API's setMyCommands endpoint.
+        Use this method to change the list of the bot's commands. Returns True on success.
+
+        https://core.telegram.org/bots/api#setmycommands
+
 
         
         Parameters:
@@ -1799,9 +1982,12 @@ class AsyncBot(BotBase):
         return self._set_my_commands__process_result(result)
     # end def set_my_commands
     
-    async def get_my_commands(self):
+    async def get_my_commands(self) -> List[BotCommand]:
         """
-        Internal function for making the request to the API's getMyCommands endpoint.
+        Use this method to get the current list of the bot's commands. Requires no parameters. Returns Array of BotCommand on success.
+
+        https://core.telegram.org/bots/api#getmycommands
+
 
         
         Returns:
@@ -1813,9 +1999,12 @@ class AsyncBot(BotBase):
         return self._get_my_commands__process_result(result)
     # end def get_my_commands
     
-    async def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None, entities=None, disable_web_page_preview=None, reply_markup=None):
+    async def edit_message_text(self, text: str, chat_id: Optional[Union[int, str]] = None, message_id: Optional[int] = None, inline_message_id: Optional[str] = None, parse_mode: Optional[str] = None, entities: Optional[List[MessageEntity]] = None, disable_web_page_preview: Optional[bool] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Union[Message, bool]:
         """
-        Internal function for making the request to the API's editMessageText endpoint.
+        Use this method to edit text and game messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#editmessagetext
+
 
         
         Parameters:
@@ -1856,9 +2045,12 @@ class AsyncBot(BotBase):
         return self._edit_message_text__process_result(result)
     # end def edit_message_text
     
-    async def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None):
+    async def edit_message_caption(self, chat_id: Optional[Union[int, str]] = None, message_id: Optional[int] = None, inline_message_id: Optional[str] = None, caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Union[Message, bool]:
         """
-        Internal function for making the request to the API's editMessageCaption endpoint.
+        Use this method to edit captions of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#editmessagecaption
+
 
         
         Optional keyword parameters:
@@ -1893,9 +2085,12 @@ class AsyncBot(BotBase):
         return self._edit_message_caption__process_result(result)
     # end def edit_message_caption
     
-    async def edit_message_media(self, media, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    async def edit_message_media(self, media: InputMedia, chat_id: Optional[Union[int, str]] = None, message_id: Optional[int] = None, inline_message_id: Optional[str] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Union[Message, bool]:
         """
-        Internal function for making the request to the API's editMessageMedia endpoint.
+        Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded. Use a previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#editmessagemedia
+
 
         
         Parameters:
@@ -1927,9 +2122,12 @@ class AsyncBot(BotBase):
         return self._edit_message_media__process_result(result)
     # end def edit_message_media
     
-    async def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    async def edit_message_reply_markup(self, chat_id: Optional[Union[int, str]] = None, message_id: Optional[int] = None, inline_message_id: Optional[str] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Union[Message, bool]:
         """
-        Internal function for making the request to the API's editMessageReplyMarkup endpoint.
+        Use this method to edit only the reply markup of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
+
+        https://core.telegram.org/bots/api#editmessagereplymarkup
+
 
         
         Optional keyword parameters:
@@ -1955,9 +2153,12 @@ class AsyncBot(BotBase):
         return self._edit_message_reply_markup__process_result(result)
     # end def edit_message_reply_markup
     
-    async def stop_poll(self, chat_id, message_id, reply_markup=None):
+    async def stop_poll(self, chat_id: Union[int, str], message_id: int, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Poll:
         """
-        Internal function for making the request to the API's stopPoll endpoint.
+        Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the final results is returned.
+
+        https://core.telegram.org/bots/api#stoppoll
+
 
         
         Parameters:
@@ -1983,9 +2184,12 @@ class AsyncBot(BotBase):
         return self._stop_poll__process_result(result)
     # end def stop_poll
     
-    async def delete_message(self, chat_id, message_id):
+    async def delete_message(self, chat_id: Union[int, str], message_id: int) -> bool:
         """
-        Internal function for making the request to the API's deleteMessage endpoint.
+        Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming messages in private chats.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
+
+        https://core.telegram.org/bots/api#deletemessage
+
 
         
         Parameters:
@@ -2006,9 +2210,12 @@ class AsyncBot(BotBase):
         return self._delete_message__process_result(result)
     # end def delete_message
     
-    async def send_sticker(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_sticker(self, chat_id: Union[int, str], sticker: Union[InputFile, str], disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> Message:
         """
-        Internal function for making the request to the API's sendSticker endpoint.
+        Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendsticker
+
 
         
         Parameters:
@@ -2043,9 +2250,12 @@ class AsyncBot(BotBase):
         return self._send_sticker__process_result(result)
     # end def send_sticker
     
-    async def get_sticker_set(self, name):
+    async def get_sticker_set(self, name: str) -> StickerSet:
         """
-        Internal function for making the request to the API's getStickerSet endpoint.
+        Use this method to get a sticker set. On success, a StickerSet object is returned.
+
+        https://core.telegram.org/bots/api#getstickerset
+
 
         
         Parameters:
@@ -2063,9 +2273,12 @@ class AsyncBot(BotBase):
         return self._get_sticker_set__process_result(result)
     # end def get_sticker_set
     
-    async def upload_sticker_file(self, user_id, png_sticker):
+    async def upload_sticker_file(self, user_id: int, png_sticker: InputFile) -> File:
         """
-        Internal function for making the request to the API's uploadStickerFile endpoint.
+        Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+
+        https://core.telegram.org/bots/api#uploadstickerfile
+
 
         
         Parameters:
@@ -2086,9 +2299,12 @@ class AsyncBot(BotBase):
         return self._upload_sticker_file__process_result(result)
     # end def upload_sticker_file
     
-    async def create_new_sticker_set(self, user_id, name, title, emojis, png_sticker=None, tgs_sticker=None, contains_masks=None, mask_position=None):
+    async def create_new_sticker_set(self, user_id: int, name: str, title: str, emojis: str, png_sticker: Optional[Union[InputFile, str]] = None, tgs_sticker: Optional[InputFile] = None, contains_masks: Optional[bool] = None, mask_position: Optional[MaskPosition] = None) -> bool:
         """
-        Internal function for making the request to the API's createNewStickerSet endpoint.
+        Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker. Returns True on success.
+
+        https://core.telegram.org/bots/api#createnewstickerset
+
 
         
         Parameters:
@@ -2129,9 +2345,12 @@ class AsyncBot(BotBase):
         return self._create_new_sticker_set__process_result(result)
     # end def create_new_sticker_set
     
-    async def add_sticker_to_set(self, user_id, name, emojis, png_sticker=None, tgs_sticker=None, mask_position=None):
+    async def add_sticker_to_set(self, user_id: int, name: str, emojis: str, png_sticker: Optional[Union[InputFile, str]] = None, tgs_sticker: Optional[InputFile] = None, mask_position: Optional[MaskPosition] = None) -> bool:
         """
-        Internal function for making the request to the API's addStickerToSet endpoint.
+        Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
+
+        https://core.telegram.org/bots/api#addstickertoset
+
 
         
         Parameters:
@@ -2166,9 +2385,12 @@ class AsyncBot(BotBase):
         return self._add_sticker_to_set__process_result(result)
     # end def add_sticker_to_set
     
-    async def set_sticker_position_in_set(self, sticker, position):
+    async def set_sticker_position_in_set(self, sticker: str, position: int) -> bool:
         """
-        Internal function for making the request to the API's setStickerPositionInSet endpoint.
+        Use this method to move a sticker in a set created by the bot to a specific position. Returns True on success.
+
+        https://core.telegram.org/bots/api#setstickerpositioninset
+
 
         
         Parameters:
@@ -2189,9 +2411,12 @@ class AsyncBot(BotBase):
         return self._set_sticker_position_in_set__process_result(result)
     # end def set_sticker_position_in_set
     
-    async def delete_sticker_from_set(self, sticker):
+    async def delete_sticker_from_set(self, sticker: str) -> bool:
         """
-        Internal function for making the request to the API's deleteStickerFromSet endpoint.
+        Use this method to delete a sticker from a set created by the bot. Returns True on success.
+
+        https://core.telegram.org/bots/api#deletestickerfromset
+
 
         
         Parameters:
@@ -2209,9 +2434,12 @@ class AsyncBot(BotBase):
         return self._delete_sticker_from_set__process_result(result)
     # end def delete_sticker_from_set
     
-    async def set_sticker_set_thumb(self, name, user_id, thumb=None):
+    async def set_sticker_set_thumb(self, name: str, user_id: int, thumb: Optional[Union[InputFile, str]] = None) -> bool:
         """
-        Internal function for making the request to the API's setStickerSetThumb endpoint.
+        Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only. Returns True on success.
+
+        https://core.telegram.org/bots/api#setstickersetthumb
+
 
         
         Parameters:
@@ -2237,9 +2465,12 @@ class AsyncBot(BotBase):
         return self._set_sticker_set_thumb__process_result(result)
     # end def set_sticker_set_thumb
     
-    async def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
+    async def answer_inline_query(self, inline_query_id: str, results: List[InlineQueryResult], cache_time: Optional[int] = None, is_personal: Optional[bool] = None, next_offset: Optional[str] = None, switch_pm_text: Optional[str] = None, switch_pm_parameter: Optional[str] = None) -> bool:
         """
-        Internal function for making the request to the API's answerInlineQuery endpoint.
+        Use this method to send answers to an inline query. On success, True is returned.No more than 50 results per query are allowed.
+
+        https://core.telegram.org/bots/api#answerinlinequery
+
 
         
         Parameters:
@@ -2277,9 +2508,12 @@ class AsyncBot(BotBase):
         return self._answer_inline_query__process_result(result)
     # end def answer_inline_query
     
-    async def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_invoice(self, chat_id: int, title: str, description: str, payload: str, provider_token: str, start_parameter: str, currency: str, prices: List[LabeledPrice], provider_data: Optional[str] = None, photo_url: Optional[str] = None, photo_size: Optional[int] = None, photo_width: Optional[int] = None, photo_height: Optional[int] = None, need_name: Optional[bool] = None, need_phone_number: Optional[bool] = None, need_email: Optional[bool] = None, need_shipping_address: Optional[bool] = None, send_phone_number_to_provider: Optional[bool] = None, send_email_to_provider: Optional[bool] = None, is_flexible: Optional[bool] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Message:
         """
-        Internal function for making the request to the API's sendInvoice endpoint.
+        Use this method to send invoices. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendinvoice
+
 
         
         Parameters:
@@ -2368,9 +2602,12 @@ class AsyncBot(BotBase):
         return self._send_invoice__process_result(result)
     # end def send_invoice
     
-    async def answer_shipping_query(self, shipping_query_id, ok, shipping_options=None, error_message=None):
+    async def answer_shipping_query(self, shipping_query_id: str, ok: bool, shipping_options: Optional[List[ShippingOption]] = None, error_message: Optional[str] = None) -> bool:
         """
-        Internal function for making the request to the API's answerShippingQuery endpoint.
+        If you sent an invoice requesting a shipping address and the parameter is_flexible was specified, the Bot API will send an Update with a shipping_query field to the bot. Use this method to reply to shipping queries. On success, True is returned.
+
+        https://core.telegram.org/bots/api#answershippingquery
+
 
         
         Parameters:
@@ -2399,9 +2636,12 @@ class AsyncBot(BotBase):
         return self._answer_shipping_query__process_result(result)
     # end def answer_shipping_query
     
-    async def answer_pre_checkout_query(self, pre_checkout_query_id, ok, error_message=None):
+    async def answer_pre_checkout_query(self, pre_checkout_query_id: str, ok: bool, error_message: Optional[str] = None) -> bool:
         """
-        Internal function for making the request to the API's answerPreCheckoutQuery endpoint.
+        Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an Update with the field pre_checkout_query. Use this method to respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.
+
+        https://core.telegram.org/bots/api#answerprecheckoutquery
+
 
         
         Parameters:
@@ -2427,9 +2667,13 @@ class AsyncBot(BotBase):
         return self._answer_pre_checkout_query__process_result(result)
     # end def answer_pre_checkout_query
     
-    async def set_passport_data_errors(self, user_id, errors):
+    async def set_passport_data_errors(self, user_id: int, errors: List[PassportElementError]) -> bool:
         """
-        Internal function for making the request to the API's setPassportDataErrors endpoint.
+        Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success.
+Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
+
+        https://core.telegram.org/bots/api#setpassportdataerrors
+
 
         
         Parameters:
@@ -2450,9 +2694,12 @@ class AsyncBot(BotBase):
         return self._set_passport_data_errors__process_result(result)
     # end def set_passport_data_errors
     
-    async def send_game(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    async def send_game(self, chat_id: int, game_short_name: str, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Message:
         """
-        Internal function for making the request to the API's sendGame endpoint.
+        Use this method to send a game. On success, the sent Message is returned.
+
+        https://core.telegram.org/bots/api#sendgame
+
 
         
         Parameters:
@@ -2487,9 +2734,12 @@ class AsyncBot(BotBase):
         return self._send_game__process_result(result)
     # end def send_game
     
-    async def set_game_score(self, user_id, score, force=None, disable_edit_message=None, chat_id=None, message_id=None, inline_message_id=None):
+    async def set_game_score(self, user_id: int, score: int, force: Optional[bool] = None, disable_edit_message: Optional[bool] = None, chat_id: Optional[int] = None, message_id: Optional[int] = None, inline_message_id: Optional[str] = None) -> Union[Message, bool]:
         """
-        Internal function for making the request to the API's setGameScore endpoint.
+        Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+
+        https://core.telegram.org/bots/api#setgamescore
+
 
         
         Parameters:
@@ -2527,9 +2777,15 @@ class AsyncBot(BotBase):
         return self._set_game_score__process_result(result)
     # end def set_game_score
     
-    async def get_game_high_scores(self, user_id, chat_id=None, message_id=None, inline_message_id=None):
+    async def get_game_high_scores(self, user_id: int, chat_id: Optional[int] = None, message_id: Optional[int] = None, inline_message_id: Optional[str] = None) -> List[GameHighScore]:
         """
-        Internal function for making the request to the API's getGameHighScores endpoint.
+        Use this method to get data for high score tables. Will return the score of the specified user and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
+
+This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+
+
+        https://core.telegram.org/bots/api#getgamehighscores
+
 
         
         Parameters:

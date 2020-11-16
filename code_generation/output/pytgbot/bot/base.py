@@ -248,7 +248,7 @@ class BotBase(object):
 
     # start of generated functions
     
-    def _get_updates__make_request(self):
+    def _get_updates__make_request(self, offset=None, limit=None, timeout=None, allowed_updates=None):
         """
         Internal function for making the request to the API's getUpdates endpoint.
 
@@ -280,7 +280,7 @@ class BotBase(object):
 
     def _get_updates__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getUpdates endpoint.
+        Internal function for processing the json data returned by the API's getUpdates endpoint.
 
         :return: An Array of Update objects is returned
         :rtype:  list of pytgbot.api_types.receivable.updates.Update
@@ -302,7 +302,7 @@ class BotBase(object):
         return result
     # end def _get_updates__process_result
     
-    def _set_webhook__make_request(self):
+    def _set_webhook__make_request(self, url, certificate=None, ip_address=None, max_connections=None, allowed_updates=None, drop_pending_updates=None):
         """
         Internal function for making the request to the API's setWebhook endpoint.
 
@@ -346,7 +346,7 @@ class BotBase(object):
 
     def _set_webhook__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setWebhook endpoint.
+        Internal function for processing the json data returned by the API's setWebhook endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -367,7 +367,7 @@ class BotBase(object):
         return result
     # end def _set_webhook__process_result
     
-    def _delete_webhook__make_request(self):
+    def _delete_webhook__make_request(self, drop_pending_updates=None):
         """
         Internal function for making the request to the API's deleteWebhook endpoint.
 
@@ -387,7 +387,7 @@ class BotBase(object):
 
     def _delete_webhook__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's deleteWebhook endpoint.
+        Internal function for processing the json data returned by the API's deleteWebhook endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -422,7 +422,7 @@ class BotBase(object):
 
     def _get_webhook_info__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getWebhookInfo endpoint.
+        Internal function for processing the json data returned by the API's getWebhookInfo endpoint.
 
         :return: On success, returns a WebhookInfo object
         :rtype:  pytgbot.api_types.receivable.updates.WebhookInfo
@@ -458,7 +458,7 @@ class BotBase(object):
 
     def _get_me__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getMe endpoint.
+        Internal function for processing the json data returned by the API's getMe endpoint.
 
         :return: Returns basic information about the bot in form of a User object
         :rtype:  pytgbot.api_types.receivable.peer.User
@@ -494,7 +494,7 @@ class BotBase(object):
 
     def _log_out__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's logOut endpoint.
+        Internal function for processing the json data returned by the API's logOut endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -515,7 +515,7 @@ class BotBase(object):
         return result
     # end def _log_out__process_result
     
-    def _send_message__make_request(self):
+    def _send_message__make_request(self, chat_id, text, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendMessage endpoint.
 
@@ -575,7 +575,7 @@ class BotBase(object):
 
     def _send_message__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendMessage endpoint.
+        Internal function for processing the json data returned by the API's sendMessage endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -597,7 +597,7 @@ class BotBase(object):
         return result
     # end def _send_message__process_result
     
-    def _forward_message__make_request(self):
+    def _forward_message__make_request(self, chat_id, from_chat_id, message_id, disable_notification=None):
         """
         Internal function for making the request to the API's forwardMessage endpoint.
 
@@ -632,7 +632,7 @@ class BotBase(object):
 
     def _forward_message__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's forwardMessage endpoint.
+        Internal function for processing the json data returned by the API's forwardMessage endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -654,7 +654,7 @@ class BotBase(object):
         return result
     # end def _forward_message__process_result
     
-    def _copy_message__make_request(self):
+    def _copy_message__make_request(self, chat_id, from_chat_id, message_id, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's copyMessage endpoint.
 
@@ -718,7 +718,7 @@ class BotBase(object):
 
     def _copy_message__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's copyMessage endpoint.
+        Internal function for processing the json data returned by the API's copyMessage endpoint.
 
         :return: Returns the MessageId of the sent message on success
         :rtype:  pytgbot.api_types.receivable.responses.MessageId
@@ -740,7 +740,7 @@ class BotBase(object):
         return result
     # end def _copy_message__process_result
     
-    def _send_photo__make_request(self):
+    def _send_photo__make_request(self, chat_id, photo, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendPhoto endpoint.
 
@@ -801,7 +801,7 @@ class BotBase(object):
 
     def _send_photo__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendPhoto endpoint.
+        Internal function for processing the json data returned by the API's sendPhoto endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -823,7 +823,7 @@ class BotBase(object):
         return result
     # end def _send_photo__process_result
     
-    def _send_audio__make_request(self):
+    def _send_audio__make_request(self, chat_id, audio, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendAudio endpoint.
 
@@ -900,7 +900,7 @@ class BotBase(object):
 
     def _send_audio__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendAudio endpoint.
+        Internal function for processing the json data returned by the API's sendAudio endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -922,7 +922,7 @@ class BotBase(object):
         return result
     # end def _send_audio__process_result
     
-    def _send_document__make_request(self):
+    def _send_document__make_request(self, chat_id, document, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendDocument endpoint.
 
@@ -991,7 +991,7 @@ class BotBase(object):
 
     def _send_document__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendDocument endpoint.
+        Internal function for processing the json data returned by the API's sendDocument endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -1013,7 +1013,7 @@ class BotBase(object):
         return result
     # end def _send_document__process_result
     
-    def _send_video__make_request(self):
+    def _send_video__make_request(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVideo endpoint.
 
@@ -1094,7 +1094,7 @@ class BotBase(object):
 
     def _send_video__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendVideo endpoint.
+        Internal function for processing the json data returned by the API's sendVideo endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -1116,7 +1116,7 @@ class BotBase(object):
         return result
     # end def _send_video__process_result
     
-    def _send_animation__make_request(self):
+    def _send_animation__make_request(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendAnimation endpoint.
 
@@ -1193,7 +1193,7 @@ class BotBase(object):
 
     def _send_animation__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendAnimation endpoint.
+        Internal function for processing the json data returned by the API's sendAnimation endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -1215,7 +1215,7 @@ class BotBase(object):
         return result
     # end def _send_animation__process_result
     
-    def _send_voice__make_request(self):
+    def _send_voice__make_request(self, chat_id, voice, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVoice endpoint.
 
@@ -1280,7 +1280,7 @@ class BotBase(object):
 
     def _send_voice__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendVoice endpoint.
+        Internal function for processing the json data returned by the API's sendVoice endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -1302,7 +1302,7 @@ class BotBase(object):
         return result
     # end def _send_voice__process_result
     
-    def _send_video_note__make_request(self):
+    def _send_video_note__make_request(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVideoNote endpoint.
 
@@ -1362,7 +1362,7 @@ class BotBase(object):
 
     def _send_video_note__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendVideoNote endpoint.
+        Internal function for processing the json data returned by the API's sendVideoNote endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -1384,7 +1384,7 @@ class BotBase(object):
         return result
     # end def _send_video_note__process_result
     
-    def _send_media_group__make_request(self):
+    def _send_media_group__make_request(self, chat_id, media, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None):
         """
         Internal function for making the request to the API's sendMediaGroup endpoint.
 
@@ -1424,7 +1424,7 @@ class BotBase(object):
 
     def _send_media_group__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendMediaGroup endpoint.
+        Internal function for processing the json data returned by the API's sendMediaGroup endpoint.
 
         :return: On success, an array of Messages that were sent is returned
         :rtype:  list of pytgbot.api_types.receivable.updates.Message
@@ -1446,7 +1446,7 @@ class BotBase(object):
         return result
     # end def _send_media_group__process_result
     
-    def _send_location__make_request(self):
+    def _send_location__make_request(self, chat_id, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendLocation endpoint.
 
@@ -1513,7 +1513,7 @@ class BotBase(object):
 
     def _send_location__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendLocation endpoint.
+        Internal function for processing the json data returned by the API's sendLocation endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -1535,7 +1535,7 @@ class BotBase(object):
         return result
     # end def _send_location__process_result
     
-    def _edit_message_live_location__make_request(self):
+    def _edit_message_live_location__make_request(self, latitude, longitude, chat_id=None, message_id=None, inline_message_id=None, horizontal_accuracy=None, heading=None, proximity_alert_radius=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageLiveLocation endpoint.
 
@@ -1591,7 +1591,7 @@ class BotBase(object):
 
     def _edit_message_live_location__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's editMessageLiveLocation endpoint.
+        Internal function for processing the json data returned by the API's editMessageLiveLocation endpoint.
 
         :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
@@ -1619,7 +1619,7 @@ class BotBase(object):
         return result
     # end def _edit_message_live_location__process_result
     
-    def _stop_message_live_location__make_request(self):
+    def _stop_message_live_location__make_request(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Internal function for making the request to the API's stopMessageLiveLocation endpoint.
 
@@ -1652,7 +1652,7 @@ class BotBase(object):
 
     def _stop_message_live_location__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's stopMessageLiveLocation endpoint.
+        Internal function for processing the json data returned by the API's stopMessageLiveLocation endpoint.
 
         :return: On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
@@ -1680,7 +1680,7 @@ class BotBase(object):
         return result
     # end def _stop_message_live_location__process_result
     
-    def _send_venue__make_request(self):
+    def _send_venue__make_request(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVenue endpoint.
 
@@ -1755,7 +1755,7 @@ class BotBase(object):
 
     def _send_venue__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendVenue endpoint.
+        Internal function for processing the json data returned by the API's sendVenue endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -1777,7 +1777,7 @@ class BotBase(object):
         return result
     # end def _send_venue__process_result
     
-    def _send_contact__make_request(self):
+    def _send_contact__make_request(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendContact endpoint.
 
@@ -1836,7 +1836,7 @@ class BotBase(object):
 
     def _send_contact__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendContact endpoint.
+        Internal function for processing the json data returned by the API's sendContact endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -1858,7 +1858,7 @@ class BotBase(object):
         return result
     # end def _send_contact__process_result
     
-    def _send_poll__make_request(self):
+    def _send_poll__make_request(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendPoll endpoint.
 
@@ -1950,7 +1950,7 @@ class BotBase(object):
 
     def _send_poll__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendPoll endpoint.
+        Internal function for processing the json data returned by the API's sendPoll endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -1972,7 +1972,7 @@ class BotBase(object):
         return result
     # end def _send_poll__process_result
     
-    def _send_dice__make_request(self):
+    def _send_dice__make_request(self, chat_id, emoji=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendDice endpoint.
 
@@ -2019,7 +2019,7 @@ class BotBase(object):
 
     def _send_dice__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendDice endpoint.
+        Internal function for processing the json data returned by the API's sendDice endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -2041,7 +2041,7 @@ class BotBase(object):
         return result
     # end def _send_dice__process_result
     
-    def _send_chat_action__make_request(self):
+    def _send_chat_action__make_request(self, chat_id, action):
         """
         Internal function for making the request to the API's sendChatAction endpoint.
 
@@ -2066,7 +2066,7 @@ class BotBase(object):
 
     def _send_chat_action__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendChatAction endpoint.
+        Internal function for processing the json data returned by the API's sendChatAction endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2087,7 +2087,7 @@ class BotBase(object):
         return result
     # end def _send_chat_action__process_result
     
-    def _get_user_profile_photos__make_request(self):
+    def _get_user_profile_photos__make_request(self, user_id, offset=None, limit=None):
         """
         Internal function for making the request to the API's getUserProfilePhotos endpoint.
 
@@ -2118,7 +2118,7 @@ class BotBase(object):
 
     def _get_user_profile_photos__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getUserProfilePhotos endpoint.
+        Internal function for processing the json data returned by the API's getUserProfilePhotos endpoint.
 
         :return: Returns a UserProfilePhotos object
         :rtype:  pytgbot.api_types.receivable.media.UserProfilePhotos
@@ -2140,7 +2140,7 @@ class BotBase(object):
         return result
     # end def _get_user_profile_photos__process_result
     
-    def _get_file__make_request(self):
+    def _get_file__make_request(self, file_id):
         """
         Internal function for making the request to the API's getFile endpoint.
 
@@ -2161,7 +2161,7 @@ class BotBase(object):
 
     def _get_file__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getFile endpoint.
+        Internal function for processing the json data returned by the API's getFile endpoint.
 
         :return: On success, a File object is returned
         :rtype:  pytgbot.api_types.receivable.media.File
@@ -2183,7 +2183,7 @@ class BotBase(object):
         return result
     # end def _get_file__process_result
     
-    def _kick_chat_member__make_request(self):
+    def _kick_chat_member__make_request(self, chat_id, user_id, until_date=None):
         """
         Internal function for making the request to the API's kickChatMember endpoint.
 
@@ -2214,7 +2214,7 @@ class BotBase(object):
 
     def _kick_chat_member__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's kickChatMember endpoint.
+        Internal function for processing the json data returned by the API's kickChatMember endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2235,7 +2235,7 @@ class BotBase(object):
         return result
     # end def _kick_chat_member__process_result
     
-    def _unban_chat_member__make_request(self):
+    def _unban_chat_member__make_request(self, chat_id, user_id, only_if_banned=None):
         """
         Internal function for making the request to the API's unbanChatMember endpoint.
 
@@ -2266,7 +2266,7 @@ class BotBase(object):
 
     def _unban_chat_member__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's unbanChatMember endpoint.
+        Internal function for processing the json data returned by the API's unbanChatMember endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2287,7 +2287,7 @@ class BotBase(object):
         return result
     # end def _unban_chat_member__process_result
     
-    def _restrict_chat_member__make_request(self):
+    def _restrict_chat_member__make_request(self, chat_id, user_id, permissions, until_date=None):
         """
         Internal function for making the request to the API's restrictChatMember endpoint.
 
@@ -2323,7 +2323,7 @@ class BotBase(object):
 
     def _restrict_chat_member__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's restrictChatMember endpoint.
+        Internal function for processing the json data returned by the API's restrictChatMember endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2344,7 +2344,7 @@ class BotBase(object):
         return result
     # end def _restrict_chat_member__process_result
     
-    def _promote_chat_member__make_request(self):
+    def _promote_chat_member__make_request(self, chat_id, user_id, is_anonymous=None, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None):
         """
         Internal function for making the request to the API's promoteChatMember endpoint.
 
@@ -2407,7 +2407,7 @@ class BotBase(object):
 
     def _promote_chat_member__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's promoteChatMember endpoint.
+        Internal function for processing the json data returned by the API's promoteChatMember endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2428,7 +2428,7 @@ class BotBase(object):
         return result
     # end def _promote_chat_member__process_result
     
-    def _set_chat_administrator_custom_title__make_request(self):
+    def _set_chat_administrator_custom_title__make_request(self, chat_id, user_id, custom_title):
         """
         Internal function for making the request to the API's setChatAdministratorCustomTitle endpoint.
 
@@ -2457,7 +2457,7 @@ class BotBase(object):
 
     def _set_chat_administrator_custom_title__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setChatAdministratorCustomTitle endpoint.
+        Internal function for processing the json data returned by the API's setChatAdministratorCustomTitle endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2478,7 +2478,7 @@ class BotBase(object):
         return result
     # end def _set_chat_administrator_custom_title__process_result
     
-    def _set_chat_permissions__make_request(self):
+    def _set_chat_permissions__make_request(self, chat_id, permissions):
         """
         Internal function for making the request to the API's setChatPermissions endpoint.
 
@@ -2504,7 +2504,7 @@ class BotBase(object):
 
     def _set_chat_permissions__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setChatPermissions endpoint.
+        Internal function for processing the json data returned by the API's setChatPermissions endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2525,7 +2525,7 @@ class BotBase(object):
         return result
     # end def _set_chat_permissions__process_result
     
-    def _export_chat_invite_link__make_request(self):
+    def _export_chat_invite_link__make_request(self, chat_id):
         """
         Internal function for making the request to the API's exportChatInviteLink endpoint.
 
@@ -2546,7 +2546,7 @@ class BotBase(object):
 
     def _export_chat_invite_link__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's exportChatInviteLink endpoint.
+        Internal function for processing the json data returned by the API's exportChatInviteLink endpoint.
 
         :return: Returns the new invite link as String on success
         :rtype:  str|unicode
@@ -2567,7 +2567,7 @@ class BotBase(object):
         return result
     # end def _export_chat_invite_link__process_result
     
-    def _set_chat_photo__make_request(self):
+    def _set_chat_photo__make_request(self, chat_id, photo):
         """
         Internal function for making the request to the API's setChatPhoto endpoint.
 
@@ -2593,7 +2593,7 @@ class BotBase(object):
 
     def _set_chat_photo__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setChatPhoto endpoint.
+        Internal function for processing the json data returned by the API's setChatPhoto endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2614,7 +2614,7 @@ class BotBase(object):
         return result
     # end def _set_chat_photo__process_result
     
-    def _delete_chat_photo__make_request(self):
+    def _delete_chat_photo__make_request(self, chat_id):
         """
         Internal function for making the request to the API's deleteChatPhoto endpoint.
 
@@ -2635,7 +2635,7 @@ class BotBase(object):
 
     def _delete_chat_photo__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's deleteChatPhoto endpoint.
+        Internal function for processing the json data returned by the API's deleteChatPhoto endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2656,7 +2656,7 @@ class BotBase(object):
         return result
     # end def _delete_chat_photo__process_result
     
-    def _set_chat_title__make_request(self):
+    def _set_chat_title__make_request(self, chat_id, title):
         """
         Internal function for making the request to the API's setChatTitle endpoint.
 
@@ -2681,7 +2681,7 @@ class BotBase(object):
 
     def _set_chat_title__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setChatTitle endpoint.
+        Internal function for processing the json data returned by the API's setChatTitle endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2702,7 +2702,7 @@ class BotBase(object):
         return result
     # end def _set_chat_title__process_result
     
-    def _set_chat_description__make_request(self):
+    def _set_chat_description__make_request(self, chat_id, description=None):
         """
         Internal function for making the request to the API's setChatDescription endpoint.
 
@@ -2729,7 +2729,7 @@ class BotBase(object):
 
     def _set_chat_description__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setChatDescription endpoint.
+        Internal function for processing the json data returned by the API's setChatDescription endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2750,7 +2750,7 @@ class BotBase(object):
         return result
     # end def _set_chat_description__process_result
     
-    def _pin_chat_message__make_request(self):
+    def _pin_chat_message__make_request(self, chat_id, message_id, disable_notification=None):
         """
         Internal function for making the request to the API's pinChatMessage endpoint.
 
@@ -2781,7 +2781,7 @@ class BotBase(object):
 
     def _pin_chat_message__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's pinChatMessage endpoint.
+        Internal function for processing the json data returned by the API's pinChatMessage endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2802,7 +2802,7 @@ class BotBase(object):
         return result
     # end def _pin_chat_message__process_result
     
-    def _unpin_chat_message__make_request(self):
+    def _unpin_chat_message__make_request(self, chat_id, message_id=None):
         """
         Internal function for making the request to the API's unpinChatMessage endpoint.
 
@@ -2829,7 +2829,7 @@ class BotBase(object):
 
     def _unpin_chat_message__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's unpinChatMessage endpoint.
+        Internal function for processing the json data returned by the API's unpinChatMessage endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2850,7 +2850,7 @@ class BotBase(object):
         return result
     # end def _unpin_chat_message__process_result
     
-    def _unpin_all_chat_messages__make_request(self):
+    def _unpin_all_chat_messages__make_request(self, chat_id):
         """
         Internal function for making the request to the API's unpinAllChatMessages endpoint.
 
@@ -2871,7 +2871,7 @@ class BotBase(object):
 
     def _unpin_all_chat_messages__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's unpinAllChatMessages endpoint.
+        Internal function for processing the json data returned by the API's unpinAllChatMessages endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2892,7 +2892,7 @@ class BotBase(object):
         return result
     # end def _unpin_all_chat_messages__process_result
     
-    def _leave_chat__make_request(self):
+    def _leave_chat__make_request(self, chat_id):
         """
         Internal function for making the request to the API's leaveChat endpoint.
 
@@ -2913,7 +2913,7 @@ class BotBase(object):
 
     def _leave_chat__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's leaveChat endpoint.
+        Internal function for processing the json data returned by the API's leaveChat endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2934,7 +2934,7 @@ class BotBase(object):
         return result
     # end def _leave_chat__process_result
     
-    def _get_chat__make_request(self):
+    def _get_chat__make_request(self, chat_id):
         """
         Internal function for making the request to the API's getChat endpoint.
 
@@ -2955,7 +2955,7 @@ class BotBase(object):
 
     def _get_chat__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getChat endpoint.
+        Internal function for processing the json data returned by the API's getChat endpoint.
 
         :return: Returns a Chat object on success
         :rtype:  pytgbot.api_types.receivable.peer.Chat
@@ -2977,7 +2977,7 @@ class BotBase(object):
         return result
     # end def _get_chat__process_result
     
-    def _get_chat_administrators__make_request(self):
+    def _get_chat_administrators__make_request(self, chat_id):
         """
         Internal function for making the request to the API's getChatAdministrators endpoint.
 
@@ -2998,7 +2998,7 @@ class BotBase(object):
 
     def _get_chat_administrators__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getChatAdministrators endpoint.
+        Internal function for processing the json data returned by the API's getChatAdministrators endpoint.
 
         :return: On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots
         :rtype:  list of pytgbot.api_types.receivable.peer.ChatMember
@@ -3020,7 +3020,7 @@ class BotBase(object):
         return result
     # end def _get_chat_administrators__process_result
     
-    def _get_chat_members_count__make_request(self):
+    def _get_chat_members_count__make_request(self, chat_id):
         """
         Internal function for making the request to the API's getChatMembersCount endpoint.
 
@@ -3041,7 +3041,7 @@ class BotBase(object):
 
     def _get_chat_members_count__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getChatMembersCount endpoint.
+        Internal function for processing the json data returned by the API's getChatMembersCount endpoint.
 
         :return: Returns Int on success
         :rtype:  int
@@ -3062,7 +3062,7 @@ class BotBase(object):
         return result
     # end def _get_chat_members_count__process_result
     
-    def _get_chat_member__make_request(self):
+    def _get_chat_member__make_request(self, chat_id, user_id):
         """
         Internal function for making the request to the API's getChatMember endpoint.
 
@@ -3087,7 +3087,7 @@ class BotBase(object):
 
     def _get_chat_member__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getChatMember endpoint.
+        Internal function for processing the json data returned by the API's getChatMember endpoint.
 
         :return: Returns a ChatMember object on success
         :rtype:  pytgbot.api_types.receivable.peer.ChatMember
@@ -3109,7 +3109,7 @@ class BotBase(object):
         return result
     # end def _get_chat_member__process_result
     
-    def _set_chat_sticker_set__make_request(self):
+    def _set_chat_sticker_set__make_request(self, chat_id, sticker_set_name):
         """
         Internal function for making the request to the API's setChatStickerSet endpoint.
 
@@ -3134,7 +3134,7 @@ class BotBase(object):
 
     def _set_chat_sticker_set__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setChatStickerSet endpoint.
+        Internal function for processing the json data returned by the API's setChatStickerSet endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -3155,7 +3155,7 @@ class BotBase(object):
         return result
     # end def _set_chat_sticker_set__process_result
     
-    def _delete_chat_sticker_set__make_request(self):
+    def _delete_chat_sticker_set__make_request(self, chat_id):
         """
         Internal function for making the request to the API's deleteChatStickerSet endpoint.
 
@@ -3176,7 +3176,7 @@ class BotBase(object):
 
     def _delete_chat_sticker_set__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's deleteChatStickerSet endpoint.
+        Internal function for processing the json data returned by the API's deleteChatStickerSet endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -3197,7 +3197,7 @@ class BotBase(object):
         return result
     # end def _delete_chat_sticker_set__process_result
     
-    def _answer_callback_query__make_request(self):
+    def _answer_callback_query__make_request(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
         """
         Internal function for making the request to the API's answerCallbackQuery endpoint.
 
@@ -3236,7 +3236,7 @@ class BotBase(object):
 
     def _answer_callback_query__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's answerCallbackQuery endpoint.
+        Internal function for processing the json data returned by the API's answerCallbackQuery endpoint.
 
         :return: On success, True is returned
         :rtype:  bool
@@ -3257,7 +3257,7 @@ class BotBase(object):
         return result
     # end def _answer_callback_query__process_result
     
-    def _set_my_commands__make_request(self):
+    def _set_my_commands__make_request(self, commands):
         """
         Internal function for making the request to the API's setMyCommands endpoint.
 
@@ -3279,7 +3279,7 @@ class BotBase(object):
 
     def _set_my_commands__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setMyCommands endpoint.
+        Internal function for processing the json data returned by the API's setMyCommands endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -3314,7 +3314,7 @@ class BotBase(object):
 
     def _get_my_commands__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getMyCommands endpoint.
+        Internal function for processing the json data returned by the API's getMyCommands endpoint.
 
         :return: On success, an array of the commands is returned
         :rtype:  list of pytgbot.api_types.sendable.command.BotCommand
@@ -3336,7 +3336,7 @@ class BotBase(object):
         return result
     # end def _get_my_commands__process_result
     
-    def _edit_message_text__make_request(self):
+    def _edit_message_text__make_request(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None, entities=None, disable_web_page_preview=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageText endpoint.
 
@@ -3389,7 +3389,7 @@ class BotBase(object):
 
     def _edit_message_text__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's editMessageText endpoint.
+        Internal function for processing the json data returned by the API's editMessageText endpoint.
 
         :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
@@ -3417,7 +3417,7 @@ class BotBase(object):
         return result
     # end def _edit_message_text__process_result
     
-    def _edit_message_caption__make_request(self):
+    def _edit_message_caption__make_request(self, chat_id=None, message_id=None, inline_message_id=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageCaption endpoint.
 
@@ -3463,7 +3463,7 @@ class BotBase(object):
 
     def _edit_message_caption__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's editMessageCaption endpoint.
+        Internal function for processing the json data returned by the API's editMessageCaption endpoint.
 
         :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
@@ -3491,7 +3491,7 @@ class BotBase(object):
         return result
     # end def _edit_message_caption__process_result
     
-    def _edit_message_media__make_request(self):
+    def _edit_message_media__make_request(self, media, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageMedia endpoint.
 
@@ -3532,7 +3532,7 @@ class BotBase(object):
 
     def _edit_message_media__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's editMessageMedia endpoint.
+        Internal function for processing the json data returned by the API's editMessageMedia endpoint.
 
         :return: On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
@@ -3560,7 +3560,7 @@ class BotBase(object):
         return result
     # end def _edit_message_media__process_result
     
-    def _edit_message_reply_markup__make_request(self):
+    def _edit_message_reply_markup__make_request(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageReplyMarkup endpoint.
 
@@ -3593,7 +3593,7 @@ class BotBase(object):
 
     def _edit_message_reply_markup__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's editMessageReplyMarkup endpoint.
+        Internal function for processing the json data returned by the API's editMessageReplyMarkup endpoint.
 
         :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
@@ -3621,7 +3621,7 @@ class BotBase(object):
         return result
     # end def _edit_message_reply_markup__process_result
     
-    def _stop_poll__make_request(self):
+    def _stop_poll__make_request(self, chat_id, message_id, reply_markup=None):
         """
         Internal function for making the request to the API's stopPoll endpoint.
 
@@ -3653,7 +3653,7 @@ class BotBase(object):
 
     def _stop_poll__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's stopPoll endpoint.
+        Internal function for processing the json data returned by the API's stopPoll endpoint.
 
         :return: On success, the stopped Poll with the final results is returned
         :rtype:  pytgbot.api_types.receivable.media.Poll
@@ -3675,7 +3675,7 @@ class BotBase(object):
         return result
     # end def _stop_poll__process_result
     
-    def _delete_message__make_request(self):
+    def _delete_message__make_request(self, chat_id, message_id):
         """
         Internal function for making the request to the API's deleteMessage endpoint.
 
@@ -3700,7 +3700,7 @@ class BotBase(object):
 
     def _delete_message__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's deleteMessage endpoint.
+        Internal function for processing the json data returned by the API's deleteMessage endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -3721,7 +3721,7 @@ class BotBase(object):
         return result
     # end def _delete_message__process_result
     
-    def _send_sticker__make_request(self):
+    def _send_sticker__make_request(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendSticker endpoint.
 
@@ -3769,7 +3769,7 @@ class BotBase(object):
 
     def _send_sticker__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendSticker endpoint.
+        Internal function for processing the json data returned by the API's sendSticker endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -3791,7 +3791,7 @@ class BotBase(object):
         return result
     # end def _send_sticker__process_result
     
-    def _get_sticker_set__make_request(self):
+    def _get_sticker_set__make_request(self, name):
         """
         Internal function for making the request to the API's getStickerSet endpoint.
 
@@ -3812,7 +3812,7 @@ class BotBase(object):
 
     def _get_sticker_set__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getStickerSet endpoint.
+        Internal function for processing the json data returned by the API's getStickerSet endpoint.
 
         :return: On success, a StickerSet object is returned
         :rtype:  pytgbot.api_types.receivable.stickers.StickerSet
@@ -3834,7 +3834,7 @@ class BotBase(object):
         return result
     # end def _get_sticker_set__process_result
     
-    def _upload_sticker_file__make_request(self):
+    def _upload_sticker_file__make_request(self, user_id, png_sticker):
         """
         Internal function for making the request to the API's uploadStickerFile endpoint.
 
@@ -3860,7 +3860,7 @@ class BotBase(object):
 
     def _upload_sticker_file__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's uploadStickerFile endpoint.
+        Internal function for processing the json data returned by the API's uploadStickerFile endpoint.
 
         :return: Returns the uploaded File on success
         :rtype:  pytgbot.api_types.receivable.media.File
@@ -3882,7 +3882,7 @@ class BotBase(object):
         return result
     # end def _upload_sticker_file__process_result
     
-    def _create_new_sticker_set__make_request(self):
+    def _create_new_sticker_set__make_request(self, user_id, name, title, emojis, png_sticker=None, tgs_sticker=None, contains_masks=None, mask_position=None):
         """
         Internal function for making the request to the API's createNewStickerSet endpoint.
 
@@ -3935,7 +3935,7 @@ class BotBase(object):
 
     def _create_new_sticker_set__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's createNewStickerSet endpoint.
+        Internal function for processing the json data returned by the API's createNewStickerSet endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -3956,7 +3956,7 @@ class BotBase(object):
         return result
     # end def _create_new_sticker_set__process_result
     
-    def _add_sticker_to_set__make_request(self):
+    def _add_sticker_to_set__make_request(self, user_id, name, emojis, png_sticker=None, tgs_sticker=None, mask_position=None):
         """
         Internal function for making the request to the API's addStickerToSet endpoint.
 
@@ -4001,7 +4001,7 @@ class BotBase(object):
 
     def _add_sticker_to_set__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's addStickerToSet endpoint.
+        Internal function for processing the json data returned by the API's addStickerToSet endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -4022,7 +4022,7 @@ class BotBase(object):
         return result
     # end def _add_sticker_to_set__process_result
     
-    def _set_sticker_position_in_set__make_request(self):
+    def _set_sticker_position_in_set__make_request(self, sticker, position):
         """
         Internal function for making the request to the API's setStickerPositionInSet endpoint.
 
@@ -4047,7 +4047,7 @@ class BotBase(object):
 
     def _set_sticker_position_in_set__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setStickerPositionInSet endpoint.
+        Internal function for processing the json data returned by the API's setStickerPositionInSet endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -4068,7 +4068,7 @@ class BotBase(object):
         return result
     # end def _set_sticker_position_in_set__process_result
     
-    def _delete_sticker_from_set__make_request(self):
+    def _delete_sticker_from_set__make_request(self, sticker):
         """
         Internal function for making the request to the API's deleteStickerFromSet endpoint.
 
@@ -4089,7 +4089,7 @@ class BotBase(object):
 
     def _delete_sticker_from_set__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's deleteStickerFromSet endpoint.
+        Internal function for processing the json data returned by the API's deleteStickerFromSet endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -4110,7 +4110,7 @@ class BotBase(object):
         return result
     # end def _delete_sticker_from_set__process_result
     
-    def _set_sticker_set_thumb__make_request(self):
+    def _set_sticker_set_thumb__make_request(self, name, user_id, thumb=None):
         """
         Internal function for making the request to the API's setStickerSetThumb endpoint.
 
@@ -4142,7 +4142,7 @@ class BotBase(object):
 
     def _set_sticker_set_thumb__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setStickerSetThumb endpoint.
+        Internal function for processing the json data returned by the API's setStickerSetThumb endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -4163,7 +4163,7 @@ class BotBase(object):
         return result
     # end def _set_sticker_set_thumb__process_result
     
-    def _answer_inline_query__make_request(self):
+    def _answer_inline_query__make_request(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
         """
         Internal function for making the request to the API's answerInlineQuery endpoint.
 
@@ -4211,7 +4211,7 @@ class BotBase(object):
 
     def _answer_inline_query__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's answerInlineQuery endpoint.
+        Internal function for processing the json data returned by the API's answerInlineQuery endpoint.
 
         :return: On success, True is returned
         :rtype:  bool
@@ -4232,7 +4232,7 @@ class BotBase(object):
         return result
     # end def _answer_inline_query__process_result
     
-    def _send_invoice__make_request(self):
+    def _send_invoice__make_request(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendInvoice endpoint.
 
@@ -4349,7 +4349,7 @@ class BotBase(object):
 
     def _send_invoice__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendInvoice endpoint.
+        Internal function for processing the json data returned by the API's sendInvoice endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -4371,7 +4371,7 @@ class BotBase(object):
         return result
     # end def _send_invoice__process_result
     
-    def _answer_shipping_query__make_request(self):
+    def _answer_shipping_query__make_request(self, shipping_query_id, ok, shipping_options=None, error_message=None):
         """
         Internal function for making the request to the API's answerShippingQuery endpoint.
 
@@ -4407,7 +4407,7 @@ class BotBase(object):
 
     def _answer_shipping_query__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's answerShippingQuery endpoint.
+        Internal function for processing the json data returned by the API's answerShippingQuery endpoint.
 
         :return: On success, True is returned
         :rtype:  bool
@@ -4428,7 +4428,7 @@ class BotBase(object):
         return result
     # end def _answer_shipping_query__process_result
     
-    def _answer_pre_checkout_query__make_request(self):
+    def _answer_pre_checkout_query__make_request(self, pre_checkout_query_id, ok, error_message=None):
         """
         Internal function for making the request to the API's answerPreCheckoutQuery endpoint.
 
@@ -4459,7 +4459,7 @@ class BotBase(object):
 
     def _answer_pre_checkout_query__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's answerPreCheckoutQuery endpoint.
+        Internal function for processing the json data returned by the API's answerPreCheckoutQuery endpoint.
 
         :return: On success, True is returned
         :rtype:  bool
@@ -4480,7 +4480,7 @@ class BotBase(object):
         return result
     # end def _answer_pre_checkout_query__process_result
     
-    def _set_passport_data_errors__make_request(self):
+    def _set_passport_data_errors__make_request(self, user_id, errors):
         """
         Internal function for making the request to the API's setPassportDataErrors endpoint.
 
@@ -4506,7 +4506,7 @@ class BotBase(object):
 
     def _set_passport_data_errors__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setPassportDataErrors endpoint.
+        Internal function for processing the json data returned by the API's setPassportDataErrors endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -4527,7 +4527,7 @@ class BotBase(object):
         return result
     # end def _set_passport_data_errors__process_result
     
-    def _send_game__make_request(self):
+    def _send_game__make_request(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendGame endpoint.
 
@@ -4571,7 +4571,7 @@ class BotBase(object):
 
     def _send_game__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's sendGame endpoint.
+        Internal function for processing the json data returned by the API's sendGame endpoint.
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
@@ -4593,7 +4593,7 @@ class BotBase(object):
         return result
     # end def _send_game__process_result
     
-    def _set_game_score__make_request(self):
+    def _set_game_score__make_request(self, user_id, score, force=None, disable_edit_message=None, chat_id=None, message_id=None, inline_message_id=None):
         """
         Internal function for making the request to the API's setGameScore endpoint.
 
@@ -4640,7 +4640,7 @@ class BotBase(object):
 
     def _set_game_score__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's setGameScore endpoint.
+        Internal function for processing the json data returned by the API's setGameScore endpoint.
 
         :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
@@ -4668,7 +4668,7 @@ class BotBase(object):
         return result
     # end def _set_game_score__process_result
     
-    def _get_game_high_scores__make_request(self):
+    def _get_game_high_scores__make_request(self, user_id, chat_id=None, message_id=None, inline_message_id=None):
         """
         Internal function for making the request to the API's getGameHighScores endpoint.
 
@@ -4703,7 +4703,7 @@ class BotBase(object):
 
     def _get_game_high_scores__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's getGameHighScores endpoint.
+        Internal function for processing the json data returned by the API's getGameHighScores endpoint.
 
         :return: On success, returns an Array of GameHighScore objects
         :rtype:  list of pytgbot.api_types.receivable.game.GameHighScore
