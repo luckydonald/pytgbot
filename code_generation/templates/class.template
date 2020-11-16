@@ -40,7 +40,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
         {{ self.class_docstring()|indent -}}
         """{% endif %}
-        super({{ clazz.clazz }}, self).__init__()
+        super({{ clazz.clazz }}, self).__init__({%- for variable in clazz.variables if clazz.parent_clazz_has_same_variable(variable) %}{{ variable.value_to_set }}{% if not loop.last %}, {% endif %}{%- endfor %})
 
         {%- block imports_block -%}
         {%- if clazz.imports %}
@@ -49,29 +49,32 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% endfor -%}
         {% endif -%}
         {%- endblock -%}
-        {% for variable in clazz.variables -%}
-        {% if not variable.is_fixed_value %}{#
+        {% for variable in clazz.variables %}{#
+        #}{% if not variable.is_fixed_value and not clazz.parent_clazz_has_same_variable(variable) %}{#
         #}{% if variable.optional %}
-        assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
-        {% if variable.always_is_value -%}
+        assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}"){#
+        #}{% if variable.always_is_value %}
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
             raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
-        # end if
-        {%- endif -%}
-        {%- else %}
-        assert_type_or_raise({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
-        {% if variable.always_is_value -%}
+        # end if{#
+        #}{% endif %}{#
+        #}{% else %}
+        assert_type_or_raise({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}"){#
+        #}{% if variable.always_is_value %}
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
             raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
-        # end if
-        {%- endif %}
-        {%- endif -%}
-        {% else %}{# forces linebreak #}
-        {% endif -%}
-        self.{{ variable.name }} = {{ variable.value_to_set }}
-        {%- if not loop.last %}
-        {% endif -%}
-        {% endfor %}{% if not is_sendable %}
+        # end if{#
+        #}{% endif %}{#
+        #}{% endif %}{#
+        #}{% endif %}{#
+        #}{% if clazz.parent_clazz_has_same_variable(variable) %}
+        # {{ variable.name.__repr__() }} is set by {{ clazz.parent_clazz.string }} base class{#
+        #}{% else %}
+        self.{{ variable.name }} = {{ variable.value_to_set }}{#
+        #}{% endif %}{#
+        #}{% if not loop.last %}{#
+        #}{% endif %}{#
+        #}{% endfor %}{% if not is_sendable %}
 
         self._raw = _raw{% endif %}{# not is_sendable #}
     {# force line tabs -#}
