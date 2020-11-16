@@ -553,7 +553,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             ],
             optional=True,
             default=None,
-            description='Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing',
+            description='Optional. Caption of the media to be sent, 0-1024 characters after entities parsing',
         ),
         Variable(
             api_name='parse_mode',
