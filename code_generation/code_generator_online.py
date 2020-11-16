@@ -453,7 +453,9 @@ def preprocess_results(results: List[Union[Clazz, Function]], additional_items: 
     clazzes_by_name: Dict[str, Clazz] = {}  # "Class": Class
 
     for other in additional_items:
-        clazzes_by_name[other.clazz] = other
+        if isinstance(other, Clazz):
+            clazzes_by_name[other.clazz] = other
+        # end if
     # end for
     for result in results:
         if isinstance(result, Clazz):
@@ -584,6 +586,7 @@ def safe_to_file(folder, results):
     clazzes: Dict[str, List[Clazz]] = {}  # "filepath": [Class, Class, ...]
     all_the_clazzes = []
     custom_classes = {}  # "filepath": [Class, Class, ...]
+    all_the_custom_clazzes = []  # actually only used to call preprocess_results with all the items. They will be modified in place anyway.
     for import_path, result in CUSTOM_CLASSES.items():
         # result.import_path = result.calculate_import_path()
         result.filepath = result.calculate_filepath(folder)
@@ -597,7 +600,10 @@ def safe_to_file(folder, results):
         # end if
         clazzes[file_path].append(result)
         all_the_clazzes.append(result)
+        all_the_custom_clazzes.append(result)
     # end def
+
+    _ = preprocess_results(all_the_custom_clazzes, additional_items=results)
 
     # split results into functions and classes
     for result in results:
