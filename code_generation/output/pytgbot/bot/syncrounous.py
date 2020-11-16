@@ -14,51 +14,155 @@ from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types.sendable.inline import InlineQueryResult
 from ..api_types import from_array_list
 
+from .base import BotBase
+
 
 # sync imports
 import requests
 
 
-
 __author__ = 'luckydonald'
-__all__ = ["Bot", "SyncBot"]
+__all__ = ["SyncBot", "Bot"]
 
 logger = logging.getLogger(__name__)
 
 
-class SyncBot(object):
-    _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # you shouldn't change that.
+class SyncBot(BotBase):
+    def send_msg(self, *args, **kwargs):
+        """ alias to :func:`send_message` """
+        return self.send_message(*args, **kwargs)
+    # end def send_msg
 
-    def __init__(self, api_key, return_python_objects=True):
+    def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
-        A Bot instance. From here you can call all the functions.
-        The api key can be optained from @BotFather, see https://core.telegram.org/bots#6-botfather
+        Send a request to the api.
 
-        :param api_key: The API key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
-        :type  api_key: str
+        If the bot is set to return the json objects, it will look like this:
 
-        :param return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects. Default: `True`
-        :type  return_python_objects: bool
+        ```json
+        {
+            "ok": bool,
+            "result": {...},
+            # optionally present:
+            "description": "human-readable description of the result",
+            "error_code": int
+        }
+        ```
+
+        :param command: The Url command parameter
+        :type  command: str
+
+        :param request_timeout: When the request should time out. Default: `None`
+        :type  request_timeout: int
+
+        :param files: if it needs to send files.
+
+        :param use_long_polling: if it should use long polling. Default: `False`
+                                (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
+        :type  use_long_polling: bool
+
+        :param query: all the other `**kwargs` will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
-        if api_key is None or not api_key:
-            raise ValueError("No api_key given.")
-        self.api_key = api_key
-        self.return_python_objects = return_python_objects
-        self._last_update = datetime.now()
-        self._id = None        # will be filled when using the property .id or .username, or when calling ._load_info()
-        self._username = None  # will be filled when using the property .id or .username, or when calling ._load_info()
-    # end def __init__
+        import requests
+        
+
+        url, params = self._prepare_request(command, query)
+        r = requests.post(url, params=params, files=files, stream=use_long_polling,
+                          verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+                          timeout=request_timeout)
+        return self._postprocess_request(r)
+    # end def do
+
+    def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
+        """
+        :param file_param_name: For what field the file should be uploaded.
+        :type  file_param_name: str
+
+        :param value: File to send. You can either pass a file_id as String to resend a file
+                      file that is already on the Telegram servers, or upload a new file,
+                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
+        :type  value: pytgbot.api_types.sendable.files.InputFile | str
+
+        :param _command: Overwrite the sended command.
+                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
+
+        :param kwargs: will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+
+        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
+        """
+        from ..api_types.sendable.files import InputFile
+        from luckydonaldUtils.encoding import unicode_type
+        from luckydonaldUtils.encoding import to_native as n
+
+        if isinstance(value, str):
+            kwargs[file_param_name] = str(value)
+        elif isinstance(value, unicode_type):
+            kwargs[file_param_name] = n(value)
+        elif isinstance(value, InputFile):
+            kwargs["files"] = value.get_request_files(file_param_name)
+        else:
+            raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
+                key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
+        # end if
+        if not _command:
+            # command as camelCase  # "voice_note" -> "sendVoiceNote"  # https://stackoverflow.com/a/10984923/3423324
+            command = re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), "send_" + file_param_name)
+        else:
+            command = _command
+        # end def
+        return self.do(command, **kwargs)
+    # end def _do_fileupload
+
+    def _load_info(self):
+        """
+        This functions stores the id and the username of the bot.
+        Called by `.username` and `.id` properties.
+        :return:
+        """
+        myself = self.get_me()
+        if self.return_python_objects:
+            self._id = myself.id
+            self._username = myself.username
+        else:
+            self._id = myself["result"]["id"]
+            self._username = myself["result"]["username"]
+        # end if
+    # end def
+
+    @property
+    def username(self):
+        if not self._username:
+            self._load_info()
+        # end if
+        return self._username
+    # end def
+
+    @property
+    def id(self):
+        if not self._id:
+            self._load_info()
+        # end if
+        return self._id
+    # end def
+
+    def __str__(self):
+        username = self.username
+        id = self.id
+        return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
+    # end def
+
 
     # start of generated functions
     
-    def get_updates(self, offset=None, limit=None, timeout=None, allowed_updates=None):
+    def get_updates(self, offset=None, , limit=None, , timeout=None, , allowed_updates=None):
         """
-        Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
-
-        Notes1. This method will not work if an outgoing webhook is set up.2. In order to avoid getting duplicate updates, recalculate offset after each server response.
-
-
-        https://core.telegram.org/bots/api#getupdates
+        Internal function for making the request to the API's getUpdates endpoint.
 
         
         Optional keyword parameters:
@@ -80,39 +184,13 @@ class SyncBot(object):
         :return: An Array of Update objects is returned
         :rtype:  list of pytgbot.api_types.receivable.updates.Update
         """
-        assert_type_or_raise(offset, None, int, parameter_name="offset")
-        
-        assert_type_or_raise(limit, None, int, parameter_name="limit")
-        
-        assert_type_or_raise(timeout, None, int, parameter_name="timeout")
-        
-        assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
-        
-        result = self.do("getUpdates", offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Update
-            try:
-                return Update.from_array_list(result, list_level=1)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Update", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_updates__make_request(offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates)
+        return self._get_updates__process_result(result)
     # end def get_updates
     
-    def set_webhook(self, url, certificate=None, ip_address=None, max_connections=None, allowed_updates=None, drop_pending_updates=None):
+    def set_webhook(self, url, , certificate=None, , ip_address=None, , max_connections=None, , allowed_updates=None, , drop_pending_updates=None):
         """
-        Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
-        If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot's token, you can be pretty sure it's us.
-
-        Notes1. You will not be able to receive updates using getUpdates for as long as an outgoing webhook is set up.2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter. Please upload as InputFile, sending a String will not work.3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
-        NEW! If you're having any trouble setting up webhooks, please check out this amazing guide to Webhooks.
-
-
-        https://core.telegram.org/bots/api#setwebhook
+        Internal function for making the request to the API's setWebhook endpoint.
 
         
         Parameters:
@@ -143,39 +221,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        
-        assert_type_or_raise(url, unicode_type, parameter_name="url")
-        
-        assert_type_or_raise(certificate, None, InputFile, parameter_name="certificate")
-        
-        assert_type_or_raise(ip_address, None, unicode_type, parameter_name="ip_address")
-        
-        assert_type_or_raise(max_connections, None, int, parameter_name="max_connections")
-        
-        assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
-        
-        assert_type_or_raise(drop_pending_updates, None, bool, parameter_name="drop_pending_updates")
-        
-        result = self.do("setWebhook", url=url, certificate=certificate, ip_address=ip_address, max_connections=max_connections, allowed_updates=allowed_updates, drop_pending_updates=drop_pending_updates)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_webhook__make_request(url=url, certificate=certificate, ip_address=ip_address, max_connections=max_connections, allowed_updates=allowed_updates, drop_pending_updates=drop_pending_updates)
+        return self._set_webhook__process_result(result)
     # end def set_webhook
     
     def delete_webhook(self, drop_pending_updates=None):
         """
-        Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success.
-
-        https://core.telegram.org/bots/api#deletewebhook
+        Internal function for making the request to the API's deleteWebhook endpoint.
 
         
         Optional keyword parameters:
@@ -188,27 +240,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(drop_pending_updates, None, bool, parameter_name="drop_pending_updates")
-        
-        result = self.do("deleteWebhook", drop_pending_updates=drop_pending_updates)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._delete_webhook__make_request(drop_pending_updates=drop_pending_updates)
+        return self._delete_webhook__process_result(result)
     # end def delete_webhook
     
-    def get_webhook_info(self, ):
+    def get_webhook_info(self):
         """
-        Use this method to get current webhook status. Requires no parameters. On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty.
-
-        https://core.telegram.org/bots/api#getwebhookinfo
+        Internal function for making the request to the API's getWebhookInfo endpoint.
 
         
         Returns:
@@ -216,27 +254,13 @@ class SyncBot(object):
         :return: On success, returns a WebhookInfo object
         :rtype:  pytgbot.api_types.receivable.updates.WebhookInfo
         """
-        
-        result = self.do("getWebhookInfo", )
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import WebhookInfo
-            try:
-                return WebhookInfo.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type WebhookInfo", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_webhook_info__make_request()
+        return self._get_webhook_info__process_result(result)
     # end def get_webhook_info
     
-    def get_me(self, ):
+    def get_me(self):
         """
-        A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
-
-        https://core.telegram.org/bots/api#getme
+        Internal function for making the request to the API's getMe endpoint.
 
         
         Returns:
@@ -244,27 +268,13 @@ class SyncBot(object):
         :return: Returns basic information about the bot in form of a User object
         :rtype:  pytgbot.api_types.receivable.peer.User
         """
-        
-        result = self.do("getMe", )
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.peer import User
-            try:
-                return User.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type User", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_me__make_request()
+        return self._get_me__process_result(result)
     # end def get_me
     
-    def log_out(self, ):
+    def log_out(self):
         """
-        Use this method to log out from the cloud Bot API server before launching the bot locally. You must log out the bot before running it locally, otherwise there is no guarantee that the bot will receive updates. After a successful call, you can immediately log in on a local server, but will not be able to log in back to the cloud Bot API server for 10 minutes. Returns True on success. Requires no parameters.
-
-        https://core.telegram.org/bots/api#logout
+        Internal function for making the request to the API's logOut endpoint.
 
         
         Returns:
@@ -272,26 +282,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        
-        result = self.do("logOut", )
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._log_out__make_request()
+        return self._log_out__process_result(result)
     # end def log_out
     
-    def send_message(self, chat_id, text, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_message(self, chat_id, , text, , parse_mode=None, , entities=None, , disable_web_page_preview=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send text messages. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendmessage
+        Internal function for making the request to the API's sendMessage endpoint.
 
         
         Parameters:
@@ -331,50 +328,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(text, unicode_type, parameter_name="text")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(entities, None, list, parameter_name="entities")
-        
-        assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_message__make_request(chat_id=chat_id, text=text, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_message__process_result(result)
     # end def send_message
     
-    def forward_message(self, chat_id, from_chat_id, message_id, disable_notification=None):
+    def forward_message(self, chat_id, , from_chat_id, , message_id, , disable_notification=None):
         """
-        Use this method to forward messages of any kind. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#forwardmessage
+        Internal function for making the request to the API's forwardMessage endpoint.
 
         
         Parameters:
@@ -399,34 +359,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(from_chat_id, (int, unicode_type), parameter_name="from_chat_id")
-        
-        assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        result = self.do("forwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, disable_notification=disable_notification)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._forward_message__make_request(chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, disable_notification=disable_notification)
+        return self._forward_message__process_result(result)
     # end def forward_message
     
-    def copy_message(self, chat_id, from_chat_id, message_id, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def copy_message(self, chat_id, , from_chat_id, , message_id, , caption=None, , parse_mode=None, , caption_entities=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to copy messages of any kind. The method is analogous to the method forwardMessages, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
-
-        https://core.telegram.org/bots/api#copymessage
+        Internal function for making the request to the API's copyMessage endpoint.
 
         
         Parameters:
@@ -469,52 +408,13 @@ class SyncBot(object):
         :return: Returns the MessageId of the sent message on success
         :rtype:  pytgbot.api_types.receivable.responses.MessageId
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(from_chat_id, (int, unicode_type), parameter_name="from_chat_id")
-        
-        assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("copyMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.responses import MessageId
-            try:
-                return MessageId.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type MessageId", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._copy_message__make_request(chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._copy_message__process_result(result)
     # end def copy_message
     
-    def send_photo(self, chat_id, photo, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_photo(self, chat_id, , photo, , caption=None, , parse_mode=None, , caption_entities=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send photos. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendphoto
+        Internal function for making the request to the API's sendPhoto endpoint.
 
         
         Parameters:
@@ -554,52 +454,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(photo, (InputFile, unicode_type), parameter_name="photo")
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendPhoto", chat_id=chat_id, photo=photo, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_photo__make_request(chat_id=chat_id, photo=photo, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_photo__process_result(result)
     # end def send_photo
     
-    def send_audio(self, chat_id, audio, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_audio(self, chat_id, , audio, , caption=None, , parse_mode=None, , caption_entities=None, , duration=None, , performer=None, , title=None, , thumb=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
-        For sending voice messages, use the sendVoice method instead.
-
-        https://core.telegram.org/bots/api#sendaudio
+        Internal function for making the request to the API's sendAudio endpoint.
 
         
         Parameters:
@@ -651,59 +512,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(audio, (InputFile, unicode_type), parameter_name="audio")
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
-        assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
-        
-        assert_type_or_raise(title, None, unicode_type, parameter_name="title")
-        
-        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendAudio", chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_audio__make_request(chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_audio__process_result(result)
     # end def send_audio
     
-    def send_document(self, chat_id, document, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_document(self, chat_id, , document, , thumb=None, , caption=None, , parse_mode=None, , caption_entities=None, , disable_content_type_detection=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
-
-        https://core.telegram.org/bots/api#senddocument
+        Internal function for making the request to the API's sendDocument endpoint.
 
         
         Parameters:
@@ -749,55 +564,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(document, (InputFile, unicode_type), parameter_name="document")
-        
-        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
-        assert_type_or_raise(disable_content_type_detection, None, bool, parameter_name="disable_content_type_detection")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendDocument", chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_content_type_detection=disable_content_type_detection, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_document__make_request(chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_content_type_detection=disable_content_type_detection, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_document__process_result(result)
     # end def send_document
     
-    def send_video(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_video(self, chat_id, , video, , duration=None, , width=None, , height=None, , thumb=None, , caption=None, , parse_mode=None, , caption_entities=None, , supports_streaming=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
-
-        https://core.telegram.org/bots/api#sendvideo
+        Internal function for making the request to the API's sendVideo endpoint.
 
         
         Parameters:
@@ -852,61 +625,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(video, (InputFile, unicode_type), parameter_name="video")
-        
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
-        assert_type_or_raise(width, None, int, parameter_name="width")
-        
-        assert_type_or_raise(height, None, int, parameter_name="height")
-        
-        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
-        assert_type_or_raise(supports_streaming, None, bool, parameter_name="supports_streaming")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendVideo", chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, supports_streaming=supports_streaming, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_video__make_request(chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, supports_streaming=supports_streaming, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_video__process_result(result)
     # end def send_video
     
-    def send_animation(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_animation(self, chat_id, , animation, , duration=None, , width=None, , height=None, , thumb=None, , caption=None, , parse_mode=None, , caption_entities=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
-
-        https://core.telegram.org/bots/api#sendanimation
+        Internal function for making the request to the API's sendAnimation endpoint.
 
         
         Parameters:
@@ -958,59 +683,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(animation, (InputFile, unicode_type), parameter_name="animation")
-        
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
-        assert_type_or_raise(width, None, int, parameter_name="width")
-        
-        assert_type_or_raise(height, None, int, parameter_name="height")
-        
-        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendAnimation", chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_animation__make_request(chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_animation__process_result(result)
     # end def send_animation
     
-    def send_voice(self, chat_id, voice, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_voice(self, chat_id, , voice, , caption=None, , parse_mode=None, , caption_entities=None, , duration=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
-
-        https://core.telegram.org/bots/api#sendvoice
+        Internal function for making the request to the API's sendVoice endpoint.
 
         
         Parameters:
@@ -1053,53 +732,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(voice, (InputFile, unicode_type), parameter_name="voice")
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendVoice", chat_id=chat_id, voice=voice, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_voice__make_request(chat_id=chat_id, voice=voice, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_voice__process_result(result)
     # end def send_voice
     
-    def send_video_note(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_video_note(self, chat_id, , video_note, , duration=None, , length=None, , thumb=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendvideonote
+        Internal function for making the request to the API's sendVideoNote endpoint.
 
         
         Parameters:
@@ -1139,50 +778,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(video_note, (InputFile, unicode_type), parameter_name="video_note")
-        
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        
-        assert_type_or_raise(length, None, int, parameter_name="length")
-        
-        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_video_note__make_request(chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_video_note__process_result(result)
     # end def send_video_note
     
-    def send_media_group(self, chat_id, media, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None):
+    def send_media_group(self, chat_id, , media, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None):
         """
-        Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
-
-        https://core.telegram.org/bots/api#sendmediagroup
+        Internal function for making the request to the API's sendMediaGroup endpoint.
 
         
         Parameters:
@@ -1210,38 +812,13 @@ class SyncBot(object):
         :return: On success, an array of Messages that were sent is returned
         :rtype:  list of pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.input_media import InputMediaVideo
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(media, (list, InputMediaVideo), parameter_name="media")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        result = self.do("sendMediaGroup", chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array_list(result, list_level=1)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_media_group__make_request(chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply)
+        return self._send_media_group__process_result(result)
     # end def send_media_group
     
-    def send_location(self, chat_id, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_location(self, chat_id, , latitude, , longitude, , horizontal_accuracy=None, , live_period=None, , heading=None, , proximity_alert_radius=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send point on the map. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendlocation
+        Internal function for making the request to the API's sendLocation endpoint.
 
         
         Parameters:
@@ -1287,53 +864,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
-        assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
-        assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
-        
-        assert_type_or_raise(live_period, None, int, parameter_name="live_period")
-        
-        assert_type_or_raise(heading, None, int, parameter_name="heading")
-        
-        assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude, horizontal_accuracy=horizontal_accuracy, live_period=live_period, heading=heading, proximity_alert_radius=proximity_alert_radius, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_location__make_request(chat_id=chat_id, latitude=latitude, longitude=longitude, horizontal_accuracy=horizontal_accuracy, live_period=live_period, heading=heading, proximity_alert_radius=proximity_alert_radius, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_location__process_result(result)
     # end def send_location
     
-    def edit_message_live_location(self, latitude, longitude, chat_id=None, message_id=None, inline_message_id=None, horizontal_accuracy=None, heading=None, proximity_alert_radius=None, reply_markup=None):
+    def edit_message_live_location(self, latitude, , longitude, , chat_id=None, , message_id=None, , inline_message_id=None, , horizontal_accuracy=None, , heading=None, , proximity_alert_radius=None, , reply_markup=None):
         """
-        Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
-
-        https://core.telegram.org/bots/api#editmessagelivelocation
+        Internal function for making the request to the API's editMessageLiveLocation endpoint.
 
         
         Parameters:
@@ -1373,52 +910,13 @@ class SyncBot(object):
         :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
-        assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
-        assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
-        assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
-        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
-        assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
-        
-        assert_type_or_raise(heading, None, int, parameter_name="heading")
-        
-        assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
-        
-        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
-        result = self.do("editMessageLiveLocation", latitude=latitude, longitude=longitude, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, horizontal_accuracy=horizontal_accuracy, heading=heading, proximity_alert_radius=proximity_alert_radius, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-        
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._edit_message_live_location__make_request(latitude=latitude, longitude=longitude, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, horizontal_accuracy=horizontal_accuracy, heading=heading, proximity_alert_radius=proximity_alert_radius, reply_markup=reply_markup)
+        return self._edit_message_live_location__process_result(result)
     # end def edit_message_live_location
     
-    def stop_message_live_location(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    def stop_message_live_location(self, chat_id=None, , message_id=None, , inline_message_id=None, , reply_markup=None):
         """
-        Use this method to stop updating a live location message before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
-
-        https://core.telegram.org/bots/api#stopmessagelivelocation
+        Internal function for making the request to the API's stopMessageLiveLocation endpoint.
 
         
         Optional keyword parameters:
@@ -1440,42 +938,13 @@ class SyncBot(object):
         :return: On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
-        assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
-        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
-        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
-        result = self.do("stopMessageLiveLocation", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-        
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._stop_message_live_location__make_request(chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        return self._stop_message_live_location__process_result(result)
     # end def stop_message_live_location
     
-    def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_venue(self, chat_id, , latitude, , longitude, , title, , address, , foursquare_id=None, , foursquare_type=None, , google_place_id=None, , google_place_type=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send information about a venue. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendvenue
+        Internal function for making the request to the API's sendVenue endpoint.
 
         
         Parameters:
@@ -1527,57 +996,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(latitude, float, parameter_name="latitude")
-        
-        assert_type_or_raise(longitude, float, parameter_name="longitude")
-        
-        assert_type_or_raise(title, unicode_type, parameter_name="title")
-        
-        assert_type_or_raise(address, unicode_type, parameter_name="address")
-        
-        assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
-        
-        assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
-        
-        assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
-        
-        assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, google_place_id=google_place_id, google_place_type=google_place_type, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_venue__make_request(chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, google_place_id=google_place_id, google_place_type=google_place_type, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_venue__process_result(result)
     # end def send_venue
     
-    def send_contact(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_contact(self, chat_id, , phone_number, , first_name, , last_name=None, , vcard=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send phone contacts. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendcontact
+        Internal function for making the request to the API's sendContact endpoint.
 
         
         Parameters:
@@ -1617,49 +1042,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
-        
-        assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
-        
-        assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
-        
-        assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendContact", chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_contact__make_request(chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_contact__process_result(result)
     # end def send_contact
     
-    def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_poll(self, chat_id, , question, , options, , is_anonymous=None, , type=None, , allows_multiple_answers=None, , correct_option_id=None, , explanation=None, , explanation_parse_mode=None, , explanation_entities=None, , open_period=None, , close_date=None, , is_closed=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send a native poll. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendpoll
+        Internal function for making the request to the API's sendPoll endpoint.
 
         
         Parameters:
@@ -1723,66 +1112,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(question, unicode_type, parameter_name="question")
-        
-        assert_type_or_raise(options, list, parameter_name="options")
-        
-        assert_type_or_raise(is_anonymous, None, bool, parameter_name="is_anonymous")
-        
-        assert_type_or_raise(type, None, unicode_type, parameter_name="type")
-        
-        assert_type_or_raise(allows_multiple_answers, None, bool, parameter_name="allows_multiple_answers")
-        
-        assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
-        
-        assert_type_or_raise(explanation, None, unicode_type, parameter_name="explanation")
-        
-        assert_type_or_raise(explanation_parse_mode, None, unicode_type, parameter_name="explanation_parse_mode")
-        
-        assert_type_or_raise(explanation_entities, None, list, parameter_name="explanation_entities")
-        
-        assert_type_or_raise(open_period, None, int, parameter_name="open_period")
-        
-        assert_type_or_raise(close_date, None, int, parameter_name="close_date")
-        
-        assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, explanation_entities=explanation_entities, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_poll__make_request(chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, explanation_entities=explanation_entities, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_poll__process_result(result)
     # end def send_poll
     
-    def send_dice(self, chat_id, emoji=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_dice(self, chat_id, , emoji=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send an animated emoji that will display a random value. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#senddice
+        Internal function for making the request to the API's sendDice endpoint.
 
         
         Parameters:
@@ -1813,47 +1149,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendDice", chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_dice__make_request(chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_dice__process_result(result)
     # end def send_dice
     
-    def send_chat_action(self, chat_id, action):
+    def send_chat_action(self, chat_id, , action):
         """
-        Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.
-
-        Example: The ImageBot needs some time to process a request and upload the image. Instead of sending a text message along the lines of "Retrieving image, please wait…", the bot may use sendChatAction with action = upload_photo. The user will see a "sending photo" status for the bot.
-
-        We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
-
-        https://core.telegram.org/bots/api#sendchataction
+        Internal function for making the request to the API's sendChatAction endpoint.
 
         
         Parameters:
@@ -1870,29 +1172,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(action, unicode_type, parameter_name="action")
-        
-        result = self.do("sendChatAction", chat_id=chat_id, action=action)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_chat_action__make_request(chat_id=chat_id, action=action)
+        return self._send_chat_action__process_result(result)
     # end def send_chat_action
     
-    def get_user_profile_photos(self, user_id, offset=None, limit=None):
+    def get_user_profile_photos(self, user_id, , offset=None, , limit=None):
         """
-        Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
-
-        https://core.telegram.org/bots/api#getuserprofilephotos
+        Internal function for making the request to the API's getUserProfilePhotos endpoint.
 
         
         Parameters:
@@ -1914,33 +1200,13 @@ class SyncBot(object):
         :return: Returns a UserProfilePhotos object
         :rtype:  pytgbot.api_types.receivable.media.UserProfilePhotos
         """
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(offset, None, int, parameter_name="offset")
-        
-        assert_type_or_raise(limit, None, int, parameter_name="limit")
-        
-        result = self.do("getUserProfilePhotos", user_id=user_id, offset=offset, limit=limit)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media import UserProfilePhotos
-            try:
-                return UserProfilePhotos.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type UserProfilePhotos", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_user_profile_photos__make_request(user_id=user_id, offset=offset, limit=limit)
+        return self._get_user_profile_photos__process_result(result)
     # end def get_user_profile_photos
     
     def get_file(self, file_id):
         """
-        Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
-        Note: This function may not preserve the original file name and MIME type. You should save the file's MIME type and name (if available) when the File object is received.
-
-        https://core.telegram.org/bots/api#getfile
+        Internal function for making the request to the API's getFile endpoint.
 
         
         Parameters:
@@ -1954,28 +1220,13 @@ class SyncBot(object):
         :return: On success, a File object is returned
         :rtype:  pytgbot.api_types.receivable.media.File
         """
-        assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
-        
-        result = self.do("getFile", file_id=file_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media import File
-            try:
-                return File.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type File", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_file__make_request(file_id=file_id)
+        return self._get_file__process_result(result)
     # end def get_file
     
-    def kick_chat_member(self, chat_id, user_id, until_date=None):
+    def kick_chat_member(self, chat_id, , user_id, , until_date=None):
         """
-        Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-
-        https://core.telegram.org/bots/api#kickchatmember
+        Internal function for making the request to the API's kickChatMember endpoint.
 
         
         Parameters:
@@ -1997,31 +1248,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(until_date, None, int, parameter_name="until_date")
-        
-        result = self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._kick_chat_member__make_request(chat_id=chat_id, user_id=user_id, until_date=until_date)
+        return self._kick_chat_member__process_result(result)
     # end def kick_chat_member
     
-    def unban_chat_member(self, chat_id, user_id, only_if_banned=None):
+    def unban_chat_member(self, chat_id, , user_id, , only_if_banned=None):
         """
-        Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. By default, this method guarantees that after the call the user is not a member of the chat, but will be able to join it. So if the user is a member of the chat they will also be removed from the chat. If you don't want this, use the parameter only_if_banned. Returns True on success.
-
-        https://core.telegram.org/bots/api#unbanchatmember
+        Internal function for making the request to the API's unbanChatMember endpoint.
 
         
         Parameters:
@@ -2043,31 +1276,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(only_if_banned, None, bool, parameter_name="only_if_banned")
-        
-        result = self.do("unbanChatMember", chat_id=chat_id, user_id=user_id, only_if_banned=only_if_banned)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._unban_chat_member__make_request(chat_id=chat_id, user_id=user_id, only_if_banned=only_if_banned)
+        return self._unban_chat_member__process_result(result)
     # end def unban_chat_member
     
-    def restrict_chat_member(self, chat_id, user_id, permissions, until_date=None):
+    def restrict_chat_member(self, chat_id, , user_id, , permissions, , until_date=None):
         """
-        Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
-
-        https://core.telegram.org/bots/api#restrictchatmember
+        Internal function for making the request to the API's restrictChatMember endpoint.
 
         
         Parameters:
@@ -2092,35 +1307,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.receivable.peer import ChatPermissions
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
-        
-        assert_type_or_raise(until_date, None, int, parameter_name="until_date")
-        
-        result = self.do("restrictChatMember", chat_id=chat_id, user_id=user_id, permissions=permissions, until_date=until_date)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._restrict_chat_member__make_request(chat_id=chat_id, user_id=user_id, permissions=permissions, until_date=until_date)
+        return self._restrict_chat_member__process_result(result)
     # end def restrict_chat_member
     
-    def promote_chat_member(self, chat_id, user_id, is_anonymous=None, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None):
+    def promote_chat_member(self, chat_id, , user_id, , is_anonymous=None, , can_change_info=None, , can_post_messages=None, , can_edit_messages=None, , can_delete_messages=None, , can_invite_users=None, , can_restrict_members=None, , can_pin_messages=None, , can_promote_members=None):
         """
-        Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
-
-        https://core.telegram.org/bots/api#promotechatmember
+        Internal function for making the request to the API's promoteChatMember endpoint.
 
         
         Parameters:
@@ -2166,47 +1359,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(is_anonymous, None, bool, parameter_name="is_anonymous")
-        
-        assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
-        
-        assert_type_or_raise(can_post_messages, None, bool, parameter_name="can_post_messages")
-        
-        assert_type_or_raise(can_edit_messages, None, bool, parameter_name="can_edit_messages")
-        
-        assert_type_or_raise(can_delete_messages, None, bool, parameter_name="can_delete_messages")
-        
-        assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
-        
-        assert_type_or_raise(can_restrict_members, None, bool, parameter_name="can_restrict_members")
-        
-        assert_type_or_raise(can_pin_messages, None, bool, parameter_name="can_pin_messages")
-        
-        assert_type_or_raise(can_promote_members, None, bool, parameter_name="can_promote_members")
-        
-        result = self.do("promoteChatMember", chat_id=chat_id, user_id=user_id, is_anonymous=is_anonymous, can_change_info=can_change_info, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_invite_users=can_invite_users, can_restrict_members=can_restrict_members, can_pin_messages=can_pin_messages, can_promote_members=can_promote_members)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._promote_chat_member__make_request(chat_id=chat_id, user_id=user_id, is_anonymous=is_anonymous, can_change_info=can_change_info, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_invite_users=can_invite_users, can_restrict_members=can_restrict_members, can_pin_messages=can_pin_messages, can_promote_members=can_promote_members)
+        return self._promote_chat_member__process_result(result)
     # end def promote_chat_member
     
-    def set_chat_administrator_custom_title(self, chat_id, user_id, custom_title):
+    def set_chat_administrator_custom_title(self, chat_id, , user_id, , custom_title):
         """
-        Use this method to set a custom title for an administrator in a supergroup promoted by the bot. Returns True on success.
-
-        https://core.telegram.org/bots/api#setchatadministratorcustomtitle
+        Internal function for making the request to the API's setChatAdministratorCustomTitle endpoint.
 
         
         Parameters:
@@ -2226,31 +1385,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(custom_title, unicode_type, parameter_name="custom_title")
-        
-        result = self.do("setChatAdministratorCustomTitle", chat_id=chat_id, user_id=user_id, custom_title=custom_title)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_chat_administrator_custom_title__make_request(chat_id=chat_id, user_id=user_id, custom_title=custom_title)
+        return self._set_chat_administrator_custom_title__process_result(result)
     # end def set_chat_administrator_custom_title
     
-    def set_chat_permissions(self, chat_id, permissions):
+    def set_chat_permissions(self, chat_id, , permissions):
         """
-        Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights. Returns True on success.
-
-        https://core.telegram.org/bots/api#setchatpermissions
+        Internal function for making the request to the API's setChatPermissions endpoint.
 
         
         Parameters:
@@ -2267,34 +1408,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.receivable.peer import ChatPermissions
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(permissions, ChatPermissions, parameter_name="permissions")
-        
-        result = self.do("setChatPermissions", chat_id=chat_id, permissions=permissions)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_chat_permissions__make_request(chat_id=chat_id, permissions=permissions)
+        return self._set_chat_permissions__process_result(result)
     # end def set_chat_permissions
     
     def export_chat_invite_link(self, chat_id):
         """
-        Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
-
-        Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink — after this the link will become available to the bot via the getChat method. If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
-
-
-        https://core.telegram.org/bots/api#exportchatinvitelink
+        Internal function for making the request to the API's exportChatInviteLink endpoint.
 
         
         Parameters:
@@ -2308,27 +1428,13 @@ class SyncBot(object):
         :return: Returns the new invite link as String on success
         :rtype:  str|unicode
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        result = self.do("exportChatInviteLink", chat_id=chat_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(str, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive str", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._export_chat_invite_link__make_request(chat_id=chat_id)
+        return self._export_chat_invite_link__process_result(result)
     # end def export_chat_invite_link
     
-    def set_chat_photo(self, chat_id, photo):
+    def set_chat_photo(self, chat_id, , photo):
         """
-        Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-
-        https://core.telegram.org/bots/api#setchatphoto
+        Internal function for making the request to the API's setChatPhoto endpoint.
 
         
         Parameters:
@@ -2345,31 +1451,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(photo, InputFile, parameter_name="photo")
-        
-        result = self.do("setChatPhoto", chat_id=chat_id, photo=photo)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_chat_photo__make_request(chat_id=chat_id, photo=photo)
+        return self._set_chat_photo__process_result(result)
     # end def set_chat_photo
     
     def delete_chat_photo(self, chat_id):
         """
-        Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-
-        https://core.telegram.org/bots/api#deletechatphoto
+        Internal function for making the request to the API's deleteChatPhoto endpoint.
 
         
         Parameters:
@@ -2383,27 +1471,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        result = self.do("deleteChatPhoto", chat_id=chat_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._delete_chat_photo__make_request(chat_id=chat_id)
+        return self._delete_chat_photo__process_result(result)
     # end def delete_chat_photo
     
-    def set_chat_title(self, chat_id, title):
+    def set_chat_title(self, chat_id, , title):
         """
-        Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-
-        https://core.telegram.org/bots/api#setchattitle
+        Internal function for making the request to the API's setChatTitle endpoint.
 
         
         Parameters:
@@ -2420,29 +1494,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(title, unicode_type, parameter_name="title")
-        
-        result = self.do("setChatTitle", chat_id=chat_id, title=title)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_chat_title__make_request(chat_id=chat_id, title=title)
+        return self._set_chat_title__process_result(result)
     # end def set_chat_title
     
-    def set_chat_description(self, chat_id, description=None):
+    def set_chat_description(self, chat_id, , description=None):
         """
-        Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-
-        https://core.telegram.org/bots/api#setchatdescription
+        Internal function for making the request to the API's setChatDescription endpoint.
 
         
         Parameters:
@@ -2461,29 +1519,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(description, None, unicode_type, parameter_name="description")
-        
-        result = self.do("setChatDescription", chat_id=chat_id, description=description)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_chat_description__make_request(chat_id=chat_id, description=description)
+        return self._set_chat_description__process_result(result)
     # end def set_chat_description
     
-    def pin_chat_message(self, chat_id, message_id, disable_notification=None):
+    def pin_chat_message(self, chat_id, , message_id, , disable_notification=None):
         """
-        Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
-
-        https://core.telegram.org/bots/api#pinchatmessage
+        Internal function for making the request to the API's pinChatMessage endpoint.
 
         
         Parameters:
@@ -2505,31 +1547,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        result = self.do("pinChatMessage", chat_id=chat_id, message_id=message_id, disable_notification=disable_notification)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._pin_chat_message__make_request(chat_id=chat_id, message_id=message_id, disable_notification=disable_notification)
+        return self._pin_chat_message__process_result(result)
     # end def pin_chat_message
     
-    def unpin_chat_message(self, chat_id, message_id=None):
+    def unpin_chat_message(self, chat_id, , message_id=None):
         """
-        Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
-
-        https://core.telegram.org/bots/api#unpinchatmessage
+        Internal function for making the request to the API's unpinChatMessage endpoint.
 
         
         Parameters:
@@ -2548,29 +1572,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
-        result = self.do("unpinChatMessage", chat_id=chat_id, message_id=message_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._unpin_chat_message__make_request(chat_id=chat_id, message_id=message_id)
+        return self._unpin_chat_message__process_result(result)
     # end def unpin_chat_message
     
     def unpin_all_chat_messages(self, chat_id):
         """
-        Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
-
-        https://core.telegram.org/bots/api#unpinallchatmessages
+        Internal function for making the request to the API's unpinAllChatMessages endpoint.
 
         
         Parameters:
@@ -2584,27 +1592,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        result = self.do("unpinAllChatMessages", chat_id=chat_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._unpin_all_chat_messages__make_request(chat_id=chat_id)
+        return self._unpin_all_chat_messages__process_result(result)
     # end def unpin_all_chat_messages
     
     def leave_chat(self, chat_id):
         """
-        Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
-
-        https://core.telegram.org/bots/api#leavechat
+        Internal function for making the request to the API's leaveChat endpoint.
 
         
         Parameters:
@@ -2618,27 +1612,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        result = self.do("leaveChat", chat_id=chat_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._leave_chat__make_request(chat_id=chat_id)
+        return self._leave_chat__process_result(result)
     # end def leave_chat
     
     def get_chat(self, chat_id):
         """
-        Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
-
-        https://core.telegram.org/bots/api#getchat
+        Internal function for making the request to the API's getChat endpoint.
 
         
         Parameters:
@@ -2652,28 +1632,13 @@ class SyncBot(object):
         :return: Returns a Chat object on success
         :rtype:  pytgbot.api_types.receivable.peer.Chat
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        result = self.do("getChat", chat_id=chat_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.peer import Chat
-            try:
-                return Chat.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Chat", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_chat__make_request(chat_id=chat_id)
+        return self._get_chat__process_result(result)
     # end def get_chat
     
     def get_chat_administrators(self, chat_id):
         """
-        Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
-
-        https://core.telegram.org/bots/api#getchatadministrators
+        Internal function for making the request to the API's getChatAdministrators endpoint.
 
         
         Parameters:
@@ -2687,28 +1652,13 @@ class SyncBot(object):
         :return: On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots
         :rtype:  list of pytgbot.api_types.receivable.peer.ChatMember
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        result = self.do("getChatAdministrators", chat_id=chat_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.peer import ChatMember
-            try:
-                return ChatMember.from_array_list(result, list_level=1)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type ChatMember", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_chat_administrators__make_request(chat_id=chat_id)
+        return self._get_chat_administrators__process_result(result)
     # end def get_chat_administrators
     
     def get_chat_members_count(self, chat_id):
         """
-        Use this method to get the number of members in a chat. Returns Int on success.
-
-        https://core.telegram.org/bots/api#getchatmemberscount
+        Internal function for making the request to the API's getChatMembersCount endpoint.
 
         
         Parameters:
@@ -2722,27 +1672,13 @@ class SyncBot(object):
         :return: Returns Int on success
         :rtype:  int
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        result = self.do("getChatMembersCount", chat_id=chat_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(int, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive int", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_chat_members_count__make_request(chat_id=chat_id)
+        return self._get_chat_members_count__process_result(result)
     # end def get_chat_members_count
     
-    def get_chat_member(self, chat_id, user_id):
+    def get_chat_member(self, chat_id, , user_id):
         """
-        Use this method to get information about a member of a chat. Returns a ChatMember object on success.
-
-        https://core.telegram.org/bots/api#getchatmember
+        Internal function for making the request to the API's getChatMember endpoint.
 
         
         Parameters:
@@ -2759,30 +1695,13 @@ class SyncBot(object):
         :return: Returns a ChatMember object on success
         :rtype:  pytgbot.api_types.receivable.peer.ChatMember
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        result = self.do("getChatMember", chat_id=chat_id, user_id=user_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.peer import ChatMember
-            try:
-                return ChatMember.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type ChatMember", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_chat_member__make_request(chat_id=chat_id, user_id=user_id)
+        return self._get_chat_member__process_result(result)
     # end def get_chat_member
     
-    def set_chat_sticker_set(self, chat_id, sticker_set_name):
+    def set_chat_sticker_set(self, chat_id, , sticker_set_name):
         """
-        Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
-
-        https://core.telegram.org/bots/api#setchatstickerset
+        Internal function for making the request to the API's setChatStickerSet endpoint.
 
         
         Parameters:
@@ -2799,29 +1718,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(sticker_set_name, unicode_type, parameter_name="sticker_set_name")
-        
-        result = self.do("setChatStickerSet", chat_id=chat_id, sticker_set_name=sticker_set_name)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_chat_sticker_set__make_request(chat_id=chat_id, sticker_set_name=sticker_set_name)
+        return self._set_chat_sticker_set__process_result(result)
     # end def set_chat_sticker_set
     
     def delete_chat_sticker_set(self, chat_id):
         """
-        Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
-
-        https://core.telegram.org/bots/api#deletechatstickerset
+        Internal function for making the request to the API's deleteChatStickerSet endpoint.
 
         
         Parameters:
@@ -2835,30 +1738,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        result = self.do("deleteChatStickerSet", chat_id=chat_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._delete_chat_sticker_set__make_request(chat_id=chat_id)
+        return self._delete_chat_sticker_set__process_result(result)
     # end def delete_chat_sticker_set
     
-    def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
+    def answer_callback_query(self, callback_query_id, , text=None, , show_alert=None, , url=None, , cache_time=None):
         """
-        Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
-
-        Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via @Botfather and accept the terms. Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
-
-
-        https://core.telegram.org/bots/api#answercallbackquery
+        Internal function for making the request to the API's answerCallbackQuery endpoint.
 
         
         Parameters:
@@ -2886,35 +1772,13 @@ class SyncBot(object):
         :return: On success, True is returned
         :rtype:  bool
         """
-        assert_type_or_raise(callback_query_id, unicode_type, parameter_name="callback_query_id")
-        
-        assert_type_or_raise(text, None, unicode_type, parameter_name="text")
-        
-        assert_type_or_raise(show_alert, None, bool, parameter_name="show_alert")
-        
-        assert_type_or_raise(url, None, unicode_type, parameter_name="url")
-        
-        assert_type_or_raise(cache_time, None, int, parameter_name="cache_time")
-        
-        result = self.do("answerCallbackQuery", callback_query_id=callback_query_id, text=text, show_alert=show_alert, url=url, cache_time=cache_time)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._answer_callback_query__make_request(callback_query_id=callback_query_id, text=text, show_alert=show_alert, url=url, cache_time=cache_time)
+        return self._answer_callback_query__process_result(result)
     # end def answer_callback_query
     
     def set_my_commands(self, commands):
         """
-        Use this method to change the list of the bot's commands. Returns True on success.
-
-        https://core.telegram.org/bots/api#setmycommands
+        Internal function for making the request to the API's setMyCommands endpoint.
 
         
         Parameters:
@@ -2928,29 +1792,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.command import BotCommand
-        
-        assert_type_or_raise(commands, list, parameter_name="commands")
-        
-        result = self.do("setMyCommands", commands=commands)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_my_commands__make_request(commands=commands)
+        return self._set_my_commands__process_result(result)
     # end def set_my_commands
     
-    def get_my_commands(self, ):
+    def get_my_commands(self):
         """
-        Use this method to get the current list of the bot's commands. Requires no parameters. Returns Array of BotCommand on success.
-
-        https://core.telegram.org/bots/api#getmycommands
+        Internal function for making the request to the API's getMyCommands endpoint.
 
         
         Returns:
@@ -2958,27 +1806,13 @@ class SyncBot(object):
         :return: On success, an array of the commands is returned
         :rtype:  list of pytgbot.api_types.sendable.command.BotCommand
         """
-        
-        result = self.do("getMyCommands", )
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.sendable.command import BotCommand
-            try:
-                return BotCommand.from_array_list(result, list_level=1)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type BotCommand", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_my_commands__make_request()
+        return self._get_my_commands__process_result(result)
     # end def get_my_commands
     
-    def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None, entities=None, disable_web_page_preview=None, reply_markup=None):
+    def edit_message_text(self, text, , chat_id=None, , message_id=None, , inline_message_id=None, , parse_mode=None, , entities=None, , disable_web_page_preview=None, , reply_markup=None):
         """
-        Use this method to edit text and game messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
-
-        https://core.telegram.org/bots/api#editmessagetext
+        Internal function for making the request to the API's editMessageText endpoint.
 
         
         Parameters:
@@ -3015,51 +1849,13 @@ class SyncBot(object):
         :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
-        assert_type_or_raise(text, unicode_type, parameter_name="text")
-        
-        assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
-        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(entities, None, list, parameter_name="entities")
-        
-        assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
-        
-        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
-        result = self.do("editMessageText", text=text, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-        
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._edit_message_text__make_request(text=text, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, reply_markup=reply_markup)
+        return self._edit_message_text__process_result(result)
     # end def edit_message_text
     
-    def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None):
+    def edit_message_caption(self, chat_id=None, , message_id=None, , inline_message_id=None, , caption=None, , parse_mode=None, , caption_entities=None, , reply_markup=None):
         """
-        Use this method to edit captions of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
-
-        https://core.telegram.org/bots/api#editmessagecaption
+        Internal function for making the request to the API's editMessageCaption endpoint.
 
         
         Optional keyword parameters:
@@ -3090,49 +1886,13 @@ class SyncBot(object):
         :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
-        assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
-        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        
-        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
-        result = self.do("editMessageCaption", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-        
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._edit_message_caption__make_request(chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, reply_markup=reply_markup)
+        return self._edit_message_caption__process_result(result)
     # end def edit_message_caption
     
-    def edit_message_media(self, media, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    def edit_message_media(self, media, , chat_id=None, , message_id=None, , inline_message_id=None, , reply_markup=None):
         """
-        Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded. Use a previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
-
-        https://core.telegram.org/bots/api#editmessagemedia
+        Internal function for making the request to the API's editMessageMedia endpoint.
 
         
         Parameters:
@@ -3160,45 +1920,13 @@ class SyncBot(object):
         :return: On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.input_media import InputMedia
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
-        assert_type_or_raise(media, InputMedia, parameter_name="media")
-        
-        assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
-        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
-        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
-        result = self.do("editMessageMedia", media=media, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-        
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._edit_message_media__make_request(media=media, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        return self._edit_message_media__process_result(result)
     # end def edit_message_media
     
-    def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+    def edit_message_reply_markup(self, chat_id=None, , message_id=None, , inline_message_id=None, , reply_markup=None):
         """
-        Use this method to edit only the reply markup of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
-
-        https://core.telegram.org/bots/api#editmessagereplymarkup
+        Internal function for making the request to the API's editMessageReplyMarkup endpoint.
 
         
         Optional keyword parameters:
@@ -3220,42 +1948,13 @@ class SyncBot(object):
         :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
-        assert_type_or_raise(chat_id, None, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
-        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
-        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
-        result = self.do("editMessageReplyMarkup", chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-        
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._edit_message_reply_markup__make_request(chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
+        return self._edit_message_reply_markup__process_result(result)
     # end def edit_message_reply_markup
     
-    def stop_poll(self, chat_id, message_id, reply_markup=None):
+    def stop_poll(self, chat_id, , message_id, , reply_markup=None):
         """
-        Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the final results is returned.
-
-        https://core.telegram.org/bots/api#stoppoll
+        Internal function for making the request to the API's stopPoll endpoint.
 
         
         Parameters:
@@ -3277,34 +1976,13 @@ class SyncBot(object):
         :return: On success, the stopped Poll with the final results is returned
         :rtype:  pytgbot.api_types.receivable.media.Poll
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
-        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
-        result = self.do("stopPoll", chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media import Poll
-            try:
-                return Poll.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Poll", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._stop_poll__make_request(chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
+        return self._stop_poll__process_result(result)
     # end def stop_poll
     
-    def delete_message(self, chat_id, message_id):
+    def delete_message(self, chat_id, , message_id):
         """
-        Use this method to delete a message, including service messages, with the following limitations:- A message can only be deleted if it was sent less than 48 hours ago.- A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.- Bots can delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming messages in private chats.- Bots granted can_post_messages permissions can delete outgoing messages in channels.- If the bot is an administrator of a group, it can delete any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.Returns True on success.
-
-        https://core.telegram.org/bots/api#deletemessage
+        Internal function for making the request to the API's deleteMessage endpoint.
 
         
         Parameters:
@@ -3321,29 +1999,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, int, parameter_name="message_id")
-        
-        result = self.do("deleteMessage", chat_id=chat_id, message_id=message_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._delete_message__make_request(chat_id=chat_id, message_id=message_id)
+        return self._delete_message__process_result(result)
     # end def delete_message
     
-    def send_sticker(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_sticker(self, chat_id, , sticker, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendsticker
+        Internal function for making the request to the API's sendSticker endpoint.
 
         
         Parameters:
@@ -3374,44 +2036,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
-        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        
-        assert_type_or_raise(sticker, (InputFile, unicode_type), parameter_name="sticker")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        
-        result = self.do("sendSticker", chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_sticker__make_request(chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_sticker__process_result(result)
     # end def send_sticker
     
     def get_sticker_set(self, name):
         """
-        Use this method to get a sticker set. On success, a StickerSet object is returned.
-
-        https://core.telegram.org/bots/api#getstickerset
+        Internal function for making the request to the API's getStickerSet endpoint.
 
         
         Parameters:
@@ -3425,28 +2056,13 @@ class SyncBot(object):
         :return: On success, a StickerSet object is returned
         :rtype:  pytgbot.api_types.receivable.stickers.StickerSet
         """
-        assert_type_or_raise(name, unicode_type, parameter_name="name")
-        
-        result = self.do("getStickerSet", name=name)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.stickers import StickerSet
-            try:
-                return StickerSet.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type StickerSet", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_sticker_set__make_request(name=name)
+        return self._get_sticker_set__process_result(result)
     # end def get_sticker_set
     
-    def upload_sticker_file(self, user_id, png_sticker):
+    def upload_sticker_file(self, user_id, , png_sticker):
         """
-        Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
-
-        https://core.telegram.org/bots/api#uploadstickerfile
+        Internal function for making the request to the API's uploadStickerFile endpoint.
 
         
         Parameters:
@@ -3463,32 +2079,13 @@ class SyncBot(object):
         :return: Returns the uploaded File on success
         :rtype:  pytgbot.api_types.receivable.media.File
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(png_sticker, InputFile, parameter_name="png_sticker")
-        
-        result = self.do("uploadStickerFile", user_id=user_id, png_sticker=png_sticker)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.media import File
-            try:
-                return File.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type File", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._upload_sticker_file__make_request(user_id=user_id, png_sticker=png_sticker)
+        return self._upload_sticker_file__process_result(result)
     # end def upload_sticker_file
     
-    def create_new_sticker_set(self, user_id, name, title, emojis, png_sticker=None, tgs_sticker=None, contains_masks=None, mask_position=None):
+    def create_new_sticker_set(self, user_id, , name, , title, , emojis, , png_sticker=None, , tgs_sticker=None, , contains_masks=None, , mask_position=None):
         """
-        Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker. Returns True on success.
-
-        https://core.telegram.org/bots/api#createnewstickerset
+        Internal function for making the request to the API's createNewStickerSet endpoint.
 
         
         Parameters:
@@ -3525,44 +2122,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.receivable.stickers import MaskPosition
-        from pytgbot.api_types.sendable.files import InputFile
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(name, unicode_type, parameter_name="name")
-        
-        assert_type_or_raise(title, unicode_type, parameter_name="title")
-        
-        assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
-        
-        assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
-        
-        assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
-        
-        assert_type_or_raise(contains_masks, None, bool, parameter_name="contains_masks")
-        
-        assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
-        
-        result = self.do("createNewStickerSet", user_id=user_id, name=name, title=title, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, contains_masks=contains_masks, mask_position=mask_position)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._create_new_sticker_set__make_request(user_id=user_id, name=name, title=title, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, contains_masks=contains_masks, mask_position=mask_position)
+        return self._create_new_sticker_set__process_result(result)
     # end def create_new_sticker_set
     
-    def add_sticker_to_set(self, user_id, name, emojis, png_sticker=None, tgs_sticker=None, mask_position=None):
+    def add_sticker_to_set(self, user_id, , name, , emojis, , png_sticker=None, , tgs_sticker=None, , mask_position=None):
         """
-        Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
-
-        https://core.telegram.org/bots/api#addstickertoset
+        Internal function for making the request to the API's addStickerToSet endpoint.
 
         
         Parameters:
@@ -3593,40 +2159,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.receivable.stickers import MaskPosition
-        from pytgbot.api_types.sendable.files import InputFile
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(name, unicode_type, parameter_name="name")
-        
-        assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
-        
-        assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
-        
-        assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
-        
-        assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
-        
-        result = self.do("addStickerToSet", user_id=user_id, name=name, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, mask_position=mask_position)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._add_sticker_to_set__make_request(user_id=user_id, name=name, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, mask_position=mask_position)
+        return self._add_sticker_to_set__process_result(result)
     # end def add_sticker_to_set
     
-    def set_sticker_position_in_set(self, sticker, position):
+    def set_sticker_position_in_set(self, sticker, , position):
         """
-        Use this method to move a sticker in a set created by the bot to a specific position. Returns True on success.
-
-        https://core.telegram.org/bots/api#setstickerpositioninset
+        Internal function for making the request to the API's setStickerPositionInSet endpoint.
 
         
         Parameters:
@@ -3643,29 +2182,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(sticker, unicode_type, parameter_name="sticker")
-        
-        assert_type_or_raise(position, int, parameter_name="position")
-        
-        result = self.do("setStickerPositionInSet", sticker=sticker, position=position)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_sticker_position_in_set__make_request(sticker=sticker, position=position)
+        return self._set_sticker_position_in_set__process_result(result)
     # end def set_sticker_position_in_set
     
     def delete_sticker_from_set(self, sticker):
         """
-        Use this method to delete a sticker from a set created by the bot. Returns True on success.
-
-        https://core.telegram.org/bots/api#deletestickerfromset
+        Internal function for making the request to the API's deleteStickerFromSet endpoint.
 
         
         Parameters:
@@ -3679,27 +2202,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        assert_type_or_raise(sticker, unicode_type, parameter_name="sticker")
-        
-        result = self.do("deleteStickerFromSet", sticker=sticker)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._delete_sticker_from_set__make_request(sticker=sticker)
+        return self._delete_sticker_from_set__process_result(result)
     # end def delete_sticker_from_set
     
-    def set_sticker_set_thumb(self, name, user_id, thumb=None):
+    def set_sticker_set_thumb(self, name, , user_id, , thumb=None):
         """
-        Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only. Returns True on success.
-
-        https://core.telegram.org/bots/api#setstickersetthumb
+        Internal function for making the request to the API's setStickerSetThumb endpoint.
 
         
         Parameters:
@@ -3721,33 +2230,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.files import InputFile
-        
-        assert_type_or_raise(name, unicode_type, parameter_name="name")
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
-        
-        result = self.do("setStickerSetThumb", name=name, user_id=user_id, thumb=thumb)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_sticker_set_thumb__make_request(name=name, user_id=user_id, thumb=thumb)
+        return self._set_sticker_set_thumb__process_result(result)
     # end def set_sticker_set_thumb
     
-    def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
+    def answer_inline_query(self, inline_query_id, , results, , cache_time=None, , is_personal=None, , next_offset=None, , switch_pm_text=None, , switch_pm_parameter=None):
         """
-        Use this method to send answers to an inline query. On success, True is returned.No more than 50 results per query are allowed.
-
-        https://core.telegram.org/bots/api#answerinlinequery
+        Internal function for making the request to the API's answerInlineQuery endpoint.
 
         
         Parameters:
@@ -3781,41 +2270,13 @@ class SyncBot(object):
         :return: On success, True is returned
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.inline import InlineQueryResult
-        
-        assert_type_or_raise(inline_query_id, unicode_type, parameter_name="inline_query_id")
-        
-        assert_type_or_raise(results, list, parameter_name="results")
-        
-        assert_type_or_raise(cache_time, None, int, parameter_name="cache_time")
-        
-        assert_type_or_raise(is_personal, None, bool, parameter_name="is_personal")
-        
-        assert_type_or_raise(next_offset, None, unicode_type, parameter_name="next_offset")
-        
-        assert_type_or_raise(switch_pm_text, None, unicode_type, parameter_name="switch_pm_text")
-        
-        assert_type_or_raise(switch_pm_parameter, None, unicode_type, parameter_name="switch_pm_parameter")
-        
-        result = self.do("answerInlineQuery", inline_query_id=inline_query_id, results=results, cache_time=cache_time, is_personal=is_personal, next_offset=next_offset, switch_pm_text=switch_pm_text, switch_pm_parameter=switch_pm_parameter)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._answer_inline_query__make_request(inline_query_id=inline_query_id, results=results, cache_time=cache_time, is_personal=is_personal, next_offset=next_offset, switch_pm_text=switch_pm_text, switch_pm_parameter=switch_pm_parameter)
+        return self._answer_inline_query__process_result(result)
     # end def answer_inline_query
     
-    def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_invoice(self, chat_id, , title, , description, , payload, , provider_token, , start_parameter, , currency, , prices, , provider_data=None, , photo_url=None, , photo_size=None, , photo_width=None, , photo_height=None, , need_name=None, , need_phone_number=None, , need_email=None, , need_shipping_address=None, , send_phone_number_to_provider=None, , send_email_to_provider=None, , is_flexible=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send invoices. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendinvoice
+        Internal function for making the request to the API's sendInvoice endpoint.
 
         
         Parameters:
@@ -3900,77 +2361,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.payments import LabeledPrice
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
-        assert_type_or_raise(chat_id, int, parameter_name="chat_id")
-        
-        assert_type_or_raise(title, unicode_type, parameter_name="title")
-        
-        assert_type_or_raise(description, unicode_type, parameter_name="description")
-        
-        assert_type_or_raise(payload, unicode_type, parameter_name="payload")
-        
-        assert_type_or_raise(provider_token, unicode_type, parameter_name="provider_token")
-        
-        assert_type_or_raise(start_parameter, unicode_type, parameter_name="start_parameter")
-        
-        assert_type_or_raise(currency, unicode_type, parameter_name="currency")
-        
-        assert_type_or_raise(prices, list, parameter_name="prices")
-        
-        assert_type_or_raise(provider_data, None, unicode_type, parameter_name="provider_data")
-        
-        assert_type_or_raise(photo_url, None, unicode_type, parameter_name="photo_url")
-        
-        assert_type_or_raise(photo_size, None, int, parameter_name="photo_size")
-        
-        assert_type_or_raise(photo_width, None, int, parameter_name="photo_width")
-        
-        assert_type_or_raise(photo_height, None, int, parameter_name="photo_height")
-        
-        assert_type_or_raise(need_name, None, bool, parameter_name="need_name")
-        
-        assert_type_or_raise(need_phone_number, None, bool, parameter_name="need_phone_number")
-        
-        assert_type_or_raise(need_email, None, bool, parameter_name="need_email")
-        
-        assert_type_or_raise(need_shipping_address, None, bool, parameter_name="need_shipping_address")
-        
-        assert_type_or_raise(send_phone_number_to_provider, None, bool, parameter_name="send_phone_number_to_provider")
-        
-        assert_type_or_raise(send_email_to_provider, None, bool, parameter_name="send_email_to_provider")
-        
-        assert_type_or_raise(is_flexible, None, bool, parameter_name="is_flexible")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
-        result = self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_invoice__make_request(chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_invoice__process_result(result)
     # end def send_invoice
     
-    def answer_shipping_query(self, shipping_query_id, ok, shipping_options=None, error_message=None):
+    def answer_shipping_query(self, shipping_query_id, , ok, , shipping_options=None, , error_message=None):
         """
-        If you sent an invoice requesting a shipping address and the parameter is_flexible was specified, the Bot API will send an Update with a shipping_query field to the bot. Use this method to reply to shipping queries. On success, True is returned.
-
-        https://core.telegram.org/bots/api#answershippingquery
+        Internal function for making the request to the API's answerShippingQuery endpoint.
 
         
         Parameters:
@@ -3995,35 +2392,13 @@ class SyncBot(object):
         :return: On success, True is returned
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.payments import ShippingOption
-        
-        assert_type_or_raise(shipping_query_id, unicode_type, parameter_name="shipping_query_id")
-        
-        assert_type_or_raise(ok, bool, parameter_name="ok")
-        
-        assert_type_or_raise(shipping_options, None, list, parameter_name="shipping_options")
-        
-        assert_type_or_raise(error_message, None, unicode_type, parameter_name="error_message")
-        
-        result = self.do("answerShippingQuery", shipping_query_id=shipping_query_id, ok=ok, shipping_options=shipping_options, error_message=error_message)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._answer_shipping_query__make_request(shipping_query_id=shipping_query_id, ok=ok, shipping_options=shipping_options, error_message=error_message)
+        return self._answer_shipping_query__process_result(result)
     # end def answer_shipping_query
     
-    def answer_pre_checkout_query(self, pre_checkout_query_id, ok, error_message=None):
+    def answer_pre_checkout_query(self, pre_checkout_query_id, , ok, , error_message=None):
         """
-        Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an Update with the field pre_checkout_query. Use this method to respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.
-
-        https://core.telegram.org/bots/api#answerprecheckoutquery
+        Internal function for making the request to the API's answerPreCheckoutQuery endpoint.
 
         
         Parameters:
@@ -4045,32 +2420,13 @@ class SyncBot(object):
         :return: On success, True is returned
         :rtype:  bool
         """
-        assert_type_or_raise(pre_checkout_query_id, unicode_type, parameter_name="pre_checkout_query_id")
-        
-        assert_type_or_raise(ok, bool, parameter_name="ok")
-        
-        assert_type_or_raise(error_message, None, unicode_type, parameter_name="error_message")
-        
-        result = self.do("answerPreCheckoutQuery", pre_checkout_query_id=pre_checkout_query_id, ok=ok, error_message=error_message)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._answer_pre_checkout_query__make_request(pre_checkout_query_id=pre_checkout_query_id, ok=ok, error_message=error_message)
+        return self._answer_pre_checkout_query__process_result(result)
     # end def answer_pre_checkout_query
     
-    def set_passport_data_errors(self, user_id, errors):
+    def set_passport_data_errors(self, user_id, , errors):
         """
-        Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success.
-        Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
-
-        https://core.telegram.org/bots/api#setpassportdataerrors
+        Internal function for making the request to the API's setPassportDataErrors endpoint.
 
         
         Parameters:
@@ -4087,31 +2443,13 @@ class SyncBot(object):
         :return: Returns True on success
         :rtype:  bool
         """
-        from pytgbot.api_types.sendable.passport import PassportElementError
-        
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(errors, list, parameter_name="errors")
-        
-        result = self.do("setPassportDataErrors", user_id=user_id, errors=errors)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_passport_data_errors__make_request(user_id=user_id, errors=errors)
+        return self._set_passport_data_errors__process_result(result)
     # end def set_passport_data_errors
     
-    def send_game(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_game(self, chat_id, , game_short_name, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
         """
-        Use this method to send a game. On success, the sent Message is returned.
-
-        https://core.telegram.org/bots/api#sendgame
+        Internal function for making the request to the API's sendGame endpoint.
 
         
         Parameters:
@@ -4142,40 +2480,13 @@ class SyncBot(object):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
-        assert_type_or_raise(chat_id, int, parameter_name="chat_id")
-        
-        assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
-        
-        assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        
-        assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
-        
-        assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        
-        assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        
-        result = self.do("sendGame", chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._send_game__make_request(chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self._send_game__process_result(result)
     # end def send_game
     
-    def set_game_score(self, user_id, score, force=None, disable_edit_message=None, chat_id=None, message_id=None, inline_message_id=None):
+    def set_game_score(self, user_id, , score, , force=None, , disable_edit_message=None, , chat_id=None, , message_id=None, , inline_message_id=None):
         """
-        Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
-
-        https://core.telegram.org/bots/api#setgamescore
+        Internal function for making the request to the API's setGameScore endpoint.
 
         
         Parameters:
@@ -4209,49 +2520,13 @@ class SyncBot(object):
         :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(score, int, parameter_name="score")
-        
-        assert_type_or_raise(force, None, bool, parameter_name="force")
-        
-        assert_type_or_raise(disable_edit_message, None, bool, parameter_name="disable_edit_message")
-        
-        assert_type_or_raise(chat_id, None, int, parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
-        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
-        result = self.do("setGameScore", user_id=user_id, score=score, force=force, disable_edit_message=disable_edit_message, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.updates import Message
-            try:
-                return Message.from_array(result)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type Message", exc_info=True)
-            # end try
-        
-            try:
-                return from_array_list(bool, result, list_level=0, is_builtin=True)
-            except TgApiParseException:
-                logger.debug("Failed parsing as primitive bool", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._set_game_score__make_request(user_id=user_id, score=score, force=force, disable_edit_message=disable_edit_message, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
+        return self._set_game_score__process_result(result)
     # end def set_game_score
     
-    def get_game_high_scores(self, user_id, chat_id=None, message_id=None, inline_message_id=None):
+    def get_game_high_scores(self, user_id, , chat_id=None, , message_id=None, , inline_message_id=None):
         """
-        Use this method to get data for high score tables. Will return the score of the specified user and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
-
-        This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
-
-
-        https://core.telegram.org/bots/api#getgamehighscores
+        Internal function for making the request to the API's getGameHighScores endpoint.
 
         
         Parameters:
@@ -4276,245 +2551,11 @@ class SyncBot(object):
         :return: On success, returns an Array of GameHighScore objects
         :rtype:  list of pytgbot.api_types.receivable.game.GameHighScore
         """
-        assert_type_or_raise(user_id, int, parameter_name="user_id")
-        
-        assert_type_or_raise(chat_id, None, int, parameter_name="chat_id")
-        
-        assert_type_or_raise(message_id, None, int, parameter_name="message_id")
-        
-        assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
-        
-        result = self.do("getGameHighScores", user_id=user_id, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
-        if self.return_python_objects:
-            logger.debug("Trying to parse {data}".format(data=repr(result)))
-            from pytgbot.api_types.receivable.game import GameHighScore
-            try:
-                return GameHighScore.from_array_list(result, list_level=1)
-            except TgApiParseException:
-                logger.debug("Failed parsing as api_type GameHighScore", exc_info=True)
-            # end try
-            # no valid parsing so far
-            raise TgApiParseException("Could not parse result.")  # See debug log for details!
-        # end if return_python_objects
-        return result
+        result = self._get_game_high_scores__make_request(user_id=user_id, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)
+        return self._get_game_high_scores__process_result(result)
     # end def get_game_high_scores
-    
     # end of generated functions
-
-    def send_msg(self, *args, **kwargs):
-        """ alias to :func:`send_message` """
-        return self.send_message(*args, **kwargs)
-    # end def send_msg
-
-    def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
-        """
-        Send a request to the api.
-
-        If the bot is set to return the json objects, it will look like this:
-
-        ```json
-        {
-            "ok": bool,
-            "result": {...},
-            # optionally present:
-            "description": "human-readable description of the result",
-            "error_code": int
-        }
-        ```
-
-        :param command: The Url command parameter
-        :type  command: str
-
-        :param request_timeout: When the request should time out. Default: `None`
-        :type  request_timeout: int
-
-        :param files: if it needs to send files.
-
-        :param use_long_polling: if it should use long polling. Default: `False`
-                                (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
-        :type  use_long_polling: bool
-
-        :param query: all the other `**kwargs` will get json encoded.
-
-        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
-        """
-        import requests
-        
-
-        url, params = self._prepare_request(command, query)
-        r = requests.post(url, params=params, files=files, stream=use_long_polling,
-                          verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
-                          timeout=request_timeout)
-        return self._postprocess_request(r)
-    # end def do
-
-    def _prepare_request(self, command, query):
-        """
-        Prepares the command url, and converts the query json.
-
-        :param command: The Url command parameter
-        :type  command: str
-
-        :param query: Will get json encoded.
-
-        :return: params and a url, for use with requests etc.
-        """
-        from pytgbot.api_types.sendable import Sendable
-        from pytgbot.api_types import as_array
-        import json
-
-        params = {}
-        for key in query.keys():
-            element = query[key]
-            if element is not None:
-                if isinstance(element, Sendable):
-                    params[key] = json.dumps(as_array(element))
-                else:
-                    params[key] = element
-        url = self._base_url.format(api_key=n(self.api_key), command=n(command))
-        return url, params
-    # end def _prepare_request
-
-    def _postprocess_request(self, r):
-        """
-        This converts the response to either the response or a parsed :class:`pytgbot.api_types.receivable.Receivable`.
-
-        :param r: the request response
-        :type  r: requests.Response
-
-        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
-        """
-        from DictObject import DictObject
-        import requests
-
-        assert isinstance(r, requests.Response)
-
-        try:
-            logger.debug(r.json())
-            res = DictObject.objectify(r.json())
-        except Exception:
-            logger.exception("Parsing answer failed.\nRequest: {r!s}\nContent: {r.content}".format(r=r))
-            raise
-        # end if
-        res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
-        # TG should always return an dict, with at least a status or something.
-        if self.return_python_objects:
-            if res.ok != True:
-                raise TgApiServerException(
-                    error_code=res.error_code if "error_code" in res else None,
-                    response=res.response if "response" in res else None,
-                    description=res.description if "description" in res else None,
-                    request=r.request
-                )
-            # end if not ok
-            if "result" not in res:
-                raise TgApiParseException('Key "result" is missing.')
-            # end if no result
-            return res.result
-        # end if return_python_objects
-        return res
-    # end def _postprocess_request
-
-    def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
-        """
-        :param file_param_name: For what field the file should be uploaded.
-        :type  file_param_name: str
-
-        :param value: File to send. You can either pass a file_id as String to resend a file
-                      file that is already on the Telegram servers, or upload a new file,
-                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
-        :type  value: pytgbot.api_types.sendable.files.InputFile | str
-
-        :param _command: Overwrite the sended command.
-                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
-
-        :param kwargs: will get json encoded.
-
-        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
-
-        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
-        """
-        from ..api_types.sendable.files import InputFile
-        from luckydonaldUtils.encoding import unicode_type
-        from luckydonaldUtils.encoding import to_native as n
-
-        if isinstance(value, str):
-            kwargs[file_param_name] = str(value)
-        elif isinstance(value, unicode_type):
-            kwargs[file_param_name] = n(value)
-        elif isinstance(value, InputFile):
-            kwargs["files"] = value.get_request_files(file_param_name)
-        else:
-            raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
-                key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
-        # end if
-        if not _command:
-            # command as camelCase  # "voice_note" -> "sendVoiceNote"  # https://stackoverflow.com/a/10984923/3423324
-            command = re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), "send_" + file_param_name)
-        else:
-            command = _command
-        # end def
-        return self.do(command, **kwargs)
-    # end def _do_fileupload
-
-    def get_download_url(self, file):
-        """
-        Creates a url to download the file.
-
-        Note: Contains the secret API key, so you should not share this url!
-
-        :param file: The File you want to get the url to download.
-        :type  file: pytgbot.api_types.receivable.media.File
-
-        :return: url
-        :rtype: str
-        """
-        from ..api_types.receivable.media import File
-        assert isinstance(file, File)
-        return file.get_download_url(self.api_key)
-    # end def get_download_url
-
-    def _load_info(self):
-        """
-        This functions stores the id and the username of the bot.
-        Called by `.username` and `.id` properties.
-        :return:
-        """
-        myself = self.get_me()
-        if self.return_python_objects:
-            self._id = myself.id
-            self._username = myself.username
-        else:
-            self._id = myself["result"]["id"]
-            self._username = myself["result"]["username"]
-        # end if
-    # end def
-
-    @property
-    def username(self):
-        if not self._username:
-            self._load_info()
-        # end if
-        return self._username
-    # end def
-
-    @property
-    def id(self):
-        if not self._id:
-            self._load_info()
-        # end if
-        return self._id
-    # end def
-
-    def __str__(self):
-        username = self.username
-        id = self.id
-        return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
-    # end def
 # end class Bot
 
-# allow importing them as `pytgbot.bot.async.Bot` and `pytgbot.bot.sync.Bot`.
+# allow importing the bot as `pytgbot.bot.syncrounous.Bot`.
 Bot = SyncBot

@@ -14,52 +14,25 @@ from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types.sendable.inline import InlineQueryResult
 from ..api_types import from_array_list
 
+from .base import BotBase
+
 {% if is_asyncio %}
 # async imports
 from async_property import async_property
-import httpx
-{% else %}
+import httpx{#
+#}{% else %}
 # sync imports
-import requests
-{% endif %}
+import requests{#
+#}{% endif %}{% from "macros.template" import for_type_list_of_full %}
 
 
 __author__ = 'luckydonald'
-__all__ = ["Bot", "{% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}"]
+__all__ = ["{% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}", "Bot"]
 
 logger = logging.getLogger(__name__)
 
 
-class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(object):
-    _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # you shouldn't change that.
-
-    def __init__(self, api_key, return_python_objects=True):
-        """
-        A Bot instance. From here you can call all the functions.
-        The api key can be optained from @BotFather, see https://core.telegram.org/bots#6-botfather
-
-        :param api_key: The API key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
-        :type  api_key: str
-
-        :param return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects. Default: `True`
-        :type  return_python_objects: bool
-        """
-        if api_key is None or not api_key:
-            raise ValueError("No api_key given.")
-        self.api_key = api_key
-        self.return_python_objects = return_python_objects
-        self._last_update = datetime.now()
-        self._id = None        # will be filled when using the property .id or .username, or when calling ._load_info()
-        self._username = None  # will be filled when using the property .id or .username, or when calling ._load_info()
-    # end def __init__
-
-    # start of generated functions
-    {% for function in functions -%}
-    {% include "func.template" -%}
-    {#- strip end #}
-    {% endfor %}
-    # end of generated functions
-
+class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
     {% if is_asyncio %}async {% endif %}def send_msg(self, *args, **kwargs):
         """ alias to :func:`send_message` """
         return self.send_message(*args, **kwargs)
@@ -109,74 +82,6 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(object):
         return self._postprocess_request(r)
     # end def do
 
-    def _prepare_request(self, command, query):
-        """
-        Prepares the command url, and converts the query json.
-
-        :param command: The Url command parameter
-        :type  command: str
-
-        :param query: Will get json encoded.
-
-        :return: params and a url, for use with requests etc.
-        """
-        from pytgbot.api_types.sendable import Sendable
-        from pytgbot.api_types import as_array
-        import json
-
-        params = {}
-        for key in query.keys():
-            element = query[key]
-            if element is not None:
-                if isinstance(element, Sendable):
-                    params[key] = json.dumps(as_array(element))
-                else:
-                    params[key] = element
-        url = self._base_url.format(api_key=n(self.api_key), command=n(command))
-        return url, params
-    # end def _prepare_request
-
-    def _postprocess_request(self, r):
-        """
-        This converts the response to either the response or a parsed :class:`pytgbot.api_types.receivable.Receivable`.
-
-        :param r: the request response
-        :type  r: requests.Response
-
-        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
-        """
-        from DictObject import DictObject
-        import requests
-
-        assert isinstance(r, requests.Response)
-
-        try:
-            logger.debug(r.json())
-            res = DictObject.objectify(r.json())
-        except Exception:
-            logger.exception("Parsing answer failed.\nRequest: {r!s}\nContent: {r.content}".format(r=r))
-            raise
-        # end if
-        res["response"] = r  # TODO: does this failes on json lists? Does TG does that?
-        # TG should always return an dict, with at least a status or something.
-        if self.return_python_objects:
-            if res.ok != True:
-                raise TgApiServerException(
-                    error_code=res.error_code if "error_code" in res else None,
-                    response=res.response if "response" in res else None,
-                    description=res.description if "description" in res else None,
-                    request=r.request
-                )
-            # end if not ok
-            if "result" not in res:
-                raise TgApiParseException('Key "result" is missing.')
-            # end if no result
-            return res.result
-        # end if return_python_objects
-        return res
-    # end def _postprocess_request
-
     {% if is_asyncio %}async {% endif %}def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
         """
         :param file_param_name: For what field the file should be uploaded.
@@ -220,23 +125,6 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(object):
         return {% if is_asyncio %}await {% endif %}self.do(command, **kwargs)
     # end def _do_fileupload
 
-    def get_download_url(self, file):
-        """
-        Creates a url to download the file.
-
-        Note: Contains the secret API key, so you should not share this url!
-
-        :param file: The File you want to get the url to download.
-        :type  file: pytgbot.api_types.receivable.media.File
-
-        :return: url
-        :rtype: str
-        """
-        from ..api_types.receivable.media import File
-        assert isinstance(file, File)
-        return file.get_download_url(self.api_key)
-    # end def get_download_url
-
     {% if is_asyncio %}async {% endif %}def _load_info(self):
         """
         This functions stores the id and the username of the bot.
@@ -274,7 +162,43 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(object):
         id = {% if is_asyncio %}self._id if self._id else "<not loaded>"{% else %}self.id{% endif %}
         return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
     # end def
+
+
+    # start of generated functions
+    {% for function in functions %}
+    {% if is_asyncio %}async {% endif %}def {{ function.name }}(self{% for variable in function.variables %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% else %}{{ variable.default }}{% endif %}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}):
+        """
+        Internal function for making the request to the API's {{ function.api_name }} endpoint.
+
+        {% if function.parameters %}
+        Parameters:
+        {% for param in function.parameters %}
+        :param {{ param.name }}: {{ param.description }}
+        :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
+        {% endfor %}
+        {% endif %}
+        {% if function.keywords -%}
+        Optional keyword parameters:
+        {% for keyword in function.keywords %}
+        :param {{ keyword.name }}: {{ keyword.description }}
+        :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
+        {% endfor %}
+        {% endif -%}
+
+
+        Returns:
+
+        :return: {{ function.returns.description }}
+        :rtype:  {{ for_type_list_of_full(function.returns) }}
+        """
+        result = {% if is_asyncio %}await {% endif %}self._{{ function.name }}__make_request({% for variable in function.variables %}{{ variable.name }}={{ variable.name }}{% if not loop.last %}, {% endif %}{% endfor %})
+        return self._{{ function.name }}__process_result(result)
+    # end def {{ function.name }}{#
+    #}{% if not loop.last %}{# extra linebreak #}
+    {% endif %}{#
+    #}{% endfor %}
+    # end of generated functions
 # end class Bot
 
-# allow importing them as `pytgbot.bot.async.Bot` and `pytgbot.bot.sync.Bot`.
+# allow importing the bot as `pytgbot.bot.{% if is_asyncio %}a{% endif %}syncrounous.Bot`.
 Bot = {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}

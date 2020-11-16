@@ -40,6 +40,7 @@ class BotBase(object):
         """
         if api_key is None or not api_key:
             raise ValueError("No api_key given.")
+        # end if
         self.api_key = api_key
         self.return_python_objects = return_python_objects
         self._last_update = datetime.now()
@@ -195,46 +196,54 @@ class BotBase(object):
         :rtype: str
         """
         from ..api_types.receivable.media import File
-        assert isinstance(file, File)
-        return file.get_download_url(self.api_key)
+        assert_type_or_raise(file, File, parameter_name='file')
+        return self._base_url.rstrip('/').format(api_key=n(elf.api_keys), command=n(file.file_path))
     # end def get_download_url
 
+    @abstractmethod
     def _load_info(self):
         """
         This functions stores the id and the username of the bot.
         Called by `.username` and `.id` properties.
+        Must be synchronous, even in asynchronous subclasses.
         :return:
         """
-        myself = self.get_me()
-        if self.return_python_objects:
-            self._id = myself.id
-            self._username = myself.username
-        else:
-            self._id = myself["result"]["id"]
-            self._username = myself["result"]["username"]
+        raise NotImplementedError('subclass needs to overwrite this.')
+    # end def
+
+    @property
+    def me(self):
+        """
+        :rtype: User
+        """
+        if not self._me:
+            self._load_info()
         # end if
+        return self._me
     # end def
 
     @property
     def username(self):
-        if not self._username:
-            self._load_info()
-        # end if
-        return self._username
+        return self.me.username
     # end def
 
     @property
     def id(self):
-        if not self._id:
-            self._load_info()
-        # end if
-        return self._id
+        return self.me.id
     # end def
 
     def __str__(self):
-        username = self.username
-        id = self.id
-        return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
+        return "{s.__class__.__name__}(username={s.username!r}, id={s.id!r})".format(s=self)
+    # end def
+
+    @abstractmethod
+    def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
+        raise NotImplementedError('subclass needs to overwrite this.')
+    # end def
+
+    @abstractmethod
+    def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
+        raise NotImplementedError('subclass needs to overwrite this.')
     # end def
 
     # start of generated functions
