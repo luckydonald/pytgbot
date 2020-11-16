@@ -473,18 +473,13 @@ class InputMediaPlayable(InputMediaWithThumb):
         assert_type_or_raise(array, dict, parameter_name="array")
         
         data = InputMediaWithThumb.validate_array(array)
-        data['type'] = u(array.get('type'))
-        data['media'] = u(array.get('media'))
-        if isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = InputFile.from_array(array.get('thumb'))
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifdata['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
+        # 'type' is given by class type
+        # 'media' is given by class type
+        # 'thumb' is given by class type
+        # 'duration' is given by class type
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
         return data
     # end def validate_array
 
@@ -671,20 +666,15 @@ class InputMediaVideolike(InputMediaPlayable):
         assert_type_or_raise(array, dict, parameter_name="array")
         
         data = InputMediaPlayable.validate_array(array)
-        data['type'] = u(array.get('type'))
-        data['media'] = u(array.get('media'))
-        if isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = InputFile.from_array(array.get('thumb'))
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end ifdata['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
+        # 'type' is given by class type
+        # 'media' is given by class type
+        # 'thumb' is given by class type
+        # 'duration' is given by class type
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
         return data
     # end def validate_array
 
@@ -1064,7 +1054,8 @@ class InputMediaVideo(InputMediaVideolike):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
@@ -1282,7 +1273,8 @@ class InputMediaAnimation(InputMediaVideolike):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
@@ -1499,7 +1491,8 @@ class InputMediaAudio(InputMediaPlayable):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
@@ -1694,7 +1687,8 @@ class InputMediaDocument(InputMediaWithThumb):
             data['thumb'] = u(array.get('thumb'))
         else:
             raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end ifdata['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        # end if
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         data['disable_content_type_detection'] = bool(array.get('disable_content_type_detection')) if array.get('disable_content_type_detection') is not None else None
