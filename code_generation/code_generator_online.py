@@ -668,10 +668,12 @@ def safe_to_file(folder, results):
     # end if
 
 
+# noinspection PyCompatibility
 def render_file_to_disk(file, txt):
     with open(file, "w") as f:
         f.write(txt)
     # end with
+    print(f'Written {file!r} to disk, {len(txt)} chars.')
     if use_back:
         black.reformat_one(
             src=black.Path(file),

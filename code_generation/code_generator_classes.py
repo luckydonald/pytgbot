@@ -93,6 +93,7 @@ class Clazz(ClassOrFunction):
         return self.parameters + self.keywords
     # end def variables
 
+    @cached
     def parent_clazz_has_same_variable(self, variable: 'Variable'):
         if not self._parent_clazz_clazz:
             return False
