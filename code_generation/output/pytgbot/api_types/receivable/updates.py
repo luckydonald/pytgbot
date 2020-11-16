@@ -154,8 +154,6 @@ class Update(Receivable):
         from .media import PollAnswer
         from .payments import PreCheckoutQuery
         from .payments import ShippingQuery
-        from . import CallbackQuery
-        from . import Message
         
         assert_type_or_raise(update_id, int, parameter_name="update_id")
         self.update_id = update_id
@@ -256,8 +254,6 @@ class Update(Receivable):
         from .media import PollAnswer
         from .payments import PreCheckoutQuery
         from .payments import ShippingQuery
-        from . import CallbackQuery
-        from . import Message
         
         data = Receivable.validate_array(array)
         data['update_id'] = int(array.get('update_id'))
@@ -881,7 +877,6 @@ class Message(UpdateType):
         from .payments import SuccessfulPayment
         from .peer import Chat
         from .peer import User
-        from . import Message
         from ..sendable.reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(message_id, int, parameter_name="message_id")
@@ -1212,7 +1207,6 @@ class Message(UpdateType):
         from .payments import SuccessfulPayment
         from .peer import Chat
         from .peer import User
-        from . import Message
         from ..sendable.reply_markup import InlineKeyboardMarkup
         
         data = UpdateType.validate_array(array)
@@ -1396,7 +1390,6 @@ class CallbackQuery(UpdateType):
         """
         super(CallbackQuery, self).__init__()
         from .peer import User
-        from . import Message
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1456,7 +1449,6 @@ class CallbackQuery(UpdateType):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-        from . import Message
         
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))

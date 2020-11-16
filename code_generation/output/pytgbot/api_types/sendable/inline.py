@@ -150,7 +150,6 @@ class InlineQueryResultArticle(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultArticle, self).__init__()
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -227,7 +226,6 @@ class InlineQueryResultArticle(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -398,7 +396,6 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         super(InlineQueryResultPhoto, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -487,7 +484,6 @@ class InlineQueryResultPhoto(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -666,7 +662,6 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         super(InlineQueryResultGif, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -760,7 +755,6 @@ class InlineQueryResultGif(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -940,7 +934,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         super(InlineQueryResultMpeg4Gif, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -1034,7 +1027,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -1224,7 +1216,6 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         super(InlineQueryResultVideo, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -1321,7 +1312,6 @@ class InlineQueryResultVideo(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -1486,7 +1476,6 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         super(InlineQueryResultAudio, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -1565,7 +1554,6 @@ class InlineQueryResultAudio(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -1720,7 +1708,6 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         super(InlineQueryResultVoice, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -1794,7 +1781,6 @@ class InlineQueryResultVoice(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -1972,7 +1958,6 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         super(InlineQueryResultDocument, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -2065,7 +2050,6 @@ class InlineQueryResultDocument(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -2246,7 +2230,6 @@ class InlineQueryResultLocation(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultLocation, self).__init__()
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -2337,7 +2320,6 @@ class InlineQueryResultLocation(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -2524,7 +2506,6 @@ class InlineQueryResultVenue(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultVenue, self).__init__()
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -2619,7 +2600,6 @@ class InlineQueryResultVenue(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -2783,7 +2763,6 @@ class InlineQueryResultContact(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultContact, self).__init__()
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -2860,7 +2839,6 @@ class InlineQueryResultContact(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
@@ -3164,7 +3142,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedPhoto, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -3239,7 +3216,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
@@ -3385,7 +3361,6 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedGif, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -3455,7 +3430,6 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
@@ -3600,7 +3574,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedMpeg4Gif, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -3670,7 +3643,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
@@ -3792,7 +3764,6 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedSticker, self).__init__()
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -3840,7 +3811,6 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
@@ -3989,7 +3959,6 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedDocument, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -4063,7 +4032,6 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
@@ -4215,7 +4183,6 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedVideo, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -4289,7 +4256,6 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
@@ -4437,7 +4403,6 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedVoice, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -4506,7 +4471,6 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
@@ -4647,7 +4611,6 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedAudio, self).__init__()
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -4712,7 +4675,6 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        from . import InputMessageContent
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)

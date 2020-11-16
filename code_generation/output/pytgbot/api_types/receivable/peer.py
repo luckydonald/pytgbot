@@ -366,8 +366,6 @@ class Chat(Peer):
         """
         super(Chat, self).__init__()
         from .media import ChatPhoto
-        from . import ChatLocation
-        from . import ChatPermissions
         from .updates import Message
         
         assert_type_or_raise(id, int, parameter_name="id")
@@ -481,8 +479,6 @@ class Chat(Peer):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import ChatPhoto
-        from . import ChatLocation
-        from . import ChatPermissions
         from .updates import Message
         
         data = Peer.validate_array(array)
@@ -705,7 +701,6 @@ class ChatMember(Result):
         :type  _raw: None | dict
         """
         super(ChatMember, self).__init__()
-        from . import User
         
         assert_type_or_raise(user, User, parameter_name="user")
         self.user = user
@@ -829,7 +824,6 @@ class ChatMember(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from . import User
         
         data = Result.validate_array(array)
         data['user'] = User.from_array(array.get('user'))

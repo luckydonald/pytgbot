@@ -432,7 +432,6 @@ class InputMediaPlayable(InputMediaWithThumb):
         :type  duration: int
         """
         super(InputMediaPlayable, self).__init__()
-        from . import InputMediaWithThumb
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -494,7 +493,6 @@ class InputMediaPlayable(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from . import InputMediaWithThumb
         
         data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -644,7 +642,6 @@ class InputMediaVideolike(InputMediaPlayable):
         :type  height: int
         """
         super(InputMediaVideolike, self).__init__()
-        from . import InputMediaPlayable
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -716,7 +713,6 @@ class InputMediaVideolike(InputMediaPlayable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from . import InputMediaPlayable
         
         data = InputMediaPlayable.validate_array(array)
         data['type'] = u(array.get('type'))
