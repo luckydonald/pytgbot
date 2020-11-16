@@ -18,6 +18,23 @@ logger = logging.getLogger(__name__)
 
 
 class SyncBot(BotBase):
+    def _load_info(self):
+        """
+        This functions stores the id and the username of the bot.
+
+        This actually does a
+        Called by `.username` and `.id` properties.
+        :return:
+        """
+        myself = self.get_me()
+        if self.return_python_objects:
+            self._me = myself
+        else:
+            from ..api_types.receivable.peer import User
+            self._me = User.from_array(myself["result"])
+        # end def
+    # end def
+
     def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.

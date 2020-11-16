@@ -19,13 +19,6 @@ logger = logging.getLogger(__name__)
 
 
 class AsyncBot(BotBase):
-
-    def __init__(self, api_key, return_python_objects=True):
-        from .syncrounous import SyncBot
-        SyncBot(api_key, return_python_objects=True)
-        super().__init__(api_key, return_python_objects)
-    # end def
-
     def _load_info(self):
         """
         This functions stores the id and the username of the bot.

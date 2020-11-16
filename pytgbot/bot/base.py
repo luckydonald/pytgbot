@@ -10,7 +10,7 @@ from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
 from luckydonaldUtils.exceptions import assert_type_or_raise
 
-from ..exceptions import TgApiServerException, TgApiParseException, TgApiException
+from ..exceptions import TgApiServerException, TgApiParseException
 from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types.sendable.inline import InlineQueryResult
 from ..api_types.receivable.peer import User
@@ -39,10 +39,9 @@ class BotBase(object):
         :param return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects. Default: `True`
         :type  return_python_objects: bool
         """
-        from datetime import datetime
-
         if api_key is None or not api_key:
             raise ValueError("No api_key given.")
+        # end if
         self.api_key = api_key
         self.return_python_objects = return_python_objects
         self._last_update = datetime.now()
@@ -202,18 +201,15 @@ class BotBase(object):
         return file.get_download_url(self.api_key)
     # end def get_download_url
 
+    @abstractmethod
     def _load_info(self):
         """
         This functions stores the id and the username of the bot.
         Called by `.username` and `.id` properties.
+        Must be synchronous, even in asynchronous subclasses.
         :return:
         """
-        myself = self.get_me()
-        if self.return_python_objects:
-            self._me = myself
-        else:
-            self._me = User.from_array(myself["result"])
-        # end if
+        raise NotImplementedError('subclass needs to overwrite this.')
     # end def
 
     @property
