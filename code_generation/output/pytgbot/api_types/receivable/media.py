@@ -17,19 +17,7 @@ class Media(Receivable):
     :type  _raw: None | dict
     """
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    pass
 # end class Media
 
 

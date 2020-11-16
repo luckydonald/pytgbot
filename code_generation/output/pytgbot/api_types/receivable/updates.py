@@ -17,19 +17,7 @@ class UpdateType(Receivable):
     :type  _raw: None | dict
     """
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    pass
 # end class UpdateType
 
 
@@ -45,23 +33,14 @@ class CallbackGame(UpdateType):
     :type  _raw: None | dict
     """
 
-    
+    def to_array(self):
+        return {}
+    # end def
 
-    
-
-    
     @staticmethod
     def validate_array(array):
         return {}
     # end def
-
-    
-
-    
-
-    
-
-    
 # end class CallbackGame
 
 

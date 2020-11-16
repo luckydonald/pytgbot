@@ -13,22 +13,9 @@ class Button(Sendable):
     Optional keyword parameters:
     """
 
-    
     def __init__(self):
         super(Button, self).__init__()
     # end def __init__
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 # end class Button
 
 
@@ -39,22 +26,9 @@ class ReplyMarkup(Sendable):
     Optional keyword parameters:
     """
 
-    
     def __init__(self):
         super(ReplyMarkup, self).__init__()
     # end def __init__
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 # end class ReplyMarkup
 
 

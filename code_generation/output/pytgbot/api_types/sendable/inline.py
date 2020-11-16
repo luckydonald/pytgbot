@@ -17,7 +17,6 @@ class InlineQueryResult(Sendable):
     Optional keyword parameters:
     """
 
-    
     def __init__(self, id, type):
         assert_type_or_raise(id, unicode_type, int, parameter_name="id")
         if not isinstance(id, unicode_type):
@@ -28,17 +27,12 @@ class InlineQueryResult(Sendable):
         super(InlineQueryResult, self).__init__()
     # end def
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    def to_array(self):
+        return {
+            "type": u(self.type),
+            "id": u(self.id),
+        }
+    # end def to_array
 # end class InlineQueryResult
 
 
@@ -49,19 +43,7 @@ class InlineQueryCachedResult(InlineQueryResult):
     Optional keyword parameters:
     """
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    pass
 # end class InlineQueryCachedResult
 
 
@@ -72,19 +54,7 @@ class InputMessageContent(Sendable):
     Optional keyword parameters:
     """
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    pass
 # end class InputMessageContent
 
 

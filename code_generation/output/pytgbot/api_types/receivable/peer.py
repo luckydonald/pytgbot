@@ -16,19 +16,7 @@ class Peer(Result):
     :type  _raw: None | dict
     """
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    pass
 # end class Peer
 
 

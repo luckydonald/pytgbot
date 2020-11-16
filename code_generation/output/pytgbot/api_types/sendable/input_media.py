@@ -34,7 +34,6 @@ class InputMedia(Sendable):
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
-    
     def __init__(self, type, media, caption=None, parse_mode=None):
         """
         This object represents the content of a media message to be sent.
@@ -74,9 +73,26 @@ class InputMedia(Sendable):
         self.parse_mode = parse_mode
     # end def __init__
 
+    def to_array(self):
+        """
+        Serializes this InputMediaPhoto to a dictionary.
     
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = {
+            "type": u(self.type),
+            #"media": u(self.media),
+        }
+        if self.caption is not None:
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
+        if self.parse_mode is not None:
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
+        return array
+    # end def to_array
 
-    
     @staticmethod
     def validate_array(array):
         """
@@ -94,7 +110,6 @@ class InputMedia(Sendable):
         return data
     # end def validate_array
 
-    
     @staticmethod
     def from_array(array):
         """
@@ -113,7 +128,6 @@ class InputMedia(Sendable):
         return instance
     # end def from_array
 
-    
     def __str__(self):
         """
         Implements `str(inputmediaphoto_instance)`
@@ -121,7 +135,6 @@ class InputMedia(Sendable):
         return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
     # end def __str__
 
-    
     def __repr__(self):
         """
         Implements `repr(inputmedia_instance)`
@@ -132,7 +145,6 @@ class InputMedia(Sendable):
         return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
     # end def __repr__
 
-    
     def __contains__(self, key):
         """
         Implements `"key" in inputmedia_instance`
@@ -143,6 +155,36 @@ class InputMedia(Sendable):
             and bool(getattr(self, key, None))
         )
     # end def __contains__
+
+    def get_request_data(self, var_name, full_data=False):
+        """
+        :param var_name:
+        :param full_data: If you want `.to_array()` with this data, ready to be sent.
+        :return: A tuple of `to_array()` dict and the files (:py:func:`InputFile.get_request_files()`).
+                 Files can be None, if no file was given, but an url or existing `file_id`.
+                 If `media` is :py:class:`InputFile` however, the first tuple element,
+                 media, will have ['media'] set to `attach://{var_name}_media` automatically.
+        """
+        if full_data:
+            data = self.to_array()
+            data['media'], file = self.get_inputfile_data(self.media, var_name, suffix='_media')
+            return data, file
+        # end if
+        return self.get_inputfile_data(self.media, var_name, suffix='_media')
+    # end def get_request_data
+    
+    @staticmethod
+    def get_inputfile_data(media, var_name, suffix='_media'):
+        name = "{var_name}{suffix}".format(var_name=var_name, suffix=suffix)
+        if isinstance(media, InputFile):
+            # is file to be uploaded
+            string = 'attach://{name}'.format(name=name)
+            return string, media.get_request_files(name)
+        else:
+            # is no upload
+            return media, None
+        # end if
+    # end def get_inputfile_data
 # end class InputMedia
 
 
@@ -177,7 +219,37 @@ class InputMediaWithThumb(InputMedia):
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
     """
 
+    def get_request_data(self, var_name, full_data=False):
+        """
+        :param var_name:
+        :param full_data: If you want `.to_array()` with this data, ready to be sent.
+        :return: A tuple of `to_array()` dict and the files (:py:func:`InputFile.get_request_files()`).
+                 Files can be None, if no file was given, but an url or existing `file_id`.
     
+                 If `self.media` is an `InputFile` however,
+                 the first tuple element (either the string, or the dict's `['media']` if `full_data=True`),
+                 will be set to `attach://{var_name}_media` automatically.
+                 If `self.thumb` is an `InputFile` however, the first tuple element's `['thumb']`, will be set to `attach://{var_name}_thumb` automatically.
+        """
+        if not full_data:
+            raise ArithmeticError('we have a thumbnail, please use `full_data=True`.')
+        # end if
+        file = {}
+        data, file_to_add = super(InputMediaWithThumb, self).get_request_data(var_name, full_data=True)
+        if file_to_add:
+            file.update(file_to_add)
+        # end if
+        data['thumb'], file_to_add = self.get_inputfile_data(self.thumb, var_name, suffix='_thumb')
+        if data['thumb'] is None:
+            del data['thumb']  # having `'thumb': null` in the json produces errors.
+        # end if
+        if file_to_add:
+            file.update(file_to_add)
+        # end if
+        return data, (file or None)
+        # end if
+    # end def
+
     def __init__(self, type, media, thumb, caption=None, parse_mode=None):
         """
         Represents a media with thumb field to be sent.
@@ -208,9 +280,23 @@ class InputMediaWithThumb(InputMedia):
         self.thumb = thumb
     # end def
 
+    def to_array(self):
+        """
+        Serializes this InputMediaPhoto to a dictionary.
     
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(InputMediaWithThumb, self).to_array()
+        # 'type' is handled by superclass
+        array['media'] = u(self.media)  # py2: type unicode, py3: type str
+        if self.caption is not None:
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        if self.parse_mode is not None:
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        return array
+    # end def to_array
 
-    
     @staticmethod
     def validate_array(array):
         """
@@ -228,7 +314,6 @@ class InputMediaWithThumb(InputMedia):
         return data
     # end def validate_array
 
-    
     @staticmethod
     def from_array(array):
         """
@@ -247,7 +332,6 @@ class InputMediaWithThumb(InputMedia):
         return instance
     # end def from_array
 
-    
     def __str__(self):
         """
         Implements `str(inputmediawiththumb_instance)`
@@ -255,7 +339,6 @@ class InputMediaWithThumb(InputMedia):
         return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
     # end def __str__
 
-    
     def __repr__(self):
         """
         Implements `repr(inputmediawiththumb_instance)`
@@ -266,7 +349,6 @@ class InputMediaWithThumb(InputMedia):
         return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
     # end def __repr__
 
-    
     def __contains__(self, key):
         """
         Implements `"key" in inputmediawiththumb_instance`
@@ -313,6 +395,8 @@ class InputMediaPlayable(InputMediaWithThumb):
     :param duration: Optional. Duration of the media
     :type  duration: int
     """
+
+    
 
     def __init__(self, type, media, caption=None, parse_mode=None, caption_entities=None, thumb, duration=None):
         """
@@ -372,7 +456,34 @@ class InputMediaPlayable(InputMediaWithThumb):
         self.duration = duration
     # end def __init__
 
-    
+    def to_array(self):
+        """
+        Serializes this InputMediaPlayable to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(InputMediaPlayable, self).to_array()
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['media'] = u(self.media)  # py2: type unicode, py3: type str
+        if self.caption is not None:
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        if self.parse_mode is not None:
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
+        if isinstance(self.thumb, InputFile):
+            array['thumb'] = self.thumb.to_array()  # type InputFile
+        elif isinstance(self.thumb, str):
+            array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
+            raise TypeError('Unknown type, must be one of InputFile, str.')
+        # end if
+
+        if self.duration is not None:
+            array['duration'] = int(self.duration)  # type int
+        return array
+    # end def to_array
 
     @staticmethod
     def validate_array(array):
@@ -446,6 +557,8 @@ class InputMediaPlayable(InputMediaWithThumb):
             and bool(getattr(self, key, None))
         )
     # end def __contains__
+
+    
 # end class InputMediaPlayable
 
 
@@ -488,6 +601,8 @@ class InputMediaVideolike(InputMediaPlayable):
     :param height: Optional. Media height
     :type  height: int
     """
+
+    
 
     def __init__(self, type, media, caption=None, parse_mode=None, caption_entities=None, thumb, duration=None, width=None, height=None):
         """
@@ -559,7 +674,38 @@ class InputMediaVideolike(InputMediaPlayable):
         self.height = height
     # end def __init__
 
-    
+    def to_array(self):
+        """
+        Serializes this InputMediaVideolike to a dictionary.
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        array = super(InputMediaVideolike, self).to_array()
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['media'] = u(self.media)  # py2: type unicode, py3: type str
+        if self.caption is not None:
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        if self.parse_mode is not None:
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+
+        if isinstance(self.thumb, InputFile):
+            array['thumb'] = self.thumb.to_array()  # type InputFile
+        elif isinstance(self.thumb, str):
+            array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
+            raise TypeError('Unknown type, must be one of InputFile, str.')
+        # end if
+
+        if self.duration is not None:
+            array['duration'] = int(self.duration)  # type int
+        if self.width is not None:
+            array['width'] = int(self.width)  # type int
+        if self.height is not None:
+            array['height'] = int(self.height)  # type int
+        return array
+    # end def to_array
 
     @staticmethod
     def validate_array(array):
@@ -635,6 +781,8 @@ class InputMediaVideolike(InputMediaPlayable):
             and bool(getattr(self, key, None))
         )
     # end def __contains__
+
+    
 # end class InputMediaVideolike
 
 

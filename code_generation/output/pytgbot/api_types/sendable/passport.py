@@ -15,19 +15,7 @@ class PassportElementError(Sendable):
     Optional keyword parameters:
     """
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    pass
 # end class PassportElementError
 
 
