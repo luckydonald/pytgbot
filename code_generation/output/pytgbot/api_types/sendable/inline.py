@@ -104,7 +104,7 @@ class InlineQueryResultArticle(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, title, input_message_content, reply_markup=None, url=None, hide_url=None, description=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, id, title, input_message_content, reply_markup=None, url=None, hide_url=None, description=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a link to an article or web page.
 
@@ -152,8 +152,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         super(InlineQueryResultArticle, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'article'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -343,7 +342,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, photo_url, thumb_url, photo_width=None, photo_height=None, title=None, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, photo_url, thumb_url, photo_width=None, photo_height=None, title=None, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
@@ -398,8 +397,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'photo'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -606,7 +604,7 @@ class InlineQueryResultGif(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, gif_url, thumb_url, gif_width=None, gif_height=None, gif_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, gif_url, thumb_url, gif_width=None, gif_height=None, gif_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -664,8 +662,7 @@ class InlineQueryResultGif(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'gif'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1155,7 +1152,7 @@ class InlineQueryResultVideo(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, video_url, mime_type, thumb_url, title, caption=None, parse_mode=None, caption_entities=None, video_width=None, video_height=None, video_duration=None, description=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, video_url, mime_type, thumb_url, title, caption=None, parse_mode=None, caption_entities=None, video_width=None, video_height=None, video_duration=None, description=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
@@ -1218,8 +1215,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'video'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1428,7 +1424,7 @@ class InlineQueryResultAudio(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, audio_url, title, caption=None, parse_mode=None, caption_entities=None, performer=None, audio_duration=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, audio_url, title, caption=None, parse_mode=None, caption_entities=None, performer=None, audio_duration=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -1478,8 +1474,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'audio'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1663,7 +1658,7 @@ class InlineQueryResultVoice(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, voice_url, title, caption=None, parse_mode=None, caption_entities=None, voice_duration=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, voice_url, title, caption=None, parse_mode=None, caption_entities=None, voice_duration=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -1710,8 +1705,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'voice'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1901,7 +1895,7 @@ class InlineQueryResultDocument(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, title, document_url, mime_type, caption=None, parse_mode=None, caption_entities=None, description=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, id, title, document_url, mime_type, caption=None, parse_mode=None, caption_entities=None, description=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -1960,8 +1954,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'document'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2174,7 +2167,7 @@ class InlineQueryResultLocation(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, latitude, longitude, title, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, id, latitude, longitude, title, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -2232,8 +2225,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         super(InlineQueryResultLocation, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'location'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2447,7 +2439,7 @@ class InlineQueryResultVenue(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -2508,8 +2500,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         super(InlineQueryResultVenue, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'venue'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2716,7 +2707,7 @@ class InlineQueryResultContact(InlineQueryResult):
     :type  thumb_height: int
     """
 
-    def __init__(self, type, id, phone_number, first_name, last_name=None, vcard=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
+    def __init__(self, id, phone_number, first_name, last_name=None, vcard=None, reply_markup=None, input_message_content=None, thumb_url=None, thumb_width=None, thumb_height=None):
         """
         Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -2765,8 +2756,7 @@ class InlineQueryResultContact(InlineQueryResult):
         super(InlineQueryResultContact, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'contact'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2930,7 +2920,7 @@ class InlineQueryResultGame(InlineQueryResult):
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     """
 
-    def __init__(self, type, id, game_short_name, reply_markup=None):
+    def __init__(self, id, game_short_name, reply_markup=None):
         """
         Represents a Game.
         Note: This will only work in Telegram versions released after October 1, 2016. Older clients will not display any inline results if a game result is among them.
@@ -2958,8 +2948,7 @@ class InlineQueryResultGame(InlineQueryResult):
         super(InlineQueryResultGame, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'game'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -3098,7 +3087,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, photo_file_id, title=None, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, photo_file_id, title=None, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
 
@@ -3144,8 +3133,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'photo'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -3320,7 +3308,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, gif_file_id, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, gif_file_id, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
 
@@ -3363,8 +3351,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'gif'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -3735,7 +3722,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, sticker_file_id, reply_markup=None, input_message_content=None):
+    def __init__(self, id, sticker_file_id, reply_markup=None, input_message_content=None):
         """
         Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
         Note: This will only work in Telegram versions released after 9 April, 2016 for static stickers and after 06 July, 2019 for animated stickers. Older clients will ignore them.
@@ -3766,8 +3753,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         super(InlineQueryResultCachedSticker, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'sticker'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -3914,7 +3900,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, title, document_file_id, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, title, document_file_id, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -3961,8 +3947,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'document'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -4139,7 +4124,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, video_file_id, title, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, video_file_id, title, description=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
 
@@ -4185,8 +4170,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'video'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -4361,7 +4345,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, voice_file_id, title, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, voice_file_id, title, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -4405,8 +4389,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'voice'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -4572,7 +4555,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, audio_file_id, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, audio_file_id, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
@@ -4613,8 +4596,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'audio'
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id

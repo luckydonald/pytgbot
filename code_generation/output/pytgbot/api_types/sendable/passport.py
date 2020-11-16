@@ -47,7 +47,7 @@ class PassportElementErrorDataField(PassportElementError):
     Optional keyword parameters:
     """
 
-    def __init__(self, source, type, field_name, data_hash, message):
+    def __init__(self, type, field_name, data_hash, message):
         """
         Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
 
@@ -75,8 +75,7 @@ class PassportElementErrorDataField(PassportElementError):
         Optional keyword parameters:
         """
         super(PassportElementErrorDataField, self).__init__()
-        assert_type_or_raise(source, unicode_type, parameter_name="source")
-        self.source = source
+        self.source = 'data'
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -198,7 +197,7 @@ class PassportElementErrorFrontSide(PassportElementError):
     Optional keyword parameters:
     """
 
-    def __init__(self, source, type, file_hash, message):
+    def __init__(self, type, file_hash, message):
         """
         Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
 
@@ -223,8 +222,7 @@ class PassportElementErrorFrontSide(PassportElementError):
         Optional keyword parameters:
         """
         super(PassportElementErrorFrontSide, self).__init__()
-        assert_type_or_raise(source, unicode_type, parameter_name="source")
-        self.source = source
+        self.source = 'front_side'
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -341,7 +339,7 @@ class PassportElementErrorReverseSide(PassportElementError):
     Optional keyword parameters:
     """
 
-    def __init__(self, source, type, file_hash, message):
+    def __init__(self, type, file_hash, message):
         """
         Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
 
@@ -366,8 +364,7 @@ class PassportElementErrorReverseSide(PassportElementError):
         Optional keyword parameters:
         """
         super(PassportElementErrorReverseSide, self).__init__()
-        assert_type_or_raise(source, unicode_type, parameter_name="source")
-        self.source = source
+        self.source = 'reverse_side'
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -484,7 +481,7 @@ class PassportElementErrorSelfie(PassportElementError):
     Optional keyword parameters:
     """
 
-    def __init__(self, source, type, file_hash, message):
+    def __init__(self, type, file_hash, message):
         """
         Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
 
@@ -509,8 +506,7 @@ class PassportElementErrorSelfie(PassportElementError):
         Optional keyword parameters:
         """
         super(PassportElementErrorSelfie, self).__init__()
-        assert_type_or_raise(source, unicode_type, parameter_name="source")
-        self.source = source
+        self.source = 'selfie'
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -627,7 +623,7 @@ class PassportElementErrorFile(PassportElementError):
     Optional keyword parameters:
     """
 
-    def __init__(self, source, type, file_hash, message):
+    def __init__(self, type, file_hash, message):
         """
         Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
 
@@ -652,8 +648,7 @@ class PassportElementErrorFile(PassportElementError):
         Optional keyword parameters:
         """
         super(PassportElementErrorFile, self).__init__()
-        assert_type_or_raise(source, unicode_type, parameter_name="source")
-        self.source = source
+        self.source = 'file'
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -770,7 +765,7 @@ class PassportElementErrorFiles(PassportElementError):
     Optional keyword parameters:
     """
 
-    def __init__(self, source, type, file_hashes, message):
+    def __init__(self, type, file_hashes, message):
         """
         Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
 
@@ -795,8 +790,7 @@ class PassportElementErrorFiles(PassportElementError):
         Optional keyword parameters:
         """
         super(PassportElementErrorFiles, self).__init__()
-        assert_type_or_raise(source, unicode_type, parameter_name="source")
-        self.source = source
+        self.source = 'files'
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -914,7 +908,7 @@ class PassportElementErrorTranslationFile(PassportElementError):
     Optional keyword parameters:
     """
 
-    def __init__(self, source, type, file_hash, message):
+    def __init__(self, type, file_hash, message):
         """
         Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
 
@@ -939,8 +933,7 @@ class PassportElementErrorTranslationFile(PassportElementError):
         Optional keyword parameters:
         """
         super(PassportElementErrorTranslationFile, self).__init__()
-        assert_type_or_raise(source, unicode_type, parameter_name="source")
-        self.source = source
+        self.source = 'translation_file'
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1057,7 +1050,7 @@ class PassportElementErrorTranslationFiles(PassportElementError):
     Optional keyword parameters:
     """
 
-    def __init__(self, source, type, file_hashes, message):
+    def __init__(self, type, file_hashes, message):
         """
         Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
 
@@ -1082,8 +1075,7 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         Optional keyword parameters:
         """
         super(PassportElementErrorTranslationFiles, self).__init__()
-        assert_type_or_raise(source, unicode_type, parameter_name="source")
-        self.source = source
+        self.source = 'translation_files'
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1201,7 +1193,7 @@ class PassportElementErrorUnspecified(PassportElementError):
     Optional keyword parameters:
     """
 
-    def __init__(self, source, type, element_hash, message):
+    def __init__(self, type, element_hash, message):
         """
         Represents an issue in an unspecified place. The error is considered resolved when new data is added.
 
@@ -1226,8 +1218,7 @@ class PassportElementErrorUnspecified(PassportElementError):
         Optional keyword parameters:
         """
         super(PassportElementErrorUnspecified, self).__init__()
-        assert_type_or_raise(source, unicode_type, parameter_name="source")
-        self.source = source
+        self.source = 'unspecified'
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type

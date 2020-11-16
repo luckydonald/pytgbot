@@ -810,7 +810,7 @@ class InputMediaPhoto(InputMedia):
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
-    def __init__(self, type, media, caption=None, parse_mode=None, caption_entities=None):
+    def __init__(self, media, caption=None, parse_mode=None, caption_entities=None):
         """
         Represents a photo to be sent.
 
@@ -840,8 +840,7 @@ class InputMediaPhoto(InputMedia):
         super(InputMediaPhoto, self).__init__()
         from ..receivable.media import MessageEntity
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'photo'
         
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
@@ -987,7 +986,7 @@ class InputMediaVideo(InputMediaVideolike):
     :type  supports_streaming: bool
     """
 
-    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, width=None, height=None, duration=None, supports_streaming=None):
+    def __init__(self, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, width=None, height=None, duration=None, supports_streaming=None):
         """
         Represents a video to be sent.
 
@@ -1033,8 +1032,7 @@ class InputMediaVideo(InputMediaVideolike):
         from ..receivable.media import MessageEntity
         from .files import InputFile
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'video'
         
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
@@ -1221,7 +1219,7 @@ class InputMediaAnimation(InputMediaVideolike):
     :type  duration: int
     """
 
-    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, width=None, height=None, duration=None):
+    def __init__(self, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, width=None, height=None, duration=None):
         """
         Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 
@@ -1264,8 +1262,7 @@ class InputMediaAnimation(InputMediaVideolike):
         from ..receivable.media import MessageEntity
         from .files import InputFile
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'animation'
         
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
@@ -1446,7 +1443,7 @@ class InputMediaAudio(InputMediaPlayable):
     :type  title: str|unicode
     """
 
-    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None):
+    def __init__(self, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None):
         """
         Represents an audio file to be treated as music to be sent.
 
@@ -1489,8 +1486,7 @@ class InputMediaAudio(InputMediaPlayable):
         from ..receivable.media import MessageEntity
         from .files import InputFile
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'audio'
         
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
@@ -1665,7 +1661,7 @@ class InputMediaDocument(InputMediaWithThumb):
     :type  disable_content_type_detection: bool
     """
 
-    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None):
+    def __init__(self, media, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None):
         """
         Represents a general file to be sent.
 
@@ -1702,8 +1698,7 @@ class InputMediaDocument(InputMediaWithThumb):
         from ..receivable.media import MessageEntity
         from .files import InputFile
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'document'
         
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
