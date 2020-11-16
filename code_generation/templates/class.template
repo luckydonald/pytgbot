@@ -40,7 +40,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
         {{ self.class_docstring()|indent -}}
         """{% endif %}
-        super({{ clazz.clazz }}, self).__init__({%- for variable in clazz.variables if clazz.parent_clazz_has_same_variable(variable) %}{{ variable.value_to_set }}{% if not loop.last %}, {% endif %}{%- endfor %})
+        super({{ clazz.clazz }}, self).__init__({%- for variable in clazz.variables if variable.duplicate_of_parent %}{{ variable.value_to_set }}{% if not loop.last %}, {% endif %}{%- endfor %})
 
         {%- block imports_block -%}
         {%- if clazz.imports %}
@@ -50,7 +50,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% endif -%}
         {%- endblock -%}
         {% for variable in clazz.variables %}{#
-        #}{% if not variable.is_fixed_value and not clazz.parent_clazz_has_same_variable(variable) %}{#
+        #}{% if not variable.is_fixed_value and not variable.duplicate_of_parent %}{#
         #}{% if variable.optional %}
         assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}"){#
         #}{% if variable.always_is_value %}
@@ -67,7 +67,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         #}{% endif %}{#
         #}{% endif %}{#
         #}{% endif %}{#
-        #}{% if clazz.parent_clazz_has_same_variable(variable) %}
+        #}{% if variable.duplicate_of_parent %}
         # {{ variable.name.__repr__() }} is set by {{ clazz.parent_clazz.string }} base class{#
         #}{% else %}
         self.{{ variable.name }} = {{ variable.value_to_set }}{#
@@ -91,7 +91,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         """
         array = super({{ clazz.clazz }}, self).to_array()
         {% for variable in clazz.variables %}{#
-        #}{% if clazz.parent_clazz_has_same_variable(variable) %}
+        #}{% if variable.duplicate_of_parent %}
         # {{ variable.name.__repr__() }} given by superclass{#
         #}{% elif variable.optional %}
         if self.{{ variable.name }} is not None:

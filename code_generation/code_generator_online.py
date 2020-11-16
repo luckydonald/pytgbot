@@ -570,8 +570,11 @@ def safe_to_file(folder, results):
             continue
         # end if
         if result.parent_clazz.string in clazzes_by_name:
-            # noinspection PyUnresolvedReferences
-            result._parent_clazz_clazz = clazzes_by_name[result.parent_clazz.string]
+            parent_clazz: Clazz = clazzes_by_name[result.parent_clazz.string]
+            for variable in result.variables:
+                variable: Variable
+                variable.duplicate_of_parent = parent_clazz.has_same_variable(variable)
+            # end for
         else:
             logger.warning(f'Could not resolve parent class: {result.parent_clazz}')
         # end if

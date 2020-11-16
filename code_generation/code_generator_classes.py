@@ -1,4 +1,5 @@
 from itertools import chain
+from symbol import parameters
 from typing import Mapping, Union, List, Tuple, Optional, Callable
 
 from luckydonaldUtils.exceptions import assert_type_or_raise
@@ -68,15 +69,12 @@ class Clazz(ClassOrFunction):
         self.import_path = import_path if import_path is not None else self.calculate_import_path()
         self.imports = imports if imports else []  # Imports needed by parameters and keywords.
         self.parent_clazz = parent_clazz if parent_clazz is not None else Type("object", is_builtin=True)
-        self._parent_clazz_clazz = None
         assert_type_or_raise(self.parent_clazz, Type, parameter_name="self.parent_clazz")
         self.link = link
         self.description = description
         self.parameters = parameters if parameters else []
         self.keywords = keywords if keywords else []
     # end def __init__
-
-    _parent_clazz_clazz: Union[None, 'Clazz']
 
     def calculate_import_path(self) -> 'Import':
         from code_generator import get_type_path
@@ -93,13 +91,10 @@ class Clazz(ClassOrFunction):
         return self.parameters + self.keywords
     # end def variables
 
-    @cached
-    def parent_clazz_has_same_variable(self, variable: 'Variable'):
-        if not self._parent_clazz_clazz:
-            return False
-        # end if
-        for parent_variable in self._parent_clazz_clazz.variables:
-            if variable.compare(parent_variable, ignore_description=True):
+    def has_same_variable(self, variable: 'Variable', ignore_description: bool = True) -> bool:
+        assert_type_or_raise(variable, Variable, parameter_name='variable')
+        for own_variable in self.variables:
+            if variable.compare(own_variable, ignore_description=ignore_description):
                 return True
             # end if
         # end for
@@ -304,7 +299,8 @@ class Variable(dict):
             types: List['Type'] = None,
             optional: bool = None,
             default: Union[None, str, 'Type'] = None,
-            description: Optional[str] = None
+            description: Optional[str] = None,
+            duplicate_of_parent: Optional[bool] = None,
     ):
         """
         :param api_name: Name the telegram api uses.
@@ -313,6 +309,7 @@ class Variable(dict):
         :param types: `list` of :class:`Type`.  [Type(int), Type(bool)]  or  [Type(Message)]  etc.
         :param optional: If it is not needed. `True` will be a normal parameter, `False` means a kwarg.
         :param default: If it is optional, that is the default value. Else it uses "None" via templating.
+        :param duplicate_of_parent: If True, this (class) variable is also present in the parent class we inherit from.
         :param description:
         """
         self.api_name = api_name                           # parse_param_types(param)
@@ -322,6 +319,7 @@ class Variable(dict):
         self.optional = optional  # bool                   # parse_param_types(param)
         self.default = default  # bool
         self.description = description  # some text about it.  # parse_param_types(param)
+        self.duplicate_of_parent = duplicate_of_parent
     # end def
 
     """
