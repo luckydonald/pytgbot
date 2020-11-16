@@ -59,13 +59,20 @@ class PassportData(Result):
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportData to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportData, self).to_array()
         
         array['data'] = self._as_array(self.data)  # type list of EncryptedPassportElement
@@ -205,13 +212,20 @@ class PassportFile(Result):
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportFile to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportFile, self).to_array()
         
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
@@ -403,13 +417,20 @@ class EncryptedPassportElement(Result):
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this EncryptedPassportElement to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(EncryptedPassportElement, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -573,13 +594,20 @@ class EncryptedCredentials(Result):
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this EncryptedCredentials to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(EncryptedCredentials, self).to_array()
         
         array['data'] = u(self.data)  # py2: type unicode, py3: type str

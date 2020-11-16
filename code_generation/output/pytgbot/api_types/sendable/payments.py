@@ -50,13 +50,20 @@ class LabeledPrice(Sendable):
         self.amount = amount
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this LabeledPrice to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(LabeledPrice, self).to_array()
         
         array['label'] = u(self.label)  # py2: type unicode, py3: type str
@@ -181,13 +188,20 @@ class ShippingOption(Sendable):
         self.prices = prices
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ShippingOption to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(ShippingOption, self).to_array()
         
         array['id'] = u(self.id)  # py2: type unicode, py3: type str

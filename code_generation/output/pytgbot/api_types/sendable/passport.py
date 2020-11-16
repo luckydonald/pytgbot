@@ -80,13 +80,20 @@ class PassportElementErrorDataField(PassportElementError):
         self.message = message
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportElementErrorDataField to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportElementErrorDataField, self).to_array()
         
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
@@ -217,13 +224,20 @@ class PassportElementErrorFrontSide(PassportElementError):
         self.message = message
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportElementErrorFrontSide to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportElementErrorFrontSide, self).to_array()
         
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
@@ -352,13 +366,20 @@ class PassportElementErrorReverseSide(PassportElementError):
         self.message = message
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportElementErrorReverseSide to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportElementErrorReverseSide, self).to_array()
         
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
@@ -487,13 +508,20 @@ class PassportElementErrorSelfie(PassportElementError):
         self.message = message
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportElementErrorSelfie to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportElementErrorSelfie, self).to_array()
         
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
@@ -622,13 +650,20 @@ class PassportElementErrorFile(PassportElementError):
         self.message = message
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportElementErrorFile to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportElementErrorFile, self).to_array()
         
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
@@ -757,13 +792,20 @@ class PassportElementErrorFiles(PassportElementError):
         self.message = message
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportElementErrorFiles to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportElementErrorFiles, self).to_array()
         
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
@@ -892,13 +934,20 @@ class PassportElementErrorTranslationFile(PassportElementError):
         self.message = message
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportElementErrorTranslationFile to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportElementErrorTranslationFile, self).to_array()
         
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
@@ -1027,13 +1076,20 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         self.message = message
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportElementErrorTranslationFiles to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportElementErrorTranslationFiles, self).to_array()
         
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
@@ -1162,13 +1218,20 @@ class PassportElementErrorUnspecified(PassportElementError):
         self.message = message
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportElementErrorUnspecified to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportElementErrorUnspecified, self).to_array()
         
         array['source'] = u(self.source)  # py2: type unicode, py3: type str

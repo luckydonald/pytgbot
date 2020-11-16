@@ -93,13 +93,20 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         self.selective = selective
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ReplyKeyboardMarkup to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(ReplyKeyboardMarkup, self).to_array()
         
         array['keyboard'] = self._as_array(self.keyboard)  # type list of list of KeyboardButton
@@ -245,13 +252,20 @@ class KeyboardButton(Button):
         self.request_poll = request_poll
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this KeyboardButton to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(KeyboardButton, self).to_array()
         
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
@@ -362,13 +376,20 @@ class KeyboardButtonPollType(Button):
         self.type = type
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this KeyboardButtonPollType to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(KeyboardButtonPollType, self).to_array()
         
         if self.type is not None:
@@ -477,13 +498,20 @@ class ReplyKeyboardRemove(ReplyMarkup):
         self.selective = selective
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ReplyKeyboardRemove to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(ReplyKeyboardRemove, self).to_array()
         
         array['remove_keyboard'] = bool(self.remove_keyboard)  # type bool
@@ -596,13 +624,20 @@ class InlineKeyboardMarkup(ReplyMarkup):
         self.inline_keyboard = inline_keyboard
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineKeyboardMarkup to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineKeyboardMarkup, self).to_array()
         
         array['inline_keyboard'] = self._as_array(self.inline_keyboard)  # type list of list of InlineKeyboardButton
@@ -767,13 +802,20 @@ class InlineKeyboardButton(Button):
         self.pay = pay
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineKeyboardButton to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineKeyboardButton, self).to_array()
         
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
@@ -939,13 +981,20 @@ class LoginUrl(Sendable):
         self.request_write_access = request_write_access
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this LoginUrl to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(LoginUrl, self).to_array()
         
         array['url'] = u(self.url)  # py2: type unicode, py3: type str
@@ -1078,13 +1127,20 @@ class ForceReply(ReplyMarkup):
         self.selective = selective
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ForceReply to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(ForceReply, self).to_array()
         
         array['force_reply'] = bool(self.force_reply)  # type bool

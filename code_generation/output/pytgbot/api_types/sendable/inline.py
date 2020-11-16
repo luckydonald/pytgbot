@@ -169,13 +169,20 @@ class InlineQueryResultArticle(InlineQueryResult):
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultArticle to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultArticle, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -409,13 +416,20 @@ class InlineQueryResultPhoto(InlineQueryResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultPhoto to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultPhoto, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -666,13 +680,20 @@ class InlineQueryResultGif(InlineQueryResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultGif to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultGif, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -934,13 +955,20 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultMpeg4Gif to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultMpeg4Gif, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1207,13 +1235,20 @@ class InlineQueryResultVideo(InlineQueryResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultVideo to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultVideo, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1446,13 +1481,20 @@ class InlineQueryResultAudio(InlineQueryResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultAudio to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultAudio, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1665,13 +1707,20 @@ class InlineQueryResultVoice(InlineQueryResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultVoice to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultVoice, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1912,13 +1961,20 @@ class InlineQueryResultDocument(InlineQueryResult):
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultDocument to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultDocument, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -2172,13 +2228,20 @@ class InlineQueryResultLocation(InlineQueryResult):
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultLocation to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultLocation, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -2439,13 +2502,20 @@ class InlineQueryResultVenue(InlineQueryResult):
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultVenue to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultVenue, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -2676,13 +2746,20 @@ class InlineQueryResultContact(InlineQueryResult):
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultContact to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultContact, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -2845,13 +2922,20 @@ class InlineQueryResultGame(InlineQueryResult):
         self.reply_markup = reply_markup
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultGame to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultGame, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3035,13 +3119,20 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedPhoto to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedPhoto, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3242,13 +3333,20 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedGif to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedGif, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3452,13 +3550,20 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedMpeg4Gif to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3624,13 +3729,20 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedSticker to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedSticker, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3820,13 +3932,20 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedDocument to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedDocument, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -4033,13 +4152,20 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedVideo to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedVideo, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -4240,13 +4366,20 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedVoice to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedVoice, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -4435,13 +4568,20 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedAudio to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedAudio, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -4600,13 +4740,20 @@ class InputTextMessageContent(InputMessageContent):
         self.disable_web_page_preview = disable_web_page_preview
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputTextMessageContent to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputTextMessageContent, self).to_array()
         
         array['message_text'] = u(self.message_text)  # py2: type unicode, py3: type str
@@ -4766,13 +4913,20 @@ class InputLocationMessageContent(InputMessageContent):
         self.proximity_alert_radius = proximity_alert_radius
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputLocationMessageContent to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputLocationMessageContent, self).to_array()
         
         array['latitude'] = float(self.latitude)  # type float
@@ -4952,13 +5106,20 @@ class InputVenueMessageContent(InputMessageContent):
         self.google_place_type = google_place_type
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputVenueMessageContent to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputVenueMessageContent, self).to_array()
         
         array['latitude'] = float(self.latitude)  # type float
@@ -5110,13 +5271,20 @@ class InputContactMessageContent(InputMessageContent):
         self.vcard = vcard
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputContactMessageContent to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputContactMessageContent, self).to_array()
         
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str

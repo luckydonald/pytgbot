@@ -442,13 +442,20 @@ class InputMediaPlayable(InputMediaWithThumb):
         # 'caption_entities' is set by InputMediaWithThumb base class
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaPlayable to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaPlayable, self).to_array()
         
         # 'type' given by superclass
@@ -629,13 +636,20 @@ class InputMediaVideolike(InputMediaPlayable):
         # 'caption_entities' is set by InputMediaPlayable base class
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaVideolike to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaVideolike, self).to_array()
         
         # 'type' given by superclass
@@ -791,13 +805,20 @@ class InputMediaPhoto(InputMedia):
         self.caption_entities = caption_entities
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaPhoto to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaPhoto, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -987,13 +1008,20 @@ class InputMediaVideo(InputMediaVideolike):
         self.supports_streaming = supports_streaming
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaVideo to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaVideo, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1209,13 +1237,20 @@ class InputMediaAnimation(InputMediaVideolike):
         self.duration = duration
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaAnimation to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaAnimation, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1427,13 +1462,20 @@ class InputMediaAudio(InputMediaPlayable):
         self.title = title
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaAudio to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaAudio, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1629,13 +1671,20 @@ class InputMediaDocument(InputMediaWithThumb):
         self.disable_content_type_detection = disable_content_type_detection
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaDocument to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaDocument, self).to_array()
         
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
