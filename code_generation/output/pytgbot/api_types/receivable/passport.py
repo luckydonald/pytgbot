@@ -53,7 +53,6 @@ class PassportData(Result):
         
         assert_type_or_raise(data, list, parameter_name="data")
         self.data = data
-        
         assert_type_or_raise(credentials, EncryptedCredentials, parameter_name="credentials")
         self.credentials = credentials
 
@@ -196,13 +195,10 @@ class PassportFile(Result):
         super(PassportFile, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(file_size, int, parameter_name="file_size")
         self.file_size = file_size
-        
         assert_type_or_raise(file_date, int, parameter_name="file_date")
         self.file_date = file_date
 
@@ -383,31 +379,22 @@ class EncryptedPassportElement(Result):
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(hash, unicode_type, parameter_name="hash")
         self.hash = hash
-        
         assert_type_or_raise(data, None, unicode_type, parameter_name="data")
         self.data = data
-        
         assert_type_or_raise(phone_number, None, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-        
         assert_type_or_raise(email, None, unicode_type, parameter_name="email")
         self.email = email
-        
         assert_type_or_raise(files, None, list, parameter_name="files")
         self.files = files
-        
         assert_type_or_raise(front_side, None, PassportFile, parameter_name="front_side")
         self.front_side = front_side
-        
         assert_type_or_raise(reverse_side, None, PassportFile, parameter_name="reverse_side")
         self.reverse_side = reverse_side
-        
         assert_type_or_raise(selfie, None, PassportFile, parameter_name="selfie")
         self.selfie = selfie
-        
         assert_type_or_raise(translation, None, list, parameter_name="translation")
         self.translation = translation
 
@@ -571,10 +558,8 @@ class EncryptedCredentials(Result):
         super(EncryptedCredentials, self).__init__()
         assert_type_or_raise(data, unicode_type, parameter_name="data")
         self.data = data
-        
         assert_type_or_raise(hash, unicode_type, parameter_name="hash")
         self.hash = hash
-        
         assert_type_or_raise(secret, unicode_type, parameter_name="secret")
         self.secret = secret
 

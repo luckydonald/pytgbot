@@ -108,28 +108,20 @@ class User(Peer):
         super(User, self).__init__()
         assert_type_or_raise(id, int, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(is_bot, bool, parameter_name="is_bot")
         self.is_bot = is_bot
-        
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-        
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
-        
         assert_type_or_raise(username, None, unicode_type, parameter_name="username")
         self.username = username
-        
         assert_type_or_raise(language_code, None, unicode_type, parameter_name="language_code")
         self.language_code = language_code
-        
         assert_type_or_raise(can_join_groups, None, bool, parameter_name="can_join_groups")
         self.can_join_groups = can_join_groups
-        
         assert_type_or_raise(can_read_all_group_messages, None, bool, parameter_name="can_read_all_group_messages")
         self.can_read_all_group_messages = can_read_all_group_messages
-        
         assert_type_or_raise(supports_inline_queries, None, bool, parameter_name="supports_inline_queries")
         self.supports_inline_queries = supports_inline_queries
 
@@ -370,52 +362,36 @@ class Chat(Peer):
         
         assert_type_or_raise(id, int, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(username, None, unicode_type, parameter_name="username")
         self.username = username
-        
         assert_type_or_raise(first_name, None, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-        
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
-        
         assert_type_or_raise(photo, None, ChatPhoto, parameter_name="photo")
         self.photo = photo
-        
         assert_type_or_raise(bio, None, unicode_type, parameter_name="bio")
         self.bio = bio
-        
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-        
         assert_type_or_raise(invite_link, None, unicode_type, parameter_name="invite_link")
         self.invite_link = invite_link
-        
         assert_type_or_raise(pinned_message, None, Message, parameter_name="pinned_message")
         self.pinned_message = pinned_message
-        
         assert_type_or_raise(permissions, None, ChatPermissions, parameter_name="permissions")
         self.permissions = permissions
-        
         assert_type_or_raise(slow_mode_delay, None, int, parameter_name="slow_mode_delay")
         self.slow_mode_delay = slow_mode_delay
-        
         assert_type_or_raise(sticker_set_name, None, unicode_type, parameter_name="sticker_set_name")
         self.sticker_set_name = sticker_set_name
-        
         assert_type_or_raise(can_set_sticker_set, None, bool, parameter_name="can_set_sticker_set")
         self.can_set_sticker_set = can_set_sticker_set
-        
         assert_type_or_raise(linked_chat_id, None, int, parameter_name="linked_chat_id")
         self.linked_chat_id = linked_chat_id
-        
         assert_type_or_raise(location, None, ChatLocation, parameter_name="location")
         self.location = location
 
@@ -704,61 +680,42 @@ class ChatMember(Result):
         
         assert_type_or_raise(user, User, parameter_name="user")
         self.user = user
-        
         assert_type_or_raise(status, unicode_type, parameter_name="status")
         self.status = status
-        
         assert_type_or_raise(custom_title, None, unicode_type, parameter_name="custom_title")
         self.custom_title = custom_title
-        
         assert_type_or_raise(is_anonymous, None, bool, parameter_name="is_anonymous")
         self.is_anonymous = is_anonymous
-        
         assert_type_or_raise(can_be_edited, None, bool, parameter_name="can_be_edited")
         self.can_be_edited = can_be_edited
-        
         assert_type_or_raise(can_post_messages, None, bool, parameter_name="can_post_messages")
         self.can_post_messages = can_post_messages
-        
         assert_type_or_raise(can_edit_messages, None, bool, parameter_name="can_edit_messages")
         self.can_edit_messages = can_edit_messages
-        
         assert_type_or_raise(can_delete_messages, None, bool, parameter_name="can_delete_messages")
         self.can_delete_messages = can_delete_messages
-        
         assert_type_or_raise(can_restrict_members, None, bool, parameter_name="can_restrict_members")
         self.can_restrict_members = can_restrict_members
-        
         assert_type_or_raise(can_promote_members, None, bool, parameter_name="can_promote_members")
         self.can_promote_members = can_promote_members
-        
         assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
         self.can_change_info = can_change_info
-        
         assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
         self.can_invite_users = can_invite_users
-        
         assert_type_or_raise(can_pin_messages, None, bool, parameter_name="can_pin_messages")
         self.can_pin_messages = can_pin_messages
-        
         assert_type_or_raise(is_member, None, bool, parameter_name="is_member")
         self.is_member = is_member
-        
         assert_type_or_raise(can_send_messages, None, bool, parameter_name="can_send_messages")
         self.can_send_messages = can_send_messages
-        
         assert_type_or_raise(can_send_media_messages, None, bool, parameter_name="can_send_media_messages")
         self.can_send_media_messages = can_send_media_messages
-        
         assert_type_or_raise(can_send_polls, None, bool, parameter_name="can_send_polls")
         self.can_send_polls = can_send_polls
-        
         assert_type_or_raise(can_send_other_messages, None, bool, parameter_name="can_send_other_messages")
         self.can_send_other_messages = can_send_other_messages
-        
         assert_type_or_raise(can_add_web_page_previews, None, bool, parameter_name="can_add_web_page_previews")
         self.can_add_web_page_previews = can_add_web_page_previews
-        
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
         self.until_date = until_date
 
@@ -970,25 +927,18 @@ class ChatPermissions(Result):
         super(ChatPermissions, self).__init__()
         assert_type_or_raise(can_send_messages, None, bool, parameter_name="can_send_messages")
         self.can_send_messages = can_send_messages
-        
         assert_type_or_raise(can_send_media_messages, None, bool, parameter_name="can_send_media_messages")
         self.can_send_media_messages = can_send_media_messages
-        
         assert_type_or_raise(can_send_polls, None, bool, parameter_name="can_send_polls")
         self.can_send_polls = can_send_polls
-        
         assert_type_or_raise(can_send_other_messages, None, bool, parameter_name="can_send_other_messages")
         self.can_send_other_messages = can_send_other_messages
-        
         assert_type_or_raise(can_add_web_page_previews, None, bool, parameter_name="can_add_web_page_previews")
         self.can_add_web_page_previews = can_add_web_page_previews
-        
         assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
         self.can_change_info = can_change_info
-        
         assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
         self.can_invite_users = can_invite_users
-        
         assert_type_or_raise(can_pin_messages, None, bool, parameter_name="can_pin_messages")
         self.can_pin_messages = can_pin_messages
 
@@ -1138,7 +1088,6 @@ class ChatLocation(Result):
         
         assert_type_or_raise(location, Location, parameter_name="location")
         self.location = location
-        
         assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
 

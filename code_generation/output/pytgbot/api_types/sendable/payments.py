@@ -46,7 +46,6 @@ class LabeledPrice(Sendable):
         super(LabeledPrice, self).__init__()
         assert_type_or_raise(label, unicode_type, parameter_name="label")
         self.label = label
-        
         assert_type_or_raise(amount, int, parameter_name="amount")
         self.amount = amount
     # end def __init__
@@ -174,10 +173,8 @@ class ShippingOption(Sendable):
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(prices, list, parameter_name="prices")
         self.prices = prices
     # end def __init__

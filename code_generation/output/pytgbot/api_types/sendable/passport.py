@@ -70,16 +70,12 @@ class PassportElementErrorDataField(PassportElementError):
         """
         super(PassportElementErrorDataField, self).__init__()
         self.source = 'data'
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(field_name, unicode_type, parameter_name="field_name")
         self.field_name = field_name
-        
         assert_type_or_raise(data_hash, unicode_type, parameter_name="data_hash")
         self.data_hash = data_hash
-        
         assert_type_or_raise(message, unicode_type, parameter_name="message")
         self.message = message
     # end def __init__
@@ -211,13 +207,10 @@ class PassportElementErrorFrontSide(PassportElementError):
         """
         super(PassportElementErrorFrontSide, self).__init__()
         self.source = 'front_side'
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(file_hash, unicode_type, parameter_name="file_hash")
         self.file_hash = file_hash
-        
         assert_type_or_raise(message, unicode_type, parameter_name="message")
         self.message = message
     # end def __init__
@@ -347,13 +340,10 @@ class PassportElementErrorReverseSide(PassportElementError):
         """
         super(PassportElementErrorReverseSide, self).__init__()
         self.source = 'reverse_side'
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(file_hash, unicode_type, parameter_name="file_hash")
         self.file_hash = file_hash
-        
         assert_type_or_raise(message, unicode_type, parameter_name="message")
         self.message = message
     # end def __init__
@@ -483,13 +473,10 @@ class PassportElementErrorSelfie(PassportElementError):
         """
         super(PassportElementErrorSelfie, self).__init__()
         self.source = 'selfie'
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(file_hash, unicode_type, parameter_name="file_hash")
         self.file_hash = file_hash
-        
         assert_type_or_raise(message, unicode_type, parameter_name="message")
         self.message = message
     # end def __init__
@@ -619,13 +606,10 @@ class PassportElementErrorFile(PassportElementError):
         """
         super(PassportElementErrorFile, self).__init__()
         self.source = 'file'
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(file_hash, unicode_type, parameter_name="file_hash")
         self.file_hash = file_hash
-        
         assert_type_or_raise(message, unicode_type, parameter_name="message")
         self.message = message
     # end def __init__
@@ -755,13 +739,10 @@ class PassportElementErrorFiles(PassportElementError):
         """
         super(PassportElementErrorFiles, self).__init__()
         self.source = 'files'
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(file_hashes, list, parameter_name="file_hashes")
         self.file_hashes = file_hashes
-        
         assert_type_or_raise(message, unicode_type, parameter_name="message")
         self.message = message
     # end def __init__
@@ -892,13 +873,10 @@ class PassportElementErrorTranslationFile(PassportElementError):
         """
         super(PassportElementErrorTranslationFile, self).__init__()
         self.source = 'translation_file'
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(file_hash, unicode_type, parameter_name="file_hash")
         self.file_hash = file_hash
-        
         assert_type_or_raise(message, unicode_type, parameter_name="message")
         self.message = message
     # end def __init__
@@ -1028,13 +1006,10 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         """
         super(PassportElementErrorTranslationFiles, self).__init__()
         self.source = 'translation_files'
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(file_hashes, list, parameter_name="file_hashes")
         self.file_hashes = file_hashes
-        
         assert_type_or_raise(message, unicode_type, parameter_name="message")
         self.message = message
     # end def __init__
@@ -1165,13 +1140,10 @@ class PassportElementErrorUnspecified(PassportElementError):
         """
         super(PassportElementErrorUnspecified, self).__init__()
         self.source = 'unspecified'
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(element_hash, unicode_type, parameter_name="element_hash")
         self.element_hash = element_hash
-        
         assert_type_or_raise(message, unicode_type, parameter_name="message")
         self.message = message
     # end def __init__

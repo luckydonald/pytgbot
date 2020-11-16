@@ -147,34 +147,24 @@ class InlineQueryResultArticle(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'article'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(input_message_content, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
-        
         assert_type_or_raise(hide_url, None, bool, parameter_name="hide_url")
         self.hide_url = hide_url
-        
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-        
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-        
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-        
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
@@ -386,40 +376,28 @@ class InlineQueryResultPhoto(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'photo'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(photo_url, unicode_type, parameter_name="photo_url")
         self.photo_url = photo_url
-        
         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-        
         assert_type_or_raise(photo_width, None, int, parameter_name="photo_width")
         self.photo_width = photo_width
-        
         assert_type_or_raise(photo_height, None, int, parameter_name="photo_height")
         self.photo_height = photo_height
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -645,43 +623,30 @@ class InlineQueryResultGif(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'gif'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(gif_url, unicode_type, parameter_name="gif_url")
         self.gif_url = gif_url
-        
         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-        
         assert_type_or_raise(gif_width, None, int, parameter_name="gif_width")
         self.gif_width = gif_width
-        
         assert_type_or_raise(gif_height, None, int, parameter_name="gif_height")
         self.gif_height = gif_height
-        
         assert_type_or_raise(gif_duration, None, int, parameter_name="gif_duration")
         self.gif_duration = gif_duration
-        
         assert_type_or_raise(thumb_mime_type, None, unicode_type, parameter_name="thumb_mime_type")
         self.thumb_mime_type = thumb_mime_type
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -917,43 +882,30 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(mpeg4_url, unicode_type, parameter_name="mpeg4_url")
         self.mpeg4_url = mpeg4_url
-        
         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-        
         assert_type_or_raise(mpeg4_width, None, int, parameter_name="mpeg4_width")
         self.mpeg4_width = mpeg4_width
-        
         assert_type_or_raise(mpeg4_height, None, int, parameter_name="mpeg4_height")
         self.mpeg4_height = mpeg4_height
-        
         assert_type_or_raise(mpeg4_duration, None, int, parameter_name="mpeg4_duration")
         self.mpeg4_duration = mpeg4_duration
-        
         assert_type_or_raise(thumb_mime_type, None, unicode_type, parameter_name="thumb_mime_type")
         self.thumb_mime_type = thumb_mime_type
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -1192,46 +1144,32 @@ class InlineQueryResultVideo(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'video'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(video_url, unicode_type, parameter_name="video_url")
         self.video_url = video_url
-        
         assert_type_or_raise(mime_type, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(video_width, None, int, parameter_name="video_width")
         self.video_width = video_width
-        
         assert_type_or_raise(video_height, None, int, parameter_name="video_height")
         self.video_height = video_height
-        
         assert_type_or_raise(video_duration, None, int, parameter_name="video_duration")
         self.video_duration = video_duration
-        
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -1445,34 +1383,24 @@ class InlineQueryResultAudio(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'audio'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(audio_url, unicode_type, parameter_name="audio_url")
         self.audio_url = audio_url
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
-        
         assert_type_or_raise(audio_duration, None, int, parameter_name="audio_duration")
         self.audio_duration = audio_duration
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -1670,31 +1598,22 @@ class InlineQueryResultVoice(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'voice'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(voice_url, unicode_type, parameter_name="voice_url")
         self.voice_url = voice_url
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(voice_duration, None, int, parameter_name="voice_duration")
         self.voice_duration = voice_duration
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -1913,43 +1832,30 @@ class InlineQueryResultDocument(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'document'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(document_url, unicode_type, parameter_name="document_url")
         self.document_url = document_url
-        
         assert_type_or_raise(mime_type, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-        
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-        
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-        
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
@@ -2178,43 +2084,30 @@ class InlineQueryResultLocation(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'location'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-        
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
         self.horizontal_accuracy = horizontal_accuracy
-        
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
         self.live_period = live_period
-        
         assert_type_or_raise(heading, None, int, parameter_name="heading")
         self.heading = heading
-        
         assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
         self.proximity_alert_radius = proximity_alert_radius
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-        
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-        
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-        
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
@@ -2447,46 +2340,32 @@ class InlineQueryResultVenue(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'venue'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-        
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
-        
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
-        
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
-        
         assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
         self.google_place_id = google_place_id
-        
         assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
         self.google_place_type = google_place_type
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-        
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-        
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-        
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
@@ -2697,34 +2576,24 @@ class InlineQueryResultContact(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'contact'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-        
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-        
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
-        
         assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
         self.vcard = vcard
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-        
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-        
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-        
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
@@ -2883,13 +2752,10 @@ class InlineQueryResultGame(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'game'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
     # end def __init__
@@ -3062,31 +2928,22 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'photo'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(photo_file_id, unicode_type, parameter_name="photo_file_id")
         self.photo_file_id = photo_file_id
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -3274,28 +3131,20 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'gif'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(gif_file_id, unicode_type, parameter_name="gif_file_id")
         self.gif_file_id = gif_file_id
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -3487,28 +3336,20 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(mpeg4_file_id, unicode_type, parameter_name="mpeg4_file_id")
         self.mpeg4_file_id = mpeg4_file_id
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -3670,16 +3511,12 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'sticker'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(sticker_file_id, unicode_type, parameter_name="sticker_file_id")
         self.sticker_file_id = sticker_file_id
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -3858,31 +3695,22 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'document'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(document_file_id, unicode_type, parameter_name="document_file_id")
         self.document_file_id = document_file_id
-        
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -4075,31 +3903,22 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'video'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(video_file_id, unicode_type, parameter_name="video_file_id")
         self.video_file_id = video_file_id
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -4288,28 +4107,20 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'voice'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(voice_file_id, unicode_type, parameter_name="voice_file_id")
         self.voice_file_id = voice_file_id
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -4489,25 +4300,18 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         self.type = 'audio'
-        
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(audio_file_id, unicode_type, parameter_name="audio_file_id")
         self.audio_file_id = audio_file_id
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-        
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
@@ -4665,13 +4469,10 @@ class InputTextMessageContent(InputMessageContent):
         
         assert_type_or_raise(message_text, unicode_type, parameter_name="message_text")
         self.message_text = message_text
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(entities, None, list, parameter_name="entities")
         self.entities = entities
-        
         assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
         self.disable_web_page_preview = disable_web_page_preview
     # end def __init__
@@ -4826,19 +4627,14 @@ class InputLocationMessageContent(InputMessageContent):
         super(InputLocationMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-        
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-        
         assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
         self.horizontal_accuracy = horizontal_accuracy
-        
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
         self.live_period = live_period
-        
         assert_type_or_raise(heading, None, int, parameter_name="heading")
         self.heading = heading
-        
         assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
         self.proximity_alert_radius = proximity_alert_radius
     # end def __init__
@@ -5007,25 +4803,18 @@ class InputVenueMessageContent(InputMessageContent):
         super(InputVenueMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-        
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
-        
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
-        
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
-        
         assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
         self.google_place_id = google_place_id
-        
         assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
         self.google_place_type = google_place_type
     # end def __init__
@@ -5174,13 +4963,10 @@ class InputContactMessageContent(InputMessageContent):
         super(InputContactMessageContent, self).__init__()
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-        
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-        
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
-        
         assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
         self.vcard = vcard
     # end def __init__

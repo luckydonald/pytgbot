@@ -431,28 +431,16 @@ class InputMediaPlayable(InputMediaWithThumb):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaPlayable, self).__init__()
+        super(InputMediaPlayable, self).__init__(type, media, thumb, caption, parse_mode, caption_entities)
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
-        
-        assert_type_or_raise(media, unicode_type, parameter_name="media")
-        self.media = media
-        
-        assert_type_or_raise(thumb, InputFile, unicode_type, parameter_name="thumb")
-        self.thumb = thumb
-        
+        # 'type' is set by InputMediaWithThumb base class
+        # 'media' is set by InputMediaWithThumb base class
+        # 'thumb' is set by InputMediaWithThumb base class
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        self.caption = caption
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        self.parse_mode = parse_mode
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
+        # 'caption' is set by InputMediaWithThumb base class
+        # 'parse_mode' is set by InputMediaWithThumb base class
+        # 'caption_entities' is set by InputMediaWithThumb base class
     # end def __init__
 
     def to_array(self):
@@ -641,34 +629,19 @@ class InputMediaVideolike(InputMediaPlayable):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaVideolike, self).__init__()
+        super(InputMediaVideolike, self).__init__(type, media, thumb, duration, caption, parse_mode, caption_entities)
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
-        
-        assert_type_or_raise(media, unicode_type, parameter_name="media")
-        self.media = media
-        
-        assert_type_or_raise(thumb, InputFile, unicode_type, parameter_name="thumb")
-        self.thumb = thumb
-        
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        self.duration = duration
-        
+        # 'type' is set by InputMediaPlayable base class
+        # 'media' is set by InputMediaPlayable base class
+        # 'thumb' is set by InputMediaPlayable base class
+        # 'duration' is set by InputMediaPlayable base class
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
-        
         assert_type_or_raise(height, None, int, parameter_name="height")
         self.height = height
-        
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        self.caption = caption
-        
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        self.parse_mode = parse_mode
-        
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
+        # 'caption' is set by InputMediaPlayable base class
+        # 'parse_mode' is set by InputMediaPlayable base class
+        # 'caption_entities' is set by InputMediaPlayable base class
     # end def __init__
 
     def to_array(self):
@@ -835,16 +808,12 @@ class InputMediaPhoto(InputMedia):
         from ..receivable.media import MessageEntity
         
         self.type = 'photo'
-        
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
     # end def __init__
@@ -1021,31 +990,22 @@ class InputMediaVideo(InputMediaVideolike):
         from .files import InputFile
         
         self.type = 'video'
-        
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
-        
         assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")
         self.thumb = thumb
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
-        
         assert_type_or_raise(height, None, int, parameter_name="height")
         self.height = height
-        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
-        
         assert_type_or_raise(supports_streaming, None, bool, parameter_name="supports_streaming")
         self.supports_streaming = supports_streaming
     # end def __init__
@@ -1245,28 +1205,20 @@ class InputMediaAnimation(InputMediaVideolike):
         from .files import InputFile
         
         self.type = 'animation'
-        
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
-        
         assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")
         self.thumb = thumb
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
-        
         assert_type_or_raise(height, None, int, parameter_name="height")
         self.height = height
-        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
     # end def __init__
@@ -1463,28 +1415,20 @@ class InputMediaAudio(InputMediaPlayable):
         from .files import InputFile
         
         self.type = 'audio'
-        
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
-        
         assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")
         self.thumb = thumb
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
-        
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
     # end def __init__
@@ -1669,22 +1613,16 @@ class InputMediaDocument(InputMediaWithThumb):
         from .files import InputFile
         
         self.type = 'document'
-        
         assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
-        
         assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")
         self.thumb = thumb
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(disable_content_type_detection, None, bool, parameter_name="disable_content_type_detection")
         self.disable_content_type_detection = disable_content_type_detection
     # end def __init__

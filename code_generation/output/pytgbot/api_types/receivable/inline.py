@@ -74,16 +74,12 @@ class InlineQuery(Result):
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
         self.from_peer = from_peer
-        
         assert_type_or_raise(query, unicode_type, parameter_name="query")
         self.query = query
-        
         assert_type_or_raise(offset, unicode_type, parameter_name="offset")
         self.offset = offset
-        
         assert_type_or_raise(location, None, Location, parameter_name="location")
         self.location = location
 
@@ -246,16 +242,12 @@ class ChosenInlineResult(UpdateType):
         
         assert_type_or_raise(result_id, unicode_type, parameter_name="result_id")
         self.result_id = result_id
-        
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
         self.from_peer = from_peer
-        
         assert_type_or_raise(query, unicode_type, parameter_name="query")
         self.query = query
-        
         assert_type_or_raise(location, None, Location, parameter_name="location")
         self.location = location
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
         self.inline_message_id = inline_message_id
 

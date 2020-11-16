@@ -79,19 +79,14 @@ class StickerSet(Result):
         
         assert_type_or_raise(name, unicode_type, parameter_name="name")
         self.name = name
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(is_animated, bool, parameter_name="is_animated")
         self.is_animated = is_animated
-        
         assert_type_or_raise(contains_masks, bool, parameter_name="contains_masks")
         self.contains_masks = contains_masks
-        
         assert_type_or_raise(stickers, list, parameter_name="stickers")
         self.stickers = stickers
-        
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
 
@@ -245,13 +240,10 @@ class MaskPosition(Result):
         super(MaskPosition, self).__init__()
         assert_type_or_raise(point, unicode_type, parameter_name="point")
         self.point = point
-        
         assert_type_or_raise(x_shift, float, parameter_name="x_shift")
         self.x_shift = x_shift
-        
         assert_type_or_raise(y_shift, float, parameter_name="y_shift")
         self.y_shift = y_shift
-        
         assert_type_or_raise(scale, float, parameter_name="scale")
         self.scale = scale
 

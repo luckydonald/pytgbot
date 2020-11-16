@@ -60,10 +60,8 @@ class GameHighScore(Result):
         
         assert_type_or_raise(position, int, parameter_name="position")
         self.position = position
-        
         assert_type_or_raise(user, User, parameter_name="user")
         self.user = user
-        
         assert_type_or_raise(score, int, parameter_name="score")
         self.score = score
 

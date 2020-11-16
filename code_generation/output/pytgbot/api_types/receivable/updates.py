@@ -157,37 +157,26 @@ class Update(Receivable):
         
         assert_type_or_raise(update_id, int, parameter_name="update_id")
         self.update_id = update_id
-        
         assert_type_or_raise(message, None, Message, parameter_name="message")
         self.message = message
-        
         assert_type_or_raise(edited_message, None, Message, parameter_name="edited_message")
         self.edited_message = edited_message
-        
         assert_type_or_raise(channel_post, None, Message, parameter_name="channel_post")
         self.channel_post = channel_post
-        
         assert_type_or_raise(edited_channel_post, None, Message, parameter_name="edited_channel_post")
         self.edited_channel_post = edited_channel_post
-        
         assert_type_or_raise(inline_query, None, InlineQuery, parameter_name="inline_query")
         self.inline_query = inline_query
-        
         assert_type_or_raise(chosen_inline_result, None, ChosenInlineResult, parameter_name="chosen_inline_result")
         self.chosen_inline_result = chosen_inline_result
-        
         assert_type_or_raise(callback_query, None, CallbackQuery, parameter_name="callback_query")
         self.callback_query = callback_query
-        
         assert_type_or_raise(shipping_query, None, ShippingQuery, parameter_name="shipping_query")
         self.shipping_query = shipping_query
-        
         assert_type_or_raise(pre_checkout_query, None, PreCheckoutQuery, parameter_name="pre_checkout_query")
         self.pre_checkout_query = pre_checkout_query
-        
         assert_type_or_raise(poll, None, Poll, parameter_name="poll")
         self.poll = poll
-        
         assert_type_or_raise(poll_answer, None, PollAnswer, parameter_name="poll_answer")
         self.poll_answer = poll_answer
 
@@ -400,25 +389,18 @@ class WebhookInfo(Receivable):
         super(WebhookInfo, self).__init__()
         assert_type_or_raise(url, unicode_type, parameter_name="url")
         self.url = url
-        
         assert_type_or_raise(has_custom_certificate, bool, parameter_name="has_custom_certificate")
         self.has_custom_certificate = has_custom_certificate
-        
         assert_type_or_raise(pending_update_count, int, parameter_name="pending_update_count")
         self.pending_update_count = pending_update_count
-        
         assert_type_or_raise(ip_address, None, unicode_type, parameter_name="ip_address")
         self.ip_address = ip_address
-        
         assert_type_or_raise(last_error_date, None, int, parameter_name="last_error_date")
         self.last_error_date = last_error_date
-        
         assert_type_or_raise(last_error_message, None, unicode_type, parameter_name="last_error_message")
         self.last_error_message = last_error_message
-        
         assert_type_or_raise(max_connections, None, int, parameter_name="max_connections")
         self.max_connections = max_connections
-        
         assert_type_or_raise(allowed_updates, None, list, parameter_name="allowed_updates")
         self.allowed_updates = allowed_updates
 
@@ -881,154 +863,104 @@ class Message(UpdateType):
         
         assert_type_or_raise(message_id, int, parameter_name="message_id")
         self.message_id = message_id
-        
         assert_type_or_raise(date, int, parameter_name="date")
         self.date = date
-        
         assert_type_or_raise(chat, Chat, parameter_name="chat")
         self.chat = chat
-        
         assert_type_or_raise(from_peer, None, User, parameter_name="from_peer")
         self.from_peer = from_peer
-        
         assert_type_or_raise(sender_chat, None, Chat, parameter_name="sender_chat")
         self.sender_chat = sender_chat
-        
         assert_type_or_raise(forward_from, None, User, parameter_name="forward_from")
         self.forward_from = forward_from
-        
         assert_type_or_raise(forward_from_chat, None, Chat, parameter_name="forward_from_chat")
         self.forward_from_chat = forward_from_chat
-        
         assert_type_or_raise(forward_from_message_id, None, int, parameter_name="forward_from_message_id")
         self.forward_from_message_id = forward_from_message_id
-        
         assert_type_or_raise(forward_signature, None, unicode_type, parameter_name="forward_signature")
         self.forward_signature = forward_signature
-        
         assert_type_or_raise(forward_sender_name, None, unicode_type, parameter_name="forward_sender_name")
         self.forward_sender_name = forward_sender_name
-        
         assert_type_or_raise(forward_date, None, int, parameter_name="forward_date")
         self.forward_date = forward_date
-        
         assert_type_or_raise(reply_to_message, None, Message, parameter_name="reply_to_message")
         self.reply_to_message = reply_to_message
-        
         assert_type_or_raise(via_bot, None, User, parameter_name="via_bot")
         self.via_bot = via_bot
-        
         assert_type_or_raise(edit_date, None, int, parameter_name="edit_date")
         self.edit_date = edit_date
-        
         assert_type_or_raise(media_group_id, None, unicode_type, parameter_name="media_group_id")
         self.media_group_id = media_group_id
-        
         assert_type_or_raise(author_signature, None, unicode_type, parameter_name="author_signature")
         self.author_signature = author_signature
-        
         assert_type_or_raise(text, None, unicode_type, parameter_name="text")
         self.text = text
-        
         assert_type_or_raise(entities, None, list, parameter_name="entities")
         self.entities = entities
-        
         assert_type_or_raise(animation, None, Animation, parameter_name="animation")
         self.animation = animation
-        
         assert_type_or_raise(audio, None, Audio, parameter_name="audio")
         self.audio = audio
-        
         assert_type_or_raise(document, None, Document, parameter_name="document")
         self.document = document
-        
         assert_type_or_raise(photo, None, list, parameter_name="photo")
         self.photo = photo
-        
         assert_type_or_raise(sticker, None, Sticker, parameter_name="sticker")
         self.sticker = sticker
-        
         assert_type_or_raise(video, None, Video, parameter_name="video")
         self.video = video
-        
         assert_type_or_raise(video_note, None, VideoNote, parameter_name="video_note")
         self.video_note = video_note
-        
         assert_type_or_raise(voice, None, Voice, parameter_name="voice")
         self.voice = voice
-        
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-        
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-        
         assert_type_or_raise(contact, None, Contact, parameter_name="contact")
         self.contact = contact
-        
         assert_type_or_raise(dice, None, Dice, parameter_name="dice")
         self.dice = dice
-        
         assert_type_or_raise(game, None, Game, parameter_name="game")
         self.game = game
-        
         assert_type_or_raise(poll, None, Poll, parameter_name="poll")
         self.poll = poll
-        
         assert_type_or_raise(venue, None, Venue, parameter_name="venue")
         self.venue = venue
-        
         assert_type_or_raise(location, None, Location, parameter_name="location")
         self.location = location
-        
         assert_type_or_raise(new_chat_members, None, list, parameter_name="new_chat_members")
         self.new_chat_members = new_chat_members
-        
         assert_type_or_raise(left_chat_member, None, User, parameter_name="left_chat_member")
         self.left_chat_member = left_chat_member
-        
         assert_type_or_raise(new_chat_title, None, unicode_type, parameter_name="new_chat_title")
         self.new_chat_title = new_chat_title
-        
         assert_type_or_raise(new_chat_photo, None, list, parameter_name="new_chat_photo")
         self.new_chat_photo = new_chat_photo
-        
         assert_type_or_raise(delete_chat_photo, None, bool, parameter_name="delete_chat_photo")
         self.delete_chat_photo = delete_chat_photo
-        
         assert_type_or_raise(group_chat_created, None, bool, parameter_name="group_chat_created")
         self.group_chat_created = group_chat_created
-        
         assert_type_or_raise(supergroup_chat_created, None, bool, parameter_name="supergroup_chat_created")
         self.supergroup_chat_created = supergroup_chat_created
-        
         assert_type_or_raise(channel_chat_created, None, bool, parameter_name="channel_chat_created")
         self.channel_chat_created = channel_chat_created
-        
         assert_type_or_raise(migrate_to_chat_id, None, int, parameter_name="migrate_to_chat_id")
         self.migrate_to_chat_id = migrate_to_chat_id
-        
         assert_type_or_raise(migrate_from_chat_id, None, int, parameter_name="migrate_from_chat_id")
         self.migrate_from_chat_id = migrate_from_chat_id
-        
         assert_type_or_raise(pinned_message, None, Message, parameter_name="pinned_message")
         self.pinned_message = pinned_message
-        
         assert_type_or_raise(invoice, None, Invoice, parameter_name="invoice")
         self.invoice = invoice
-        
         assert_type_or_raise(successful_payment, None, SuccessfulPayment, parameter_name="successful_payment")
         self.successful_payment = successful_payment
-        
         assert_type_or_raise(connected_website, None, unicode_type, parameter_name="connected_website")
         self.connected_website = connected_website
-        
         assert_type_or_raise(passport_data, None, PassportData, parameter_name="passport_data")
         self.passport_data = passport_data
-        
         assert_type_or_raise(proximity_alert_triggered, None, ProximityAlertTriggered, parameter_name="proximity_alert_triggered")
         self.proximity_alert_triggered = proximity_alert_triggered
-        
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
 
@@ -1393,22 +1325,16 @@ class CallbackQuery(UpdateType):
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
         self.from_peer = from_peer
-        
         assert_type_or_raise(chat_instance, unicode_type, parameter_name="chat_instance")
         self.chat_instance = chat_instance
-        
         assert_type_or_raise(message, None, Message, parameter_name="message")
         self.message = message
-        
         assert_type_or_raise(inline_message_id, None, unicode_type, parameter_name="inline_message_id")
         self.inline_message_id = inline_message_id
-        
         assert_type_or_raise(data, None, unicode_type, parameter_name="data")
         self.data = data
-        
         assert_type_or_raise(game_short_name, None, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
 
@@ -1546,7 +1472,6 @@ class ResponseParameters(Receivable):
         super(ResponseParameters, self).__init__()
         assert_type_or_raise(migrate_to_chat_id, None, int, parameter_name="migrate_to_chat_id")
         self.migrate_to_chat_id = migrate_to_chat_id
-        
         assert_type_or_raise(retry_after, None, int, parameter_name="retry_after")
         self.retry_after = retry_after
 

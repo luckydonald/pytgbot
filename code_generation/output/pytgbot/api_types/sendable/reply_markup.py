@@ -85,13 +85,10 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         
         assert_type_or_raise(keyboard, list, parameter_name="keyboard")
         self.keyboard = keyboard
-        
         assert_type_or_raise(resize_keyboard, None, bool, parameter_name="resize_keyboard")
         self.resize_keyboard = resize_keyboard
-        
         assert_type_or_raise(one_time_keyboard, None, bool, parameter_name="one_time_keyboard")
         self.one_time_keyboard = one_time_keyboard
-        
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
@@ -236,13 +233,10 @@ class KeyboardButton(Button):
         
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
-        
         assert_type_or_raise(request_contact, None, bool, parameter_name="request_contact")
         self.request_contact = request_contact
-        
         assert_type_or_raise(request_location, None, bool, parameter_name="request_location")
         self.request_location = request_location
-        
         assert_type_or_raise(request_poll, None, KeyboardButtonPollType, parameter_name="request_poll")
         self.request_poll = request_poll
     # end def __init__
@@ -468,7 +462,6 @@ class ReplyKeyboardRemove(ReplyMarkup):
         """
         super(ReplyKeyboardRemove, self).__init__()
         self.remove_keyboard = True
-        
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
@@ -743,25 +736,18 @@ class InlineKeyboardButton(Button):
         
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
-        
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
-        
         assert_type_or_raise(login_url, None, LoginUrl, parameter_name="login_url")
         self.login_url = login_url
-        
         assert_type_or_raise(callback_data, None, unicode_type, parameter_name="callback_data")
         self.callback_data = callback_data
-        
         assert_type_or_raise(switch_inline_query, None, unicode_type, parameter_name="switch_inline_query")
         self.switch_inline_query = switch_inline_query
-        
         assert_type_or_raise(switch_inline_query_current_chat, None, unicode_type, parameter_name="switch_inline_query_current_chat")
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
-        
         assert_type_or_raise(callback_game, None, CallbackGame, parameter_name="callback_game")
         self.callback_game = callback_game
-        
         assert_type_or_raise(pay, None, bool, parameter_name="pay")
         self.pay = pay
     # end def __init__
@@ -923,13 +909,10 @@ class LoginUrl(Sendable):
         super(LoginUrl, self).__init__()
         assert_type_or_raise(url, unicode_type, parameter_name="url")
         self.url = url
-        
         assert_type_or_raise(forward_text, None, unicode_type, parameter_name="forward_text")
         self.forward_text = forward_text
-        
         assert_type_or_raise(bot_username, None, unicode_type, parameter_name="bot_username")
         self.bot_username = bot_username
-        
         assert_type_or_raise(request_write_access, None, bool, parameter_name="request_write_access")
         self.request_write_access = request_write_access
     # end def __init__
@@ -1064,7 +1047,6 @@ class ForceReply(ReplyMarkup):
         """
         super(ForceReply, self).__init__()
         self.force_reply = True
-        
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__

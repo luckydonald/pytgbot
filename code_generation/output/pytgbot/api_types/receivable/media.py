@@ -93,19 +93,14 @@ class MessageEntity(Result):
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(offset, int, parameter_name="offset")
         self.offset = offset
-        
         assert_type_or_raise(length, int, parameter_name="length")
         self.length = length
-        
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
-        
         assert_type_or_raise(user, None, User, parameter_name="user")
         self.user = user
-        
         assert_type_or_raise(language, None, unicode_type, parameter_name="language")
         self.language = language
 
@@ -265,16 +260,12 @@ class PhotoSize(Result):
         super(PhotoSize, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-        
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-        
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
@@ -452,28 +443,20 @@ class Animation(Media):
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-        
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-        
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-        
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-        
         assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
-        
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
@@ -664,28 +647,20 @@ class Audio(Media):
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-        
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
-        
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
-        
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
-        
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
 
@@ -860,19 +835,14 @@ class Document(Media):
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-        
         assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
-        
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
@@ -1057,28 +1027,20 @@ class Video(Media):
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-        
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-        
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-        
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-        
         assert_type_or_raise(file_name, None, unicode_type, parameter_name="file_name")
         self.file_name = file_name
-        
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
@@ -1251,19 +1213,14 @@ class VideoNote(Media):
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(length, int, parameter_name="length")
         self.length = length
-        
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-        
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-        
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
@@ -1421,16 +1378,12 @@ class Voice(Media):
         super(Voice, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(duration, int, parameter_name="duration")
         self.duration = duration
-        
         assert_type_or_raise(mime_type, None, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-        
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
@@ -1584,16 +1537,12 @@ class Contact(Media):
         super(Contact, self).__init__()
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-        
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-        
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
-        
         assert_type_or_raise(user_id, None, int, parameter_name="user_id")
         self.user_id = user_id
-        
         assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
         self.vcard = vcard
 
@@ -1730,7 +1679,6 @@ class Dice(Media):
         super(Dice, self).__init__()
         assert_type_or_raise(emoji, unicode_type, parameter_name="emoji")
         self.emoji = emoji
-        
         assert_type_or_raise(value, int, parameter_name="value")
         self.value = value
 
@@ -1858,7 +1806,6 @@ class PollOption(Receivable):
         super(PollOption, self).__init__()
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
-        
         assert_type_or_raise(voter_count, int, parameter_name="voter_count")
         self.voter_count = voter_count
 
@@ -1994,10 +1941,8 @@ class PollAnswer(Receivable):
         
         assert_type_or_raise(poll_id, unicode_type, parameter_name="poll_id")
         self.poll_id = poll_id
-        
         assert_type_or_raise(user, User, parameter_name="user")
         self.user = user
-        
         assert_type_or_raise(option_ids, list, parameter_name="option_ids")
         self.option_ids = option_ids
 
@@ -2198,40 +2143,28 @@ class Poll(Media):
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-        
         assert_type_or_raise(question, unicode_type, parameter_name="question")
         self.question = question
-        
         assert_type_or_raise(options, list, parameter_name="options")
         self.options = options
-        
         assert_type_or_raise(total_voter_count, int, parameter_name="total_voter_count")
         self.total_voter_count = total_voter_count
-        
         assert_type_or_raise(is_closed, bool, parameter_name="is_closed")
         self.is_closed = is_closed
-        
         assert_type_or_raise(is_anonymous, bool, parameter_name="is_anonymous")
         self.is_anonymous = is_anonymous
-        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        
         assert_type_or_raise(allows_multiple_answers, bool, parameter_name="allows_multiple_answers")
         self.allows_multiple_answers = allows_multiple_answers
-        
         assert_type_or_raise(correct_option_id, None, int, parameter_name="correct_option_id")
         self.correct_option_id = correct_option_id
-        
         assert_type_or_raise(explanation, None, unicode_type, parameter_name="explanation")
         self.explanation = explanation
-        
         assert_type_or_raise(explanation_entities, None, list, parameter_name="explanation_entities")
         self.explanation_entities = explanation_entities
-        
         assert_type_or_raise(open_period, None, int, parameter_name="open_period")
         self.open_period = open_period
-        
         assert_type_or_raise(close_date, None, int, parameter_name="close_date")
         self.close_date = close_date
 
@@ -2413,19 +2346,14 @@ class Location(Media):
         super(Location, self).__init__()
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-        
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-        
         assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
         self.horizontal_accuracy = horizontal_accuracy
-        
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
         self.live_period = live_period
-        
         assert_type_or_raise(heading, None, int, parameter_name="heading")
         self.heading = heading
-        
         assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
         self.proximity_alert_radius = proximity_alert_radius
 
@@ -2596,22 +2524,16 @@ class Venue(Media):
         
         assert_type_or_raise(location, Location, parameter_name="location")
         self.location = location
-        
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
-        
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
-        
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
-        
         assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
         self.google_place_id = google_place_id
-        
         assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
         self.google_place_type = google_place_type
 
@@ -2763,10 +2685,8 @@ class ProximityAlertTriggered(Media):
         
         assert_type_or_raise(traveler, User, parameter_name="traveler")
         self.traveler = traveler
-        
         assert_type_or_raise(watcher, User, parameter_name="watcher")
         self.watcher = watcher
-        
         assert_type_or_raise(distance, int, parameter_name="distance")
         self.distance = distance
 
@@ -2901,7 +2821,6 @@ class UserProfilePhotos(Result):
         
         assert_type_or_raise(total_count, int, parameter_name="total_count")
         self.total_count = total_count
-        
         assert_type_or_raise(photos, list, parameter_name="photos")
         self.photos = photos
 
@@ -3047,13 +2966,10 @@ class File(Receivable):
         super(File, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
-        
         assert_type_or_raise(file_path, None, unicode_type, parameter_name="file_path")
         self.file_path = file_path
 
@@ -3199,13 +3115,10 @@ class ChatPhoto(Result):
         super(ChatPhoto, self).__init__()
         assert_type_or_raise(small_file_id, unicode_type, parameter_name="small_file_id")
         self.small_file_id = small_file_id
-        
         assert_type_or_raise(small_file_unique_id, unicode_type, parameter_name="small_file_unique_id")
         self.small_file_unique_id = small_file_unique_id
-        
         assert_type_or_raise(big_file_id, unicode_type, parameter_name="big_file_id")
         self.big_file_id = big_file_id
-        
         assert_type_or_raise(big_file_unique_id, unicode_type, parameter_name="big_file_unique_id")
         self.big_file_unique_id = big_file_unique_id
 
@@ -3387,31 +3300,22 @@ class Sticker(Media):
         
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-        
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-        
         assert_type_or_raise(width, int, parameter_name="width")
         self.width = width
-        
         assert_type_or_raise(height, int, parameter_name="height")
         self.height = height
-        
         assert_type_or_raise(is_animated, bool, parameter_name="is_animated")
         self.is_animated = is_animated
-        
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
-        
         assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
         self.emoji = emoji
-        
         assert_type_or_raise(set_name, None, unicode_type, parameter_name="set_name")
         self.set_name = set_name
-        
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
         self.mask_position = mask_position
-        
         assert_type_or_raise(file_size, None, int, parameter_name="file_size")
         self.file_size = file_size
 
@@ -3589,19 +3493,14 @@ class Game(Media):
         
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-        
         assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
-        
         assert_type_or_raise(photo, list, parameter_name="photo")
         self.photo = photo
-        
         assert_type_or_raise(text, None, unicode_type, parameter_name="text")
         self.text = text
-        
         assert_type_or_raise(text_entities, None, list, parameter_name="text_entities")
         self.text_entities = text_entities
-        
         assert_type_or_raise(animation, None, Animation, parameter_name="animation")
         self.animation = animation
 

@@ -46,7 +46,6 @@ class BotCommand(Sendable):
         super(BotCommand, self).__init__()
         assert_type_or_raise(command, unicode_type, parameter_name="command")
         self.command = command
-        
         assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
     # end def __init__
