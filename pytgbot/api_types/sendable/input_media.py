@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from . import InputFileFromURL
 from .files import InputFile
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
@@ -793,18 +792,14 @@ class InputMediaPhoto(InputMedia):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaPhoto, self).__init__("photo", media, caption=caption, parse_mode=parse_mode)
+        super(InputMediaPhoto, self).__init__('photo', media, caption, parse_mode, caption_entities)
+        from ..receivable.media import MessageEntity
 
-        # type is set by InputMedia base class
-
-        # caption is set by InputMedia base class
-
-        # media is set by InputMedia base class
-
-        # parse_mode is set by InputMedia base class
-
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
+        # 'type' is set by InputMedia base class
+        # 'media' is set by InputMedia base class
+        # 'caption' is set by InputMedia base class
+        # 'parse_mode' is set by InputMedia base class
+        # 'caption_entities' is set by InputMedia base class
     # end def __init__
 
     def to_array(self, prefer_original=False):
@@ -826,9 +821,7 @@ class InputMediaPhoto(InputMedia):
         # 'media' given by superclass
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-        # end if
+        # 'caption_entities' given by superclass
 
         return array
     # end def to_array
@@ -846,10 +839,10 @@ class InputMediaPhoto(InputMedia):
 
         data = InputMedia.validate_array(array)
         # 'type' is given by class type
-        data['media'] = u(array.get('media'))
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
+        # 'media' is given by class type
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
         return data
     # end def validate_array
 
@@ -980,22 +973,19 @@ class InputMediaVideo(InputMediaVideolike):
         :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
         :type  supports_streaming: bool
         """
-        super(InputMediaVideo, self).__init__("video", media, thumb, caption=caption, parse_mode=parse_mode)
+        super(InputMediaVideo, self).__init__('video', media, thumb, caption, parse_mode, caption_entities, width, height, duration)
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
 
-        # type is set by InputMedia base class
-        # media is set by InputMedia base class
-        # thumb is set by InputMediaWithThumb base class
-        # caption is set by InputMedia base class
-        # parse_mode is set by InputMedia base class
-
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
-        assert_type_or_raise(width, None, int, parameter_name="width")
-        self.width = width
-        assert_type_or_raise(height, None, int, parameter_name="height")
-        self.height = height
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        self.duration = duration
+        # 'type' is set by InputMediaVideolike base class
+        # 'media' is set by InputMediaVideolike base class
+        # 'thumb' is set by InputMediaVideolike base class
+        # 'caption' is set by InputMediaVideolike base class
+        # 'parse_mode' is set by InputMediaVideolike base class
+        # 'caption_entities' is set by InputMediaVideolike base class
+        # 'width' is set by InputMediaVideolike base class
+        # 'height' is set by InputMediaVideolike base class
+        # 'duration' is set by InputMediaVideolike base class
         assert_type_or_raise(supports_streaming, None, bool, parameter_name="supports_streaming")
         self.supports_streaming = supports_streaming
     # end def __init__
@@ -1017,28 +1007,13 @@ class InputMediaVideo(InputMediaVideolike):
         array = super(InputMediaVideo, self).to_array()
         # 'type' given by superclass
         # 'media' given by superclass
-        if self.thumb is not None:
-            if isinstance(self.thumb, InputFile):
-                array['thumb'] = self.thumb.to_array()  # type InputFile
-            elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
-                raise TypeError('Unknown type, must be one of InputFile, str.')
-            # end if
-        # end if
+        # 'thumb' given by superclass
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-        # end if
-        if self.width is not None:
-            array['width'] = int(self.width)  # type int
-        # end if
-        if self.height is not None:
-            array['height'] = int(self.height)  # type int
-        # end if
-        if self.duration is not None:
-            array['duration'] = int(self.duration)  # type int
-        # end if
+        # 'caption_entities' given by superclass
+        # 'width' given by superclass
+        # 'height' given by superclass
+        # 'duration' given by superclass
         if self.supports_streaming is not None:
             array['supports_streaming'] = bool(self.supports_streaming)  # type bool
         # end if
@@ -1058,24 +1033,16 @@ class InputMediaVideo(InputMediaVideolike):
         from ..receivable.media import MessageEntity
         from .files import InputFile
 
-        data = InputMediaWithThumb.validate_array(array)
+        data = InputMediaVideolike.validate_array(array)
         # 'type' is given by class type
-        data['media'] = u(array.get('media'))
-        if array.get('thumb') is None:
-            data['thumb'] = None
-        elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = None  # will be filled later by get_request_data()
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end if
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
-        data['width'] = int(array.get('width')) if array.get('width') is not None else None
-        data['height'] = int(array.get('height')) if array.get('height') is not None else None
-        data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
+        # 'media' is given by class type
+        # 'thumb' is given by class type
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
+        # 'width' is given by class type
+        # 'height' is given by class type
+        # 'duration' is given by class type
         data['supports_streaming'] = bool(array.get('supports_streaming')) if array.get('supports_streaming') is not None else None
         return data
     # end def validate_array
@@ -1137,7 +1104,7 @@ class InputMediaAnimation(InputMediaVideolike):
 
     Parameters:
 
-    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
 
@@ -1174,7 +1141,7 @@ class InputMediaAnimation(InputMediaVideolike):
 
         Parameters:
 
-        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
 
@@ -1201,24 +1168,19 @@ class InputMediaAnimation(InputMediaVideolike):
         :param duration: Optional. Animation duration
         :type  duration: int
         """
-        super(InputMediaAnimation, self).__init__('animation', media, thumb, caption=caption, parse_mode=parse_mode)
+        super(InputMediaAnimation, self).__init__('animation', media, thumb, caption, parse_mode, caption_entities, width, height, duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
 
-        # type is set by InputMedia base class
-        # media is set by InputMedia base class
-        # thumb is set by InputMediaWithThumb base class
-        # caption is set by InputMedia base class
-        # parse_mode is set by InputMedia base class
-
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
-        assert_type_or_raise(width, None, int, parameter_name="width")
-        self.width = width
-        assert_type_or_raise(height, None, int, parameter_name="height")
-        self.height = height
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        self.duration = duration
+        # 'type' is set by InputMediaVideolike base class
+        # 'media' is set by InputMediaVideolike base class
+        # 'thumb' is set by InputMediaVideolike base class
+        # 'caption' is set by InputMediaVideolike base class
+        # 'parse_mode' is set by InputMediaVideolike base class
+        # 'caption_entities' is set by InputMediaVideolike base class
+        # 'width' is set by InputMediaVideolike base class
+        # 'height' is set by InputMediaVideolike base class
+        # 'duration' is set by InputMediaVideolike base class
     # end def __init__
 
     def to_array(self, prefer_original=False):
@@ -1237,34 +1199,15 @@ class InputMediaAnimation(InputMediaVideolike):
 
         array = super(InputMediaAnimation, self).to_array()
 
-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
-        array['media'] = u(self.media)  # py2: type unicode, py3: type str
-        if self.thumb is not None:
-            if isinstance(self.thumb, InputFile):
-                array['thumb'] = self.thumb.to_array()  # type InputFile
-            elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
-                raise TypeError('Unknown type, must be one of InputFile, str.')
-            # end if
-        # end if
-        if self.caption is not None:
-            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-        # end if
-        if self.parse_mode is not None:
-            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-        # end if
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-        # end if
-        if self.width is not None:
-            array['width'] = int(self.width)  # type int
-        # end if
-        if self.height is not None:
-            array['height'] = int(self.height)  # type int
-        # end if
-        if self.duration is not None:
-            array['duration'] = int(self.duration)  # type int
-        # end if
+        # 'type' given by superclass
+        # 'media' given by superclass
+        # 'thumb' given by superclass
+        # 'caption' given by superclass
+        # 'parse_mode' given by superclass
+        # 'caption_entities' given by superclass
+        # 'width' given by superclass
+        # 'height' given by superclass
+        # 'duration' given by superclass
 
         return array
     # end def to_array
@@ -1281,24 +1224,16 @@ class InputMediaAnimation(InputMediaVideolike):
         from ..receivable.media import MessageEntity
         from .files import InputFile
 
-        data = InputMediaWithThumb.validate_array(array)
+        data = InputMediaVideolike.validate_array(array)
         # 'type' is given by class type
-        data['media'] = u(array.get('media'))
-        if array.get('thumb') is None:
-            data['thumb'] = None
-        elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = None  # will be filled later by get_request_data()
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end if
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
-        data['width'] = int(array.get('width')) if array.get('width') is not None else None
-        data['height'] = int(array.get('height')) if array.get('height') is not None else None
-        data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
+        # 'media' is given by class type
+        # 'thumb' is given by class type
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
+        # 'width' is given by class type
+        # 'height' is given by class type
+        # 'duration' is given by class type
         return data
     # end def validate_array
 
@@ -1359,7 +1294,7 @@ class InputMediaAudio(InputMediaPlayable):
 
     Parameters:
 
-    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
 
@@ -1396,8 +1331,8 @@ class InputMediaAudio(InputMediaPlayable):
 
         Parameters:
 
-        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
+        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+       :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
 
         Optional keyword parameters:
@@ -1423,20 +1358,17 @@ class InputMediaAudio(InputMediaPlayable):
         :param title: Optional. Title of the audio
         :type  title: str|unicode
         """
-        super(InputMediaAudio, self).__init__('audio', media, thumb, caption=caption, parse_mode=parse_mode)
+        super(InputMediaAudio, self).__init__('audio', media, thumb, caption, parse_mode, caption_entities, duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
 
-        # type is set by InputMedia base class
-        # media is set by InputMedia base class
-        # thumb is set by InputMediaWithThumb base class
-        # caption is set by InputMedia base class
-        # parse_mode is set by InputMedia base class
-
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        self.duration = duration
+        # 'type' is set by InputMediaPlayable base class
+        # 'media' is set by InputMediaPlayable base class
+        # 'thumb' is set by InputMediaPlayable base class
+        # 'caption' is set by InputMediaPlayable base class
+        # 'parse_mode' is set by InputMediaPlayable base class
+        # 'caption_entities' is set by InputMediaPlayable base class
+        # 'duration' is set by InputMediaPlayable base class
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
@@ -1460,21 +1392,11 @@ class InputMediaAudio(InputMediaPlayable):
         array = super(InputMediaAudio, self).to_array()
         # 'type' given by superclass
         # 'media' given by superclass
-        if self.thumb is not None:
-            if isinstance(self.thumb, InputFile):
-                array['thumb'] = None   # will be filled later by get_request_data()
-            elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
-                raise TypeError('Unknown type, must be one of InputFile, str.')
-            # end if
+        # 'thumb' given by superclass
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-        # end if
-        if self.duration is not None:
-            array['duration'] = int(self.duration)  # type int
-        # end if
+        # 'caption_entities' given by superclass
+        # 'duration' given by superclass
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
         # end if
@@ -1499,20 +1421,12 @@ class InputMediaAudio(InputMediaPlayable):
 
         data = InputMediaPlayable.validate_array(array)
         # 'type' is given by class type
-        data['media'] = u(array.get('media'))
-        if array.get('thumb') is None:
-            data['thumb'] = None
-        elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = None  # will be filled later by get_request_data()
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end if
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
-        data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
+        # 'media' is given by class type
+        # 'thumb' is given by class type
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
+        # 'duration' is given by class type
         data['performer'] = u(array.get('performer')) if array.get('performer') is not None else None
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         return data
@@ -1606,7 +1520,7 @@ class InputMediaDocument(InputMediaWithThumb):
 
         Parameters:
 
-        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
 
 
@@ -1627,16 +1541,16 @@ class InputMediaDocument(InputMediaWithThumb):
         :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
         :type  disable_content_type_detection: bool
         """
-        super(InputMediaDocument, self).__init__('document', media, thumb, caption=caption, parse_mode=parse_mode)
+        super(InputMediaDocument, self).__init__('document', media, thumb, caption, parse_mode, caption_entities)
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
 
-        # type is set by InputMedia base class
-        # media is set by InputMedia base class
-        # thumb is set by InputMediaWithThumb base class
-        # caption is set by InputMedia base class
-        # parse_mode is set by InputMedia base class
-
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
+        # 'type' is set by InputMediaWithThumb base class
+        # 'media' is set by InputMediaWithThumb base class
+        # 'thumb' is set by InputMediaWithThumb base class
+        # 'caption' is set by InputMediaWithThumb base class
+        # 'parse_mode' is set by InputMediaWithThumb base class
+        # 'caption_entities' is set by InputMediaWithThumb base class
         assert_type_or_raise(disable_content_type_detection, None, bool, parameter_name="disable_content_type_detection")
         self.disable_content_type_detection = disable_content_type_detection
     # end def __init__
@@ -1659,21 +1573,10 @@ class InputMediaDocument(InputMediaWithThumb):
 
         # 'type' given by superclass
         # 'media' given by superclass
-        if self.thumb is not None:
-            if isinstance(self.thumb, InputFile):
-                array['thumb'] = None  # will be filled later by get_request_data()
-            elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
-                raise TypeError('Unknown type, must be one of InputFile, str.')
-            # end if
-        # end if
-
+        # 'thumb' given by superclass
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
-
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-        # end if
+        # 'caption_entities' given by superclass
         if self.disable_content_type_detection is not None:
             array['disable_content_type_detection'] = bool(self.disable_content_type_detection)  # type bool
         # end if
@@ -1695,19 +1598,11 @@ class InputMediaDocument(InputMediaWithThumb):
 
         data = InputMediaWithThumb.validate_array(array)
         # 'type' is given by class type
-        data['media'] = u(array.get('media'))
-        if array.get('thumb') is None:
-            data['thumb'] = None
-        elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = None  # will be filled later by get_request_data()
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str or None.')
-        # end if
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
+        # 'media' is given by class type
+        # 'thumb' is given by class type
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
         data['disable_content_type_detection'] = bool(array.get('disable_content_type_detection')) if array.get('disable_content_type_detection') is not None else None
         return data
     # end def validate_array
