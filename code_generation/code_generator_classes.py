@@ -400,6 +400,37 @@ class Variable(dict):
     # end def
 
     @property
+    def typehint_quoted(self) -> str:
+        """
+        Returns a python 3.5+ type hint string.
+
+        Depending on the amount of types in the self.types list.
+        - For 0 elements, the returned type is `Any`.
+        - For 1 element it's just that type, quoted.
+        - For more elements it's a `Union[...]`.
+
+        :uses: Variable.types
+        :uses: Type.typehint
+        """
+        if len(self.types) == 0:
+            return "Any"
+        # end if
+        if len(self.types) == 1:
+            return repr(self.types[0].typehint)
+        # end if
+        return (", ".join(repr(t.typehint) for t in self.types)).join(("Union[", "]"))
+    # end def
+
+    @property
+    def typehint_quoted_optional(self):
+        if self.optional:
+            return self.typehint_quoted.join(("Optional[", "]"))
+        # end if
+        return self.typehint_quoted
+
+    # end def
+
+    @property
     def typehint_has_model(self):
         for t in self.types:
             if not t.is_builtin:
