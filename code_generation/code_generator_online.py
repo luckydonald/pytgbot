@@ -23,6 +23,11 @@ from bs4.element import NavigableString
 from os.path import abspath, dirname, join as path_join, sep as folder_seperator, isfile, exists, isdir
 from luckydonaldUtils.interactions import safe_eval, NoBuiltins
 
+__author__ = "luckydonald"
+logging.add_colored_handler(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+
 FILE_HEADER = "# -*- coding: utf-8 -*-\n"
 MAIN_FILE_CLASS_HEADER = "class Bot(object):\n    _base_url = \"https://api.telegram.org/bot{api_key}/{command}\"\n"
 
@@ -207,7 +212,7 @@ def load_from_html(folder):
     bs = BeautifulSoup(document.content)
     results = []
     for h in bs.select("#dev_page_content > h4"):
-        print("------")
+        logger.info("------")
         anchor = h.find(lol1)
         if not anchor or not anchor.has_attr("name"):
             continue
@@ -215,10 +220,10 @@ def load_from_html(folder):
         title = h.text
         descr = []
         table_type, param_strings = None, None
-        print("title: " + title)
-        print("link: " + link)
+        logger.info("title: " + title)
+        logger.info("link: " + link)
         if filter and title not in filter:
-            print("Skipping {title}, filtered.".format(title=title))
+            logger.info("Skipping {title}, filtered.".format(title=title))
             continue
         # logger.debug(h)
         type_strings = []
@@ -298,22 +303,24 @@ def load_from_html(folder):
             elif sibling.name == "hr":  # end of page
                 break
             else:
-                print("unknown: " + sibling.name)
+                logger.info("unknown: " + sibling.name)
                 # end if
         # end for
         if not all([link, title, descr]):
-            print("Skipped: Missing link, title or description")
+            logger.warning("Skipped: Missing link, title or description")
             continue
         if not all([table_type, param_strings]):
             if title not in WHITELISTED_FUNCS:
-                print("Skipped. Has no table with Parameters or Fields.\n"
-                      "Also isn't a whitelisted function in `code_generator_settings.WHITELISTED_FUNCS`.")
+                logger.warning(
+                    "Skipped. Has no table with Parameters or Fields.\n"
+                    "Also isn't a whitelisted function in `code_generator_settings.WHITELISTED_FUNCS`."
+                )
                 continue
             # -> else: is in WHITELISTED_FUNCS:
             table_type = "func"
         # end if
         descr = "\n".join(descr)
-        print("descr: " + repr(descr))
+        logger.info("descr: " + repr(descr))
         params_string = "\n".join(param_strings) if param_strings else None  # WHITELISTED_FUNCS have no params
         if table_type == "func":
             seems_valid = False
@@ -337,17 +344,17 @@ def load_from_html(folder):
                 wlist_func_return = wlist_func['return'] if 'return' in wlist_func else None
                 wlist_func_r_type = wlist_func['r_type'] if 'r_type' in wlist_func else None
                 if wlist_func_return and default_returns[0] != wlist_func_return['expected']:
-                    print(f"whitelist: Mismatch in return. Expected {wlist_func_return['expected']!r}, got {default_returns[0]!r}.")
+                    logger.warning(f"whitelist: Mismatch in return. Expected {wlist_func_return['expected']!r}, got {default_returns[0]!r}.")
                     replaced_valid = False
                 if wlist_func_r_type and default_returns[1] != wlist_func_r_type['expected']:
-                    print(f"whitelist: Mismatch in r_type. Expected {wlist_func_r_type['expected']!r}, got {default_returns[1]!r}")
+                    logger.warning(f"whitelist: Mismatch in r_type. Expected {wlist_func_r_type['expected']!r}, got {default_returns[1]!r}")
                     replaced_valid = False
                 if replaced_valid is None:  # whitelist didn't fail
                     replaced_valid = True
-                    print("the found return: " + repr(default_returns[0]) + '.')
-                    print("the found r_type: " + repr(default_returns[1]) + '.')
-                    print("whitelist return: " + repr(wlist_func_return['replace']) + '.')
-                    print("whitelist r_type: " + repr(wlist_func_r_type['replace']) + '.')
+                    logger.info("the found return: " + repr(default_returns[0]) + '.')
+                    logger.info("the found r_type: " + repr(default_returns[1]) + '.')
+                    logger.info("whitelist return: " + repr(wlist_func_return['replace']) + '.')
+                    logger.info("whitelist r_type: " + repr(wlist_func_r_type['replace']) + '.')
                     default_returns[0] = wlist_func_return['replace']
                     default_returns[1] = wlist_func_r_type['replace']
             if not seems_valid and not replaced_valid:
@@ -366,7 +373,7 @@ def load_from_html(folder):
         elif table_type == "class":
             if title in CLASS_TYPE_PATHS:
                 parent_clazz = CLASS_TYPE_PATHS[title][CLASS_TYPE_PATHS__PARENT]
-                print("superclass: " + parent_clazz)
+                logger.info("superclass: " + parent_clazz)
             else:
                 parent_clazz = answer("Parent class name", "TgBotApiObject")
             # end if
@@ -420,7 +427,7 @@ def load_from_dump(folder):
 def output(folder, results, html_content=None):
     can_quit = False
     do_overwrite = confirm("Can the folder {path} be overwritten?".format(path=folder))
-    print("vvvvvvvvv")
+    logger.info("vvvvvvvvv")
     while not can_quit:
         if do_overwrite:
             try:
@@ -456,10 +463,10 @@ def output(folder, results, html_content=None):
                 logger.exception("Template error.")
                 # end if
         # end try
-        print("Writen to file.")
+        logger.info("Writen to file.")
         can_quit = not confirm("Write again after reloading templates?", default=True)
-    print("#########")
-    print("Exit.")
+    logger.info("#########")
+    logger.info("Exit.")
 # end def
 
 
@@ -481,7 +488,7 @@ def get_filter():
 def get_folder_path():
     default = "/tmp/pytgbotapi/"
     candidate = abspath(path_join(dirname(abspath(__file__)),  'output'))
-    print(candidate)
+    logger.info(f'canidate: {candidate}')
     if exists(candidate) and isdir(candidate):
         default = candidate
     # end if
@@ -676,7 +683,7 @@ def render_file_to_disk(file, txt):
     with open(file, "w") as f:
         f.write(txt)
     # end with
-    print(f'Written {file!r} to disk, {len(txt)} chars.')
+    logger.info(f'Written {file!r} to disk, {len(txt)} chars.')
     if use_back:
         black.reformat_one(
             src=black.Path(file),

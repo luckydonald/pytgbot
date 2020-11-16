@@ -249,6 +249,7 @@ def as_types(types_string, variable_name):
         types_string = types_string.replace(" Nothing ", " None ")
         types_string = types_string.replace(" Null ", " None ")
         types_string = types_string.replace(" true ", " True ")
+        types_string = types_string.replace(" Messages ", " Message ")
 
         types_string = types_string.replace(" or ", " | ")
         types_string = types_string.replace(" and ", " | ")
@@ -304,8 +305,7 @@ def to_type(type_string, variable_name) -> Type:
         var_type.import_path = CLASS_TYPE_PATHS[var_type.string][CLASS_TYPE_PATHS__IMPORT].rstrip(".")
         var_type.is_builtin = False
     else:
-        logger.warn(
-            "Added unrecognized type in param <{var}>: {type!r}".format(var=variable_name, type=var_type.string))
+        logger.warning(f"Added unrecognized type in param <{variable_name}>: {var_type.string!r}")
     # end if
     return var_type
 # end def
