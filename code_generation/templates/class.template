@@ -119,6 +119,9 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         #}{{ self.imports_block() }}
         data = {{ clazz.parent_clazz.string }}.validate_array(array){#
         #}{% for variable in clazz.variables %}{#
+        #}{% if variable.duplicate_of_parent %}
+        # {{ variable.name.__repr__() }} is given by class type{#
+        #}{% else %}{#
         #}{% if variable.types|length == 1 %}
         {{ set_data_array_element(variable, variable.types[0], clazz.clazz, variable.optional) | trim() }}{#
         #}{% else %}{#
@@ -133,6 +136,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
         # end if{#
+        #}{% endif %}{#
         #}{% endif %}{#
         #}{% endfor %}
         return data
