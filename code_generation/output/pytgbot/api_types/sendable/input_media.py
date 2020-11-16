@@ -15,7 +15,7 @@ class InputMedia(Sendable):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
+    :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
     
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
@@ -34,62 +34,75 @@ class InputMedia(Sendable):
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
-    def __init__(self, type, media, caption=None, parse_mode=None):
+    def __init__(self, type, media, caption=None, parse_mode=None, caption_entities=None):
         """
         This object represents the content of a media message to be sent.
-    
+
         https://core.telegram.org/bots/api#inputmedia
-    
-    
+        
+
         Parameters:
-    
-        :param type: Type of the result
+        
+        :param type: Type of the result, a fixed value per subclass
         :type  type: str|unicode
-    
-        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+        
+        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-    
-    
+        
+
         Optional keyword parameters:
-    
-        :param caption: Optional. Caption of the media to be sent, 0-1024 characters
+        
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-    
-        :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        
+        :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
+        
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMedia, self).__init__()
-    
+        
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-    
-        assert_type_or_raise(media, unicode_type, InputFile, parameter_name="media")
+        assert_type_or_raise(media, unicode_type, parameter_name="media")
         self.media = media
-    
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-    
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
+        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
+        self.caption_entities = caption_entities
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
-        Serializes this InputMediaPhoto to a dictionary.
-    
+        Serializes this InputMedia to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
+
         :return: dictionary representation of this object.
         :rtype: dict
         """
-        array = {
-            "type": u(self.type),
-            #"media": u(self.media),
-        }
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
+        array = super(InputMedia, self).to_array()
+        
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
         # end if
+        if self.caption_entities is not None:
+            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+        # end if
+
         return array
     # end def to_array
 
@@ -97,16 +110,18 @@ class InputMedia(Sendable):
     def validate_array(array):
         """
         Builds a new array with valid values for the InputMedia constructor.
-    
+
         :return: new array with valid values
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        data = InputMedia.validate_array(array)
+        
+        data = Sendable.validate_array(array)
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
         return data
     # end def validate_array
 
@@ -114,14 +129,14 @@ class InputMedia(Sendable):
     def from_array(array):
         """
         Deserialize a new InputMedia from a given dictionary.
-    
+
         :return: new InputMedia instance.
         :rtype: InputMedia
         """
         if not array:  # None or {}
             return None
         # end if
-    
+
         data = InputMedia.validate_array(array)
         instance = InputMedia(**data)
         instance._raw = array
@@ -130,9 +145,9 @@ class InputMedia(Sendable):
 
     def __str__(self):
         """
-        Implements `str(inputmediaphoto_instance)`
+        Implements `str(inputmedia_instance)`
         """
-        return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+        return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -142,7 +157,7 @@ class InputMedia(Sendable):
         if self._raw:
             return "InputMedia.from_array({self._raw})".format(self=self)
         # end if
-        return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+        return "InputMedia(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -150,7 +165,7 @@ class InputMedia(Sendable):
         Implements `"key" in inputmedia_instance`
         """
         return (
-            key in ["type", "media", "caption", "parse_mode"]
+            key in ["type", "media", "caption", "parse_mode", "caption_entities"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -197,7 +212,7 @@ class InputMediaWithThumb(InputMedia):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
+    :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
     
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
@@ -250,67 +265,101 @@ class InputMediaWithThumb(InputMedia):
         # end if
     # end def
 
-    def __init__(self, type, media, thumb, caption=None, parse_mode=None):
+    def __init__(self, type, media, thumb, caption=None, parse_mode=None, caption_entities=None):
         """
-        Represents a media with thumb field to be sent.
-    
-    
-        Parameters:
-    
-        :param type: Type of the result, must be photo
-        :type  type: str|unicode
-    
-        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode
-    
-        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file
-        :type  thumb: InputFile | str|unicode
-    
-    
-        Optional keyword parameters:
-    
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters
-        :type  caption: str|unicode
-    
-        :param parse_mode: Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
-        :type  parse_mode: str|unicode
-        """
-        super(InputMediaWithThumb, self).__init__(type, media, caption, parse_mode)
-        assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")
-        self.thumb = thumb
-    # end def
+        This object represents the content of a media message to be sent.
 
-    def to_array(self):
+        https://core.telegram.org/bots/api#inputmedia
+        
+
+        Parameters:
+        
+        :param type: Type of the result, a fixed value per subclass
+        :type  type: str|unicode
+        
+        :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+        :type  media: str|unicode
+        
+        :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
+        :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
+        
+
+        Optional keyword parameters:
+        
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :type  caption: str|unicode
+        
+        :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        :type  parse_mode: str|unicode
+        
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        Serializes this InputMediaPhoto to a dictionary.
-    
+        super(InputMediaWithThumb, self).__init__(type, media, caption, parse_mode, caption_entities)
+        
+        # 'type' is set by InputMedia base class
+        # 'media' is set by InputMedia base class
+        assert_type_or_raise(thumb, InputFile, unicode_type, parameter_name="thumb")
+        self.thumb = thumb
+        # 'caption' is set by InputMedia base class
+        # 'parse_mode' is set by InputMedia base class
+        # 'caption_entities' is set by InputMedia base class
+    # end def __init__
+
+    def to_array(self, prefer_original=False):
+        """
+        Serializes this InputMediaWithThumb to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
+
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaWithThumb, self).to_array()
-        # 'type' is handled by superclass
-        array['media'] = u(self.media)  # py2: type unicode, py3: type str
-        if self.caption is not None:
-            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-        if self.parse_mode is not None:
-            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        
+        # 'type' given by superclass
+        # 'media' given by superclass
+        if isinstance(self.thumb, InputFile):
+            array['thumb'] = self.thumb.to_array()  # type InputFile
+        elif isinstance(self.thumb, str):
+            array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
+            raise TypeError('Unknown type, must be one of InputFile, str.')
+        # end if
+        # 'caption' given by superclass
+        # 'parse_mode' given by superclass
+        # 'caption_entities' given by superclass
+
         return array
     # end def to_array
 
     @staticmethod
     def validate_array(array):
         """
-        Builds a new array with valid values for the InputMediaPhoto constructor.
-    
+        Builds a new array with valid values for the InputMediaWithThumb constructor.
+
         :return: new array with valid values
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        
         data = InputMedia.validate_array(array)
-        # 'type' is handled by the superclass.
-        data['media'] = u(array.get('media'))
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+        # 'type' is given by class type
+        # 'media' is given by class type
+        if isinstance(array.get('thumb'), InputFile):
+            data['thumb'] = None  # will be filled later by get_request_data()
+        elif isinstance(array.get('thumb'), str):
+            data['thumb'] = u(array.get('thumb'))
+        else:
+            raise TypeError('Unknown type, must be one of InputFile, str.')
+        # end if
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
         return data
     # end def validate_array
 
@@ -318,14 +367,14 @@ class InputMediaWithThumb(InputMedia):
     def from_array(array):
         """
         Deserialize a new InputMediaWithThumb from a given dictionary.
-    
+
         :return: new InputMediaWithThumb instance.
         :rtype: InputMediaWithThumb
         """
         if not array:  # None or {}
             return None
         # end if
-    
+
         data = InputMediaWithThumb.validate_array(array)
         instance = InputMediaWithThumb(**data)
         instance._raw = array
@@ -336,7 +385,7 @@ class InputMediaWithThumb(InputMedia):
         """
         Implements `str(inputmediawiththumb_instance)`
         """
-        return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+        return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -346,7 +395,7 @@ class InputMediaWithThumb(InputMedia):
         if self._raw:
             return "InputMediaWithThumb.from_array({self._raw})".format(self=self)
         # end if
-        return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r})".format(self=self)
+        return "InputMediaWithThumb(type={self.type!r}, media={self.media!r}, thumb={self.thumb!r}, caption={self.caption!r}, parse_mode={self.parse_mode!r}, caption_entities={self.caption_entities!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -354,7 +403,7 @@ class InputMediaWithThumb(InputMedia):
         Implements `"key" in inputmediawiththumb_instance`
         """
         return (
-            key in ["type", "media", "caption", "parse_mode"]
+            key in ["type", "media", "thumb", "caption", "parse_mode", "caption_entities"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -371,7 +420,7 @@ class InputMediaPlayable(InputMediaWithThumb):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
+    :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
     
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
@@ -407,7 +456,7 @@ class InputMediaPlayable(InputMediaWithThumb):
 
         Parameters:
         
-        :param type: Type of the result, must be photo
+        :param type: Type of the result, a fixed value per subclass
         :type  type: str|unicode
         
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
@@ -431,12 +480,13 @@ class InputMediaPlayable(InputMediaWithThumb):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaPlayable, self).__init__(type, media, thumb, duration, caption, parse_mode, caption_entities)
+        super(InputMediaPlayable, self).__init__(type, media, thumb, caption, parse_mode, caption_entities)
         
         # 'type' is set by InputMediaWithThumb base class
         # 'media' is set by InputMediaWithThumb base class
         # 'thumb' is set by InputMediaWithThumb base class
-        # 'duration' is set by InputMediaWithThumb base class
+        assert_type_or_raise(duration, None, int, parameter_name="duration")
+        self.duration = duration
         # 'caption' is set by InputMediaWithThumb base class
         # 'parse_mode' is set by InputMediaWithThumb base class
         # 'caption_entities' is set by InputMediaWithThumb base class
@@ -461,7 +511,9 @@ class InputMediaPlayable(InputMediaWithThumb):
         # 'type' given by superclass
         # 'media' given by superclass
         # 'thumb' given by superclass
-        # 'duration' given by superclass
+        if self.duration is not None:
+            array['duration'] = int(self.duration)  # type int
+        # end if
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
         # 'caption_entities' given by superclass
@@ -483,7 +535,7 @@ class InputMediaPlayable(InputMediaWithThumb):
         # 'type' is given by class type
         # 'media' is given by class type
         # 'thumb' is given by class type
-        # 'duration' is given by class type
+        data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
         # 'caption' is given by class type
         # 'parse_mode' is given by class type
         # 'caption_entities' is given by class type
@@ -549,7 +601,7 @@ class InputMediaVideolike(InputMediaPlayable):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
+    :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
     
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
@@ -591,7 +643,7 @@ class InputMediaVideolike(InputMediaPlayable):
 
         Parameters:
         
-        :param type: Type of the result, must be photo
+        :param type: Type of the result, a fixed value per subclass
         :type  type: str|unicode
         
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »

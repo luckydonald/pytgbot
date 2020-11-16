@@ -20,7 +20,7 @@ class InputMedia(Sendable):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
+    :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
     
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
@@ -54,7 +54,7 @@ class InputMediaWithThumb(InputMedia):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
+    :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
     
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
@@ -92,7 +92,7 @@ class InputMediaPlayable(InputMediaWithThumb):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
+    :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
     
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
@@ -134,7 +134,7 @@ class InputMediaVideolike(InputMediaPlayable):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
+    :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
     
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
