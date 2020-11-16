@@ -91,10 +91,10 @@ class Clazz(ClassOrFunction):
         return self.parameters + self.keywords
     # end def variables
 
-    def has_same_variable(self, variable: 'Variable', ignore_description: bool = True) -> bool:
+    def has_same_variable(self, variable: 'Variable', ignore_pytg_name: bool = False, ignore_description: bool = True) -> bool:
         assert_type_or_raise(variable, Variable, parameter_name='variable')
         for own_variable in self.variables:
-            if variable.compare(own_variable, ignore_description=ignore_description):
+            if variable.compare(own_variable, ignore_pytg_name=ignore_pytg_name, ignore_description=ignore_description):
                 return True
             # end if
         # end for
@@ -493,7 +493,8 @@ class Variable(dict):
         return (
             "Variable("
                 "api_name={s.api_name!r}, name={s.name!r}, pytg_name={s.pytg_name!r}, types={s.types!r}, "
-                "optional={s.optional!r}, default={s.default!r}, description={s.description!r}"
+                "optional={s.optional!r}, default={s.default!r}, description={s.description!r}, "
+                "duplicate_of_parent={s.duplicate_of_parent!r}"
             ")"
         ).format(s=self)
     # end def __repr__
@@ -506,13 +507,13 @@ class Variable(dict):
         return self.compare(other, ignore_description=False)
     # end def __eq__
 
-    def compare(self, other: 'Variable', ignore_description: bool = False):
+    def compare(self, other: 'Variable', ignore_pytg_name: bool = False, ignore_description: bool = False):
         assert_type_or_raise(other, Variable, parameter_name='other')
         return (
             self.api_name == other.api_name and
             self.name == other.name and
             self.types == other.types and
-            self.pytg_name == other.pytg_name and
+            (ignore_pytg_name or self.pytg_name == other.pytg_name) and
             self.optional == other.optional and
             self.default == other.default and
             (ignore_description or self.description == other.description) and

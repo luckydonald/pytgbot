@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from code_generator import get_type_path
 from code_generator_template import clazz, func, get_template, as_types
@@ -413,6 +413,7 @@ def load_api_definitions():
     else:  # Dump
         results, html_document = load_from_dump(folder)
     # end def
+    results = preprocess_results(results, additional_items=list(CUSTOM_CLASSES.values()))
     return folder, html_document, results
 # end def
 
@@ -433,6 +434,52 @@ def load_from_dump(folder):
     # end if
     results = safe_eval(dump, SAVE_VALUES)
     return results, html_document
+# end def
+
+
+# noinspection PyCompatibility
+def preprocess_results(results: List[Union[Clazz, Function]], additional_items: Union[None, List[Clazz]] = None):
+    """
+    Sets `variable.duplicate_of_parent` appropriately for all variables of all classes in the results list.
+    :param results:
+    :param additional_items: e.g. CUSTOM_CLASSES.values()
+    :return:
+    """
+    if additional_items is None:
+        additional_items = []
+    # end if
+
+    logger.info('Calculating duplicate_of_parent.')
+    clazzes_by_name: Dict[str, Clazz] = {}  # "Class": Class
+
+    for other in additional_items:
+        clazzes_by_name[other.clazz] = other
+    # end for
+    for result in results:
+        if isinstance(result, Clazz):
+            clazzes_by_name[result.clazz] = result
+        # end if
+    # end for
+    for result in results:
+        if not isinstance(result, Clazz):
+            continue
+        # end if
+
+        # fill in clazz._parent_clazz_clazz, so we can check our parents
+        if result.parent_clazz is None or result.parent_clazz.string == 'object':
+            continue
+        # end if
+        if result.parent_clazz.string in clazzes_by_name:
+            parent_clazz: Clazz = clazzes_by_name[result.parent_clazz.string]
+            for variable in result.variables:
+                variable: Variable
+                variable.duplicate_of_parent = parent_clazz.has_same_variable(variable, ignore_pytg_name=True, ignore_description=True)
+            # end for
+        else:
+            logger.warning(f'Could not resolve parent class: {result.parent_clazz}')
+        # end if
+    # end for
+    return results
 # end def
 
 
@@ -535,7 +582,6 @@ def safe_to_file(folder, results):
     functions = []
     message_send_functions = []
     clazzes: Dict[str, List[Clazz]] = {}  # "filepath": [Class, Class, ...]
-    clazzes_by_name: Dict[str, Clazz] = {}  # "Class": Class
     all_the_clazzes = []
     custom_classes = {}  # "filepath": [Class, Class, ...]
     for import_path, result in CUSTOM_CLASSES.items():
@@ -550,7 +596,6 @@ def safe_to_file(folder, results):
             clazzes[file_path] = []
         # end if
         clazzes[file_path].append(result)
-        clazzes_by_name[result.clazz] = result
         all_the_clazzes.append(result)
     # end def
 
@@ -564,7 +609,6 @@ def safe_to_file(folder, results):
             if file_path not in clazzes:
                 clazzes[file_path] = []
             clazzes[file_path].append(result)
-            clazzes_by_name[result.clazz] = result
             all_the_clazzes.append(result)
         else:
             assert isinstance(result, Function)
@@ -580,22 +624,6 @@ def safe_to_file(folder, results):
                 result2.filepath = file_path
                 message_send_functions.append(result2)
             # end if
-        # end if
-    # end for
-
-    for result in all_the_clazzes:
-        # fill in clazz._parent_clazz_clazz, so we can check our parents
-        if result.parent_clazz is None or result.parent_clazz.string == 'object':
-            continue
-        # end if
-        if result.parent_clazz.string in clazzes_by_name:
-            parent_clazz: Clazz = clazzes_by_name[result.parent_clazz.string]
-            for variable in result.variables:
-                variable: Variable
-                variable.duplicate_of_parent = parent_clazz.has_same_variable(variable)
-            # end for
-        else:
-            logger.warning(f'Could not resolve parent class: {result.parent_clazz}')
         # end if
     # end for
 
