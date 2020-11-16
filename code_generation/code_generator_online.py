@@ -576,13 +576,15 @@ def safe_to_file(folder, results):
         for clazz_ in clazz_list:
             assert isinstance(clazz_, Clazz)
             assert isinstance(clazz_.parent_clazz, Type)
-            clazz_imports.add(clazz_.parent_clazz.as_import)
+            if not clazz_.parent_clazz.is_builtin:
+                clazz_imports.add(clazz_.parent_clazz.as_import)
+            # end if
         # end for
         clazz_imports = list(clazz_imports)
         clazz_imports.sort()
         is_sendable = ("sendable" in path)
         try:
-            txt = clazzfile_template.render(clazzes=clazz_list, manual_clazzes=[],imports=clazz_imports, is_sendable=is_sendable)
+            txt = clazzfile_template.render(clazzes=clazz_list, manual_clazzes=[], imports=clazz_imports, is_sendable=is_sendable)
             txt = txt.replace("\t", "    ")
             render_file_to_disk(path, txt)
         except IOError:

@@ -488,7 +488,7 @@ class Type(dict):
     # end def __init__
 
     @property
-    def as_import(self):
+    def as_import(self) -> 'Import':
         return Import(self.import_path, self.string)
     # end def as_import
 
