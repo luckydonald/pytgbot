@@ -33,6 +33,23 @@ class CallbackGame(UpdateType):
     :type  _raw: None | dict
     """
 
+    def __init__(self, _raw=None):
+        """
+        A placeholder, currently holds no information. Use BotFather to set up your game.
+
+        https://core.telegram.org/bots/api#callbackgame
+
+        Optional keyword parameters:
+        
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(CallbackGame, self).__init__()
+        
+
+        self._raw = _raw
+    # end def __init__
+
     def to_array(self):
         return {}
     # end def
@@ -41,6 +58,51 @@ class CallbackGame(UpdateType):
     def validate_array(array):
         return {}
     # end def
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new CallbackGame from a given dictionary.
+
+        :return: new CallbackGame instance.
+        :rtype: CallbackGame
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = CallbackGame.validate_array(array)
+        data['_raw'] = array
+        return CallbackGame(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(callbackgame_instance)`
+        """
+        return "CallbackGame()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(callbackgame_instance)`
+        """
+        if self._raw:
+            return "CallbackGame.from_array({self._raw})".format(self=self)
+        # end if
+        return "CallbackGame()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in callbackgame_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
 # end class CallbackGame
 
 
