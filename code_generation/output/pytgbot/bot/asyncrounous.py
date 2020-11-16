@@ -120,45 +120,6 @@ class AsyncBot(BotBase):
         return await self.do(command, **kwargs)
     # end def _do_fileupload
 
-    async def _load_info(self):
-        """
-        This functions stores the id and the username of the bot.
-        Called by `.username` and `.id` properties.
-        :return:
-        """
-        myself = await self.get_me()
-        if self.return_python_objects:
-            self._id = myself.id
-            self._username = myself.username
-        else:
-            self._id = myself["result"]["id"]
-            self._username = myself["result"]["username"]
-        # end if
-    # end def
-
-    @async_property
-    def username(self):
-        if not self._username:
-            await self._load_info()
-        # end if
-        return self._username
-    # end def
-
-    @async_property
-    def id(self):
-        if not self._id:
-            await self._load_info()
-        # end if
-        return self._id
-    # end def
-
-    def __str__(self):
-        username = self._username if self._username else "<not loaded>"
-        id = self._id if self._id else "<not loaded>"
-        return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
-    # end def
-
-
     # start of generated functions
     
     async def get_updates(self, offset=None, , limit=None, , timeout=None, , allowed_updates=None):

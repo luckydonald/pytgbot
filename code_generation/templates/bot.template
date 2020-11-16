@@ -125,45 +125,6 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         return {% if is_asyncio %}await {% endif %}self.do(command, **kwargs)
     # end def _do_fileupload
 
-    {% if is_asyncio %}async {% endif %}def _load_info(self):
-        """
-        This functions stores the id and the username of the bot.
-        Called by `.username` and `.id` properties.
-        :return:
-        """
-        myself = {% if is_asyncio %}await {% endif %}self.get_me()
-        if self.return_python_objects:
-            self._id = myself.id
-            self._username = myself.username
-        else:
-            self._id = myself["result"]["id"]
-            self._username = myself["result"]["username"]
-        # end if
-    # end def
-
-    @{% if is_asyncio %}async_property{% else %}property{% endif %}
-    def username(self):
-        if not self._username:
-            {% if is_asyncio %}await {% endif %}self._load_info()
-        # end if
-        return self._username
-    # end def
-
-    @{% if is_asyncio %}async_property{% else %}property{% endif %}
-    def id(self):
-        if not self._id:
-            {% if is_asyncio %}await {% endif %}self._load_info()
-        # end if
-        return self._id
-    # end def
-
-    def __str__(self):
-        username = {% if is_asyncio %}self._username if self._username else "<not loaded>"{% else %}self.username{% endif %}
-        id = {% if is_asyncio %}self._id if self._id else "<not loaded>"{% else %}self.id{% endif %}
-        return "{s.__class__.__name__}(username={username!r}, id={id!r})".format(s=self, username=username, id=id)
-    # end def
-
-
     # start of generated functions
     {% for function in functions %}
     {% if is_asyncio %}async {% endif %}def {{ function.name }}(self{% for variable in function.variables %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% else %}{{ variable.default }}{% endif %}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}):
