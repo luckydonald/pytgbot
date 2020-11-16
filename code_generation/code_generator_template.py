@@ -203,7 +203,7 @@ def parse_param_types(param) -> Variable:
     variable.types = as_types(param_types, variable.api_name)
     if is_clazz:
         # check for "must be photo" kinda stuff.
-        m = re.search(r'[Mm]ust be ([a-z_]+)([\.\,\!\?]|$)', variable.description)
+        m = re.search(r'[Mm]ust be ([a-z0-9_]+)([\.\,\!\?]|$)', variable.description)
         if m:
             for t in variable.types:
                 if not t.is_builtin:
