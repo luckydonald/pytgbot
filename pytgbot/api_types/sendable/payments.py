@@ -20,7 +20,11 @@ class LabeledPrice(Sendable):
 
     :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  amount: int
+
+
+    Optional keyword parameters:
     """
+
     def __init__(self, label, amount):
         """
         This object represents a portion of the price for goods or services.
@@ -35,6 +39,9 @@ class LabeledPrice(Sendable):
 
         :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  amount: int
+
+
+        Optional keyword parameters:
         """
         super(LabeledPrice, self).__init__()
         assert_type_or_raise(label, unicode_type, parameter_name="label")
@@ -137,6 +144,9 @@ class ShippingOption(Sendable):
 
     :param prices: List of price portions
     :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
+
+
+    Optional keyword parameters:
     """
 
     def __init__(self, id, title, prices):
@@ -156,6 +166,9 @@ class ShippingOption(Sendable):
 
         :param prices: List of price portions
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
+
+
+        Optional keyword parameters:
         """
         super(ShippingOption, self).__init__()
 
@@ -180,6 +193,7 @@ class ShippingOption(Sendable):
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['prices'] = self._as_array(self.prices)  # type list of LabeledPrice
+
         return array
     # end def to_array
 
@@ -246,3 +260,4 @@ class ShippingOption(Sendable):
         )
     # end def __contains__
 # end class ShippingOption
+

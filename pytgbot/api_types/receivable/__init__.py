@@ -9,11 +9,29 @@ logger = logging.getLogger(__name__)
 
 
 class Receivable(TgBotApiObject):
+    """
+    Base class for all classes for stuff which telegram sends us.
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
     pass
 # end class Receivable
 
 
 class Result(Receivable):
+    """
+    Base class for all classes for stuff which we get back after we called a telegram method.
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
     def to_array(self):
         return {}
     pass

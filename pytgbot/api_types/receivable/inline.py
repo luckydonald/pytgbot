@@ -22,7 +22,7 @@ class InlineQuery(Result):
     :param from_peer: Sender
     :type  from_peer: pytgbot.api_types.receivable.peer.User
 
-    :param query: Text of the query (up to 512 characters)
+    :param query: Text of the query (up to 256 characters)
     :type  query: str|unicode
 
     :param offset: Offset of the results to be returned, can be controlled by the bot
@@ -69,8 +69,8 @@ class InlineQuery(Result):
         :type  _raw: None | dict
         """
         super(InlineQuery, self).__init__()
-        from pytgbot.api_types.receivable.media import Location
-        from pytgbot.api_types.receivable.peer import User
+        from .media import Location
+        from .peer import User
 
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -115,8 +115,8 @@ class InlineQuery(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import Location
-        from pytgbot.api_types.receivable.peer import User
+        from .media import Location
+        from .peer import User
 
         data = Result.validate_array(array)
         data['id'] = u(array.get('id'))
@@ -238,9 +238,8 @@ class ChosenInlineResult(UpdateType):
         :type  _raw: None | dict
         """
         super(ChosenInlineResult, self).__init__()
-
-        from ..receivable.media import Location
-        from ..receivable.peer import User
+        from .media import Location
+        from .peer import User
 
         assert_type_or_raise(result_id, unicode_type, parameter_name="result_id")
         self.result_id = result_id
@@ -286,8 +285,8 @@ class ChosenInlineResult(UpdateType):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from ..receivable.media import Location
-        from ..receivable.peer import User
+        from .media import Location
+        from .peer import User
 
         data = UpdateType.validate_array(array)
         data['result_id'] = u(array.get('result_id'))

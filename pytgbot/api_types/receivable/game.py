@@ -56,7 +56,7 @@ class GameHighScore(Result):
         :type  _raw: None | dict
         """
         super(GameHighScore, self).__init__()
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
 
         assert_type_or_raise(position, int, parameter_name="position")
 
@@ -96,8 +96,7 @@ class GameHighScore(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
-        from pytgbot.api_types.receivable.peer import User
+        from .peer import User
 
         data = Result.validate_array(array)
         data['position'] = int(array.get('position'))

@@ -74,7 +74,8 @@ class StickerSet(Result):
         :type  _raw: None | dict
         """
         super(StickerSet, self).__init__()
-        from .media import PhotoSize, Sticker
+        from .media import PhotoSize
+        from .media import Sticker
 
         assert_type_or_raise(name, unicode_type, parameter_name="name")
         self.name = name
@@ -126,7 +127,8 @@ class StickerSet(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from .media import PhotoSize, Sticker
+        from .media import PhotoSize
+        from .media import Sticker
 
         data = Result.validate_array(array)
         data['name'] = u(array.get('name'))
@@ -194,7 +196,7 @@ class MaskPosition(Result):
 
     Parameters:
 
-    :param point: The part of the face relative to which the mask should be placed. One of “forehead”, “eyes”, “mouth”, or “chin”.
+    :param point: The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin".
     :type  point: str|unicode
 
     :param x_shift: Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.
@@ -222,7 +224,7 @@ class MaskPosition(Result):
 
         Parameters:
 
-        :param point: The part of the face relative to which the mask should be placed. One of “forehead”, “eyes”, “mouth”, or “chin”.
+        :param point: The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin".
         :type  point: str|unicode
 
         :param x_shift: Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.

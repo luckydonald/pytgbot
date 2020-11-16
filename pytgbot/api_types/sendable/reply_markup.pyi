@@ -9,6 +9,22 @@ from pytgbot.api_types.sendable.reply_markup import ReplyMarkup
 __author__ = 'luckydonald'
 
 
+class Button(Sendable):
+    """
+    Class for grouping KeyboardButton, KeyboardButtonPollType and InlineKeyboardButton.
+
+    Optional keyword parameters:
+    """
+# end class Button
+
+class ReplyMarkup(Sendable):
+    """
+    Class for grouping ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup and ForceReply.
+
+    Optional keyword parameters:
+    """
+# end class ReplyMarkup
+
 class ReplyKeyboardMarkup(ReplyMarkup):
     """
     This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
@@ -75,7 +91,6 @@ class KeyboardButtonPollType(Button):
     This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
 
     https://core.telegram.org/bots/api#keyboardbuttonpolltype
-    
 
     Optional keyword parameters:
     

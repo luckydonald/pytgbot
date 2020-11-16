@@ -9,11 +9,15 @@ __author__ = 'luckydonald'
 
 class PassportElementError(Sendable):
     """
-    This object represents an error in the Telegram Passport element
-    which was submitted that should be resolved by the user.
+    This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user.
+
+    https://core.telegram.org/bots/api#inputmedia
+
+    Optional keyword parameters:
     """
+
     pass
-# end class
+# end class PassportElementError
 
 
 class PassportElementErrorDataField(PassportElementError):
@@ -28,7 +32,7 @@ class PassportElementErrorDataField(PassportElementError):
     :param source: Error source, must be data
     :type  source: str|unicode
 
-    :param type: The section of the user's Telegram Passport which has the error, one of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”
+    :param type: The section of the user's Telegram Passport which has the error, one of "personal_details", "passport", "driver_license", "identity_card", "internal_passport", "address"
     :type  type: str|unicode
 
     :param field_name: Name of the data field which has the error
@@ -56,7 +60,7 @@ class PassportElementErrorDataField(PassportElementError):
         :param source: Error source, must be data
         :type  source: str|unicode
 
-        :param type: The section of the user's Telegram Passport which has the error, one of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”
+        :param type: The section of the user's Telegram Passport which has the error, one of "personal_details", "passport", "driver_license", "identity_card", "internal_passport", "address"
         :type  type: str|unicode
 
         :param field_name: Name of the data field which has the error
@@ -182,7 +186,7 @@ class PassportElementErrorFrontSide(PassportElementError):
     :param source: Error source, must be front_side
     :type  source: str|unicode
 
-    :param type: The section of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”
+    :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
     :type  type: str|unicode
 
     :param file_hash: Base64-encoded hash of the file with the front side of the document
@@ -207,7 +211,7 @@ class PassportElementErrorFrontSide(PassportElementError):
         :param source: Error source, must be front_side
         :type  source: str|unicode
 
-        :param type: The section of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”
+        :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
         :type  type: str|unicode
 
         :param file_hash: Base64-encoded hash of the file with the front side of the document
@@ -262,7 +266,7 @@ class PassportElementErrorFrontSide(PassportElementError):
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
-
+        return data
     # end def validate_array
 
     @staticmethod
@@ -325,7 +329,7 @@ class PassportElementErrorReverseSide(PassportElementError):
     :param source: Error source, must be reverse_side
     :type  source: str|unicode
 
-    :param type: The section of the user's Telegram Passport which has the issue, one of “driver_license”, “identity_card”
+    :param type: The section of the user's Telegram Passport which has the issue, one of "driver_license", "identity_card"
     :type  type: str|unicode
 
     :param file_hash: Base64-encoded hash of the file with the reverse side of the document
@@ -350,7 +354,7 @@ class PassportElementErrorReverseSide(PassportElementError):
         :param source: Error source, must be reverse_side
         :type  source: str|unicode
 
-        :param type: The section of the user's Telegram Passport which has the issue, one of “driver_license”, “identity_card”
+        :param type: The section of the user's Telegram Passport which has the issue, one of "driver_license", "identity_card"
         :type  type: str|unicode
 
         :param file_hash: Base64-encoded hash of the file with the reverse side of the document
@@ -468,7 +472,7 @@ class PassportElementErrorSelfie(PassportElementError):
     :param source: Error source, must be selfie
     :type  source: str|unicode
 
-    :param type: The section of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”
+    :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
     :type  type: str|unicode
 
     :param file_hash: Base64-encoded hash of the file with the selfie
@@ -493,7 +497,7 @@ class PassportElementErrorSelfie(PassportElementError):
         :param source: Error source, must be selfie
         :type  source: str|unicode
 
-        :param type: The section of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”
+        :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
         :type  type: str|unicode
 
         :param file_hash: Base64-encoded hash of the file with the selfie
@@ -611,7 +615,7 @@ class PassportElementErrorFile(PassportElementError):
     :param source: Error source, must be file
     :type  source: str|unicode
 
-    :param type: The section of the user's Telegram Passport which has the issue, one of “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+    :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
 
     :param file_hash: Base64-encoded file hash
@@ -636,7 +640,7 @@ class PassportElementErrorFile(PassportElementError):
         :param source: Error source, must be file
         :type  source: str|unicode
 
-        :param type: The section of the user's Telegram Passport which has the issue, one of “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+        :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
 
         :param file_hash: Base64-encoded file hash
@@ -754,7 +758,7 @@ class PassportElementErrorFiles(PassportElementError):
     :param source: Error source, must be files
     :type  source: str|unicode
 
-    :param type: The section of the user's Telegram Passport which has the issue, one of “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+    :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
 
     :param file_hashes: List of base64-encoded file hashes
@@ -779,7 +783,7 @@ class PassportElementErrorFiles(PassportElementError):
         :param source: Error source, must be files
         :type  source: str|unicode
 
-        :param type: The section of the user's Telegram Passport which has the issue, one of “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+        :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
 
         :param file_hashes: List of base64-encoded file hashes
@@ -816,6 +820,7 @@ class PassportElementErrorFiles(PassportElementError):
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['file_hashes'] = self._as_array(self.file_hashes)  # type list of str
+
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
         return array
     # end def to_array
@@ -897,7 +902,7 @@ class PassportElementErrorTranslationFile(PassportElementError):
     :param source: Error source, must be translation_file
     :type  source: str|unicode
 
-    :param type: Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+    :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
 
     :param file_hash: Base64-encoded file hash
@@ -922,7 +927,7 @@ class PassportElementErrorTranslationFile(PassportElementError):
         :param source: Error source, must be translation_file
         :type  source: str|unicode
 
-        :param type: Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+        :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
 
         :param file_hash: Base64-encoded file hash
@@ -957,13 +962,9 @@ class PassportElementErrorTranslationFile(PassportElementError):
         """
         array = super(PassportElementErrorTranslationFile, self).to_array()
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
-
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
-
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -1044,7 +1045,7 @@ class PassportElementErrorTranslationFiles(PassportElementError):
     :param source: Error source, must be translation_files
     :type  source: str|unicode
 
-    :param type: Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”
+    :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
 
     :param file_hashes: List of base64-encoded file hashes
@@ -1106,6 +1107,7 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['file_hashes'] = self._as_array(self.file_hashes)  # type list of str
+
         array['message'] = u(self.message)  # py2: type unicode, py3: type str
         return array
     # end def to_array
@@ -1316,3 +1318,4 @@ class PassportElementErrorUnspecified(PassportElementError):
         )
     # end def __contains__
 # end class PassportElementErrorUnspecified
+

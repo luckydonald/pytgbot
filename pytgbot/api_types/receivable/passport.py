@@ -145,8 +145,11 @@ class PassportFile(Result):
 
     Parameters:
 
-    :param file_id: Identifier for this file
+    :param file_id: Identifier for this file, which can be used to download or reuse the file
     :type  file_id: str|unicode
+
+    :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    :type  file_unique_id: str|unicode
 
     :param file_size: File size
     :type  file_size: int
@@ -161,7 +164,7 @@ class PassportFile(Result):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, file_size, file_date, _raw=None):
+    def __init__(self, file_id, file_unique_id, file_size, file_date, _raw=None):
         """
         This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
 
@@ -170,8 +173,11 @@ class PassportFile(Result):
 
         Parameters:
 
-        :param file_id: Identifier for this file
+        :param file_id: Identifier for this file, which can be used to download or reuse the file
         :type  file_id: str|unicode
+
+        :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+        :type  file_unique_id: str|unicode
 
         :param file_size: File size
         :type  file_size: int
@@ -188,6 +194,9 @@ class PassportFile(Result):
         super(PassportFile, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
+
+        assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
+        self.file_unique_id = file_unique_id
 
         assert_type_or_raise(file_size, int, parameter_name="file_size")
         self.file_size = file_size
@@ -286,7 +295,7 @@ class EncryptedPassportElement(Result):
 
     Parameters:
 
-    :param type: Element type. One of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”, “phone_number”, “email”.
+    :param type: Element type. One of "personal_details", "passport", "driver_license", "identity_card", "internal_passport", "address", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration", "phone_number", "email".
     :type  type: str|unicode
 
     :param hash: Base64-encoded element hash for using in PassportElementErrorUnspecified
@@ -294,28 +303,28 @@ class EncryptedPassportElement(Result):
 
     Optional keyword parameters:
 
-    :param data: Optional. Base64-encoded encrypted Telegram Passport element data provided by the user, available for “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport” and “address” types. Can be decrypted and verified using the accompanying EncryptedCredentials.
+    :param data: Optional. Base64-encoded encrypted Telegram Passport element data provided by the user, available for "personal_details", "passport", "driver_license", "identity_card", "internal_passport" and "address" types. Can be decrypted and verified using the accompanying EncryptedCredentials.
     :type  data: str|unicode
 
-    :param phone_number: Optional. User's verified phone number, available only for “phone_number” type
+    :param phone_number: Optional. User's verified phone number, available only for "phone_number" type
     :type  phone_number: str|unicode
 
-    :param email: Optional. User's verified email address, available only for “email” type
+    :param email: Optional. User's verified email address, available only for "email" type
     :type  email: str|unicode
 
-    :param files: Optional. Array of encrypted files with documents provided by the user, available for “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration” and “temporary_registration” types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
+    :param files: Optional. Array of encrypted files with documents provided by the user, available for "utility_bill", "bank_statement", "rental_agreement", "passport_registration" and "temporary_registration" types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
     :type  files: list of pytgbot.api_types.receivable.passport.PassportFile
 
-    :param front_side: Optional. Encrypted file with the front side of the document, provided by the user. Available for “passport”, “driver_license”, “identity_card” and “internal_passport”. The file can be decrypted and verified using the accompanying EncryptedCredentials.
+    :param front_side: Optional. Encrypted file with the front side of the document, provided by the user. Available for "passport", "driver_license", "identity_card" and "internal_passport". The file can be decrypted and verified using the accompanying EncryptedCredentials.
     :type  front_side: pytgbot.api_types.receivable.passport.PassportFile
 
-    :param reverse_side: Optional. Encrypted file with the reverse side of the document, provided by the user. Available for “driver_license” and “identity_card”. The file can be decrypted and verified using the accompanying EncryptedCredentials.
+    :param reverse_side: Optional. Encrypted file with the reverse side of the document, provided by the user. Available for "driver_license" and "identity_card". The file can be decrypted and verified using the accompanying EncryptedCredentials.
     :type  reverse_side: pytgbot.api_types.receivable.passport.PassportFile
 
-    :param selfie: Optional. Encrypted file with the selfie of the user holding a document, provided by the user; available for “passport”, “driver_license”, “identity_card” and “internal_passport”. The file can be decrypted and verified using the accompanying EncryptedCredentials.
+    :param selfie: Optional. Encrypted file with the selfie of the user holding a document, provided by the user; available for "passport", "driver_license", "identity_card" and "internal_passport". The file can be decrypted and verified using the accompanying EncryptedCredentials.
     :type  selfie: pytgbot.api_types.receivable.passport.PassportFile
 
-    :param translation: Optional. Array of encrypted files with translated versions of documents provided by the user. Available if requested for “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration” and “temporary_registration” types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
+    :param translation: Optional. Array of encrypted files with translated versions of documents provided by the user. Available if requested for "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration" and "temporary_registration" types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
     :type  translation: list of pytgbot.api_types.receivable.passport.PassportFile
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -331,7 +340,7 @@ class EncryptedPassportElement(Result):
 
         Parameters:
 
-        :param type: Element type. One of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”, “phone_number”, “email”.
+        :param type: Element type. One of "personal_details", "passport", "driver_license", "identity_card", "internal_passport", "address", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration", "phone_number", "email".
         :type  type: str|unicode
 
         :param hash: Base64-encoded element hash for using in PassportElementErrorUnspecified
@@ -340,28 +349,28 @@ class EncryptedPassportElement(Result):
 
         Optional keyword parameters:
 
-        :param data: Optional. Base64-encoded encrypted Telegram Passport element data provided by the user, available for “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport” and “address” types. Can be decrypted and verified using the accompanying EncryptedCredentials.
+        :param data: Optional. Base64-encoded encrypted Telegram Passport element data provided by the user, available for "personal_details", "passport", "driver_license", "identity_card", "internal_passport" and "address" types. Can be decrypted and verified using the accompanying EncryptedCredentials.
         :type  data: str|unicode
 
-        :param phone_number: Optional. User's verified phone number, available only for “phone_number” type
+        :param phone_number: Optional. User's verified phone number, available only for "phone_number" type
         :type  phone_number: str|unicode
 
-        :param email: Optional. User's verified email address, available only for “email” type
+        :param email: Optional. User's verified email address, available only for "email" type
         :type  email: str|unicode
 
-        :param files: Optional. Array of encrypted files with documents provided by the user, available for “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration” and “temporary_registration” types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
+        :param files: Optional. Array of encrypted files with documents provided by the user, available for "utility_bill", "bank_statement", "rental_agreement", "passport_registration" and "temporary_registration" types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
         :type  files: list of pytgbot.api_types.receivable.passport.PassportFile
 
-        :param front_side: Optional. Encrypted file with the front side of the document, provided by the user. Available for “passport”, “driver_license”, “identity_card” and “internal_passport”. The file can be decrypted and verified using the accompanying EncryptedCredentials.
+        :param front_side: Optional. Encrypted file with the front side of the document, provided by the user. Available for "passport", "driver_license", "identity_card" and "internal_passport". The file can be decrypted and verified using the accompanying EncryptedCredentials.
         :type  front_side: pytgbot.api_types.receivable.passport.PassportFile
 
-        :param reverse_side: Optional. Encrypted file with the reverse side of the document, provided by the user. Available for “driver_license” and “identity_card”. The file can be decrypted and verified using the accompanying EncryptedCredentials.
+        :param reverse_side: Optional. Encrypted file with the reverse side of the document, provided by the user. Available for "driver_license" and "identity_card". The file can be decrypted and verified using the accompanying EncryptedCredentials.
         :type  reverse_side: pytgbot.api_types.receivable.passport.PassportFile
 
-        :param selfie: Optional. Encrypted file with the selfie of the user holding a document, provided by the user; available for “passport”, “driver_license”, “identity_card” and “internal_passport”. The file can be decrypted and verified using the accompanying EncryptedCredentials.
+        :param selfie: Optional. Encrypted file with the selfie of the user holding a document, provided by the user; available for "passport", "driver_license", "identity_card" and "internal_passport". The file can be decrypted and verified using the accompanying EncryptedCredentials.
         :type  selfie: pytgbot.api_types.receivable.passport.PassportFile
 
-        :param translation: Optional. Array of encrypted files with translated versions of documents provided by the user. Available if requested for “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration” and “temporary_registration” types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
+        :param translation: Optional. Array of encrypted files with translated versions of documents provided by the user. Available if requested for "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration" and "temporary_registration" types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
         :type  translation: list of pytgbot.api_types.receivable.passport.PassportFile
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.

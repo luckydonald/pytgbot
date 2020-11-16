@@ -2,10 +2,21 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
+from pytgbot.api_types.sendable import Sendable
 from pytgbot.api_types.sendable.passport import PassportElementError
 
 __author__ = 'luckydonald'
 
+
+class PassportElementError(Sendable):
+    """
+    This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user.
+
+    https://core.telegram.org/bots/api#inputmedia
+
+    Optional keyword parameters:
+    """
+# end class PassportElementError
 
 class PassportElementErrorDataField(PassportElementError):
     """
