@@ -432,7 +432,7 @@ class InputMediaPlayable(InputMediaWithThumb):
         :type  duration: int
         """
         super(InputMediaPlayable, self).__init__()
-        from pytgbot.api_types.sendable.input_media import InputMediaWithThumb
+        from . import InputMediaWithThumb
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -494,7 +494,7 @@ class InputMediaPlayable(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.input_media import InputMediaWithThumb
+        from . import InputMediaWithThumb
         
         data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -644,7 +644,7 @@ class InputMediaVideolike(InputMediaPlayable):
         :type  height: int
         """
         super(InputMediaVideolike, self).__init__()
-        from pytgbot.api_types.sendable.input_media import InputMediaPlayable
+        from . import InputMediaPlayable
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -716,7 +716,7 @@ class InputMediaVideolike(InputMediaPlayable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.input_media import InputMediaPlayable
+        from . import InputMediaPlayable
         
         data = InputMediaPlayable.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -842,7 +842,7 @@ class InputMediaPhoto(InputMedia):
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaPhoto, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
+        from ..receivable.media import MessageEntity
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -889,7 +889,7 @@ class InputMediaPhoto(InputMedia):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
+        from ..receivable.media import MessageEntity
         
         data = InputMedia.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -1034,8 +1034,8 @@ class InputMediaVideo(InputMediaVideolike):
         :type  supports_streaming: bool
         """
         super(InputMediaVideo, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1113,8 +1113,8 @@ class InputMediaVideo(InputMediaVideolike):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         
         data = InputMediaVideolike.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -1265,8 +1265,8 @@ class InputMediaAnimation(InputMediaVideolike):
         :type  duration: int
         """
         super(InputMediaAnimation, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1339,8 +1339,8 @@ class InputMediaAnimation(InputMediaVideolike):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         
         data = InputMediaVideolike.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -1490,8 +1490,8 @@ class InputMediaAudio(InputMediaPlayable):
         :type  title: str|unicode
         """
         super(InputMediaAudio, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1564,8 +1564,8 @@ class InputMediaAudio(InputMediaPlayable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         
         data = InputMediaPlayable.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -1703,8 +1703,8 @@ class InputMediaDocument(InputMediaWithThumb):
         :type  disable_content_type_detection: bool
         """
         super(InputMediaDocument, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1767,8 +1767,8 @@ class InputMediaDocument(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         
         data = InputMediaWithThumb.validate_array(array)
         data['type'] = u(array.get('type'))

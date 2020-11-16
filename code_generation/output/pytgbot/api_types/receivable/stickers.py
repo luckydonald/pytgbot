@@ -74,8 +74,8 @@ class StickerSet(Result):
         :type  _raw: None | dict
         """
         super(StickerSet, self).__init__()
-        from pytgbot.api_types.receivable.media import PhotoSize
-        from pytgbot.api_types.receivable.media import Sticker
+        from .media import PhotoSize
+        from .media import Sticker
         
         assert_type_or_raise(name, unicode_type, parameter_name="name")
         self.name = name
@@ -127,8 +127,8 @@ class StickerSet(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import PhotoSize
-        from pytgbot.api_types.receivable.media import Sticker
+        from .media import PhotoSize
+        from .media import Sticker
         
         data = Result.validate_array(array)
         data['name'] = u(array.get('name'))

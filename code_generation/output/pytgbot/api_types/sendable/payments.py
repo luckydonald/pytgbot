@@ -171,7 +171,7 @@ class ShippingOption(Sendable):
         Optional keyword parameters:
         """
         super(ShippingOption, self).__init__()
-        from pytgbot.api_types.sendable.payments import LabeledPrice
+        from . import LabeledPrice
         
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -207,7 +207,7 @@ class ShippingOption(Sendable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.payments import LabeledPrice
+        from . import LabeledPrice
         
         data = Sendable.validate_array(array)
         data['id'] = u(array.get('id'))

@@ -150,8 +150,8 @@ class InlineQueryResultArticle(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultArticle, self).__init__()
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -227,8 +227,8 @@ class InlineQueryResultArticle(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -397,9 +397,9 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultPhoto, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -486,9 +486,9 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -665,9 +665,9 @@ class InlineQueryResultGif(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultGif, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -759,9 +759,9 @@ class InlineQueryResultGif(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -939,9 +939,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultMpeg4Gif, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1033,9 +1033,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -1223,9 +1223,9 @@ class InlineQueryResultVideo(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultVideo, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1320,9 +1320,9 @@ class InlineQueryResultVideo(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -1485,9 +1485,9 @@ class InlineQueryResultAudio(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultAudio, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1564,9 +1564,9 @@ class InlineQueryResultAudio(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -1719,9 +1719,9 @@ class InlineQueryResultVoice(InlineQueryResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultVoice, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -1793,9 +1793,9 @@ class InlineQueryResultVoice(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -1971,9 +1971,9 @@ class InlineQueryResultDocument(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultDocument, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -2064,9 +2064,9 @@ class InlineQueryResultDocument(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -2246,8 +2246,8 @@ class InlineQueryResultLocation(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultLocation, self).__init__()
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -2337,8 +2337,8 @@ class InlineQueryResultLocation(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -2524,8 +2524,8 @@ class InlineQueryResultVenue(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultVenue, self).__init__()
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -2619,8 +2619,8 @@ class InlineQueryResultVenue(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -2783,8 +2783,8 @@ class InlineQueryResultContact(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultContact, self).__init__()
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -2860,8 +2860,8 @@ class InlineQueryResultContact(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -2978,7 +2978,7 @@ class InlineQueryResultGame(InlineQueryResult):
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         """
         super(InlineQueryResultGame, self).__init__()
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -3019,7 +3019,7 @@ class InlineQueryResultGame(InlineQueryResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -3163,9 +3163,9 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedPhoto, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -3238,9 +3238,9 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -3384,9 +3384,9 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedGif, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -3454,9 +3454,9 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -3599,9 +3599,9 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedMpeg4Gif, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -3669,9 +3669,9 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -3792,8 +3792,8 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedSticker, self).__init__()
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -3840,8 +3840,8 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -3988,9 +3988,9 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedDocument, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -4062,9 +4062,9 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -4214,9 +4214,9 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedVideo, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -4288,9 +4288,9 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -4436,9 +4436,9 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedVoice, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -4505,9 +4505,9 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -4646,9 +4646,9 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedAudio, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -4711,9 +4711,9 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.inline import InputMessageContent
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+        from ..receivable.media import MessageEntity
+        from . import InputMessageContent
+        from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
         data['type'] = u(array.get('type'))
@@ -4825,7 +4825,7 @@ class InputTextMessageContent(InputMessageContent):
         :type  disable_web_page_preview: bool
         """
         super(InputTextMessageContent, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
+        from ..receivable.media import MessageEntity
         
         assert_type_or_raise(message_text, unicode_type, parameter_name="message_text")
         self.message_text = message_text
@@ -4868,7 +4868,7 @@ class InputTextMessageContent(InputMessageContent):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
+        from ..receivable.media import MessageEntity
         
         data = InputMessageContent.validate_array(array)
         data['message_text'] = u(array.get('message_text'))

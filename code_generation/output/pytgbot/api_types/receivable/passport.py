@@ -50,8 +50,8 @@ class PassportData(Result):
         :type  _raw: None | dict
         """
         super(PassportData, self).__init__()
-        from pytgbot.api_types.receivable.passport import EncryptedCredentials
-        from pytgbot.api_types.receivable.passport import EncryptedPassportElement
+        from . import EncryptedCredentials
+        from . import EncryptedPassportElement
         
         assert_type_or_raise(data, list, parameter_name="data")
         self.data = data
@@ -86,8 +86,8 @@ class PassportData(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.passport import EncryptedCredentials
-        from pytgbot.api_types.receivable.passport import EncryptedPassportElement
+        from . import EncryptedCredentials
+        from . import EncryptedPassportElement
         
         data = Result.validate_array(array)
         data['data'] = EncryptedPassportElement.from_array_list(array.get('data'), list_level=1)
@@ -384,7 +384,7 @@ class EncryptedPassportElement(Result):
         :type  _raw: None | dict
         """
         super(EncryptedPassportElement, self).__init__()
-        from pytgbot.api_types.receivable.passport import PassportFile
+        from . import PassportFile
         
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
@@ -462,7 +462,7 @@ class EncryptedPassportElement(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.passport import PassportFile
+        from . import PassportFile
         
         data = Result.validate_array(array)
         data['type'] = u(array.get('type'))
