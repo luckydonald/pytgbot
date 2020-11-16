@@ -172,7 +172,7 @@ class: import, master_class, descr
 WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
     # "func": {'return': {'expected': '', 'replace': ''}, 'r_type': {'expected': '', 'replace': ''}},
     "getMe":                  {'return': {'expected': '', 'replace': 'Returns basic information about the bot in form of a User object'}, 'r_type': {'expected': '', 'replace': 'User'}},
-    "deleteWebhook":          {'return': {'expected': '', 'replace': 'Returns True on success'}, 'r_type': {'expected': '', 'replace': 'True'}},
+    "logOut":                 {'return': {'expected': '', 'replace': 'Returns True on success'}, 'r_type': {'expected': '', 'replace': 'True'}},  # November 4, 2020
     "getWebhookInfo":         {'return': {'expected': 'On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty', 'replace': 'On success, returns a WebhookInfo object'}, 'r_type': {'expected': 'WebhookInfo or getUpdates or url', 'replace': 'WebhookInfo'}},
     "kickChatMember":         {'return': {'expected': 'In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
     "unbanChatMember":        {'return': {'expected': 'The user will not return to the group or channel automatically, but will be able to join via link, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
@@ -182,10 +182,10 @@ WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters 
     "setGameScore":           {'return': {'expected': "On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False", 'replace': 'On success, if the message was sent by the bot, returns the edited Message, otherwise returns True'}, 'r_type': {'expected': 'Message or True or force or False', 'replace': 'Message or True'}},
     "getGameHighScores":      {'return': {'expected': 'This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.', 'replace': 'On success, returns an Array of GameHighScore objects'}, 'r_type': {'expected': '', 'replace': 'list of GameHighScore'}},
     "setPassportDataErrors":  {'return': {'expected': 'The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
-    "sendMediaGroup":         {'return': {'expected': 'On success, an array of the sent Messages is returned', 'replace': 'On success, an array of the sent Messages is returned'}, 'r_type': {'expected': 'Messages', 'replace': 'list of Message'}},
+    "sendMediaGroup":         {'return': {'expected': 'On success, an array of Messages that were sent is returned', 'replace': 'On success, an array of Messages that were sent is returned'}, 'r_type': {'expected': 'list of Messages', 'replace': 'list of Message'}},
     "answerShippingQuery":    {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
     "answerPreCheckoutQuery": {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
-    "getMyCommands":          {'return': {'expected': 'Returns Array of BotCommand on success', 'replace': 'On success, an array of the commands is returned'}, 'r_type': {'expected': 'Array of BotCommand', 'replace': 'list of BotCommand'}},
+    "getMyCommands":          {'return': {'expected': 'Returns Array of BotCommand on success', 'replace': 'On success, an array of the commands is returned'}, 'r_type': {'expected': 'list of BotCommand', 'replace': 'list of BotCommand'}},
 }
 """
 Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
@@ -194,6 +194,7 @@ Array with names of functions which have no parameters table and thus wouldn't b
 WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters table and thus wouldn't be detected.
     "CallbackGame",
     "InlineQueryResult",
+    #"InputMessageContent",
     "InputMedia",
     "PassportElementError",
     "InputMediaWithThumb",
@@ -351,7 +352,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.CallbackGame"] = CustomClaz
     description='A placeholder, currently holds no information. Use BotFather to set up your game.',
     body=ReplacementBody(
         before=[],
-        init=[],
+        init=None,
         to_array=[
             'def to_array(self):',
             '    return {}',
@@ -363,10 +364,10 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.updates.CallbackGame"] = CustomClaz
             '    return {}',
             '# end def',
         ],
-        from_array=[],
-        str=[],
-        repr=[],
-        contains=[],
+        from_array=None,
+        str=None,
+        repr=None,
+        contains=None,
         after=[],
     ),
 )
