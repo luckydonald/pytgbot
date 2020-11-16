@@ -8,7 +8,7 @@ from DictObject import DictObject
 from luckydonaldUtils.logger import logging
 
 from ..exceptions import TgApiParseException, TgApiException, TgApiTypeError
-from .bot import BotBase
+from .base import BotBase
 
 
 __author__ = 'luckydonald'

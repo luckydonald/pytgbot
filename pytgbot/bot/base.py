@@ -13,11 +13,13 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from ..exceptions import TgApiServerException, TgApiParseException, TgApiException
 from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types.sendable.inline import InlineQueryResult
+from ..api_types.receivable.peer import User
 from ..api_types import from_array_list
 
 
+
 __author__ = 'luckydonald'
-__all__ = ["Bot"]
+__all__ = ["BotBase"]
 
 logger = logging.getLogger(__name__)
 
@@ -43,8 +45,7 @@ class BotBase(object):
         self.api_key = api_key
         self.return_python_objects = return_python_objects
         self._last_update = datetime.now()
-        self._id = None        # will be filled when using the property .id or .username, or when calling ._load_info()
-        self._username = None  # will be filled when using the property .id or .username, or when calling ._load_info()
+        self._me = None        # will be filled when using the property .id or .username, or when calling ._load_info()
     # end def __init__
 
 
@@ -4362,28 +4363,31 @@ class BotBase(object):
         """
         myself = self.get_me()
         if self.return_python_objects:
-            self._id = myself.id
-            self._username = myself.username
+            self._me = myself
         else:
-            self._id = myself["result"]["id"]
-            self._username = myself["result"]["username"]
+            self._me = User.from_array(myself["result"])
         # end if
+    # end def
+
+    @property
+    def me(self):
+        """
+        :rtype: User
+        """
+        if not self._me:
+            self._load_info()
+        # end if
+        return self._me
     # end def
 
     @property
     def username(self):
-        if not self._username:
-            self._load_info()
-        # end if
-        return self._username
+        return self.me.username
     # end def
 
     @property
     def id(self):
-        if not self._id:
-            self._load_info()
-        # end if
-        return self._id
+        return self.me.id
     # end def
 
     def __str__(self):
@@ -4399,4 +4403,4 @@ class BotBase(object):
     def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         raise NotImplementedError('subclass needs to overwrite this.')
     # end def
-# end class Bot
+# end class BotBase

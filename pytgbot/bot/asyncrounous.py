@@ -8,7 +8,7 @@ from DictObject import DictObject
 from luckydonaldUtils.logger import logging
 
 from ..exceptions import TgApiParseException, TgApiException, TgApiTypeError
-from .bot import BotBase
+from .base import BotBase
 
 
 __author__ = 'luckydonald'
@@ -17,7 +17,29 @@ __all__ = ["AsyncBot", "Bot"]
 logger = logging.getLogger(__name__)
 
 
+
 class AsyncBot(BotBase):
+
+    def __init__(self, api_key, return_python_objects=True):
+        from .syncrounous import SyncBot
+        SyncBot(api_key, return_python_objects=True)
+        super().__init__(api_key, return_python_objects)
+    # end def
+
+    def _load_info(self):
+        """
+        This functions stores the id and the username of the bot.
+
+        This actually does a
+        Called by `.username` and `.id` properties.
+        :return:
+        """
+        from .syncrounous import SyncBot
+        bot = SyncBot(api_key=self.api_key, return_python_objects=True)
+        myself = bot.get_me()
+        self._me = myself
+    # end def
+
     async def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
