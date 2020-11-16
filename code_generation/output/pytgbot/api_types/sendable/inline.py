@@ -821,9 +821,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be mpeg4_gif
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -867,7 +864,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -875,9 +872,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be mpeg4_gif
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -925,8 +919,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'mpeg4_gif'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(mpeg4_url, unicode_type, parameter_name="mpeg4_url")
@@ -3456,9 +3449,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
 
     Parameters:
     
-    :param type: Type of the result, must be mpeg4_gif
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -3487,7 +3477,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
-    def __init__(self, type, id, mpeg4_file_id, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
+    def __init__(self, id, mpeg4_file_id, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 
@@ -3495,9 +3485,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be mpeg4_gif
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -3530,8 +3517,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
         
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
+        self.type = 'mpeg4_gif'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(mpeg4_file_id, unicode_type, parameter_name="mpeg4_file_id")
