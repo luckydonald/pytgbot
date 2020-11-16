@@ -91,10 +91,21 @@ class Clazz(ClassOrFunction):
         return self.parameters + self.keywords
     # end def variables
 
-    def has_same_variable(self, variable: 'Variable', ignore_pytg_name: bool = False, ignore_description: bool = True) -> bool:
+    def has_same_variable(
+        self,
+        variable: 'Variable',
+        ignore_pytg_name: bool = False,
+        ignore_description: bool = False,
+        ignore_type_always_is_value: bool = False,
+    ) -> bool:
         assert_type_or_raise(variable, Variable, parameter_name='variable')
         for own_variable in self.variables:
-            if variable.compare(own_variable, ignore_pytg_name=ignore_pytg_name, ignore_description=ignore_description):
+            if variable.compare(
+                own_variable,
+                ignore_pytg_name=ignore_pytg_name,
+                ignore_description=ignore_description,
+                ignore_type_always_is_value=ignore_type_always_is_value,
+            ):
                 return True
             # end if
         # end for
@@ -507,12 +518,30 @@ class Variable(dict):
         return self.compare(other, ignore_description=False)
     # end def __eq__
 
-    def compare(self, other: 'Variable', ignore_pytg_name: bool = False, ignore_description: bool = False):
+    def compare(
+        self,
+        other: 'Variable',
+        ignore_pytg_name: bool = False,
+        ignore_description: bool = False,
+        ignore_type_always_is_value: bool = False
+    ):
         assert_type_or_raise(other, Variable, parameter_name='other')
         return (
             self.api_name == other.api_name and
             self.name == other.name and
-            self.types == other.types and
+            (
+                len(self.types) == len(other.types) and
+                all(
+                    Type.compare(
+                        self=own_type,
+                        other=other.types[i],
+                        ignore_always_is_value=ignore_type_always_is_value,
+                        ignore_description=ignore_description
+                    )
+                    for i, own_type
+                    in enumerate(self.types)
+                )
+            ) and
             (ignore_pytg_name or self.pytg_name == other.pytg_name) and
             self.optional == other.optional and
             self.default == other.default and
@@ -597,12 +626,12 @@ class Type(dict):
         return self.compare(other, ignore_description=False)
     # end def __eq__
 
-    def compare(self, other: 'Type', ignore_description: bool = False):
+    def compare(self, other: 'Type', ignore_always_is_value: bool = False, ignore_description: bool = False):
         assert_type_or_raise(other, Type, parameter_name='other')
         return (
             self.string == other.string and  # the type (e.g. "bool")
             self.is_builtin == other.is_builtin and  # bool.  If it is a build in type (float, int, ...) or not.
-            self.always_is_value == other.always_is_value and  # None or the only possible value (e.g. a bool, always "True")
+            (ignore_always_is_value or self.always_is_value == other.always_is_value) and  # None or the only possible value (e.g. a bool, always "True")
             self.is_list == other.is_list and  # number denoting the list level. 0 means 'no list'. 1 is foo[], and 2 would be foo[][].
             self.import_path == other.import_path and  # from <import_path> import <string>
             (ignore_description or self.description == other.description) and  # if there are additional comments needed.
