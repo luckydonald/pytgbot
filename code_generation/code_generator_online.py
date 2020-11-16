@@ -688,11 +688,34 @@ def safe_to_file(folder, results):
         # end try
     # end for classes
     if functions:
-        txt_sync = bot_template.render(functions=functions, is_asyncio=False)
+        func_imports = set()
+        for func_ in functions:
+            assert isinstance(func_, Function)
+            for var_ in func_.variables:
+                assert isinstance(var_, Variable)
+                for type_ in var_.types:
+                    assert isinstance(type_, Type)
+                    func_imports.add(type_.as_import)
+                # end for
+            # end for
+            if func_.returns is not None:
+                assert isinstance(func_.returns, Variable)
+                for type_ in func_.returns.types:
+                    assert isinstance(type_, Type)
+                    func_imports.add(type_.as_import)
+                # end for
+            # end if
+        # end for
+        func_imports = list(func_imports)
+        func_imports.sort()
+
+        txt_sync = bot_template.render(functions=functions, is_asyncio=False, imports=func_imports, file_import_path='pytgbot.bot.syncrounous')
         render_file_to_disk(functions[0].filepath.replace('asyncrounous', 'syncrounous'), txt_sync)
-        txt_async = bot_template.render(functions=functions, is_asyncio=True)
+
+        txt_async = bot_template.render(functions=functions, is_asyncio=True, imports=func_imports, file_import_path='pytgbot.bot.asyncrounous')
         render_file_to_disk(functions[0].filepath, txt_async)
-        txt_base = bot_base_template.render(functions=functions)
+
+        txt_base = bot_base_template.render(functions=functions, imports=func_imports, file_import_path='pytgbot.bot.base')
         render_file_to_disk(functions[0].filepath.replace('asyncrounous', 'base'), txt_base)
 
         imports = set()

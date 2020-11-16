@@ -25,6 +25,11 @@ import httpx{#
 import requests{#
 #}{% endif %}{% from "macros.template" import for_type_list_of_full %}
 
+{% if is_asyncio %}{#
+#}{% for some_import in imports if some_import.path != file_import_path.path and some_import.path != None %}
+{{ some_import.import_statement_from_file(file_import_path) }}{#
+#}{% endfor %}{#
+#}{% endif %}
 
 __author__ = 'luckydonald'
 __all__ = ["{% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}", "Bot"]

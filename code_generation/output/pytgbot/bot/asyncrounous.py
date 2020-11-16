@@ -22,6 +22,34 @@ from async_property import async_property
 import httpx
 
 
+from ..api_types.receivable.game import GameHighScore
+from ..api_types.receivable.media import File
+from ..api_types.receivable.media import MessageEntity
+from ..api_types.receivable.media import Poll
+from ..api_types.receivable.media import UserProfilePhotos
+from ..api_types.receivable.peer import Chat
+from ..api_types.receivable.peer import ChatMember
+from ..api_types.receivable.peer import ChatPermissions
+from ..api_types.receivable.peer import User
+from ..api_types.receivable.responses import MessageId
+from ..api_types.receivable.stickers import MaskPosition
+from ..api_types.receivable.stickers import StickerSet
+from ..api_types.receivable.updates import Message
+from ..api_types.receivable.updates import Update
+from ..api_types.receivable.updates import WebhookInfo
+from ..api_types.sendable.command import BotCommand
+from ..api_types.sendable.files import InputFile
+from ..api_types.sendable.inline import InlineQueryResult
+from ..api_types.sendable.input_media import InputMedia
+from ..api_types.sendable.input_media import InputMediaVideo
+from ..api_types.sendable.passport import PassportElementError
+from ..api_types.sendable.payments import LabeledPrice
+from ..api_types.sendable.payments import ShippingOption
+from ..api_types.sendable.reply_markup import ForceReply
+from ..api_types.sendable.reply_markup import InlineKeyboardMarkup
+from ..api_types.sendable.reply_markup import ReplyKeyboardMarkup
+from ..api_types.sendable.reply_markup import ReplyKeyboardRemove
+
 __author__ = 'luckydonald'
 __all__ = ["AsyncBot", "Bot"]
 
