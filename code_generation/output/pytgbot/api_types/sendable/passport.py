@@ -28,9 +28,6 @@ class PassportElementErrorDataField(PassportElementError):
 
     Parameters:
     
-    :param source: Error source, must be data
-    :type  source: str|unicode
-    
     :param type: The section of the user's Telegram Passport which has the error, one of "personal_details", "passport", "driver_license", "identity_card", "internal_passport", "address"
     :type  type: str|unicode
     
@@ -55,9 +52,6 @@ class PassportElementErrorDataField(PassportElementError):
         
 
         Parameters:
-        
-        :param source: Error source, must be data
-        :type  source: str|unicode
         
         :param type: The section of the user's Telegram Passport which has the error, one of "personal_details", "passport", "driver_license", "identity_card", "internal_passport", "address"
         :type  type: str|unicode
@@ -181,9 +175,6 @@ class PassportElementErrorFrontSide(PassportElementError):
 
     Parameters:
     
-    :param source: Error source, must be front_side
-    :type  source: str|unicode
-    
     :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
     :type  type: str|unicode
     
@@ -205,9 +196,6 @@ class PassportElementErrorFrontSide(PassportElementError):
         
 
         Parameters:
-        
-        :param source: Error source, must be front_side
-        :type  source: str|unicode
         
         :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
         :type  type: str|unicode
@@ -323,9 +311,6 @@ class PassportElementErrorReverseSide(PassportElementError):
 
     Parameters:
     
-    :param source: Error source, must be reverse_side
-    :type  source: str|unicode
-    
     :param type: The section of the user's Telegram Passport which has the issue, one of "driver_license", "identity_card"
     :type  type: str|unicode
     
@@ -347,9 +332,6 @@ class PassportElementErrorReverseSide(PassportElementError):
         
 
         Parameters:
-        
-        :param source: Error source, must be reverse_side
-        :type  source: str|unicode
         
         :param type: The section of the user's Telegram Passport which has the issue, one of "driver_license", "identity_card"
         :type  type: str|unicode
@@ -465,9 +447,6 @@ class PassportElementErrorSelfie(PassportElementError):
 
     Parameters:
     
-    :param source: Error source, must be selfie
-    :type  source: str|unicode
-    
     :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
     :type  type: str|unicode
     
@@ -489,9 +468,6 @@ class PassportElementErrorSelfie(PassportElementError):
         
 
         Parameters:
-        
-        :param source: Error source, must be selfie
-        :type  source: str|unicode
         
         :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
         :type  type: str|unicode
@@ -607,9 +583,6 @@ class PassportElementErrorFile(PassportElementError):
 
     Parameters:
     
-    :param source: Error source, must be file
-    :type  source: str|unicode
-    
     :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
     
@@ -631,9 +604,6 @@ class PassportElementErrorFile(PassportElementError):
         
 
         Parameters:
-        
-        :param source: Error source, must be file
-        :type  source: str|unicode
         
         :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
@@ -749,9 +719,6 @@ class PassportElementErrorFiles(PassportElementError):
 
     Parameters:
     
-    :param source: Error source, must be files
-    :type  source: str|unicode
-    
     :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
     
@@ -773,9 +740,6 @@ class PassportElementErrorFiles(PassportElementError):
         
 
         Parameters:
-        
-        :param source: Error source, must be files
-        :type  source: str|unicode
         
         :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
@@ -892,9 +856,6 @@ class PassportElementErrorTranslationFile(PassportElementError):
 
     Parameters:
     
-    :param source: Error source, must be translation_file
-    :type  source: str|unicode
-    
     :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
     
@@ -916,9 +877,6 @@ class PassportElementErrorTranslationFile(PassportElementError):
         
 
         Parameters:
-        
-        :param source: Error source, must be translation_file
-        :type  source: str|unicode
         
         :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
@@ -1034,9 +992,6 @@ class PassportElementErrorTranslationFiles(PassportElementError):
 
     Parameters:
     
-    :param source: Error source, must be translation_files
-    :type  source: str|unicode
-    
     :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
     
@@ -1058,9 +1013,6 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         
 
         Parameters:
-        
-        :param source: Error source, must be translation_files
-        :type  source: str|unicode
         
         :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
@@ -1177,9 +1129,6 @@ class PassportElementErrorUnspecified(PassportElementError):
 
     Parameters:
     
-    :param source: Error source, must be unspecified
-    :type  source: str|unicode
-    
     :param type: Type of element of the user's Telegram Passport which has the issue
     :type  type: str|unicode
     
@@ -1201,9 +1150,6 @@ class PassportElementErrorUnspecified(PassportElementError):
         
 
         Parameters:
-        
-        :param source: Error source, must be unspecified
-        :type  source: str|unicode
         
         :param type: Type of element of the user's Telegram Passport which has the issue
         :type  type: str|unicode

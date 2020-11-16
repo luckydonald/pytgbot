@@ -67,9 +67,6 @@ class InlineQueryResultArticle(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be article
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 Bytes
     :type  id: str|unicode
     
@@ -112,9 +109,6 @@ class InlineQueryResultArticle(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be article
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 Bytes
         :type  id: str|unicode
@@ -299,9 +293,6 @@ class InlineQueryResultPhoto(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -350,9 +341,6 @@ class InlineQueryResultPhoto(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be photo
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -558,9 +546,6 @@ class InlineQueryResultGif(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be gif
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -612,9 +597,6 @@ class InlineQueryResultGif(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be gif
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -1103,9 +1085,6 @@ class InlineQueryResultVideo(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be video
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -1162,9 +1141,6 @@ class InlineQueryResultVideo(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be video
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -1387,9 +1363,6 @@ class InlineQueryResultAudio(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be audio
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -1433,9 +1406,6 @@ class InlineQueryResultAudio(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be audio
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -1624,9 +1594,6 @@ class InlineQueryResultVoice(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be voice
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -1667,9 +1634,6 @@ class InlineQueryResultVoice(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be voice
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -1849,9 +1813,6 @@ class InlineQueryResultDocument(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be document
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -1904,9 +1865,6 @@ class InlineQueryResultDocument(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be document
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -2121,9 +2079,6 @@ class InlineQueryResultLocation(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be location
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 Bytes
     :type  id: str|unicode
     
@@ -2176,9 +2131,6 @@ class InlineQueryResultLocation(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be location
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 Bytes
         :type  id: str|unicode
@@ -2390,9 +2342,6 @@ class InlineQueryResultVenue(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be venue
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 Bytes
     :type  id: str|unicode
     
@@ -2448,9 +2397,6 @@ class InlineQueryResultVenue(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be venue
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 Bytes
         :type  id: str|unicode
@@ -2670,9 +2616,6 @@ class InlineQueryResultContact(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be contact
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 Bytes
     :type  id: str|unicode
     
@@ -2716,9 +2659,6 @@ class InlineQueryResultContact(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be contact
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 Bytes
         :type  id: str|unicode
@@ -2904,9 +2844,6 @@ class InlineQueryResultGame(InlineQueryResult):
 
     Parameters:
     
-    :param type: Type of the result, must be game
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -2929,9 +2866,6 @@ class InlineQueryResultGame(InlineQueryResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be game
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -3053,9 +2987,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
 
     Parameters:
     
-    :param type: Type of the result, must be photo
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -3095,9 +3026,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be photo
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -3277,9 +3205,6 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
 
     Parameters:
     
-    :param type: Type of the result, must be gif
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -3316,9 +3241,6 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be gif
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -3703,9 +3625,6 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
 
     Parameters:
     
-    :param type: Type of the result, must be sticker
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -3731,9 +3650,6 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be sticker
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -3866,9 +3782,6 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
 
     Parameters:
     
-    :param type: Type of the result, must be document
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -3909,9 +3822,6 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be document
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -4090,9 +4000,6 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
 
     Parameters:
     
-    :param type: Type of the result, must be video
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -4132,9 +4039,6 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be video
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -4314,9 +4218,6 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
     Parameters:
     
-    :param type: Type of the result, must be voice
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -4354,9 +4255,6 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be voice
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
@@ -4527,9 +4425,6 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
     Parameters:
     
-    :param type: Type of the result, must be audio
-    :type  type: str|unicode
-    
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
     
@@ -4564,9 +4459,6 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         
 
         Parameters:
-        
-        :param type: Type of the result, must be audio
-        :type  type: str|unicode
         
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
