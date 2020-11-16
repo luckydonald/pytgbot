@@ -83,9 +83,8 @@ class Clazz(ClassOrFunction):
         return import_path
     # end def
 
-    def calculate_filepath(self, folder: str):
-        from code_generator_online import calc_path_and_create_folders
-        return calc_path_and_create_folders(folder, self.import_path.path + '.' + self.import_path.name)
+    def calculate_filepath(self, folder: str) -> str:
+        return self.import_path.calculate_filepath(folder)
     # end def
 
     @property
@@ -522,16 +521,25 @@ class Type(dict):
 
 class Import(dict):
     """ from <path> import <name> """
-    def __init__(self, path=None, name=None):
+    def __init__(self, path: Union[str, None] = None, name: Union[str, None] = None, is_init: bool = False):
+        """
+        from <path> import <name>
+
+        :param path: part where to import from
+        :param name: actual name to import
+        :param is_init: if this is not `<name>.py`, but `<name>/__init__.py`.
+        """
         super(Import, self).__init__()
         self.path = path
         self.name = name
+        self.is_init = is_init
     # end def __init__
 
     def relative_import_full(self, base_path: Union[str, 'Import']):
         if isinstance(base_path, Import):
-            base_path: str = base_path.path
+            base_path = base_path.path
         # end if
+        base_path: str
 
         return relimport(self.full, base_path)
     # end def
@@ -566,6 +574,23 @@ class Import(dict):
         # end if
         from code_generator_template import path_to_import_text
         return path_to_import_text(path)
+    # end def
+
+    def calculate_filepath(self, folder: str) -> str:
+        from code_generator_online import calc_path_and_create_folders
+        full_path = ''
+        if self.path:
+            full_path += self.path
+        # end if
+        if self.is_init:
+            full_path += '.__init__'
+        # end if
+        if self.name:
+            full_path += '.' + self.name
+        # end if
+        full_path = full_path.strip('.')
+
+        return calc_path_and_create_folders(folder, full_path)
     # end def
 
     def __str__(self):
@@ -632,7 +657,7 @@ class Import(dict):
     def __repr__(self):
         return (
             "Import("
-                "path={s.path!r}, name={s.name!r}"
+                "path={s.path!r}, name={s.name!r}, is_init={s.is_init!r}"
             ")"
         ).format(s=self)
     # end def __repr__

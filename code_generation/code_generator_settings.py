@@ -1142,7 +1142,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.reply_markup.ReplyMarkup"]
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClazz(
     clazz='Receivable',
-    import_path=Import(path=CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Receivable"),
+    import_path=Import(path=CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Receivable", is_init=True),
     imports=[
         Import(
             path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
@@ -1180,7 +1180,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClazz(
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClazz(
     clazz='Result',
-    import_path=Import(path=CLASS_TYPE_PATHS["Result"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Result"),
+    import_path=Import(path=CLASS_TYPE_PATHS["Result"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Result", is_init=True),
     imports=[
         Import(
             path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Result"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
