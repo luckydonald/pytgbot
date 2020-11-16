@@ -33,6 +33,21 @@ logger = logging.getLogger(__name__)
 
 
 class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
+    {% if is_asyncio %}async {% endif %}def _load_info(self):
+        """
+        This functions stores the id and the username of the bot.
+        Called by `.username` and `.id` properties.
+        :return:
+        """
+        myself = {% if is_asyncio %}await {% endif %}self.get_me()
+        if self.return_python_objects:
+            self._id = myself.id
+            self._username = myself.username
+        else:
+            self._id = myself["result"]["id"]
+            self._username = myself["result"]["username"]
+        # end if
+    # end def
     {% if is_asyncio %}async {% endif %}def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.
