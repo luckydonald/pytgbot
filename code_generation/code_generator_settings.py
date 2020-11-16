@@ -1219,7 +1219,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClazz(
 )
 
 CUSTOM_CLASSES["pytgbot.api_types.TgBotApiObject"] = CustomClazz(
-    clazz='Result',
+    clazz='TgBotApiObject',
     import_path=Import(path=CLASS_TYPE_PATHS["TgBotApiObject"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="TgBotApiObject", is_init=True),
     imports=[],
     parent_clazz=Type(
