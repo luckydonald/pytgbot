@@ -1,12 +1,13 @@
 # Changelog
 
-## Version 5.0
+## Version 5.0  (not released yet) 
 Core:
 - The already for a while now deprecated `pytgbot.api_types.sendable.InputFile`, `pytgbot.api_types.sendable.InputFileFromURL` and `pytgbot.api_types.sendable.InputFileFromDisk` can no longer be found in `pytgbot.api_types.sendable.\*`
   They are now only available at `pytgbot.api_types.sendable.files.\*`, resulting in 
   - `pytgbot.api_types.sendable.files.InputFile`,
   - `pytgbot.api_types.sendable.files.InputFileFromURL` and
   - `pytgbot.api_types.sendable.files.InputFileFromDisk`.
+- `.as_array()` now has a `prefer_original=False` boolean, if it should return the data this was constructed with if available. Otherwise, it will be constructed normally from the data of the object, as it was before. 
 
 ## Version 4.9.1
 - Fixed `pytgbot.bot` not being part of the pip release.
