@@ -90,15 +90,14 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         :rtype: dict
         """
         array = super({{ clazz.clazz }}, self).to_array()
-
         {% for variable in clazz.variables %}{#
         #}{% if clazz.parent_clazz_has_same_variable(variable) %}
         # {{ variable.name.__repr__() }} given by superclass{#
         #}{% elif variable.optional %}
         if self.{{ variable.name }} is not None:
-            {{ set_array(variable)|indent(12) }}{#
+            {{ set_array(variable)|trim()|indent(12) }}{#
         #}{% else %}
-        {{ set_array(variable)|indent(8) }}{#
+        {{ set_array(variable)|trim()|indent(8) }}{#
         #}{% endif %}{#
         #}{% endfor %}
 
