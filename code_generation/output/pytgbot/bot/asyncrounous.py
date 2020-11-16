@@ -122,7 +122,7 @@ class AsyncBot(BotBase):
 
     # start of generated functions
     
-    async def get_updates(self, offset=None, , limit=None, , timeout=None, , allowed_updates=None):
+    async def get_updates(self, offset=None, limit=None, timeout=None, allowed_updates=None):
         """
         Internal function for making the request to the API's getUpdates endpoint.
 
@@ -150,7 +150,7 @@ class AsyncBot(BotBase):
         return self._get_updates__process_result(result)
     # end def get_updates
     
-    async def set_webhook(self, url, , certificate=None, , ip_address=None, , max_connections=None, , allowed_updates=None, , drop_pending_updates=None):
+    async def set_webhook(self, url, certificate=None, ip_address=None, max_connections=None, allowed_updates=None, drop_pending_updates=None):
         """
         Internal function for making the request to the API's setWebhook endpoint.
 
@@ -248,7 +248,7 @@ class AsyncBot(BotBase):
         return self._log_out__process_result(result)
     # end def log_out
     
-    async def send_message(self, chat_id, , text, , parse_mode=None, , entities=None, , disable_web_page_preview=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_message(self, chat_id, text, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendMessage endpoint.
 
@@ -294,7 +294,7 @@ class AsyncBot(BotBase):
         return self._send_message__process_result(result)
     # end def send_message
     
-    async def forward_message(self, chat_id, , from_chat_id, , message_id, , disable_notification=None):
+    async def forward_message(self, chat_id, from_chat_id, message_id, disable_notification=None):
         """
         Internal function for making the request to the API's forwardMessage endpoint.
 
@@ -325,7 +325,7 @@ class AsyncBot(BotBase):
         return self._forward_message__process_result(result)
     # end def forward_message
     
-    async def copy_message(self, chat_id, , from_chat_id, , message_id, , caption=None, , parse_mode=None, , caption_entities=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def copy_message(self, chat_id, from_chat_id, message_id, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's copyMessage endpoint.
 
@@ -374,7 +374,7 @@ class AsyncBot(BotBase):
         return self._copy_message__process_result(result)
     # end def copy_message
     
-    async def send_photo(self, chat_id, , photo, , caption=None, , parse_mode=None, , caption_entities=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_photo(self, chat_id, photo, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendPhoto endpoint.
 
@@ -420,7 +420,7 @@ class AsyncBot(BotBase):
         return self._send_photo__process_result(result)
     # end def send_photo
     
-    async def send_audio(self, chat_id, , audio, , caption=None, , parse_mode=None, , caption_entities=None, , duration=None, , performer=None, , title=None, , thumb=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_audio(self, chat_id, audio, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendAudio endpoint.
 
@@ -478,7 +478,7 @@ class AsyncBot(BotBase):
         return self._send_audio__process_result(result)
     # end def send_audio
     
-    async def send_document(self, chat_id, , document, , thumb=None, , caption=None, , parse_mode=None, , caption_entities=None, , disable_content_type_detection=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_document(self, chat_id, document, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendDocument endpoint.
 
@@ -530,7 +530,7 @@ class AsyncBot(BotBase):
         return self._send_document__process_result(result)
     # end def send_document
     
-    async def send_video(self, chat_id, , video, , duration=None, , width=None, , height=None, , thumb=None, , caption=None, , parse_mode=None, , caption_entities=None, , supports_streaming=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_video(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVideo endpoint.
 
@@ -591,7 +591,7 @@ class AsyncBot(BotBase):
         return self._send_video__process_result(result)
     # end def send_video
     
-    async def send_animation(self, chat_id, , animation, , duration=None, , width=None, , height=None, , thumb=None, , caption=None, , parse_mode=None, , caption_entities=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_animation(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendAnimation endpoint.
 
@@ -649,7 +649,7 @@ class AsyncBot(BotBase):
         return self._send_animation__process_result(result)
     # end def send_animation
     
-    async def send_voice(self, chat_id, , voice, , caption=None, , parse_mode=None, , caption_entities=None, , duration=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_voice(self, chat_id, voice, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVoice endpoint.
 
@@ -698,7 +698,7 @@ class AsyncBot(BotBase):
         return self._send_voice__process_result(result)
     # end def send_voice
     
-    async def send_video_note(self, chat_id, , video_note, , duration=None, , length=None, , thumb=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_video_note(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVideoNote endpoint.
 
@@ -744,7 +744,7 @@ class AsyncBot(BotBase):
         return self._send_video_note__process_result(result)
     # end def send_video_note
     
-    async def send_media_group(self, chat_id, , media, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None):
+    async def send_media_group(self, chat_id, media, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None):
         """
         Internal function for making the request to the API's sendMediaGroup endpoint.
 
@@ -778,7 +778,7 @@ class AsyncBot(BotBase):
         return self._send_media_group__process_result(result)
     # end def send_media_group
     
-    async def send_location(self, chat_id, , latitude, , longitude, , horizontal_accuracy=None, , live_period=None, , heading=None, , proximity_alert_radius=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_location(self, chat_id, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendLocation endpoint.
 
@@ -830,7 +830,7 @@ class AsyncBot(BotBase):
         return self._send_location__process_result(result)
     # end def send_location
     
-    async def edit_message_live_location(self, latitude, , longitude, , chat_id=None, , message_id=None, , inline_message_id=None, , horizontal_accuracy=None, , heading=None, , proximity_alert_radius=None, , reply_markup=None):
+    async def edit_message_live_location(self, latitude, longitude, chat_id=None, message_id=None, inline_message_id=None, horizontal_accuracy=None, heading=None, proximity_alert_radius=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageLiveLocation endpoint.
 
@@ -876,7 +876,7 @@ class AsyncBot(BotBase):
         return self._edit_message_live_location__process_result(result)
     # end def edit_message_live_location
     
-    async def stop_message_live_location(self, chat_id=None, , message_id=None, , inline_message_id=None, , reply_markup=None):
+    async def stop_message_live_location(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Internal function for making the request to the API's stopMessageLiveLocation endpoint.
 
@@ -904,7 +904,7 @@ class AsyncBot(BotBase):
         return self._stop_message_live_location__process_result(result)
     # end def stop_message_live_location
     
-    async def send_venue(self, chat_id, , latitude, , longitude, , title, , address, , foursquare_id=None, , foursquare_type=None, , google_place_id=None, , google_place_type=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVenue endpoint.
 
@@ -962,7 +962,7 @@ class AsyncBot(BotBase):
         return self._send_venue__process_result(result)
     # end def send_venue
     
-    async def send_contact(self, chat_id, , phone_number, , first_name, , last_name=None, , vcard=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_contact(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendContact endpoint.
 
@@ -1008,7 +1008,7 @@ class AsyncBot(BotBase):
         return self._send_contact__process_result(result)
     # end def send_contact
     
-    async def send_poll(self, chat_id, , question, , options, , is_anonymous=None, , type=None, , allows_multiple_answers=None, , correct_option_id=None, , explanation=None, , explanation_parse_mode=None, , explanation_entities=None, , open_period=None, , close_date=None, , is_closed=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendPoll endpoint.
 
@@ -1078,7 +1078,7 @@ class AsyncBot(BotBase):
         return self._send_poll__process_result(result)
     # end def send_poll
     
-    async def send_dice(self, chat_id, , emoji=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_dice(self, chat_id, emoji=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendDice endpoint.
 
@@ -1115,7 +1115,7 @@ class AsyncBot(BotBase):
         return self._send_dice__process_result(result)
     # end def send_dice
     
-    async def send_chat_action(self, chat_id, , action):
+    async def send_chat_action(self, chat_id, action):
         """
         Internal function for making the request to the API's sendChatAction endpoint.
 
@@ -1138,7 +1138,7 @@ class AsyncBot(BotBase):
         return self._send_chat_action__process_result(result)
     # end def send_chat_action
     
-    async def get_user_profile_photos(self, user_id, , offset=None, , limit=None):
+    async def get_user_profile_photos(self, user_id, offset=None, limit=None):
         """
         Internal function for making the request to the API's getUserProfilePhotos endpoint.
 
@@ -1186,7 +1186,7 @@ class AsyncBot(BotBase):
         return self._get_file__process_result(result)
     # end def get_file
     
-    async def kick_chat_member(self, chat_id, , user_id, , until_date=None):
+    async def kick_chat_member(self, chat_id, user_id, until_date=None):
         """
         Internal function for making the request to the API's kickChatMember endpoint.
 
@@ -1214,7 +1214,7 @@ class AsyncBot(BotBase):
         return self._kick_chat_member__process_result(result)
     # end def kick_chat_member
     
-    async def unban_chat_member(self, chat_id, , user_id, , only_if_banned=None):
+    async def unban_chat_member(self, chat_id, user_id, only_if_banned=None):
         """
         Internal function for making the request to the API's unbanChatMember endpoint.
 
@@ -1242,7 +1242,7 @@ class AsyncBot(BotBase):
         return self._unban_chat_member__process_result(result)
     # end def unban_chat_member
     
-    async def restrict_chat_member(self, chat_id, , user_id, , permissions, , until_date=None):
+    async def restrict_chat_member(self, chat_id, user_id, permissions, until_date=None):
         """
         Internal function for making the request to the API's restrictChatMember endpoint.
 
@@ -1273,7 +1273,7 @@ class AsyncBot(BotBase):
         return self._restrict_chat_member__process_result(result)
     # end def restrict_chat_member
     
-    async def promote_chat_member(self, chat_id, , user_id, , is_anonymous=None, , can_change_info=None, , can_post_messages=None, , can_edit_messages=None, , can_delete_messages=None, , can_invite_users=None, , can_restrict_members=None, , can_pin_messages=None, , can_promote_members=None):
+    async def promote_chat_member(self, chat_id, user_id, is_anonymous=None, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None):
         """
         Internal function for making the request to the API's promoteChatMember endpoint.
 
@@ -1325,7 +1325,7 @@ class AsyncBot(BotBase):
         return self._promote_chat_member__process_result(result)
     # end def promote_chat_member
     
-    async def set_chat_administrator_custom_title(self, chat_id, , user_id, , custom_title):
+    async def set_chat_administrator_custom_title(self, chat_id, user_id, custom_title):
         """
         Internal function for making the request to the API's setChatAdministratorCustomTitle endpoint.
 
@@ -1351,7 +1351,7 @@ class AsyncBot(BotBase):
         return self._set_chat_administrator_custom_title__process_result(result)
     # end def set_chat_administrator_custom_title
     
-    async def set_chat_permissions(self, chat_id, , permissions):
+    async def set_chat_permissions(self, chat_id, permissions):
         """
         Internal function for making the request to the API's setChatPermissions endpoint.
 
@@ -1394,7 +1394,7 @@ class AsyncBot(BotBase):
         return self._export_chat_invite_link__process_result(result)
     # end def export_chat_invite_link
     
-    async def set_chat_photo(self, chat_id, , photo):
+    async def set_chat_photo(self, chat_id, photo):
         """
         Internal function for making the request to the API's setChatPhoto endpoint.
 
@@ -1437,7 +1437,7 @@ class AsyncBot(BotBase):
         return self._delete_chat_photo__process_result(result)
     # end def delete_chat_photo
     
-    async def set_chat_title(self, chat_id, , title):
+    async def set_chat_title(self, chat_id, title):
         """
         Internal function for making the request to the API's setChatTitle endpoint.
 
@@ -1460,7 +1460,7 @@ class AsyncBot(BotBase):
         return self._set_chat_title__process_result(result)
     # end def set_chat_title
     
-    async def set_chat_description(self, chat_id, , description=None):
+    async def set_chat_description(self, chat_id, description=None):
         """
         Internal function for making the request to the API's setChatDescription endpoint.
 
@@ -1485,7 +1485,7 @@ class AsyncBot(BotBase):
         return self._set_chat_description__process_result(result)
     # end def set_chat_description
     
-    async def pin_chat_message(self, chat_id, , message_id, , disable_notification=None):
+    async def pin_chat_message(self, chat_id, message_id, disable_notification=None):
         """
         Internal function for making the request to the API's pinChatMessage endpoint.
 
@@ -1513,7 +1513,7 @@ class AsyncBot(BotBase):
         return self._pin_chat_message__process_result(result)
     # end def pin_chat_message
     
-    async def unpin_chat_message(self, chat_id, , message_id=None):
+    async def unpin_chat_message(self, chat_id, message_id=None):
         """
         Internal function for making the request to the API's unpinChatMessage endpoint.
 
@@ -1638,7 +1638,7 @@ class AsyncBot(BotBase):
         return self._get_chat_members_count__process_result(result)
     # end def get_chat_members_count
     
-    async def get_chat_member(self, chat_id, , user_id):
+    async def get_chat_member(self, chat_id, user_id):
         """
         Internal function for making the request to the API's getChatMember endpoint.
 
@@ -1661,7 +1661,7 @@ class AsyncBot(BotBase):
         return self._get_chat_member__process_result(result)
     # end def get_chat_member
     
-    async def set_chat_sticker_set(self, chat_id, , sticker_set_name):
+    async def set_chat_sticker_set(self, chat_id, sticker_set_name):
         """
         Internal function for making the request to the API's setChatStickerSet endpoint.
 
@@ -1704,7 +1704,7 @@ class AsyncBot(BotBase):
         return self._delete_chat_sticker_set__process_result(result)
     # end def delete_chat_sticker_set
     
-    async def answer_callback_query(self, callback_query_id, , text=None, , show_alert=None, , url=None, , cache_time=None):
+    async def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
         """
         Internal function for making the request to the API's answerCallbackQuery endpoint.
 
@@ -1772,7 +1772,7 @@ class AsyncBot(BotBase):
         return self._get_my_commands__process_result(result)
     # end def get_my_commands
     
-    async def edit_message_text(self, text, , chat_id=None, , message_id=None, , inline_message_id=None, , parse_mode=None, , entities=None, , disable_web_page_preview=None, , reply_markup=None):
+    async def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None, entities=None, disable_web_page_preview=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageText endpoint.
 
@@ -1815,7 +1815,7 @@ class AsyncBot(BotBase):
         return self._edit_message_text__process_result(result)
     # end def edit_message_text
     
-    async def edit_message_caption(self, chat_id=None, , message_id=None, , inline_message_id=None, , caption=None, , parse_mode=None, , caption_entities=None, , reply_markup=None):
+    async def edit_message_caption(self, chat_id=None, message_id=None, inline_message_id=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageCaption endpoint.
 
@@ -1852,7 +1852,7 @@ class AsyncBot(BotBase):
         return self._edit_message_caption__process_result(result)
     # end def edit_message_caption
     
-    async def edit_message_media(self, media, , chat_id=None, , message_id=None, , inline_message_id=None, , reply_markup=None):
+    async def edit_message_media(self, media, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageMedia endpoint.
 
@@ -1886,7 +1886,7 @@ class AsyncBot(BotBase):
         return self._edit_message_media__process_result(result)
     # end def edit_message_media
     
-    async def edit_message_reply_markup(self, chat_id=None, , message_id=None, , inline_message_id=None, , reply_markup=None):
+    async def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
         Internal function for making the request to the API's editMessageReplyMarkup endpoint.
 
@@ -1914,7 +1914,7 @@ class AsyncBot(BotBase):
         return self._edit_message_reply_markup__process_result(result)
     # end def edit_message_reply_markup
     
-    async def stop_poll(self, chat_id, , message_id, , reply_markup=None):
+    async def stop_poll(self, chat_id, message_id, reply_markup=None):
         """
         Internal function for making the request to the API's stopPoll endpoint.
 
@@ -1942,7 +1942,7 @@ class AsyncBot(BotBase):
         return self._stop_poll__process_result(result)
     # end def stop_poll
     
-    async def delete_message(self, chat_id, , message_id):
+    async def delete_message(self, chat_id, message_id):
         """
         Internal function for making the request to the API's deleteMessage endpoint.
 
@@ -1965,7 +1965,7 @@ class AsyncBot(BotBase):
         return self._delete_message__process_result(result)
     # end def delete_message
     
-    async def send_sticker(self, chat_id, , sticker, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_sticker(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendSticker endpoint.
 
@@ -2022,7 +2022,7 @@ class AsyncBot(BotBase):
         return self._get_sticker_set__process_result(result)
     # end def get_sticker_set
     
-    async def upload_sticker_file(self, user_id, , png_sticker):
+    async def upload_sticker_file(self, user_id, png_sticker):
         """
         Internal function for making the request to the API's uploadStickerFile endpoint.
 
@@ -2045,7 +2045,7 @@ class AsyncBot(BotBase):
         return self._upload_sticker_file__process_result(result)
     # end def upload_sticker_file
     
-    async def create_new_sticker_set(self, user_id, , name, , title, , emojis, , png_sticker=None, , tgs_sticker=None, , contains_masks=None, , mask_position=None):
+    async def create_new_sticker_set(self, user_id, name, title, emojis, png_sticker=None, tgs_sticker=None, contains_masks=None, mask_position=None):
         """
         Internal function for making the request to the API's createNewStickerSet endpoint.
 
@@ -2088,7 +2088,7 @@ class AsyncBot(BotBase):
         return self._create_new_sticker_set__process_result(result)
     # end def create_new_sticker_set
     
-    async def add_sticker_to_set(self, user_id, , name, , emojis, , png_sticker=None, , tgs_sticker=None, , mask_position=None):
+    async def add_sticker_to_set(self, user_id, name, emojis, png_sticker=None, tgs_sticker=None, mask_position=None):
         """
         Internal function for making the request to the API's addStickerToSet endpoint.
 
@@ -2125,7 +2125,7 @@ class AsyncBot(BotBase):
         return self._add_sticker_to_set__process_result(result)
     # end def add_sticker_to_set
     
-    async def set_sticker_position_in_set(self, sticker, , position):
+    async def set_sticker_position_in_set(self, sticker, position):
         """
         Internal function for making the request to the API's setStickerPositionInSet endpoint.
 
@@ -2168,7 +2168,7 @@ class AsyncBot(BotBase):
         return self._delete_sticker_from_set__process_result(result)
     # end def delete_sticker_from_set
     
-    async def set_sticker_set_thumb(self, name, , user_id, , thumb=None):
+    async def set_sticker_set_thumb(self, name, user_id, thumb=None):
         """
         Internal function for making the request to the API's setStickerSetThumb endpoint.
 
@@ -2196,7 +2196,7 @@ class AsyncBot(BotBase):
         return self._set_sticker_set_thumb__process_result(result)
     # end def set_sticker_set_thumb
     
-    async def answer_inline_query(self, inline_query_id, , results, , cache_time=None, , is_personal=None, , next_offset=None, , switch_pm_text=None, , switch_pm_parameter=None):
+    async def answer_inline_query(self, inline_query_id, results, cache_time=None, is_personal=None, next_offset=None, switch_pm_text=None, switch_pm_parameter=None):
         """
         Internal function for making the request to the API's answerInlineQuery endpoint.
 
@@ -2236,7 +2236,7 @@ class AsyncBot(BotBase):
         return self._answer_inline_query__process_result(result)
     # end def answer_inline_query
     
-    async def send_invoice(self, chat_id, , title, , description, , payload, , provider_token, , start_parameter, , currency, , prices, , provider_data=None, , photo_url=None, , photo_size=None, , photo_width=None, , photo_height=None, , need_name=None, , need_phone_number=None, , need_email=None, , need_shipping_address=None, , send_phone_number_to_provider=None, , send_email_to_provider=None, , is_flexible=None, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_invoice(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendInvoice endpoint.
 
@@ -2327,7 +2327,7 @@ class AsyncBot(BotBase):
         return self._send_invoice__process_result(result)
     # end def send_invoice
     
-    async def answer_shipping_query(self, shipping_query_id, , ok, , shipping_options=None, , error_message=None):
+    async def answer_shipping_query(self, shipping_query_id, ok, shipping_options=None, error_message=None):
         """
         Internal function for making the request to the API's answerShippingQuery endpoint.
 
@@ -2358,7 +2358,7 @@ class AsyncBot(BotBase):
         return self._answer_shipping_query__process_result(result)
     # end def answer_shipping_query
     
-    async def answer_pre_checkout_query(self, pre_checkout_query_id, , ok, , error_message=None):
+    async def answer_pre_checkout_query(self, pre_checkout_query_id, ok, error_message=None):
         """
         Internal function for making the request to the API's answerPreCheckoutQuery endpoint.
 
@@ -2386,7 +2386,7 @@ class AsyncBot(BotBase):
         return self._answer_pre_checkout_query__process_result(result)
     # end def answer_pre_checkout_query
     
-    async def set_passport_data_errors(self, user_id, , errors):
+    async def set_passport_data_errors(self, user_id, errors):
         """
         Internal function for making the request to the API's setPassportDataErrors endpoint.
 
@@ -2409,7 +2409,7 @@ class AsyncBot(BotBase):
         return self._set_passport_data_errors__process_result(result)
     # end def set_passport_data_errors
     
-    async def send_game(self, chat_id, , game_short_name, , disable_notification=None, , reply_to_message_id=None, , allow_sending_without_reply=None, , reply_markup=None):
+    async def send_game(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendGame endpoint.
 
@@ -2446,7 +2446,7 @@ class AsyncBot(BotBase):
         return self._send_game__process_result(result)
     # end def send_game
     
-    async def set_game_score(self, user_id, , score, , force=None, , disable_edit_message=None, , chat_id=None, , message_id=None, , inline_message_id=None):
+    async def set_game_score(self, user_id, score, force=None, disable_edit_message=None, chat_id=None, message_id=None, inline_message_id=None):
         """
         Internal function for making the request to the API's setGameScore endpoint.
 
@@ -2486,7 +2486,7 @@ class AsyncBot(BotBase):
         return self._set_game_score__process_result(result)
     # end def set_game_score
     
-    async def get_game_high_scores(self, user_id, , chat_id=None, , message_id=None, , inline_message_id=None):
+    async def get_game_high_scores(self, user_id, chat_id=None, message_id=None, inline_message_id=None):
         """
         Internal function for making the request to the API's getGameHighScores endpoint.
 

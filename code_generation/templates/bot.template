@@ -127,7 +127,7 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
 
     # start of generated functions
     {% for function in functions %}
-    {% if is_asyncio %}async {% endif %}def {{ function.name }}(self{% for variable in function.variables %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% else %}{{ variable.default }}{% endif %}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}):
+    {% if is_asyncio %}async {% endif %}def {{ function.name }}(self{% for variable in function.variables %}, {{ variable.name }}{% if variable.optional %}={% if variable.default %}{{ variable.default }}}{% else %}None{% endif %}{% endif %}{% endfor %}):
         """
         Internal function for making the request to the API's {{ function.api_name }} endpoint.
 
