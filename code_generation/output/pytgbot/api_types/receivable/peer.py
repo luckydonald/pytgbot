@@ -136,21 +136,29 @@ class User(Peer):
         :rtype: dict
         """
         array = super(User, self).to_array()
+        
         array['id'] = int(self.id)  # type int
         array['is_bot'] = bool(self.is_bot)  # type bool
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+        # end if
         if self.username is not None:
             array['username'] = u(self.username)  # py2: type unicode, py3: type str
+        # end if
         if self.language_code is not None:
             array['language_code'] = u(self.language_code)  # py2: type unicode, py3: type str
+        # end if
         if self.can_join_groups is not None:
             array['can_join_groups'] = bool(self.can_join_groups)  # type bool
+        # end if
         if self.can_read_all_group_messages is not None:
             array['can_read_all_group_messages'] = bool(self.can_read_all_group_messages)  # type bool
+        # end if
         if self.supports_inline_queries is not None:
             array['supports_inline_queries'] = bool(self.supports_inline_queries)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -406,41 +414,54 @@ class Chat(Peer):
         :rtype: dict
         """
         array = super(Chat, self).to_array()
+        
         array['id'] = int(self.id)  # type int
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
         if self.username is not None:
             array['username'] = u(self.username)  # py2: type unicode, py3: type str
+        # end if
         if self.first_name is not None:
             array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
+        # end if
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+        # end if
         if self.photo is not None:
             array['photo'] = self.photo.to_array()  # type ChatPhoto
-
+        # end if
         if self.bio is not None:
             array['bio'] = u(self.bio)  # py2: type unicode, py3: type str
+        # end if
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        # end if
         if self.invite_link is not None:
             array['invite_link'] = u(self.invite_link)  # py2: type unicode, py3: type str
+        # end if
         if self.pinned_message is not None:
             array['pinned_message'] = self.pinned_message.to_array()  # type Message
-
+        # end if
         if self.permissions is not None:
             array['permissions'] = self.permissions.to_array()  # type ChatPermissions
-
+        # end if
         if self.slow_mode_delay is not None:
             array['slow_mode_delay'] = int(self.slow_mode_delay)  # type int
+        # end if
         if self.sticker_set_name is not None:
             array['sticker_set_name'] = u(self.sticker_set_name)  # py2: type unicode, py3: type str
+        # end if
         if self.can_set_sticker_set is not None:
             array['can_set_sticker_set'] = bool(self.can_set_sticker_set)  # type bool
+        # end if
         if self.linked_chat_id is not None:
             array['linked_chat_id'] = int(self.linked_chat_id)  # type int
+        # end if
         if self.location is not None:
             array['location'] = self.location.to_array()  # type ChatLocation
+        # end if
 
         return array
     # end def to_array
@@ -730,45 +751,64 @@ class ChatMember(Result):
         :rtype: dict
         """
         array = super(ChatMember, self).to_array()
+        
         array['user'] = self.user.to_array()  # type User
-
         array['status'] = u(self.status)  # py2: type unicode, py3: type str
         if self.custom_title is not None:
             array['custom_title'] = u(self.custom_title)  # py2: type unicode, py3: type str
+        # end if
         if self.is_anonymous is not None:
             array['is_anonymous'] = bool(self.is_anonymous)  # type bool
+        # end if
         if self.can_be_edited is not None:
             array['can_be_edited'] = bool(self.can_be_edited)  # type bool
+        # end if
         if self.can_post_messages is not None:
             array['can_post_messages'] = bool(self.can_post_messages)  # type bool
+        # end if
         if self.can_edit_messages is not None:
             array['can_edit_messages'] = bool(self.can_edit_messages)  # type bool
+        # end if
         if self.can_delete_messages is not None:
             array['can_delete_messages'] = bool(self.can_delete_messages)  # type bool
+        # end if
         if self.can_restrict_members is not None:
             array['can_restrict_members'] = bool(self.can_restrict_members)  # type bool
+        # end if
         if self.can_promote_members is not None:
             array['can_promote_members'] = bool(self.can_promote_members)  # type bool
+        # end if
         if self.can_change_info is not None:
             array['can_change_info'] = bool(self.can_change_info)  # type bool
+        # end if
         if self.can_invite_users is not None:
             array['can_invite_users'] = bool(self.can_invite_users)  # type bool
+        # end if
         if self.can_pin_messages is not None:
             array['can_pin_messages'] = bool(self.can_pin_messages)  # type bool
+        # end if
         if self.is_member is not None:
             array['is_member'] = bool(self.is_member)  # type bool
+        # end if
         if self.can_send_messages is not None:
             array['can_send_messages'] = bool(self.can_send_messages)  # type bool
+        # end if
         if self.can_send_media_messages is not None:
             array['can_send_media_messages'] = bool(self.can_send_media_messages)  # type bool
+        # end if
         if self.can_send_polls is not None:
             array['can_send_polls'] = bool(self.can_send_polls)  # type bool
+        # end if
         if self.can_send_other_messages is not None:
             array['can_send_other_messages'] = bool(self.can_send_other_messages)  # type bool
+        # end if
         if self.can_add_web_page_previews is not None:
             array['can_add_web_page_previews'] = bool(self.can_add_web_page_previews)  # type bool
+        # end if
         if self.until_date is not None:
             array['until_date'] = int(self.until_date)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -953,22 +993,32 @@ class ChatPermissions(Result):
         :rtype: dict
         """
         array = super(ChatPermissions, self).to_array()
+        
         if self.can_send_messages is not None:
             array['can_send_messages'] = bool(self.can_send_messages)  # type bool
+        # end if
         if self.can_send_media_messages is not None:
             array['can_send_media_messages'] = bool(self.can_send_media_messages)  # type bool
+        # end if
         if self.can_send_polls is not None:
             array['can_send_polls'] = bool(self.can_send_polls)  # type bool
+        # end if
         if self.can_send_other_messages is not None:
             array['can_send_other_messages'] = bool(self.can_send_other_messages)  # type bool
+        # end if
         if self.can_add_web_page_previews is not None:
             array['can_add_web_page_previews'] = bool(self.can_add_web_page_previews)  # type bool
+        # end if
         if self.can_change_info is not None:
             array['can_change_info'] = bool(self.can_change_info)  # type bool
+        # end if
         if self.can_invite_users is not None:
             array['can_invite_users'] = bool(self.can_invite_users)  # type bool
+        # end if
         if self.can_pin_messages is not None:
             array['can_pin_messages'] = bool(self.can_pin_messages)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -1102,9 +1152,10 @@ class ChatLocation(Result):
         :rtype: dict
         """
         array = super(ChatLocation, self).to_array()
+        
         array['location'] = self.location.to_array()  # type Location
-
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 

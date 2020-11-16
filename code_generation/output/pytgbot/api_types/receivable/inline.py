@@ -94,13 +94,14 @@ class InlineQuery(Result):
         :rtype: dict
         """
         array = super(InlineQuery, self).to_array()
+        
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
-
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
         array['offset'] = u(self.offset)  # py2: type unicode, py3: type str
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
+        # end if
 
         return array
     # end def to_array
@@ -262,15 +263,17 @@ class ChosenInlineResult(UpdateType):
         :rtype: dict
         """
         array = super(ChosenInlineResult, self).to_array()
+        
         array['result_id'] = u(self.result_id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
-
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
-
+        # end if
         if self.inline_message_id is not None:
             array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 

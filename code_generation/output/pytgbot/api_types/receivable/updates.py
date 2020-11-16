@@ -191,39 +191,41 @@ class Update(Receivable):
         :rtype: dict
         """
         array = super(Update, self).to_array()
+        
         array['update_id'] = int(self.update_id)  # type int
         if self.message is not None:
             array['message'] = self.message.to_array()  # type Message
-
+        # end if
         if self.edited_message is not None:
             array['edited_message'] = self.edited_message.to_array()  # type Message
-
+        # end if
         if self.channel_post is not None:
             array['channel_post'] = self.channel_post.to_array()  # type Message
-
+        # end if
         if self.edited_channel_post is not None:
             array['edited_channel_post'] = self.edited_channel_post.to_array()  # type Message
-
+        # end if
         if self.inline_query is not None:
             array['inline_query'] = self.inline_query.to_array()  # type InlineQuery
-
+        # end if
         if self.chosen_inline_result is not None:
             array['chosen_inline_result'] = self.chosen_inline_result.to_array()  # type ChosenInlineResult
-
+        # end if
         if self.callback_query is not None:
             array['callback_query'] = self.callback_query.to_array()  # type CallbackQuery
-
+        # end if
         if self.shipping_query is not None:
             array['shipping_query'] = self.shipping_query.to_array()  # type ShippingQuery
-
+        # end if
         if self.pre_checkout_query is not None:
             array['pre_checkout_query'] = self.pre_checkout_query.to_array()  # type PreCheckoutQuery
-
+        # end if
         if self.poll is not None:
             array['poll'] = self.poll.to_array()  # type Poll
-
+        # end if
         if self.poll_answer is not None:
             array['poll_answer'] = self.poll_answer.to_array()  # type PollAnswer
+        # end if
 
         return array
     # end def to_array
@@ -415,19 +417,25 @@ class WebhookInfo(Receivable):
         :rtype: dict
         """
         array = super(WebhookInfo, self).to_array()
+        
         array['url'] = u(self.url)  # py2: type unicode, py3: type str
         array['has_custom_certificate'] = bool(self.has_custom_certificate)  # type bool
         array['pending_update_count'] = int(self.pending_update_count)  # type int
         if self.ip_address is not None:
             array['ip_address'] = u(self.ip_address)  # py2: type unicode, py3: type str
+        # end if
         if self.last_error_date is not None:
             array['last_error_date'] = int(self.last_error_date)  # type int
+        # end if
         if self.last_error_message is not None:
             array['last_error_message'] = u(self.last_error_message)  # py2: type unicode, py3: type str
+        # end if
         if self.max_connections is not None:
             array['max_connections'] = int(self.max_connections)  # type int
+        # end if
         if self.allowed_updates is not None:
             array['allowed_updates'] = self._as_array(self.allowed_updates)  # type list of str
+        # end if
 
         return array
     # end def to_array
@@ -975,136 +983,154 @@ class Message(UpdateType):
         :rtype: dict
         """
         array = super(Message, self).to_array()
+        
         array['message_id'] = int(self.message_id)  # type int
         array['date'] = int(self.date)  # type int
         array['chat'] = self.chat.to_array()  # type Chat
-
         if self.from_peer is not None:
             array['from'] = self.from_peer.to_array()  # type User
-
+        # end if
         if self.sender_chat is not None:
             array['sender_chat'] = self.sender_chat.to_array()  # type Chat
-
+        # end if
         if self.forward_from is not None:
             array['forward_from'] = self.forward_from.to_array()  # type User
-
+        # end if
         if self.forward_from_chat is not None:
             array['forward_from_chat'] = self.forward_from_chat.to_array()  # type Chat
-
+        # end if
         if self.forward_from_message_id is not None:
             array['forward_from_message_id'] = int(self.forward_from_message_id)  # type int
+        # end if
         if self.forward_signature is not None:
             array['forward_signature'] = u(self.forward_signature)  # py2: type unicode, py3: type str
+        # end if
         if self.forward_sender_name is not None:
             array['forward_sender_name'] = u(self.forward_sender_name)  # py2: type unicode, py3: type str
+        # end if
         if self.forward_date is not None:
             array['forward_date'] = int(self.forward_date)  # type int
+        # end if
         if self.reply_to_message is not None:
             array['reply_to_message'] = self.reply_to_message.to_array()  # type Message
-
+        # end if
         if self.via_bot is not None:
             array['via_bot'] = self.via_bot.to_array()  # type User
-
+        # end if
         if self.edit_date is not None:
             array['edit_date'] = int(self.edit_date)  # type int
+        # end if
         if self.media_group_id is not None:
             array['media_group_id'] = u(self.media_group_id)  # py2: type unicode, py3: type str
+        # end if
         if self.author_signature is not None:
             array['author_signature'] = u(self.author_signature)  # py2: type unicode, py3: type str
+        # end if
         if self.text is not None:
             array['text'] = u(self.text)  # py2: type unicode, py3: type str
+        # end if
         if self.entities is not None:
             array['entities'] = self._as_array(self.entities)  # type list of MessageEntity
-
+        # end if
         if self.animation is not None:
             array['animation'] = self.animation.to_array()  # type Animation
-
+        # end if
         if self.audio is not None:
             array['audio'] = self.audio.to_array()  # type Audio
-
+        # end if
         if self.document is not None:
             array['document'] = self.document.to_array()  # type Document
-
+        # end if
         if self.photo is not None:
             array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
-
+        # end if
         if self.sticker is not None:
             array['sticker'] = self.sticker.to_array()  # type Sticker
-
+        # end if
         if self.video is not None:
             array['video'] = self.video.to_array()  # type Video
-
+        # end if
         if self.video_note is not None:
             array['video_note'] = self.video_note.to_array()  # type VideoNote
-
+        # end if
         if self.voice is not None:
             array['voice'] = self.voice.to_array()  # type Voice
-
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.contact is not None:
             array['contact'] = self.contact.to_array()  # type Contact
-
+        # end if
         if self.dice is not None:
             array['dice'] = self.dice.to_array()  # type Dice
-
+        # end if
         if self.game is not None:
             array['game'] = self.game.to_array()  # type Game
-
+        # end if
         if self.poll is not None:
             array['poll'] = self.poll.to_array()  # type Poll
-
+        # end if
         if self.venue is not None:
             array['venue'] = self.venue.to_array()  # type Venue
-
+        # end if
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
-
+        # end if
         if self.new_chat_members is not None:
             array['new_chat_members'] = self._as_array(self.new_chat_members)  # type list of User
-
+        # end if
         if self.left_chat_member is not None:
             array['left_chat_member'] = self.left_chat_member.to_array()  # type User
-
+        # end if
         if self.new_chat_title is not None:
             array['new_chat_title'] = u(self.new_chat_title)  # py2: type unicode, py3: type str
+        # end if
         if self.new_chat_photo is not None:
             array['new_chat_photo'] = self._as_array(self.new_chat_photo)  # type list of PhotoSize
-
+        # end if
         if self.delete_chat_photo is not None:
             array['delete_chat_photo'] = bool(self.delete_chat_photo)  # type bool
+        # end if
         if self.group_chat_created is not None:
             array['group_chat_created'] = bool(self.group_chat_created)  # type bool
+        # end if
         if self.supergroup_chat_created is not None:
             array['supergroup_chat_created'] = bool(self.supergroup_chat_created)  # type bool
+        # end if
         if self.channel_chat_created is not None:
             array['channel_chat_created'] = bool(self.channel_chat_created)  # type bool
+        # end if
         if self.migrate_to_chat_id is not None:
             array['migrate_to_chat_id'] = int(self.migrate_to_chat_id)  # type int
+        # end if
         if self.migrate_from_chat_id is not None:
             array['migrate_from_chat_id'] = int(self.migrate_from_chat_id)  # type int
+        # end if
         if self.pinned_message is not None:
             array['pinned_message'] = self.pinned_message.to_array()  # type Message
-
+        # end if
         if self.invoice is not None:
             array['invoice'] = self.invoice.to_array()  # type Invoice
-
+        # end if
         if self.successful_payment is not None:
             array['successful_payment'] = self.successful_payment.to_array()  # type SuccessfulPayment
-
+        # end if
         if self.connected_website is not None:
             array['connected_website'] = u(self.connected_website)  # py2: type unicode, py3: type str
+        # end if
         if self.passport_data is not None:
             array['passport_data'] = self.passport_data.to_array()  # type PassportData
-
+        # end if
         if self.proximity_alert_triggered is not None:
             array['proximity_alert_triggered'] = self.proximity_alert_triggered.to_array()  # type ProximityAlertTriggered
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+        # end if
 
         return array
     # end def to_array
@@ -1349,19 +1375,23 @@ class CallbackQuery(UpdateType):
         :rtype: dict
         """
         array = super(CallbackQuery, self).to_array()
+        
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
-
         array['chat_instance'] = u(self.chat_instance)  # py2: type unicode, py3: type str
         if self.message is not None:
             array['message'] = self.message.to_array()  # type Message
-
+        # end if
         if self.inline_message_id is not None:
             array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
+        # end if
         if self.data is not None:
             array['data'] = u(self.data)  # py2: type unicode, py3: type str
+        # end if
         if self.game_short_name is not None:
             array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -1486,10 +1516,14 @@ class ResponseParameters(Receivable):
         :rtype: dict
         """
         array = super(ResponseParameters, self).to_array()
+        
         if self.migrate_to_chat_id is not None:
             array['migrate_to_chat_id'] = int(self.migrate_to_chat_id)  # type int
+        # end if
         if self.retry_after is not None:
             array['retry_after'] = int(self.retry_after)  # type int
+        # end if
+
         return array
     # end def to_array
 

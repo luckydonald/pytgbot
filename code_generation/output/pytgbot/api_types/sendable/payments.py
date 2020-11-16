@@ -58,8 +58,10 @@ class LabeledPrice(Sendable):
         :rtype: dict
         """
         array = super(LabeledPrice, self).to_array()
+        
         array['label'] = u(self.label)  # py2: type unicode, py3: type str
         array['amount'] = int(self.amount)  # type int
+
         return array
     # end def to_array
 
@@ -187,6 +189,7 @@ class ShippingOption(Sendable):
         :rtype: dict
         """
         array = super(ShippingOption, self).to_array()
+        
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['prices'] = self._as_array(self.prices)  # type list of LabeledPrice

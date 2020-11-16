@@ -101,14 +101,18 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         array = super(ReplyKeyboardMarkup, self).to_array()
+        
         array['keyboard'] = self._as_array(self.keyboard)  # type list of list of KeyboardButton
-
         if self.resize_keyboard is not None:
             array['resize_keyboard'] = bool(self.resize_keyboard)  # type bool
+        # end if
         if self.one_time_keyboard is not None:
             array['one_time_keyboard'] = bool(self.one_time_keyboard)  # type bool
+        # end if
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -249,13 +253,17 @@ class KeyboardButton(Button):
         :rtype: dict
         """
         array = super(KeyboardButton, self).to_array()
+        
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.request_contact is not None:
             array['request_contact'] = bool(self.request_contact)  # type bool
+        # end if
         if self.request_location is not None:
             array['request_location'] = bool(self.request_location)  # type bool
+        # end if
         if self.request_poll is not None:
             array['request_poll'] = self.request_poll.to_array()  # type KeyboardButtonPollType
+        # end if
 
         return array
     # end def to_array
@@ -362,8 +370,11 @@ class KeyboardButtonPollType(Button):
         :rtype: dict
         """
         array = super(KeyboardButtonPollType, self).to_array()
+        
         if self.type is not None:
             array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -474,9 +485,12 @@ class ReplyKeyboardRemove(ReplyMarkup):
         :rtype: dict
         """
         array = super(ReplyKeyboardRemove, self).to_array()
+        
         array['remove_keyboard'] = bool(self.remove_keyboard)  # type bool
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -590,6 +604,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         array = super(InlineKeyboardMarkup, self).to_array()
+        
         array['inline_keyboard'] = self._as_array(self.inline_keyboard)  # type list of list of InlineKeyboardButton
 
         return array
@@ -760,23 +775,30 @@ class InlineKeyboardButton(Button):
         :rtype: dict
         """
         array = super(InlineKeyboardButton, self).to_array()
+        
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
+        # end if
         if self.login_url is not None:
             array['login_url'] = self.login_url.to_array()  # type LoginUrl
-
+        # end if
         if self.callback_data is not None:
             array['callback_data'] = u(self.callback_data)  # py2: type unicode, py3: type str
+        # end if
         if self.switch_inline_query is not None:
             array['switch_inline_query'] = u(self.switch_inline_query)  # py2: type unicode, py3: type str
+        # end if
         if self.switch_inline_query_current_chat is not None:
             array['switch_inline_query_current_chat'] = u(self.switch_inline_query_current_chat)  # py2: type unicode, py3: type str
+        # end if
         if self.callback_game is not None:
             array['callback_game'] = self.callback_game.to_array()  # type CallbackGame
-
+        # end if
         if self.pay is not None:
             array['pay'] = bool(self.pay)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -925,13 +947,18 @@ class LoginUrl(Sendable):
         :rtype: dict
         """
         array = super(LoginUrl, self).to_array()
+        
         array['url'] = u(self.url)  # py2: type unicode, py3: type str
         if self.forward_text is not None:
             array['forward_text'] = u(self.forward_text)  # py2: type unicode, py3: type str
+        # end if
         if self.bot_username is not None:
             array['bot_username'] = u(self.bot_username)  # py2: type unicode, py3: type str
+        # end if
         if self.request_write_access is not None:
             array['request_write_access'] = bool(self.request_write_access)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -1059,9 +1086,12 @@ class ForceReply(ReplyMarkup):
         :rtype: dict
         """
         array = super(ForceReply, self).to_array()
+        
         array['force_reply'] = bool(self.force_reply)  # type bool
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
+        # end if
+
         return array
     # end def to_array
 

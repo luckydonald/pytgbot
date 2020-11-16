@@ -431,13 +431,12 @@ class InputMediaPlayable(InputMediaWithThumb):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaPlayable, self).__init__(type, media, thumb, caption, parse_mode, caption_entities)
+        super(InputMediaPlayable, self).__init__(type, media, thumb, duration, caption, parse_mode, caption_entities)
         
         # 'type' is set by InputMediaWithThumb base class
         # 'media' is set by InputMediaWithThumb base class
         # 'thumb' is set by InputMediaWithThumb base class
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        self.duration = duration
+        # 'duration' is set by InputMediaWithThumb base class
         # 'caption' is set by InputMediaWithThumb base class
         # 'parse_mode' is set by InputMediaWithThumb base class
         # 'caption_entities' is set by InputMediaWithThumb base class
@@ -451,23 +450,14 @@ class InputMediaPlayable(InputMediaWithThumb):
         :rtype: dict
         """
         array = super(InputMediaPlayable, self).to_array()
-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
-        array['media'] = u(self.media)  # py2: type unicode, py3: type str
-        if isinstance(self.thumb, InputFile):
-            array['thumb'] = self.thumb.to_array()  # type InputFile
-        elif isinstance(self.thumb, str):
-            array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end if
-
-        if self.duration is not None:
-            array['duration'] = int(self.duration)  # type int
-        if self.caption is not None:
-            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-        if self.parse_mode is not None:
-            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+        
+        # 'type' given by superclass
+        # 'media' given by superclass
+        # 'thumb' given by superclass
+        # 'duration' given by superclass
+        # 'caption' given by superclass
+        # 'parse_mode' given by superclass
+        # 'caption_entities' given by superclass
 
         return array
     # end def to_array
@@ -629,16 +619,14 @@ class InputMediaVideolike(InputMediaPlayable):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaVideolike, self).__init__(type, media, thumb, duration, caption, parse_mode, caption_entities)
+        super(InputMediaVideolike, self).__init__(type, media, thumb, duration, width, height, caption, parse_mode, caption_entities)
         
         # 'type' is set by InputMediaPlayable base class
         # 'media' is set by InputMediaPlayable base class
         # 'thumb' is set by InputMediaPlayable base class
         # 'duration' is set by InputMediaPlayable base class
-        assert_type_or_raise(width, None, int, parameter_name="width")
-        self.width = width
-        assert_type_or_raise(height, None, int, parameter_name="height")
-        self.height = height
+        # 'width' is set by InputMediaPlayable base class
+        # 'height' is set by InputMediaPlayable base class
         # 'caption' is set by InputMediaPlayable base class
         # 'parse_mode' is set by InputMediaPlayable base class
         # 'caption_entities' is set by InputMediaPlayable base class
@@ -652,27 +640,16 @@ class InputMediaVideolike(InputMediaPlayable):
         :rtype: dict
         """
         array = super(InputMediaVideolike, self).to_array()
-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
-        array['media'] = u(self.media)  # py2: type unicode, py3: type str
-        if isinstance(self.thumb, InputFile):
-            array['thumb'] = self.thumb.to_array()  # type InputFile
-        elif isinstance(self.thumb, str):
-            array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end if
-
-        if self.duration is not None:
-            array['duration'] = int(self.duration)  # type int
-        if self.width is not None:
-            array['width'] = int(self.width)  # type int
-        if self.height is not None:
-            array['height'] = int(self.height)  # type int
-        if self.caption is not None:
-            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-        if self.parse_mode is not None:
-            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+        
+        # 'type' given by superclass
+        # 'media' given by superclass
+        # 'thumb' given by superclass
+        # 'duration' given by superclass
+        # 'width' given by superclass
+        # 'height' given by superclass
+        # 'caption' given by superclass
+        # 'parse_mode' given by superclass
+        # 'caption_entities' given by superclass
 
         return array
     # end def to_array
@@ -826,14 +803,18 @@ class InputMediaPhoto(InputMedia):
         :rtype: dict
         """
         array = super(InputMediaPhoto, self).to_array()
+        
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+        # end if
 
         return array
     # end def to_array
@@ -1018,6 +999,7 @@ class InputMediaVideo(InputMediaVideolike):
         :rtype: dict
         """
         array = super(InputMediaVideo, self).to_array()
+        
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.thumb is not None:
@@ -1027,22 +1009,29 @@ class InputMediaVideo(InputMediaVideolike):
                 array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
-
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.width is not None:
             array['width'] = int(self.width)  # type int
+        # end if
         if self.height is not None:
             array['height'] = int(self.height)  # type int
+        # end if
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
+        # end if
         if self.supports_streaming is not None:
             array['supports_streaming'] = bool(self.supports_streaming)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -1231,6 +1220,7 @@ class InputMediaAnimation(InputMediaVideolike):
         :rtype: dict
         """
         array = super(InputMediaAnimation, self).to_array()
+        
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.thumb is not None:
@@ -1240,20 +1230,26 @@ class InputMediaAnimation(InputMediaVideolike):
                 array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
-
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.width is not None:
             array['width'] = int(self.width)  # type int
+        # end if
         if self.height is not None:
             array['height'] = int(self.height)  # type int
+        # end if
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -1441,6 +1437,7 @@ class InputMediaAudio(InputMediaPlayable):
         :rtype: dict
         """
         array = super(InputMediaAudio, self).to_array()
+        
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.thumb is not None:
@@ -1450,20 +1447,26 @@ class InputMediaAudio(InputMediaPlayable):
                 array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
-
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
+        # end if
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
+        # end if
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -1635,6 +1638,7 @@ class InputMediaDocument(InputMediaWithThumb):
         :rtype: dict
         """
         array = super(InputMediaDocument, self).to_array()
+        
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.thumb is not None:
@@ -1644,16 +1648,20 @@ class InputMediaDocument(InputMediaWithThumb):
                 array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
-
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.disable_content_type_detection is not None:
             array['disable_content_type_detection'] = bool(self.disable_content_type_detection)  # type bool
+        # end if
+
         return array
     # end def to_array
 

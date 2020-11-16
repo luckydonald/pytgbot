@@ -101,14 +101,15 @@ class StickerSet(Result):
         :rtype: dict
         """
         array = super(StickerSet, self).to_array()
+        
         array['name'] = u(self.name)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['is_animated'] = bool(self.is_animated)  # type bool
         array['contains_masks'] = bool(self.contains_masks)  # type bool
         array['stickers'] = self._as_array(self.stickers)  # type list of Sticker
-
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        # end if
 
         return array
     # end def to_array
@@ -258,10 +259,12 @@ class MaskPosition(Result):
         :rtype: dict
         """
         array = super(MaskPosition, self).to_array()
+        
         array['point'] = u(self.point)  # py2: type unicode, py3: type str
         array['x_shift'] = float(self.x_shift)  # type float
         array['y_shift'] = float(self.y_shift)  # type float
         array['scale'] = float(self.scale)  # type float
+
         return array
     # end def to_array
 

@@ -22,7 +22,7 @@ class Receivable(TgBotApiObject):
 
 class Result(Receivable):
     """
-    Base class for all classes for stuff which we get back after we called a telegram method.
+    Base class for all classes for stuff which we throw in requests towards the telegram servers.
 
     Optional keyword parameters:
     
@@ -30,8 +30,6 @@ class Result(Receivable):
     :type  _raw: None | dict
     """
 
-    def to_array(self):
-        return {}
     pass
 # end class Result
 

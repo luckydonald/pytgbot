@@ -115,16 +115,20 @@ class MessageEntity(Result):
         :rtype: dict
         """
         array = super(MessageEntity, self).to_array()
+        
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['offset'] = int(self.offset)  # type int
         array['length'] = int(self.length)  # type int
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
+        # end if
         if self.user is not None:
             array['user'] = self.user.to_array()  # type User
-
+        # end if
         if self.language is not None:
             array['language'] = u(self.language)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -280,12 +284,15 @@ class PhotoSize(Result):
         :rtype: dict
         """
         array = super(PhotoSize, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -471,6 +478,7 @@ class Animation(Media):
         :rtype: dict
         """
         array = super(Animation, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
@@ -478,13 +486,17 @@ class Animation(Media):
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
-
+        # end if
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -675,21 +687,28 @@ class Audio(Media):
         :rtype: dict
         """
         array = super(Audio, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['duration'] = int(self.duration)  # type int
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
+        # end if
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        # end if
 
         return array
     # end def to_array
@@ -857,17 +876,22 @@ class Document(Media):
         :rtype: dict
         """
         array = super(Document, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
-
+        # end if
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -1055,6 +1079,7 @@ class Video(Media):
         :rtype: dict
         """
         array = super(Video, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
@@ -1062,13 +1087,17 @@ class Video(Media):
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
-
+        # end if
         if self.file_name is not None:
             array['file_name'] = u(self.file_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -1235,15 +1264,18 @@ class VideoNote(Media):
         :rtype: dict
         """
         array = super(VideoNote, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['length'] = int(self.length)  # type int
         array['duration'] = int(self.duration)  # type int
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
-
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -1398,13 +1430,17 @@ class Voice(Media):
         :rtype: dict
         """
         array = super(Voice, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['duration'] = int(self.duration)  # type int
         if self.mime_type is not None:
             array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -1557,14 +1593,19 @@ class Contact(Media):
         :rtype: dict
         """
         array = super(Contact, self).to_array()
+        
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+        # end if
         if self.user_id is not None:
             array['user_id'] = int(self.user_id)  # type int
+        # end if
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -1693,8 +1734,10 @@ class Dice(Media):
         :rtype: dict
         """
         array = super(Dice, self).to_array()
+        
         array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
         array['value'] = int(self.value)  # type int
+
         return array
     # end def to_array
 
@@ -1820,8 +1863,10 @@ class PollOption(Receivable):
         :rtype: dict
         """
         array = super(PollOption, self).to_array()
+        
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         array['voter_count'] = int(self.voter_count)  # type int
+
         return array
     # end def to_array
 
@@ -1957,9 +2002,9 @@ class PollAnswer(Receivable):
         :rtype: dict
         """
         array = super(PollAnswer, self).to_array()
+        
         array['poll_id'] = u(self.poll_id)  # py2: type unicode, py3: type str
         array['user'] = self.user.to_array()  # type User
-
         array['option_ids'] = self._as_array(self.option_ids)  # type list of int
 
         return array
@@ -2179,10 +2224,10 @@ class Poll(Media):
         :rtype: dict
         """
         array = super(Poll, self).to_array()
+        
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['question'] = u(self.question)  # py2: type unicode, py3: type str
         array['options'] = self._as_array(self.options)  # type list of PollOption
-
         array['total_voter_count'] = int(self.total_voter_count)  # type int
         array['is_closed'] = bool(self.is_closed)  # type bool
         array['is_anonymous'] = bool(self.is_anonymous)  # type bool
@@ -2190,15 +2235,20 @@ class Poll(Media):
         array['allows_multiple_answers'] = bool(self.allows_multiple_answers)  # type bool
         if self.correct_option_id is not None:
             array['correct_option_id'] = int(self.correct_option_id)  # type int
+        # end if
         if self.explanation is not None:
             array['explanation'] = u(self.explanation)  # py2: type unicode, py3: type str
+        # end if
         if self.explanation_entities is not None:
             array['explanation_entities'] = self._as_array(self.explanation_entities)  # type list of MessageEntity
-
+        # end if
         if self.open_period is not None:
             array['open_period'] = int(self.open_period)  # type int
+        # end if
         if self.close_date is not None:
             array['close_date'] = int(self.close_date)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -2368,16 +2418,22 @@ class Location(Media):
         :rtype: dict
         """
         array = super(Location, self).to_array()
+        
         array['longitude'] = float(self.longitude)  # type float
         array['latitude'] = float(self.latitude)  # type float
         if self.horizontal_accuracy is not None:
             array['horizontal_accuracy'] = float(self.horizontal_accuracy)  # type float
+        # end if
         if self.live_period is not None:
             array['live_period'] = int(self.live_period)  # type int
+        # end if
         if self.heading is not None:
             array['heading'] = int(self.heading)  # type int
+        # end if
         if self.proximity_alert_radius is not None:
             array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -2548,18 +2604,23 @@ class Venue(Media):
         :rtype: dict
         """
         array = super(Venue, self).to_array()
+        
         array['location'] = self.location.to_array()  # type Location
-
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
+        # end if
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+        # end if
         if self.google_place_id is not None:
             array['google_place_id'] = u(self.google_place_id)  # py2: type unicode, py3: type str
+        # end if
         if self.google_place_type is not None:
             array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -2701,11 +2762,11 @@ class ProximityAlertTriggered(Media):
         :rtype: dict
         """
         array = super(ProximityAlertTriggered, self).to_array()
+        
         array['traveler'] = self.traveler.to_array()  # type User
-
         array['watcher'] = self.watcher.to_array()  # type User
-
         array['distance'] = int(self.distance)  # type int
+
         return array
     # end def to_array
 
@@ -2835,6 +2896,7 @@ class UserProfilePhotos(Result):
         :rtype: dict
         """
         array = super(UserProfilePhotos, self).to_array()
+        
         array['total_count'] = int(self.total_count)  # type int
         array['photos'] = self._as_array(self.photos)  # type list of list of PhotoSize
 
@@ -2984,12 +3046,16 @@ class File(Receivable):
         :rtype: dict
         """
         array = super(File, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
         if self.file_path is not None:
             array['file_path'] = u(self.file_path)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -3133,10 +3199,12 @@ class ChatPhoto(Result):
         :rtype: dict
         """
         array = super(ChatPhoto, self).to_array()
+        
         array['small_file_id'] = u(self.small_file_id)  # py2: type unicode, py3: type str
         array['small_file_unique_id'] = u(self.small_file_unique_id)  # py2: type unicode, py3: type str
         array['big_file_id'] = u(self.big_file_id)  # py2: type unicode, py3: type str
         array['big_file_unique_id'] = u(self.big_file_unique_id)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -3330,6 +3398,7 @@ class Sticker(Media):
         :rtype: dict
         """
         array = super(Sticker, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['width'] = int(self.width)  # type int
@@ -3337,16 +3406,20 @@ class Sticker(Media):
         array['is_animated'] = bool(self.is_animated)  # type bool
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
-
+        # end if
         if self.emoji is not None:
             array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
+        # end if
         if self.set_name is not None:
             array['set_name'] = u(self.set_name)  # py2: type unicode, py3: type str
+        # end if
         if self.mask_position is not None:
             array['mask_position'] = self.mask_position.to_array()  # type MaskPosition
-
+        # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -3515,17 +3588,19 @@ class Game(Media):
         :rtype: dict
         """
         array = super(Game, self).to_array()
+        
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
         array['photo'] = self._as_array(self.photo)  # type list of PhotoSize
-
         if self.text is not None:
             array['text'] = u(self.text)  # py2: type unicode, py3: type str
+        # end if
         if self.text_entities is not None:
             array['text_entities'] = self._as_array(self.text_entities)  # type list of MessageEntity
-
+        # end if
         if self.animation is not None:
             array['animation'] = self.animation.to_array()  # type Animation
+        # end if
 
         return array
     # end def to_array

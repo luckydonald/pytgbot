@@ -58,8 +58,10 @@ class BotCommand(Sendable):
         :rtype: dict
         """
         array = super(BotCommand, self).to_array()
+        
         array['command'] = u(self.command)  # py2: type unicode, py3: type str
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 

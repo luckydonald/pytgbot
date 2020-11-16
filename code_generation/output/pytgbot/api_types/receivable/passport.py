@@ -67,8 +67,8 @@ class PassportData(Result):
         :rtype: dict
         """
         array = super(PassportData, self).to_array()
+        
         array['data'] = self._as_array(self.data)  # type list of EncryptedPassportElement
-
         array['credentials'] = self.credentials.to_array()  # type EncryptedCredentials
 
         return array
@@ -213,10 +213,12 @@ class PassportFile(Result):
         :rtype: dict
         """
         array = super(PassportFile, self).to_array()
+        
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['file_size'] = int(self.file_size)  # type int
         array['file_date'] = int(self.file_date)  # type int
+
         return array
     # end def to_array
 
@@ -409,28 +411,33 @@ class EncryptedPassportElement(Result):
         :rtype: dict
         """
         array = super(EncryptedPassportElement, self).to_array()
+        
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['hash'] = u(self.hash)  # py2: type unicode, py3: type str
         if self.data is not None:
             array['data'] = u(self.data)  # py2: type unicode, py3: type str
+        # end if
         if self.phone_number is not None:
             array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+        # end if
         if self.email is not None:
             array['email'] = u(self.email)  # py2: type unicode, py3: type str
+        # end if
         if self.files is not None:
             array['files'] = self._as_array(self.files)  # type list of PassportFile
-
+        # end if
         if self.front_side is not None:
             array['front_side'] = self.front_side.to_array()  # type PassportFile
-
+        # end if
         if self.reverse_side is not None:
             array['reverse_side'] = self.reverse_side.to_array()  # type PassportFile
-
+        # end if
         if self.selfie is not None:
             array['selfie'] = self.selfie.to_array()  # type PassportFile
-
+        # end if
         if self.translation is not None:
             array['translation'] = self._as_array(self.translation)  # type list of PassportFile
+        # end if
 
         return array
     # end def to_array
@@ -574,9 +581,11 @@ class EncryptedCredentials(Result):
         :rtype: dict
         """
         array = super(EncryptedCredentials, self).to_array()
+        
         array['data'] = u(self.data)  # py2: type unicode, py3: type str
         array['hash'] = u(self.hash)  # py2: type unicode, py3: type str
         array['secret'] = u(self.secret)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
