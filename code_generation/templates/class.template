@@ -90,14 +90,18 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         :rtype: dict
         """
         array = super({{ clazz.clazz }}, self).to_array()
-        {# fresh line -#}
-        {% for variable in clazz.variables -%}
-        {%- if variable.optional %}if self.{{ variable.name }} is not None:
-            {{ set_array(variable)|indent(12) }}
-        {% else -%}
-        {{ set_array(variable)|indent(8) }}
-        {% endif -%}
-        {% endfor -%}
+
+        {% for variable in clazz.variables %}{#
+        #}{% if clazz.parent_clazz_has_same_variable(variable) %}
+        # {{ variable.name.__repr__() }} given by superclass{#
+        #}{% elif variable.optional %}
+        if self.{{ variable.name }} is not None:
+            {{ set_array(variable)|indent(12) }}{#
+        #}{% else %}
+        {{ set_array(variable)|indent(8) }}{#
+        #}{% endif %}{#
+        #}{% endfor %}
+
         return array
     # end def to_array{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.validate_array != []) %}
 
