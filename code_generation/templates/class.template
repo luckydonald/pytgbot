@@ -30,7 +30,9 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     {% endif -%}{%- endblock -%}
     """{% endif %}
 
-    def __init__(self, {{ for_args_none(clazz.variables) }}{% if not is_sendable %}, _raw=None{% endif %}):
+    {% if clazz.body and clazz.body.init != None %}{% for line in clazz.body.init %}
+    {{ line }}{% endfor %}{% else %}{#
+    #}def __init__(self{%- for variable in clazz.variables %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% else %}{{ variable.default if variable.default is string else fix_type_docs(variable.default) }}{% endif %}{% endif %}{%- endfor %}{% if not is_sendable %}, _raw=None{% endif %}):
         {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
         {{ self.class_docstring()|indent -}}
         """{% endif %}
@@ -66,9 +68,11 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
 
         self._raw = _raw{% endif %}{# not is_sendable #}
     {# force line tabs -#}
-    # end def __init__
+    # end def __init__{% endif %}
 
-    def to_array(self):
+    {% if clazz.body and clazz.body.array != None %}{% for line in clazz.body.array %}
+    {{ line }}{% endfor %}{% else %}{#
+    #}def to_array(self):
         """
         Serializes this {{ clazz.clazz }} to a dictionary.
 
@@ -85,9 +89,11 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% endif -%}
         {% endfor -%}
         return array
-    # end def to_array
+    # end def to_array{% endif %}
 
-    @staticmethod
+    {% if clazz.body and clazz.body.validate_array != None %}{% for line in clazz.body.validate_array %}
+    {{ line }}{% endfor %}{% else %}{#
+    #}@staticmethod
     def validate_array(array):
         """
         Builds a new array with valid values for the {{ clazz.clazz }} constructor.
@@ -120,9 +126,11 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {%- endfor -%}
         return data
         {#- remove empty line  #}
-    # end def validate_array
+    # end def validate_array{% endif %}
 
-    @staticmethod
+    {% if clazz.body and clazz.body.from_array != None %}{% for line in clazz.body.from_array %}
+    {{ line }}{% endfor %}{% else %}{#
+    #}@staticmethod
     def from_array(array):
         """
         Deserialize a new {{ clazz.clazz }} from a given dictionary.
@@ -141,16 +149,20 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         instance = {{ clazz.clazz }}(**data)
         instance._raw = array
         return instance{% endif %}
-    # end def from_array
+    # end def from_array{% endif %}
 
-    def __str__(self):
+    {% if clazz.body and clazz.body.str != None %}{% for line in clazz.body.str %}
+    {{ line }}{% endfor %}{% else %}{#
+    #}def __str__(self):
         """
         Implements `str({{ clazz.clazz|lower }}_instance)`
         """
         return "{{ clazz.clazz }}({{ for_args_format_repr(clazz.variables) }})".format(self=self)
-    # end def __str__
+    # end def __str__{% endif %}
 
-    def __repr__(self):
+    {% if clazz.body and clazz.body.repr != None %}{% for line in clazz.body.repr %}
+    {{ line }}{% endfor %}{% else %}{#
+    #}def __repr__(self):
         """
         Implements `repr({{ clazz.clazz|lower }}_instance)`
         """
@@ -158,9 +170,11 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
             return "{{ clazz.clazz }}.from_array({self._raw})".format(self=self)
         # end if
         return "{{ clazz.clazz }}({{ for_args_format_repr(clazz.variables) }})".format(self=self)
-    # end def __repr__
+    # end def __repr__{% endif %}
 
-    def __contains__(self, key):
+    {% if clazz.body and clazz.body.contains != None %}{% for line in clazz.body.contains %}
+    {{ line }}{% endfor %}{% else %}{#
+    #}def __contains__(self, key):
         """
         Implements `"key" in {{ clazz.clazz|lower }}_instance`
         """
@@ -169,5 +183,5 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
-    # end def __contains__
+    # end def __contains__{% endif %}
 # end class {{ clazz.clazz }}
