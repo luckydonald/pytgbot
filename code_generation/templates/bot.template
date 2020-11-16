@@ -4,7 +4,6 @@ import re
 
 from datetime import timedelta, datetime
 from DictObject import DictObject
-
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
 from luckydonaldUtils.exceptions import assert_type_or_raise
@@ -19,8 +18,11 @@ from .base import BotBase
 {% if is_asyncio %}
 # async imports
 from async_property import async_property
+from typing import Union, Optional, List, Any
 import httpx{#
 #}{% else %}
+from ..api_types.sendable.files import InputFile
+
 # sync imports
 import requests{#
 #}{% endif %}{% from "macros.template" import for_type_list_of_full %}
@@ -140,9 +142,6 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
 
         :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
         """
-        from ..api_types.sendable.files import InputFile
-        from luckydonaldUtils.encoding import unicode_type
-        from luckydonaldUtils.encoding import to_native as n
 
         if isinstance(value, str):
             kwargs[file_param_name] = str(value)
