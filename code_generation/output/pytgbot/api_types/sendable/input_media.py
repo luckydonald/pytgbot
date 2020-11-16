@@ -24,7 +24,7 @@ class InputMedia(Sendable):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -52,7 +52,7 @@ class InputMedia(Sendable):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -224,7 +224,7 @@ class InputMediaWithThumb(InputMedia):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -286,7 +286,7 @@ class InputMediaWithThumb(InputMedia):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -306,60 +306,37 @@ class InputMediaWithThumb(InputMedia):
         # 'caption_entities' is set by InputMedia base class
     # end def __init__
 
-    def to_array(self, prefer_original=False):
+    def to_array(self):
         """
-        Serializes this InputMediaWithThumb to a dictionary.
-
-        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
-        :type  prefer_original: bool
-
+        Serializes this InputMediaPhoto to a dictionary.
+    
         :return: dictionary representation of this object.
         :rtype: dict
         """
-        if prefer_original and self._raw:
-            return self._raw
-        # end if
-
         array = super(InputMediaWithThumb, self).to_array()
-        
-        # 'type' given by superclass
-        # 'media' given by superclass
-        if isinstance(self.thumb, InputFile):
-            array['thumb'] = self.thumb.to_array()  # type InputFile
-        elif isinstance(self.thumb, str):
-            array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end if
-        # 'caption' given by superclass
-        # 'parse_mode' given by superclass
-        # 'caption_entities' given by superclass
-
+        # 'type' is handled by superclass
+        array['media'] = u(self.media)  # py2: type unicode, py3: type str
+        if self.caption is not None:
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        if self.parse_mode is not None:
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
     @staticmethod
     def validate_array(array):
         """
-        Builds a new array with valid values for the InputMediaWithThumb constructor.
-
+        Builds a new array with valid values for the InputMediaPhoto constructor.
+    
         :return: new array with valid values
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
         data = InputMedia.validate_array(array)
-        # 'type' is given by class type
-        # 'media' is given by class type
-        if isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = None  # will be filled later by get_request_data()
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end if
-        # 'caption' is given by class type
-        # 'parse_mode' is given by class type
-        # 'caption_entities' is given by class type
+        # 'type' is handled by the superclass.
+        data['media'] = u(array.get('media'))
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         return data
     # end def validate_array
 
@@ -367,14 +344,14 @@ class InputMediaWithThumb(InputMedia):
     def from_array(array):
         """
         Deserialize a new InputMediaWithThumb from a given dictionary.
-
+    
         :return: new InputMediaWithThumb instance.
         :rtype: InputMediaWithThumb
         """
         if not array:  # None or {}
             return None
         # end if
-
+    
         data = InputMediaWithThumb.validate_array(array)
         instance = InputMediaWithThumb(**data)
         instance._raw = array
@@ -435,7 +412,7 @@ class InputMediaPlayable(InputMediaWithThumb):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -471,7 +448,7 @@ class InputMediaPlayable(InputMediaWithThumb):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -622,7 +599,7 @@ class InputMediaVideolike(InputMediaPlayable):
 
     Optional keyword parameters:
     
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
     
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -664,7 +641,7 @@ class InputMediaVideolike(InputMediaPlayable):
 
         Optional keyword parameters:
         
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
         
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
