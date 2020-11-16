@@ -24,10 +24,11 @@ __all__ = ["BotBase"]
 logger = logging.getLogger(__name__)
 
 
-class BotBase(object):
-    _base_url = "https://api.telegram.org/bot{api_key}/{command}"  # you shouldn't change that.
+DEFAULT_BASE_URL = "https://api.telegram.org/bot{api_key}/{command}"
 
-    def __init__(self, api_key, return_python_objects=True):
+
+class BotBase(object):
+    def __init__(self, api_key, return_python_objects=True, base_url=DEFAULT_BASE_URL):
         """
         A Bot instance. From here you can call all the functions.
         The api key can be optained from @BotFather, see https://core.telegram.org/bots#6-botfather
@@ -45,6 +46,7 @@ class BotBase(object):
         self.api_key = api_key
         self.return_python_objects = return_python_objects
         self._last_update = datetime.now()
+        self._base_url = base_url
         self._me = None        # will be filled when using the property .id or .username, or when calling ._load_info()
     # end def __init__
 

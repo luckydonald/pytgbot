@@ -640,6 +640,7 @@ def safe_to_file(folder, results):
     # end for
 
     bot_template = get_template("bot.template")
+    bot_base_template = get_template("bot_base.template")
     clazzfile_template = get_template("classfile.template")
     teleflask_messages_template = get_template("teleflask_messages_file.template")
     typehints_template = get_template("typehintsfile.template")
@@ -691,6 +692,8 @@ def safe_to_file(folder, results):
         render_file_to_disk(functions[0].filepath.replace('asyncrounous', 'syncrounous'), txt_sync)
         txt_async = bot_template.render(functions=functions, is_asyncio=True)
         render_file_to_disk(functions[0].filepath, txt_async)
+        txt_base = bot_base_template.render(functions=functions)
+        render_file_to_disk(functions[0].filepath.replace('asyncrounous', 'base'), txt_base)
 
         imports = set()
         imports.add(('enum', 'Enum'))
