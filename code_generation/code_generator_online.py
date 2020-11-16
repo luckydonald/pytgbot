@@ -479,6 +479,7 @@ def preprocess_results(results: List[Union[Clazz, Function]], additional_items: 
                     variable,
                     ignore_pytg_name=True,
                     ignore_description=True,
+                    ignore_optional=True,
                     ignore_type_always_is_value=True,
                 )
             # end for

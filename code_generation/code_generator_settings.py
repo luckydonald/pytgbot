@@ -223,8 +223,9 @@ Function "sendMessage" => "Message" will be replaced with "TextMessage".
 from code_generator_classes import Clazz, Variable, Type, Import, CustomClazz, ReplacementBody
 from typing import Dict
 
-
+# noinspection PyCompatibility,PyDictCreation
 CUSTOM_CLASSES: Dict[str, CustomClazz] = {}
+
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.media.Media"] = CustomClazz(
     clazz='Media',

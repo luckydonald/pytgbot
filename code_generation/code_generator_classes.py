@@ -96,6 +96,7 @@ class Clazz(ClassOrFunction):
         variable: 'Variable',
         ignore_pytg_name: bool = False,
         ignore_description: bool = False,
+        ignore_optional: bool = False,
         ignore_type_always_is_value: bool = False,
     ) -> bool:
         assert_type_or_raise(variable, Variable, parameter_name='variable')
@@ -104,6 +105,7 @@ class Clazz(ClassOrFunction):
                 own_variable,
                 ignore_pytg_name=ignore_pytg_name,
                 ignore_description=ignore_description,
+                ignore_optional=ignore_optional,
                 ignore_type_always_is_value=ignore_type_always_is_value,
             ):
                 return True
@@ -523,6 +525,7 @@ class Variable(dict):
         other: 'Variable',
         ignore_pytg_name: bool = False,
         ignore_description: bool = False,
+        ignore_optional: bool = False,
         ignore_type_always_is_value: bool = False
     ):
         assert_type_or_raise(other, Variable, parameter_name='other')
@@ -543,7 +546,7 @@ class Variable(dict):
                 )
             ) and
             (ignore_pytg_name or self.pytg_name == other.pytg_name) and
-            self.optional == other.optional and
+            (ignore_optional or self.optional == other.optional) and
             self.default == other.default and
             (ignore_description or self.description == other.description) and
             True
