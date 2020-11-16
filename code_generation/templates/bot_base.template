@@ -248,7 +248,7 @@ class BotBase(object):
 
     # start of generated functions
     {% for function in functions %}
-    def _{{ function.name }}__make_request(self{% for variable in variables %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% elif variable.default %}{{ variable.default }}{% else %}{% if type.string == 'str' %}str|unicode{% else %}{{ type.as_import.full }}{% endif %}{% endif %}{% endif %}{% if not loop.last %}, {% endif -%}{%- endfor %}):
+    def _{{ function.name }}__make_request(self{% for variable in function.variables %}, {{ variable.name }}{% if variable.optional %}={{ variable.default if variable.default else 'None' }}{% endif %}{% endfor %}):
         """
         Internal function for making the request to the API's {{ function.api_name }} endpoint.
 
