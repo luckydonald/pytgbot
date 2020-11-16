@@ -115,31 +115,27 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         :return: new array with valid values
         :rtype: dict
         """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        {#- strip linebreak after -#}
-        {{- self.imports_block() -}}
-        {#- does strip before #}
-        {#- this will be a new line #}
-        data = {{ clazz.parent_clazz.string }}.validate_array(array)
-        {% for variable in clazz.variables -%}
-        {%- if variable.types|length == 1 -%}
-        {{- set_data_array_element(variable, variable.types[0], clazz.clazz, variable.optional) -}}
-        {%- else -%}
-        {%- if variable.optional -%}
+        assert_type_or_raise(array, dict, parameter_name="array"){#
+        #}{{ self.imports_block() }}
+        data = {{ clazz.parent_clazz.string }}.validate_array(array){#
+        #}{% for variable in clazz.variables %}{#
+        #}{% if variable.types|length == 1 %}
+        {{ set_data_array_element(variable, variable.types[0], clazz.clazz, variable.optional) }}{#
+        #}{% else %}{#
+        #}{% if variable.optional %}
         if array.get('{{ variable.api_name }}') is None:
-            data['{{ variable.name }}'] = None
-        {% endif -%}
-        {%- for var_type in variable.types -%}
-        {%- if not loop.first or variable.optional %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
-            {{ set_data_array_element(variable, var_type, clazz.clazz, False) -}}
-        {%- endfor -%}
+            data['{{ variable.name }}'] = None{#
+        #}{% endif %}{#
+        #}{% for var_type in variable.types %}
+        {% if not loop.first or variable.optional %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
+            {{ set_data_array_element(variable, var_type, clazz.clazz, False) }}{#
+        #}{% endfor %}
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
-        # end if
-        {%- endif -%}
-        {%- endfor -%}
+        # end if{#
+        #}{% endif %}{#
+        #}{% endfor %}
         return data
-        {#- remove empty line  #}
     # end def validate_array{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.from_array != []) %}
 
     {% endif %}{% if clazz.body and clazz.body.from_array != None %}{% for line in clazz.body.from_array %}{% set needs_space = True %}{% if not loop.first %}
