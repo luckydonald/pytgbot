@@ -49,7 +49,7 @@ def func(command, description, link, params_string, returns="On success, the sen
             param_needed = False
         param_description = table[3].strip()
         if param_needed:
-            param_list_args.append(Param(param_name, param_type,param_needed, param_description))
+            param_list_args.append(Param(param_name, param_type, param_needed, param_description))
             args.append(param_name)
             args2.append("{param_name}={param_name}".format(param_name=param_name))
             str_args += '\t\t:param {key}: {descr}\n\t\t:type  {key}: {type}\n\n'.format(key=param_name, descr=param_description, type=param_type)
@@ -57,7 +57,7 @@ def func(command, description, link, params_string, returns="On success, the sen
                 asserts.append("assert({var} is not None)".format(var=param_name))
                 asserts.append("assert({ass})".format(ass=" or ".join(assert_commands)) + (("  # {comment}".format(comment=", ".join(assert_comments))) if assert_comments else ""))
         else:
-            param_list_kwargs.append(Param(param_name, param_type,param_needed, param_description))
+            param_list_kwargs.append(Param(param_name, param_type, param_needed, param_description))
             kwargs.append("{param_name}=None".format(param_name=param_name))
             kwargs2.append("{param_name}={param_name}".format(param_name=param_name))
             str_kwargs += '\t\t:keyword {key}: {descr}\n\t\t:type    {key}: {type}\n\n'.format(key=param_name, descr=param_description, type=param_type)

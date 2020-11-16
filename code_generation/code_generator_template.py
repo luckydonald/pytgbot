@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import re
 
 from typing import List, Set
 
@@ -168,9 +169,10 @@ def parse_param_types(param) -> Variable:
     # ## "message_id\tString or Boolean\tUnique message identifier"
     table = param.split("\t")
     variable = Variable()
+    is_clazz = len(table) == 3
 
     variable.api_name = table[0].strip()
-    if len(table) == 3:  # class
+    if is_clazz:  # class
         variable.description = table[2].replace('“', '"').replace('”', '"')
         variable.optional = variable.description.startswith("Optional.")
     else:  # function
@@ -197,7 +199,25 @@ def parse_param_types(param) -> Variable:
 
     param_types = table[1]
     # ## " String or Boolean "
+
     variable.types = as_types(param_types, variable.api_name)
+    if is_clazz:
+        # check for "must be photo" kinda stuff.
+        m = re.search(r'[Mm]ust be ([a-z_]+)([\.\,\!\?]|$)', variable.description)
+        if m:
+            for t in variable.types:
+                if not t.is_builtin:
+                    continue
+                # end if
+                value = m.group(1)
+                if t.string == 'bool':
+                    t.always_is_value = {'True': True, 'False': False, 'None': None}[value]
+                elif t.string == 'str':
+                    t.always_is_value = value
+                # end if
+            # end if
+        # end if
+    # end if
     return variable
 # end def
 
