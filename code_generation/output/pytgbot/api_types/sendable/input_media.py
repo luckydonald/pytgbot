@@ -1077,7 +1077,7 @@ class InputMediaVideo(InputMediaVideolike):
         if array.get('thumb') is None:
             data['thumb'] = None
         elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = InputFile.from_array(array.get('thumb'))
+            data['thumb'] = None  # will be filled later by get_request_data()
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
         else:
@@ -1303,7 +1303,7 @@ class InputMediaAnimation(InputMediaVideolike):
         if array.get('thumb') is None:
             data['thumb'] = None
         elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = InputFile.from_array(array.get('thumb'))
+            data['thumb'] = None  # will be filled later by get_request_data()
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
         else:
@@ -1528,7 +1528,7 @@ class InputMediaAudio(InputMediaPlayable):
         if array.get('thumb') is None:
             data['thumb'] = None
         elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = InputFile.from_array(array.get('thumb'))
+            data['thumb'] = None  # will be filled later by get_request_data()
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
         else:
@@ -1731,7 +1731,7 @@ class InputMediaDocument(InputMediaWithThumb):
         if array.get('thumb') is None:
             data['thumb'] = None
         elif isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = InputFile.from_array(array.get('thumb'))
+            data['thumb'] = None  # will be filled later by get_request_data()
         elif isinstance(array.get('thumb'), str):
             data['thumb'] = u(array.get('thumb'))
         else:

@@ -137,8 +137,12 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
             data['{{ variable.name }}'] = None{#
         #}{% endif %}{#
         #}{% for var_type in variable.types %}
-        {% if not loop.first or variable.optional %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
+        {% if not loop.first or variable.optional %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):{#
+            #}{% if var_type.string == 'InputFile' %}
+            data['thumb'] = None  # will be filled later by get_request_data(){#
+            #}{% else %}
             {{ set_data_array_element(variable, var_type, clazz.clazz, False) | trim() }}{#
+            #}{% endif %}{#
         #}{% endfor %}
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
