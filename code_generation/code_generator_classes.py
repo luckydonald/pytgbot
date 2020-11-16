@@ -542,6 +542,13 @@ class Import(dict):
         return relimport(self.full, base_path)
     # end def
 
+    def relative_import(self, base_path: Union[str, 'Import']):
+        from code_generator_template import split_path
+        import_path, import_name = split_path(self.relative_import_full(base_path=base_path))
+        return Import(import_path, import_name)
+    # end def
+
+
     @property
     def full(self):
         """ self.path + "." + self.name """
