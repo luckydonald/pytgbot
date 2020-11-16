@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from typing import Union
+from typing import Union, overload
 
-
-# from code_generator_template import Import
+from code_generator_classes import Import
 from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
 
 
@@ -95,15 +94,16 @@ safe_var_translations = {
 }
 
 
-def get_type_path(param_class, as_object=False) -> Union[str, 'Import']:
+@overload
+def get_type_path(param_class, as_object=False) -> Import: pass
+
+@overload
+def get_type_path(param_class, as_object=True) -> str: pass
+
+def get_type_path(param_class, as_object=False) -> Union[str, Import]:
     if not as_object:
         return get_type_path(param_class=param_class, as_object=True).full
     # end if
-    try:
-        from code_generator_classes import Import
-    except ImportError:
-        from .code_generator_classes import Import
-    # end try
 
     param_class = param_class.strip()
     if param_class in CLASS_TYPE_PATHS:

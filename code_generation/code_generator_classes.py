@@ -6,9 +6,6 @@ from luckydonaldUtils.functions import cached
 from luckydonaldUtils.imports.relative import relimport
 
 
-from code_generator_settings import MESSAGE_CLASS_OVERRIDES
-
-
 class KwargableObject(Mapping):
     """ allow `**self`, and include all @property s """
     def __getitem__(self, key):
@@ -163,6 +160,7 @@ class Function(ClassOrFunction):
 
         # e.g. "MessageMessage" will be replaced as "TextMessage"
         # b/c "sendMessage" -> "SendMessage" -> "Message" -> "MessageMessage"  ==> "TextMessage"
+        from code_generator_settings import MESSAGE_CLASS_OVERRIDES
         if name in MESSAGE_CLASS_OVERRIDES:
             return MESSAGE_CLASS_OVERRIDES[name]
         # end if
