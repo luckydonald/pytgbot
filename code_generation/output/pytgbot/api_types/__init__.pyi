@@ -2,8 +2,6 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
-from None import object
-
 __author__ = 'luckydonald'
 
 
