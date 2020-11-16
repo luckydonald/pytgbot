@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 5.0
+Core:
+- The already for a while now deprecated `pytgbot.api_types.sendable.InputFile`, `pytgbot.api_types.sendable.InputFileFromURL` and `pytgbot.api_types.sendable.InputFileFromDisk` can no longer be found in `pytgbot.api_types.sendable.\*`
+  They are now only available at `pytgbot.api_types.sendable.files.\*`, resulting in 
+  - `pytgbot.api_types.sendable.files.InputFile`,
+  - `pytgbot.api_types.sendable.files.InputFileFromURL` and
+  - `pytgbot.api_types.sendable.files.InputFileFromDisk`.
+
 ## Version 4.9.1
 - Fixed `pytgbot.bot` not being part of the pip release.
 
