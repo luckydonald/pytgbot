@@ -68,13 +68,26 @@ class AsyncBot(BotBase):
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
         import httpx
-        
 
         url, params = self._prepare_request(command, query)
-        r = requests.post(url, params=params, files=files, stream=use_long_polling,
-                          verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
-                          timeout=request_timeout)
-        return self._postprocess_request(r)
+        logger.debug('Sending async request to url {url!r} with params: {params!r}'.format(url=url, params=params))
+        async with httpx.AsyncClient(
+            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+        ) as client:
+            if use_long_polling:
+                method = client.stream
+            else:
+                method = client.request
+            # end if
+            r = await method(
+                'POST',
+                url=url, params=params, files=files,
+                timeout=request_timeout
+            )
+        # end with
+
+        json = r.json()
+        return self._postprocess_request(r.request, response=r, json=json)
     # end def do
 
     async def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):

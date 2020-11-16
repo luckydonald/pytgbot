@@ -71,15 +71,38 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
-        {% if is_asyncio %}import httpx
-        {% else %}import requests
-        {% endif %}
+        import {% if is_asyncio %}httpx{% else %}requests{% endif %}
 
-        url, params = self._prepare_request(command, query)
-        r = requests.post(url, params=params, files=files, stream=use_long_polling,
-                          verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
-                          timeout=request_timeout)
-        return self._postprocess_request(r)
+        url, params = self._prepare_request(command, query){#
+        #}{% if is_asyncio %}
+        logger.debug('Sending async request to url {url!r} with params: {params!r}'.format(url=url, params=params))
+        async with httpx.AsyncClient(
+            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+        ) as client:
+            if use_long_polling:
+                method = client.stream
+            else:
+                method = client.request
+            # end if
+            r = await method(
+                'POST',
+                url=url, params=params, files=files,
+                timeout=request_timeout
+            )
+        # end with{#
+        #}{% else %}
+        r = requests.post(
+            url,
+            params=params,
+            files=files,
+            stream=use_long_polling,
+            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+            timeout=request_timeout
+        ){#
+        #}{% endif %}
+
+        json = r.json()
+        return self._postprocess_request(r.request, response=r, json=json)
     # end def do
 
     {% if is_asyncio %}async {% endif %}def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):

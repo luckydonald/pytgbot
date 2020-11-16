@@ -67,13 +67,19 @@ class SyncBot(BotBase):
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
         import requests
-        
 
         url, params = self._prepare_request(command, query)
-        r = requests.post(url, params=params, files=files, stream=use_long_polling,
-                          verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
-                          timeout=request_timeout)
-        return self._postprocess_request(r)
+        r = requests.post(
+            url,
+            params=params,
+            files=files,
+            stream=use_long_polling,
+            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+            timeout=request_timeout
+        )
+
+        json = r.json()
+        return self._postprocess_request(r.request, response=r, json=json)
     # end def do
 
     def _do_fileupload(self, file_param_name, value, _command=None, **kwargs):
