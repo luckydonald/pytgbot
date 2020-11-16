@@ -11,6 +11,15 @@ logger = logging.getLogger(__name__)
 
 
 class TgBotApiObject(object):
+    """
+    Base class for every api object class.
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
     def __init__(self):
         self._raw = None
         super(TgBotApiObject, self).__init__()

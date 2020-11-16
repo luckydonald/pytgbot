@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-from luckydonaldUtils.functions import deprecated
-from luckydonaldUtils.logger import logging
-
-from pytgbot.api_types import TgBotApiObject
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
+from .. import TgBotApiObject
 
 __author__ = 'luckydonald'
 __all__ = ["files", "inline", "payments", "reply_markup", "Sendable"]
 
 # UPCOMING CHANGE IN v2.2.0:
 from . import files  # backwards compatibility, before v2.2.0
-
-logger = logging.getLogger(__name__)
 
 
 class Sendable(TgBotApiObject):

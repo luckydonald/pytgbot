@@ -1342,6 +1342,8 @@ class VideoNote(Media):
         # end if
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
+        # end if
+
         return array
     # end def to_array
 
