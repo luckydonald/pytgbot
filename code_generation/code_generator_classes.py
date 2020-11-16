@@ -68,7 +68,7 @@ class Clazz(ClassOrFunction):
         self.import_path = import_path if import_path is not None else self.calculate_import_path()
         self.imports = imports if imports else []  # Imports needed by parameters and keywords.
         self.parent_clazz = parent_clazz if parent_clazz is not None else Type("object", is_builtin=True)
-        self.parent_clazz_clazz = None
+        self._parent_clazz_clazz = None
         assert_type_or_raise(self.parent_clazz, Type, parameter_name="self.parent_clazz")
         self.link = link
         self.description = description
@@ -76,7 +76,7 @@ class Clazz(ClassOrFunction):
         self.keywords = keywords if keywords else []
     # end def __init__
 
-    parent_clazz_clazz: Union[None, 'Clazz']
+    _parent_clazz_clazz: Union[None, 'Clazz']
 
     def calculate_import_path(self) -> 'Import':
         from code_generator import get_type_path
@@ -94,10 +94,10 @@ class Clazz(ClassOrFunction):
     # end def variables
 
     def parent_clazz_has_same_variable(self, variable: 'Variable'):
-        if not self.parent_clazz_clazz:
+        if not self._parent_clazz_clazz:
             return False
         # end if
-        for parent_variable in self.parent_clazz_clazz.variables:
+        for parent_variable in self._parent_clazz_clazz.variables:
             if variable.compare(parent_variable, ignore_description=True):
                 return True
             # end if

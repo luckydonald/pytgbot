@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from typing import Dict, List
+
 from code_generator import get_type_path
 from code_generator_template import clazz, func, get_template, as_types
 from code_generator_classes import Clazz, Function, Variable, Type, Import, CustomClazz
@@ -499,6 +501,7 @@ def get_folder_path():
 # end def
 
 
+# noinspection PyCompatibility
 def safe_to_file(folder, results):
     """
     Receives a list of results (type :class:`Clazz` or :class:`Function`), and put them into the right files in :var:`folder`
@@ -512,7 +515,8 @@ def safe_to_file(folder, results):
     """
     functions = []
     message_send_functions = []
-    clazzes = {}  # "filepath": [Class, Class, ...]
+    clazzes: Dict[str, List[Clazz]] = {}  # "filepath": [Class, Class, ...]
+    clazzes_by_name: Dict[str, Clazz] = {}  # "Class": Class
     all_the_clazzes = []
     custom_classes = {}  # "filepath": [Class, Class, ...]
     for import_path, result in CUSTOM_CLASSES.items():
@@ -527,6 +531,7 @@ def safe_to_file(folder, results):
             clazzes[file_path] = []
         # end if
         clazzes[file_path].append(result)
+        clazzes_by_name[result.clazz] = result
         all_the_clazzes.append(result)
     # end def
 
@@ -540,6 +545,7 @@ def safe_to_file(folder, results):
             if file_path not in clazzes:
                 clazzes[file_path] = []
             clazzes[file_path].append(result)
+            clazzes_by_name[result.clazz] = result
             all_the_clazzes.append(result)
         else:
             assert isinstance(result, Function)
@@ -555,6 +561,19 @@ def safe_to_file(folder, results):
                 result2.filepath = file_path
                 message_send_functions.append(result2)
             # end if
+        # end if
+    # end for
+
+    for result in all_the_clazzes:
+        # fill in clazz._parent_clazz_clazz, so we can check our parents
+        if result.parent_clazz is None or result.parent_clazz == 'object':
+            continue
+        # end if
+        if result.parent_clazz.string in clazzes_by_name:
+            # noinspection PyUnresolvedReferences
+            result._parent_clazz_clazz = clazzes_by_name[result.parent_clazz.string]
+        else:
+            logger.warning(f'Could not resolve parent class: {result.parent_clazz}')
         # end if
     # end for
 
