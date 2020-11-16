@@ -529,7 +529,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             ],
             optional=False,
             default=None,
-            description='Type of the result, must be photo'
+            description='Type of the result, a fixed value per subclass'
         ),
         Variable(
             api_name='media',
@@ -742,6 +742,11 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
         ],
     ),
 )
+CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].body=ReplacementBody(
+    before=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].body.before,
+    init=None, to_array=None, validate_array=None, from_array=None, str=None, repr=None, contains=None,
+    after=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].body.after,
+)
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"] = CustomClazz(
     clazz="InputMediaWithThumb",
@@ -764,7 +769,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
     description=(
         'This object represents the content of a media message to be sent.'
     ),
-    parameters=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].parameters + [
+    parameters=[arg.clone() for arg in CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].parameters] + [
         Variable(
             api_name='thumb',
             name='thumb',
@@ -776,7 +781,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
             description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file.'
         ),
     ],
-    keywords=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].keywords,
+    keywords=[kwarg.clone() for kwarg in CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].keywords],
     body=ReplacementBody(
         before=[
             'def get_request_data(self, var_name, full_data=False):',
@@ -932,9 +937,11 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
         after=[],
     ),
 )
-# CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].body=ReplacementBody(
-#     before=[], init=None, to_array=None, validate_array=None, from_array=None, str=None, repr=None, contains=None,
-# )
+CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].body=ReplacementBody(
+    before=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].body.before,
+    init=None, to_array=None, validate_array=None, from_array=None, str=None, repr=None, contains=None,
+    after=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].body.after,
+)
 
 
 CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"] = CustomClazz(
@@ -958,7 +965,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlay
     description=(
         'This object represents the content of a media message to be sent.'
     ),
-    parameters=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].parameters + [
+    parameters=[arg.clone() for arg in CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].parameters] + [
         Variable(
             api_name='duration',
             name='duration',
@@ -971,7 +978,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlay
             description='Optional. Duration of the media',
         ),
     ],
-    keywords=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].keywords,
+    keywords=[kwarg.clone() for kwarg in CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].keywords],
     body=None,
 )
 
@@ -996,7 +1003,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaVide
     description=(
         'This object represents the content of a media message to be sent.'
     ),
-    parameters=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"].parameters + [
+    parameters=[arg.clone() for arg in CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"].parameters] + [
         Variable(
             api_name='width',
             name='width',
@@ -1020,7 +1027,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaVide
             description='Optional. Media height',
         ),
     ],
-    keywords=CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"].keywords,
+    keywords=[kwarg.clone() for kwarg in CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlayable"].keywords],
     body=None,
 )
 

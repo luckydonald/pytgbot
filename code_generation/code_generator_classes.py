@@ -122,6 +122,23 @@ class Clazz(ClassOrFunction):
             ")"
         ).format(s=self)
     # end def __repr__
+
+    def to_array(self):
+        return {
+            "clazz": self.clazz,
+            "import_path": self.import_path,
+            "imports": self.imports,
+            "parent_clazz": self.parent_clazz,
+            "link": self.link,
+            "description": self.description,
+            "parameters": self.parameters,
+            "keywords": self.keywords,
+        }
+    # end def
+
+    def clone(self):
+        return self.__class__(**self.to_array())
+    # end def
 # end class Clazz
 
 
@@ -552,6 +569,23 @@ class Variable(dict):
             True
         )
     # end def compare
+
+    def to_array(self):
+        return {
+            "api_name": self.api_name,
+            "name": self.name,
+            "types": self.types,
+            "pytg_name": self.pytg_name,
+            "optional": self.optional,
+            "default": self.default,
+            "description": self.description,
+            "duplicate_of_parent": self.duplicate_of_parent,
+        }
+    # end def
+
+    def clone(self):
+        return self.__class__(**self.to_array())
+    # end def
 # end class Variable
 
 
