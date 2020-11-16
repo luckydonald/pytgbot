@@ -83,7 +83,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "EncryptedCredentials":       ("pytgbot.api_types.receivable.passport.", "Result", None),  # July 26, 2018
     "PassportFile":               ("pytgbot.api_types.receivable.passport.", "Result", None),  # July 26, 2018
 
-    # pytgbot.api_types.sendable.*
+    # pytgbot.api_types.sendable.__init__.*
     "Sendable":                     ("pytgbot.api_types.sendable.", "TgBotApiObject", None),
 
     # pytgbot.api_types.sendable.files.*
@@ -1178,6 +1178,83 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClazz(
     ),
 )
 
+
+CUSTOM_CLASSES["pytgbot.api_types.receivable.Receivable"] = CustomClazz(
+    clazz='Receivable',
+    import_path=Import(path=CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Receivable", is_init=True),
+    imports=[
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__PARENT]
+        ),
+    ],
+    parent_clazz=Type(
+        string=CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__PARENT],
+        is_builtin=False,
+        always_is_value=None,
+        is_list=0,
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Receivable"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+        description=None
+    ),
+    link=None,
+    description=(
+        'Base class for all classes for stuff which telegram sends us.'
+    ),
+    parameters=[],
+    keywords=[],
+    body=ReplacementBody(
+        before=[
+            'pass',
+        ],
+        init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+        after=[],
+    ),
+)
+
+CUSTOM_CLASSES["pytgbot.api_types.sendable.Sendable"] = CustomClazz(
+    clazz='Sendable',
+    import_path=Import(path=CLASS_TYPE_PATHS["Sendable"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Sendable", is_init=True),
+    imports=[
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Sendable"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["Sendable"][CLASS_TYPE_PATHS__PARENT]
+        ),
+    ],
+    parent_clazz=Type(
+        string=CLASS_TYPE_PATHS["Sendable"][CLASS_TYPE_PATHS__PARENT],
+        is_builtin=False,
+        always_is_value=None,
+        is_list=0,
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["Sendable"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+        description=None
+    ),
+    link=None,
+    description=(
+        'Base class for all classes for stuff which we throw in requests towards the telegram servers.'
+    ),
+    parameters=[],
+    keywords=[],
+    body=ReplacementBody(
+        before=[
+            "pass",
+        ],
+        init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+        after=[],
+    ),
+)
+
 CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClazz(
     clazz='Result',
     import_path=Import(path=CLASS_TYPE_PATHS["Result"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="Result", is_init=True),
@@ -1197,18 +1274,16 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.Result"] = CustomClazz(
     ),
     link=None,
     description=(
-        'Base class for all classes for stuff which we get back after we called a telegram method.'
+        'Base class for all classes for stuff which we throw in requests towards the telegram servers.'
     ),
     parameters=[],
     keywords=[],
     body=ReplacementBody(
-        before=[],
-        init=[],
-        to_array=[
-            'def to_array(self):',
-            '    return {}',
-            'pass',
+        before=[
+            "pass",
         ],
+        init=[],
+        to_array=[],
         validate_array=[],
         from_array=[],
         str=[],

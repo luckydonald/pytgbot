@@ -566,7 +566,7 @@ def safe_to_file(folder, results):
 
     for result in all_the_clazzes:
         # fill in clazz._parent_clazz_clazz, so we can check our parents
-        if result.parent_clazz is None or result.parent_clazz == 'object':
+        if result.parent_clazz is None or result.parent_clazz.string == 'object':
             continue
         # end if
         if result.parent_clazz.string in clazzes_by_name:
