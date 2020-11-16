@@ -50,6 +50,7 @@ class ClassOrFunction(KwargableObject):
 # end class ClassOrFunction
 
 
+# noinspection PyCompatibility
 class Clazz(ClassOrFunction):
     def __init__(
         self,
@@ -67,12 +68,15 @@ class Clazz(ClassOrFunction):
         self.import_path = import_path if import_path is not None else self.calculate_import_path()
         self.imports = imports if imports else []  # Imports needed by parameters and keywords.
         self.parent_clazz = parent_clazz if parent_clazz is not None else Type("object", is_builtin=True)
+        self.parent_clazz_clazz = None
         assert_type_or_raise(self.parent_clazz, Type, parameter_name="self.parent_clazz")
         self.link = link
         self.description = description
         self.parameters = parameters if parameters else []
         self.keywords = keywords if keywords else []
     # end def __init__
+
+    parent_clazz_clazz: Union[None, 'Clazz']
 
     def calculate_import_path(self) -> 'Import':
         from code_generator import get_type_path
@@ -88,6 +92,18 @@ class Clazz(ClassOrFunction):
     def variables(self):
         return self.parameters + self.keywords
     # end def variables
+
+    def parent_clazz_has_same_variable(self, variable: 'Variable'):
+        if not self.parent_clazz_clazz:
+            return False
+        # end if
+        for parent_variable in self.parent_clazz_clazz.variables:
+            if variable.compare(parent_variable, ignore_description=True):
+                return True
+            # end if
+        # end for
+        return False
+    # end if
 
     def __repr__(self):
         return (
@@ -277,6 +293,7 @@ class Function(ClassOrFunction):
 # end class Function
 
 
+# noinspection PyCompatibility
 class Variable(dict):
     def __init__(
             self,
@@ -438,6 +455,41 @@ class Variable(dict):
         return type_str
     # end def
 
+    @property
+    def is_fixed_value(self) -> bool:
+        if self.optional:
+            # if it is "True or None" it is not "always True"
+            return False
+        # end if
+        if len(self.types) != 1:
+            # more than one possible value
+            return False
+        # end if
+        # noinspection PyShadowingBuiltins
+        type: Type = self.types[0]
+        if type.always_is_value is None:
+            # we have no such 'always' value set.
+            return False
+        # end if
+
+        # we did all the checks, so it must be always be the same value.
+        return True
+    # end if
+
+    @property
+    def value_to_set(self):
+        if not self.is_fixed_value:
+            return self.name
+        # end if
+
+        # noinspection PyShadowingBuiltins
+        type: Type = self.types[0]
+        if type.always_is_value in ('True', 'False', 'None'):
+            return type.always_is_value
+        # end if
+        return repr(type.always_is_value)  # so we get 'photo'
+    # end def
+
     def __repr__(self):
         return (
             "Variable("
@@ -446,6 +498,28 @@ class Variable(dict):
             ")"
         ).format(s=self)
     # end def __repr__
+
+    def __eq__(self, other: object) -> bool:
+        """ self == other """
+        if not isinstance(other, self.__class__):
+            return super().__eq__(other)
+        # end if
+        return self.compare(other, ignore_description=False)
+    # end def __eq__
+
+    def compare(self, other: 'Variable', ignore_description: bool = False):
+        assert_type_or_raise(other, Variable, parameter_name='other')
+        return (
+            self.api_name == other.api_name and
+            self.name == other.name and
+            self.types == other.types and
+            self.pytg_name == other.pytg_name and
+            self.optional == other.optional and
+            self.default == other.default and
+            (ignore_description or self.description == other.description) and
+            True
+        )
+    # end def compare
 # end class Variable
 
 
@@ -480,7 +554,7 @@ class Type(dict):
         self.string = string  # the type (e.g. "bool")
         self.is_builtin = is_builtin  # bool.  If it is a build in type (float, int, ...) or not.
         self.always_is_value = always_is_value  # None or the only possible value (e.g. a bool, always "True")
-        self.is_list = is_list
+        self.is_list = is_list  # number denoting the list level. 0 means 'no list'. 1 is foo[], and 2 would be foo[][].
         self.import_path = import_path  # from <import_path> import <string>
         self.description = description  # if there are additional comments needed.
     # end def __init__
@@ -514,6 +588,27 @@ class Type(dict):
             ")"
         ).format(s=self)
     # end def __repr__
+
+    def __eq__(self, other: object) -> bool:
+        """ self == other """
+        if not isinstance(other, self.__class__):
+            return super().__eq__(other)
+        # end if
+        return self.compare(other, ignore_description=False)
+    # end def __eq__
+
+    def compare(self, other: 'Type', ignore_description: bool = False):
+        assert_type_or_raise(other, Type, parameter_name='other')
+        return (
+            self.string == other.string and  # the type (e.g. "bool")
+            self.is_builtin == other.is_builtin and  # bool.  If it is a build in type (float, int, ...) or not.
+            self.always_is_value == other.always_is_value and  # None or the only possible value (e.g. a bool, always "True")
+            self.is_list == other.is_list and  # number denoting the list level. 0 means 'no list'. 1 is foo[], and 2 would be foo[][].
+            self.import_path == other.import_path and  # from <import_path> import <string>
+            (ignore_description or self.description == other.description) and  # if there are additional comments needed.
+            True
+        )
+    # end def compare
 # end class Type
 
 

@@ -36,7 +36,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
 
     {% endif %}{% if clazz.body and clazz.body.init != None %}{% for line in clazz.body.init %}{% set needs_space = True %}{% if not loop.first %}
     {% endif %}{{ line }}{% endfor %}{% else %}{#
-    #}def __init__(self{%- for variable in clazz.variables %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% else %}{{ variable.default if variable.default is string else fix_type_docs(variable.default) }}{% endif %}{% endif %}{%- endfor %}{% if not is_sendable %}, _raw=None{% endif %}):
+    #}def __init__(self{%- for variable in clazz.variables if not variable.is_fixed_value %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% else %}{{ variable.default if variable.default is string else fix_type_docs(variable.default) }}{% endif %}{% endif %}{%- endfor %}{% if not is_sendable %}, _raw=None{% endif %}):
         {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
         {{ self.class_docstring()|indent -}}
         """{% endif %}
@@ -50,7 +50,8 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% endif -%}
         {%- endblock -%}
         {% for variable in clazz.variables -%}
-        {% if variable.optional %}
+        {% if not variable.is_fixed_value %}{#
+        #}{% if variable.optional %}
         assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
         {% if variable.always_is_value -%}
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
@@ -65,7 +66,9 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         # end if
         {%- endif %}
         {%- endif -%}
-        self.{{ variable.name }} = {{ variable.name }}
+        {% else %}{# forces linebreak #}
+        {% endif -%}
+        self.{{ variable.name }} = {{ variable.value_to_set }}
         {%- if not loop.last %}
         {% endif -%}
         {% endfor %}{% if not is_sendable %}
