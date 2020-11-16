@@ -175,7 +175,10 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
     def {{ function.name }}(self{% for variable in function.variables %}, {{ variable.name }}{% if variable.optional %}={{ variable.default if variable.default else 'None' }}{% endif %}{% endfor %}):{#
     #}{% endif %}
         """
-        Internal function for making the request to the API's {{ function.api_name }} endpoint.
+        {{ function.description if function.description else function.name | indent(8) }}
+
+        {{function.link}}
+
 
         {% if function.parameters %}
         Parameters:

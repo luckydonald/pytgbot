@@ -290,7 +290,7 @@ class BotBase(object):
 
     def _{{ function.name }}__process_result(self, result):
         """
-        Internal function for prosessing the json data returned by the API's {{ function.api_name }} endpoint.
+        Internal function for processing the json data returned by the API's {{ function.api_name }} endpoint.
 
         :return: {{ function.returns.description }}
         :rtype:  {{ for_type_list_of_full(function.returns) }}
