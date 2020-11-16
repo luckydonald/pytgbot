@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from luckydonaldUtils.logger import logging
-
 from . import Sendable
-from .reply_markup import InlineKeyboardMarkup
 
 __author__ = 'luckydonald'
-logger = logging.getLogger(__name__)
+
 
 class InlineQueryResult(Sendable):
     """
@@ -69,9 +66,6 @@ class InlineQueryResultArticle(InlineQueryResult):
 
 
     Parameters:
-
-    :param type: Type of the result, must be article
-    :type  type: str|unicode
 
     :param id: Unique identifier for this result, 1-64 Bytes
     :type  id: str|unicode
@@ -150,67 +144,72 @@ class InlineQueryResultArticle(InlineQueryResult):
         :type  thumb_height: int
         """
         super(InlineQueryResultArticle, self).__init__(id, "article")
+        from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(input_message_content, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
-
         assert_type_or_raise(hide_url, None, bool, parameter_name="hide_url")
         self.hide_url = hide_url
-
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultArticle to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultArticle, self).to_array()
-        # 'type' and 'id' given by superclass
+
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
-
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
+        # end if
         if self.hide_url is not None:
             array['hide_url'] = bool(self.hide_url)  # type bool
+        # end if
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        # end if
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+        # end if
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
+        # end if
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -389,76 +388,79 @@ class InlineQueryResultPhoto(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(photo_url, unicode_type, parameter_name="photo_url")
         self.photo_url = photo_url
-
         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-
         assert_type_or_raise(photo_width, None, int, parameter_name="photo_width")
         self.photo_width = photo_width
-
         assert_type_or_raise(photo_height, None, int, parameter_name="photo_height")
         self.photo_height = photo_height
-
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultPhoto to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultPhoto, self).to_array()
-        # 'type' and 'id' given by superclass
+
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['photo_url'] = u(self.photo_url)  # py2: type unicode, py3: type str
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.photo_width is not None:
             array['photo_width'] = int(self.photo_width)  # type int
+        # end if
         if self.photo_height is not None:
             array['photo_height'] = int(self.photo_height)  # type int
+        # end if
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -647,81 +649,84 @@ class InlineQueryResultGif(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(gif_url, unicode_type, parameter_name="gif_url")
         self.gif_url = gif_url
-
         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-
         assert_type_or_raise(gif_width, None, int, parameter_name="gif_width")
         self.gif_width = gif_width
-
         assert_type_or_raise(gif_height, None, int, parameter_name="gif_height")
         self.gif_height = gif_height
-
         assert_type_or_raise(gif_duration, None, int, parameter_name="gif_duration")
         self.gif_duration = gif_duration
-
         assert_type_or_raise(thumb_mime_type, None, unicode_type, parameter_name="thumb_mime_type")
         self.thumb_mime_type = thumb_mime_type
-
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultGif to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultGif, self).to_array()
-        # 'type' and 'id' given by superclass
+
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['gif_url'] = u(self.gif_url)  # py2: type unicode, py3: type str
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.gif_width is not None:
             array['gif_width'] = int(self.gif_width)  # type int
+        # end if
         if self.gif_height is not None:
             array['gif_height'] = int(self.gif_height)  # type int
+        # end if
         if self.gif_duration is not None:
             array['gif_duration'] = int(self.gif_duration)  # type int
+        # end if
         if self.thumb_mime_type is not None:
             array['thumb_mime_type'] = u(self.thumb_mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -740,7 +745,7 @@ class InlineQueryResultGif(InlineQueryResult):
 
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['gif_url'] = u(array.get('gif_url'))
         data['thumb_url'] = u(array.get('thumb_url'))
         data['gif_width'] = int(array.get('gif_width')) if array.get('gif_width') is not None else None
@@ -858,6 +863,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :param input_message_content: Optional. Content of the message to be sent instead of the video animation
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
+
     def __init__(self, id, mpeg4_url, thumb_url, mpeg4_width=None, mpeg4_height=None, mpeg4_duration=None, thumb_mime_type=None, title=None, caption=None, parse_mode=None, caption_entities=None, reply_markup=None, input_message_content=None):
         """
         Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
@@ -913,81 +919,83 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(mpeg4_url, unicode_type, parameter_name="mpeg4_url")
         self.mpeg4_url = mpeg4_url
-
         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-
         assert_type_or_raise(mpeg4_width, None, int, parameter_name="mpeg4_width")
         self.mpeg4_width = mpeg4_width
-
         assert_type_or_raise(mpeg4_height, None, int, parameter_name="mpeg4_height")
         self.mpeg4_height = mpeg4_height
-
         assert_type_or_raise(mpeg4_duration, None, int, parameter_name="mpeg4_duration")
         self.mpeg4_duration = mpeg4_duration
-
         assert_type_or_raise(thumb_mime_type, None, unicode_type, parameter_name="thumb_mime_type")
         self.thumb_mime_type = thumb_mime_type
-
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultMpeg4Gif to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultMpeg4Gif, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['mpeg4_url'] = u(self.mpeg4_url)  # py2: type unicode, py3: type str
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         if self.mpeg4_width is not None:
             array['mpeg4_width'] = int(self.mpeg4_width)  # type int
+        # end if
         if self.mpeg4_height is not None:
             array['mpeg4_height'] = int(self.mpeg4_height)  # type int
+        # end if
         if self.mpeg4_duration is not None:
             array['mpeg4_duration'] = int(self.mpeg4_duration)  # type int
+        # end if
         if self.thumb_mime_type is not None:
             array['thumb_mime_type'] = u(self.thumb_mime_type)  # py2: type unicode, py3: type str
+        # end if
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -1006,7 +1014,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['mpeg4_url'] = u(array.get('mpeg4_url'))
         data['thumb_url'] = u(array.get('thumb_url'))
         data['mpeg4_width'] = int(array.get('mpeg4_width')) if array.get('mpeg4_width') is not None else None
@@ -1188,83 +1196,84 @@ class InlineQueryResultVideo(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
 
         # type is given by class type
-
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-
         assert_type_or_raise(video_url, unicode_type, parameter_name="video_url")
         self.video_url = video_url
-
         assert_type_or_raise(mime_type, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-
         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(video_width, None, int, parameter_name="video_width")
         self.video_width = video_width
-
         assert_type_or_raise(video_height, None, int, parameter_name="video_height")
         self.video_height = video_height
-
         assert_type_or_raise(video_duration, None, int, parameter_name="video_duration")
         self.video_duration = video_duration
-
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultVideo to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultVideo, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['video_url'] = u(self.video_url)  # py2: type unicode, py3: type str
         array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.video_width is not None:
             array['video_width'] = int(self.video_width)  # type int
+        # end if
         if self.video_height is not None:
             array['video_height'] = int(self.video_height)  # type int
+        # end if
         if self.video_duration is not None:
             array['video_duration'] = int(self.video_duration)  # type int
+        # end if
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -1283,7 +1292,7 @@ class InlineQueryResultVideo(InlineQueryResult):
 
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['video_url'] = u(array.get('video_url'))
         data['mime_type'] = u(array.get('mime_type'))
         data['thumb_url'] = u(array.get('thumb_url'))
@@ -1443,62 +1452,66 @@ class InlineQueryResultAudio(InlineQueryResult):
 
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-
         assert_type_or_raise(audio_url, unicode_type, parameter_name="audio_url")
         self.audio_url = audio_url
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
-
         assert_type_or_raise(audio_duration, None, int, parameter_name="audio_duration")
         self.audio_duration = audio_duration
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultAudio to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultAudio, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['audio_url'] = u(self.audio_url)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
+        # end if
         if self.audio_duration is not None:
             array['audio_duration'] = int(self.audio_duration)  # type int
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -1517,7 +1530,7 @@ class InlineQueryResultAudio(InlineQueryResult):
 
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['audio_url'] = u(array.get('audio_url'))
         data['title'] = u(array.get('title'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
@@ -1663,61 +1676,64 @@ class InlineQueryResultVoice(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(voice_url, unicode_type, parameter_name="voice_url")
         self.voice_url = voice_url
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(voice_duration, None, int, parameter_name="voice_duration")
         self.voice_duration = voice_duration
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultVoice to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultVoice, self).to_array()
-        # 'type' and 'id' given by superclass
+
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['voice_url'] = u(self.voice_url)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.voice_duration is not None:
             array['voice_duration'] = int(self.voice_duration)  # type int
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -1736,7 +1752,7 @@ class InlineQueryResultVoice(InlineQueryResult):
 
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['voice_url'] = u(array.get('voice_url'))
         data['title'] = u(array.get('title'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
@@ -1805,9 +1821,6 @@ class InlineQueryResultDocument(InlineQueryResult):
 
 
     Parameters:
-
-    :param type: Type of the result, must be document
-    :type  type: str|unicode
 
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
@@ -1908,81 +1921,82 @@ class InlineQueryResultDocument(InlineQueryResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(document_url, unicode_type, parameter_name="document_url")
         self.document_url = document_url
-
         assert_type_or_raise(mime_type, unicode_type, parameter_name="mime_type")
         self.mime_type = mime_type
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultDocument to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultDocument, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['document_url'] = u(self.document_url)  # py2: type unicode, py3: type str
         array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
-
+        # end if
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+        # end if
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
+        # end if
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -2000,7 +2014,7 @@ class InlineQueryResultDocument(InlineQueryResult):
 
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['title'] = u(array.get('title'))
         data['document_url'] = u(array.get('document_url'))
         data['mime_type'] = u(array.get('mime_type'))
@@ -2172,80 +2186,82 @@ class InlineQueryResultLocation(InlineQueryResult):
         super(InlineQueryResultLocation, self).__init__(id, "location")
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
         self.horizontal_accuracy = horizontal_accuracy
-
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
         self.live_period = live_period
-
         assert_type_or_raise(heading, None, int, parameter_name="heading")
         self.heading = heading
-
         assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
         self.proximity_alert_radius = proximity_alert_radius
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultLocation to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultLocation, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.horizontal_accuracy is not None:
             array['horizontal_accuracy'] = float(self.horizontal_accuracy)  # type float
+        # end if
         if self.live_period is not None:
             array['live_period'] = int(self.live_period)  # type int
+        # end if
         if self.heading is not None:
             array['heading'] = int(self.heading)  # type int
+        # end if
         if self.proximity_alert_radius is not None:
             array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
-
+        # end if
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+        # end if
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
+        # end if
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -2262,7 +2278,7 @@ class InlineQueryResultLocation(InlineQueryResult):
 
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
         data['title'] = u(array.get('title'))
@@ -2440,84 +2456,87 @@ class InlineQueryResultVenue(InlineQueryResult):
         super(InlineQueryResultVenue, self).__init__(id, "venue")
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
-
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
-
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
-
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
-
         assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
         self.google_place_id = google_place_id
-
         assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
         self.google_place_type = google_place_type
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultVenue to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultVenue, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
+        # end if
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+        # end if
         if self.google_place_id is not None:
             array['google_place_id'] = u(self.google_place_id)  # py2: type unicode, py3: type str
+        # end if
         if self.google_place_type is not None:
             array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
-
+        # end if
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+        # end if
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
+        # end if
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -2534,7 +2553,7 @@ class InlineQueryResultVenue(InlineQueryResult):
 
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
         data['title'] = u(array.get('title'))
@@ -2689,66 +2708,69 @@ class InlineQueryResultContact(InlineQueryResult):
         super(InlineQueryResultContact, self).__init__(id, "contact")
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
-
         assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
         self.vcard = vcard
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
-
         assert_type_or_raise(thumb_url, None, unicode_type, parameter_name="thumb_url")
         self.thumb_url = thumb_url
-
         assert_type_or_raise(thumb_width, None, int, parameter_name="thumb_width")
         self.thumb_width = thumb_width
-
         assert_type_or_raise(thumb_height, None, int, parameter_name="thumb_height")
         self.thumb_height = thumb_height
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultContact to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultContact, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+        # end if
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
-
+        # end if
         if self.thumb_url is not None:
             array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+        # end if
         if self.thumb_width is not None:
             array['thumb_width'] = int(self.thumb_width)  # type int
+        # end if
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -2764,7 +2786,8 @@ class InlineQueryResultContact(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
 
         data = InlineQueryResult.validate_array(array)
-        # type is set by class type
+        # 'type' is set by class type
+        # 'id' is set by class type
         data['id'] = u(array.get('id'))
         data['phone_number'] = u(array.get('phone_number'))
         data['first_name'] = u(array.get('first_name'))
@@ -2874,30 +2897,35 @@ class InlineQueryResultGame(InlineQueryResult):
         super(InlineQueryResultGame, self).__init__(id, "game")
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultGame to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultGame, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+        # end if
 
         return array
     # end def to_array
@@ -2914,8 +2942,8 @@ class InlineQueryResultGame(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
 
         data = InlineQueryResult.validate_array(array)
-        # type is given by class type
-        data['id'] = u(array.get('id'))
+        # 'type' is given by class type
+        # 'id' is given by class type
         data['game_short_name'] = u(array.get('game_short_name'))
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         return data
@@ -3052,62 +3080,66 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(photo_file_id, unicode_type, parameter_name="photo_file_id")
         self.photo_file_id = photo_file_id
-
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedPhoto to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedPhoto, self).to_array()
-        # 'type' and 'id' given by superclass
+
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['photo_file_id'] = u(self.photo_file_id)  # py2: type unicode, py3: type str
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -3126,7 +3158,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
 
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['photo_file_id'] = u(array.get('photo_file_id'))
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
@@ -3263,57 +3295,60 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(gif_file_id, unicode_type, parameter_name="gif_file_id")
         self.gif_file_id = gif_file_id
-
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedGif to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedGif, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['gif_file_id'] = u(self.gif_file_id)  # py2: type unicode, py3: type str
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -3331,8 +3366,8 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
 
         data = InlineQueryCachedResult.validate_array(array)
-        # type is given by class type
-        data['id'] = u(array.get('id'))
+        # 'type' is given by class type
+        # 'id' is given by class type
         data['gif_file_id'] = u(array.get('gif_file_id'))
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
@@ -3400,9 +3435,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
 
     Parameters:
 
-    :param type: Type of the result, must be mpeg4_gif
-    :type  type: str|unicode
-
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
 
@@ -3440,9 +3472,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
 
         Parameters:
 
-        :param type: Type of the result, must be mpeg4_gif
-        :type  type: str|unicode
-
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
 
@@ -3474,57 +3503,60 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(mpeg4_file_id, unicode_type, parameter_name="mpeg4_file_id")
         self.mpeg4_file_id = mpeg4_file_id
-
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedMpeg4Gif to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['mpeg4_file_id'] = u(self.mpeg4_file_id)  # py2: type unicode, py3: type str
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -3543,7 +3575,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
 
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['mpeg4_file_id'] = u(array.get('mpeg4_file_id'))
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
@@ -3656,36 +3688,40 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         super(InlineQueryResultCachedSticker, self).__init__(id, "sticker")
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(sticker_file_id, unicode_type, parameter_name="sticker_file_id")
         self.sticker_file_id = sticker_file_id
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedSticker to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedSticker, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['sticker_file_id'] = u(self.sticker_file_id)  # py2: type unicode, py3: type str
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -3703,7 +3739,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
 
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['sticker_file_id'] = u(array.get('sticker_file_id'))
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
@@ -3843,61 +3879,63 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(document_file_id, unicode_type, parameter_name="document_file_id")
         self.document_file_id = document_file_id
-
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedDocument to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedDocument, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['document_file_id'] = u(self.document_file_id)  # py2: type unicode, py3: type str
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -3916,7 +3954,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
 
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['title'] = u(array.get('title'))
         data['document_file_id'] = u(array.get('document_file_id'))
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
@@ -4059,61 +4097,63 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(video_file_id, unicode_type, parameter_name="video_file_id")
         self.video_file_id = video_file_id
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedVideo to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedVideo, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['video_file_id'] = u(self.video_file_id)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -4132,7 +4172,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
 
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['video_file_id'] = u(array.get('video_file_id'))
         data['title'] = u(array.get('title'))
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
@@ -4271,56 +4311,58 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
 
-        # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'type' is given by class type
+        # 'id' is given by class type
         assert_type_or_raise(voice_file_id, unicode_type, parameter_name="voice_file_id")
         self.voice_file_id = voice_file_id
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedVoice to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedVoice, self).to_array()
-        # 'type' and 'id' given by superclass
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['voice_file_id'] = u(self.voice_file_id)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -4339,7 +4381,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['voice_file_id'] = u(array.get('voice_file_id'))
         data['title'] = u(array.get('title'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
@@ -4472,51 +4514,55 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
 
         # 'type' is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
-
+        # 'id' is given by class type
         assert_type_or_raise(audio_file_id, unicode_type, parameter_name="audio_file_id")
         self.audio_file_id = audio_file_id
-
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
         self.reply_markup = reply_markup
-
         assert_type_or_raise(input_message_content, None, InputMessageContent, parameter_name="input_message_content")
         self.input_message_content = input_message_content
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineQueryResultCachedAudio to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineQueryResultCachedAudio, self).to_array()
-        # 'type' and 'id' given by superclass
+
+        # 'type' given by superclass
+        # 'id' given by superclass
         array['audio_file_id'] = u(self.audio_file_id)  # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
-
+        # end if
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+        # end if
 
         return array
     # end def to_array
@@ -4535,7 +4581,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
-        data['id'] = u(array.get('id'))
+        # 'id' is given by class type
         data['audio_file_id'] = u(array.get('audio_file_id'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
@@ -4618,7 +4664,7 @@ class InputTextMessageContent(InputMessageContent):
     :type  disable_web_page_preview: bool
     """
 
-    def __init__(self, message_text, parse_mode=None, disable_web_page_preview=False):
+    def __init__(self, message_text, parse_mode=None, entities=None, disable_web_page_preview=False):
         """
         Represents the content of a text message to be sent as the result of an inline query.
 
@@ -4647,33 +4693,41 @@ class InputTextMessageContent(InputMessageContent):
 
         assert_type_or_raise(message_text, unicode_type, parameter_name="message_text")
         self.message_text = message_text
-
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         self.parse_mode = parse_mode
-
         assert_type_or_raise(entities, None, list, parameter_name="entities")
         self.entities = entities
-
         assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
         self.disable_web_page_preview = disable_web_page_preview
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputTextMessageContent to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputTextMessageContent, self).to_array()
+
         array['message_text'] = u(self.message_text)  # py2: type unicode, py3: type str
         if self.parse_mode is not None:
             array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.entities is not None:
             array['entities'] = self._as_array(self.entities)  # type list of MessageEntity
-
+        # end if
         if self.disable_web_page_preview is not None:
             array['disable_web_page_preview'] = bool(self.disable_web_page_preview)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -4810,41 +4864,49 @@ class InputLocationMessageContent(InputMessageContent):
         super(InputLocationMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-
         assert_type_or_raise(horizontal_accuracy, None, float, parameter_name="horizontal_accuracy")
         self.horizontal_accuracy = horizontal_accuracy
-
         assert_type_or_raise(live_period, None, int, parameter_name="live_period")
         self.live_period = live_period
-
         assert_type_or_raise(heading, None, int, parameter_name="heading")
         self.heading = heading
-
         assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
         self.proximity_alert_radius = proximity_alert_radius
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputLocationMessageContent to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputLocationMessageContent, self).to_array()
+
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         if self.horizontal_accuracy is not None:
             array['horizontal_accuracy'] = float(self.horizontal_accuracy)  # type float
+        # end if
         if self.live_period is not None:
             array['live_period'] = int(self.live_period)  # type int
+        # end if
         if self.heading is not None:
             array['heading'] = int(self.heading)  # type int
+        # end if
         if self.proximity_alert_radius is not None:
             array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -4993,49 +5055,55 @@ class InputVenueMessageContent(InputMessageContent):
         super(InputVenueMessageContent, self).__init__()
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
-
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
-
         assert_type_or_raise(foursquare_id, None, unicode_type, parameter_name="foursquare_id")
         self.foursquare_id = foursquare_id
-
         assert_type_or_raise(foursquare_type, None, unicode_type, parameter_name="foursquare_type")
         self.foursquare_type = foursquare_type
-
         assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
         self.google_place_id = google_place_id
-
         assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
         self.google_place_type = google_place_type
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputVenueMessageContent to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputVenueMessageContent, self).to_array()
+
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
         if self.foursquare_id is not None:
             array['foursquare_id'] = u(self.foursquare_id)  # py2: type unicode, py3: type str
+        # end if
         if self.foursquare_type is not None:
             array['foursquare_type'] = u(self.foursquare_type)  # py2: type unicode, py3: type str
+        # end if
         if self.google_place_id is not None:
             array['google_place_id'] = u(self.google_place_id)  # py2: type unicode, py3: type str
+        # end if
         if self.google_place_type is not None:
             array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -5162,31 +5230,39 @@ class InputContactMessageContent(InputMessageContent):
         super(InputContactMessageContent, self).__init__()
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         self.last_name = last_name
-
         assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
         self.vcard = vcard
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputContactMessageContent to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputContactMessageContent, self).to_array()
+
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if self.last_name is not None:
             array['last_name'] = u(self.last_name)  # py2: type unicode, py3: type str
+        # end if
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 

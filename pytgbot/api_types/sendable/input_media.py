@@ -433,55 +433,40 @@ class InputMediaPlayable(InputMediaWithThumb):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaPlayable, self).__init__()
+        super(InputMediaPlayable, self).__init__(type, media, thumb, duration, caption, parse_mode, caption_entities)
 
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
-
-        assert_type_or_raise(media, unicode_type, parameter_name="media")
-        self.media = media
-
-        assert_type_or_raise(thumb, InputFile, unicode_type, parameter_name="thumb")
-        self.thumb = thumb
-
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        self.duration = duration
-
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        self.caption = caption
-
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        self.parse_mode = parse_mode
-
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
+        # 'type' is set by InputMediaWithThumb base class
+        # 'media' is set by InputMediaWithThumb base class
+        # 'thumb' is set by InputMediaWithThumb base class
+        # 'duration' is set by InputMediaWithThumb base class
+        # 'caption' is set by InputMediaWithThumb base class
+        # 'parse_mode' is set by InputMediaWithThumb base class
+        # 'caption_entities' is set by InputMediaWithThumb base class
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaPlayable to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
-        array = super(InputMediaPlayable, self).to_array()
-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
-        array['media'] = u(self.media)  # py2: type unicode, py3: type str
-        if isinstance(self.thumb, InputFile):
-            array['thumb'] = self.thumb.to_array()  # type InputFile
-        elif isinstance(self.thumb, str):
-            array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
+        if prefer_original and self._raw:
+            return self._raw
         # end if
 
-        if self.duration is not None:
-            array['duration'] = int(self.duration)  # type int
-        if self.caption is not None:
-            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-        if self.parse_mode is not None:
-            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+        array = super(InputMediaPlayable, self).to_array()
+
+        # 'type' given by superclass
+        # 'media' given by superclass
+        # 'thumb' given by superclass
+        # 'duration' given by superclass
+        # 'caption' given by superclass
+        # 'parse_mode' given by superclass
+        # 'caption_entities' given by superclass
 
         return array
     # end def to_array
@@ -497,19 +482,13 @@ class InputMediaPlayable(InputMediaWithThumb):
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = InputMediaWithThumb.validate_array(array)
-        data['type'] = u(array.get('type'))
-        data['media'] = u(array.get('media'))
-        if isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = InputFile.from_array(array.get('thumb'))
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end if
-        data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
+        # 'type' is given by class type
+        # 'media' is given by class type
+        # 'thumb' is given by class type
+        # 'duration' is given by class type
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
         return data
     # end def validate_array
 
@@ -644,65 +623,50 @@ class InputMediaVideolike(InputMediaPlayable):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaVideolike, self).__init__()
+        super(InputMediaVideolike, self).__init__(type, media, thumb, duration, caption, parse_mode, caption_entities)
 
-        assert_type_or_raise(type, unicode_type, parameter_name="type")
-        self.type = type
-
-        assert_type_or_raise(media, unicode_type, parameter_name="media")
-        self.media = media
-
-        assert_type_or_raise(thumb, InputFile, unicode_type, parameter_name="thumb")
-        self.thumb = thumb
-
-        assert_type_or_raise(duration, None, int, parameter_name="duration")
-        self.duration = duration
-
+        # 'type' is set by InputMediaPlayable base class
+        # 'media' is set by InputMediaPlayable base class
+        # 'thumb' is set by InputMediaPlayable base class
+        # 'duration' is set by InputMediaPlayable base class
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
-
         assert_type_or_raise(height, None, int, parameter_name="height")
         self.height = height
-
-        assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
-        self.caption = caption
-
-        assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
-        self.parse_mode = parse_mode
-
-        assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
-        self.caption_entities = caption_entities
+        # 'caption' is set by InputMediaPlayable base class
+        # 'parse_mode' is set by InputMediaPlayable base class
+        # 'caption_entities' is set by InputMediaPlayable base class
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaVideolike to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
-        array = super(InputMediaVideolike, self).to_array()
-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
-        array['media'] = u(self.media)  # py2: type unicode, py3: type str
-        if isinstance(self.thumb, InputFile):
-            array['thumb'] = self.thumb.to_array()  # type InputFile
-        elif isinstance(self.thumb, str):
-            array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
+        if prefer_original and self._raw:
+            return self._raw
         # end if
 
-        if self.duration is not None:
-            array['duration'] = int(self.duration)  # type int
+        array = super(InputMediaVideolike, self).to_array()
+
+        # 'type' given by superclass
+        # 'media' given by superclass
+        # 'thumb' given by superclass
+        # 'duration' given by superclass
         if self.width is not None:
             array['width'] = int(self.width)  # type int
+        # end if
         if self.height is not None:
             array['height'] = int(self.height)  # type int
-        if self.caption is not None:
-            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
-        if self.parse_mode is not None:
-            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
-        if self.caption_entities is not None:
-            array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+        # end if
+        # 'caption' given by superclass
+        # 'parse_mode' given by superclass
+        # 'caption_entities' given by superclass
 
         return array
     # end def to_array
@@ -718,21 +682,15 @@ class InputMediaVideolike(InputMediaPlayable):
         assert_type_or_raise(array, dict, parameter_name="array")
 
         data = InputMediaPlayable.validate_array(array)
-        data['type'] = u(array.get('type'))
-        data['media'] = u(array.get('media'))
-        if isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = InputFile.from_array(array.get('thumb'))
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end if
-        data['duration'] = int(array.get('duration')) if array.get('duration') is not None else None
+        # 'type' is given by class type
+        # 'media' is given by class type
+        # 'thumb' is given by class type
+        # 'duration' is given by class type
         data['width'] = int(array.get('width')) if array.get('width') is not None else None
         data['height'] = int(array.get('height')) if array.get('height') is not None else None
-        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
-        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
-        data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
+        # 'caption' is given by class type
+        # 'parse_mode' is given by class type
+        # 'caption_entities' is given by class type
         return data
     # end def validate_array
 
@@ -849,13 +807,20 @@ class InputMediaPhoto(InputMedia):
         self.caption_entities = caption_entities
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaPhoto to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaPhoto, self).to_array()
         # 'type' given by superclass
         # 'media' given by superclass
@@ -863,6 +828,8 @@ class InputMediaPhoto(InputMedia):
         # 'parse_mode' given by superclass
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+        # end if
+
         return array
     # end def to_array
 
@@ -1023,51 +990,59 @@ class InputMediaVideo(InputMediaVideolike):
 
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
-
         assert_type_or_raise(height, None, int, parameter_name="height")
         self.height = height
-
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
-
         assert_type_or_raise(supports_streaming, None, bool, parameter_name="supports_streaming")
         self.supports_streaming = supports_streaming
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaVideo to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
-        from .files import InputFile
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaVideo, self).to_array()
         # 'type' given by superclass
         # 'media' given by superclass
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
-                array['thumb'] = None  # will be filled later by get_request_data()
+                array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
+        # end if
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
+        # end if
         if self.width is not None:
             array['width'] = int(self.width)  # type int
+        # end if
         if self.height is not None:
             array['height'] = int(self.height)  # type int
+        # end if
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
+        # end if
         if self.supports_streaming is not None:
             array['supports_streaming'] = bool(self.supports_streaming)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -1238,46 +1213,59 @@ class InputMediaAnimation(InputMediaVideolike):
 
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(width, None, int, parameter_name="width")
         self.width = width
-
         assert_type_or_raise(height, None, int, parameter_name="height")
         self.height = height
-
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaAnimation to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaAnimation, self).to_array()
-        # 'type' given by superclass
-        # 'media' given by superclass
+
+        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
-                array['thumb'] = None  # type InputFile
+                array['thumb'] = self.thumb.to_array()  # type InputFile
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
-        # 'caption' given by superclass
-        # 'parse_mode' given by superclass
+        # end if
+        if self.caption is not None:
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        # end if
+        if self.parse_mode is not None:
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
+        # end if
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.width is not None:
             array['width'] = int(self.width)  # type int
+        # end if
         if self.height is not None:
             array['height'] = int(self.height)  # type int
+        # end if
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
+        # end if
+
         return array
     # end def to_array
 
@@ -1447,24 +1435,28 @@ class InputMediaAudio(InputMediaPlayable):
 
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         self.duration = duration
-
         assert_type_or_raise(performer, None, unicode_type, parameter_name="performer")
         self.performer = performer
-
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         self.title = title
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaAudio to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaAudio, self).to_array()
         # 'type' given by superclass
         # 'media' given by superclass
@@ -1472,21 +1464,24 @@ class InputMediaAudio(InputMediaPlayable):
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = None   # will be filled later by get_request_data()
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.duration is not None:
             array['duration'] = int(self.duration)  # type int
+        # end if
         if self.performer is not None:
             array['performer'] = u(self.performer)  # py2: type unicode, py3: type str
+        # end if
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -1580,8 +1575,8 @@ class InputMediaDocument(InputMediaWithThumb):
 
     Parameters:
 
-    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file_attach_name>” to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
+    :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
+    :type  media: str|unicode
 
 
     Optional keyword parameters:
@@ -1633,6 +1628,7 @@ class InputMediaDocument(InputMediaWithThumb):
         :type  disable_content_type_detection: bool
         """
         super(InputMediaDocument, self).__init__('document', media, thumb, caption=caption, parse_mode=parse_mode)
+
         # type is set by InputMedia base class
         # media is set by InputMedia base class
         # thumb is set by InputMediaWithThumb base class
@@ -1641,27 +1637,33 @@ class InputMediaDocument(InputMediaWithThumb):
 
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         self.caption_entities = caption_entities
-
         assert_type_or_raise(disable_content_type_detection, None, bool, parameter_name="disable_content_type_detection")
         self.disable_content_type_detection = disable_content_type_detection
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InputMediaDocument to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InputMediaDocument, self).to_array()
+
         # 'type' given by superclass
         # 'media' given by superclass
         if self.thumb is not None:
             if isinstance(self.thumb, InputFile):
                 array['thumb'] = None  # will be filled later by get_request_data()
             elif isinstance(self.thumb, str):
-                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-            else:
+                array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type strelse:
                 raise TypeError('Unknown type, must be one of InputFile, str.')
             # end if
         # end if
@@ -1671,9 +1673,11 @@ class InputMediaDocument(InputMediaWithThumb):
 
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
-
+        # end if
         if self.disable_content_type_detection is not None:
             array['disable_content_type_detection'] = bool(self.disable_content_type_detection)  # type bool
+        # end if
+
         return array
     # end def to_array
 
