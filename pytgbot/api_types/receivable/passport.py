@@ -51,25 +51,34 @@ class PassportData(Result):
         :type  _raw: None | dict
         """
         super(PassportData, self).__init__()
+
         assert_type_or_raise(data, list, parameter_name="data")
         self.data = data
-
         assert_type_or_raise(credentials, EncryptedCredentials, parameter_name="credentials")
         self.credentials = credentials
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportData to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportData, self).to_array()
+
         array['data'] = self._as_array(self.data)  # type list of EncryptedPassportElement
         array['credentials'] = self.credentials.to_array()  # type EncryptedCredentials
+
         return array
     # end def to_array
 
@@ -194,31 +203,37 @@ class PassportFile(Result):
         super(PassportFile, self).__init__()
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
-
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
         self.file_unique_id = file_unique_id
-
         assert_type_or_raise(file_size, int, parameter_name="file_size")
         self.file_size = file_size
-
         assert_type_or_raise(file_date, int, parameter_name="file_date")
         self.file_date = file_date
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this PassportFile to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(PassportFile, self).to_array()
+
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['file_size'] = int(self.file_size)  # type int
         array['file_date'] = int(self.file_date)  # type int
+
         return array
     # end def to_array
 
@@ -301,6 +316,7 @@ class EncryptedPassportElement(Result):
     :param hash: Base64-encoded element hash for using in PassportElementErrorUnspecified
     :type  hash: str|unicode
 
+
     Optional keyword parameters:
 
     :param data: Optional. Base64-encoded encrypted Telegram Passport element data provided by the user, available for "personal_details", "passport", "driver_license", "identity_card", "internal_passport" and "address" types. Can be decrypted and verified using the accompanying EncryptedCredentials.
@@ -380,65 +396,71 @@ class EncryptedPassportElement(Result):
 
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-
         assert_type_or_raise(hash, unicode_type, parameter_name="hash")
         self.hash = hash
-
         assert_type_or_raise(data, None, unicode_type, parameter_name="data")
         self.data = data
-
         assert_type_or_raise(phone_number, None, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
-
         assert_type_or_raise(email, None, unicode_type, parameter_name="email")
         self.email = email
-
         assert_type_or_raise(files, None, list, parameter_name="files")
         self.files = files
-
         assert_type_or_raise(front_side, None, PassportFile, parameter_name="front_side")
         self.front_side = front_side
-
         assert_type_or_raise(reverse_side, None, PassportFile, parameter_name="reverse_side")
         self.reverse_side = reverse_side
-
         assert_type_or_raise(selfie, None, PassportFile, parameter_name="selfie")
         self.selfie = selfie
-
         assert_type_or_raise(translation, None, list, parameter_name="translation")
         self.translation = translation
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this EncryptedPassportElement to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(EncryptedPassportElement, self).to_array()
+
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         array['hash'] = u(self.hash)  # py2: type unicode, py3: type str
-
         if self.data is not None:
             array['data'] = u(self.data)  # py2: type unicode, py3: type str
+        # end if
         if self.phone_number is not None:
             array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+        # end if
         if self.email is not None:
             array['email'] = u(self.email)  # py2: type unicode, py3: type str
+        # end if
         if self.files is not None:
             array['files'] = self._as_array(self.files)  # type list of PassportFile
+        # end if
         if self.front_side is not None:
             array['front_side'] = self.front_side.to_array()  # type PassportFile
+        # end if
         if self.reverse_side is not None:
             array['reverse_side'] = self.reverse_side.to_array()  # type PassportFile
+        # end if
         if self.selfie is not None:
             array['selfie'] = self.selfie.to_array()  # type PassportFile
+        # end if
         if self.translation is not None:
             array['translation'] = self._as_array(self.translation)  # type list of PassportFile
+        # end if
+
         return array
     # end def to_array
 
@@ -565,27 +587,34 @@ class EncryptedCredentials(Result):
         super(EncryptedCredentials, self).__init__()
         assert_type_or_raise(data, unicode_type, parameter_name="data")
         self.data = data
-
         assert_type_or_raise(hash, unicode_type, parameter_name="hash")
         self.hash = hash
-
         assert_type_or_raise(secret, unicode_type, parameter_name="secret")
         self.secret = secret
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this EncryptedCredentials to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(EncryptedCredentials, self).to_array()
+
         array['data'] = u(self.data)  # py2: type unicode, py3: type str
         array['hash'] = u(self.hash)  # py2: type unicode, py3: type str
         array['secret'] = u(self.secret)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 
@@ -650,3 +679,4 @@ class EncryptedCredentials(Result):
         )
     # end def __contains__
 # end class EncryptedCredentials
+

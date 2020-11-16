@@ -2,11 +2,8 @@
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Sendable
-import logging
 
 __author__ = 'luckydonald'
-
-logger = logging.getLogger(__name__)
 
 
 class Button(Sendable):
@@ -59,7 +56,8 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
     :type  selective: bool
     """
-    def __init__(self, keyboard, resize_keyboard=False, one_time_keyboard=False, selective=False):
+
+    def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, selective=None):
         """
         This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 
@@ -74,58 +72,54 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
         Optional keyword parameters:
 
-        :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g.,
-                                make the keyboard smaller if there are just two rows of buttons).
-                                Defaults to false, in which case the custom keyboard is always of the same height as
-                                the app's standard keyboard.
+        :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
         :type  resize_keyboard: bool
 
-        :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used.
-                                  The keyboard will still be available, but clients will automatically display the
-                                  usual letter-keyboard in the chat – the user can press a special button in the input
-                                  field to see the custom keyboard again. Defaults to false.
+        :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
         :type  one_time_keyboard: bool
 
-        :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only.
-                          Targets: 1) users that are @mentioned in the text of the Message object;
-                                   2) if the bot's message is a reply (has reply_to_message_id),
-                                   sender of the original message.
-                          Example: A user requests to change the bot's language,
-                                  bot replies to the request with a keyboard to select the new language.
-                                  Other users in the group don't see the keyboard.
+        :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
         :type  selective: bool
         """
         super(ReplyKeyboardMarkup, self).__init__()
 
         assert_type_or_raise(keyboard, list, parameter_name="keyboard")
         self.keyboard = keyboard
-
         assert_type_or_raise(resize_keyboard, None, bool, parameter_name="resize_keyboard")
         self.resize_keyboard = resize_keyboard
-
         assert_type_or_raise(one_time_keyboard, None, bool, parameter_name="one_time_keyboard")
         self.one_time_keyboard = one_time_keyboard
-
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ReplyKeyboardMarkup to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
-        array = super(ReplyKeyboardMarkup, self).to_array()
-        array['keyboard'] = self._as_array(self.keyboard)  # type list of list of KeyboardButton
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
 
+        array = super(ReplyKeyboardMarkup, self).to_array()
+
+        array['keyboard'] = self._as_array(self.keyboard)  # type list of list of KeyboardButton
         if self.resize_keyboard is not None:
             array['resize_keyboard'] = bool(self.resize_keyboard)  # type bool
+        # end if
         if self.one_time_keyboard is not None:
             array['one_time_keyboard'] = bool(self.one_time_keyboard)  # type bool
+        # end if
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -197,13 +191,8 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
 class KeyboardButton(Button):
     """
-    This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this
-    object to specify text of the button.
-
-    Optional fields request_contact, request_location, and request_poll are mutually exclusive.
-
-    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
-    Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
+    This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields request_contact, request_location, and request_poll are mutually exclusive.
+    Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#keyboardbutton
 
@@ -228,15 +217,10 @@ class KeyboardButton(Button):
 
     def __init__(self, text, request_contact=None, request_location=None, request_poll=None):
         """
-        This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this
-        object to specify text of the button.
+        This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields request_contact, request_location, and request_poll are mutually exclusive.
+        Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
 
-        Optional fields request_contact, request_location, and request_poll are mutually exclusive.
-
-        Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
-        Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
-
-    https://core.telegram.org/bots/api#keyboardbutton
+        https://core.telegram.org/bots/api#keyboardbutton
 
 
         Parameters:
@@ -260,32 +244,40 @@ class KeyboardButton(Button):
 
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
-
         assert_type_or_raise(request_contact, None, bool, parameter_name="request_contact")
         self.request_contact = request_contact
-
         assert_type_or_raise(request_location, None, bool, parameter_name="request_location")
         self.request_location = request_location
-
         assert_type_or_raise(request_poll, None, KeyboardButtonPollType, parameter_name="request_poll")
         self.request_poll = request_poll
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this KeyboardButton to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(KeyboardButton, self).to_array()
+
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.request_contact is not None:
             array['request_contact'] = bool(self.request_contact)  # type bool
+        # end if
         if self.request_location is not None:
             array['request_location'] = bool(self.request_location)  # type bool
+        # end if
         if self.request_poll is not None:
             array['request_poll'] = self.request_poll.to_array()  # type KeyboardButtonPollType
+        # end if
 
         return array
     # end def to_array
@@ -384,16 +376,26 @@ class KeyboardButtonPollType(Button):
         self.type = type
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this KeyboardButtonPollType to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(KeyboardButtonPollType, self).to_array()
+
         if self.type is not None:
             array['type'] = u(self.type)  # py2: type unicode, py3: type str
+        # end if
+
         return array
     # end def to_array
 
@@ -461,11 +463,7 @@ class KeyboardButtonPollType(Button):
 
 class ReplyKeyboardRemove(ReplyMarkup):
     """
-    Upon receiving a message with this object,
-    Telegram clients will remove the current custom keyboard and display the default letter-keyboard.
-    By default, custom keyboards are displayed until a new keyboard is sent by a bot.
-    An exception is made for one-time keyboards that are hidden immediately after the user presses a button
-    (see ReplyKeyboardMarkup).
+    Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
 
     https://core.telegram.org/bots/api#replykeyboardremove
 
@@ -479,13 +477,9 @@ class ReplyKeyboardRemove(ReplyMarkup):
     :type  selective: bool
     """
 
-    def __init__(self, selective=False):
+    def __init__(self, selective=None):
         """
-        Upon receiving a message with this object,
-        Telegram clients will remove the current custom keyboard and display the default letter-keyboard.
-        By default, custom keyboards are displayed until a new keyboard is sent by a bot.
-        An exception is made for one-time keyboards that are hidden immediately after the user presses a button
-        (see ReplyKeyboardMarkup).
+        Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
 
         https://core.telegram.org/bots/api#replykeyboardremove
 
@@ -509,22 +503,31 @@ class ReplyKeyboardRemove(ReplyMarkup):
         """
         super(ReplyKeyboardRemove, self).__init__()
         self.remove_keyboard = True
-
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ReplyKeyboardRemove to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(ReplyKeyboardRemove, self).to_array()
+
         array['remove_keyboard'] = bool(self.remove_keyboard)  # type bool
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -598,8 +601,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
 class InlineKeyboardMarkup(ReplyMarkup):
     """
     This object represents an inline keyboard that appears right next to the message it belongs to.
-    Note: This will only work in Telegram versions released after 9 April, 2016.
-          Older clients will display unsupported message.
+    Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#inlinekeyboardmarkup
 
@@ -616,8 +618,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
     def __init__(self, inline_keyboard):
         """
         This object represents an inline keyboard that appears right next to the message it belongs to.
-        Note: This will only work in Telegram versions released after 9 April, 2016.
-              Older clients will display unsupported message.
+        Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
 
         https://core.telegram.org/bots/api#inlinekeyboardmarkup
 
@@ -636,14 +637,22 @@ class InlineKeyboardMarkup(ReplyMarkup):
         self.inline_keyboard = inline_keyboard
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineKeyboardMarkup to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineKeyboardMarkup, self).to_array()
+
         array['inline_keyboard'] = self._as_array(self.inline_keyboard)  # type list of list of InlineKeyboardButton
 
         return array
@@ -756,9 +765,6 @@ class InlineKeyboardButton(Button):
         """
         This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
 
-        Note: This will only work in Telegram versions released after 9 April, 2016.
-              Older clients will display unsupported message.
-
         https://core.telegram.org/bots/api#inlinekeyboardbutton
 
 
@@ -779,16 +785,7 @@ class InlineKeyboardButton(Button):
         :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
         :type  callback_data: str|unicode
 
-        :param switch_inline_query: Optional. If set,
-                                    pressing the button will prompt the user to select one of their chats,
-                                    open that chat and insert the bot's username and the specified
-                                    inline query in the input field. Can be empty, in which case just the bot's
-                                    username will be inserted.
-                                    Note:  This offers an easy way for users to start using your bot in inline mode
-                                           when they are currently in a private chat with it.
-                                           Especially useful when combined with switch_pm… actions – in this case the
-                                           user will be automatically returned to the chat they switched from,
-                                           skipping the chat selection screen.
+        :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. Can be empty, in which case just the bot's username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it. Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
         :type  switch_inline_query: str|unicode
 
         :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot's username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
@@ -805,54 +802,61 @@ class InlineKeyboardButton(Button):
 
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
-
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
         self.url = url
-
         assert_type_or_raise(login_url, None, LoginUrl, parameter_name="login_url")
         self.login_url = login_url
-
         assert_type_or_raise(callback_data, None, unicode_type, parameter_name="callback_data")
         self.callback_data = callback_data
-
         assert_type_or_raise(switch_inline_query, None, unicode_type, parameter_name="switch_inline_query")
         self.switch_inline_query = switch_inline_query
-
         assert_type_or_raise(switch_inline_query_current_chat, None, unicode_type, parameter_name="switch_inline_query_current_chat")
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
-
         assert_type_or_raise(callback_game, None, CallbackGame, parameter_name="callback_game")
         self.callback_game = callback_game
-
         assert_type_or_raise(pay, None, bool, parameter_name="pay")
         self.pay = pay
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this InlineKeyboardButton to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(InlineKeyboardButton, self).to_array()
+
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
+        # end if
         if self.login_url is not None:
             array['login_url'] = self.login_url.to_array()  # type LoginUrl
-
+        # end if
         if self.callback_data is not None:
             array['callback_data'] = u(self.callback_data)  # py2: type unicode, py3: type str
+        # end if
         if self.switch_inline_query is not None:
             array['switch_inline_query'] = u(self.switch_inline_query)  # py2: type unicode, py3: type str
+        # end if
         if self.switch_inline_query_current_chat is not None:
             array['switch_inline_query_current_chat'] = u(self.switch_inline_query_current_chat)  # py2: type unicode, py3: type str
+        # end if
         if self.callback_game is not None:
             array['callback_game'] = self.callback_game.to_array()  # type CallbackGame
-
+        # end if
         if self.pay is not None:
             array['pay'] = bool(self.pay)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -985,32 +989,41 @@ class LoginUrl(Sendable):
         super(LoginUrl, self).__init__()
         assert_type_or_raise(url, unicode_type, parameter_name="url")
         self.url = url
-
         assert_type_or_raise(forward_text, None, unicode_type, parameter_name="forward_text")
         self.forward_text = forward_text
-
         assert_type_or_raise(bot_username, None, unicode_type, parameter_name="bot_username")
         self.bot_username = bot_username
-
         assert_type_or_raise(request_write_access, None, bool, parameter_name="request_write_access")
         self.request_write_access = request_write_access
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this LoginUrl to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(LoginUrl, self).to_array()
+
         array['url'] = u(self.url)  # py2: type unicode, py3: type str
         if self.forward_text is not None:
             array['forward_text'] = u(self.forward_text)  # py2: type unicode, py3: type str
+        # end if
         if self.bot_username is not None:
             array['bot_username'] = u(self.bot_username)  # py2: type unicode, py3: type str
+        # end if
         if self.request_write_access is not None:
             array['request_write_access'] = bool(self.request_write_access)  # type bool
+        # end if
+
         return array
     # end def to_array
 
@@ -1108,7 +1121,8 @@ class ForceReply(ReplyMarkup):
     :param selective: Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
     :type  selective: bool
     """
-    def __init__(self, selective=False):
+
+    def __init__(self, selective=None):
         """
         Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as
         if the user has selected the bot's message and tapped 'Reply').
@@ -1145,22 +1159,31 @@ class ForceReply(ReplyMarkup):
         """
         super(ForceReply, self).__init__()
         self.force_reply = True
-
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this ForceReply to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(ForceReply, self).to_array()
+
         array['force_reply'] = bool(self.force_reply)  # type bool
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
+        # end if
+
         return array
     # end def to_array
 

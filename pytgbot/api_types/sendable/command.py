@@ -11,16 +11,16 @@ class BotCommand(Sendable):
     This object represents a bot command.
 
     https://core.telegram.org/bots/api#botcommand
-
+    
 
     Parameters:
-
+    
     :param command: Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
     :type  command: str|unicode
-
+    
     :param description: Description of the command, 3-256 characters.
     :type  description: str|unicode
-
+    
 
     Optional keyword parameters:
     """
@@ -30,37 +30,45 @@ class BotCommand(Sendable):
         This object represents a bot command.
 
         https://core.telegram.org/bots/api#botcommand
-
+        
 
         Parameters:
-
+        
         :param command: Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
         :type  command: str|unicode
-
+        
         :param description: Description of the command, 3-256 characters.
         :type  description: str|unicode
-
+        
 
         Optional keyword parameters:
         """
         super(BotCommand, self).__init__()
         assert_type_or_raise(command, unicode_type, parameter_name="command")
         self.command = command
-
         assert_type_or_raise(description, unicode_type, parameter_name="description")
         self.description = description
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this BotCommand to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(BotCommand, self).to_array()
+        
         array['command'] = u(self.command)  # py2: type unicode, py3: type str
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
+
         return array
     # end def to_array
 

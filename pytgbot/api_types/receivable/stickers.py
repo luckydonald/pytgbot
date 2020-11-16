@@ -11,31 +11,31 @@ class StickerSet(Result):
     This object represents a sticker set.
 
     https://core.telegram.org/bots/api#stickerset
-
+    
 
     Parameters:
-
+    
     :param name: Sticker set name
     :type  name: str|unicode
-
+    
     :param title: Sticker set title
     :type  title: str|unicode
-
+    
     :param is_animated: True, if the sticker set contains animated stickers
     :type  is_animated: bool
-
+    
     :param contains_masks: True, if the sticker set contains masks
     :type  contains_masks: bool
-
+    
     :param stickers: List of all set stickers
     :type  stickers: list of pytgbot.api_types.receivable.media.Sticker
-
+    
 
     Optional keyword parameters:
-
+    
     :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -45,75 +45,78 @@ class StickerSet(Result):
         This object represents a sticker set.
 
         https://core.telegram.org/bots/api#stickerset
-
+        
 
         Parameters:
-
+        
         :param name: Sticker set name
         :type  name: str|unicode
-
+        
         :param title: Sticker set title
         :type  title: str|unicode
-
+        
         :param is_animated: True, if the sticker set contains animated stickers
         :type  is_animated: bool
-
+        
         :param contains_masks: True, if the sticker set contains masks
         :type  contains_masks: bool
-
+        
         :param stickers: List of all set stickers
         :type  stickers: list of pytgbot.api_types.receivable.media.Sticker
-
+        
 
         Optional keyword parameters:
-
+        
         :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(StickerSet, self).__init__()
         from .media import PhotoSize
         from .media import Sticker
-
+        
         assert_type_or_raise(name, unicode_type, parameter_name="name")
         self.name = name
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
-
         assert_type_or_raise(is_animated, bool, parameter_name="is_animated")
         self.is_animated = is_animated
-
         assert_type_or_raise(contains_masks, bool, parameter_name="contains_masks")
         self.contains_masks = contains_masks
-
         assert_type_or_raise(stickers, list, parameter_name="stickers")
         self.stickers = stickers
-
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this StickerSet to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(StickerSet, self).to_array()
+        
         array['name'] = u(self.name)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['is_animated'] = bool(self.is_animated)  # type bool
         array['contains_masks'] = bool(self.contains_masks)  # type bool
         array['stickers'] = self._as_array(self.stickers)  # type list of Sticker
-
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
+        # end if
 
         return array
     # end def to_array
@@ -129,7 +132,7 @@ class StickerSet(Result):
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import PhotoSize
         from .media import Sticker
-
+        
         data = Result.validate_array(array)
         data['name'] = u(array.get('name'))
         data['title'] = u(array.get('title'))
@@ -192,25 +195,25 @@ class MaskPosition(Result):
     This object describes the position on faces where a mask should be placed by default.
 
     https://core.telegram.org/bots/api#maskposition
-
+    
 
     Parameters:
-
+    
     :param point: The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin".
     :type  point: str|unicode
-
+    
     :param x_shift: Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.
     :type  x_shift: float
-
+    
     :param y_shift: Shift by Y-axis measured in heights of the mask scaled to the face size, from top to bottom. For example, 1.0 will place the mask just below the default mask position.
     :type  y_shift: float
-
+    
     :param scale: Mask scaling coefficient. For example, 2.0 means double size.
     :type  scale: float
-
+    
 
     Optional keyword parameters:
-
+    
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -220,56 +223,62 @@ class MaskPosition(Result):
         This object describes the position on faces where a mask should be placed by default.
 
         https://core.telegram.org/bots/api#maskposition
-
+        
 
         Parameters:
-
+        
         :param point: The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin".
         :type  point: str|unicode
-
+        
         :param x_shift: Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.
         :type  x_shift: float
-
+        
         :param y_shift: Shift by Y-axis measured in heights of the mask scaled to the face size, from top to bottom. For example, 1.0 will place the mask just below the default mask position.
         :type  y_shift: float
-
+        
         :param scale: Mask scaling coefficient. For example, 2.0 means double size.
         :type  scale: float
-
+        
 
         Optional keyword parameters:
-
+        
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(MaskPosition, self).__init__()
         assert_type_or_raise(point, unicode_type, parameter_name="point")
         self.point = point
-
         assert_type_or_raise(x_shift, float, parameter_name="x_shift")
         self.x_shift = x_shift
-
         assert_type_or_raise(y_shift, float, parameter_name="y_shift")
         self.y_shift = y_shift
-
         assert_type_or_raise(scale, float, parameter_name="scale")
         self.scale = scale
 
         self._raw = _raw
     # end def __init__
 
-    def to_array(self):
+    def to_array(self, prefer_original=False):
         """
         Serializes this MaskPosition to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
         array = super(MaskPosition, self).to_array()
+        
         array['point'] = u(self.point)  # py2: type unicode, py3: type str
         array['x_shift'] = float(self.x_shift)  # type float
         array['y_shift'] = float(self.y_shift)  # type float
         array['scale'] = float(self.scale)  # type float
+
         return array
     # end def to_array
 
@@ -335,3 +344,4 @@ class MaskPosition(Result):
         )
     # end def __contains__
 # end class MaskPosition
+

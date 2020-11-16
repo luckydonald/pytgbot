@@ -14,10 +14,14 @@ logger = logging.getLogger(__name__)
 
 
 class Sendable(TgBotApiObject):
-    def __init__(self):
-        super(Sendable, self).__init__()
-    # end def __init__
-# end class
+    """
+    Base class for all classes for stuff which we throw in requests towards the telegram servers.
+
+    Optional keyword parameters:
+    """
+
+    pass
+# end class Sendable
 
 
 class InputFile(files.InputFile):
