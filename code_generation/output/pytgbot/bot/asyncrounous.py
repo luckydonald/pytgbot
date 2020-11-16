@@ -29,11 +29,6 @@ logger = logging.getLogger(__name__)
 
 
 class AsyncBot(BotBase):
-    async def send_msg(self, *args, **kwargs):
-        """ alias to :func:`send_message` """
-        return self.send_message(*args, **kwargs)
-    # end def send_msg
-
     async def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
         """
         Send a request to the api.
@@ -132,6 +127,11 @@ class AsyncBot(BotBase):
         # end def
         return await self.do(command, **kwargs)
     # end def _do_fileupload
+
+    async def send_msg(self, *args, **kwargs):
+        """ alias to :func:`send_message` """
+        return await self.send_message(*args, **kwargs)
+    # end def send_msg
 
     # start of generated functions
     
