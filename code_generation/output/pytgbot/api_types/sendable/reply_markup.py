@@ -454,7 +454,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
     :type  selective: bool
     """
 
-    def __init__(self, remove_keyboard, selective=None):
+    def __init__(self, selective=None):
         """
         Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
 
@@ -473,8 +473,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         :type  selective: bool
         """
         super(ReplyKeyboardRemove, self).__init__()
-        assert_type_or_raise(remove_keyboard, bool, parameter_name="remove_keyboard")
-        self.remove_keyboard = remove_keyboard
+        self.remove_keyboard = True
         
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
@@ -1050,7 +1049,7 @@ class ForceReply(ReplyMarkup):
     :type  selective: bool
     """
 
-    def __init__(self, force_reply, selective=None):
+    def __init__(self, selective=None):
         """
         Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
 
@@ -1076,8 +1075,7 @@ class ForceReply(ReplyMarkup):
         :type  selective: bool
         """
         super(ForceReply, self).__init__()
-        assert_type_or_raise(force_reply, bool, parameter_name="force_reply")
-        self.force_reply = force_reply
+        self.force_reply = True
         
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
