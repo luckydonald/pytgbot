@@ -293,7 +293,7 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
     def {{ function.name }}(self{% for variable in function.variables %}, {{ variable.name }}{% if variable.optional %}={{ variable.default if variable.default else 'None' }}{% endif %}{% endfor %}):{#
     #}{% endif %}
         """
-        {{ function.description if function.description else function.name | indent(8) }}
+        {{ (function.description if function.description else function.name) | indent(8) }}
 
         {{function.link}}
 
@@ -322,9 +322,9 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         result = {% if is_asyncio %}await {% endif %}self._{{ function.name }}__make_request({% for variable in function.variables %}{{ variable.name }}={{ variable.name }}{% if not loop.last %}, {% endif %}{% endfor %})
         return self._{{ function.name }}__process_result(result)
     # end def {{ function.name }}{#
+    #}{% endif %}{# <- name of function #}{#
     #}{% if not loop.last %}{# extra linebreak #}
     {% endif %}{#
-    #}{% endif %}{# <- name of function #}{#
     #}{% endfor %}
     # end of generated functions
 # end class Bot
