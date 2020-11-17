@@ -624,7 +624,7 @@ def safe_to_file(folder, results):
             all_the_clazzes.append(result)
         else:
             assert isinstance(result, Function)
-            import_path = "pytgbot.bot.asyncrounous."
+            import_path = "pytgbot.bot.asynchronous."
             file_path = calc_path_and_create_folders(folder, import_path)
             result.filepath = file_path
             functions.append(result)
@@ -709,14 +709,14 @@ def safe_to_file(folder, results):
         func_imports = list(func_imports)
         func_imports.sort()
 
-        txt_sync = bot_template.render(functions=functions, is_asyncio=False, imports=func_imports, file_import_path='pytgbot.bot.syncrounous')
-        render_file_to_disk(functions[0].filepath.replace('asyncrounous', 'syncrounous'), txt_sync)
+        txt_sync = bot_template.render(functions=functions, is_asyncio=False, imports=func_imports, file_import_path='pytgbot.bot.synchronous')
+        render_file_to_disk(functions[0].filepath.replace('asynchronous', 'synchronous'), txt_sync)
 
-        txt_async = bot_template.render(functions=functions, is_asyncio=True, imports=func_imports, file_import_path='pytgbot.bot.asyncrounous')
+        txt_async = bot_template.render(functions=functions, is_asyncio=True, imports=func_imports, file_import_path='pytgbot.bot.asynchronous')
         render_file_to_disk(functions[0].filepath, txt_async)
 
         txt_base = bot_base_template.render(functions=functions, imports=func_imports, file_import_path='pytgbot.bot.base')
-        render_file_to_disk(functions[0].filepath.replace('asyncrounous', 'base'), txt_base)
+        render_file_to_disk(functions[0].filepath.replace('asynchronous', 'base'), txt_base)
 
         imports = set()
         imports.add(('enum', 'Enum'))

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.logger import logging
-from .syncrounous import Bot
+from .asynchronous import Bot
 
 __author__ = 'luckydonald'
-__all__ = ["Bot", "syncrounous", "asyncrounous"]
+__all__ = ["Bot", "asynchronous", "synchronous"]
 
 logger = logging.getLogger(__name__)
 if __name__ == '__main__':
