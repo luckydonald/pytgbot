@@ -2695,7 +2695,7 @@ class MediaGroupMessage(SendableMessageBase):
     Parameters:
     
     :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
-    :type  media: list of InputMediaAudio, InputMediaDocument, InputMediaPhoto | pytgbot.api_types.sendable.input_media.InputMediaVideo
+    :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaAudio | list of pytgbot.api_types.sendable.input_media.InputMediaDocument | list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
     
     
     Optional keyword parameters:
@@ -2724,7 +2724,7 @@ class MediaGroupMessage(SendableMessageBase):
         Parameters:
         
         :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
-        :type  media: list of InputMediaAudio, InputMediaDocument, InputMediaPhoto | pytgbot.api_types.sendable.input_media.InputMediaVideo
+        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaAudio | list of pytgbot.api_types.sendable.input_media.InputMediaDocument | list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
         Optional keyword parameters:
@@ -2743,9 +2743,12 @@ class MediaGroupMessage(SendableMessageBase):
         
         """
         super(MediaGroupMessage, self).__init__()
+        from pytgbot.api_types.sendable.input_media import InputMediaAudio
+        from pytgbot.api_types.sendable.input_media import InputMediaDocument
+        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
         from pytgbot.api_types.sendable.input_media import InputMediaVideo
         
-        assert_type_or_raise(media, list, InputMediaVideo, parameter_name="media")
+        assert_type_or_raise(media, list, list, list, list, parameter_name="media")
         self.media = media
         
         assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
@@ -2786,10 +2789,14 @@ class MediaGroupMessage(SendableMessageBase):
         :rtype: dict
         """
         array = super(MediaGroupMessage, self).to_array()
-        if isinstance(self.media, InputMediaAudio, InputMediaDocument, InputMediaPhoto):
-            array['media'] = self._as_array(self.media)  # type list of InputMediaAudio, InputMediaDocument, InputMediaPhoto | InputMediaVideo
+        if isinstance(self.media, InputMediaAudio):
+            array['media'] = self._as_array(self.media)  # type list of InputMediaAudio | list of InputMediaDocument | list of InputMediaPhoto | list of InputMediaVideo
+        elif isinstance(self.media, InputMediaDocument):
+            array['media'] = self._as_array(self.media)  # type list of InputMediaAudio | list of InputMediaDocument | list of InputMediaPhoto | list of InputMediaVideo
+        elif isinstance(self.media, InputMediaPhoto):
+            array['media'] = self._as_array(self.media)  # type list of InputMediaAudio | list of InputMediaDocument | list of InputMediaPhoto | list of InputMediaVideo
         elif isinstance(self.media, InputMediaVideo):
-            array['media'] = self.media.to_array()  # type InputMediaVideo
+            array['media'] = self._as_array(self.media)  # type list of InputMediaAudio | list of InputMediaDocument | list of InputMediaPhoto | list of InputMediaVideo
         else:
             raise TypeError('Unknown type, must be one of InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo.')
         # end if
@@ -2826,13 +2833,20 @@ class MediaGroupMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
+        from pytgbot.api_types.sendable.input_media import InputMediaAudio
+        from pytgbot.api_types.sendable.input_media import InputMediaDocument
+        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
         from pytgbot.api_types.sendable.input_media import InputMediaVideo
         
         data = SendableMessageBase.validate_array(array)
-        if isinstance(array.get('media'), InputMediaAudio, InputMediaDocument, InputMediaPhoto):
-            data['media'] = InputMediaAudio, InputMediaDocument, InputMediaPhoto.from_array_list(array.get('media'), list_level=1)
+        if isinstance(array.get('media'), InputMediaAudio):
+            data['media'] = InputMediaAudio.from_array_list(array.get('media'), list_level=1)
+        elif isinstance(array.get('media'), InputMediaDocument):
+            data['media'] = InputMediaDocument.from_array_list(array.get('media'), list_level=1)
+        elif isinstance(array.get('media'), InputMediaPhoto):
+            data['media'] = InputMediaPhoto.from_array_list(array.get('media'), list_level=1)
         elif isinstance(array.get('media'), InputMediaVideo):
-            data['media'] = InputMediaVideo.from_array(array.get('media'))
+            data['media'] = InputMediaVideo.from_array_list(array.get('media'), list_level=1)
         else:
             raise TypeError('Unknown type, must be one of InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo.')
         # end if

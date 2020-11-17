@@ -5,6 +5,9 @@ from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
 from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 from pytgbot.api_types.sendable.reply_markup import ForceReply
+from pytgbot.api_types.sendable.input_media import InputMediaDocument
+from pytgbot.api_types.sendable.input_media import InputMediaAudio
+from pytgbot.api_types.sendable.input_media import InputMediaPhoto
 from pytgbot.api_types.sendable.input_media import InputMediaVideo
 from pytgbot.api_types.sendable.input_media import InputMedia
 from pytgbot.api_types.receivable.stickers import MaskPosition
@@ -852,7 +855,7 @@ async def send_video_note(
 async def send_media_group(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    media: Json[Union[List['InputMediaAudio, InputMediaDocument, InputMediaPhotoModel'], 'InputMediaVideoModel']] = Query(..., description='A JSON-serialized array describing messages to be sent, must include 2-10 items'),
+    media: Json[Union[List['InputMediaAudioModel'], List['InputMediaDocumentModel'], List['InputMediaPhotoModel'], List['InputMediaVideoModel']]] = Query(..., description='A JSON-serialized array describing messages to be sent, must include 2-10 items'),
     disable_notification: Optional[bool] = Query(None, description='Sends messages silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the messages are a reply, ID of the original message'),
     allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
@@ -862,8 +865,8 @@ async def send_media_group(
 
     https://core.telegram.org/bots/api#sendmediagroup
     """
-    media: Union[List[InputMediaAudio, InputMediaDocument, InputMediaPhotoModel], InputMediaVideoModel] = parse_obj_as(
-        Union[List[InputMediaAudio, InputMediaDocument, InputMediaPhotoModel], InputMediaVideoModel],
+    media: Union[List[InputMediaAudioModel], List[InputMediaDocumentModel], List[InputMediaPhotoModel], List[InputMediaVideoModel]] = parse_obj_as(
+        Union[List[InputMediaAudioModel], List[InputMediaDocumentModel], List[InputMediaPhotoModel], List[InputMediaVideoModel]],
         obj=media,
     )
 

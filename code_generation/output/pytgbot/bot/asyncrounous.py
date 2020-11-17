@@ -45,6 +45,9 @@ from ..api_types.sendable.command import BotCommand
 from ..api_types.sendable.files import InputFile
 from ..api_types.sendable.inline import InlineQueryResult
 from ..api_types.sendable.input_media import InputMedia
+from ..api_types.sendable.input_media import InputMediaAudio
+from ..api_types.sendable.input_media import InputMediaDocument
+from ..api_types.sendable.input_media import InputMediaPhoto
 from ..api_types.sendable.input_media import InputMediaVideo
 from ..api_types.sendable.passport import PassportElementError
 from ..api_types.sendable.payments import LabeledPrice
@@ -923,7 +926,7 @@ class AsyncBot(BotBase):
         return self._send_video_note__process_result(result)
     # end def send_video_note
     
-    async def send_media_group(self, chat_id: Union[int, str], media: Union[List[InputMediaAudio, InputMediaDocument, InputMediaPhoto], InputMediaVideo], disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None) -> List[Message]:
+    async def send_media_group(self, chat_id: Union[int, str], media: Union[List[InputMediaAudio], List[InputMediaDocument], List[InputMediaPhoto], List[InputMediaVideo]], disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None) -> List[Message]:
         """
         Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
 
@@ -937,7 +940,7 @@ class AsyncBot(BotBase):
         :type  chat_id: int | str|unicode
         
         :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
-        :type  media: list of InputMediaAudio, InputMediaDocument, InputMediaPhoto | pytgbot.api_types.sendable.input_media.InputMediaVideo
+        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaAudio | list of pytgbot.api_types.sendable.input_media.InputMediaDocument | list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
         Optional keyword parameters:

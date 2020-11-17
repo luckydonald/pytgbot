@@ -905,7 +905,7 @@ class SyncBot(BotBase):
         :type  chat_id: int | str|unicode
         
         :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
-        :type  media: list of InputMediaAudio, InputMediaDocument, InputMediaPhoto | pytgbot.api_types.sendable.input_media.InputMediaVideo
+        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaAudio | list of pytgbot.api_types.sendable.input_media.InputMediaDocument | list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
         Optional keyword parameters:

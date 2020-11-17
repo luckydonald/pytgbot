@@ -212,7 +212,7 @@ Function "sendMessage" => "Message" will be replaced with "TextMessage".
 
 
 TYPE_STRING_OVERRIDES = {  # Overrides function types
-    "Array of InputMediaPhoto and InputMediaVideo": "list of InputMediaPhoto | list of InputMediaVideo",  # sendMediaGroup
+    "Array of InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo": "list of InputMediaAudio | list of InputMediaDocument | list of InputMediaPhoto | list of InputMediaVideo",  # sendMediaGroup
     "Messages": "list of Message",  # sendMediaGroup
 }
 """

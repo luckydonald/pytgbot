@@ -1395,7 +1395,7 @@ class BotBase(object):
         :type  chat_id: int | str|unicode
         
         :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
-        :type  media: list of InputMediaAudio, InputMediaDocument, InputMediaPhoto | pytgbot.api_types.sendable.input_media.InputMediaVideo
+        :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaAudio | list of pytgbot.api_types.sendable.input_media.InputMediaDocument | list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
         
         
         Optional keyword parameters:
@@ -1412,10 +1412,13 @@ class BotBase(object):
         :return: the decoded json
         :rtype:  dict|list|bool
         """
+        from pytgbot.api_types.sendable.input_media import InputMediaAudio
+        from pytgbot.api_types.sendable.input_media import InputMediaDocument
+        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
         from pytgbot.api_types.sendable.input_media import InputMediaVideo
         
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        assert_type_or_raise(media, (list, InputMediaVideo), parameter_name="media")
+        assert_type_or_raise(media, (list, list, list, list), parameter_name="media")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
