@@ -10,6 +10,8 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 
 from ..exceptions import TgApiServerException, TgApiParseException
 from ..exceptions import TgApiTypeError, TgApiResponseException
+from ..exceptions import TgApiException
+
 from ..api_types.sendable.inline import InlineQueryResult
 from ..api_types import from_array_list
 
@@ -19,7 +21,9 @@ from .base import BotBase
 # async imports
 from async_property import async_property
 from typing import Union, Optional, List, Any
+from asyncio import sleep
 import httpx
+import httpx.exceptions
 
 
 from ..api_types.receivable.game import GameHighScore
@@ -106,7 +110,6 @@ class AsyncBot(BotBase):
         :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
-        import httpx
 
         url, params = self._prepare_request(command, query)
         logger.debug('Sending async request to url {url!r} with params: {params!r}'.format(url=url, params=params))
@@ -176,40 +179,104 @@ class AsyncBot(BotBase):
 
     # start of generated functions
     
-    async def get_updates(self, offset: Optional[int] = None, limit: Optional[int] = None, timeout: Optional[int] = None, allowed_updates: Optional[List[str]] = None) -> List[Update]:
+    async def get_updates(self, offset: Optional[int] = None, limit: Optional[int] = 100, poll_timeout: Optional[int] = None, allowed_updates: Optional[List[str]] = None, request_timeout: Optional[int] = None, delta: timedelta = timedelta(milliseconds=100), error_as_empty: bool = False) -> List[Update]:
         """
-        Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
+        Use this method to receive incoming updates using long polling (See https://en.wikipedia.org/wiki/Push_technology#Long_polling).
+        An Array of Update objects is returned.
 
-Notes1. This method will not work if an outgoing webhook is set up.2. In order to avoid getting duplicate updates, recalculate offset after each server response.
+        You can choose to set `error_as_empty` to `True` or `False`.
+        If `error_as_empty` is set to `True`, it will log that exception as warning, and fake an empty result,
+        intended for use in for loops. In case of such error (and only in such case) it contains an "exception" field.
+        Ìt will look like this: `{"result": [], "exception": e}`
+        This is useful if you want to use a for loop, but ignore Network related burps.
 
+        If `error_as_empty` is set to `False` however, all `requests.RequestException` exceptions are normally raised.
 
-        https://core.telegram.org/bots/api#getupdates
+        :keyword offset: (Optional)	Identifier of the first update to be returned.
+                 Must be greater by one than the highest among the identifiers of previously received updates.
+                 By default, updates starting with the earliest unconfirmed update are returned.
+                 An update is considered confirmed as soon as :func:`get_updates` is called with
+                 an offset higher than its `update_id`.
+        :type offset: int
 
-
-        
-        Optional keyword parameters:
-        
-        :param offset: Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.
-        :type  offset: int
-        
-        :param limit: Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100.
+        :param limit: Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100
         :type  limit: int
-        
-        :param timeout: Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
-        :type  timeout: int
-        
-        :param allowed_updates: A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
-        :type  allowed_updates: list of str|unicode
-        
+
+        :param poll_timeout: Timeout in seconds for long polling, e.g. how long we want to wait maximum.
+                               Defaults to 0, i.e. usual short polling.
+        :type  poll_timeout: int
+
+        :param allowed_updates: List the types of updates you want your bot to receive.
+                                  For example, specify [“message”, “edited_channel_post”, “callback_query”] to only
+                                  receive updates of these types. See Update for a complete list of available update
+                                  types. Specify an empty list to receive all updates regardless of type (default).
+                                  If not specified, the previous setting will be used. Please note that this parameter
+                                  doesn't affect updates created before the call to the get_updates,
+                                  so unwanted updates may be received for a short period of time.
+        :type allowed_updates: list of str
+
+
+        :param request_timeout: Timeout of the request. Not the long polling server side timeout.
+                                  If not specified, it is set to `poll_timeout`+2.
+        :type request_timeout: int
+
+        :param delta: Wait minimal 'delta' seconds, between requests. Useful in a loop.
+        :type  delta: datetime.
+
+        :param error_as_empty: If errors which subclasses `requests.RequestException` will be logged but not raised.
+                 Instead the returned DictObject will contain an "exception" field containing the exception occured,
+                 the "result" field will be an empty list `[]`. Defaults to `False`.
+        :type  error_as_empty: bool
+
+
         Returns:
 
-        :return: An Array of Update objects is returned
-        :rtype:  list of pytgbot.api_types.receivable.updates.Update
+        :return: An Array of Update objects is returned,
+                 or an empty array if there was an requests.RequestException and error_as_empty is set to True.
+        :rtype: list of pytgbot.api_types.receivable.updates.Update
         """
-        result = await self._get_updates__make_request(offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates)
-        return self._get_updates__process_result(result)
+        assert(offset is None or isinstance(offset, int))
+        assert(limit is None or isinstance(limit, int))
+        assert(poll_timeout is None or isinstance(poll_timeout, int))
+        assert(allowed_updates is None or isinstance(allowed_updates, list))
+        if poll_timeout and not request_timeout is None:
+            request_timeout = poll_timeout + 2
+        # end if
+
+        if delta.total_seconds() > poll_timeout:
+            now = datetime.now()
+            if self._last_update - now < delta:
+                wait = ((now - self._last_update) - delta).total_seconds()  # can be 0.2
+                wait = 0 if wait < 0 else wait
+                if wait != 0:
+                    logger.debug("Sleeping {i} seconds.".format(i=wait))
+                # end if
+                await sleep(wait)
+            # end if
+        # end if
+        self._last_update = datetime.now()
+        use_long_polling = poll_timeout != 0
+        try:
+            result = await self.do(
+                "getUpdates", offset=offset, limit=limit, timeout=poll_timeout, allowed_updates=allowed_updates,
+                use_long_polling=use_long_polling, request_timeout=request_timeout
+            )
+            return self._get_updates__process_result(result)
+        except (httpx.exceptions.HTTPError, TgApiException) as e:
+            if error_as_empty:
+                if not isinstance(e, httpx.exceptions.TimeoutException) or not use_long_polling:
+                    logger.warning(
+                        "Network related error happened in get_updates(), but will be ignored: " + str(e),
+                        exc_info=True
+                    )
+                # end if
+                self._last_update = datetime.now()
+                return DictObject(result=[], exception=e)
+            else:
+                raise
+            # end if
+        # end try
     # end def get_updates
-    
     async def set_webhook(self, url: str, certificate: Optional[InputFile] = None, ip_address: Optional[str] = None, max_connections: Optional[int] = None, allowed_updates: Optional[List[str]] = None, drop_pending_updates: Optional[bool] = None) -> bool:
         """
         Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
