@@ -9,7 +9,7 @@ long_description = """A Python module that connects to the Telegram bot api, all
 
 sync_requirements = ["requests", "requests[security]"]
 setup(
-    name='pytgbot', version="4.9.1",
+    name='pytgbot', version="5.0.0-beta.1",
     description='Connect to the Telegram Bot API, receive and send Telegram messages.',
     long_description=long_description,
     # The project's main homepage.
@@ -18,7 +18,7 @@ setup(
     author='luckydonald',
     author_email='code@luckydonald.de',
     # Choose your license
-    license='GPLv3+',
+    license='LGPLv3+',
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         'Development Status :: 4 - Beta',  # 2 - Pre-Alpha, 3 - Alpha, 4 - Beta, 5 - Production/Stable
