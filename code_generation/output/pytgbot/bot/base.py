@@ -69,8 +69,10 @@ class BotBase(object):
                 if isinstance(element, (str, int, float, bool)):
                     params[key] = element
                 elif isinstance(element, InputFile):
-                    files.update(element.get_request_files(key))
-                    params[key] = 'attach://{where}'.format(where=key)
+                    params[key], file_info = element.get_input_media_referenced_files(key)
+                    if file_info is not None:
+                        files.update(file_info)
+                    # end if
                 else:
                     params[key] = json.dumps(as_array(element))
                 # end if
