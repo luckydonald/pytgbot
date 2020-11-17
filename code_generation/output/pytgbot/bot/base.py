@@ -14,7 +14,9 @@ from ..exceptions import TgApiServerException, TgApiParseException
 from ..exceptions import TgApiTypeError, TgApiResponseException
 from ..api_types.sendable.inline import InlineQueryResult
 from ..api_types.receivable.peer import User
-from ..api_types import from_array_list
+from ..api_types import from_array_list, as_array
+from ..api_types.sendable.files import InputFile
+from ..api_types.sendable import Sendable
 
 
 __author__ = 'luckydonald'
@@ -59,23 +61,23 @@ class BotBase(object):
 
         :return: params and a url, for use with requests etc.
         """
-        from ..api_types.sendable import Sendable
-        from ..api_types import as_array
-        import json
-
         params = {}
+        files = {}
         for key in query.keys():
             element = query[key]
             if element is not None:
                 if isinstance(element, (str, int, float, bool)):
                     params[key] = element
+                elif isinstance(element, InputFile):
+                    files.update(element.get_request_files(key))
+                    params[key] = 'attach://{where}'.format(where=key)
                 else:
                     params[key] = json.dumps(as_array(element))
                 # end if
             # end if
         # end for
         url = self._base_url.format(api_key=n(self.api_key), command=n(command))
-        return url, params
+        return url, params, files
     # end def _prepare_request
 
     def _postprocess_request(self, request, response, json):
@@ -160,8 +162,7 @@ class BotBase(object):
             files = value.get_request_files(file_param_name)
             if "files" in kwargs and kwargs["files"]:
                 # already are some files there, merge them.
-                assert isinstance(kwargs["files"], dict), \
-                    'The files should be of type dict, but are of type {}.'.format(type(kwargs["files"]))
+                assert isinstance(kwargs["files"], dict), 'The files should be of type dict, but are of type {}.'.format(type(kwargs["files"]))
                 for key in files.keys():
                     assert key not in kwargs["files"], '{key} would be overwritten!'
                     kwargs["files"][key] = files[key]

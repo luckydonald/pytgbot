@@ -104,7 +104,7 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
 
-        url, params = self._prepare_request(command, query){#
+        url, params, files = self._prepare_request(command, query){#
         #}{% if is_asyncio %}
         logger.debug('Sending async request to url {url!r} with params: {params!r}'.format(url=url, params=params))
         async with httpx.AsyncClient(

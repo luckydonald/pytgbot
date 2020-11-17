@@ -86,7 +86,7 @@ class SyncBot(BotBase):
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
 
-        url, params = self._prepare_request(command, query)
+        url, params, files = self._prepare_request(command, query)
         r = requests.post(
             url,
             params=params,

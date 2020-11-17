@@ -114,7 +114,7 @@ class AsyncBot(BotBase):
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
 
-        url, params = self._prepare_request(command, query)
+        url, params, files = self._prepare_request(command, query)
         logger.debug('Sending async request to url {url!r} with params: {params!r}'.format(url=url, params=params))
         async with httpx.AsyncClient(
             verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
