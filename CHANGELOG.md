@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.0.0b2
+This is a re-release of `5.0.0-beta.1`, as PyPi did like that short version format better.
+Other than the version number it is exactly the same as `5.0.0-beta.1`.
+
 ## Version 5.0.0-beta.1 
 Core:
 - The already for a while now deprecated `pytgbot.api_types.sendable.InputFile`, `pytgbot.api_types.sendable.InputFileFromURL` and `pytgbot.api_types.sendable.InputFileFromDisk` can no longer be found in `pytgbot.api_types.sendable.\*`
