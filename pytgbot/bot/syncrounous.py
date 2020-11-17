@@ -35,6 +35,115 @@ class SyncBot(BotBase):
         # end def
     # end def
 
+    def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
+        """
+        Send a request to the api.
+
+        If the bot is set to return the json objects, it will look like this:
+
+        ```json
+        {
+            "ok": bool,
+            "result": {...},
+            # optionally present:
+            "description": "human-readable description of the result",
+            "error_code": int
+        }
+        ```
+
+        :param command: The Url command parameter
+        :type  command: str
+
+        :param request_timeout: When the request should time out. Default: `None`
+        :type  request_timeout: int
+
+        :param files: if it needs to send files.
+
+        :param use_long_polling: if it should use long polling. Default: `False`
+                                (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
+        :type  use_long_polling: bool
+
+        :param query: all the other `**kwargs` will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        """
+        import requests
+
+        url, params = self._prepare_request(command, query)
+        logger.debug('Sending sync request to url {url!r} with params: {params!r}'.format(url=url, params=params))
+        r = requests.post(
+            url, params=params, files=files, stream=use_long_polling,
+            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+            timeout=request_timeout
+        )
+        json = r.json()
+        return self._postprocess_request(r.request, response=r, json=json)
+    # end def do
+
+    def _do_fileupload(self, file_param_name, value, _command=None, _file_is_optional=False, **kwargs):
+        """
+        :param file_param_name: For what field the file should be uploaded.
+        :type  file_param_name: str
+
+        :param value: File to send. You can either pass a file_id as String to resend a file
+                      file that is already on the Telegram servers, or upload a new file,
+                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
+                      If `_file_is_optional` is set to `True`, it can also be set to `None`.
+        :type  value: pytgbot.api_types.sendable.files.InputFile | str | None
+
+        :param _command: Overwrite the command to be send.
+                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
+        :type  _command: str|None
+
+        :param _file_is_optional: If the file (`value`) is allowed to be None.
+        :type  _file_is_optional: bool
+
+        :param kwargs: will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+
+        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
+        """
+        from ..api_types.sendable.files import InputFile
+        from luckydonaldUtils.encoding import unicode_type
+        from luckydonaldUtils.encoding import to_native as n
+
+        if value is None and _file_is_optional:
+            # Is None but set optional, so do nothing.
+            pass
+        elif isinstance(value, str):
+            kwargs[file_param_name] = str(value)
+        elif isinstance(value, unicode_type):
+            kwargs[file_param_name] = n(value)
+        elif isinstance(value, InputFile):
+            files = value.get_request_files(file_param_name)
+            if "files" in kwargs and kwargs["files"]:
+                # already are some files there, merge them.
+                assert isinstance(kwargs["files"], dict), \
+                    'The files should be of type dict, but are of type {}.'.format(type(kwargs["files"]))
+                for key in files.keys():
+                    assert key not in kwargs["files"], '{key} would be overwritten!'
+                    kwargs["files"][key] = files[key]
+                # end for
+            else:
+                # no files so far
+                kwargs["files"] = files
+            # end if
+        else:
+            raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
+                key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
+        # end if
+        if not _command:
+            # command as camelCase  # "voice_note" -> "sendVoiceNote"  # https://stackoverflow.com/a/10984923/3423324
+            command = re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), "send_" + file_param_name)
+        else:
+            command = _command
+        # end def
+        return self.do(command, **kwargs)
+    # end def _do_fileupload
+
     def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
@@ -146,115 +255,6 @@ class SyncBot(BotBase):
             # end if
         # end try
     # end def get_updates
-
-    def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
-        """
-        Send a request to the api.
-
-        If the bot is set to return the json objects, it will look like this:
-
-        ```json
-        {
-            "ok": bool,
-            "result": {...},
-            # optionally present:
-            "description": "human-readable description of the result",
-            "error_code": int
-        }
-        ```
-
-        :param command: The Url command parameter
-        :type  command: str
-
-        :param request_timeout: When the request should time out. Default: `None`
-        :type  request_timeout: int
-
-        :param files: if it needs to send files.
-
-        :param use_long_polling: if it should use long polling. Default: `False`
-                                (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
-        :type  use_long_polling: bool
-
-        :param query: all the other `**kwargs` will get json encoded.
-
-        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
-        """
-        import requests
-
-        url, params = self._prepare_request(command, query)
-        logger.debug('Sending sync request to url {url!r} with params: {params!r}'.format(url=url, params=params))
-        r = requests.post(
-            url, params=params, files=files, stream=use_long_polling,
-            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
-            timeout=request_timeout
-        )
-        json = r.json()
-        return self._postprocess_request(r.request, response=r, json=json)
-    # end def do
-
-    def _do_fileupload(self, file_param_name, value, _command=None, _file_is_optional=False, **kwargs):
-        """
-        :param file_param_name: For what field the file should be uploaded.
-        :type  file_param_name: str
-
-        :param value: File to send. You can either pass a file_id as String to resend a file
-                      file that is already on the Telegram servers, or upload a new file,
-                      specifying the file path as :class:`pytgbot.api_types.sendable.files.InputFile`.
-                      If `_file_is_optional` is set to `True`, it can also be set to `None`.
-        :type  value: pytgbot.api_types.sendable.files.InputFile | str | None
-
-        :param _command: Overwrite the command to be send.
-                         Default is to convert `file_param_name` to camel case (`"voice_note"` -> `"sendVoiceNote"`)
-        :type  _command: str|None
-
-        :param _file_is_optional: If the file (`value`) is allowed to be None.
-        :type  _file_is_optional: bool
-
-        :param kwargs: will get json encoded.
-
-        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype: DictObject.DictObject | pytgbot.api_types.receivable.Receivable
-
-        :raises TgApiTypeError, TgApiParseException, TgApiServerException: Everything from :meth:`Bot.do`, and :class:`TgApiTypeError`
-        """
-        from ..api_types.sendable.files import InputFile
-        from luckydonaldUtils.encoding import unicode_type
-        from luckydonaldUtils.encoding import to_native as n
-
-        if value is None and _file_is_optional:
-            # Is None but set optional, so do nothing.
-            pass
-        elif isinstance(value, str):
-            kwargs[file_param_name] = str(value)
-        elif isinstance(value, unicode_type):
-            kwargs[file_param_name] = n(value)
-        elif isinstance(value, InputFile):
-            files = value.get_request_files(file_param_name)
-            if "files" in kwargs and kwargs["files"]:
-                # already are some files there, merge them.
-                assert isinstance(kwargs["files"], dict), \
-                    'The files should be of type dict, but are of type {}.'.format(type(kwargs["files"]))
-                for key in files.keys():
-                    assert key not in kwargs["files"], '{key} would be overwritten!'
-                    kwargs["files"][key] = files[key]
-                # end for
-            else:
-                # no files so far
-                kwargs["files"] = files
-            # end if
-        else:
-            raise TgApiTypeError("Parameter {key} is not type (str, {text_type}, {input_file_type}), but type {type}".format(
-                key=file_param_name, type=type(value), input_file_type=InputFile, text_type=unicode_type))
-        # end if
-        if not _command:
-            # command as camelCase  # "voice_note" -> "sendVoiceNote"  # https://stackoverflow.com/a/10984923/3423324
-            command = re.sub(r'(?!^)_([a-zA-Z])', lambda m: m.group(1).upper(), "send_" + file_param_name)
-        else:
-            command = _command
-        # end def
-        return self.do(command, **kwargs)
-    # end def _do_fileupload
 # end class Bot
 
 Bot = SyncBot

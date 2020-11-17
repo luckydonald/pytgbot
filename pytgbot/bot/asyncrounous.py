@@ -33,6 +33,61 @@ class AsyncBot(BotBase):
         self._me = myself
     # end def
 
+    async def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
+        """
+        Send a request to the api.
+
+        If the bot is set to return the json objects, it will look like this:
+
+        ```json
+        {
+            "ok": bool,
+            "result": {...},
+            # optionally present:
+            "description": "human-readable description of the result",
+            "error_code": int
+        }
+        ```
+
+        :param command: The Url command parameter
+        :type  command: str
+
+        :param request_timeout: When the request should time out. Default: `None`
+        :type  request_timeout: int
+
+        :param files: if it needs to send files.
+
+        :param use_long_polling: if it should use long polling. Default: `False`
+                                (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
+        :type  use_long_polling: bool
+
+        :param query: all the other `**kwargs` will get json encoded.
+
+        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
+        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
+        """
+        import httpx
+
+        url, params = self._prepare_request(command, query)
+        logger.debug('Sending async request to url {url!r} with params: {params!r}'.format(url=url, params=params))
+        async with httpx.AsyncClient(
+            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
+        ) as client:
+            if use_long_polling:
+                method = client.stream
+            else:
+                method = client.request
+            # end if
+            r = await method(
+                'POST',
+                url=url, params=params, files=files,
+                timeout=request_timeout
+            )
+        # end with
+        json = r.json()
+        return self._postprocess_request(r.request, r, json=json)
+    # end def do
+
     async def get_updates(self, offset=None, limit=100, poll_timeout=0, allowed_updates=None, request_timeout=None, delta=timedelta(milliseconds=100), error_as_empty=False):
         """
         Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
@@ -141,61 +196,6 @@ class AsyncBot(BotBase):
             # end if
         # end try
     # end def get_updates
-
-    async def do(self, command, files=None, use_long_polling=False, request_timeout=None, **query):
-        """
-        Send a request to the api.
-
-        If the bot is set to return the json objects, it will look like this:
-
-        ```json
-        {
-            "ok": bool,
-            "result": {...},
-            # optionally present:
-            "description": "human-readable description of the result",
-            "error_code": int
-        }
-        ```
-
-        :param command: The Url command parameter
-        :type  command: str
-
-        :param request_timeout: When the request should time out. Default: `None`
-        :type  request_timeout: int
-
-        :param files: if it needs to send files.
-
-        :param use_long_polling: if it should use long polling. Default: `False`
-                                (see http://docs.python-requests.org/en/latest/api/#requests.Response.iter_content)
-        :type  use_long_polling: bool
-
-        :param query: all the other `**kwargs` will get json encoded.
-
-        :return: The json response from the server, or, if `self.return_python_objects` is `True`, a parsed return type.
-        :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
-        """
-        import httpx
-
-        url, params = self._prepare_request(command, query)
-        logger.debug('Sending async request to url {url!r} with params: {params!r}'.format(url=url, params=params))
-        async with httpx.AsyncClient(
-            verify=True,  # No self signed certificates. Telegram should be trustworthy anyway...
-        ) as client:
-            if use_long_polling:
-                method = client.stream
-            else:
-                method = client.request
-            # end if
-            r = await method(
-                'POST',
-                url=url, params=params, files=files,
-                timeout=request_timeout
-            )
-        # end with
-        json = r.json()
-        return self._postprocess_request(r.request, r, json=json)
-    # end def do
 # end class Bot
 
 Bot = AsyncBot
