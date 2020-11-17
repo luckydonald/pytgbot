@@ -64,7 +64,7 @@ logger = logging.getLogger(__name__)
 
 
 class AsyncBot(BotBase):
-    async def _load_info(self):
+    def _load_info(self):
         """
         This functions stores the id and the username of the bot.
         Called by `.username` and `.id` properties.
