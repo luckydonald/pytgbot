@@ -1449,9 +1449,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
 
         # type is given by class type
-
-        assert_type_or_raise(id, unicode_type, parameter_name="id")
-        self.id = id
+        # id is given by class type
         assert_type_or_raise(audio_url, unicode_type, parameter_name="audio_url")
         self.audio_url = audio_url
         assert_type_or_raise(title, unicode_type, parameter_name="title")

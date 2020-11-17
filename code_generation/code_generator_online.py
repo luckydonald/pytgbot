@@ -209,7 +209,28 @@ def parse_table(tag):
     # TABLE BODY
 
     for tds in tbodys:
-        string = "\t".join([col.text for col in tds])
+        string = ''
+        for col in tds:
+            string += "\t"
+            had_something = False
+            for sub_col in col:
+                if isinstance(sub_col, NavigableString):
+                    string += sub_col
+                    had_something = True
+                elif sub_col.name == 'img':
+                    # emojis are images: <img alt="🎲" class="emoji" height="20" src="//telegram.org/img/emoji/40/F09F8EB2.png" width="20"/>
+                    string += sub_col.attrs.get('alt', '')
+                    had_something = True
+                else:
+                    string += sub_col.text
+                    had_something = True
+                # end if
+            # end for
+            if not had_something:
+                string += col.text
+            # end if
+        # end for
+        string = string.lstrip("\t")
         logger.debug("t: " + string)
         param_strings.append(string)
         pass
@@ -313,6 +334,9 @@ def load_from_html(folder):
             elif sibling.name == "h3":
                 break
             elif sibling.name == "hr":  # end of page
+                break
+            elif sibling.name == "img":  # end of page
+
                 break
             else:
                 logger.info("unknown: " + sibling.name)

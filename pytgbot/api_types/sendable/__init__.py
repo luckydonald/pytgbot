@@ -19,3 +19,4 @@ class Sendable(TgBotApiObject):
 
     pass
 # end class Sendable
+

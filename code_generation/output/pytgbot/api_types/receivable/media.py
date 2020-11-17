@@ -1749,7 +1749,7 @@ class Dice(Media):
     :param emoji: Emoji on which the dice throw animation is based
     :type  emoji: str|unicode
     
-    :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" and "" base emoji, 1-64 for "" base emoji
+    :param value: Value of the dice, 1-6 for "🎲" and "🎯" base emoji, 1-5 for "🏀" and "⚽" base emoji, 1-64 for "🎰" base emoji
     :type  value: int
     
 
@@ -1771,7 +1771,7 @@ class Dice(Media):
         :param emoji: Emoji on which the dice throw animation is based
         :type  emoji: str|unicode
         
-        :param value: Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" and "" base emoji, 1-64 for "" base emoji
+        :param value: Value of the dice, 1-6 for "🎲" and "🎯" base emoji, 1-5 for "🏀" and "⚽" base emoji, 1-64 for "🎰" base emoji
         :type  value: int
         
 

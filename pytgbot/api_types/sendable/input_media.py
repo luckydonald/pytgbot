@@ -25,7 +25,7 @@ class InputMedia(Sendable):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -93,7 +93,7 @@ class InputMedia(Sendable):
         array = super(InputMedia, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-        # array['media'] = u(self.media)  # py2: type unicode, py3: type str
+        array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         # end if
@@ -225,7 +225,7 @@ class InputMediaWithThumb(InputMedia):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -287,7 +287,7 @@ class InputMediaWithThumb(InputMedia):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -436,7 +436,7 @@ class InputMediaPlayable(InputMediaWithThumb):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -472,7 +472,7 @@ class InputMediaPlayable(InputMediaWithThumb):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -623,7 +623,7 @@ class InputMediaVideolike(InputMediaPlayable):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
 
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
@@ -665,7 +665,7 @@ class InputMediaVideolike(InputMediaPlayable):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
 
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.

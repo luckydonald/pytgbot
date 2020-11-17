@@ -1297,7 +1297,7 @@ class AsyncBot(BotBase):
         
         Optional keyword parameters:
         
-        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "", "", "", "", or "". Dice can have values 1-6 for "" and "", values 1-5 for "" and "", and values 1-64 for "". Defaults to ""
+        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", or "🎰". Dice can have values 1-6 for "🎲" and "🎯", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
         :type  emoji: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.

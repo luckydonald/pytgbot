@@ -5,7 +5,6 @@ from pytgbot.api_types import TgBotApiObject
 
 __author__ = 'luckydonald'
 __all__ = ["game", "inline", "media", "payments", "peer", "stickers", "updates", "command", "Receivable", "Result", "WebhookInfo"]
-logger = logging.getLogger(__name__)
 
 
 class Receivable(TgBotApiObject):

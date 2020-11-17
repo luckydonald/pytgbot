@@ -4231,7 +4231,7 @@ class DiceMessage(SendableMessageBase):
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
     
-    :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "", "", "", "", or "". Dice can have values 1-6 for "" and "", values 1-5 for "" and "", and values 1-64 for "". Defaults to ""
+    :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", or "🎰". Dice can have values 1-6 for "🎲" and "🎯", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
     :type  emoji: str|unicode
     
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -4260,7 +4260,7 @@ class DiceMessage(SendableMessageBase):
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
         
-        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "", "", "", "", or "". Dice can have values 1-6 for "" and "", values 1-5 for "" and "", and values 1-64 for "". Defaults to ""
+        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", or "🎰". Dice can have values 1-6 for "🎲" and "🎯", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
         :type  emoji: str|unicode
         
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
