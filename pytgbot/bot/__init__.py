@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.logger import logging
-from .asynchronous import Bot
+from .synchronous import SyncBot as Bot
 
 __author__ = 'luckydonald'
 __all__ = ["Bot", "asynchronous", "synchronous"]
