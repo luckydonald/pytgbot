@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 5.0b3
+Fixed importing the wrong bot, the async one, per default.
+
 ## Version 5.0.0b2
 This is a re-release of `5.0.0-beta.1`, as PyPi did like that short version format better.
 Other than the version number it is exactly the same as `5.0.0-beta.1`.

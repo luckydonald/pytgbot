@@ -3,7 +3,7 @@ import logging
 from .bot import Bot
 
 __author__ = 'luckydonald'
-__version__ = "5.0.0b2"
+__version__ = "5.0b3"
 __all__ = ["api_types", "bot", "Bot"]
 VERSION = __version__
 
