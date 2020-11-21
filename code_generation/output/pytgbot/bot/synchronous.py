@@ -44,6 +44,7 @@ class SyncBot(BotBase):
         :return:
         """
         
+        myself = self.get_me()
         if self.return_python_objects:
             self._me = myself
         else:

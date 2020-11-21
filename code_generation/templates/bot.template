@@ -61,6 +61,7 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         myself = bot.get_me()
         self._me = myself{#
         #}{% else %}
+        myself = self.get_me()
         if self.return_python_objects:
             self._me = myself
         else:
