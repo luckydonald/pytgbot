@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 5.0b4
+Fixed Sync bot not resolving username and id correctly.
+
 ## Version 5.0b3
 Fixed importing the wrong bot, the async one, per default.
 
