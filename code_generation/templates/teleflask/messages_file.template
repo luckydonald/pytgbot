@@ -38,5 +38,5 @@ class SendableMessageBase(object):
 # end def
 
 {% for function in functions %}
-{% include "teleflask_messages_class.template" %}
+{% include "messages_class.template" %}
 {% endfor %}
