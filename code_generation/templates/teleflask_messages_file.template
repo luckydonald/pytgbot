@@ -1,8 +1,47 @@
+# -*- coding: utf-8 -*-
+from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+from luckydonaldUtils.exceptions import assert_type_or_raise
+from pytgbot.api_types.receivable.updates import Message as PytgbotApiMessage
+from pytgbot.bot import Bot as PytgbotApiBot
 {%- from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple, for_args_pytg_send_params -%}
 {%- from "macros.template" import set_data_array_element, for_type, for_args_format_repr, for_args_keys -%}
 {%- from "macros.template" import set_array, set_array_element -%}
 
+from .messages import DEFAULT_MESSAGE_ID
 
+
+__author__ = "luckydonald"
+
+
+class SendableMessageBase(object):
+    def _apply_update_receiver(self, receiver, reply_id):
+        """
+        Updates `self.receiver` and/or `self.reply_id` if they still contain the default value.
+        :param receiver: The receiver `chat_id` to use.
+                         Either `self.receiver`, if set, e.g. when instancing `TextMessage(receiver=10001231231, ...)`,
+                         or the `chat.id` of the update context, being the id of groups or the user's `from_peer.id` in private messages.
+        :type  receiver: None | str|unicode | int
+
+
+        :param reply_id: Reply to that `message_id` in the chat we send to.
+                         Either `self.reply_id`, if set, e.g. when instancing `TextMessage(reply_id=123123, ...)`,
+                         or the `message_id` of the update which triggered the bot's functions.
+        :type  reply_id: DEFAULT_MESSAGE_ID | int
+        """
+        if self.receiver is None:
+            self.receiver = receiver
+        # end if
+        if self.reply_id is DEFAULT_MESSAGE_ID:
+            self.reply_id = reply_id
+        # end if
+    # end def
+
+    def send(self, sender: PytgbotApiBot) -> PytgbotApiMessage:
+        raise NotImplementedError("Overwrite this function.")
+    # end def
+# end def
+
+{% for function in functions %}
 class {{ function.class_name_teleflask_message }}(SendableMessageBase):
     """
     {% block class_docstring scoped -%}
@@ -64,13 +103,15 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
     {# force line tabs -#}
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, allow_sending_without_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
+
+        :param allow_sending_without_reply: If we should not do the `reply_to`, if that failed in the first try.
+        :type  allow_sending_without_reply: bool
 
         :rtype: PytgbotApiMessage
         """
@@ -177,3 +218,4 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         )
     # end def __contains__
 # end class {{ function.class_name_teleflask_message }}
+{% endfor %}

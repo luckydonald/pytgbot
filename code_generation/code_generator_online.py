@@ -666,7 +666,7 @@ def safe_to_file(folder, results):
     bot_template = get_template("bot.template")
     bot_base_template = get_template("bot_base.template")
     clazzfile_template = get_template("classfile.template")
-    teleflask_messages_template = get_template("teleflask/messages_file.template")
+    teleflask_messages_template = get_template("teleflask_messages_file.template")
     typehints_template = get_template("typehintsfile.template")
     telegram_bot_api_server_funcs_template = get_template("telegram_bot_api_server/funcs.template")
     telegram_bot_api_server_class_template = get_template("telegram_bot_api_server/classes.template")
