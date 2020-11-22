@@ -43,6 +43,7 @@ class SyncBot(BotBase):
         In fact, `AsyncBot` uses `SyncBot` to load those.
         :return:
         """
+
         myself = self.get_me()
         if self.return_python_objects:
             self._me = myself
@@ -1262,7 +1263,7 @@ class SyncBot(BotBase):
 
         Optional keyword parameters:
 
-        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "", "", "", "", or "". Dice can have values 1-6 for "" and "", values 1-5 for "" and "", and values 1-64 for "". Defaults to ""
+        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", or "🎰". Dice can have values 1-6 for "🎲" and "🎯", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
         :type  emoji: str|unicode
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1303,7 +1304,7 @@ class SyncBot(BotBase):
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
 
-        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
+        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
         :type  action: str|unicode
 
 
