@@ -93,18 +93,19 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
     #}"""
 
     def __init__(self{% for variable in clazz.variables if not variable.is_fixed_value %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% else %}{{ variable.default if variable.default is string else fix_type_docs(variable.default) }}{% endif %}{% endif %}{%- endfor %}):
+        {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
+        {{ description(clazz) | indent }}
         """
-        {{ description() | indent }}
-        """
-        super({{ clazz.clazz }}, self).__init__()
-
-        {% macro imports() %}{#
+        {% endif %}{#
+        #}super({{ clazz.clazz }}, self).__init__()
+        {% macro imports(clazz) %}{#
+        #}{% if clazz.imports %}{#
         #}{%- if clazz.imports %}
         {% for import in clazz.imports -%}
         from {{ import.path }} import {{ import.name }}
         {% endfor -%}
         {% endif -%}
-        {%- endmacro -%}{{ imports() }}
+        #}{% endmacro %}{{ imports(clazz) }}
         {% for variable in clazz.variables -%}
         {% if variable.optional %}
         assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
@@ -176,7 +177,7 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         {#- strip linebreak after #}
-        {{- imports() -}}
+        {{- imports(clazz) -}}
         {#- does strip before #}
         {#- this will be a new line #}
         data = SendableMessageBase.validate_array(array)
