@@ -35,11 +35,12 @@
        # end if
 
 -#}{#
-#}{% if variable.types|length == 1 %}
-{{ set_array_element(variable, variable.types[0]) }}{#
- #}{% else %}{#
-#}{% for var_type in variable.types %}
-{% if not loop.first %}el{% endif %}if isinstance(self.{{ variable.name }}, {{ var_type.string }}):
+#}{% if variable.types|length == 1 %}{#
+#}{{ set_array_element(variable, variable.types[0]) }}{#
+#}{% else %}{#
+#}{% for var_type in variable.types %}{#
+#}{% if not loop.first %}
+el{% endif %}if {% if var_type.string == 'None' %}self.{{ variable.name }} is None{% else %}isinstance(self.{{ variable.name }}, {{ var_type.string }}){% endif %}:
     {{ set_array_element(variable, var_type) }}{#
 #}{% endfor %}
 else:
@@ -49,30 +50,30 @@ else:
 #}{% endmacro %}
 
 
-{%- macro set_array_element(variable, var_type) -%}
-{#-
+{%- macro set_array_element(variable, var_type) %}{#
+#}{#
     generates those
 
         array['xxx'] = u(self.xxx) | self.xxx.to_array() | self._as_array(self.xxx)
 
     for a single type only
--#}
-{%- if var_type.is_list > 0 -%}
-array['{{ variable.api_name }}'] = self._as_array(self.{{ variable.name }})  # type {{ for_type_list_of(variable) }}
-{% else -%}
-{% if var_type.is_builtin -%}
-{%- if var_type.string == 'str' -%}
-array['{{ variable.api_name }}'] = u(self.{{ variable.name }})  # py2: type unicode, py3: type str
-{%- elif var_type.string == 'None' -%}
-array['{{ variable.api_name }}'] = None
-{% else -%}
-array['{{ variable.api_name }}'] = {{ var_type.string }}(self.{{ variable.name }})  # type {{ var_type.string }}
-{%- endif -%}
-{% else -%}
-array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {{ var_type.string }}
-{% endif -%}
-{% endif -%}
-{%- endmacro %}
+#}{#
+#}{% if var_type.is_list > 0 %}{#
+#}array['{{ variable.api_name }}'] = self._as_array(self.{{ variable.name }})  # type {{ for_type_list_of(variable) }}{#
+#}{% else %}{#
+#}{% if var_type.is_builtin %}{#
+#}{% if var_type.string == 'str' %}{#
+#}array['{{ variable.api_name }}'] = u(self.{{ variable.name }})  # py2: type unicode, py3: type str{#
+#}{% elif var_type.string == 'None' %}{#
+#}array['{{ variable.api_name }}'] = None{#
+#}{% else %}{#
+#}array['{{ variable.api_name }}'] = {{ var_type.string }}(self.{{ variable.name }})  # type {{ var_type.string }}{#
+#}{% endif %}{#
+#}{% else %}{#
+#}array['{{ variable.api_name }}'] = self.{{ variable.name }}.to_array()  # type {{ var_type.string }}{#
+#}{% endif %}{#
+#}{% endif %}{#
+#}{% endmacro %}
 
 
 {%- macro set_data_array_element(variable, var_type, clazz_name, optional) -%}
