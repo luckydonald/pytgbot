@@ -1,6 +1,6 @@
 {%- from "macros.template" import for_args_none, for_type_list_of_full, for_type_list_of, types_as_tuple -%}
 {%- from "macros.template" import for_args_format_repr, for_args_keys, for_type -%}
-{%- from "macros.template" import set_array, set_array_element, set_data_array_element -%}
+{%- from "macros.template" import set_array, set_data_array_element -%}
 
 
 class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
