@@ -3,7 +3,7 @@ from typing import Dict, List, Union
 
 from code_generator import get_type_path
 from code_generator_template import clazz, func, get_template, as_types
-from code_generator_classes import Clazz, Function, Variable, Type, Import, CustomClazz
+from code_generator_classes import Clazz, Function, Variable, Type, Import, FunctionClazz
 from luckydonaldUtils.files.basics import mkdir_p  # luckydonaldUtils v0.49+
 from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
@@ -657,7 +657,7 @@ def safe_to_file(folder, results):
                 import_path = "teleflask_messages."
                 file_path = calc_path_and_create_folders(folder, import_path)
                 args, special_kwargs, kwargs = result.class_variables_separated
-                result2 = CustomClazz(
+                result2 = FunctionClazz(
                     clazz=result.class_name_teleflask_message,
                     import_path=Import(path=import_path.rstrip('.'), name=result.class_name_teleflask_message),
                     parent_clazz=Type(),
@@ -665,7 +665,7 @@ def safe_to_file(folder, results):
                     description=result.description,
                     parameters=args,
                     keywords=special_kwargs + kwargs,
-                    body=None,
+                    function=result,
                 )
                 result2.filepath = file_path
                 message_send_clazzes.append(result2)

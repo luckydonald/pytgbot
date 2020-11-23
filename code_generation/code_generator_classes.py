@@ -845,6 +845,29 @@ class Import(dict):
 # end class Import
 
 
+class FunctionClazz(Clazz):
+    def __init__(
+        self,
+        clazz: Union[None, str] = None,
+        import_path: Union[None, 'Import'] = None,
+        imports: Union[None, List['Import']] = None,
+        parent_clazz: Union[None, 'Type'] = None,
+        link: Union[None, str] = None,
+        description: Union[None, str] = None,
+        parameters: Union[None, List['Variable']] = None,
+        keywords: Union[None, List['Variable']] = None,
+        function: Union[None, Function] = None,
+    ):
+        """
+        Like a class, but contains the original function this was build from.
+        :param function: Function
+        """
+        super().__init__(clazz, import_path, imports, parent_clazz, link, description, parameters, keywords)
+        assert_type_or_raise(function, Function, None, parameter_name='function')
+        self.function = function if function else Function()
+    # end def
+# end class
+
 class CustomClazz(Clazz):
     def __init__(
         self,
@@ -859,9 +882,8 @@ class CustomClazz(Clazz):
         body: Union[None, 'ReplacementBody'] = None,
     ):
         """
-        Like a class, but contains text.
-        :param text: str[]
-        :param imports: str[]
+        Like a class, but contains a body.
+        :param body: ReplacementBody
         """
         super().__init__(clazz, import_path, imports, parent_clazz, link, description, parameters, keywords)
         assert_type_or_raise(body, ReplacementBody, None, parameter_name='body')
