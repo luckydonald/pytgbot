@@ -612,7 +612,7 @@ def safe_to_file(folder, results):
 
     """
     functions = []
-    message_send_functions = []
+    message_send_clazzes = []
     clazzes: Dict[str, List[Clazz]] = {}  # "filepath": [Class, Class, ...]
     all_the_clazzes = []
     custom_classes = {}  # "filepath": [Class, Class, ...]
@@ -657,8 +657,18 @@ def safe_to_file(folder, results):
                 import_path = "teleflask_messages."
                 file_path = calc_path_and_create_folders(folder, import_path)
                 result2 = safe_eval(repr(result), SAVE_VALUES)  # serialize + unserialize = deepcopy
+                result2 = CustomClazz(
+                    clazz=result.class_name_teleflask_message,
+                    import_path=Import(path=import_path.rstrip('.'), name=result.class_name_teleflask_message),
+                    parent_clazz=Type(),
+                    link=result.link,
+                    description=result.description,
+                    parameters=result.parameters,
+                    keywords=result.keywords,
+                    body=None,
+                )
                 result2.filepath = file_path
-                message_send_functions.append(result2)
+                message_send_clazzes.append(result2)
             # end if
         # end if
     # end for
@@ -770,14 +780,11 @@ def safe_to_file(folder, results):
         txt = telegram_bot_api_server_funcs_template.render(functions=functions, imports=imports_sorted)
         render_file_to_disk(path_join(folder, 'telegram_bot_api_server', 'generated', 'funcs.py'), txt)
     # end if
-    if message_send_functions:
-        txt = teleflask_messages_template.render(functions=message_send_functions)
-        render_file_to_disk(message_send_functions[0].filepath, txt)
+    if message_send_clazzes:
+        txt = teleflask_messages_template.render(clazzes=message_send_clazzes)
+        render_file_to_disk(message_send_clazzes[0].filepath, txt)
     # end if
-    if message_send_functions:
-        txt = teleflask_messages_template.render(functions=message_send_functions)
-        render_file_to_disk(message_send_functions[0].filepath, txt)
-    # end if
+# end def
 
 
 # noinspection PyCompatibility

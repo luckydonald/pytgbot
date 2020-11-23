@@ -59,7 +59,7 @@ class SendableMessageBase(object):
     # end def
 # end def
 
-{% for function in functions %}
+{% for function in clazzes %}
 class {{ function.class_name_teleflask_message }}(SendableMessageBase):
     """
     {% block class_docstring scoped -%}
