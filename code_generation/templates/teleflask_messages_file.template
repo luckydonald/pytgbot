@@ -36,7 +36,20 @@ class SendableMessageBase(object):
         # end if
     # end def
 
+    @abstractmethod
     def send(self, sender: PytgbotApiBot) -> PytgbotApiMessage:
+        try:
+            return self.actual_send(sender)
+        except TgApiServerException as e:
+            if e.error_code == 400 and e.description.startswith('bad request') and 'reply message not found' in e.description:
+                logger.debug('Trying to resend without reply_to.')
+                return self.actual_send(sender, ignore_reply=True)
+            # end if
+            raise e
+        # end try
+    # end def
+
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         raise NotImplementedError("Overwrite this function.")
     # end def
 # end def
@@ -103,19 +116,19 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
     {# force line tabs -#}
     # end def __init__
 
-    def actual_send(self, sender: PytgbotApiBot, *, allow_sending_without_reply: bool = False) -> PytgbotApiMessage:
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
-        :param allow_sending_without_reply: If we should not do the `reply_to`, if that failed in the first try.
-        :type  allow_sending_without_reply: bool
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
 
         :rtype: PytgbotApiMessage
         """
-        return sender.{{ function.name }}(
+        return sender.{{ class.name }}(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
             {{ for_args_pytg_send_params(function.class_variables) }}
         )
