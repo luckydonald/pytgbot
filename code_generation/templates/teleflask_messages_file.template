@@ -67,20 +67,22 @@ class {{ clazz.clazz }}(SendableMessageBase):
     {{clazz.link}}
 
     {% if clazz.parameters %}
-    Parameters:
-    {% for param in clazz.parameters %}
+    Parameters:{#
+    #}{% for param in clazz.parameters %}
     :param {{ param.name }}: {{ param.description }}
     :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
-    {% endfor %}
-    {% endif %}
-    {% if clazz.keywords -%}
+    {% endfor %}{#
+    #}{% endif %}{#
+    #}{% if clazz.keywords %}
     Optional keyword parameters:
-    {% for keyword in clazz.keywords %}
+
+    {#
+    #}{% for keyword in clazz.keywords %}
     :param {{ keyword.name }}: {{ keyword.description }}
     :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
-    {% endfor %}
-    {% endif -%}
-    {% endmacro %}{{ description() }}{#
+    {% endfor %}{#
+    #}{% endif %}{#
+    #}{% endmacro %}{{ description() }}{#
     #}"""
 
     def __init__(self, {{ for_args_none(clazz.variables) }}):
