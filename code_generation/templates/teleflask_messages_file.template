@@ -24,7 +24,7 @@ class DEFAULT_MESSAGE_ID(object):
 # end class
 
 
-class SendableMessageBase(object):
+class {{ clazzes[0].parent_clazz.string }}(object):
     def _apply_update_receiver(self, receiver, reply_id):
         """
         Updates `self.receiver` and/or `self.reply_id` if they still contain the default value.
@@ -66,7 +66,7 @@ class SendableMessageBase(object):
 # end def
 
 {% for clazz in clazzes %}
-class {{ clazz.clazz }}(SendableMessageBase):
+class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
     """{% macro description(clazz) %}
     {% if clazz.description %}{{ clazz.description.strip()|indent }}{% endif %}{%- if clazz.description and clazz.link %}
 
