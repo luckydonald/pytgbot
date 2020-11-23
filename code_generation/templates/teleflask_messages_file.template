@@ -101,33 +101,34 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         {% macro imports(clazz) %}{#
         #}{% if clazz.imports %}{#
         #}{%- if clazz.imports %}
-        {% for import in clazz.imports -%}
-        from {{ import.path }} import {{ import.name }}
-        {% endfor -%}
-        {% endif -%}
+        #}{% for import in clazz.imports %}
+        {{ import.import_statement_from_file(None) }}{#
+        #}{% endfor %}{#
+        #}{% endif %}{#
         #}{% endmacro %}{{ imports(clazz) }}
-        {% for variable in clazz.variables -%}
-        {% if variable.optional %}
-        assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
-        {% if variable.always_is_value -%}
+        {% for variable in clazz.variables %}{#
+        #}{% if variable.optional %}
+        assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}"){#
+        #}{% if variable.always_is_value %}
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
             raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
-        # end if
-        {%- endif -%}
-        {%- else %}
-        assert_type_or_raise({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
-        {% if variable.always_is_value -%}
+        # end if{#
+        #}{% endif %}{#
+        #}{% else %}
+        assert_type_or_raise({{ variable.name }}, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}"){#
+        #}{% if variable.always_is_value %}
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
             raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
-        # end if
-        {%- endif %}
-        {%- endif -%}
-        self.{{ variable.name }} = {{ variable.name }}
-        {%- if not loop.last %}
-        {% endif -%}
-        {% endfor %}
+        # end if{#
+        #}{% endif %}{#
+        #}{% endif %}
+        self.{{ variable.name }} = {{ variable.name }}{#
+        #}{% if not loop.last %}{#
+        #}{% endif %}{#
+        #}{% endfor %}
+
+        # custom variable for message chaining
         self._next_msg = None
-    {# force line tabs -#}
     # end def __init__
 
     def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
