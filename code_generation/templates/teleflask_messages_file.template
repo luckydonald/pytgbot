@@ -159,7 +159,8 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
 
         :return: dictionary representation of this object.
         :rtype: dict
-        """
+        """{{ imports(clazz) }}
+
         array = super({{ clazz.clazz }}, self).to_array()
         {% for variable in clazz.variables %}{#
         #}{% if variable.duplicate_of_parent %}
