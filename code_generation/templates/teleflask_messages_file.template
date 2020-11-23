@@ -146,10 +146,10 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
 
         :rtype: PytgbotApiMessage
         """
-        return sender.{{ clazz.function.name }}(
-            {% for variable in clazz.variables %}{#
-            #}{{ variable.pytg_name if variable.pytg_name else variable.name }}=self.{{ variable.name }},
-            {% endfor %}
+        return sender.{{ clazz.function.name }}({#
+            #}{% for variable in clazz.variables %}
+            {{ variable.pytg_name if variable.pytg_name else variable.name }}=self.{{ variable.name }},{#
+            #}{% endfor %}
         )
     # end def send
 
