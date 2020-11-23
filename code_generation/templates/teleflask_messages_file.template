@@ -63,6 +63,10 @@ class {{ clazzes[0].parent_clazz.string }}(object):
     def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         raise NotImplementedError("Overwrite this function.")
     # end def
+
+    def to_array(self) -> dict:
+        return {}
+    # end def
 # end def
 
 {% for clazz in clazzes %}
