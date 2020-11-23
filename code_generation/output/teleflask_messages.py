@@ -1,13 +1,24 @@
 # -*- coding: utf-8 -*-
+from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable.updates import Message as PytgbotApiMessage
+from pytgbot.exceptions import TgApiServerException
 from pytgbot.bot import Bot as PytgbotApiBot
-
-from .messages import DEFAULT_MESSAGE_ID
+from abc import abstractmethod
 
 
 __author__ = "luckydonald"
+logger = logging.getLogger(__name__)
+
+
+# noinspection PyPep8Naming
+class DEFAULT_MESSAGE_ID(object):
+    """
+    Used for reply_id.
+    """
+    pass
+# end class
 
 
 class SendableMessageBase(object):
@@ -23,7 +34,7 @@ class SendableMessageBase(object):
         :param reply_id: Reply to that `message_id` in the chat we send to.
                          Either `self.reply_id`, if set, e.g. when instancing `TextMessage(reply_id=123123, ...)`,
                          or the `message_id` of the update which triggered the bot's functions.
-        :type  reply_id: DEFAULT_MESSAGE_ID | int
+        :type  reply_id: DEFAULT_MESSAGE_ID | int | None
         """
         if self.receiver is None:
             self.receiver = receiver
@@ -33,8 +44,22 @@ class SendableMessageBase(object):
         # end if
     # end def
 
+    @abstractmethod
     def send(self, sender: PytgbotApiBot) -> PytgbotApiMessage:
+        try:
+            return self.actual_send(sender)
+        except TgApiServerException as e:
+            if e.error_code == 400 and e.description.startswith('bad request') and 'reply message not found' in e.description:
+                logger.debug('Trying to resend without reply_to.')
+                return self.actual_send(sender, ignore_reply=True)
+            # end if
+            raise e
+        # end try
+    # end def
+
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         raise NotImplementedError("Overwrite this function.")
+    # end def
 # end def
 
 
@@ -46,12 +71,11 @@ class TextMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param text: Text of the message to be sent, 1-4096 characters after entities parsing
     :type  text: str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -76,23 +100,22 @@ class TextMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, text, receiver=None, reply_id=DEFAULT_MESSAGE_ID, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send text messages. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendmessage
 
         
         Parameters:
-        
         :param text: Text of the message to be sent, 1-4096 characters after entities parsing
         :type  text: str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -120,11 +143,8 @@ class TextMessage(SendableMessageBase):
         
         """
         super(TextMessage, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
@@ -155,19 +175,20 @@ class TextMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_message(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            text=self.text, chat_id=self.receiver, reply_to_message_id=self.reply_id, parse_mode=self.parse_mode, entities=self.entities, disable_web_page_preview=self.disable_web_page_preview, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.text, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.parse_mode, None=self.entities, None=self.disable_web_page_preview, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -232,12 +253,6 @@ class TextMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         data['text'] = u(array.get('text'))
         if array.get('chat_id') is None:
@@ -332,12 +347,11 @@ class PhotoMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param photo: Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. More info on Sending Files »
     :type  photo: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -362,23 +376,22 @@ class PhotoMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, photo, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send photos. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendphoto
 
         
         Parameters:
-        
         :param photo: Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. More info on Sending Files »
         :type  photo: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -406,12 +419,8 @@ class PhotoMessage(SendableMessageBase):
         
         """
         super(PhotoMessage, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(photo, InputFile, unicode_type, parameter_name="photo")
         self.photo = photo
@@ -442,19 +451,20 @@ class PhotoMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_photo(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            photo=self.photo, chat_id=self.receiver, reply_to_message_id=self.reply_id, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.photo, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.caption, None=self.parse_mode, None=self.caption_entities, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -525,13 +535,6 @@ class PhotoMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         if isinstance(array.get('photo'), InputFile):
             data['photo'] = InputFile.from_array(array.get('photo'))
@@ -633,12 +636,11 @@ class AudioMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param audio: Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
     :type  audio: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -675,11 +677,11 @@ class AudioMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, audio, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
             For sending voice messages, use the sendVoice method instead.
 
@@ -687,12 +689,11 @@ class AudioMessage(SendableMessageBase):
 
         
         Parameters:
-        
         :param audio: Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  audio: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -732,12 +733,8 @@ class AudioMessage(SendableMessageBase):
         
         """
         super(AudioMessage, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(audio, InputFile, unicode_type, parameter_name="audio")
         self.audio = audio
@@ -780,19 +777,20 @@ class AudioMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_audio(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            audio=self.audio, chat_id=self.receiver, reply_to_message_id=self.reply_id, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, duration=self.duration, performer=self.performer, title=self.title, thumb=self.thumb, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.audio, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.caption, None=self.parse_mode, None=self.caption_entities, None=self.duration, None=self.performer, None=self.title, None=self.thumb, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -877,13 +875,6 @@ class AudioMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         if isinstance(array.get('audio'), InputFile):
             data['audio'] = InputFile.from_array(array.get('audio'))
@@ -996,12 +987,11 @@ class DocumentMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param document: File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
     :type  document: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -1032,23 +1022,22 @@ class DocumentMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, document, receiver=None, reply_id=DEFAULT_MESSAGE_ID, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#senddocument
 
         
         Parameters:
-        
         :param document: File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  document: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -1082,12 +1071,8 @@ class DocumentMessage(SendableMessageBase):
         
         """
         super(DocumentMessage, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(document, InputFile, unicode_type, parameter_name="document")
         self.document = document
@@ -1124,19 +1109,20 @@ class DocumentMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_document(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            document=self.document, chat_id=self.receiver, reply_to_message_id=self.reply_id, thumb=self.thumb, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, disable_content_type_detection=self.disable_content_type_detection, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.document, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.thumb, None=self.caption, None=self.parse_mode, None=self.caption_entities, None=self.disable_content_type_detection, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -1217,13 +1203,6 @@ class DocumentMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         if isinstance(array.get('document'), InputFile):
             data['document'] = InputFile.from_array(array.get('document'))
@@ -1334,12 +1313,11 @@ class VideoMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param video: Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. More info on Sending Files »
     :type  video: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -1379,23 +1357,22 @@ class VideoMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, video, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#sendvideo
 
         
         Parameters:
-        
         :param video: Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. More info on Sending Files »
         :type  video: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -1438,12 +1415,8 @@ class VideoMessage(SendableMessageBase):
         
         """
         super(VideoMessage, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(video, InputFile, unicode_type, parameter_name="video")
         self.video = video
@@ -1489,19 +1462,20 @@ class VideoMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_video(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            video=self.video, chat_id=self.receiver, reply_to_message_id=self.reply_id, duration=self.duration, width=self.width, height=self.height, thumb=self.thumb, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, supports_streaming=self.supports_streaming, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.video, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.duration, None=self.width, None=self.height, None=self.thumb, None=self.caption, None=self.parse_mode, None=self.caption_entities, None=self.supports_streaming, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -1588,13 +1562,6 @@ class VideoMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         if isinstance(array.get('video'), InputFile):
             data['video'] = InputFile.from_array(array.get('video'))
@@ -1708,12 +1675,11 @@ class AnimationMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param animation: Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data. More info on Sending Files »
     :type  animation: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -1750,23 +1716,22 @@ class AnimationMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, animation, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#sendanimation
 
         
         Parameters:
-        
         :param animation: Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data. More info on Sending Files »
         :type  animation: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -1806,12 +1771,8 @@ class AnimationMessage(SendableMessageBase):
         
         """
         super(AnimationMessage, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(animation, InputFile, unicode_type, parameter_name="animation")
         self.animation = animation
@@ -1854,19 +1815,20 @@ class AnimationMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_animation(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            animation=self.animation, chat_id=self.receiver, reply_to_message_id=self.reply_id, duration=self.duration, width=self.width, height=self.height, thumb=self.thumb, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.animation, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.duration, None=self.width, None=self.height, None=self.thumb, None=self.caption, None=self.parse_mode, None=self.caption_entities, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -1951,13 +1913,6 @@ class AnimationMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         if isinstance(array.get('animation'), InputFile):
             data['animation'] = InputFile.from_array(array.get('animation'))
@@ -2070,12 +2025,11 @@ class VoiceMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param voice: Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
     :type  voice: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -2103,23 +2057,22 @@ class VoiceMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, voice, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#sendvoice
 
         
         Parameters:
-        
         :param voice: Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  voice: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -2150,12 +2103,8 @@ class VoiceMessage(SendableMessageBase):
         
         """
         super(VoiceMessage, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(voice, InputFile, unicode_type, parameter_name="voice")
         self.voice = voice
@@ -2189,19 +2138,20 @@ class VoiceMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_voice(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            voice=self.voice, chat_id=self.receiver, reply_to_message_id=self.reply_id, caption=self.caption, parse_mode=self.parse_mode, caption_entities=self.caption_entities, duration=self.duration, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.voice, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.caption, None=self.parse_mode, None=self.caption_entities, None=self.duration, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -2274,13 +2224,6 @@ class VoiceMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         if isinstance(array.get('voice'), InputFile):
             data['voice'] = InputFile.from_array(array.get('voice'))
@@ -2382,12 +2325,11 @@ class VideoNoteMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param video_note: Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More info on Sending Files ». Sending video notes by a URL is currently unsupported
     :type  video_note: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -2412,23 +2354,22 @@ class VideoNoteMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, video_note, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, length=None, thumb=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendvideonote
 
         
         Parameters:
-        
         :param video_note: Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More info on Sending Files ». Sending video notes by a URL is currently unsupported
         :type  video_note: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -2456,11 +2397,8 @@ class VideoNoteMessage(SendableMessageBase):
         
         """
         super(VideoNoteMessage, self).__init__()
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(video_note, InputFile, unicode_type, parameter_name="video_note")
         self.video_note = video_note
@@ -2491,19 +2429,20 @@ class VideoNoteMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_video_note(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            video_note=self.video_note, chat_id=self.receiver, reply_to_message_id=self.reply_id, duration=self.duration, length=self.length, thumb=self.thumb, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.video_note, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.duration, None=self.length, None=self.thumb, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -2579,12 +2518,6 @@ class VideoNoteMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         if isinstance(array.get('video_note'), InputFile):
             data['video_note'] = InputFile.from_array(array.get('video_note'))
@@ -2693,12 +2626,11 @@ class MediaGroupMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
     :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaAudio | list of pytgbot.api_types.sendable.input_media.InputMediaDocument | list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -2711,23 +2643,22 @@ class MediaGroupMessage(SendableMessageBase):
     
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
     """
 
     def __init__(self, media, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, allow_sending_without_reply=None):
         """
+        
         Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
 
         https://core.telegram.org/bots/api#sendmediagroup
 
         
         Parameters:
-        
         :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
         :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaAudio | list of pytgbot.api_types.sendable.input_media.InputMediaDocument | list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -2743,10 +2674,8 @@ class MediaGroupMessage(SendableMessageBase):
         
         """
         super(MediaGroupMessage, self).__init__()
-        from pytgbot.api_types.sendable.input_media import InputMediaAudio
-        from pytgbot.api_types.sendable.input_media import InputMediaDocument
-        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
-        from pytgbot.api_types.sendable.input_media import InputMediaVideo
+
+        
         
         assert_type_or_raise(media, list, list, list, list, parameter_name="media")
         self.media = media
@@ -2765,19 +2694,20 @@ class MediaGroupMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_media_group(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            media=self.media, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.media, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.disable_notification, None=self.allow_sending_without_reply
         )
     # end def send
 
@@ -2833,11 +2763,6 @@ class MediaGroupMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.input_media import InputMediaAudio
-        from pytgbot.api_types.sendable.input_media import InputMediaDocument
-        from pytgbot.api_types.sendable.input_media import InputMediaPhoto
-        from pytgbot.api_types.sendable.input_media import InputMediaVideo
-        
         data = SendableMessageBase.validate_array(array)
         if isinstance(array.get('media'), InputMediaAudio):
             data['media'] = InputMediaAudio.from_array_list(array.get('media'), list_level=1)
@@ -2926,15 +2851,14 @@ class LocationMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param latitude: Latitude of the location
     :type  latitude: float
     
     :param longitude: Longitude of the location
     :type  longitude: float
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -2962,26 +2886,25 @@ class LocationMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, latitude, longitude, receiver=None, reply_id=DEFAULT_MESSAGE_ID, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send point on the map. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendlocation
 
         
         Parameters:
-        
         :param latitude: Latitude of the location
         :type  latitude: float
         
         :param longitude: Longitude of the location
         :type  longitude: float
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -3012,10 +2935,8 @@ class LocationMessage(SendableMessageBase):
         
         """
         super(LocationMessage, self).__init__()
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
@@ -3052,19 +2973,20 @@ class LocationMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_location(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            latitude=self.latitude, longitude=self.longitude, chat_id=self.receiver, reply_to_message_id=self.reply_id, horizontal_accuracy=self.horizontal_accuracy, live_period=self.live_period, heading=self.heading, proximity_alert_radius=self.proximity_alert_radius, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.latitude, None=self.longitude, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.horizontal_accuracy, None=self.live_period, None=self.heading, None=self.proximity_alert_radius, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -3131,11 +3053,6 @@ class LocationMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
@@ -3232,7 +3149,6 @@ class VenueMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param latitude: Latitude of the venue
     :type  latitude: float
     
@@ -3245,8 +3161,8 @@ class VenueMessage(SendableMessageBase):
     :param address: Address of the venue
     :type  address: str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -3274,18 +3190,17 @@ class VenueMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, latitude, longitude, title, address, receiver=None, reply_id=DEFAULT_MESSAGE_ID, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send information about a venue. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendvenue
 
         
         Parameters:
-        
         :param latitude: Latitude of the venue
         :type  latitude: float
         
@@ -3298,8 +3213,8 @@ class VenueMessage(SendableMessageBase):
         :param address: Address of the venue
         :type  address: str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -3330,10 +3245,8 @@ class VenueMessage(SendableMessageBase):
         
         """
         super(VenueMessage, self).__init__()
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
@@ -3376,19 +3289,20 @@ class VenueMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_venue(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            latitude=self.latitude, longitude=self.longitude, title=self.title, address=self.address, chat_id=self.receiver, reply_to_message_id=self.reply_id, foursquare_id=self.foursquare_id, foursquare_type=self.foursquare_type, google_place_id=self.google_place_id, google_place_type=self.google_place_type, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.latitude, None=self.longitude, None=self.title, None=self.address, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.foursquare_id, None=self.foursquare_type, None=self.google_place_id, None=self.google_place_type, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -3457,11 +3371,6 @@ class VenueMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
@@ -3560,15 +3469,14 @@ class ContactMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param phone_number: Contact's phone number
     :type  phone_number: str|unicode
     
     :param first_name: Contact's first name
     :type  first_name: str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -3590,26 +3498,25 @@ class ContactMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, phone_number, first_name, receiver=None, reply_id=DEFAULT_MESSAGE_ID, last_name=None, vcard=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send phone contacts. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendcontact
 
         
         Parameters:
-        
         :param phone_number: Contact's phone number
         :type  phone_number: str|unicode
         
         :param first_name: Contact's first name
         :type  first_name: str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -3634,10 +3541,8 @@ class ContactMessage(SendableMessageBase):
         
         """
         super(ContactMessage, self).__init__()
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
@@ -3668,19 +3573,20 @@ class ContactMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_contact(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            phone_number=self.phone_number, first_name=self.first_name, chat_id=self.receiver, reply_to_message_id=self.reply_id, last_name=self.last_name, vcard=self.vcard, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.phone_number, None=self.first_name, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.last_name, None=self.vcard, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -3743,11 +3649,6 @@ class ContactMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         data['phone_number'] = u(array.get('phone_number'))
         data['first_name'] = u(array.get('first_name'))
@@ -3842,15 +3743,14 @@ class PollMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param question: Poll question, 1-300 characters
     :type  question: str|unicode
     
     :param options: A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
     :type  options: list of str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -3896,26 +3796,25 @@ class PollMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, question, options, receiver=None, reply_id=DEFAULT_MESSAGE_ID, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send a native poll. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendpoll
 
         
         Parameters:
-        
         :param question: Poll question, 1-300 characters
         :type  question: str|unicode
         
         :param options: A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
         :type  options: list of str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -3964,11 +3863,8 @@ class PollMessage(SendableMessageBase):
         
         """
         super(PollMessage, self).__init__()
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(question, unicode_type, parameter_name="question")
         self.question = question
@@ -4023,19 +3919,20 @@ class PollMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_poll(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            question=self.question, options=self.options, chat_id=self.receiver, reply_to_message_id=self.reply_id, is_anonymous=self.is_anonymous, type=self.type, allows_multiple_answers=self.allows_multiple_answers, correct_option_id=self.correct_option_id, explanation=self.explanation, explanation_parse_mode=self.explanation_parse_mode, explanation_entities=self.explanation_entities, open_period=self.open_period, close_date=self.close_date, is_closed=self.is_closed, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.question, None=self.options, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.is_anonymous, None=self.type, None=self.allows_multiple_answers, None=self.correct_option_id, None=self.explanation, None=self.explanation_parse_mode, None=self.explanation_entities, None=self.open_period, None=self.close_date, None=self.is_closed, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -4116,15 +4013,9 @@ class PollMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.receivable.media import MessageEntity
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         data['question'] = u(array.get('question'))
-        data['options'] = PollMessage._builtin_from_array_list(required_type=unicode_type, value=array.get('options'), list_level=1)
+        data['options'] = ._builtin_from_array_list(required_type=unicode_type, value=array.get('options'), list_level=1)
         if array.get('chat_id') is None:
             data['receiver'] = None
         elif isinstance(array.get('chat_id'), None):
@@ -4224,6 +4115,7 @@ class DiceMessage(SendableMessageBase):
 
     
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -4242,17 +4134,18 @@ class DiceMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, receiver=None, reply_id=DEFAULT_MESSAGE_ID, emoji=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send an animated emoji that will display a random value. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#senddice
 
         
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -4274,10 +4167,8 @@ class DiceMessage(SendableMessageBase):
         
         """
         super(DiceMessage, self).__init__()
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
@@ -4299,19 +4190,20 @@ class DiceMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_dice(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            chat_id=self.receiver, reply_to_message_id=self.reply_id, emoji=self.emoji, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idchat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.emoji, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -4370,11 +4262,6 @@ class DiceMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         if array.get('chat_id') is None:
             data['receiver'] = None
@@ -4470,20 +4357,19 @@ class ChatActionMessage(SendableMessageBase):
 
     
     Parameters:
-    
-    :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
+    :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
     :type  action: str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
-    
     """
 
     def __init__(self, action, receiver=None):
         """
+        
         Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.
 
             Example: The ImageBot needs some time to process a request and upload the image. Instead of sending a text message along the lines of "Retrieving image, please wait…", the bot may use sendChatAction with action = upload_photo. The user will see a "sending photo" status for the bot.
@@ -4494,18 +4380,20 @@ class ChatActionMessage(SendableMessageBase):
 
         
         Parameters:
-        
-        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
+        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
         :type  action: str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
         
         """
         super(ChatActionMessage, self).__init__()
+
+        
+        
         assert_type_or_raise(action, unicode_type, parameter_name="action")
         self.action = action
         
@@ -4514,19 +4402,20 @@ class ChatActionMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_chat_action(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            action=self.action, chat_id=self.receiver
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.action, chat_id=self.receiver
         )
     # end def send
 
@@ -4627,12 +4516,11 @@ class StickerMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
     :type  sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -4648,23 +4536,22 @@ class StickerMessage(SendableMessageBase):
     
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-    
     """
 
     def __init__(self, sticker, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendsticker
 
         
         Parameters:
-        
         :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -4683,11 +4570,8 @@ class StickerMessage(SendableMessageBase):
         
         """
         super(StickerMessage, self).__init__()
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
+
+        
         
         assert_type_or_raise(sticker, InputFile, unicode_type, parameter_name="sticker")
         self.sticker = sticker
@@ -4709,19 +4593,20 @@ class StickerMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_sticker(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            sticker=self.sticker, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.sticker, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -4785,12 +4670,6 @@ class StickerMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.files import InputFile
-        from pytgbot.api_types.sendable.reply_markup import ForceReply
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
-        from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
         data = SendableMessageBase.validate_array(array)
         if isinstance(array.get('sticker'), InputFile):
             data['sticker'] = InputFile.from_array(array.get('sticker'))
@@ -4888,7 +4767,6 @@ class InvoiceMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param title: Product name, 1-32 characters
     :type  title: str|unicode
     
@@ -4910,8 +4788,8 @@ class InvoiceMessage(SendableMessageBase):
     :param prices: Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
     :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -4963,18 +4841,17 @@ class InvoiceMessage(SendableMessageBase):
     
     :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
     """
 
     def __init__(self, title, description, payload, provider_token, start_parameter, currency, prices, receiver=None, reply_id=DEFAULT_MESSAGE_ID, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send invoices. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendinvoice
 
         
         Parameters:
-        
         :param title: Product name, 1-32 characters
         :type  title: str|unicode
         
@@ -4996,8 +4873,8 @@ class InvoiceMessage(SendableMessageBase):
         :param prices: Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -5052,8 +4929,8 @@ class InvoiceMessage(SendableMessageBase):
         
         """
         super(InvoiceMessage, self).__init__()
-        from pytgbot.api_types.sendable.payments import LabeledPrice
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        
         
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
@@ -5129,19 +5006,20 @@ class InvoiceMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_invoice(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            title=self.title, description=self.description, payload=self.payload, provider_token=self.provider_token, start_parameter=self.start_parameter, currency=self.currency, prices=self.prices, chat_id=self.receiver, reply_to_message_id=self.reply_id, provider_data=self.provider_data, photo_url=self.photo_url, photo_size=self.photo_size, photo_width=self.photo_width, photo_height=self.photo_height, need_name=self.need_name, need_phone_number=self.need_phone_number, need_email=self.need_email, need_shipping_address=self.need_shipping_address, send_phone_number_to_provider=self.send_phone_number_to_provider, send_email_to_provider=self.send_email_to_provider, is_flexible=self.is_flexible, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.title, None=self.description, None=self.payload, None=self.provider_token, None=self.start_parameter, None=self.currency, None=self.prices, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.provider_data, None=self.photo_url, None=self.photo_size, None=self.photo_width, None=self.photo_height, None=self.need_name, None=self.need_phone_number, None=self.need_email, None=self.need_shipping_address, None=self.send_phone_number_to_provider, None=self.send_email_to_provider, None=self.is_flexible, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -5220,9 +5098,6 @@ class InvoiceMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.payments import LabeledPrice
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
         data = SendableMessageBase.validate_array(array)
         data['title'] = u(array.get('title'))
         data['description'] = u(array.get('description'))
@@ -5320,12 +5195,11 @@ class GameMessage(SendableMessageBase):
 
     
     Parameters:
-    
     :param game_short_name: Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
     :type  game_short_name: str|unicode
     
-    
     Optional keyword parameters:
+
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: None | str|unicode | int
@@ -5341,23 +5215,22 @@ class GameMessage(SendableMessageBase):
     
     :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-    
     """
 
     def __init__(self, game_short_name, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
+        
         Use this method to send a game. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendgame
 
         
         Parameters:
-        
         :param game_short_name: Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
         :type  game_short_name: str|unicode
         
-        
         Optional keyword parameters:
+
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: None | str|unicode | int
@@ -5376,7 +5249,8 @@ class GameMessage(SendableMessageBase):
         
         """
         super(GameMessage, self).__init__()
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
+
+        
         
         assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
@@ -5398,19 +5272,20 @@ class GameMessage(SendableMessageBase):
         self._next_msg = None
     # end def __init__
 
-    @backoff.on_exception(backoff.expo, DoRetryException, max_tries=20, jitter=None)
-    def send(self, sender: PytgbotApiBot):
+    def actual_send(self, sender: PytgbotApiBot, *, ignore_reply: bool = False) -> PytgbotApiMessage:
         """
         Send the message via pytgbot.
 
         :param sender: The bot instance to send with.
         :type  sender: pytgbot.bot.Bot
 
+        :param ignore_reply: If we should not include the the `reply_to` parameter, because that already failed.
+        :type  ignore_reply: bool
+
         :rtype: PytgbotApiMessage
         """
         return sender.send_game(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            game_short_name=self.game_short_name, chat_id=self.receiver, reply_to_message_id=self.reply_id, disable_notification=self.disable_notification, allow_sending_without_reply=self.allow_sending_without_reply, reply_markup=self.reply_markup
+            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_idNone=self.game_short_name, chat_id=self.receiver, reply_to_message_id=self.reply_id, None=self.disable_notification, None=self.allow_sending_without_reply, None=self.reply_markup
         )
     # end def send
 
@@ -5458,8 +5333,6 @@ class GameMessage(SendableMessageBase):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
         data = SendableMessageBase.validate_array(array)
         data['game_short_name'] = u(array.get('game_short_name'))
         if array.get('chat_id') is None:
