@@ -147,8 +147,9 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         :rtype: PytgbotApiMessage
         """
         return sender.{{ clazz.function.name }}(
-            # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            {%- for variable in clazz.variables %}{{ variable.pytg_name }}=self.{{ variable.name }}{% if not loop.last %}, {% endif -%}{%- endfor %}
+            {% for variable in clazz.variables %}{#
+            #}{{ variable.pytg_name if variable.pytg_name else variable.name }}=self.{{ variable.name }},
+            {% endfor %}
         )
     # end def send
 
