@@ -104,7 +104,6 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         #}super({{ clazz.clazz }}, self).__init__()
         {% macro imports(clazz) %}{#
         #}{% if clazz.imports %}{#
-        #}{%- if clazz.imports %}
         #}{% for import in clazz.imports %}
         {{ import.import_statement_from_file(None) }}{#
         #}{% endfor %}{#
