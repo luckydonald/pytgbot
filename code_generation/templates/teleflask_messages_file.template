@@ -61,8 +61,7 @@ class SendableMessageBase(object):
 
 {% for clazz in clazzes %}
 class {{ clazz.clazz }}(SendableMessageBase):
-    """
-    {% block class_docstring scoped -%}
+    """{% macro description() %}
     {{ clazz.description|indent(8) }}
 
     {{clazz.link}}
@@ -81,22 +80,22 @@ class {{ clazz.clazz }}(SendableMessageBase):
     :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
     {% endfor %}
     {% endif -%}
-    {% endblock docstring -%}
-    """
+    {% endmacro %}{{ description() }}{#
+    #}"""
 
     def __init__(self, {{ for_args_none(clazz.variables) }}):
         """
-        {{ self.class_docstring()|indent -}}
+        {{ description() | indent }}
         """
         super({{ clazz.clazz }}, self).__init__()
 
-        {%- block imports_block -%}
-        {%- if clazz.imports %}
+        {% macro imports() %}{#
+        #}{%- if clazz.imports %}
         {% for import in clazz.imports -%}
         from {{ import.path }} import {{ import.name }}
         {% endfor -%}
         {% endif -%}
-        {%- endblock -%}
+        {%- endmacro -%}{{ imports() }}
         {% for variable in clazz.variables -%}
         {% if variable.optional %}
         assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}")
@@ -168,7 +167,7 @@ class {{ clazz.clazz }}(SendableMessageBase):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         {#- strip linebreak after #}
-        {{- self.imports_block() -}}
+        {{- imports() -}}
         {#- does strip before #}
         {#- this will be a new line #}
         data = SendableMessageBase.validate_array(array)
