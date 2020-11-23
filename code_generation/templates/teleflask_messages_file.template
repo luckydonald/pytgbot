@@ -59,24 +59,24 @@ class SendableMessageBase(object):
     # end def
 # end def
 
-{% for function in clazzes %}
-class {{ function.class_name_teleflask_message }}(SendableMessageBase):
+{% for clazz in clazzes %}
+class {{ clazz.class_name_teleflask_message }}(SendableMessageBase):
     """
     {% block class_docstring scoped -%}
-    {{ function.description|indent(8) }}
+    {{ clazz.description|indent(8) }}
 
-    {{function.link}}
+    {{clazz.link}}
 
-    {% if function.class_parameters %}
+    {% if clazz.class_parameters %}
     Parameters:
-    {% for param in function.class_parameters %}
+    {% for param in clazz.class_parameters %}
     :param {{ param.name }}: {{ param.description }}
     :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
     {% endfor %}
     {% endif %}
-    {% if function.class_keywords -%}
+    {% if clazz.class_keywords -%}
     Optional keyword parameters:
-    {% for keyword in function.class_keywords %}
+    {% for keyword in clazz.class_keywords %}
     :param {{ keyword.name }}: {{ keyword.description }}
     :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
     {% endfor %}
@@ -84,29 +84,29 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
     {% endblock class_docstring -%}
     """
 
-    def __init__(self, {{ for_args_none(function.class_variables) }}):
+    def __init__(self, {{ for_args_none(clazz.class_variables) }}):
         """
         {{ self.class_docstring()|indent -}}
         """
-        super({{ function.class_name_teleflask_message }}, self).__init__()
+        super({{ clazz.class_name_teleflask_message }}, self).__init__()
 
         {%- block imports_block -%}
-        {%- if function.imports %}
-        {% for import in function.imports -%}
+        {%- if clazz.imports %}
+        {% for import in clazz.imports -%}
         from {{ import.path }} import {{ import.name }}
         {% endfor -%}
         {% endif -%}
         {%- endblock -%}
-        {% for variable in function.class_variables -%}
+        {% for variable in clazz.class_variables -%}
         {% if variable.optional %}
-        assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(function.class_variables, variable) }}, parameter_name="{{ variable.name }}")
+        assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.class_variables, variable) }}, parameter_name="{{ variable.name }}")
         {% if variable.always_is_value -%}
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
             raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
         # end if
         {%- endif -%}
         {%- else %}
-        assert_type_or_raise({{ variable.name }}, {{ types_as_tuple(function.class_variables, variable) }}, parameter_name="{{ variable.name }}")
+        assert_type_or_raise({{ variable.name }}, {{ types_as_tuple(clazz.class_variables, variable) }}, parameter_name="{{ variable.name }}")
         {% if variable.always_is_value -%}
         if {{ variable.name }} is not None and {{ variable.name }} != {{ variable.always_is_value }}:
             raise ValueError("The parameter {{ variable.name }} should be the value {expected_value}, but is type {real_type}: {real_value!r}" )
@@ -135,20 +135,20 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         """
         return sender.{{ class.name }}(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            {%- for variable in function.class_variables %}{{ variable.pytg_name }}=self.{{ variable.name }}{% if not loop.last %}, {% endif -%}{%- endfor %}
+            {%- for variable in clazz.class_variables %}{{ variable.pytg_name }}=self.{{ variable.name }}{% if not loop.last %}, {% endif -%}{%- endfor %}
         )
     # end def send
 
     def to_array(self):
         """
-        Serializes this {{ function.class_name_teleflask_message }} to a dictionary.
+        Serializes this {{ clazz.class_name_teleflask_message }} to a dictionary.
 
         :return: dictionary representation of this object.
         :rtype: dict
         """
-        array = super({{ function.class_name_teleflask_message }}, self).to_array()
+        array = super({{ clazz.class_name_teleflask_message }}, self).to_array()
         {# fresh line -#}
-        {% for variable in function.class_variables -%}
+        {% for variable in clazz.class_variables -%}
         {%- if variable.optional %}if self.{{ variable.name }} is not None:
             {{ set_array(variable)|indent(12) }}
         {% else -%}
@@ -161,7 +161,7 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
     @staticmethod
     def validate_array(array):
         """
-        Builds a new array with valid values for the {{ function.class_name_teleflask_message }} constructor.
+        Builds a new array with valid values for the {{ clazz.class_name_teleflask_message }} constructor.
 
         :return: new array with valid values
         :rtype: dict
@@ -172,9 +172,9 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         {#- does strip before #}
         {#- this will be a new line #}
         data = SendableMessageBase.validate_array(array)
-        {% for variable in function.class_variables -%}
+        {% for variable in clazz.class_variables -%}
         {%- if variable.types|length == 1 -%}
-        {{- set_data_array_element(variable, variable.types[0], function.class_name_teleflask_message, variable.optional) -}}
+        {{- set_data_array_element(variable, variable.types[0], clazz.class_name_teleflask_message, variable.optional) -}}
         {% else -%}
         {%- if variable.optional -%}
         if array.get('{{ variable.api_name }}') is None:
@@ -182,7 +182,7 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         {% endif -%}
         {%- for var_type in variable.types -%}
         {%- if not loop.first or variable.optional %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
-            {{ set_data_array_element(variable, var_type, function.class_name_teleflask_message, False) -}}
+            {{ set_data_array_element(variable, var_type, clazz.class_name_teleflask_message, False) -}}
         {%- endfor -%}
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
@@ -195,45 +195,45 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
     @staticmethod
     def from_array(array):
         """
-        Deserialize a new {{ function.class_name_teleflask_message }} from a given dictionary.
+        Deserialize a new {{ clazz.class_name_teleflask_message }} from a given dictionary.
 
-        :return: new {{ function.class_name_teleflask_message }} instance.
-        :rtype: {{ function.class_name_teleflask_message }}
+        :return: new {{ clazz.class_name_teleflask_message }} instance.
+        :rtype: {{ clazz.class_name_teleflask_message }}
         """
         if not array:  # None or {}
             return None
         # end if
 
-        data = {{ function.class_name_teleflask_message }}.validate_array(array)
+        data = {{ clazz.class_name_teleflask_message }}.validate_array(array)
         {% if not is_sendable -%}
-        return {{ function.class_name_teleflask_message }}(**data){% else -%}
-        instance = {{ function.class_name_teleflask_message }}(**data)
+        return {{ clazz.class_name_teleflask_message }}(**data){% else -%}
+        instance = {{ clazz.class_name_teleflask_message }}(**data)
         return instance{% endif %}
     # end def from_array
 
     def __str__(self):
         """
-        Implements `str({{ function.class_name_teleflask_message|lower }}_instance)`
+        Implements `str({{ clazz.class_name_teleflask_message|lower }}_instance)`
         """
-        return "{{ function.class_name_teleflask_message }}({{ for_args_format_repr(function.class_variables) }})".format(self=self)
+        return "{{ clazz.class_name_teleflask_message }}({{ for_args_format_repr(clazz.class_variables) }})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
-        Implements `repr({{ function.class_name_teleflask_message|lower }}_instance)`
+        Implements `repr({{ clazz.class_name_teleflask_message|lower }}_instance)`
         """
-        return "{{ function.class_name_teleflask_message }}({{ for_args_format_repr(function.class_variables) }})".format(self=self)
+        return "{{ clazz.class_name_teleflask_message }}({{ for_args_format_repr(clazz.class_variables) }})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
         """
-        Implements `"key" in {{ function.class_name_teleflask_message|lower }}_instance`
+        Implements `"key" in {{ clazz.class_name_teleflask_message|lower }}_instance`
         """
         return (
-            key in [{{ for_args_keys(function.class_variables) }}]
+            key in [{{ for_args_keys(clazz.class_variables) }}]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
     # end def __contains__
-# end class {{ function.class_name_teleflask_message }}
+# end class {{ clazz.class_name_teleflask_message }}
 {% endfor %}
