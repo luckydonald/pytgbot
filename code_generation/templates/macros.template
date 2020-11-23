@@ -34,19 +34,19 @@
             raise TypeError('Unknown type, must be one of type1, type2.')
        # end if
 
--#}
-{%- if variable.types|length == 1 -%}
-{{- set_array_element(variable, variable.types[0]) -}}{#
- #}{%- else -%}
-{%- for var_type in variable.types -%}
-{%- if not loop.first %}el{% endif %}if isinstance(self.{{ variable.name }}, {{ var_type.string }}):
-    {{ set_array_element(variable, var_type) -}}
-{%- endfor -%}
+-#}{#
+#}{% if variable.types|length == 1 %}
+{{ set_array_element(variable, variable.types[0]) }}{#
+ #}{% else %}{#
+#}{% for var_type in variable.types %}
+{% if not loop.first %}el{% endif %}if isinstance(self.{{ variable.name }}, {{ var_type.string }}):
+    {{ set_array_element(variable, var_type) }}{#
+#}{% endfor %}
 else:
     raise TypeError('Unknown type, must be one of {{ for_type(variable) }}.')
-# end if
-{% endif -%}
-{%- endmacro %}
+# end if{#
+#}{% endif %}{#
+#}{% endmacro %}
 
 
 {%- macro set_array_element(variable, var_type) -%}
