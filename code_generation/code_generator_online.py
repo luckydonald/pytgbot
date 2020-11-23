@@ -656,15 +656,15 @@ def safe_to_file(folder, results):
             if result.name.startswith('send_'):
                 import_path = "teleflask_messages."
                 file_path = calc_path_and_create_folders(folder, import_path)
-                result2 = safe_eval(repr(result), SAVE_VALUES)  # serialize + unserialize = deepcopy
+                args, special_kwargs, kwargs = result.class_variables_separated
                 result2 = CustomClazz(
                     clazz=result.class_name_teleflask_message,
                     import_path=Import(path=import_path.rstrip('.'), name=result.class_name_teleflask_message),
                     parent_clazz=Type(),
                     link=result.link,
                     description=result.description,
-                    parameters=result.parameters,
-                    keywords=result.keywords,
+                    parameters=args,
+                    keywords=special_kwargs + kwargs,
                     body=None,
                 )
                 result2.filepath = file_path

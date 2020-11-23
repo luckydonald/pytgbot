@@ -297,22 +297,6 @@ class Function(ClassOrFunction):
     # end def
 
     @property
-    def class_parameters(self) -> List['Variable']:
-        return self.class_variables_separated[0]
-    # end def
-
-    @property
-    def class_keywords(self) -> List['Variable']:
-        return self.class_variables_separated[1] + self.class_variables_separated[2]
-    # end def
-
-    @property
-    @cached
-    def class_variables(self):
-        return self.class_parameters + self.class_keywords
-    # end def
-
-    @property
     def variables(self):
         return self.parameters + self.keywords
     # end def variables
