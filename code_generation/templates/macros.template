@@ -18,30 +18,30 @@
 {#- CLASS RELATED STUFF -#}
 
 
-{%- macro set_array(variable, class_name) -%}
+{%- macro set_array(variable, helper_clazz='self') -%}
 {#
     Does the full
 
-        array['xxx'] = u(self.xxx) | self.xxx.to_array() | self._as_array(self.xxx)
+        array['xxx'] = u(self.xxx) | self.xxx.to_array() | {helper_clazz}._as_array(self.xxx)
 
     including having multiple types:
 
        if isinstance(self.xxx, type1):
-            array['xxx'] = u(self.xxx) | self.xxx.to_array() | self._as_array(self.xxx)
+            array['xxx'] = u(self.xxx) | self.xxx.to_array() | {helper_clazz}._as_array(self.xxx)
        elif isinstance(self.xxx, type2):
-            array['xxx'] = u(self.xxx) | self.xxx.to_array() | self._as_array(self.xxx)
+            array['xxx'] = u(self.xxx) | self.xxx.to_array() | {helper_clazz}._as_array(self.xxx)
        else:
             raise TypeError('Unknown type, must be one of type1, type2.')
        # end if
 
 -#}{#
 #}{% if variable.types|length == 1 %}{#
-#}{{ set_array_element(variable, variable.types[0]) }}{#
+#}{{ set_array_element(variable, variable.types[0], helper_clazz) }}{#
 #}{% else %}{#
 #}{% for var_type in variable.types %}{#
 #}{% if not loop.first %}
 el{% endif %}if {% if var_type.string == 'None' %}self.{{ variable.name }} is None{% else %}isinstance(self.{{ variable.name }}, {{ var_type.string }}){% endif %}:
-    {{ set_array_element(variable, var_type) }}{#
+    {{ set_array_element(variable, var_type, helper_clazz) }}{#
 #}{% endfor %}
 else:
     raise TypeError('Unknown type, must be one of {{ for_type(variable) }}.')
@@ -50,16 +50,16 @@ else:
 #}{% endmacro %}
 
 
-{%- macro set_array_element(variable, var_type) %}{#
+{%- macro set_array_element(variable, var_type, helper_clazz) %}{#
 #}{#
     generates those
 
-        array['xxx'] = u(self.xxx) | self.xxx.to_array() | self._as_array(self.xxx)
+        array['xxx'] = u(self.xxx) | self.xxx.to_array() | {helper_clazz}._as_array(self.xxx)
 
     for a single type only
 #}{#
 #}{% if var_type.is_list > 0 %}{#
-#}array['{{ variable.api_name }}'] = self._as_array(self.{{ variable.name }})  # type {{ for_type_list_of(variable) }}{#
+#}array['{{ variable.api_name }}'] = {{ helper_clazz }}._as_array(self.{{ variable.name }})  # type {{ for_type_list_of(variable) }}{#
 #}{% else %}{#
 #}{% if var_type.is_builtin %}{#
 #}{% if var_type.string == 'str' %}{#
