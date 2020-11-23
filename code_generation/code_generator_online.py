@@ -660,7 +660,8 @@ def safe_to_file(folder, results):
                 result2 = FunctionClazz(
                     clazz=result.class_name_teleflask_message,
                     import_path=Import(path=import_path.rstrip('.'), name=result.class_name_teleflask_message),
-                    parent_clazz=Type(),
+                    imports=result.imports,
+                    parent_clazz=Type(string='ReturnableMessageBase', is_builtin=False, is_list=0, import_path=None, description="Base class"),
                     link=result.link,
                     description=result.description,
                     parameters=args,
