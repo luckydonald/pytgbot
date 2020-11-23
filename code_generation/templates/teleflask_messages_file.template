@@ -4,6 +4,7 @@ from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable.updates import Message as PytgbotApiMessage
 from pytgbot.exceptions import TgApiServerException
+from pytgbot.api_types import TgBotApiObject
 from pytgbot.bot import Bot as PytgbotApiBot
 from abc import abstractmethod{#
 #}{% from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple %}{#
@@ -166,7 +167,7 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         #}{% if variable.duplicate_of_parent %}
         # {{ variable.name.__repr__() }} given by superclass{#
         #}{% else %}
-        {{ set_array(variable)|trim()|indent(8) }}{#
+        {{ set_array(variable, 'PytgbotApiBot')|trim()|indent(8) }}{#
         #}{% endif %}{#
         #}{% endfor %}
         return array
@@ -188,7 +189,7 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         data = SendableMessageBase.validate_array(array)
         {% for variable in clazz.variables -%}
         {%- if variable.types|length == 1 -%}
-        {{- set_data_array_element(variable, variable.types[0], clazz.name_teleflask_message, variable.optional) -}}
+        {{- set_data_array_element(variable, variable.types[0], 'TgBotApiObject', variable.optional) -}}
         {% else -%}
         {%- if variable.optional -%}
         if array.get('{{ variable.api_name }}') is None:
@@ -196,7 +197,7 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         {% endif -%}
         {%- for var_type in variable.types -%}
         {%- if not loop.first or variable.optional %}el{% endif %}if isinstance(array.get('{{ variable.api_name }}'), {{ var_type.string }}):
-            {{ set_data_array_element(variable, var_type, clazz.clazz, False) -}}
+            {{ set_data_array_element(variable, var_type, 'TgBotApiObject', False) -}}
         {%- endfor -%}
         else:
             raise TypeError('Unknown type, must be one of {{ for_type(variable) }}{% if variable.optional %} or None{% endif %}.')
