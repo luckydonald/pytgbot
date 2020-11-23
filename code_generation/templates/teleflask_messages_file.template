@@ -3,7 +3,7 @@ from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from pytgbot.api_types.receivable.updates import Message as PytgbotApiMessage
 from pytgbot.bot import Bot as PytgbotApiBot
-{%- from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple, for_args_pytg_send_params -%}
+{%- from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple -%}
 {%- from "macros.template" import set_data_array_element, for_type, for_args_format_repr, for_args_keys -%}
 {%- from "macros.template" import set_array, set_array_element -%}
 
@@ -130,7 +130,7 @@ class {{ function.class_name_teleflask_message }}(SendableMessageBase):
         """
         return sender.{{ class.name }}(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
-            {{ for_args_pytg_send_params(function.class_variables) }}
+            {%- for variable in function.class_variables %}{{ class.variable.pytg_name }}=self.{{ variable.name }}{% if not loop.last %}, {% endif -%}{%- endfor %}
         )
     # end def send
 
