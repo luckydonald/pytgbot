@@ -87,6 +87,8 @@ else:
         {% else -%}
         {% if var_type.is_list > 0 -%}
         data['{{ variable.name }}'] = {{ clazz_name }}._builtin_from_array_list(required_type={{ var_type.string }}, value=array.get('{{ variable.api_name }}'), list_level={{ var_type.is_list }}){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
+        {% elif var_type.always_is_value -%}
+        data['{{ variable.name }}'] = {{ var_type.always_is_value }}
         {% else -%}
         data['{{ variable.name }}'] = {{ var_type.string }}(array.get('{{ variable.api_name }}')){%- if optional %} if array.get('{{ variable.api_name }}') is not None else None{%- endif %}
         {% endif -%}
