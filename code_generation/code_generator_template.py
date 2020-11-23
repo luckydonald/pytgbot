@@ -4,7 +4,7 @@ import re
 
 from typing import List, Set
 
-from jinja2 import  Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader
 from jinja2.exceptions import TemplateSyntaxError
 
 from luckydonaldUtils.logger import logging
