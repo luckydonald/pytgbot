@@ -143,7 +143,7 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
 
         :rtype: PytgbotApiMessage
         """
-        return sender.{{ clazz.clazz }}(
+        return sender.{{ clazz.function.name }}(
             # receiver, self.media, disable_notification=self.disable_notification, reply_to_message_id=reply_id
             {%- for variable in clazz.variables %}{{ variable.pytg_name }}=self.{{ variable.name }}{% if not loop.last %}, {% endif -%}{%- endfor %}
         )
@@ -156,7 +156,7 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         :return: dictionary representation of this object.
         :rtype: dict
         """
-        array = super({{ clazz.name_teleflask_message }}, self).to_array()
+        array = super({{ clazz.clazz }}, self).to_array()
         {# fresh line -#}
         {% for variable in clazz.variables -%}
         {%- if variable.optional %}if self.{{ variable.name }} is not None:
