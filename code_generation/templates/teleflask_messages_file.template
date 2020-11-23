@@ -67,28 +67,29 @@ class SendableMessageBase(object):
 
 {% for clazz in clazzes %}
 class {{ clazz.clazz }}(SendableMessageBase):
-    """{% macro description() %}
-    {{ clazz.description|indent(8) }}
+    """{% macro description(clazz) %}
+    {% if clazz.description %}{{ clazz.description.strip()|indent }}{% endif %}{%- if clazz.description and clazz.link %}
 
-    {{clazz.link}}
+    {% endif %}{% if clazz.link %}{{ clazz.link }}{% endif %}{% if (clazz.description or clazz.link) and clazz.parameters %}
+    {# first line -#}
+    {% endif %}{% if clazz.parameters %}
 
-    {% if clazz.parameters %}
-    Parameters:{#
-    #}{% for param in clazz.parameters %}
+    Parameters:
+    {% for param in clazz.parameters if not param.is_fixed_value %}
     :param {{ param.name }}: {{ param.description }}
     :type  {{ param.name }}: {{ for_type_list_of_full(param) }}
-    {% endfor %}{#
-    #}{% endif %}{#
-    #}{% if clazz.keywords %}
-    Optional keyword parameters:
+    {% endfor -%}
+    {%- endif -%}{%- if (clazz.description or clazz.link or clazz.parameters) and clazz.keywords %}
+    {# first line -#}
+    {% endif %}{%- if clazz.keywords %}
 
-    {#
-    #}{% for keyword in clazz.keywords %}
+    Optional keyword parameters:
+    {% for keyword in clazz.keywords if not keyword.is_fixed_value %}
     :param {{ keyword.name }}: {{ keyword.description }}
     :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
     {% endfor %}{#
     #}{% endif %}{#
-    #}{% endmacro %}{{ description() }}{#
+    #}{% endmacro %}{{ description(clazz) }}{#
     #}"""
 
     def __init__(self, {{ for_args_none(clazz.variables) }}):
