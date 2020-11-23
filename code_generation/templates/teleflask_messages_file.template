@@ -8,7 +8,7 @@ from pytgbot.bot import Bot as PytgbotApiBot
 from abc import abstractmethod{#
 #}{% from "macros.template" import for_type_list_of_full, for_args_none, types_as_tuple %}{#
 #}{% from "macros.template" import set_data_array_element, for_type, for_args_format_repr, for_args_keys %}{#
-#}{% from "macros.template" import set_array, set_array_element %}
+#}{% from "macros.template" import set_array, set_array_element, fix_type_docs %}
 
 
 __author__ = "luckydonald"
@@ -92,7 +92,7 @@ class {{ clazz.clazz }}(SendableMessageBase):
     #}{% endmacro %}{{ description(clazz) }}{#
     #}"""
 
-    def __init__(self, {{ for_args_none(clazz.variables) }}):
+    def __init__(self{% for variable in clazz.variables if not variable.is_fixed_value %}, {{ variable.name }}{% if variable.optional %}={% if variable.default == None %}None{% else %}{{ variable.default if variable.default is string else fix_type_docs(variable.default) }}{% endif %}{% endif %}{%- endfor %}):
         """
         {{ description() | indent }}
         """
