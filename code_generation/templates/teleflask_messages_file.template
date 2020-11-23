@@ -186,7 +186,7 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         {{- imports(clazz) -}}
         {#- does strip before #}
         {#- this will be a new line #}
-        data = SendableMessageBase.validate_array(array)
+        data = super({{ clazz.clazz }}, {{ clazz.clazz }}).validate_array(array)
         {% for variable in clazz.variables -%}
         {%- if variable.types|length == 1 -%}
         {{- set_data_array_element(variable, variable.types[0], 'TgBotApiObject', variable.optional) -}}
