@@ -251,4 +251,5 @@ class {{ clazz.clazz }}({{ clazz.parent_clazz.string }}):
         )
     # end def __contains__
 # end class {{ clazz.clazz }}
-{% endfor %}
+
+{% endfor -%}
