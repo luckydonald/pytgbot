@@ -792,6 +792,10 @@ def safe_to_file(folder, results):
 
 # noinspection PyCompatibility
 def render_file_to_disk(file, txt):
+    # add blank line at end of file.
+    if not txt.endswith("\n"):
+        txt += "\n"
+    # end if
     with open(file, "w") as f:
         f.write(txt)
     # end with
