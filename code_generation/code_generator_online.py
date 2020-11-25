@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pathlib import Path
 from typing import Dict, List, Union
 
 from code_generator import get_type_path
@@ -648,9 +649,10 @@ def safe_to_file(folder, results):
             all_the_clazzes.append(result)
         else:
             assert isinstance(result, Function)
-            import_path = "pytgbot.bot.asynchronous."
-            file_path = calc_path_and_create_folders(folder, import_path)
-            result.filepath = file_path
+            pytgbot_dir = Path(__file__).parent.parent
+            # import_path = "pytgbot.bot.asynchronous."
+            # file_path = calc_path_and_create_folders(pytgbot_dir.absolute(), import_path)
+            result.filepath = str(pytgbot_dir.joinpath('pytgbot').joinpath('bot').joinpath('asynchronous').absolute())
             functions.append(result)
 
             if result.name.startswith('send_'):
