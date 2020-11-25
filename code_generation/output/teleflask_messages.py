@@ -85,7 +85,7 @@ class TextMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -127,7 +127,7 @@ class TextMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -161,7 +161,7 @@ class TextMessage(ReturnableMessageBase):
         
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -223,12 +223,14 @@ class TextMessage(ReturnableMessageBase):
         array = super(TextMessage, self).to_array()
         
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -274,12 +276,14 @@ class TextMessage(ReturnableMessageBase):
         data['text'] = u(array.get('text'))
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -372,7 +376,7 @@ class PhotoMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -414,7 +418,7 @@ class PhotoMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -449,7 +453,7 @@ class PhotoMessage(ReturnableMessageBase):
         
         assert_type_or_raise(photo, InputFile, unicode_type, parameter_name="photo")
         self.photo = photo
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -518,12 +522,14 @@ class PhotoMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -576,12 +582,14 @@ class PhotoMessage(ReturnableMessageBase):
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -675,7 +683,7 @@ class AudioMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -730,7 +738,7 @@ class AudioMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -777,7 +785,7 @@ class AudioMessage(ReturnableMessageBase):
         
         assert_type_or_raise(audio, InputFile, unicode_type, parameter_name="audio")
         self.audio = audio
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -858,12 +866,14 @@ class AudioMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -926,12 +936,14 @@ class AudioMessage(ReturnableMessageBase):
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -1036,7 +1048,7 @@ class DocumentMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -1084,7 +1096,7 @@ class DocumentMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -1125,7 +1137,7 @@ class DocumentMessage(ReturnableMessageBase):
         
         assert_type_or_raise(document, InputFile, unicode_type, parameter_name="document")
         self.document = document
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -1200,12 +1212,14 @@ class DocumentMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -1266,12 +1280,14 @@ class DocumentMessage(ReturnableMessageBase):
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -1374,7 +1390,7 @@ class VideoMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -1431,7 +1447,7 @@ class VideoMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -1481,7 +1497,7 @@ class VideoMessage(ReturnableMessageBase):
         
         assert_type_or_raise(video, InputFile, unicode_type, parameter_name="video")
         self.video = video
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -1565,12 +1581,14 @@ class VideoMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -1634,12 +1652,14 @@ class VideoMessage(ReturnableMessageBase):
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -1745,7 +1765,7 @@ class AnimationMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -1799,7 +1819,7 @@ class AnimationMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -1846,7 +1866,7 @@ class AnimationMessage(ReturnableMessageBase):
         
         assert_type_or_raise(animation, InputFile, unicode_type, parameter_name="animation")
         self.animation = animation
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -1927,12 +1947,14 @@ class AnimationMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -1995,12 +2017,14 @@ class AnimationMessage(ReturnableMessageBase):
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -2105,7 +2129,7 @@ class VoiceMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -2150,7 +2174,7 @@ class VoiceMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -2188,7 +2212,7 @@ class VoiceMessage(ReturnableMessageBase):
         
         assert_type_or_raise(voice, InputFile, unicode_type, parameter_name="voice")
         self.voice = voice
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -2260,12 +2284,14 @@ class VoiceMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -2319,12 +2345,14 @@ class VoiceMessage(ReturnableMessageBase):
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -2418,7 +2446,7 @@ class VideoNoteMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -2460,7 +2488,7 @@ class VideoNoteMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -2494,7 +2522,7 @@ class VideoNoteMessage(ReturnableMessageBase):
         
         assert_type_or_raise(video_note, InputFile, unicode_type, parameter_name="video_note")
         self.video_note = video_note
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -2562,12 +2590,14 @@ class VideoNoteMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -2625,12 +2655,14 @@ class VideoNoteMessage(ReturnableMessageBase):
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -2731,7 +2763,7 @@ class MediaGroupMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -2761,7 +2793,7 @@ class MediaGroupMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -2782,7 +2814,7 @@ class MediaGroupMessage(ReturnableMessageBase):
         
         assert_type_or_raise(media, list, list, list, list, parameter_name="media")
         self.media = media
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -2841,12 +2873,14 @@ class MediaGroupMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo.')
         # end if
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -2887,12 +2921,14 @@ class MediaGroupMessage(ReturnableMessageBase):
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -2972,7 +3008,7 @@ class LocationMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -3020,7 +3056,7 @@ class LocationMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -3058,7 +3094,7 @@ class LocationMessage(ReturnableMessageBase):
         self.latitude = latitude
         assert_type_or_raise(longitude, float, parameter_name="longitude")
         self.longitude = longitude
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -3124,12 +3160,14 @@ class LocationMessage(ReturnableMessageBase):
         
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -3176,12 +3214,14 @@ class LocationMessage(ReturnableMessageBase):
         data['longitude'] = float(array.get('longitude'))
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -3284,7 +3324,7 @@ class VenueMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -3338,7 +3378,7 @@ class VenueMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -3380,7 +3420,7 @@ class VenueMessage(ReturnableMessageBase):
         self.title = title
         assert_type_or_raise(address, unicode_type, parameter_name="address")
         self.address = address
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -3450,12 +3490,14 @@ class VenueMessage(ReturnableMessageBase):
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -3504,12 +3546,14 @@ class VenueMessage(ReturnableMessageBase):
         data['address'] = u(array.get('address'))
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -3606,7 +3650,7 @@ class ContactMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -3648,7 +3692,7 @@ class ContactMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -3680,7 +3724,7 @@ class ContactMessage(ReturnableMessageBase):
         self.phone_number = phone_number
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
         self.first_name = first_name
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -3740,12 +3784,14 @@ class ContactMessage(ReturnableMessageBase):
         
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -3790,12 +3836,14 @@ class ContactMessage(ReturnableMessageBase):
         data['first_name'] = u(array.get('first_name'))
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -3890,7 +3938,7 @@ class PollMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -3956,7 +4004,7 @@ class PollMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -4013,7 +4061,7 @@ class PollMessage(ReturnableMessageBase):
         self.question = question
         assert_type_or_raise(options, list, parameter_name="options")
         self.options = options
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -4098,12 +4146,14 @@ class PollMessage(ReturnableMessageBase):
         
         array['question'] = u(self.question)  # py2: type unicode, py3: type str
         array['options'] = PytgbotApiBot._as_array(self.options)  # type list of str
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -4157,12 +4207,14 @@ class PollMessage(ReturnableMessageBase):
         data['options'] = TgBotApiObject._builtin_from_array_list(required_type=unicode_type, value=array.get('options'), list_level=1)
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -4255,7 +4307,7 @@ class DiceMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -4284,7 +4336,7 @@ class DiceMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -4309,7 +4361,7 @@ class DiceMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
         
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -4362,12 +4414,14 @@ class DiceMessage(ReturnableMessageBase):
 
         array = super(DiceMessage, self).to_array()
         
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -4409,12 +4463,14 @@ class DiceMessage(ReturnableMessageBase):
         data = super(DiceMessage, DiceMessage).validate_array(array)
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -4509,7 +4565,7 @@ class ChatActionMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     """
 
     def __init__(self, action, receiver=None):
@@ -4534,7 +4590,7 @@ class ChatActionMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         """
         super(ChatActionMessage, self).__init__()
@@ -4542,7 +4598,7 @@ class ChatActionMessage(ReturnableMessageBase):
         
         assert_type_or_raise(action, unicode_type, parameter_name="action")
         self.action = action
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
 
         # custom variable for message chaining
@@ -4578,12 +4634,14 @@ class ChatActionMessage(ReturnableMessageBase):
         array = super(ChatActionMessage, self).to_array()
         
         array['action'] = u(self.action)  # py2: type unicode, py3: type str
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         return array
     # end def to_array
@@ -4601,12 +4659,14 @@ class ChatActionMessage(ReturnableMessageBase):
         data['action'] = u(array.get('action'))
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         
         return data
@@ -4672,7 +4732,7 @@ class StickerMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -4705,7 +4765,7 @@ class StickerMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -4730,7 +4790,7 @@ class StickerMessage(ReturnableMessageBase):
         
         assert_type_or_raise(sticker, InputFile, unicode_type, parameter_name="sticker")
         self.sticker = sticker
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -4789,12 +4849,14 @@ class StickerMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InputFile, str.')
         # end if
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -4843,12 +4905,14 @@ class StickerMessage(ReturnableMessageBase):
         # end if
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -4956,7 +5020,7 @@ class InvoiceMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -5043,7 +5107,7 @@ class InvoiceMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -5113,7 +5177,7 @@ class InvoiceMessage(ReturnableMessageBase):
         self.currency = currency
         assert_type_or_raise(prices, list, parameter_name="prices")
         self.prices = prices
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -5211,12 +5275,14 @@ class InvoiceMessage(ReturnableMessageBase):
         array['start_parameter'] = u(self.start_parameter)  # py2: type unicode, py3: type str
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
         array['prices'] = PytgbotApiBot._as_array(self.prices)  # type list of LabeledPrice
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -5264,12 +5330,14 @@ class InvoiceMessage(ReturnableMessageBase):
         data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
@@ -5359,7 +5427,7 @@ class GameMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: str|unicode | int
+    :type  receiver: None | str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -5392,7 +5460,7 @@ class GameMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: str|unicode | int
+        :type  receiver: None | str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -5413,7 +5481,7 @@ class GameMessage(ReturnableMessageBase):
         
         assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
-        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
@@ -5462,12 +5530,14 @@ class GameMessage(ReturnableMessageBase):
         array = super(GameMessage, self).to_array()
         
         array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
-        if isinstance(self.receiver, str):
+        if self.receiver is None:
+            array['chat_id'] = None
+        elif isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
             array['chat_id'] = int(self.receiver)  # type int
         else:
-            raise TypeError('Unknown type, must be one of str, int.')
+            raise TypeError('Unknown type, must be one of None, str, int.')
         # end if
         if isinstance(self.reply_id, DEFAULT_MESSAGE_ID):
             array['reply_to_message_id'] = DEFAULT_MESSAGE_ID(self.reply_id)  # type DEFAULT_MESSAGE_ID
@@ -5496,12 +5566,14 @@ class GameMessage(ReturnableMessageBase):
         data['game_short_name'] = u(array.get('game_short_name'))
         if array.get('chat_id') is None:
             data['receiver'] = None
+        elif isinstance(array.get('chat_id'), None):
+            data['receiver'] = None(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), str):
             data['receiver'] = u(array.get('chat_id'))
         elif isinstance(array.get('chat_id'), int):
             data['receiver'] = int(array.get('chat_id'))
         else:
-            raise TypeError('Unknown type, must be one of str, int or None.')
+            raise TypeError('Unknown type, must be one of None, str, int or None.')
         # end if
         if array.get('reply_to_message_id') is None:
             data['reply_id'] = None
