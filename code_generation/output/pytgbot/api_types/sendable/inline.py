@@ -226,7 +226,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always article.
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
@@ -480,7 +480,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always photo.
         data['id'] = u(array.get('id'))
         data['photo_url'] = u(array.get('photo_url'))
         data['thumb_url'] = u(array.get('thumb_url'))
@@ -747,7 +747,7 @@ class InlineQueryResultGif(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always gif.
         data['id'] = u(array.get('id'))
         data['gif_url'] = u(array.get('gif_url'))
         data['thumb_url'] = u(array.get('thumb_url'))
@@ -1015,7 +1015,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always mpeg4_gif.
         data['id'] = u(array.get('id'))
         data['mpeg4_url'] = u(array.get('mpeg4_url'))
         data['thumb_url'] = u(array.get('thumb_url'))
@@ -1294,7 +1294,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always video.
         data['id'] = u(array.get('id'))
         data['video_url'] = u(array.get('video_url'))
         data['mime_type'] = u(array.get('mime_type'))
@@ -1532,7 +1532,7 @@ class InlineQueryResultAudio(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always audio.
         data['id'] = u(array.get('id'))
         data['audio_url'] = u(array.get('audio_url'))
         data['title'] = u(array.get('title'))
@@ -1755,7 +1755,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always voice.
         data['id'] = u(array.get('id'))
         data['voice_url'] = u(array.get('voice_url'))
         data['title'] = u(array.get('title'))
@@ -2019,7 +2019,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always document.
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))
         data['document_url'] = u(array.get('document_url'))
@@ -2285,7 +2285,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always location.
         data['id'] = u(array.get('id'))
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
@@ -2560,7 +2560,7 @@ class InlineQueryResultVenue(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always venue.
         data['id'] = u(array.get('id'))
         data['latitude'] = float(array.get('latitude'))
         data['longitude'] = float(array.get('longitude'))
@@ -2796,7 +2796,7 @@ class InlineQueryResultContact(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always contact.
         data['id'] = u(array.get('id'))
         data['phone_number'] = u(array.get('phone_number'))
         data['first_name'] = u(array.get('first_name'))
@@ -2953,7 +2953,7 @@ class InlineQueryResultGame(InlineQueryResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always game.
         data['id'] = u(array.get('id'))
         data['game_short_name'] = u(array.get('game_short_name'))
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
@@ -3169,7 +3169,7 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always photo.
         data['id'] = u(array.get('id'))
         data['photo_file_id'] = u(array.get('photo_file_id'))
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
@@ -3380,7 +3380,7 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always gif.
         data['id'] = u(array.get('id'))
         data['gif_file_id'] = u(array.get('gif_file_id'))
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
@@ -3590,7 +3590,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always mpeg4_gif.
         data['id'] = u(array.get('id'))
         data['mpeg4_file_id'] = u(array.get('mpeg4_file_id'))
         data['title'] = u(array.get('title')) if array.get('title') is not None else None
@@ -3756,7 +3756,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always sticker.
         data['id'] = u(array.get('id'))
         data['sticker_file_id'] = u(array.get('sticker_file_id'))
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
@@ -3973,7 +3973,7 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always document.
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))
         data['document_file_id'] = u(array.get('document_file_id'))
@@ -4193,7 +4193,7 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always video.
         data['id'] = u(array.get('id'))
         data['video_file_id'] = u(array.get('video_file_id'))
         data['title'] = u(array.get('title'))
@@ -4404,7 +4404,7 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always voice.
         data['id'] = u(array.get('id'))
         data['voice_file_id'] = u(array.get('voice_file_id'))
         data['title'] = u(array.get('title'))
@@ -4605,7 +4605,7 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         from .reply_markup import InlineKeyboardMarkup
         
         data = InlineQueryCachedResult.validate_array(array)
-        data['type'] = u(array.get('type'))
+        # 'type' is always audio.
         data['id'] = u(array.get('id'))
         data['audio_file_id'] = u(array.get('audio_file_id'))
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None

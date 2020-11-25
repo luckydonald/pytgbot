@@ -532,7 +532,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = ReplyMarkup.validate_array(array)
-        data['remove_keyboard'] = bool(array.get('remove_keyboard'))
+        # 'remove_keyboard' is always True.
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
         return data
     # end def validate_array
@@ -1161,7 +1161,7 @@ class ForceReply(ReplyMarkup):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = ReplyMarkup.validate_array(array)
-        data['force_reply'] = bool(array.get('force_reply'))
+        # 'force_reply' is always True.
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
         return data
     # end def validate_array

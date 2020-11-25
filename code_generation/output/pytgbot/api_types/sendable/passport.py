@@ -115,7 +115,7 @@ class PassportElementErrorDataField(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always data.
         data['type'] = u(array.get('type'))
         data['field_name'] = u(array.get('field_name'))
         data['data_hash'] = u(array.get('data_hash'))
@@ -258,7 +258,7 @@ class PassportElementErrorFrontSide(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always front_side.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -400,7 +400,7 @@ class PassportElementErrorReverseSide(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always reverse_side.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -542,7 +542,7 @@ class PassportElementErrorSelfie(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always selfie.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -684,7 +684,7 @@ class PassportElementErrorFile(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always file.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -826,7 +826,7 @@ class PassportElementErrorFiles(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always files.
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
@@ -968,7 +968,7 @@ class PassportElementErrorTranslationFile(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always translation_file.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -1110,7 +1110,7 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always translation_files.
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorTranslationFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
@@ -1252,7 +1252,7 @@ class PassportElementErrorUnspecified(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always unspecified.
         data['type'] = u(array.get('type'))
         data['element_hash'] = u(array.get('element_hash'))
         data['message'] = u(array.get('message'))

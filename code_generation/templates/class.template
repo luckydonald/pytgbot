@@ -128,6 +128,8 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         #}{% for variable in clazz.variables %}{#
         #}{% if variable.duplicate_of_parent %}
         # {{ variable.name.__repr__() }} is given by class type{#
+        #}{% elif variable.types[0].always_is_value and not variable.optional %}
+        # {{ variable.name.__repr__() }} is always {{ variable.types[0].always_is_value }}.{#
         #}{% else %}{#
         #}{% if variable.types|length == 1 %}
         {{ set_data_array_element(variable, variable.types[0], clazz.clazz, variable.optional) | trim() }}{#
