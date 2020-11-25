@@ -234,7 +234,6 @@ class Function(ClassOrFunction):
                     pytg_name=param.name,
                     name='receiver',
                     types=[
-                        default,
                         Type(
                             'str',
                             is_builtin=True,

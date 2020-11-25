@@ -85,7 +85,7 @@ class TextMessage(ReturnableMessageBase):
     Optional keyword parameters:
     
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-    :type  receiver: None | str|unicode | int
+    :type  receiver: str|unicode | int
     
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -127,7 +127,7 @@ class TextMessage(ReturnableMessageBase):
         Optional keyword parameters:
         
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
-        :type  receiver: None | str|unicode | int
+        :type  receiver: str|unicode | int
         
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
@@ -161,7 +161,7 @@ class TextMessage(ReturnableMessageBase):
         
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
-        assert_type_or_raise(receiver, None, None, unicode_type, int, parameter_name="receiver")
+        assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
