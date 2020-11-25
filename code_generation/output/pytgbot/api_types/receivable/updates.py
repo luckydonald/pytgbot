@@ -1289,10 +1289,10 @@ class Message(UpdateType):
         data['left_chat_member'] = User.from_array(array.get('left_chat_member')) if array.get('left_chat_member') is not None else None
         data['new_chat_title'] = u(array.get('new_chat_title')) if array.get('new_chat_title') is not None else None
         data['new_chat_photo'] = PhotoSize.from_array_list(array.get('new_chat_photo'), list_level=1) if array.get('new_chat_photo') is not None else None
-        data['delete_chat_photo'] = bool(array.get('delete_chat_photo')) if array.get('delete_chat_photo') is not None else None
-        data['group_chat_created'] = bool(array.get('group_chat_created')) if array.get('group_chat_created') is not None else None
-        data['supergroup_chat_created'] = bool(array.get('supergroup_chat_created')) if array.get('supergroup_chat_created') is not None else None
-        data['channel_chat_created'] = bool(array.get('channel_chat_created')) if array.get('channel_chat_created') is not None else None
+        data['delete_chat_photo'] = True if array.get('delete_chat_photo') is not None else None
+        data['group_chat_created'] = True if array.get('group_chat_created') is not None else None
+        data['supergroup_chat_created'] = True if array.get('supergroup_chat_created') is not None else None
+        data['channel_chat_created'] = True if array.get('channel_chat_created') is not None else None
         data['migrate_to_chat_id'] = int(array.get('migrate_to_chat_id')) if array.get('migrate_to_chat_id') is not None else None
         data['migrate_from_chat_id'] = int(array.get('migrate_from_chat_id')) if array.get('migrate_from_chat_id') is not None else None
         data['pinned_message'] = Message.from_array(array.get('pinned_message')) if array.get('pinned_message') is not None else None
