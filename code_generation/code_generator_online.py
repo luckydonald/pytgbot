@@ -518,10 +518,10 @@ def preprocess_results(results: List[Union[Clazz, Function]], additional_items: 
 
 def output(folder, results, html_content=None):
     can_quit = False
-    do_overwrite = confirm("Can the folder {path} be overwritten?".format(path=folder))
+    do_delete_first = confirm("Can the folder {path} be deleted before writing?".format(path=folder))
     logger.info("vvvvvvvvv")
     while not can_quit:
-        if do_overwrite:
+        if do_delete_first:
             try:
                 import Send2Trash
                 Send2Trash.send2trash(folder)
