@@ -200,7 +200,7 @@ class BotBase(object):
         """
         from ..api_types.receivable.media import File
         assert_type_or_raise(file, File, parameter_name='file')
-        return self._base_url.rstrip('/').format(api_key=n(elf.api_keys), command=n(file.file_path))
+        return self._base_url.rstrip('/').format(api_key=n(self.api_key), command=n(file.file_path))
     # end def get_download_url
 
     @abstractmethod
