@@ -58,7 +58,7 @@ To learn how to create…">
 <li>Added the method <a href="#logout">logOut</a>, which can be used to log out from the cloud Bot API server before launching your bot locally. You <strong>must</strong> log out the bot before running it locally, otherwise there is no guarantee that the bot will receive all updates.</li>
 <li>Added the method <a href="#close">close</a>, which can be used to close the bot instance before moving it from one local server to another.</li>
 </ul>
-<p><strong>Transfer Bot Ownnership</strong></p>
+<p><strong>Transfer Bot Ownership</strong></p>
 <ul>
 <li>You can now use <a href="https://t.me/botfather">@BotFather</a> to transfer your existing bots to another Telegram account. </li>
 </ul>
@@ -751,7 +751,7 @@ To learn how to create…">
 <tr>
 <td>dice</td>
 <td><a href="#dice">Dice</a></td>
-<td><em>Optional</em>. Message is a dice with random value from 1 to 6</td>
+<td><em>Optional</em>. Message is a dice with random value</td>
 </tr>
 <tr>
 <td>game</td>
@@ -2782,7 +2782,7 @@ pre-formatted fixed-width code block written in the Python programming language
 <td>photo</td>
 <td><a href="#inputfile">InputFile</a> or String</td>
 <td>Yes</td>
-<td>Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. <a href="#sending-files">More info on Sending Files »</a></td>
+<td>Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. The photo must be at most 10 MB in size. The photo&#39;s width and height must not exceed 10000 in total. Width and height ratio must be at most 20. <a href="#sending-files">More info on Sending Files »</a></td>
 </tr>
 <tr>
 <td>caption</td>
@@ -8339,4 +8339,4 @@ removePreloadInit();
 </script>
   </body>
 </html>
-<!-- page generated in 56.92ms -->
+<!-- page generated in 31.31ms -->

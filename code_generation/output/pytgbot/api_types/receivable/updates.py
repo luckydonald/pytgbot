@@ -683,7 +683,7 @@ class Message(UpdateType):
     :param contact: Optional. Message is a shared contact, information about the contact
     :type  contact: pytgbot.api_types.receivable.media.Contact
     
-    :param dice: Optional. Message is a dice with random value from 1 to 6
+    :param dice: Optional. Message is a dice with random value
     :type  dice: pytgbot.api_types.receivable.media.Dice
     
     :param game: Optional. Message is a game, information about the game. More about games »
@@ -852,7 +852,7 @@ class Message(UpdateType):
         :param contact: Optional. Message is a shared contact, information about the contact
         :type  contact: pytgbot.api_types.receivable.media.Contact
         
-        :param dice: Optional. Message is a dice with random value from 1 to 6
+        :param dice: Optional. Message is a dice with random value
         :type  dice: pytgbot.api_types.receivable.media.Dice
         
         :param game: Optional. Message is a game, information about the game. More about games »
