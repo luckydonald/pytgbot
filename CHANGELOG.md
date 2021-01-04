@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.0.0
+Fixed get_download_url.
+Also cut a stable release.
+
 ## Version 5.0b4
 Fixed Sync bot not resolving username and id correctly.
 
