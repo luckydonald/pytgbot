@@ -555,7 +555,7 @@ def output(folder, results, html_content=None):
                 logger.exception("Template error.")
                 # end if
         # end try
-        logger.info("Writen to file.")
+        logger.info("Written to file.")
         can_quit = not confirm("Write again after reloading templates?", default=True)
     logger.info("#########")
     logger.info("Exit.")
