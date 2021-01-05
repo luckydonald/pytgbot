@@ -18,7 +18,7 @@ setup(
     author='luckydonald',
     author_email='code@luckydonald.de',
     # Choose your license
-    license='LGPLv3+',
+    license='MIT',
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         'Development Status :: 4 - Beta',  # 2 - Pre-Alpha, 3 - Alpha, 4 - Beta, 5 - Production/Stable
