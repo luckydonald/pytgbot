@@ -8,9 +8,10 @@ Native python package with a pure Python interface for the [Telegram Bot API](ht
 # Recent changes
  - Updated official API changes of [`Bot API 5`.`0` (November 4, 2020)](https://core.telegram.org/bots/api-changelog#november-4-2020)
  - Proper `asyncio` support, and a lot of cleanup in that regard.
- - LGPL Licence! **Whoooh!** _(Yes, AGPL and GPL sucks!)_ 
+ - LGPL Licence! **Whoooh!** _(Yes, AGPL and GPL sucks! LGPL is okeyish, but eh)_ 
     - You can it without being forced to upload your project you are using it with!
     - Only if you modify this library directly, you need to share it with the world again.
+ - Support for custom servers, see [Custom servers](#custom-servers) section below on how to set those. 
  - [And more...](CHANGELOG.md)
 
  [Older changes...](CHANGELOG.md)
@@ -86,10 +87,13 @@ python setup.py install
 ```python
 from pytgbot import Bot
 
+API_KEY='123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11'  # change this to the token you get from @BotFather
+CHAT='@username'  # can be a @username or a id, change this to your own @username or id for example.
+
 bot = Bot(API_KEY)
 
 # sending messages:
-bot.send_message(CHAT, "Example Text!")  # CHAT can be a @username or a id
+bot.send_message(CHAT, "Example Text!")
 
 # getting events:
 for x in bot.get_updates():
@@ -109,13 +113,18 @@ You can also use the python `help()` command in the interactive interpreter:
 >>> help(Bot.get_updates)
 ```
 
+## Custom servers
+If you want to use a custom Telegram API server, e.g. https://telegram.rest/ it is as simple as setting `base_url` and `download_url` when creating the bot:
+```py
+bot = Bot(API_KEY, base_url="https://telegram.rest/bot{api_key}/{command}", download_url="https://telegram.rest/file/bot{api_key}/{file}")
+```
 
 ## Examples
 Have a look into the [examples](https://github.com/luckydonald/pytgbot/tree/master/examples) folder.
 
 # In case of errors
 First you should set logging to level `DEBUG` to see what's going on.
-```python
+```py
 # add this to the first lines in your file
 import logging
 logging.basicConfig(level=logging.DEBUG)

@@ -1,8 +1,16 @@
 # Changelog
 
+## Version 5.0.0.2 
+Fixed `get_download_url(…)` to actually use the newly introduced `download_url` instead of the `base_url`.
+
+## Version 5.0.0.1 
+Added `download_url` parameter to the constructor of the `Bot`s, so one can set the download url for non-official API servers.
+Those might be different for a selfhosted server. 
+If that is not given but only a `base_url` is, we'll try to guess it but show a warning.
+
 ## Version 5.0.0
-Fixed get_download_url.
-Also cut a stable release.
+Fixed syntax error in `get_download_url(…)`.
+Also cut a stable release (too early again).
 
 ## Version 5.0b4
 Fixed Sync bot not resolving username and id correctly.
