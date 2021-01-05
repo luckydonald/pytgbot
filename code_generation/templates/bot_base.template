@@ -268,14 +268,21 @@ class BotBase(object):
         Note: Contains the secret API key, so you should not share this url!
 
         :param file: The File you want to get the url to download.
-        :type  file: pytgbot.api_types.receivable.media.File
+                     Either the telegram's `File` as returned by `.get_file`
+                     or the string of the file name on the api servers (which would be `File.file_path` in essence).
+        :type  file: pytgbot.api_types.receivable.media.File|str
 
         :return: url
         :rtype: str
         """
         from ..api_types.receivable.media import File
-        assert_type_or_raise(file, File, parameter_name='file')
-        return self._base_url.rstrip('/').format(api_key=n(self.api_key), command=n(file.file_path))
+        assert_type_or_raise(file, File, str, parameter_name='file')
+        if isinstance(file, File):
+            file_path = file.file_path
+        else:
+            file_path = file
+        # end if
+        return self._download_url.format(api_key=n(self.api_key), file=n(file_path))
     # end def get_download_url
 
     @abstractmethod
