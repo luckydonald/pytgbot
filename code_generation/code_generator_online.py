@@ -792,11 +792,12 @@ def safe_to_file(folder, results):
 
 # noinspection PyCompatibility
 def render_file_to_disk(file, txt):
+    # remove whitespaces at the end of a line
+    txt = "\n".join(line.rstrip() for line in txt.splitlines())
     # add blank line at end of file.
     if not txt.endswith("\n"):
         txt += "\n"
     # end if
-    txt = "\n".join(line.rstrip() for line in txt.splitlines())
     with open(file, "w") as f:
         f.write(txt)
     # end with
