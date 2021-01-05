@@ -10,7 +10,7 @@ class TgBotApiObject(object):
     Base class for every api object class.
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """

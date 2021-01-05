@@ -11,7 +11,7 @@ class Receivable(TgBotApiObject):
     Base class for all classes for stuff which telegram sends us.
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -25,11 +25,10 @@ class Result(Receivable):
     Base class for all classes for stuff which we throw in requests towards the telegram servers.
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
     pass
 # end class Result
-

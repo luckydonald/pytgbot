@@ -37,22 +37,22 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 
     https://core.telegram.org/bots/api#replykeyboardmarkup
-    
+
 
     Parameters:
-    
+
     :param keyboard: Array of button rows, each represented by an Array of KeyboardButton objects
     :type  keyboard: list of list of pytgbot.api_types.sendable.reply_markup.KeyboardButton
-    
+
 
     Optional keyword parameters:
-    
+
     :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
     :type  resize_keyboard: bool
-    
+
     :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
     :type  one_time_keyboard: bool
-    
+
     :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
     :type  selective: bool
     """
@@ -62,27 +62,27 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 
         https://core.telegram.org/bots/api#replykeyboardmarkup
-        
+
 
         Parameters:
-        
+
         :param keyboard: Array of button rows, each represented by an Array of KeyboardButton objects
         :type  keyboard: list of list of pytgbot.api_types.sendable.reply_markup.KeyboardButton
-        
+
 
         Optional keyword parameters:
-        
+
         :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
         :type  resize_keyboard: bool
-        
+
         :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
         :type  one_time_keyboard: bool
-        
+
         :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
         :type  selective: bool
         """
         super(ReplyKeyboardMarkup, self).__init__()
-        
+
         assert_type_or_raise(keyboard, list, parameter_name="keyboard")
         self.keyboard = keyboard
         assert_type_or_raise(resize_keyboard, None, bool, parameter_name="resize_keyboard")
@@ -108,7 +108,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         # end if
 
         array = super(ReplyKeyboardMarkup, self).to_array()
-        
+
         array['keyboard'] = self._as_array(self.keyboard)  # type list of list of KeyboardButton
         if self.resize_keyboard is not None:
             array['resize_keyboard'] = bool(self.resize_keyboard)  # type bool
@@ -132,7 +132,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = ReplyMarkup.validate_array(array)
         data['keyboard'] = KeyboardButton.from_array_list(array.get('keyboard'), list_level=2)
         data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
@@ -195,22 +195,22 @@ class KeyboardButton(Button):
     Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#keyboardbutton
-    
+
 
     Parameters:
-    
+
     :param text: Text of the button. If none of the optional fields are used, it will be sent as a message when the button is pressed
     :type  text: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
     :type  request_contact: bool
-    
+
     :param request_location: Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
     :type  request_location: bool
-    
+
     :param request_poll: Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
     :type  request_poll: pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType
     """
@@ -221,27 +221,27 @@ class KeyboardButton(Button):
         Note: request_contact and request_location options will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.Note: request_poll option will only work in Telegram versions released after 23 January, 2020. Older clients will display unsupported message.
 
         https://core.telegram.org/bots/api#keyboardbutton
-        
+
 
         Parameters:
-        
+
         :param text: Text of the button. If none of the optional fields are used, it will be sent as a message when the button is pressed
         :type  text: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
         :type  request_contact: bool
-        
+
         :param request_location: Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
         :type  request_location: bool
-        
+
         :param request_poll: Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
         :type  request_poll: pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType
         """
         super(KeyboardButton, self).__init__()
-        
+
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
         assert_type_or_raise(request_contact, None, bool, parameter_name="request_contact")
@@ -267,7 +267,7 @@ class KeyboardButton(Button):
         # end if
 
         array = super(KeyboardButton, self).to_array()
-        
+
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.request_contact is not None:
             array['request_contact'] = bool(self.request_contact)  # type bool
@@ -291,7 +291,7 @@ class KeyboardButton(Button):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = Button.validate_array(array)
         data['text'] = u(array.get('text'))
         data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
@@ -355,7 +355,7 @@ class KeyboardButtonPollType(Button):
     https://core.telegram.org/bots/api#keyboardbuttonpolltype
 
     Optional keyword parameters:
-    
+
     :param type: Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
     :type  type: str|unicode
     """
@@ -367,7 +367,7 @@ class KeyboardButtonPollType(Button):
         https://core.telegram.org/bots/api#keyboardbuttonpolltype
 
         Optional keyword parameters:
-        
+
         :param type: Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
         :type  type: str|unicode
         """
@@ -391,7 +391,7 @@ class KeyboardButtonPollType(Button):
         # end if
 
         array = super(KeyboardButtonPollType, self).to_array()
-        
+
         if self.type is not None:
             array['type'] = u(self.type)  # py2: type unicode, py3: type str
         # end if
@@ -466,13 +466,13 @@ class ReplyKeyboardRemove(ReplyMarkup):
     Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
 
     https://core.telegram.org/bots/api#replykeyboardremove
-    
+
 
     Parameters:
-    
+
 
     Optional keyword parameters:
-    
+
     :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
     :type  selective: bool
     """
@@ -482,13 +482,13 @@ class ReplyKeyboardRemove(ReplyMarkup):
         Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
 
         https://core.telegram.org/bots/api#replykeyboardremove
-        
+
 
         Parameters:
-        
+
 
         Optional keyword parameters:
-        
+
         :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
         :type  selective: bool
         """
@@ -513,7 +513,7 @@ class ReplyKeyboardRemove(ReplyMarkup):
         # end if
 
         array = super(ReplyKeyboardRemove, self).to_array()
-        
+
         array['remove_keyboard'] = bool(self.remove_keyboard)  # type bool
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
@@ -591,13 +591,13 @@ class InlineKeyboardMarkup(ReplyMarkup):
     Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
 
     https://core.telegram.org/bots/api#inlinekeyboardmarkup
-    
+
 
     Parameters:
-    
+
     :param inline_keyboard: Array of button rows, each represented by an Array of InlineKeyboardButton objects
     :type  inline_keyboard: list of list of pytgbot.api_types.sendable.reply_markup.InlineKeyboardButton
-    
+
 
     Optional keyword parameters:
     """
@@ -608,18 +608,18 @@ class InlineKeyboardMarkup(ReplyMarkup):
         Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will display unsupported message.
 
         https://core.telegram.org/bots/api#inlinekeyboardmarkup
-        
+
 
         Parameters:
-        
+
         :param inline_keyboard: Array of button rows, each represented by an Array of InlineKeyboardButton objects
         :type  inline_keyboard: list of list of pytgbot.api_types.sendable.reply_markup.InlineKeyboardButton
-        
+
 
         Optional keyword parameters:
         """
         super(InlineKeyboardMarkup, self).__init__()
-        
+
         assert_type_or_raise(inline_keyboard, list, parameter_name="inline_keyboard")
         self.inline_keyboard = inline_keyboard
     # end def __init__
@@ -639,7 +639,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         # end if
 
         array = super(InlineKeyboardMarkup, self).to_array()
-        
+
         array['inline_keyboard'] = self._as_array(self.inline_keyboard)  # type list of list of InlineKeyboardButton
 
         return array
@@ -654,7 +654,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = ReplyMarkup.validate_array(array)
         data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
         return data
@@ -713,34 +713,34 @@ class InlineKeyboardButton(Button):
     This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
 
     https://core.telegram.org/bots/api#inlinekeyboardbutton
-    
+
 
     Parameters:
-    
+
     :param text: Label text on the button
     :type  text: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param url: Optional. HTTP or tg:// url to be opened when button is pressed
     :type  url: str|unicode
-    
+
     :param login_url: Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.
     :type  login_url: pytgbot.api_types.sendable.reply_markup.LoginUrl
-    
+
     :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
     :type  callback_data: str|unicode
-    
+
     :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. Can be empty, in which case just the bot's username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it. Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
     :type  switch_inline_query: str|unicode
-    
+
     :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot's username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
     :type  switch_inline_query_current_chat: str|unicode
-    
+
     :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
     :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
-    
+
     :param pay: Optional. Specify True, to send a Pay button.NOTE: This type of button must always be the first button in the first row.
     :type  pay: bool
     """
@@ -750,40 +750,40 @@ class InlineKeyboardButton(Button):
         This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
 
         https://core.telegram.org/bots/api#inlinekeyboardbutton
-        
+
 
         Parameters:
-        
+
         :param text: Label text on the button
         :type  text: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param url: Optional. HTTP or tg:// url to be opened when button is pressed
         :type  url: str|unicode
-        
+
         :param login_url: Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.
         :type  login_url: pytgbot.api_types.sendable.reply_markup.LoginUrl
-        
+
         :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
         :type  callback_data: str|unicode
-        
+
         :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. Can be empty, in which case just the bot's username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it. Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
         :type  switch_inline_query: str|unicode
-        
+
         :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot's username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
         :type  switch_inline_query_current_chat: str|unicode
-        
+
         :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
         :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
-        
+
         :param pay: Optional. Specify True, to send a Pay button.NOTE: This type of button must always be the first button in the first row.
         :type  pay: bool
         """
         super(InlineKeyboardButton, self).__init__()
         from ..receivable.updates import CallbackGame
-        
+
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
@@ -817,7 +817,7 @@ class InlineKeyboardButton(Button):
         # end if
 
         array = super(InlineKeyboardButton, self).to_array()
-        
+
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if self.url is not None:
             array['url'] = u(self.url)  # py2: type unicode, py3: type str
@@ -854,7 +854,7 @@ class InlineKeyboardButton(Button):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.updates import CallbackGame
-        
+
         data = Button.validate_array(array)
         data['text'] = u(array.get('text'))
         data['url'] = u(array.get('url')) if array.get('url') is not None else None
@@ -923,22 +923,22 @@ class LoginUrl(Sendable):
     Sample bot: @discussbot
 
     https://core.telegram.org/bots/api#loginurl
-    
+
 
     Parameters:
-    
+
     :param url: An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data.NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
     :type  url: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param forward_text: Optional. New text of the button in forwarded messages.
     :type  forward_text: str|unicode
-    
+
     :param bot_username: Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
     :type  bot_username: str|unicode
-    
+
     :param request_write_access: Optional. Pass True to request the permission for your bot to send messages to the user.
     :type  request_write_access: bool
     """
@@ -951,22 +951,22 @@ class LoginUrl(Sendable):
         Sample bot: @discussbot
 
         https://core.telegram.org/bots/api#loginurl
-        
+
 
         Parameters:
-        
+
         :param url: An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data.NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
         :type  url: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param forward_text: Optional. New text of the button in forwarded messages.
         :type  forward_text: str|unicode
-        
+
         :param bot_username: Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
         :type  bot_username: str|unicode
-        
+
         :param request_write_access: Optional. Pass True to request the permission for your bot to send messages to the user.
         :type  request_write_access: bool
         """
@@ -996,7 +996,7 @@ class LoginUrl(Sendable):
         # end if
 
         array = super(LoginUrl, self).to_array()
-        
+
         array['url'] = u(self.url)  # py2: type unicode, py3: type str
         if self.forward_text is not None:
             array['forward_text'] = u(self.forward_text)  # py2: type unicode, py3: type str
@@ -1088,13 +1088,13 @@ class ForceReply(ReplyMarkup):
     The last option is definitely more attractive. And if you use ForceReply in your bot's questions, it will receive the user's answers even if it only receives replies, commands and mentions — without any extra work for the user.
 
     https://core.telegram.org/bots/api#forcereply
-    
+
 
     Parameters:
-    
+
 
     Optional keyword parameters:
-    
+
     :param selective: Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
     :type  selective: bool
     """
@@ -1111,13 +1111,13 @@ class ForceReply(ReplyMarkup):
         The last option is definitely more attractive. And if you use ForceReply in your bot's questions, it will receive the user's answers even if it only receives replies, commands and mentions — without any extra work for the user.
 
         https://core.telegram.org/bots/api#forcereply
-        
+
 
         Parameters:
-        
+
 
         Optional keyword parameters:
-        
+
         :param selective: Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
         :type  selective: bool
         """
@@ -1142,7 +1142,7 @@ class ForceReply(ReplyMarkup):
         # end if
 
         array = super(ForceReply, self).to_array()
-        
+
         array['force_reply'] = bool(self.force_reply)  # type bool
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
@@ -1212,4 +1212,3 @@ class ForceReply(ReplyMarkup):
         )
     # end def __contains__
 # end class ForceReply
-

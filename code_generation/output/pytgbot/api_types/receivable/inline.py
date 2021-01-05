@@ -12,28 +12,28 @@ class InlineQuery(Result):
     This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
 
     https://core.telegram.org/bots/api#inlinequery
-    
+
 
     Parameters:
-    
+
     :param id: Unique identifier for this query
     :type  id: str|unicode
-    
+
     :param from_peer: Sender
     :type  from_peer: pytgbot.api_types.receivable.peer.User
-    
+
     :param query: Text of the query (up to 256 characters)
     :type  query: str|unicode
-    
+
     :param offset: Offset of the results to be returned, can be controlled by the bot
     :type  offset: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param location: Optional. Sender location, only for bots that request user location
     :type  location: pytgbot.api_types.receivable.media.Location
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -43,35 +43,35 @@ class InlineQuery(Result):
         This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
 
         https://core.telegram.org/bots/api#inlinequery
-        
+
 
         Parameters:
-        
+
         :param id: Unique identifier for this query
         :type  id: str|unicode
-        
+
         :param from_peer: Sender
         :type  from_peer: pytgbot.api_types.receivable.peer.User
-        
+
         :param query: Text of the query (up to 256 characters)
         :type  query: str|unicode
-        
+
         :param offset: Offset of the results to be returned, can be controlled by the bot
         :type  offset: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param location: Optional. Sender location, only for bots that request user location
         :type  location: pytgbot.api_types.receivable.media.Location
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(InlineQuery, self).__init__()
         from .media import Location
         from .peer import User
-        
+
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -101,7 +101,7 @@ class InlineQuery(Result):
         # end if
 
         array = super(InlineQuery, self).to_array()
-        
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
@@ -124,7 +124,7 @@ class InlineQuery(Result):
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import Location
         from .peer import User
-        
+
         data = Result.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
@@ -187,28 +187,28 @@ class ChosenInlineResult(UpdateType):
     Note: It is necessary to enable inline feedback via @Botfather in order to receive these objects in updates.
 
     https://core.telegram.org/bots/api#choseninlineresult
-    
+
 
     Parameters:
-    
+
     :param result_id: The unique identifier for the result that was chosen
     :type  result_id: str|unicode
-    
+
     :param from_peer: The user that chose the result
     :type  from_peer: pytgbot.api_types.receivable.peer.User
-    
+
     :param query: The query that was used to obtain the result
     :type  query: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param location: Optional. Sender location, only for bots that require user location
     :type  location: pytgbot.api_types.receivable.media.Location
-    
+
     :param inline_message_id: Optional. Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message.
     :type  inline_message_id: str|unicode
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -219,35 +219,35 @@ class ChosenInlineResult(UpdateType):
         Note: It is necessary to enable inline feedback via @Botfather in order to receive these objects in updates.
 
         https://core.telegram.org/bots/api#choseninlineresult
-        
+
 
         Parameters:
-        
+
         :param result_id: The unique identifier for the result that was chosen
         :type  result_id: str|unicode
-        
+
         :param from_peer: The user that chose the result
         :type  from_peer: pytgbot.api_types.receivable.peer.User
-        
+
         :param query: The query that was used to obtain the result
         :type  query: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param location: Optional. Sender location, only for bots that require user location
         :type  location: pytgbot.api_types.receivable.media.Location
-        
+
         :param inline_message_id: Optional. Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message.
         :type  inline_message_id: str|unicode
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(ChosenInlineResult, self).__init__()
         from .media import Location
         from .peer import User
-        
+
         assert_type_or_raise(result_id, unicode_type, parameter_name="result_id")
         self.result_id = result_id
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -277,7 +277,7 @@ class ChosenInlineResult(UpdateType):
         # end if
 
         array = super(ChosenInlineResult, self).to_array()
-        
+
         array['result_id'] = u(self.result_id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
@@ -302,7 +302,7 @@ class ChosenInlineResult(UpdateType):
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import Location
         from .peer import User
-        
+
         data = UpdateType.validate_array(array)
         data['result_id'] = u(array.get('result_id'))
         data['from_peer'] = User.from_array(array.get('from'))
@@ -357,4 +357,3 @@ class ChosenInlineResult(UpdateType):
         )
     # end def __contains__
 # end class ChosenInlineResult
-

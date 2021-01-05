@@ -11,25 +11,25 @@ class InputMedia(Sendable):
     This object represents the content of a media message to be sent.
 
     https://core.telegram.org/bots/api#inputmedia
-    
+
 
     Parameters:
-    
+
     :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
@@ -39,30 +39,30 @@ class InputMedia(Sendable):
         This object represents the content of a media message to be sent.
 
         https://core.telegram.org/bots/api#inputmedia
-        
+
 
         Parameters:
-        
+
         :param type: Type of the result, a fixed value per subclass
         :type  type: str|unicode
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMedia, self).__init__()
-        
+
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         assert_type_or_raise(media, unicode_type, parameter_name="media")
@@ -90,7 +90,7 @@ class InputMedia(Sendable):
         # end if
 
         array = super(InputMedia, self).to_array()
-        
+
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['media'] = u(self.media)  # py2: type unicode, py3: type str
         if self.caption is not None:
@@ -115,7 +115,7 @@ class InputMedia(Sendable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = Sendable.validate_array(array)
         data['type'] = u(array.get('type'))
         data['media'] = u(array.get('media'))
@@ -187,7 +187,7 @@ class InputMedia(Sendable):
         # end if
         return self.get_inputfile_data(self.media, var_name, suffix='_media')
     # end def get_request_data
-    
+
     @staticmethod
     def get_inputfile_data(media, var_name, suffix='_media'):
         name = "{var_name}{suffix}".format(var_name=var_name, suffix=suffix)
@@ -208,28 +208,28 @@ class InputMediaWithThumb(InputMedia):
     This object represents the content of a media message to be sent.
 
     https://core.telegram.org/bots/api#inputmedia
-    
+
 
     Parameters:
-    
+
     :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
-    
+
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
@@ -240,7 +240,7 @@ class InputMediaWithThumb(InputMedia):
         :param full_data: If you want `.to_array()` with this data, ready to be sent.
         :return: A tuple of `to_array()` dict and the files (:py:func:`InputFile.get_request_files()`).
                  Files can be None, if no file was given, but an url or existing `file_id`.
-    
+
                  If `self.media` is an `InputFile` however,
                  the first tuple element (either the string, or the dict's `['media']` if `full_data=True`),
                  will be set to `attach://{var_name}_media` automatically.
@@ -270,33 +270,33 @@ class InputMediaWithThumb(InputMedia):
         This object represents the content of a media message to be sent.
 
         https://core.telegram.org/bots/api#inputmedia
-        
+
 
         Parameters:
-        
+
         :param type: Type of the result, a fixed value per subclass
         :type  type: str|unicode
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-        
+
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaWithThumb, self).__init__(type, media, caption, parse_mode, caption_entities)
-        
+
         # 'type' is set by InputMedia base class
         # 'media' is set by InputMedia base class
         assert_type_or_raise(thumb, InputFile, unicode_type, parameter_name="thumb")
@@ -309,7 +309,7 @@ class InputMediaWithThumb(InputMedia):
     def to_array(self):
         """
         Serializes this InputMediaPhoto to a dictionary.
-    
+
         :return: dictionary representation of this object.
         :rtype: dict
         """
@@ -327,7 +327,7 @@ class InputMediaWithThumb(InputMedia):
     def validate_array(array):
         """
         Builds a new array with valid values for the InputMediaPhoto constructor.
-    
+
         :return: new array with valid values
         :rtype: dict
         """
@@ -344,14 +344,14 @@ class InputMediaWithThumb(InputMedia):
     def from_array(array):
         """
         Deserialize a new InputMediaWithThumb from a given dictionary.
-    
+
         :return: new InputMediaWithThumb instance.
         :rtype: InputMediaWithThumb
         """
         if not array:  # None or {}
             return None
         # end if
-    
+
         data = InputMediaWithThumb.validate_array(array)
         instance = InputMediaWithThumb(**data)
         instance._raw = array
@@ -393,72 +393,72 @@ class InputMediaPlayable(InputMediaWithThumb):
     This object represents the content of a media message to be sent.
 
     https://core.telegram.org/bots/api#inputmedia
-    
+
 
     Parameters:
-    
+
     :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
-    
+
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param duration: Optional. Duration of the media
     :type  duration: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
-    
+
 
     def __init__(self, type, media, thumb, duration=None, caption=None, parse_mode=None, caption_entities=None):
         """
         This object represents the content of a media message to be sent.
 
         https://core.telegram.org/bots/api#inputmedia
-        
+
 
         Parameters:
-        
+
         :param type: Type of the result, a fixed value per subclass
         :type  type: str|unicode
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-        
+
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param duration: Optional. Duration of the media
         :type  duration: int
-        
+
 
         Optional keyword parameters:
-        
+
         :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaPlayable, self).__init__(type, media, thumb, caption, parse_mode, caption_entities)
-        
+
         # 'type' is set by InputMediaWithThumb base class
         # 'media' is set by InputMediaWithThumb base class
         # 'thumb' is set by InputMediaWithThumb base class
@@ -484,7 +484,7 @@ class InputMediaPlayable(InputMediaWithThumb):
         # end if
 
         array = super(InputMediaPlayable, self).to_array()
-        
+
         # 'type' given by superclass
         # 'media' given by superclass
         # 'thumb' given by superclass
@@ -507,7 +507,7 @@ class InputMediaPlayable(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = InputMediaWithThumb.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -565,7 +565,7 @@ class InputMediaPlayable(InputMediaWithThumb):
         )
     # end def __contains__
 
-    
+
 # end class InputMediaPlayable
 
 
@@ -574,84 +574,84 @@ class InputMediaVideolike(InputMediaPlayable):
     This object represents the content of a media message to be sent.
 
     https://core.telegram.org/bots/api#inputmedia
-    
+
 
     Parameters:
-    
+
     :param type: Type of the result, a fixed value per subclass
     :type  type: str|unicode
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
-    
+
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param duration: Optional. Duration of the media
     :type  duration: int
-    
+
     :param width: Optional. Media width
     :type  width: int
-    
+
     :param height: Optional. Media height
     :type  height: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
-    
+
 
     def __init__(self, type, media, thumb, duration=None, width=None, height=None, caption=None, parse_mode=None, caption_entities=None):
         """
         This object represents the content of a media message to be sent.
 
         https://core.telegram.org/bots/api#inputmedia
-        
+
 
         Parameters:
-        
+
         :param type: Type of the result, a fixed value per subclass
         :type  type: str|unicode
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-        
+
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param duration: Optional. Duration of the media
         :type  duration: int
-        
+
         :param width: Optional. Media width
         :type  width: int
-        
+
         :param height: Optional. Media height
         :type  height: int
-        
+
 
         Optional keyword parameters:
-        
+
         :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaVideolike, self).__init__(type, media, thumb, duration, caption, parse_mode, caption_entities)
-        
+
         # 'type' is set by InputMediaPlayable base class
         # 'media' is set by InputMediaPlayable base class
         # 'thumb' is set by InputMediaPlayable base class
@@ -680,7 +680,7 @@ class InputMediaVideolike(InputMediaPlayable):
         # end if
 
         array = super(InputMediaVideolike, self).to_array()
-        
+
         # 'type' given by superclass
         # 'media' given by superclass
         # 'thumb' given by superclass
@@ -707,7 +707,7 @@ class InputMediaVideolike(InputMediaPlayable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = InputMediaPlayable.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -767,7 +767,7 @@ class InputMediaVideolike(InputMediaPlayable):
         )
     # end def __contains__
 
-    
+
 # end class InputMediaVideolike
 
 
@@ -776,22 +776,22 @@ class InputMediaPhoto(InputMedia):
     Represents a photo to be sent.
 
     https://core.telegram.org/bots/api#inputmediaphoto
-    
+
 
     Parameters:
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
@@ -801,28 +801,28 @@ class InputMediaPhoto(InputMedia):
         Represents a photo to be sent.
 
         https://core.telegram.org/bots/api#inputmediaphoto
-        
+
 
         Parameters:
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaPhoto, self).__init__('photo', media, caption, parse_mode, caption_entities)
         from ..receivable.media import MessageEntity
-        
+
         # 'type' is set by InputMedia base class
         # 'media' is set by InputMedia base class
         # 'caption' is set by InputMedia base class
@@ -845,7 +845,7 @@ class InputMediaPhoto(InputMedia):
         # end if
 
         array = super(InputMediaPhoto, self).to_array()
-        
+
         # 'type' given by superclass
         # 'media' given by superclass
         # 'caption' given by superclass
@@ -865,7 +865,7 @@ class InputMediaPhoto(InputMedia):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-        
+
         data = InputMedia.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -928,37 +928,37 @@ class InputMediaVideo(InputMediaVideolike):
     Represents a video to be sent.
 
     https://core.telegram.org/bots/api#inputmediavideo
-    
+
 
     Parameters:
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param width: Optional. Video width
     :type  width: int
-    
+
     :param height: Optional. Video height
     :type  height: int
-    
+
     :param duration: Optional. Video duration
     :type  duration: int
-    
+
     :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
     :type  supports_streaming: bool
     """
@@ -968,44 +968,44 @@ class InputMediaVideo(InputMediaVideolike):
         Represents a video to be sent.
 
         https://core.telegram.org/bots/api#inputmediavideo
-        
+
 
         Parameters:
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param width: Optional. Video width
         :type  width: int
-        
+
         :param height: Optional. Video height
         :type  height: int
-        
+
         :param duration: Optional. Video duration
         :type  duration: int
-        
+
         :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
         :type  supports_streaming: bool
         """
         super(InputMediaVideo, self).__init__('video', media, thumb, caption, parse_mode, caption_entities, width, height, duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
-        
+
         # 'type' is set by InputMediaVideolike base class
         # 'media' is set by InputMediaVideolike base class
         # 'thumb' is set by InputMediaVideolike base class
@@ -1034,7 +1034,7 @@ class InputMediaVideo(InputMediaVideolike):
         # end if
 
         array = super(InputMediaVideo, self).to_array()
-        
+
         # 'type' given by superclass
         # 'media' given by superclass
         # 'thumb' given by superclass
@@ -1062,7 +1062,7 @@ class InputMediaVideo(InputMediaVideolike):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .files import InputFile
-        
+
         data = InputMediaVideolike.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -1130,34 +1130,34 @@ class InputMediaAnimation(InputMediaVideolike):
     Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 
     https://core.telegram.org/bots/api#inputmediaanimation
-    
+
 
     Parameters:
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param caption: Optional. Caption of the animation to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Mode for parsing entities in the animation caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param width: Optional. Animation width
     :type  width: int
-    
+
     :param height: Optional. Animation height
     :type  height: int
-    
+
     :param duration: Optional. Animation duration
     :type  duration: int
     """
@@ -1167,41 +1167,41 @@ class InputMediaAnimation(InputMediaVideolike):
         Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 
         https://core.telegram.org/bots/api#inputmediaanimation
-        
+
 
         Parameters:
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param caption: Optional. Caption of the animation to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Mode for parsing entities in the animation caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param width: Optional. Animation width
         :type  width: int
-        
+
         :param height: Optional. Animation height
         :type  height: int
-        
+
         :param duration: Optional. Animation duration
         :type  duration: int
         """
         super(InputMediaAnimation, self).__init__('animation', media, thumb, caption, parse_mode, caption_entities, width, height, duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
-        
+
         # 'type' is set by InputMediaVideolike base class
         # 'media' is set by InputMediaVideolike base class
         # 'thumb' is set by InputMediaVideolike base class
@@ -1228,7 +1228,7 @@ class InputMediaAnimation(InputMediaVideolike):
         # end if
 
         array = super(InputMediaAnimation, self).to_array()
-        
+
         # 'type' given by superclass
         # 'media' given by superclass
         # 'thumb' given by superclass
@@ -1253,7 +1253,7 @@ class InputMediaAnimation(InputMediaVideolike):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .files import InputFile
-        
+
         data = InputMediaVideolike.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -1320,34 +1320,34 @@ class InputMediaAudio(InputMediaPlayable):
     Represents an audio file to be treated as music to be sent.
 
     https://core.telegram.org/bots/api#inputmediaaudio
-    
+
 
     Parameters:
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param caption: Optional. Caption of the audio to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param duration: Optional. Duration of the audio in seconds
     :type  duration: int
-    
+
     :param performer: Optional. Performer of the audio
     :type  performer: str|unicode
-    
+
     :param title: Optional. Title of the audio
     :type  title: str|unicode
     """
@@ -1357,41 +1357,41 @@ class InputMediaAudio(InputMediaPlayable):
         Represents an audio file to be treated as music to be sent.
 
         https://core.telegram.org/bots/api#inputmediaaudio
-        
+
 
         Parameters:
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param caption: Optional. Caption of the audio to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param duration: Optional. Duration of the audio in seconds
         :type  duration: int
-        
+
         :param performer: Optional. Performer of the audio
         :type  performer: str|unicode
-        
+
         :param title: Optional. Title of the audio
         :type  title: str|unicode
         """
         super(InputMediaAudio, self).__init__('audio', media, thumb, caption, parse_mode, caption_entities, duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
-        
+
         # 'type' is set by InputMediaPlayable base class
         # 'media' is set by InputMediaPlayable base class
         # 'thumb' is set by InputMediaPlayable base class
@@ -1420,7 +1420,7 @@ class InputMediaAudio(InputMediaPlayable):
         # end if
 
         array = super(InputMediaAudio, self).to_array()
-        
+
         # 'type' given by superclass
         # 'media' given by superclass
         # 'thumb' given by superclass
@@ -1449,7 +1449,7 @@ class InputMediaAudio(InputMediaPlayable):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .files import InputFile
-        
+
         data = InputMediaPlayable.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -1516,28 +1516,28 @@ class InputMediaDocument(InputMediaWithThumb):
     Represents a general file to be sent.
 
     https://core.telegram.org/bots/api#inputmediadocument
-    
+
 
     Parameters:
-    
+
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
     :type  media: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
     :type  disable_content_type_detection: bool
     """
@@ -1547,35 +1547,35 @@ class InputMediaDocument(InputMediaWithThumb):
         Represents a general file to be sent.
 
         https://core.telegram.org/bots/api#inputmediadocument
-        
+
 
         Parameters:
-        
+
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
         :type  media: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
         :type  disable_content_type_detection: bool
         """
         super(InputMediaDocument, self).__init__('document', media, thumb, caption, parse_mode, caption_entities)
         from ..receivable.media import MessageEntity
         from .files import InputFile
-        
+
         # 'type' is set by InputMediaWithThumb base class
         # 'media' is set by InputMediaWithThumb base class
         # 'thumb' is set by InputMediaWithThumb base class
@@ -1601,7 +1601,7 @@ class InputMediaDocument(InputMediaWithThumb):
         # end if
 
         array = super(InputMediaDocument, self).to_array()
-        
+
         # 'type' given by superclass
         # 'media' given by superclass
         # 'thumb' given by superclass
@@ -1626,7 +1626,7 @@ class InputMediaDocument(InputMediaWithThumb):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .files import InputFile
-        
+
         data = InputMediaWithThumb.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -1684,4 +1684,3 @@ class InputMediaDocument(InputMediaWithThumb):
         )
     # end def __contains__
 # end class InputMediaDocument
-

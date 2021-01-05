@@ -11,22 +11,22 @@ class GameHighScore(Result):
     This object represents one row of the high scores table for a game.
 
     https://core.telegram.org/bots/api#gamehighscore
-    
+
 
     Parameters:
-    
+
     :param position: Position in high score table for the game
     :type  position: int
-    
+
     :param user: User
     :type  user: pytgbot.api_types.receivable.peer.User
-    
+
     :param score: Score
     :type  score: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -36,28 +36,28 @@ class GameHighScore(Result):
         This object represents one row of the high scores table for a game.
 
         https://core.telegram.org/bots/api#gamehighscore
-        
+
 
         Parameters:
-        
+
         :param position: Position in high score table for the game
         :type  position: int
-        
+
         :param user: User
         :type  user: pytgbot.api_types.receivable.peer.User
-        
+
         :param score: Score
         :type  score: int
-        
+
 
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(GameHighScore, self).__init__()
         from .peer import User
-        
+
         assert_type_or_raise(position, int, parameter_name="position")
         self.position = position
         assert_type_or_raise(user, User, parameter_name="user")
@@ -83,7 +83,7 @@ class GameHighScore(Result):
         # end if
 
         array = super(GameHighScore, self).to_array()
-        
+
         array['position'] = int(self.position)  # type int
         array['user'] = self.user.to_array()  # type User
         array['score'] = int(self.score)  # type int
@@ -101,7 +101,7 @@ class GameHighScore(Result):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-        
+
         data = Result.validate_array(array)
         data['position'] = int(array.get('position'))
         data['user'] = User.from_array(array.get('user'))
@@ -154,4 +154,3 @@ class GameHighScore(Result):
         )
     # end def __contains__
 # end class GameHighScore
-
