@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
 import re
-from abc import abstractmethod
 
+from abc import abstractmethod
+from warnings import warn
 from datetime import timedelta, datetime
-from DictObject import DictObject
+from urllib.parse import urlparse, urlunparse
 
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
@@ -18,7 +19,6 @@ from ..api_types import from_array_list, as_array
 from ..api_types.sendable.files import InputFile
 from ..api_types.sendable import Sendable
 
-
 __author__ = 'luckydonald'
 __all__ = ["BotBase"]
 
@@ -26,18 +26,34 @@ logger = logging.getLogger(__name__)
 
 
 DEFAULT_BASE_URL = "https://api.telegram.org/bot{api_key}/{command}"
+DEFAULT_DOWNLOAD_URL = "https://api.telegram.org/file/bot{api_key}/{file}"
 
 
 class BotBase(object):
-    def __init__(self, api_key, return_python_objects=True, base_url=DEFAULT_BASE_URL):
+    def __init__(self, api_key, return_python_objects=True, base_url=None, download_url=None):
         """
         A Bot instance. From here you can call all the functions.
-        The api key can be optained from @BotFather, see https://core.telegram.org/bots#6-botfather
+        The api key can be obtained from @BotFather, see https://core.telegram.org/bots#6-botfather
 
         :param api_key: The API key. Something like "ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
         :type  api_key: str
 
-        :param return_python_objects: If it should convert the json to `pytgbot.api_types.**` objects. Default: `True`
+        :param base_url: Change the URL of the server instance.
+                         Set to None to use the telegram default.
+                         This is needed for sending commands to the server.
+                         It will later fill in the variables `{api_key}` and `{command}` accordingly.
+                         See `str.format()` at https://docs.python.org/3/library/string.html#string-formatting.
+        :type  base_url: None|str
+
+        :param download_url: Change the URL of file downloads from the server instance.
+                             Set to None to use the telegram default.
+                             This is needed if you wanna use `.get_file(…)`,
+                             there it will later fill in the variables `{api_key}` and `{file}` accordingly.
+                             See `str.format()` at https://docs.python.org/3/library/string.html#string-formatting.
+        :type  download_url: None|str
+
+        :param return_python_objects: If it should convert the json to `pytgbot.api_types.*` object  (`True`, default)
+                                      or return the parsed json values directly (`False`).
         :type  return_python_objects: bool
         """
         if api_key is None or not api_key:
@@ -46,9 +62,67 @@ class BotBase(object):
         self.api_key = api_key
         self.return_python_objects = return_python_objects
         self._last_update = datetime.now()
-        self._base_url = base_url
+        self._base_url = DEFAULT_BASE_URL if base_url is None else base_url
+        self._download_url = self.calculate_download_url(self._base_url, download_url)
         self._me = None        # will be filled when using the property .id or .username, or when calling ._load_info()
     # end def __init__
+
+    @classmethod
+    def calculate_download_url(cls, base_url, download_url):
+        """
+        Tries to get the best fitting download URL from what we have.
+        :param base_url:
+        :type  base_url: str
+
+        :param download_url:
+        :type  download_url: str
+
+        :return:
+        :rtype: str
+        """
+        if base_url == DEFAULT_BASE_URL:
+            # the normal url is already the official url
+            if download_url is None:
+                # so we can use the official download url as well
+                return DEFAULT_DOWNLOAD_URL
+            else:
+                # but someone wants to override that.
+                return download_url
+            # end if
+        else:
+            # the normal url is a custom one
+            if download_url is None:
+                # Okey. So this is tricky. There's a custom set url, but no download url.
+                # We'll try to do the same structure as the official api,
+                # but issue a warning that a user should better specify it directly instead.
+                # We'll change the path from what we hope to be similar to
+                # "/bot{api_key}/{command}"
+                # to
+                # "/file/bot{api_key}/{file}"
+                # by appending '/file' to the front of the path part and and replacing {command} with {file} in the resulting version.
+
+                # first warn
+                parsed_base_url = urlparse(base_url)
+                # copy the tuple version of the named tuple to a editable list.
+                parsed_base_url = list(parsed_base_url[:])
+                # append "/file" to the path which is the third ([2]) tuple/list attribute.
+                parsed_base_url[2] = '/file' + (parsed_base_url[2] or '')
+                # piece that together as a full url again
+                download_url = urlunparse(parsed_base_url)
+                # replace the "{command}" with "{file}".
+                download_url = download_url.format(api_key="{api_key}", command="{file}")
+                # we're done, shout at the user for making us so much effort and return it.
+                warn(
+                    "Custom server `base_url` set ({base_url!r}), but no custom `download_url`. ".format(base_url=base_url) +
+                    "Tried to guess it as {download_url!r}.".format(download_url=download_url)
+                )
+                return download_url
+            else:
+                # someone wants to override that. Thanks.
+                return download_url
+            # end if
+        # end if
+    # end def
 
     def _prepare_request(self, command, query):
         """
