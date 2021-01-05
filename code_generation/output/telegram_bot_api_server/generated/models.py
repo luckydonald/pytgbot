@@ -41,20 +41,20 @@ else:
 
 class MediaModel(BaseModel):  # Receivable"""parent class for all receivable media.
     """
-    
+
 # end class Media
 
 
 class PeerModel(BaseModel):  # Result"""parent class for both users and chats.
     """
-    
+
 # end class Peer
 
 
 class UpdateTypeModel(BaseModel):  # Receivable"""All extending classes are an property of the Update type.
     Like Message: Update.message
     """
-    
+
 # end class UpdateType
 
 
@@ -62,7 +62,7 @@ class CallbackGameModel(BaseModel):  # UpdateType"""A placeholder, currently hol
 
     https://core.telegram.org/bots/api#callbackgame
     """
-    
+
 # end class CallbackGame
 
 
@@ -72,19 +72,19 @@ class InlineQueryResultModel(BaseModel):  # Sendable"""This object represents on
 
     https://core.telegram.org/bots/api#inlinequeryresult
     """
-    
+
 # end class InlineQueryResult
 
 
 class InlineQueryCachedResultModel(BaseModel):  # InlineQueryResult"""Parent class of all those cached inline results.
     """
-    
+
 # end class InlineQueryCachedResult
 
 
 class InputMessageContentModel(BaseModel):  # Sendable"""Parent class of all those input message content.
     """
-    
+
 # end class InputMessageContent
 
 
@@ -92,7 +92,7 @@ class InputMediaModel(BaseModel):  # Sendable"""This object represents the conte
 
     https://core.telegram.org/bots/api#inputmedia
     """
-    
+
     type: str
     media: str
     caption: Optional[str]
@@ -105,7 +105,7 @@ class InputMediaWithThumbModel(BaseModel):  # InputMedia"""This object represent
 
     https://core.telegram.org/bots/api#inputmedia
     """
-    
+
     type: str
     media: str
     thumb: Union['InputFileModel', str]
@@ -119,7 +119,7 @@ class InputMediaPlayableModel(BaseModel):  # InputMediaWithThumb"""This object r
 
     https://core.telegram.org/bots/api#inputmedia
     """
-    
+
     type: str
     media: str
     thumb: Union['InputFileModel', str]
@@ -134,7 +134,7 @@ class InputMediaVideolikeModel(BaseModel):  # InputMediaPlayable"""This object r
 
     https://core.telegram.org/bots/api#inputmedia
     """
-    
+
     type: str
     media: str
     thumb: Union['InputFileModel', str]
@@ -151,43 +151,43 @@ class PassportElementErrorModel(BaseModel):  # Sendable"""This object represents
 
     https://core.telegram.org/bots/api#inputmedia
     """
-    
+
 # end class PassportElementError
 
 
 class ButtonModel(BaseModel):  # Sendable"""Class for grouping KeyboardButton, KeyboardButtonPollType and InlineKeyboardButton.
     """
-    
+
 # end class Button
 
 
 class ReplyMarkupModel(BaseModel):  # Sendable"""Class for grouping ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup and ForceReply.
     """
-    
+
 # end class ReplyMarkup
 
 
 class ReceivableModel(BaseModel):  # TgBotApiObject"""Base class for all classes for stuff which telegram sends us.
     """
-    
+
 # end class Receivable
 
 
 class SendableModel(BaseModel):  # TgBotApiObject"""Base class for all classes for stuff which we throw in requests towards the telegram servers.
     """
-    
+
 # end class Sendable
 
 
 class ResultModel(BaseModel):  # Receivable"""Base class for all classes for stuff which we throw in requests towards the telegram servers.
     """
-    
+
 # end class Result
 
 
 class TgBotApiObjectModel(BaseModel):  # object"""Base class for every api object class.
     """
-    
+
 # end class TgBotApiObject
 
 
@@ -195,7 +195,7 @@ class UpdateModel(BaseModel):  # Receivable"""This object represents an incoming
 
     https://core.telegram.org/bots/api#update
     """
-    
+
     update_id: int
     message: Optional['MessageModel']
     edited_message: Optional['MessageModel']
@@ -215,7 +215,7 @@ class WebhookInfoModel(BaseModel):  # Receivable"""Contains information about th
 
     https://core.telegram.org/bots/api#webhookinfo
     """
-    
+
     url: str
     has_custom_certificate: bool
     pending_update_count: int
@@ -231,7 +231,7 @@ class UserModel(BaseModel):  # Peer"""This object represents a Telegram user or 
 
     https://core.telegram.org/bots/api#user
     """
-    
+
     id: int
     is_bot: bool
     first_name: str
@@ -248,7 +248,7 @@ class ChatModel(BaseModel):  # Peer"""This object represents a chat.
 
     https://core.telegram.org/bots/api#chat
     """
-    
+
     id: int
     type: str
     title: Optional[str]
@@ -273,7 +273,7 @@ class MessageModel(BaseModel):  # UpdateType"""This object represents a message.
 
     https://core.telegram.org/bots/api#message
     """
-    
+
     message_id: int
     date: int
     chat: 'ChatModel'
@@ -332,7 +332,7 @@ class MessageIdModel(BaseModel):  # Result"""This object represents a unique mes
 
     https://core.telegram.org/bots/api#messageid
     """
-    
+
     message_id: int
 # end class MessageId
 
@@ -341,7 +341,7 @@ class MessageEntityModel(BaseModel):  # Result"""This object represents one spec
 
     https://core.telegram.org/bots/api#messageentity
     """
-    
+
     type: str
     offset: int
     length: int
@@ -355,7 +355,7 @@ class PhotoSizeModel(BaseModel):  # Result"""This object represents one size of 
 
     https://core.telegram.org/bots/api#photosize
     """
-    
+
     file_id: str
     file_unique_id: str
     width: int
@@ -368,7 +368,7 @@ class AnimationModel(BaseModel):  # Media"""This object represents an animation 
 
     https://core.telegram.org/bots/api#animation
     """
-    
+
     file_id: str
     file_unique_id: str
     width: int
@@ -385,7 +385,7 @@ class AudioModel(BaseModel):  # Media"""This object represents an audio file to 
 
     https://core.telegram.org/bots/api#audio
     """
-    
+
     file_id: str
     file_unique_id: str
     duration: int
@@ -402,7 +402,7 @@ class DocumentModel(BaseModel):  # Media"""This object represents a general file
 
     https://core.telegram.org/bots/api#document
     """
-    
+
     file_id: str
     file_unique_id: str
     thumb: Optional['PhotoSizeModel']
@@ -416,7 +416,7 @@ class VideoModel(BaseModel):  # Media"""This object represents a video file.
 
     https://core.telegram.org/bots/api#video
     """
-    
+
     file_id: str
     file_unique_id: str
     width: int
@@ -433,7 +433,7 @@ class VideoNoteModel(BaseModel):  # Media"""This object represents a video messa
 
     https://core.telegram.org/bots/api#videonote
     """
-    
+
     file_id: str
     file_unique_id: str
     length: int
@@ -447,7 +447,7 @@ class VoiceModel(BaseModel):  # Media"""This object represents a voice note.
 
     https://core.telegram.org/bots/api#voice
     """
-    
+
     file_id: str
     file_unique_id: str
     duration: int
@@ -460,7 +460,7 @@ class ContactModel(BaseModel):  # Media"""This object represents a phone contact
 
     https://core.telegram.org/bots/api#contact
     """
-    
+
     phone_number: str
     first_name: str
     last_name: Optional[str]
@@ -473,7 +473,7 @@ class DiceModel(BaseModel):  # Media"""This object represents an animated emoji 
 
     https://core.telegram.org/bots/api#dice
     """
-    
+
     emoji: str
     value: int
 # end class Dice
@@ -483,7 +483,7 @@ class PollOptionModel(BaseModel):  # Receivable"""This object contains informati
 
     https://core.telegram.org/bots/api#polloption
     """
-    
+
     text: str
     voter_count: int
 # end class PollOption
@@ -493,7 +493,7 @@ class PollAnswerModel(BaseModel):  # Receivable"""This object represents an answ
 
     https://core.telegram.org/bots/api#pollanswer
     """
-    
+
     poll_id: str
     user: 'UserModel'
     option_ids: List[int]
@@ -504,7 +504,7 @@ class PollModel(BaseModel):  # Media"""This object contains information about a 
 
     https://core.telegram.org/bots/api#poll
     """
-    
+
     id: str
     question: str
     options: List['PollOptionModel']
@@ -525,7 +525,7 @@ class LocationModel(BaseModel):  # Media"""This object represents a point on the
 
     https://core.telegram.org/bots/api#location
     """
-    
+
     longitude: float
     latitude: float
     horizontal_accuracy: Optional[float]
@@ -539,7 +539,7 @@ class VenueModel(BaseModel):  # Media"""This object represents a venue.
 
     https://core.telegram.org/bots/api#venue
     """
-    
+
     location: 'LocationModel'
     title: str
     address: str
@@ -554,7 +554,7 @@ class ProximityAlertTriggeredModel(BaseModel):  # Media"""This object represents
 
     https://core.telegram.org/bots/api#proximityalerttriggered
     """
-    
+
     traveler: 'UserModel'
     watcher: 'UserModel'
     distance: int
@@ -565,7 +565,7 @@ class UserProfilePhotosModel(BaseModel):  # Result"""This object represent a use
 
     https://core.telegram.org/bots/api#userprofilephotos
     """
-    
+
     total_count: int
     photos: List[List['PhotoSizeModel']]
 # end class UserProfilePhotos
@@ -577,7 +577,7 @@ class FileModel(BaseModel):  # Receivable"""This object represents a file ready 
 
     https://core.telegram.org/bots/api#file
     """
-    
+
     file_id: str
     file_unique_id: str
     file_size: Optional[int]
@@ -589,7 +589,7 @@ class ReplyKeyboardMarkupModel(BaseModel):  # ReplyMarkup"""This object represen
 
     https://core.telegram.org/bots/api#replykeyboardmarkup
     """
-    
+
     keyboard: List[List['KeyboardButtonModel']]
     resize_keyboard: Optional[bool]
     one_time_keyboard: Optional[bool]
@@ -602,7 +602,7 @@ class KeyboardButtonModel(BaseModel):  # Button"""This object represents one but
 
     https://core.telegram.org/bots/api#keyboardbutton
     """
-    
+
     text: str
     request_contact: Optional[bool]
     request_location: Optional[bool]
@@ -614,7 +614,7 @@ class KeyboardButtonPollTypeModel(BaseModel):  # Button"""This object represents
 
     https://core.telegram.org/bots/api#keyboardbuttonpolltype
     """
-    
+
     type: Optional[str]
 # end class KeyboardButtonPollType
 
@@ -623,7 +623,7 @@ class ReplyKeyboardRemoveModel(BaseModel):  # ReplyMarkup"""Upon receiving a mes
 
     https://core.telegram.org/bots/api#replykeyboardremove
     """
-    
+
     remove_keyboard: bool
     selective: Optional[bool]
 # end class ReplyKeyboardRemove
@@ -634,7 +634,7 @@ class InlineKeyboardMarkupModel(BaseModel):  # ReplyMarkup"""This object represe
 
     https://core.telegram.org/bots/api#inlinekeyboardmarkup
     """
-    
+
     inline_keyboard: List[List['InlineKeyboardButtonModel']]
 # end class InlineKeyboardMarkup
 
@@ -643,7 +643,7 @@ class InlineKeyboardButtonModel(BaseModel):  # Button"""This object represents o
 
     https://core.telegram.org/bots/api#inlinekeyboardbutton
     """
-    
+
     text: str
     url: Optional[str]
     login_url: Optional['LoginUrlModel']
@@ -662,7 +662,7 @@ class LoginUrlModel(BaseModel):  # Sendable"""This object represents a parameter
 
     https://core.telegram.org/bots/api#loginurl
     """
-    
+
     url: str
     forward_text: Optional[str]
     bot_username: Optional[str]
@@ -676,7 +676,7 @@ class CallbackQueryModel(BaseModel):  # UpdateType"""This object represents an i
 
     https://core.telegram.org/bots/api#callbackquery
     """
-    
+
     id: str
     from_peer: 'UserModel'
     chat_instance: str
@@ -698,7 +698,7 @@ class ForceReplyModel(BaseModel):  # ReplyMarkup"""Upon receiving a message with
 
     https://core.telegram.org/bots/api#forcereply
     """
-    
+
     force_reply: bool
     selective: Optional[bool]
 # end class ForceReply
@@ -708,7 +708,7 @@ class ChatPhotoModel(BaseModel):  # Result"""This object represents a chat photo
 
     https://core.telegram.org/bots/api#chatphoto
     """
-    
+
     small_file_id: str
     small_file_unique_id: str
     big_file_id: str
@@ -720,7 +720,7 @@ class ChatMemberModel(BaseModel):  # Result"""This object contains information a
 
     https://core.telegram.org/bots/api#chatmember
     """
-    
+
     user: 'UserModel'
     status: str
     custom_title: Optional[str]
@@ -748,7 +748,7 @@ class ChatPermissionsModel(BaseModel):  # Result"""Describes actions that a non-
 
     https://core.telegram.org/bots/api#chatpermissions
     """
-    
+
     can_send_messages: Optional[bool]
     can_send_media_messages: Optional[bool]
     can_send_polls: Optional[bool]
@@ -764,7 +764,7 @@ class ChatLocationModel(BaseModel):  # Result"""Represents a location to which a
 
     https://core.telegram.org/bots/api#chatlocation
     """
-    
+
     location: 'LocationModel'
     address: str
 # end class ChatLocation
@@ -774,7 +774,7 @@ class BotCommandModel(BaseModel):  # Sendable"""This object represents a bot com
 
     https://core.telegram.org/bots/api#botcommand
     """
-    
+
     command: str
     description: str
 # end class BotCommand
@@ -784,7 +784,7 @@ class ResponseParametersModel(BaseModel):  # Receivable"""Contains information a
 
     https://core.telegram.org/bots/api#responseparameters
     """
-    
+
     migrate_to_chat_id: Optional[int]
     retry_after: Optional[int]
 # end class ResponseParameters
@@ -794,7 +794,7 @@ class InputMediaPhotoModel(BaseModel):  # InputMedia"""Represents a photo to be 
 
     https://core.telegram.org/bots/api#inputmediaphoto
     """
-    
+
     type: str
     media: str
     caption: Optional[str]
@@ -807,7 +807,7 @@ class InputMediaVideoModel(BaseModel):  # InputMediaVideolike"""Represents a vid
 
     https://core.telegram.org/bots/api#inputmediavideo
     """
-    
+
     type: str
     media: str
     thumb: Optional[Union['InputFileModel', str]]
@@ -825,7 +825,7 @@ class InputMediaAnimationModel(BaseModel):  # InputMediaVideolike"""Represents a
 
     https://core.telegram.org/bots/api#inputmediaanimation
     """
-    
+
     type: str
     media: str
     thumb: Optional[Union['InputFileModel', str]]
@@ -842,7 +842,7 @@ class InputMediaAudioModel(BaseModel):  # InputMediaPlayable"""Represents an aud
 
     https://core.telegram.org/bots/api#inputmediaaudio
     """
-    
+
     type: str
     media: str
     thumb: Optional[Union['InputFileModel', str]]
@@ -859,7 +859,7 @@ class InputMediaDocumentModel(BaseModel):  # InputMediaWithThumb"""Represents a 
 
     https://core.telegram.org/bots/api#inputmediadocument
     """
-    
+
     type: str
     media: str
     thumb: Optional[Union['InputFileModel', str]]
@@ -874,7 +874,7 @@ class StickerModel(BaseModel):  # Media"""This object represents a sticker.
 
     https://core.telegram.org/bots/api#sticker
     """
-    
+
     file_id: str
     file_unique_id: str
     width: int
@@ -892,7 +892,7 @@ class StickerSetModel(BaseModel):  # Result"""This object represents a sticker s
 
     https://core.telegram.org/bots/api#stickerset
     """
-    
+
     name: str
     title: str
     is_animated: bool
@@ -906,7 +906,7 @@ class MaskPositionModel(BaseModel):  # Result"""This object describes the positi
 
     https://core.telegram.org/bots/api#maskposition
     """
-    
+
     point: str
     x_shift: float
     y_shift: float
@@ -918,7 +918,7 @@ class InlineQueryModel(BaseModel):  # Result"""This object represents an incomin
 
     https://core.telegram.org/bots/api#inlinequery
     """
-    
+
     id: str
     from_peer: 'UserModel'
     query: str
@@ -931,7 +931,7 @@ class InlineQueryResultArticleModel(BaseModel):  # InlineQueryResult"""Represent
 
     https://core.telegram.org/bots/api#inlinequeryresultarticle
     """
-    
+
     type: str
     id: str
     title: str
@@ -950,7 +950,7 @@ class InlineQueryResultPhotoModel(BaseModel):  # InlineQueryResult"""Represents 
 
     https://core.telegram.org/bots/api#inlinequeryresultphoto
     """
-    
+
     type: str
     id: str
     photo_url: str
@@ -971,7 +971,7 @@ class InlineQueryResultGifModel(BaseModel):  # InlineQueryResult"""Represents a 
 
     https://core.telegram.org/bots/api#inlinequeryresultgif
     """
-    
+
     type: str
     id: str
     gif_url: str
@@ -993,7 +993,7 @@ class InlineQueryResultMpeg4GifModel(BaseModel):  # InlineQueryResult"""Represen
 
     https://core.telegram.org/bots/api#inlinequeryresultmpeg4gif
     """
-    
+
     type: str
     id: str
     mpeg4_url: str
@@ -1017,7 +1017,7 @@ class InlineQueryResultVideoModel(BaseModel):  # InlineQueryResult"""Represents 
 
     https://core.telegram.org/bots/api#inlinequeryresultvideo
     """
-    
+
     type: str
     id: str
     video_url: str
@@ -1041,7 +1041,7 @@ class InlineQueryResultAudioModel(BaseModel):  # InlineQueryResult"""Represents 
 
     https://core.telegram.org/bots/api#inlinequeryresultaudio
     """
-    
+
     type: str
     id: str
     audio_url: str
@@ -1061,7 +1061,7 @@ class InlineQueryResultVoiceModel(BaseModel):  # InlineQueryResult"""Represents 
 
     https://core.telegram.org/bots/api#inlinequeryresultvoice
     """
-    
+
     type: str
     id: str
     voice_url: str
@@ -1080,7 +1080,7 @@ class InlineQueryResultDocumentModel(BaseModel):  # InlineQueryResult"""Represen
 
     https://core.telegram.org/bots/api#inlinequeryresultdocument
     """
-    
+
     type: str
     id: str
     title: str
@@ -1103,7 +1103,7 @@ class InlineQueryResultLocationModel(BaseModel):  # InlineQueryResult"""Represen
 
     https://core.telegram.org/bots/api#inlinequeryresultlocation
     """
-    
+
     type: str
     id: str
     latitude: float
@@ -1126,7 +1126,7 @@ class InlineQueryResultVenueModel(BaseModel):  # InlineQueryResult"""Represents 
 
     https://core.telegram.org/bots/api#inlinequeryresultvenue
     """
-    
+
     type: str
     id: str
     latitude: float
@@ -1150,7 +1150,7 @@ class InlineQueryResultContactModel(BaseModel):  # InlineQueryResult"""Represent
 
     https://core.telegram.org/bots/api#inlinequeryresultcontact
     """
-    
+
     type: str
     id: str
     phone_number: str
@@ -1170,7 +1170,7 @@ class InlineQueryResultGameModel(BaseModel):  # InlineQueryResult"""Represents a
 
     https://core.telegram.org/bots/api#inlinequeryresultgame
     """
-    
+
     type: str
     id: str
     game_short_name: str
@@ -1182,7 +1182,7 @@ class InlineQueryResultCachedPhotoModel(BaseModel):  # InlineQueryCachedResult""
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedphoto
     """
-    
+
     type: str
     id: str
     photo_file_id: str
@@ -1200,7 +1200,7 @@ class InlineQueryResultCachedGifModel(BaseModel):  # InlineQueryCachedResult"""R
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedgif
     """
-    
+
     type: str
     id: str
     gif_file_id: str
@@ -1217,7 +1217,7 @@ class InlineQueryResultCachedMpeg4GifModel(BaseModel):  # InlineQueryCachedResul
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedmpeg4gif
     """
-    
+
     type: str
     id: str
     mpeg4_file_id: str
@@ -1235,7 +1235,7 @@ class InlineQueryResultCachedStickerModel(BaseModel):  # InlineQueryCachedResult
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedsticker
     """
-    
+
     type: str
     id: str
     sticker_file_id: str
@@ -1249,7 +1249,7 @@ class InlineQueryResultCachedDocumentModel(BaseModel):  # InlineQueryCachedResul
 
     https://core.telegram.org/bots/api#inlinequeryresultcacheddocument
     """
-    
+
     type: str
     id: str
     title: str
@@ -1267,7 +1267,7 @@ class InlineQueryResultCachedVideoModel(BaseModel):  # InlineQueryCachedResult""
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedvideo
     """
-    
+
     type: str
     id: str
     video_file_id: str
@@ -1286,7 +1286,7 @@ class InlineQueryResultCachedVoiceModel(BaseModel):  # InlineQueryCachedResult""
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedvoice
     """
-    
+
     type: str
     id: str
     voice_file_id: str
@@ -1304,7 +1304,7 @@ class InlineQueryResultCachedAudioModel(BaseModel):  # InlineQueryCachedResult""
 
     https://core.telegram.org/bots/api#inlinequeryresultcachedaudio
     """
-    
+
     type: str
     id: str
     audio_file_id: str
@@ -1320,7 +1320,7 @@ class InputTextMessageContentModel(BaseModel):  # InputMessageContent"""Represen
 
     https://core.telegram.org/bots/api#inputtextmessagecontent
     """
-    
+
     message_text: str
     parse_mode: Optional[str]
     entities: Optional[List['MessageEntityModel']]
@@ -1332,7 +1332,7 @@ class InputLocationMessageContentModel(BaseModel):  # InputMessageContent"""Repr
 
     https://core.telegram.org/bots/api#inputlocationmessagecontent
     """
-    
+
     latitude: float
     longitude: float
     horizontal_accuracy: Optional[float]
@@ -1346,7 +1346,7 @@ class InputVenueMessageContentModel(BaseModel):  # InputMessageContent"""Represe
 
     https://core.telegram.org/bots/api#inputvenuemessagecontent
     """
-    
+
     latitude: float
     longitude: float
     title: str
@@ -1362,7 +1362,7 @@ class InputContactMessageContentModel(BaseModel):  # InputMessageContent"""Repre
 
     https://core.telegram.org/bots/api#inputcontactmessagecontent
     """
-    
+
     phone_number: str
     first_name: str
     last_name: Optional[str]
@@ -1375,7 +1375,7 @@ class ChosenInlineResultModel(BaseModel):  # UpdateType"""Represents a result of
 
     https://core.telegram.org/bots/api#choseninlineresult
     """
-    
+
     result_id: str
     from_peer: 'UserModel'
     query: str
@@ -1388,7 +1388,7 @@ class LabeledPriceModel(BaseModel):  # Sendable"""This object represents a porti
 
     https://core.telegram.org/bots/api#labeledprice
     """
-    
+
     label: str
     amount: int
 # end class LabeledPrice
@@ -1398,7 +1398,7 @@ class InvoiceModel(BaseModel):  # Result"""This object contains basic informatio
 
     https://core.telegram.org/bots/api#invoice
     """
-    
+
     title: str
     description: str
     start_parameter: str
@@ -1411,7 +1411,7 @@ class ShippingAddressModel(BaseModel):  # Result"""This object represents a ship
 
     https://core.telegram.org/bots/api#shippingaddress
     """
-    
+
     country_code: str
     state: str
     city: str
@@ -1425,7 +1425,7 @@ class OrderInfoModel(BaseModel):  # Result"""This object represents information 
 
     https://core.telegram.org/bots/api#orderinfo
     """
-    
+
     name: Optional[str]
     phone_number: Optional[str]
     email: Optional[str]
@@ -1437,7 +1437,7 @@ class ShippingOptionModel(BaseModel):  # Sendable"""This object represents one s
 
     https://core.telegram.org/bots/api#shippingoption
     """
-    
+
     id: str
     title: str
     prices: List['LabeledPriceModel']
@@ -1448,7 +1448,7 @@ class SuccessfulPaymentModel(BaseModel):  # Result"""This object contains basic 
 
     https://core.telegram.org/bots/api#successfulpayment
     """
-    
+
     currency: str
     total_amount: int
     invoice_payload: str
@@ -1463,7 +1463,7 @@ class ShippingQueryModel(BaseModel):  # UpdateType"""This object contains inform
 
     https://core.telegram.org/bots/api#shippingquery
     """
-    
+
     id: str
     from_peer: 'UserModel'
     invoice_payload: str
@@ -1475,7 +1475,7 @@ class PreCheckoutQueryModel(BaseModel):  # UpdateType"""This object contains inf
 
     https://core.telegram.org/bots/api#precheckoutquery
     """
-    
+
     id: str
     from_peer: 'UserModel'
     currency: str
@@ -1490,7 +1490,7 @@ class PassportDataModel(BaseModel):  # Result"""Contains information about Teleg
 
     https://core.telegram.org/bots/api#passportdata
     """
-    
+
     data: List['EncryptedPassportElementModel']
     credentials: 'EncryptedCredentialsModel'
 # end class PassportData
@@ -1500,7 +1500,7 @@ class PassportFileModel(BaseModel):  # Result"""This object represents a file up
 
     https://core.telegram.org/bots/api#passportfile
     """
-    
+
     file_id: str
     file_unique_id: str
     file_size: int
@@ -1512,7 +1512,7 @@ class EncryptedPassportElementModel(BaseModel):  # Result"""Contains information
 
     https://core.telegram.org/bots/api#encryptedpassportelement
     """
-    
+
     type: str
     hash: str
     data: Optional[str]
@@ -1530,7 +1530,7 @@ class EncryptedCredentialsModel(BaseModel):  # Result"""Contains data required f
 
     https://core.telegram.org/bots/api#encryptedcredentials
     """
-    
+
     data: str
     hash: str
     secret: str
@@ -1541,7 +1541,7 @@ class PassportElementErrorDataFieldModel(BaseModel):  # PassportElementError"""R
 
     https://core.telegram.org/bots/api#passportelementerrordatafield
     """
-    
+
     source: str
     type: str
     field_name: str
@@ -1554,7 +1554,7 @@ class PassportElementErrorFrontSideModel(BaseModel):  # PassportElementError"""R
 
     https://core.telegram.org/bots/api#passportelementerrorfrontside
     """
-    
+
     source: str
     type: str
     file_hash: str
@@ -1566,7 +1566,7 @@ class PassportElementErrorReverseSideModel(BaseModel):  # PassportElementError""
 
     https://core.telegram.org/bots/api#passportelementerrorreverseside
     """
-    
+
     source: str
     type: str
     file_hash: str
@@ -1578,7 +1578,7 @@ class PassportElementErrorSelfieModel(BaseModel):  # PassportElementError"""Repr
 
     https://core.telegram.org/bots/api#passportelementerrorselfie
     """
-    
+
     source: str
     type: str
     file_hash: str
@@ -1590,7 +1590,7 @@ class PassportElementErrorFileModel(BaseModel):  # PassportElementError"""Repres
 
     https://core.telegram.org/bots/api#passportelementerrorfile
     """
-    
+
     source: str
     type: str
     file_hash: str
@@ -1602,7 +1602,7 @@ class PassportElementErrorFilesModel(BaseModel):  # PassportElementError"""Repre
 
     https://core.telegram.org/bots/api#passportelementerrorfiles
     """
-    
+
     source: str
     type: str
     file_hashes: List[str]
@@ -1614,7 +1614,7 @@ class PassportElementErrorTranslationFileModel(BaseModel):  # PassportElementErr
 
     https://core.telegram.org/bots/api#passportelementerrortranslationfile
     """
-    
+
     source: str
     type: str
     file_hash: str
@@ -1626,7 +1626,7 @@ class PassportElementErrorTranslationFilesModel(BaseModel):  # PassportElementEr
 
     https://core.telegram.org/bots/api#passportelementerrortranslationfiles
     """
-    
+
     source: str
     type: str
     file_hashes: List[str]
@@ -1638,7 +1638,7 @@ class PassportElementErrorUnspecifiedModel(BaseModel):  # PassportElementError""
 
     https://core.telegram.org/bots/api#passportelementerrorunspecified
     """
-    
+
     source: str
     type: str
     element_hash: str
@@ -1650,7 +1650,7 @@ class GameModel(BaseModel):  # Media"""This object represents a game. Use BotFat
 
     https://core.telegram.org/bots/api#game
     """
-    
+
     title: str
     description: str
     photo: List['PhotoSizeModel']
@@ -1664,7 +1664,7 @@ class GameHighScoreModel(BaseModel):  # Result"""This object represents one row 
 
     https://core.telegram.org/bots/api#gamehighscore
     """
-    
+
     position: int
     user: 'UserModel'
     score: int

@@ -73,92 +73,92 @@ class TextMessage(ReturnableMessageBase):
     Use this method to send text messages. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendmessage
-    
+
 
     Parameters:
-    
+
     :param text: Text of the message to be sent, 1-4096 characters after entities parsing
     :type  text: str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
     :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param disable_web_page_preview: Disables link previews for links in this message
     :type  disable_web_page_preview: bool
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, text, receiver=None, reply_id=DEFAULT_MESSAGE_ID, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send text messages. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendmessage
-        
+
 
         Parameters:
-        
+
         :param text: Text of the message to be sent, 1-4096 characters after entities parsing
         :type  text: str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param disable_web_page_preview: Disables link previews for links in this message
         :type  disable_web_page_preview: bool
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(TextMessage, self).__init__()
-        
+
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -221,7 +221,7 @@ class TextMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(TextMessage, self).to_array()
-        
+
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         if isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
@@ -308,7 +308,7 @@ class TextMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -360,93 +360,93 @@ class PhotoMessage(ReturnableMessageBase):
     Use this method to send photos. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendphoto
-    
+
 
     Parameters:
-    
+
     :param photo: Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20. More info on Sending Files »
     :type  photo: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param caption: Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, photo, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send photos. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendphoto
-        
+
 
         Parameters:
-        
+
         :param photo: Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20. More info on Sending Files »
         :type  photo: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param caption: Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(PhotoMessage, self).__init__()
-        
+
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(photo, InputFile, unicode_type, parameter_name="photo")
         self.photo = photo
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -510,7 +510,7 @@ class PhotoMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(PhotoMessage, self).to_array()
-        
+
         if isinstance(self.photo, InputFile):
             array['photo'] = self.photo.to_array()  # type InputFile
         elif isinstance(self.photo, str):
@@ -610,7 +610,7 @@ class PhotoMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -663,118 +663,118 @@ class AudioMessage(ReturnableMessageBase):
     For sending voice messages, use the sendVoice method instead.
 
     https://core.telegram.org/bots/api#sendaudio
-    
+
 
     Parameters:
-    
+
     :param audio: Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
     :type  audio: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param caption: Audio caption, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param duration: Duration of the audio in seconds
     :type  duration: int
-    
+
     :param performer: Performer
     :type  performer: str|unicode
-    
+
     :param title: Track name
     :type  title: str|unicode
-    
+
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, audio, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
         For sending voice messages, use the sendVoice method instead.
 
         https://core.telegram.org/bots/api#sendaudio
-        
+
 
         Parameters:
-        
+
         :param audio: Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  audio: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param caption: Audio caption, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param duration: Duration of the audio in seconds
         :type  duration: int
-        
+
         :param performer: Performer
         :type  performer: str|unicode
-        
+
         :param title: Track name
         :type  title: str|unicode
-        
+
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(AudioMessage, self).__init__()
-        
+
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(audio, InputFile, unicode_type, parameter_name="audio")
         self.audio = audio
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -850,7 +850,7 @@ class AudioMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(AudioMessage, self).to_array()
-        
+
         if isinstance(self.audio, InputFile):
             array['audio'] = self.audio.to_array()  # type InputFile
         elif isinstance(self.audio, str):
@@ -972,7 +972,7 @@ class AudioMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -1024,105 +1024,105 @@ class DocumentMessage(ReturnableMessageBase):
     Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 
     https://core.telegram.org/bots/api#senddocument
-    
+
 
     Parameters:
-    
+
     :param document: File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
     :type  document: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param disable_content_type_detection: Disables automatic server-side content type detection for files uploaded using multipart/form-data
     :type  disable_content_type_detection: bool
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, document, receiver=None, reply_id=DEFAULT_MESSAGE_ID, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#senddocument
-        
+
 
         Parameters:
-        
+
         :param document: File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  document: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param caption: Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param disable_content_type_detection: Disables automatic server-side content type detection for files uploaded using multipart/form-data
         :type  disable_content_type_detection: bool
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(DocumentMessage, self).__init__()
-        
+
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(document, InputFile, unicode_type, parameter_name="document")
         self.document = document
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -1192,7 +1192,7 @@ class DocumentMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(DocumentMessage, self).to_array()
-        
+
         if isinstance(self.document, InputFile):
             array['document'] = self.document.to_array()  # type InputFile
         elif isinstance(self.document, str):
@@ -1310,7 +1310,7 @@ class DocumentMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -1362,123 +1362,123 @@ class VideoMessage(ReturnableMessageBase):
     Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 
     https://core.telegram.org/bots/api#sendvideo
-    
+
 
     Parameters:
-    
+
     :param video: Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. More info on Sending Files »
     :type  video: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param duration: Duration of sent video in seconds
     :type  duration: int
-    
+
     :param width: Video width
     :type  width: int
-    
+
     :param height: Video height
     :type  height: int
-    
+
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
     :type  supports_streaming: bool
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, video, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#sendvideo
-        
+
 
         Parameters:
-        
+
         :param video: Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. More info on Sending Files »
         :type  video: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param duration: Duration of sent video in seconds
         :type  duration: int
-        
+
         :param width: Video width
         :type  width: int
-        
+
         :param height: Video height
         :type  height: int
-        
+
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param caption: Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
         :type  supports_streaming: bool
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(VideoMessage, self).__init__()
-        
+
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(video, InputFile, unicode_type, parameter_name="video")
         self.video = video
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -1557,7 +1557,7 @@ class VideoMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(VideoMessage, self).to_array()
-        
+
         if isinstance(self.video, InputFile):
             array['video'] = self.video.to_array()  # type InputFile
         elif isinstance(self.video, str):
@@ -1681,7 +1681,7 @@ class VideoMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -1733,117 +1733,117 @@ class AnimationMessage(ReturnableMessageBase):
     Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
 
     https://core.telegram.org/bots/api#sendanimation
-    
+
 
     Parameters:
-    
+
     :param animation: Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data. More info on Sending Files »
     :type  animation: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param duration: Duration of sent animation in seconds
     :type  duration: int
-    
+
     :param width: Animation width
     :type  width: int
-    
+
     :param height: Animation height
     :type  height: int
-    
+
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, animation, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#sendanimation
-        
+
 
         Parameters:
-        
+
         :param animation: Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data. More info on Sending Files »
         :type  animation: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param duration: Duration of sent animation in seconds
         :type  duration: int
-        
+
         :param width: Animation width
         :type  width: int
-        
+
         :param height: Animation height
         :type  height: int
-        
+
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param caption: Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(AnimationMessage, self).__init__()
-        
+
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(animation, InputFile, unicode_type, parameter_name="animation")
         self.animation = animation
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -1919,7 +1919,7 @@ class AnimationMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(AnimationMessage, self).to_array()
-        
+
         if isinstance(self.animation, InputFile):
             array['animation'] = self.animation.to_array()  # type InputFile
         elif isinstance(self.animation, str):
@@ -2041,7 +2041,7 @@ class AnimationMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -2093,99 +2093,99 @@ class VoiceMessage(ReturnableMessageBase):
     Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
     https://core.telegram.org/bots/api#sendvoice
-    
+
 
     Parameters:
-    
+
     :param voice: Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
     :type  voice: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param caption: Voice message caption, 0-1024 characters after entities parsing
     :type  caption: str|unicode
-    
+
     :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
     :type  parse_mode: str|unicode
-    
+
     :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param duration: Duration of the voice message in seconds
     :type  duration: int
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, voice, receiver=None, reply_id=DEFAULT_MESSAGE_ID, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
         https://core.telegram.org/bots/api#sendvoice
-        
+
 
         Parameters:
-        
+
         :param voice: Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  voice: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param caption: Voice message caption, 0-1024 characters after entities parsing
         :type  caption: str|unicode
-        
+
         :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
-        
+
         :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param duration: Duration of the voice message in seconds
         :type  duration: int
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(VoiceMessage, self).__init__()
-        
+
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(voice, InputFile, unicode_type, parameter_name="voice")
         self.voice = voice
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -2252,7 +2252,7 @@ class VoiceMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(VoiceMessage, self).to_array()
-        
+
         if isinstance(self.voice, InputFile):
             array['voice'] = self.voice.to_array()  # type InputFile
         elif isinstance(self.voice, str):
@@ -2354,7 +2354,7 @@ class VoiceMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -2406,92 +2406,92 @@ class VideoNoteMessage(ReturnableMessageBase):
     As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendvideonote
-    
+
 
     Parameters:
-    
+
     :param video_note: Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More info on Sending Files ». Sending video notes by a URL is currently unsupported
     :type  video_note: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param duration: Duration of sent video in seconds
     :type  duration: int
-    
+
     :param length: Video width and height, i.e. diameter of the video message
     :type  length: int
-    
+
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, video_note, receiver=None, reply_id=DEFAULT_MESSAGE_ID, duration=None, length=None, thumb=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendvideonote
-        
+
 
         Parameters:
-        
+
         :param video_note: Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More info on Sending Files ». Sending video notes by a URL is currently unsupported
         :type  video_note: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param duration: Duration of sent video in seconds
         :type  duration: int
-        
+
         :param length: Video width and height, i.e. diameter of the video message
         :type  length: int
-        
+
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(VideoNoteMessage, self).__init__()
-        
+
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(video_note, InputFile, unicode_type, parameter_name="video_note")
         self.video_note = video_note
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -2554,7 +2554,7 @@ class VideoNoteMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(VideoNoteMessage, self).to_array()
-        
+
         if isinstance(self.video_note, InputFile):
             array['video_note'] = self.video_note.to_array()  # type InputFile
         elif isinstance(self.video_note, str):
@@ -2667,7 +2667,7 @@ class VideoNoteMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -2719,67 +2719,67 @@ class MediaGroupMessage(ReturnableMessageBase):
     Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
 
     https://core.telegram.org/bots/api#sendmediagroup
-    
+
 
     Parameters:
-    
+
     :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
     :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaAudio | list of pytgbot.api_types.sendable.input_media.InputMediaDocument | list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param disable_notification: Sends messages silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
     """
 
     def __init__(self, media, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, allow_sending_without_reply=None):
         """
-        
+
         Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
 
         https://core.telegram.org/bots/api#sendmediagroup
-        
+
 
         Parameters:
-        
+
         :param media: A JSON-serialized array describing messages to be sent, must include 2-10 items
         :type  media: list of pytgbot.api_types.sendable.input_media.InputMediaAudio | list of pytgbot.api_types.sendable.input_media.InputMediaDocument | list of pytgbot.api_types.sendable.input_media.InputMediaPhoto | list of pytgbot.api_types.sendable.input_media.InputMediaVideo
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param disable_notification: Sends messages silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         """
         super(MediaGroupMessage, self).__init__()
-        
+
         from pytgbot.api_types.sendable.input_media import InputMediaAudio
         from pytgbot.api_types.sendable.input_media import InputMediaDocument
         from pytgbot.api_types.sendable.input_media import InputMediaPhoto
         from pytgbot.api_types.sendable.input_media import InputMediaVideo
-        
+
         assert_type_or_raise(media, list, list, list, list, parameter_name="media")
         self.media = media
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -2829,7 +2829,7 @@ class MediaGroupMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.input_media import InputMediaVideo
 
         array = super(MediaGroupMessage, self).to_array()
-        
+
         if isinstance(self.media, InputMediaAudio):
             array['media'] = PytgbotApiBot._as_array(self.media)  # type list of InputMediaAudio | list of InputMediaDocument | list of InputMediaPhoto | list of InputMediaVideo
         elif isinstance(self.media, InputMediaDocument):
@@ -2905,7 +2905,7 @@ class MediaGroupMessage(ReturnableMessageBase):
         # end if
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
-        
+
         return data
     # end def validate_array
 
@@ -2957,103 +2957,103 @@ class LocationMessage(ReturnableMessageBase):
     Use this method to send point on the map. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendlocation
-    
+
 
     Parameters:
-    
+
     :param latitude: Latitude of the location
     :type  latitude: float
-    
+
     :param longitude: Longitude of the location
     :type  longitude: float
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param horizontal_accuracy: The radius of uncertainty for the location, measured in meters; 0-1500
     :type  horizontal_accuracy: float
-    
+
     :param live_period: Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
     :type  live_period: int
-    
+
     :param heading: For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
     :type  heading: int
-    
+
     :param proximity_alert_radius: For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
     :type  proximity_alert_radius: int
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, latitude, longitude, receiver=None, reply_id=DEFAULT_MESSAGE_ID, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send point on the map. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendlocation
-        
+
 
         Parameters:
-        
+
         :param latitude: Latitude of the location
         :type  latitude: float
-        
+
         :param longitude: Longitude of the location
         :type  longitude: float
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param horizontal_accuracy: The radius of uncertainty for the location, measured in meters; 0-1500
         :type  horizontal_accuracy: float
-        
+
         :param live_period: Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
         :type  live_period: int
-        
+
         :param heading: For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
         :type  heading: int
-        
+
         :param proximity_alert_radius: For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
         :type  proximity_alert_radius: int
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(LocationMessage, self).__init__()
-        
+
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
         assert_type_or_raise(longitude, float, parameter_name="longitude")
@@ -3121,7 +3121,7 @@ class LocationMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(LocationMessage, self).to_array()
-        
+
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         if isinstance(self.receiver, str):
@@ -3211,7 +3211,7 @@ class LocationMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -3263,115 +3263,115 @@ class VenueMessage(ReturnableMessageBase):
     Use this method to send information about a venue. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendvenue
-    
+
 
     Parameters:
-    
+
     :param latitude: Latitude of the venue
     :type  latitude: float
-    
+
     :param longitude: Longitude of the venue
     :type  longitude: float
-    
+
     :param title: Name of the venue
     :type  title: str|unicode
-    
+
     :param address: Address of the venue
     :type  address: str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param foursquare_id: Foursquare identifier of the venue
     :type  foursquare_id: str|unicode
-    
+
     :param foursquare_type: Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
     :type  foursquare_type: str|unicode
-    
+
     :param google_place_id: Google Places identifier of the venue
     :type  google_place_id: str|unicode
-    
+
     :param google_place_type: Google Places type of the venue. (See supported types.)
     :type  google_place_type: str|unicode
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, latitude, longitude, title, address, receiver=None, reply_id=DEFAULT_MESSAGE_ID, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send information about a venue. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendvenue
-        
+
 
         Parameters:
-        
+
         :param latitude: Latitude of the venue
         :type  latitude: float
-        
+
         :param longitude: Longitude of the venue
         :type  longitude: float
-        
+
         :param title: Name of the venue
         :type  title: str|unicode
-        
+
         :param address: Address of the venue
         :type  address: str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param foursquare_id: Foursquare identifier of the venue
         :type  foursquare_id: str|unicode
-        
+
         :param foursquare_type: Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
         :type  foursquare_type: str|unicode
-        
+
         :param google_place_id: Google Places identifier of the venue
         :type  google_place_id: str|unicode
-        
+
         :param google_place_type: Google Places type of the venue. (See supported types.)
         :type  google_place_type: str|unicode
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(VenueMessage, self).__init__()
-        
+
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(latitude, float, parameter_name="latitude")
         self.latitude = latitude
         assert_type_or_raise(longitude, float, parameter_name="longitude")
@@ -3445,7 +3445,7 @@ class VenueMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(VenueMessage, self).to_array()
-        
+
         array['latitude'] = float(self.latitude)  # type float
         array['longitude'] = float(self.longitude)  # type float
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
@@ -3539,7 +3539,7 @@ class VenueMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -3591,91 +3591,91 @@ class ContactMessage(ReturnableMessageBase):
     Use this method to send phone contacts. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendcontact
-    
+
 
     Parameters:
-    
+
     :param phone_number: Contact's phone number
     :type  phone_number: str|unicode
-    
+
     :param first_name: Contact's first name
     :type  first_name: str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param last_name: Contact's last name
     :type  last_name: str|unicode
-    
+
     :param vcard: Additional data about the contact in the form of a vCard, 0-2048 bytes
     :type  vcard: str|unicode
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, phone_number, first_name, receiver=None, reply_id=DEFAULT_MESSAGE_ID, last_name=None, vcard=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send phone contacts. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendcontact
-        
+
 
         Parameters:
-        
+
         :param phone_number: Contact's phone number
         :type  phone_number: str|unicode
-        
+
         :param first_name: Contact's first name
         :type  first_name: str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param last_name: Contact's last name
         :type  last_name: str|unicode
-        
+
         :param vcard: Additional data about the contact in the form of a vCard, 0-2048 bytes
         :type  vcard: str|unicode
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(ContactMessage, self).__init__()
-        
+
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
         self.phone_number = phone_number
         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
@@ -3737,7 +3737,7 @@ class ContactMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(ContactMessage, self).to_array()
-        
+
         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
         if isinstance(self.receiver, str):
@@ -3823,7 +3823,7 @@ class ContactMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -3875,140 +3875,140 @@ class PollMessage(ReturnableMessageBase):
     Use this method to send a native poll. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendpoll
-    
+
 
     Parameters:
-    
+
     :param question: Poll question, 1-300 characters
     :type  question: str|unicode
-    
+
     :param options: A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
     :type  options: list of str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param is_anonymous: True, if the poll needs to be anonymous, defaults to True
     :type  is_anonymous: bool
-    
+
     :param type: Poll type, "quiz" or "regular", defaults to "regular"
     :type  type: str|unicode
-    
+
     :param allows_multiple_answers: True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
     :type  allows_multiple_answers: bool
-    
+
     :param correct_option_id: 0-based identifier of the correct answer option, required for polls in quiz mode
     :type  correct_option_id: int
-    
+
     :param explanation: Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
     :type  explanation: str|unicode
-    
+
     :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
     :type  explanation_parse_mode: str|unicode
-    
+
     :param explanation_entities: List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
     :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-    
+
     :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
     :type  open_period: int
-    
+
     :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
     :type  close_date: int
-    
+
     :param is_closed: Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
     :type  is_closed: bool
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, question, options, receiver=None, reply_id=DEFAULT_MESSAGE_ID, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send a native poll. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendpoll
-        
+
 
         Parameters:
-        
+
         :param question: Poll question, 1-300 characters
         :type  question: str|unicode
-        
+
         :param options: A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
         :type  options: list of str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param is_anonymous: True, if the poll needs to be anonymous, defaults to True
         :type  is_anonymous: bool
-        
+
         :param type: Poll type, "quiz" or "regular", defaults to "regular"
         :type  type: str|unicode
-        
+
         :param allows_multiple_answers: True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
         :type  allows_multiple_answers: bool
-        
+
         :param correct_option_id: 0-based identifier of the correct answer option, required for polls in quiz mode
         :type  correct_option_id: int
-        
+
         :param explanation: Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
         :type  explanation: str|unicode
-        
+
         :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
         :type  explanation_parse_mode: str|unicode
-        
+
         :param explanation_entities: List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
         :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
-        
+
         :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
         :type  open_period: int
-        
+
         :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
         :type  close_date: int
-        
+
         :param is_closed: Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
         :type  is_closed: bool
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(PollMessage, self).__init__()
-        
+
         from pytgbot.api_types.receivable.media import MessageEntity
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(question, unicode_type, parameter_name="question")
         self.question = question
         assert_type_or_raise(options, list, parameter_name="options")
@@ -4095,7 +4095,7 @@ class PollMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(PollMessage, self).to_array()
-        
+
         array['question'] = u(self.question)  # py2: type unicode, py3: type str
         array['options'] = PytgbotApiBot._as_array(self.options)  # type list of str
         if isinstance(self.receiver, str):
@@ -4198,7 +4198,7 @@ class PollMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -4250,65 +4250,65 @@ class DiceMessage(ReturnableMessageBase):
     Use this method to send an animated emoji that will display a random value. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#senddice
-    
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", or "🎰". Dice can have values 1-6 for "🎲" and "🎯", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
     :type  emoji: str|unicode
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, receiver=None, reply_id=DEFAULT_MESSAGE_ID, emoji=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send an animated emoji that will display a random value. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#senddice
-        
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", or "🎰". Dice can have values 1-6 for "🎲" and "🎯", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
         :type  emoji: str|unicode
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(DiceMessage, self).__init__()
-        
+
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
@@ -4361,7 +4361,7 @@ class DiceMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(DiceMessage, self).to_array()
-        
+
         if isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
         elif isinstance(self.receiver, int):
@@ -4441,7 +4441,7 @@ class DiceMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -4497,24 +4497,24 @@ class ChatActionMessage(ReturnableMessageBase):
     We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
 
     https://core.telegram.org/bots/api#sendchataction
-    
+
 
     Parameters:
-    
+
     :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
     :type  action: str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
     """
 
     def __init__(self, action, receiver=None):
         """
-        
+
         Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.
 
         Example: The ImageBot needs some time to process a request and upload the image. Instead of sending a text message along the lines of "Retrieving image, please wait…", the bot may use sendChatAction with action = upload_photo. The user will see a "sending photo" status for the bot.
@@ -4522,24 +4522,24 @@ class ChatActionMessage(ReturnableMessageBase):
         We only recommend using this method when a response from the bot will take a noticeable amount of time to arrive.
 
         https://core.telegram.org/bots/api#sendchataction
-        
+
 
         Parameters:
-        
+
         :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
         :type  action: str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         """
         super(ChatActionMessage, self).__init__()
-        
-        
+
+
         assert_type_or_raise(action, unicode_type, parameter_name="action")
         self.action = action
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -4576,7 +4576,7 @@ class ChatActionMessage(ReturnableMessageBase):
         """
 
         array = super(ChatActionMessage, self).to_array()
-        
+
         array['action'] = u(self.action)  # py2: type unicode, py3: type str
         if isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
@@ -4608,7 +4608,7 @@ class ChatActionMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of str, int or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -4660,74 +4660,74 @@ class StickerMessage(ReturnableMessageBase):
     Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendsticker
-    
+
 
     Parameters:
-    
+
     :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
     :type  sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
     """
 
     def __init__(self, sticker, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendsticker
-        
+
 
         Parameters:
-        
+
         :param sticker: Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardMarkup | pytgbot.api_types.sendable.reply_markup.ReplyKeyboardRemove | pytgbot.api_types.sendable.reply_markup.ForceReply
-        
+
         """
         super(StickerMessage, self).__init__()
-        
+
         from pytgbot.api_types.sendable.files import InputFile
         from pytgbot.api_types.sendable.reply_markup import ForceReply
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardMarkup
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
-        
+
         assert_type_or_raise(sticker, InputFile, unicode_type, parameter_name="sticker")
         self.sticker = sticker
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -4781,7 +4781,7 @@ class StickerMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import ReplyKeyboardRemove
 
         array = super(StickerMessage, self).to_array()
-        
+
         if isinstance(self.sticker, InputFile):
             array['sticker'] = self.sticker.to_array()  # type InputFile
         elif isinstance(self.sticker, str):
@@ -4874,7 +4874,7 @@ class StickerMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply or None.')
         # end if
-        
+
         return data
     # end def validate_array
 
@@ -4926,179 +4926,179 @@ class InvoiceMessage(ReturnableMessageBase):
     Use this method to send invoices. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendinvoice
-    
+
 
     Parameters:
-    
+
     :param title: Product name, 1-32 characters
     :type  title: str|unicode
-    
+
     :param description: Product description, 1-255 characters
     :type  description: str|unicode
-    
+
     :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
     :type  payload: str|unicode
-    
+
     :param provider_token: Payments provider token, obtained via Botfather
     :type  provider_token: str|unicode
-    
+
     :param start_parameter: Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
     :type  start_parameter: str|unicode
-    
+
     :param currency: Three-letter ISO 4217 currency code, see more on currencies
     :type  currency: str|unicode
-    
+
     :param prices: Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
     :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param provider_data: A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
     :type  provider_data: str|unicode
-    
+
     :param photo_url: URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
     :type  photo_url: str|unicode
-    
+
     :param photo_size: Photo size
     :type  photo_size: int
-    
+
     :param photo_width: Photo width
     :type  photo_width: int
-    
+
     :param photo_height: Photo height
     :type  photo_height: int
-    
+
     :param need_name: Pass True, if you require the user's full name to complete the order
     :type  need_name: bool
-    
+
     :param need_phone_number: Pass True, if you require the user's phone number to complete the order
     :type  need_phone_number: bool
-    
+
     :param need_email: Pass True, if you require the user's email address to complete the order
     :type  need_email: bool
-    
+
     :param need_shipping_address: Pass True, if you require the user's shipping address to complete the order
     :type  need_shipping_address: bool
-    
+
     :param send_phone_number_to_provider: Pass True, if user's phone number should be sent to provider
     :type  send_phone_number_to_provider: bool
-    
+
     :param send_email_to_provider: Pass True, if user's email address should be sent to provider
     :type  send_email_to_provider: bool
-    
+
     :param is_flexible: Pass True, if the final price depends on the shipping method
     :type  is_flexible: bool
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     """
 
     def __init__(self, title, description, payload, provider_token, start_parameter, currency, prices, receiver=None, reply_id=DEFAULT_MESSAGE_ID, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send invoices. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendinvoice
-        
+
 
         Parameters:
-        
+
         :param title: Product name, 1-32 characters
         :type  title: str|unicode
-        
+
         :param description: Product description, 1-255 characters
         :type  description: str|unicode
-        
+
         :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
         :type  payload: str|unicode
-        
+
         :param provider_token: Payments provider token, obtained via Botfather
         :type  provider_token: str|unicode
-        
+
         :param start_parameter: Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
         :type  start_parameter: str|unicode
-        
+
         :param currency: Three-letter ISO 4217 currency code, see more on currencies
         :type  currency: str|unicode
-        
+
         :param prices: Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param provider_data: A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
         :type  provider_data: str|unicode
-        
+
         :param photo_url: URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
         :type  photo_url: str|unicode
-        
+
         :param photo_size: Photo size
         :type  photo_size: int
-        
+
         :param photo_width: Photo width
         :type  photo_width: int
-        
+
         :param photo_height: Photo height
         :type  photo_height: int
-        
+
         :param need_name: Pass True, if you require the user's full name to complete the order
         :type  need_name: bool
-        
+
         :param need_phone_number: Pass True, if you require the user's phone number to complete the order
         :type  need_phone_number: bool
-        
+
         :param need_email: Pass True, if you require the user's email address to complete the order
         :type  need_email: bool
-        
+
         :param need_shipping_address: Pass True, if you require the user's shipping address to complete the order
         :type  need_shipping_address: bool
-        
+
         :param send_phone_number_to_provider: Pass True, if user's phone number should be sent to provider
         :type  send_phone_number_to_provider: bool
-        
+
         :param send_email_to_provider: Pass True, if user's email address should be sent to provider
         :type  send_email_to_provider: bool
-        
+
         :param is_flexible: Pass True, if the final price depends on the shipping method
         :type  is_flexible: bool
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-        
+
         """
         super(InvoiceMessage, self).__init__()
-        
+
         from pytgbot.api_types.sendable.payments import LabeledPrice
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
+
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         assert_type_or_raise(description, unicode_type, parameter_name="description")
@@ -5203,7 +5203,7 @@ class InvoiceMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         array = super(InvoiceMessage, self).to_array()
-        
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
         array['payload'] = u(self.payload)  # py2: type unicode, py3: type str
@@ -5295,7 +5295,7 @@ class InvoiceMessage(ReturnableMessageBase):
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
-        
+
         return data
     # end def validate_array
 
@@ -5347,70 +5347,70 @@ class GameMessage(ReturnableMessageBase):
     Use this method to send a game. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendgame
-    
+
 
     Parameters:
-    
+
     :param game_short_name: Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
     :type  game_short_name: str|unicode
-    
-    
+
+
 
     Optional keyword parameters:
-    
+
     :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
     :type  receiver: str|unicode | int
-    
+
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
-    
+
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
     :type  disable_notification: bool
-    
+
     :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
     :type  allow_sending_without_reply: bool
-    
+
     :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     """
 
     def __init__(self, game_short_name, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
-        
+
         Use this method to send a game. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendgame
-        
+
 
         Parameters:
-        
+
         :param game_short_name: Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
         :type  game_short_name: str|unicode
-        
-        
+
+
 
         Optional keyword parameters:
-        
+
         :param receiver: Set if you want to overwrite the receiver, which automatically is the chat_id in group chats, and the from_peer id in private conversations.
         :type  receiver: str|unicode | int
-        
+
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
-        
+
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
-        
+
         :param allow_sending_without_reply: Pass True, if the message should be sent even if the specified replied-to message is not found
         :type  allow_sending_without_reply: bool
-        
+
         :param reply_markup: A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
-        
+
         """
         super(GameMessage, self).__init__()
-        
+
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
-        
+
         assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
         self.game_short_name = game_short_name
         assert_type_or_raise(receiver, None, unicode_type, int, parameter_name="receiver")
@@ -5460,7 +5460,7 @@ class GameMessage(ReturnableMessageBase):
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
         array = super(GameMessage, self).to_array()
-        
+
         array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
         if isinstance(self.receiver, str):
             array['chat_id'] = u(self.receiver)  # py2: type unicode, py3: type str
@@ -5515,7 +5515,7 @@ class GameMessage(ReturnableMessageBase):
         data['disable_notification'] = bool(array.get('disable_notification')) if array.get('disable_notification') is not None else None
         data['allow_sending_without_reply'] = bool(array.get('allow_sending_without_reply')) if array.get('allow_sending_without_reply') is not None else None
         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
-        
+
         return data
     # end def validate_array
 
@@ -5560,4 +5560,3 @@ class GameMessage(ReturnableMessageBase):
         )
     # end def __contains__
 # end class GameMessage
-
