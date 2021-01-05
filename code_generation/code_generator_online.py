@@ -652,7 +652,7 @@ def safe_to_file(folder, results):
             pytgbot_dir = Path(__file__).parent.parent
             # import_path = "pytgbot.bot.asynchronous."
             # file_path = calc_path_and_create_folders(pytgbot_dir.absolute(), import_path)
-            result.filepath = str(pytgbot_dir.joinpath('pytgbot').joinpath('bot').joinpath('asynchronous').absolute())
+            result.filepath = str(pytgbot_dir.joinpath('pytgbot').joinpath('bot').joinpath('asynchronous.py').absolute())
             functions.append(result)
 
             if result.name.startswith('send_'):
