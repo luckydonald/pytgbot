@@ -19,6 +19,7 @@ from ..api_types import from_array_list, as_array
 from ..api_types.sendable.files import InputFile
 from ..api_types.sendable import Sendable
 
+
 __author__ = 'luckydonald'
 __all__ = ["BotBase"]
 
