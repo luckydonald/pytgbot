@@ -142,8 +142,8 @@ def from_array_list(required_type, result, list_level, is_builtin):
         elif isinstance(required_type, unicode_type):  # handle str, so emojis work for py2.
             return u(result)
         else:
+            logger.warning("Trying parsing with ast.literal_eval()...")
             import ast
-            logger.warn("Trying parsing with ast.literal_eval()...")
             return ast.literal_eval(str(result))  # raises ValueError if it could not parse
         # end if
     else:
@@ -163,7 +163,7 @@ def as_array(obj):
     elif isinstance(obj, (list, tuple)):
         return [as_array(x) for x in obj]
     elif isinstance(obj, dict):
-        return {key:as_array(obj[key]) for key in obj.keys()}
+        return {key: as_array(obj[key]) for key in obj.keys()}
     else:
         _json_dumps(obj)  # raises error if is wrong json
         return obj
