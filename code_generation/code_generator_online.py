@@ -796,6 +796,7 @@ def render_file_to_disk(file, txt):
     if not txt.endswith("\n"):
         txt += "\n"
     # end if
+    txt = "\n".join(line.rstrip() for line in txt.splitlines())
     with open(file, "w") as f:
         f.write(txt)
     # end with
