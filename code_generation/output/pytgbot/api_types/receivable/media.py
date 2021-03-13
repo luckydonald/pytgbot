@@ -1586,7 +1586,7 @@ class Contact(Media):
     :param last_name: Optional. Contact's last name
     :type  last_name: str|unicode
 
-    :param user_id: Optional. Contact's user identifier in Telegram
+    :param user_id: Optional. Contact's user identifier in Telegram. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
     :type  user_id: int
 
     :param vcard: Optional. Additional data about the contact in the form of a vCard
@@ -1617,7 +1617,7 @@ class Contact(Media):
         :param last_name: Optional. Contact's last name
         :type  last_name: str|unicode
 
-        :param user_id: Optional. Contact's user identifier in Telegram
+        :param user_id: Optional. Contact's user identifier in Telegram. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
         :type  user_id: int
 
         :param vcard: Optional. Additional data about the contact in the form of a vCard
@@ -1749,7 +1749,7 @@ class Dice(Media):
     :param emoji: Emoji on which the dice throw animation is based
     :type  emoji: str|unicode
 
-    :param value: Value of the dice, 1-6 for "🎲" and "🎯" base emoji, 1-5 for "🏀" and "⚽" base emoji, 1-64 for "🎰" base emoji
+    :param value: Value of the dice, 1-6 for "🎲", "🎯" and "🎳" base emoji, 1-5 for "🏀" and "⚽" base emoji, 1-64 for "🎰" base emoji
     :type  value: int
 
 
@@ -1771,7 +1771,7 @@ class Dice(Media):
         :param emoji: Emoji on which the dice throw animation is based
         :type  emoji: str|unicode
 
-        :param value: Value of the dice, 1-6 for "🎲" and "🎯" base emoji, 1-5 for "🏀" and "⚽" base emoji, 1-64 for "🎰" base emoji
+        :param value: Value of the dice, 1-6 for "🎲", "🎯" and "🎳" base emoji, 1-5 for "🏀" and "⚽" base emoji, 1-64 for "🎰" base emoji
         :type  value: int
 
 
@@ -2171,7 +2171,7 @@ class Poll(Media):
     :param id: Unique poll identifier
     :type  id: str|unicode
 
-    :param question: Poll question, 1-255 characters
+    :param question: Poll question, 1-300 characters
     :type  question: str|unicode
 
     :param options: List of poll options
@@ -2226,7 +2226,7 @@ class Poll(Media):
         :param id: Unique poll identifier
         :type  id: str|unicode
 
-        :param question: Poll question, 1-255 characters
+        :param question: Poll question, 1-300 characters
         :type  question: str|unicode
 
         :param options: List of poll options
@@ -2795,156 +2795,6 @@ class Venue(Media):
         )
     # end def __contains__
 # end class Venue
-
-
-class ProximityAlertTriggered(Media):
-    """
-    This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
-
-    https://core.telegram.org/bots/api#proximityalerttriggered
-
-
-    Parameters:
-
-    :param traveler: User that triggered the alert
-    :type  traveler: pytgbot.api_types.receivable.peer.User
-
-    :param watcher: User that set the alert
-    :type  watcher: pytgbot.api_types.receivable.peer.User
-
-    :param distance: The distance between the users
-    :type  distance: int
-
-
-    Optional keyword parameters:
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, traveler, watcher, distance, _raw=None):
-        """
-        This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
-
-        https://core.telegram.org/bots/api#proximityalerttriggered
-
-
-        Parameters:
-
-        :param traveler: User that triggered the alert
-        :type  traveler: pytgbot.api_types.receivable.peer.User
-
-        :param watcher: User that set the alert
-        :type  watcher: pytgbot.api_types.receivable.peer.User
-
-        :param distance: The distance between the users
-        :type  distance: int
-
-
-        Optional keyword parameters:
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(ProximityAlertTriggered, self).__init__()
-        from .peer import User
-
-        assert_type_or_raise(traveler, User, parameter_name="traveler")
-        self.traveler = traveler
-        assert_type_or_raise(watcher, User, parameter_name="watcher")
-        self.watcher = watcher
-        assert_type_or_raise(distance, int, parameter_name="distance")
-        self.distance = distance
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self, prefer_original=False):
-        """
-        Serializes this ProximityAlertTriggered to a dictionary.
-
-        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
-        :type  prefer_original: bool
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        if prefer_original and self._raw:
-            return self._raw
-        # end if
-
-        array = super(ProximityAlertTriggered, self).to_array()
-
-        array['traveler'] = self.traveler.to_array()  # type User
-        array['watcher'] = self.watcher.to_array()  # type User
-        array['distance'] = int(self.distance)  # type int
-
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the ProximityAlertTriggered constructor.
-
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        from .peer import User
-
-        data = Media.validate_array(array)
-        data['traveler'] = User.from_array(array.get('traveler'))
-        data['watcher'] = User.from_array(array.get('watcher'))
-        data['distance'] = int(array.get('distance'))
-        return data
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new ProximityAlertTriggered from a given dictionary.
-
-        :return: new ProximityAlertTriggered instance.
-        :rtype: ProximityAlertTriggered
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = ProximityAlertTriggered.validate_array(array)
-        data['_raw'] = array
-        return ProximityAlertTriggered(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(proximityalerttriggered_instance)`
-        """
-        return "ProximityAlertTriggered(traveler={self.traveler!r}, watcher={self.watcher!r}, distance={self.distance!r})".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(proximityalerttriggered_instance)`
-        """
-        if self._raw:
-            return "ProximityAlertTriggered.from_array({self._raw})".format(self=self)
-        # end if
-        return "ProximityAlertTriggered(traveler={self.traveler!r}, watcher={self.watcher!r}, distance={self.distance!r})".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in proximityalerttriggered_instance`
-        """
-        return (
-            key in ["traveler", "watcher", "distance"]
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
-# end class ProximityAlertTriggered
 
 
 class UserProfilePhotos(Result):

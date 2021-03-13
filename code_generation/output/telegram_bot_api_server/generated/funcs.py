@@ -80,7 +80,7 @@ async def get_updates(
     offset: Optional[int] = Query(None, description='Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.'),
     limit: Optional[int] = Query(None, description='Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100.'),
     timeout: Optional[int] = Query(None, description='Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.'),
-    allowed_updates: Optional[List[str]] = Query(None, description='A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.'),
+    allowed_updates: Optional[List[str]] = Query(None, description='A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.'),
 ) -> JSONableResponse:
     """
     Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
@@ -114,7 +114,7 @@ async def set_webhook(
     certificate: Optional[Json['InputFileModel']] = Query(None, description='Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.'),
     ip_address: Optional[str] = Query(None, description='The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS'),
     max_connections: Optional[int] = Query(None, description="Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput."),
-    allowed_updates: Optional[List[str]] = Query(None, description='A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.'),
+    allowed_updates: Optional[List[str]] = Query(None, description='A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.Please note that this parameter doesn\'t affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.'),
     drop_pending_updates: Optional[bool] = Query(None, description='Pass True to drop all pending updates'),
 ) -> JSONableResponse:
     """
@@ -347,7 +347,7 @@ async def copy_message(
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
-    Use this method to copy messages of any kind. The method is analogous to the method forwardMessages, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
+    Use this method to copy messages of any kind. The method is analogous to the method forwardMessage, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
 
     https://core.telegram.org/bots/api#copymessage
     """
@@ -1226,7 +1226,7 @@ async def send_poll(
 async def send_dice(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    emoji: Optional[str] = Query(None, description='Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", or "🎰". Dice can have values 1-6 for "🎲" and "🎯", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"'),
+    emoji: Optional[str] = Query(None, description='Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", "🎳", or "🎰". Dice can have values 1-6 for "🎲", "🎯" and "🎳", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
@@ -1362,10 +1362,11 @@ async def kick_chat_member(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target group or username of the target supergroup or channel (in the format @channelusername)'),
     user_id: int = Query(..., description='Unique identifier of the target user'),
-    until_date: Optional[int] = Query(None, description='Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever'),
+    until_date: Optional[int] = Query(None, description='Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.'),
+    revoke_messages: Optional[bool] = Query(None, description='Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.'),
 ) -> JSONableResponse:
     """
-    Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+    Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
     https://core.telegram.org/bots/api#kickchatmember
     """
@@ -1386,6 +1387,7 @@ async def kick_chat_member(
         entity=entity,
         user_id=user_id,
         until_date=until_date,
+        revoke_messages=revoke_messages,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -1474,14 +1476,16 @@ async def promote_chat_member(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     user_id: int = Query(..., description='Unique identifier of the target user'),
     is_anonymous: Optional[bool] = Query(None, description="Pass True, if the administrator's presence in the chat is hidden"),
-    can_change_info: Optional[bool] = Query(None, description='Pass True, if the administrator can change chat title, photo and other settings'),
+    can_manage_chat: Optional[bool] = Query(None, description='Pass True, if the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other administrator privilege'),
     can_post_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can create channel posts, channels only'),
     can_edit_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can edit messages of other users and can pin messages, channels only'),
     can_delete_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can delete messages of other users'),
-    can_invite_users: Optional[bool] = Query(None, description='Pass True, if the administrator can invite new users to the chat'),
+    can_manage_voice_chats: Optional[bool] = Query(None, description='Pass True, if the administrator can manage voice chats, supergroups only'),
     can_restrict_members: Optional[bool] = Query(None, description='Pass True, if the administrator can restrict, ban or unban chat members'),
-    can_pin_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can pin messages, supergroups only'),
     can_promote_members: Optional[bool] = Query(None, description='Pass True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)'),
+    can_change_info: Optional[bool] = Query(None, description='Pass True, if the administrator can change chat title, photo and other settings'),
+    can_invite_users: Optional[bool] = Query(None, description='Pass True, if the administrator can invite new users to the chat'),
+    can_pin_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can pin messages, supergroups only'),
 ) -> JSONableResponse:
     """
     Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
@@ -1505,14 +1509,16 @@ async def promote_chat_member(
         entity=entity,
         user_id=user_id,
         is_anonymous=is_anonymous,
-        can_change_info=can_change_info,
+        can_manage_chat=can_manage_chat,
         can_post_messages=can_post_messages,
         can_edit_messages=can_edit_messages,
         can_delete_messages=can_delete_messages,
-        can_invite_users=can_invite_users,
+        can_manage_voice_chats=can_manage_voice_chats,
         can_restrict_members=can_restrict_members,
-        can_pin_messages=can_pin_messages,
         can_promote_members=can_promote_members,
+        can_change_info=can_change_info,
+        can_invite_users=can_invite_users,
+        can_pin_messages=can_pin_messages,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -1597,9 +1603,9 @@ async def export_chat_invite_link(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
 ) -> JSONableResponse:
     """
-    Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
+    Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
 
-    Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink — after this the link will become available to the bot via the getChat method. If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
+    Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink or by calling the getChat method. If your bot needs to generate a new primary invite link replacing its previous one, use exportChatInviteLink again.
 
 
     https://core.telegram.org/bots/api#exportchatinvitelink
@@ -1619,6 +1625,111 @@ async def export_chat_invite_link(
 
     result = await bot.export_chat_invite_link(
         entity=entity,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+@routes.api_route('/{token}/createChatInviteLink', methods=['GET', 'POST'], tags=['official'])
+async def create_chat_invite_link(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    expire_date: Optional[int] = Query(None, description='Point in time (Unix timestamp) when the link will expire'),
+    member_limit: Optional[int] = Query(None, description='Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999'),
+) -> JSONableResponse:
+    """
+    Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. The link can be revoked using the method revokeChatInviteLink. Returns the new invite link as ChatInviteLink object.
+
+    https://core.telegram.org/bots/api#createchatinvitelink
+    """
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.create_chat_invite_link(
+        entity=entity,
+        expire_date=expire_date,
+        member_limit=member_limit,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+@routes.api_route('/{token}/editChatInviteLink', methods=['GET', 'POST'], tags=['official'])
+async def edit_chat_invite_link(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    invite_link: str = Query(..., description='The invite link to edit'),
+    expire_date: Optional[int] = Query(None, description='Point in time (Unix timestamp) when the link will expire'),
+    member_limit: Optional[int] = Query(None, description='Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999'),
+) -> JSONableResponse:
+    """
+    Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the edited invite link as a ChatInviteLink object.
+
+    https://core.telegram.org/bots/api#editchatinvitelink
+    """
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.edit_chat_invite_link(
+        entity=entity,
+        invite_link=invite_link,
+        expire_date=expire_date,
+        member_limit=member_limit,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+@routes.api_route('/{token}/revokeChatInviteLink', methods=['GET', 'POST'], tags=['official'])
+async def revoke_chat_invite_link(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier of the target chat or username of the target channel (in the format @channelusername)'),
+    invite_link: str = Query(..., description='The invite link to revoke'),
+) -> JSONableResponse:
+    """
+    Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the revoked invite link as ChatInviteLink object.
+
+    https://core.telegram.org/bots/api#revokechatinvitelink
+    """
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.revoke_chat_invite_link(
+        entity=entity,
+        invite_link=invite_link,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())

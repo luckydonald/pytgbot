@@ -28,7 +28,7 @@ class User(Peer):
 
     Parameters:
 
-    :param id: Unique identifier for this user or bot
+    :param id: Unique identifier for this user or bot. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
     :type  id: int
 
     :param is_bot: True, if this user is a bot
@@ -81,7 +81,7 @@ class Chat(Peer):
 
     Parameters:
 
-    :param id: Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+    :param id: Unique identifier for this chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
     :type  id: int
 
     :param type: Type of chat, can be either "private", "group", "supergroup" or "channel"
@@ -111,7 +111,7 @@ class Chat(Peer):
     :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
     :type  description: str|unicode
 
-    :param invite_link: Optional. Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
+    :param invite_link: Optional. Primary invite link, for groups, supergroups and channel chats. Returned only in getChat.
     :type  invite_link: str|unicode
 
     :param pinned_message: Optional. The most recent pinned message (by sending date). Returned only in getChat.
@@ -122,6 +122,9 @@ class Chat(Peer):
 
     :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in getChat.
     :type  slow_mode_delay: int
+
+    :param message_auto_delete_time: Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds. Returned only in getChat.
+    :type  message_auto_delete_time: int
 
     :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
     :type  sticker_set_name: str|unicode
@@ -151,11 +154,53 @@ class Chat(Peer):
     pinned_message: Message
     permissions: ChatPermissions
     slow_mode_delay: int
+    message_auto_delete_time: int
     sticker_set_name: str
     can_set_sticker_set: bool
     linked_chat_id: int
     location: ChatLocation
 # end class Chat
+
+class ChatInviteLink(Result):
+    """
+    Represents an invite link for a chat.
+
+    https://core.telegram.org/bots/api#chatinvitelink
+
+
+    Parameters:
+
+    :param invite_link: The invite link. If the link was created by another chat administrator, then the second part of the link will be replaced with "…".
+    :type  invite_link: str|unicode
+
+    :param creator: Creator of the link
+    :type  creator: pytgbot.api_types.receivable.peer.User
+
+    :param is_primary: True, if the link is primary
+    :type  is_primary: bool
+
+    :param is_revoked: True, if the link is revoked
+    :type  is_revoked: bool
+
+
+    Optional keyword parameters:
+
+    :param expire_date: Optional. Point in time (Unix timestamp) when the link will expire or has been expired
+    :type  expire_date: int
+
+    :param member_limit: Optional. Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+    :type  member_limit: int
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    invite_link: str
+    creator: User
+    is_primary: bool
+    is_revoked: bool
+    expire_date: int
+    member_limit: int
+# end class ChatInviteLink
 
 class ChatMember(Result):
     """
@@ -184,6 +229,9 @@ class ChatMember(Result):
     :param can_be_edited: Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
     :type  can_be_edited: bool
 
+    :param can_manage_chat: Optional. Administrators only. True, if the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other administrator privilege
+    :type  can_manage_chat: bool
+
     :param can_post_messages: Optional. Administrators only. True, if the administrator can post in the channel; channels only
     :type  can_post_messages: bool
 
@@ -192,6 +240,9 @@ class ChatMember(Result):
 
     :param can_delete_messages: Optional. Administrators only. True, if the administrator can delete messages of other users
     :type  can_delete_messages: bool
+
+    :param can_manage_voice_chats: Optional. Administrators only. True, if the administrator can manage voice chats
+    :type  can_manage_voice_chats: bool
 
     :param can_restrict_members: Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members
     :type  can_restrict_members: bool
@@ -237,9 +288,11 @@ class ChatMember(Result):
     custom_title: str
     is_anonymous: bool
     can_be_edited: bool
+    can_manage_chat: bool
     can_post_messages: bool
     can_edit_messages: bool
     can_delete_messages: bool
+    can_manage_voice_chats: bool
     can_restrict_members: bool
     can_promote_members: bool
     can_change_info: bool
@@ -253,6 +306,47 @@ class ChatMember(Result):
     can_add_web_page_previews: bool
     until_date: int
 # end class ChatMember
+
+class ChatMemberUpdated(Result):
+    """
+    This object represents changes in the status of a chat member.
+
+    https://core.telegram.org/bots/api#chatmemberupdated
+
+
+    Parameters:
+
+    :param chat: Chat the user belongs to
+    :type  chat: pytgbot.api_types.receivable.peer.Chat
+
+    :param from_peer: Performer of the action, which resulted in the change
+    :type  from_peer: pytgbot.api_types.receivable.peer.User
+
+    :param date: Date the change was done in Unix time
+    :type  date: int
+
+    :param old_chat_member: Previous information about the chat member
+    :type  old_chat_member: pytgbot.api_types.receivable.peer.ChatMember
+
+    :param new_chat_member: New information about the chat member
+    :type  new_chat_member: pytgbot.api_types.receivable.peer.ChatMember
+
+
+    Optional keyword parameters:
+
+    :param invite_link: Optional. Chat invite link, which was used by the user to join the chat; for joining by invite link events only.
+    :type  invite_link: pytgbot.api_types.receivable.peer.ChatInviteLink
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    chat: Chat
+    from_peer: User
+    date: int
+    old_chat_member: ChatMember
+    new_chat_member: ChatMember
+    invite_link: ChatInviteLink
+# end class ChatMemberUpdated
 
 class ChatPermissions(Result):
     """

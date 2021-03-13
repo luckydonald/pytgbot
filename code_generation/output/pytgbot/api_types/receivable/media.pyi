@@ -397,7 +397,7 @@ class Contact(Media):
     :param last_name: Optional. Contact's last name
     :type  last_name: str|unicode
 
-    :param user_id: Optional. Contact's user identifier in Telegram
+    :param user_id: Optional. Contact's user identifier in Telegram. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
     :type  user_id: int
 
     :param vcard: Optional. Additional data about the contact in the form of a vCard
@@ -425,7 +425,7 @@ class Dice(Media):
     :param emoji: Emoji on which the dice throw animation is based
     :type  emoji: str|unicode
 
-    :param value: Value of the dice, 1-6 for "🎲" and "🎯" base emoji, 1-5 for "🏀" and "⚽" base emoji, 1-64 for "🎰" base emoji
+    :param value: Value of the dice, 1-6 for "🎲", "🎯" and "🎳" base emoji, 1-5 for "🏀" and "⚽" base emoji, 1-64 for "🎰" base emoji
     :type  value: int
 
 
@@ -504,7 +504,7 @@ class Poll(Media):
     :param id: Unique poll identifier
     :type  id: str|unicode
 
-    :param question: Poll question, 1-255 characters
+    :param question: Poll question, 1-300 characters
     :type  question: str|unicode
 
     :param options: List of poll options
@@ -646,35 +646,6 @@ class Venue(Media):
     google_place_id: str
     google_place_type: str
 # end class Venue
-
-class ProximityAlertTriggered(Media):
-    """
-    This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
-
-    https://core.telegram.org/bots/api#proximityalerttriggered
-
-
-    Parameters:
-
-    :param traveler: User that triggered the alert
-    :type  traveler: pytgbot.api_types.receivable.peer.User
-
-    :param watcher: User that set the alert
-    :type  watcher: pytgbot.api_types.receivable.peer.User
-
-    :param distance: The distance between the users
-    :type  distance: int
-
-
-    Optional keyword parameters:
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-    traveler: User
-    watcher: User
-    distance: int
-# end class ProximityAlertTriggered
 
 class UserProfilePhotos(Result):
     """

@@ -349,7 +349,7 @@ class BotBase(object):
         :param timeout: Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
         :type  timeout: int
 
-        :param allowed_updates: A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
+        :param allowed_updates: A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
         :type  allowed_updates: list of str|unicode
 
         :return: the decoded json
@@ -409,7 +409,7 @@ class BotBase(object):
         :param max_connections: Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput.
         :type  max_connections: int
 
-        :param allowed_updates: A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
+        :param allowed_updates: A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
         :type  allowed_updates: list of str|unicode
 
         :param drop_pending_updates: Pass True to drop all pending updates
@@ -2073,7 +2073,7 @@ class BotBase(object):
 
         Optional keyword parameters:
 
-        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", or "🎰". Dice can have values 1-6 for "🎲" and "🎯", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
+        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", "🎳", or "🎰". Dice can have values 1-6 for "🎲", "🎯" and "🎳", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
         :type  emoji: str|unicode
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -2271,7 +2271,7 @@ class BotBase(object):
         return result
     # end def _get_file__process_result
 
-    def _kick_chat_member__make_request(self, chat_id, user_id, until_date=None):
+    def _kick_chat_member__make_request(self, chat_id, user_id, until_date=None, revoke_messages=None):
         """
         Internal function for making the request to the API's kickChatMember endpoint.
 
@@ -2287,8 +2287,11 @@ class BotBase(object):
 
         Optional keyword parameters:
 
-        :param until_date: Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever
+        :param until_date: Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.
         :type  until_date: int
+
+        :param revoke_messages: Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.
+        :type  revoke_messages: bool
 
         :return: the decoded json
         :rtype:  dict|list|bool
@@ -2297,7 +2300,8 @@ class BotBase(object):
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(user_id, int, parameter_name="user_id")
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
-        return self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date)
+        assert_type_or_raise(revoke_messages, None, bool, parameter_name="revoke_messages")
+        return self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date, revoke_messages=revoke_messages)
     # end def _kick_chat_member__make_request
 
     def _kick_chat_member__process_result(self, result):
@@ -2432,7 +2436,7 @@ class BotBase(object):
         return result
     # end def _restrict_chat_member__process_result
 
-    def _promote_chat_member__make_request(self, chat_id, user_id, is_anonymous=None, can_change_info=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_invite_users=None, can_restrict_members=None, can_pin_messages=None, can_promote_members=None):
+    def _promote_chat_member__make_request(self, chat_id, user_id, is_anonymous=None, can_manage_chat=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_manage_voice_chats=None, can_restrict_members=None, can_promote_members=None, can_change_info=None, can_invite_users=None, can_pin_messages=None):
         """
         Internal function for making the request to the API's promoteChatMember endpoint.
 
@@ -2451,8 +2455,8 @@ class BotBase(object):
         :param is_anonymous: Pass True, if the administrator's presence in the chat is hidden
         :type  is_anonymous: bool
 
-        :param can_change_info: Pass True, if the administrator can change chat title, photo and other settings
-        :type  can_change_info: bool
+        :param can_manage_chat: Pass True, if the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other administrator privilege
+        :type  can_manage_chat: bool
 
         :param can_post_messages: Pass True, if the administrator can create channel posts, channels only
         :type  can_post_messages: bool
@@ -2463,17 +2467,23 @@ class BotBase(object):
         :param can_delete_messages: Pass True, if the administrator can delete messages of other users
         :type  can_delete_messages: bool
 
-        :param can_invite_users: Pass True, if the administrator can invite new users to the chat
-        :type  can_invite_users: bool
+        :param can_manage_voice_chats: Pass True, if the administrator can manage voice chats, supergroups only
+        :type  can_manage_voice_chats: bool
 
         :param can_restrict_members: Pass True, if the administrator can restrict, ban or unban chat members
         :type  can_restrict_members: bool
 
-        :param can_pin_messages: Pass True, if the administrator can pin messages, supergroups only
-        :type  can_pin_messages: bool
-
         :param can_promote_members: Pass True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
         :type  can_promote_members: bool
+
+        :param can_change_info: Pass True, if the administrator can change chat title, photo and other settings
+        :type  can_change_info: bool
+
+        :param can_invite_users: Pass True, if the administrator can invite new users to the chat
+        :type  can_invite_users: bool
+
+        :param can_pin_messages: Pass True, if the administrator can pin messages, supergroups only
+        :type  can_pin_messages: bool
 
         :return: the decoded json
         :rtype:  dict|list|bool
@@ -2482,15 +2492,17 @@ class BotBase(object):
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(user_id, int, parameter_name="user_id")
         assert_type_or_raise(is_anonymous, None, bool, parameter_name="is_anonymous")
-        assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
+        assert_type_or_raise(can_manage_chat, None, bool, parameter_name="can_manage_chat")
         assert_type_or_raise(can_post_messages, None, bool, parameter_name="can_post_messages")
         assert_type_or_raise(can_edit_messages, None, bool, parameter_name="can_edit_messages")
         assert_type_or_raise(can_delete_messages, None, bool, parameter_name="can_delete_messages")
-        assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
+        assert_type_or_raise(can_manage_voice_chats, None, bool, parameter_name="can_manage_voice_chats")
         assert_type_or_raise(can_restrict_members, None, bool, parameter_name="can_restrict_members")
-        assert_type_or_raise(can_pin_messages, None, bool, parameter_name="can_pin_messages")
         assert_type_or_raise(can_promote_members, None, bool, parameter_name="can_promote_members")
-        return self.do("promoteChatMember", chat_id=chat_id, user_id=user_id, is_anonymous=is_anonymous, can_change_info=can_change_info, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_invite_users=can_invite_users, can_restrict_members=can_restrict_members, can_pin_messages=can_pin_messages, can_promote_members=can_promote_members)
+        assert_type_or_raise(can_change_info, None, bool, parameter_name="can_change_info")
+        assert_type_or_raise(can_invite_users, None, bool, parameter_name="can_invite_users")
+        assert_type_or_raise(can_pin_messages, None, bool, parameter_name="can_pin_messages")
+        return self.do("promoteChatMember", chat_id=chat_id, user_id=user_id, is_anonymous=is_anonymous, can_manage_chat=can_manage_chat, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_manage_voice_chats=can_manage_voice_chats, can_restrict_members=can_restrict_members, can_promote_members=can_promote_members, can_change_info=can_change_info, can_invite_users=can_invite_users, can_pin_messages=can_pin_messages)
     # end def _promote_chat_member__make_request
 
     def _promote_chat_member__process_result(self, result):
@@ -2654,6 +2666,163 @@ class BotBase(object):
         # end if return_python_objects
         return result
     # end def _export_chat_invite_link__process_result
+
+    def _create_chat_invite_link__make_request(self, chat_id, expire_date=None, member_limit=None):
+        """
+        Internal function for making the request to the API's createChatInviteLink endpoint.
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+
+        Optional keyword parameters:
+
+        :param expire_date: Point in time (Unix timestamp) when the link will expire
+        :type  expire_date: int
+
+        :param member_limit: Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+        :type  member_limit: int
+
+        :return: the decoded json
+        :rtype:  dict|list|bool
+        """
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        assert_type_or_raise(expire_date, None, int, parameter_name="expire_date")
+        assert_type_or_raise(member_limit, None, int, parameter_name="member_limit")
+        return self.do("createChatInviteLink", chat_id=chat_id, expire_date=expire_date, member_limit=member_limit)
+    # end def _create_chat_invite_link__make_request
+
+    def _create_chat_invite_link__process_result(self, result):
+        """
+        Internal function for processing the json data returned by the API's createChatInviteLink endpoint.
+
+        :return: Returns the new invite link as ChatInviteLink object
+        :rtype:  pytgbot.api_types.receivable.peer.ChatInviteLink
+        """
+        if not self.return_python_objects:
+            return result
+        # end if
+
+        logger.debug("Trying to parse {data}".format(data=repr(result)))
+        from pytgbot.api_types.receivable.peer import ChatInviteLink
+        try:
+            return ChatInviteLink.from_array(result)
+        except TgApiParseException:
+            logger.debug("Failed parsing as api_type ChatInviteLink", exc_info=True)
+        # end try
+            # no valid parsing so far
+        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def _create_chat_invite_link__process_result
+
+    def _edit_chat_invite_link__make_request(self, chat_id, invite_link, expire_date=None, member_limit=None):
+        """
+        Internal function for making the request to the API's editChatInviteLink endpoint.
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param invite_link: The invite link to edit
+        :type  invite_link: str|unicode
+
+
+        Optional keyword parameters:
+
+        :param expire_date: Point in time (Unix timestamp) when the link will expire
+        :type  expire_date: int
+
+        :param member_limit: Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+        :type  member_limit: int
+
+        :return: the decoded json
+        :rtype:  dict|list|bool
+        """
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        assert_type_or_raise(invite_link, unicode_type, parameter_name="invite_link")
+        assert_type_or_raise(expire_date, None, int, parameter_name="expire_date")
+        assert_type_or_raise(member_limit, None, int, parameter_name="member_limit")
+        return self.do("editChatInviteLink", chat_id=chat_id, invite_link=invite_link, expire_date=expire_date, member_limit=member_limit)
+    # end def _edit_chat_invite_link__make_request
+
+    def _edit_chat_invite_link__process_result(self, result):
+        """
+        Internal function for processing the json data returned by the API's editChatInviteLink endpoint.
+
+        :return: Returns the edited invite link as a ChatInviteLink object
+        :rtype:  pytgbot.api_types.receivable.peer.ChatInviteLink
+        """
+        if not self.return_python_objects:
+            return result
+        # end if
+
+        logger.debug("Trying to parse {data}".format(data=repr(result)))
+        from pytgbot.api_types.receivable.peer import ChatInviteLink
+        try:
+            return ChatInviteLink.from_array(result)
+        except TgApiParseException:
+            logger.debug("Failed parsing as api_type ChatInviteLink", exc_info=True)
+        # end try
+            # no valid parsing so far
+        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def _edit_chat_invite_link__process_result
+
+    def _revoke_chat_invite_link__make_request(self, chat_id, invite_link):
+        """
+        Internal function for making the request to the API's revokeChatInviteLink endpoint.
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier of the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param invite_link: The invite link to revoke
+        :type  invite_link: str|unicode
+
+
+        :return: the decoded json
+        :rtype:  dict|list|bool
+        """
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        assert_type_or_raise(invite_link, unicode_type, parameter_name="invite_link")
+        return self.do("revokeChatInviteLink", chat_id=chat_id, invite_link=invite_link)
+    # end def _revoke_chat_invite_link__make_request
+
+    def _revoke_chat_invite_link__process_result(self, result):
+        """
+        Internal function for processing the json data returned by the API's revokeChatInviteLink endpoint.
+
+        :return: Returns the revoked invite link as ChatInviteLink object
+        :rtype:  pytgbot.api_types.receivable.peer.ChatInviteLink
+        """
+        if not self.return_python_objects:
+            return result
+        # end if
+
+        logger.debug("Trying to parse {data}".format(data=repr(result)))
+        from pytgbot.api_types.receivable.peer import ChatInviteLink
+        try:
+            return ChatInviteLink.from_array(result)
+        except TgApiParseException:
+            logger.debug("Failed parsing as api_type ChatInviteLink", exc_info=True)
+        # end try
+            # no valid parsing so far
+        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def _revoke_chat_invite_link__process_result
 
     def _set_chat_photo__make_request(self, chat_id, photo):
         """

@@ -21,7 +21,6 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "VideoNote":                ("pytgbot.api_types.receivable.media.", "Media", None),  # May 18, 2017
     "Contact":                  ("pytgbot.api_types.receivable.media.", "Media", None),
     "Location":                 ("pytgbot.api_types.receivable.media.", "Media", None),
-    "ProximityAlertTriggered":  ("pytgbot.api_types.receivable.media.", "Media", None),  # November 4, 2020
     "Venue":                    ("pytgbot.api_types.receivable.media.", "Media", None),
     "Audio":                    ("pytgbot.api_types.receivable.media.", "Media", None),
     "Document":                 ("pytgbot.api_types.receivable.media.", "Media", None),
@@ -34,16 +33,25 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "PollAnswer":               ("pytgbot.api_types.receivable.media.", "Receivable", None),  # January 23, 2020
     "Dice":                     ("pytgbot.api_types.receivable.media.", "Media", None),  # March 30, 2020
 
+    # pytgbot.api_types.receivable.service.
+    "ServiceMessage":                ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
+    "ProximityAlertTriggered":       ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
+    "MessageAutoDeleteTimerChanged": ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # March 9, 2021, (import changed November 4, 2020)
+    "VoiceChatEnded":                ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
+    "VoiceChatParticipantsInvited":  ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
+
     # pytgbot.api_types.receivable.responses.*
     "MessageId":       ("pytgbot.api_types.receivable.responses.", "Result", None),  # July 29, 2019
 
     # pytgbot.api_types.receivable.peer.*
-    "ChatPermissions": ("pytgbot.api_types.receivable.peer.", "Result", None),  # July 29, 2019
-    "ChatLocation":    ("pytgbot.api_types.receivable.peer.", "Result", None),  # November 4, 2020
-    "ChatMember":      ("pytgbot.api_types.receivable.peer.", "Result", None),
-    "Peer":            ("pytgbot.api_types.receivable.peer.", "Result", None),
-    "User":            ("pytgbot.api_types.receivable.peer.", "Peer", None),
-    "Chat":            ("pytgbot.api_types.receivable.peer.", "Peer", None),
+    "ChatMemberUpdated":  ("pytgbot.api_types.receivable.peer.", "Result", None),  # March 9, 2021
+    "ChatPermissions":    ("pytgbot.api_types.receivable.peer.", "Result", None),  # July 29, 2019
+    "ChatInviteLink":     ("pytgbot.api_types.receivable.peer.", "Result", None),  # March 9, 2021
+    "ChatLocation":       ("pytgbot.api_types.receivable.peer.", "Result", None),  # November 4, 2020
+    "ChatMember":         ("pytgbot.api_types.receivable.peer.", "Result", None),
+    "Peer":               ("pytgbot.api_types.receivable.peer.", "Result", None),
+    "User":               ("pytgbot.api_types.receivable.peer.", "Peer", None),
+    "Chat":               ("pytgbot.api_types.receivable.peer.", "Peer", None),
 
     # pytgbot.api_types.receivable.command.*
     "BotCommand":            ("pytgbot.api_types.sendable.command.", "Sendable", None),
@@ -174,7 +182,7 @@ WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters 
     "getMe":                  {'return': {'expected': '', 'replace': 'Returns basic information about the bot in form of a User object'}, 'r_type': {'expected': '', 'replace': 'User'}},
     "logOut":                 {'return': {'expected': '', 'replace': 'Returns True on success'}, 'r_type': {'expected': '', 'replace': 'True'}},  # November 4, 2020
     "getWebhookInfo":         {'return': {'expected': 'On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty', 'replace': 'On success, returns a WebhookInfo object'}, 'r_type': {'expected': 'WebhookInfo or getUpdates or url', 'replace': 'WebhookInfo'}},
-    "kickChatMember":         {'return': {'expected': 'In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
+    "kickChatMember":         {'return': {'expected': 'In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
     "unbanChatMember":        {'return': {'expected': 'The user will not return to the group or channel automatically, but will be able to join via link, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
     "getChatAdministrators":  {'return': {'expected': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned', 'replace': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots'}, 'r_type': {'expected': 'list of ChatMember', 'replace': 'list of ChatMember'}},
     "setChatStickerSet":      {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
@@ -246,6 +254,40 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.media.Media"] = CustomClazz(
     ),
     link=None,
     description='parent class for all receivable media.',
+    body=ReplacementBody(
+        before=[
+            'pass',
+        ],
+        init=[],
+        to_array=[],
+        validate_array=[],
+        from_array=[],
+        str=[],
+        repr=[],
+        contains=[],
+        after=[],
+    ),
+)
+
+CUSTOM_CLASSES["pytgbot.api_types.receivable.service.ServiceMessage"] = CustomClazz(
+    clazz='ServiceMessage',
+    import_path=Import(path=CLASS_TYPE_PATHS["ServiceMessage"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="ServiceMessage"),
+    imports=[
+        Import(
+            path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["ServiceMessage"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name=CLASS_TYPE_PATHS["ServiceMessage"][CLASS_TYPE_PATHS__PARENT]
+        ),
+    ],
+    parent_clazz=Type(
+        string=CLASS_TYPE_PATHS["ServiceMessage"][CLASS_TYPE_PATHS__PARENT],
+        is_builtin=False,
+        always_is_value=None,
+        is_list=0,
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["ServiceMessage"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+        description=None
+    ),
+    link=None,
+    description='parent class for all service messages, those are not directly media related special attributes of the Message object.',
     body=ReplacementBody(
         before=[
             'pass',

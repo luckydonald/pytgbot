@@ -59,6 +59,7 @@ def lol1(tag):
 class_fields = [
     ["Field", "Type", "Description"],
     ["Parameters", "Type", "Description"],
+    ["Parameter", "Type", "Description"]
 ]
 func_fields = [
     ["Parameters", "Type", "Required", "Description"],
@@ -384,7 +385,7 @@ def load_from_html(folder):
                     logger.warning(f"whitelist: Mismatch in return.\nExpected    {wlist_func_return['expected']!r},\ninstead got {default_returns[0]!r}.")
                     replaced_valid = False
                 if wlist_func_r_type and default_returns[1] != wlist_func_r_type['expected']:
-                    logger.warning(f"whitelist: Mismatch in r_type. Expected {wlist_func_r_type['expected']!r}, got {default_returns[1]!r}")
+                    logger.warning(f"whitelist: Mismatch in r_type.\nExpected    {wlist_func_r_type['expected']!r},\ninstead got {default_returns[1]!r}")
                     replaced_valid = False
                 if replaced_valid is None:  # whitelist didn't fail
                     replaced_valid = True

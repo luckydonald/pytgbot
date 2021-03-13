@@ -81,6 +81,12 @@ class Update(Receivable):
     :param poll_answer: Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
     :type  poll_answer: pytgbot.api_types.receivable.media.PollAnswer
 
+    :param my_chat_member: Optional. The bot's chat member status was updated in a chat. For private chats, this update is received only when the bot is blocked or unblocked by the user.
+    :type  my_chat_member: pytgbot.api_types.receivable.peer.ChatMemberUpdated
+
+    :param chat_member: Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify "chat_member" in the list of allowed_updates to receive these updates.
+    :type  chat_member: pytgbot.api_types.receivable.peer.ChatMemberUpdated
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -96,6 +102,8 @@ class Update(Receivable):
     pre_checkout_query: PreCheckoutQuery
     poll: Poll
     poll_answer: PollAnswer
+    my_chat_member: ChatMemberUpdated
+    chat_member: ChatMemberUpdated
 # end class Update
 
 class WebhookInfo(Receivable):
@@ -131,7 +139,7 @@ class WebhookInfo(Receivable):
     :param max_connections: Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
     :type  max_connections: int
 
-    :param allowed_updates: Optional. A list of update types the bot is subscribed to. Defaults to all update types
+    :param allowed_updates: Optional. A list of update types the bot is subscribed to. Defaults to all update types except chat_member
     :type  allowed_updates: list of str|unicode
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -285,10 +293,13 @@ class Message(UpdateType):
     :param channel_chat_created: Optional. Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
     :type  channel_chat_created: bool
 
-    :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+    :param message_auto_delete_timer_changed: Optional. Service message: auto-delete timer settings changed in the chat
+    :type  message_auto_delete_timer_changed: pytgbot.api_types.receivable.service.MessageAutoDeleteTimerChanged
+
+    :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
     :type  migrate_to_chat_id: int
 
-    :param migrate_from_chat_id: Optional. The supergroup has been migrated from a group with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+    :param migrate_from_chat_id: Optional. The supergroup has been migrated from a group with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
     :type  migrate_from_chat_id: int
 
     :param pinned_message: Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
@@ -307,7 +318,16 @@ class Message(UpdateType):
     :type  passport_data: pytgbot.api_types.receivable.passport.PassportData
 
     :param proximity_alert_triggered: Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
-    :type  proximity_alert_triggered: pytgbot.api_types.receivable.media.ProximityAlertTriggered
+    :type  proximity_alert_triggered: pytgbot.api_types.receivable.service.ProximityAlertTriggered
+
+    :param voice_chat_started: Optional. Service message: voice chat started
+    :type  voice_chat_started: VoiceChatStarted
+
+    :param voice_chat_ended: Optional. Service message: voice chat ended
+    :type  voice_chat_ended: pytgbot.api_types.receivable.service.VoiceChatEnded
+
+    :param voice_chat_participants_invited: Optional. Service message: new participants invited to a voice chat
+    :type  voice_chat_participants_invited: pytgbot.api_types.receivable.service.VoiceChatParticipantsInvited
 
     :param reply_markup: Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
@@ -357,6 +377,7 @@ class Message(UpdateType):
     group_chat_created: bool
     supergroup_chat_created: bool
     channel_chat_created: bool
+    message_auto_delete_timer_changed: MessageAutoDeleteTimerChanged
     migrate_to_chat_id: int
     migrate_from_chat_id: int
     pinned_message: Message
@@ -365,6 +386,9 @@ class Message(UpdateType):
     connected_website: str
     passport_data: PassportData
     proximity_alert_triggered: ProximityAlertTriggered
+    voice_chat_started: VoiceChatStarted
+    voice_chat_ended: VoiceChatEnded
+    voice_chat_participants_invited: VoiceChatParticipantsInvited
     reply_markup: InlineKeyboardMarkup
 # end class Message
 
@@ -423,7 +447,7 @@ class ResponseParameters(Receivable):
 
     Optional keyword parameters:
 
-    :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+    :param migrate_to_chat_id: Optional. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
     :type  migrate_to_chat_id: int
 
     :param retry_after: Optional. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated

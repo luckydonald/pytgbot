@@ -32,6 +32,7 @@ from ..api_types.receivable.media import MessageEntity
 from ..api_types.receivable.media import Poll
 from ..api_types.receivable.media import UserProfilePhotos
 from ..api_types.receivable.peer import Chat
+from ..api_types.receivable.peer import ChatInviteLink
 from ..api_types.receivable.peer import ChatMember
 from ..api_types.receivable.peer import ChatPermissions
 from ..api_types.receivable.peer import User
@@ -311,7 +312,7 @@ class AsyncBot(BotBase):
         :param max_connections: Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput.
         :type  max_connections: int
 
-        :param allowed_updates: A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
+        :param allowed_updates: A JSON-serialized list of the update types you want your bot to receive. For example, specify ["message", "edited_channel_post", "callback_query"] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
         :type  allowed_updates: list of str|unicode
 
         :param drop_pending_updates: Pass True to drop all pending updates
@@ -484,7 +485,7 @@ class AsyncBot(BotBase):
 
     async def copy_message(self, chat_id: Union[int, str], from_chat_id: Union[int, str], message_id: int, caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> MessageId:
         """
-        Use this method to copy messages of any kind. The method is analogous to the method forwardMessages, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
+        Use this method to copy messages of any kind. The method is analogous to the method forwardMessage, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
 
         https://core.telegram.org/bots/api#copymessage
 
@@ -1297,7 +1298,7 @@ class AsyncBot(BotBase):
 
         Optional keyword parameters:
 
-        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", or "🎰". Dice can have values 1-6 for "🎲" and "🎯", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
+        :param emoji: Emoji on which the dice throw animation is based. Currently, must be one of "🎲", "🎯", "🏀", "⚽", "🎳", or "🎰". Dice can have values 1-6 for "🎲", "🎯" and "🎳", values 1-5 for "🏀" and "⚽", and values 1-64 for "🎰". Defaults to "🎲"
         :type  emoji: str|unicode
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1406,9 +1407,9 @@ class AsyncBot(BotBase):
         return self._get_file__process_result(result)
     # end def get_file
 
-    async def kick_chat_member(self, chat_id: Union[int, str], user_id: int, until_date: Optional[int] = None) -> bool:
+    async def kick_chat_member(self, chat_id: Union[int, str], user_id: int, until_date: Optional[int] = None, revoke_messages: Optional[bool] = None) -> bool:
         """
-        Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+        Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
         https://core.telegram.org/bots/api#kickchatmember
 
@@ -1425,15 +1426,18 @@ class AsyncBot(BotBase):
 
         Optional keyword parameters:
 
-        :param until_date: Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever
+        :param until_date: Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.
         :type  until_date: int
+
+        :param revoke_messages: Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.
+        :type  revoke_messages: bool
 
         Returns:
 
         :return: Returns True on success
         :rtype:  bool
         """
-        result = await self._kick_chat_member__make_request(chat_id=chat_id, user_id=user_id, until_date=until_date)
+        result = await self._kick_chat_member__make_request(chat_id=chat_id, user_id=user_id, until_date=until_date, revoke_messages=revoke_messages)
         return self._kick_chat_member__process_result(result)
     # end def kick_chat_member
 
@@ -1502,7 +1506,7 @@ class AsyncBot(BotBase):
         return self._restrict_chat_member__process_result(result)
     # end def restrict_chat_member
 
-    async def promote_chat_member(self, chat_id: Union[int, str], user_id: int, is_anonymous: Optional[bool] = None, can_change_info: Optional[bool] = None, can_post_messages: Optional[bool] = None, can_edit_messages: Optional[bool] = None, can_delete_messages: Optional[bool] = None, can_invite_users: Optional[bool] = None, can_restrict_members: Optional[bool] = None, can_pin_messages: Optional[bool] = None, can_promote_members: Optional[bool] = None) -> bool:
+    async def promote_chat_member(self, chat_id: Union[int, str], user_id: int, is_anonymous: Optional[bool] = None, can_manage_chat: Optional[bool] = None, can_post_messages: Optional[bool] = None, can_edit_messages: Optional[bool] = None, can_delete_messages: Optional[bool] = None, can_manage_voice_chats: Optional[bool] = None, can_restrict_members: Optional[bool] = None, can_promote_members: Optional[bool] = None, can_change_info: Optional[bool] = None, can_invite_users: Optional[bool] = None, can_pin_messages: Optional[bool] = None) -> bool:
         """
         Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
 
@@ -1524,8 +1528,8 @@ class AsyncBot(BotBase):
         :param is_anonymous: Pass True, if the administrator's presence in the chat is hidden
         :type  is_anonymous: bool
 
-        :param can_change_info: Pass True, if the administrator can change chat title, photo and other settings
-        :type  can_change_info: bool
+        :param can_manage_chat: Pass True, if the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other administrator privilege
+        :type  can_manage_chat: bool
 
         :param can_post_messages: Pass True, if the administrator can create channel posts, channels only
         :type  can_post_messages: bool
@@ -1536,24 +1540,30 @@ class AsyncBot(BotBase):
         :param can_delete_messages: Pass True, if the administrator can delete messages of other users
         :type  can_delete_messages: bool
 
-        :param can_invite_users: Pass True, if the administrator can invite new users to the chat
-        :type  can_invite_users: bool
+        :param can_manage_voice_chats: Pass True, if the administrator can manage voice chats, supergroups only
+        :type  can_manage_voice_chats: bool
 
         :param can_restrict_members: Pass True, if the administrator can restrict, ban or unban chat members
         :type  can_restrict_members: bool
 
-        :param can_pin_messages: Pass True, if the administrator can pin messages, supergroups only
-        :type  can_pin_messages: bool
-
         :param can_promote_members: Pass True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
         :type  can_promote_members: bool
+
+        :param can_change_info: Pass True, if the administrator can change chat title, photo and other settings
+        :type  can_change_info: bool
+
+        :param can_invite_users: Pass True, if the administrator can invite new users to the chat
+        :type  can_invite_users: bool
+
+        :param can_pin_messages: Pass True, if the administrator can pin messages, supergroups only
+        :type  can_pin_messages: bool
 
         Returns:
 
         :return: Returns True on success
         :rtype:  bool
         """
-        result = await self._promote_chat_member__make_request(chat_id=chat_id, user_id=user_id, is_anonymous=is_anonymous, can_change_info=can_change_info, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_invite_users=can_invite_users, can_restrict_members=can_restrict_members, can_pin_messages=can_pin_messages, can_promote_members=can_promote_members)
+        result = await self._promote_chat_member__make_request(chat_id=chat_id, user_id=user_id, is_anonymous=is_anonymous, can_manage_chat=can_manage_chat, can_post_messages=can_post_messages, can_edit_messages=can_edit_messages, can_delete_messages=can_delete_messages, can_manage_voice_chats=can_manage_voice_chats, can_restrict_members=can_restrict_members, can_promote_members=can_promote_members, can_change_info=can_change_info, can_invite_users=can_invite_users, can_pin_messages=can_pin_messages)
         return self._promote_chat_member__process_result(result)
     # end def promote_chat_member
 
@@ -1614,9 +1624,9 @@ class AsyncBot(BotBase):
 
     async def export_chat_invite_link(self, chat_id: Union[int, str]) -> str:
         """
-        Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
+        Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
 
-        Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink — after this the link will become available to the bot via the getChat method. If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
+        Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink or by calling the getChat method. If your bot needs to generate a new primary invite link replacing its previous one, use exportChatInviteLink again.
 
 
         https://core.telegram.org/bots/api#exportchatinvitelink
@@ -1637,6 +1647,97 @@ class AsyncBot(BotBase):
         result = await self._export_chat_invite_link__make_request(chat_id=chat_id)
         return self._export_chat_invite_link__process_result(result)
     # end def export_chat_invite_link
+
+    async def create_chat_invite_link(self, chat_id: Union[int, str], expire_date: Optional[int] = None, member_limit: Optional[int] = None) -> ChatInviteLink:
+        """
+        Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. The link can be revoked using the method revokeChatInviteLink. Returns the new invite link as ChatInviteLink object.
+
+        https://core.telegram.org/bots/api#createchatinvitelink
+
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+
+        Optional keyword parameters:
+
+        :param expire_date: Point in time (Unix timestamp) when the link will expire
+        :type  expire_date: int
+
+        :param member_limit: Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+        :type  member_limit: int
+
+        Returns:
+
+        :return: Returns the new invite link as ChatInviteLink object
+        :rtype:  pytgbot.api_types.receivable.peer.ChatInviteLink
+        """
+        result = await self._create_chat_invite_link__make_request(chat_id=chat_id, expire_date=expire_date, member_limit=member_limit)
+        return self._create_chat_invite_link__process_result(result)
+    # end def create_chat_invite_link
+
+    async def edit_chat_invite_link(self, chat_id: Union[int, str], invite_link: str, expire_date: Optional[int] = None, member_limit: Optional[int] = None) -> ChatInviteLink:
+        """
+        Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the edited invite link as a ChatInviteLink object.
+
+        https://core.telegram.org/bots/api#editchatinvitelink
+
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param invite_link: The invite link to edit
+        :type  invite_link: str|unicode
+
+
+        Optional keyword parameters:
+
+        :param expire_date: Point in time (Unix timestamp) when the link will expire
+        :type  expire_date: int
+
+        :param member_limit: Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+        :type  member_limit: int
+
+        Returns:
+
+        :return: Returns the edited invite link as a ChatInviteLink object
+        :rtype:  pytgbot.api_types.receivable.peer.ChatInviteLink
+        """
+        result = await self._edit_chat_invite_link__make_request(chat_id=chat_id, invite_link=invite_link, expire_date=expire_date, member_limit=member_limit)
+        return self._edit_chat_invite_link__process_result(result)
+    # end def edit_chat_invite_link
+
+    async def revoke_chat_invite_link(self, chat_id: Union[int, str], invite_link: str) -> ChatInviteLink:
+        """
+        Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the revoked invite link as ChatInviteLink object.
+
+        https://core.telegram.org/bots/api#revokechatinvitelink
+
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier of the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param invite_link: The invite link to revoke
+        :type  invite_link: str|unicode
+
+
+        Returns:
+
+        :return: Returns the revoked invite link as ChatInviteLink object
+        :rtype:  pytgbot.api_types.receivable.peer.ChatInviteLink
+        """
+        result = await self._revoke_chat_invite_link__make_request(chat_id=chat_id, invite_link=invite_link)
+        return self._revoke_chat_invite_link__process_result(result)
+    # end def revoke_chat_invite_link
 
     async def set_chat_photo(self, chat_id: Union[int, str], photo: InputFile) -> bool:
         """
