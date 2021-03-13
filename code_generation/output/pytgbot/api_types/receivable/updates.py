@@ -776,7 +776,7 @@ class Message(UpdateType):
     :type  proximity_alert_triggered: pytgbot.api_types.receivable.service.ProximityAlertTriggered
 
     :param voice_chat_started: Optional. Service message: voice chat started
-    :type  voice_chat_started: VoiceChatStarted
+    :type  voice_chat_started: pytgbot.api_types.receivable.service.VoiceChatStarted
 
     :param voice_chat_ended: Optional. Service message: voice chat ended
     :type  voice_chat_ended: pytgbot.api_types.receivable.service.VoiceChatEnded
@@ -957,7 +957,7 @@ class Message(UpdateType):
         :type  proximity_alert_triggered: pytgbot.api_types.receivable.service.ProximityAlertTriggered
 
         :param voice_chat_started: Optional. Service message: voice chat started
-        :type  voice_chat_started: VoiceChatStarted
+        :type  voice_chat_started: pytgbot.api_types.receivable.service.VoiceChatStarted
 
         :param voice_chat_ended: Optional. Service message: voice chat ended
         :type  voice_chat_ended: pytgbot.api_types.receivable.service.VoiceChatEnded
@@ -996,6 +996,7 @@ class Message(UpdateType):
         from .service import ProximityAlertTriggered
         from .service import VoiceChatEnded
         from .service import VoiceChatParticipantsInvited
+        from .service import VoiceChatStarted
         from ..sendable.reply_markup import InlineKeyboardMarkup
 
         assert_type_or_raise(message_id, int, parameter_name="message_id")
@@ -1324,6 +1325,7 @@ class Message(UpdateType):
         from .service import ProximityAlertTriggered
         from .service import VoiceChatEnded
         from .service import VoiceChatParticipantsInvited
+        from .service import VoiceChatStarted
         from ..sendable.reply_markup import InlineKeyboardMarkup
 
         data = UpdateType.validate_array(array)

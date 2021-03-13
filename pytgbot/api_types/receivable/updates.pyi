@@ -321,7 +321,7 @@ class Message(UpdateType):
     :type  proximity_alert_triggered: pytgbot.api_types.receivable.service.ProximityAlertTriggered
 
     :param voice_chat_started: Optional. Service message: voice chat started
-    :type  voice_chat_started: VoiceChatStarted
+    :type  voice_chat_started: pytgbot.api_types.receivable.service.VoiceChatStarted
 
     :param voice_chat_ended: Optional. Service message: voice chat ended
     :type  voice_chat_ended: pytgbot.api_types.receivable.service.VoiceChatEnded
