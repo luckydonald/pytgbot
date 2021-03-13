@@ -381,7 +381,7 @@ def load_from_html(folder):
                 wlist_func_return = wlist_func['return'] if 'return' in wlist_func else None
                 wlist_func_r_type = wlist_func['r_type'] if 'r_type' in wlist_func else None
                 if wlist_func_return and default_returns[0] != wlist_func_return['expected']:
-                    logger.warning(f"whitelist: Mismatch in return. Expected {wlist_func_return['expected']!r}, got {default_returns[0]!r}.")
+                    logger.warning(f"whitelist: Mismatch in return.\nExpected    {wlist_func_return['expected']!r},\ninstead got {default_returns[0]!r}.")
                     replaced_valid = False
                 if wlist_func_r_type and default_returns[1] != wlist_func_r_type['expected']:
                     logger.warning(f"whitelist: Mismatch in r_type. Expected {wlist_func_r_type['expected']!r}, got {default_returns[1]!r}")
