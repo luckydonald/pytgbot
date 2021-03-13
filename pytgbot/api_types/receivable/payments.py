@@ -12,28 +12,28 @@ class Invoice(Result):
     This object contains basic information about an invoice.
 
     https://core.telegram.org/bots/api#invoice
-    
+
 
     Parameters:
-    
+
     :param title: Product name
     :type  title: str|unicode
-    
+
     :param description: Product description
     :type  description: str|unicode
-    
+
     :param start_parameter: Unique bot deep-linking parameter that can be used to generate this invoice
     :type  start_parameter: str|unicode
-    
+
     :param currency: Three-letter ISO 4217 currency code
     :type  currency: str|unicode
-    
+
     :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  total_amount: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -43,28 +43,28 @@ class Invoice(Result):
         This object contains basic information about an invoice.
 
         https://core.telegram.org/bots/api#invoice
-        
+
 
         Parameters:
-        
+
         :param title: Product name
         :type  title: str|unicode
-        
+
         :param description: Product description
         :type  description: str|unicode
-        
+
         :param start_parameter: Unique bot deep-linking parameter that can be used to generate this invoice
         :type  start_parameter: str|unicode
-        
+
         :param currency: Three-letter ISO 4217 currency code
         :type  currency: str|unicode
-        
+
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
-        
+
 
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -98,7 +98,7 @@ class Invoice(Result):
         # end if
 
         array = super(Invoice, self).to_array()
-        
+
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
         array['start_parameter'] = u(self.start_parameter)  # py2: type unicode, py3: type str
@@ -178,31 +178,31 @@ class ShippingAddress(Result):
     This object represents a shipping address.
 
     https://core.telegram.org/bots/api#shippingaddress
-    
+
 
     Parameters:
-    
+
     :param country_code: ISO 3166-1 alpha-2 country code
     :type  country_code: str|unicode
-    
+
     :param state: State, if applicable
     :type  state: str|unicode
-    
+
     :param city: City
     :type  city: str|unicode
-    
+
     :param street_line1: First line for the address
     :type  street_line1: str|unicode
-    
+
     :param street_line2: Second line for the address
     :type  street_line2: str|unicode
-    
+
     :param post_code: Address post code
     :type  post_code: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -212,31 +212,31 @@ class ShippingAddress(Result):
         This object represents a shipping address.
 
         https://core.telegram.org/bots/api#shippingaddress
-        
+
 
         Parameters:
-        
+
         :param country_code: ISO 3166-1 alpha-2 country code
         :type  country_code: str|unicode
-        
+
         :param state: State, if applicable
         :type  state: str|unicode
-        
+
         :param city: City
         :type  city: str|unicode
-        
+
         :param street_line1: First line for the address
         :type  street_line1: str|unicode
-        
+
         :param street_line2: Second line for the address
         :type  street_line2: str|unicode
-        
+
         :param post_code: Address post code
         :type  post_code: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -272,7 +272,7 @@ class ShippingAddress(Result):
         # end if
 
         array = super(ShippingAddress, self).to_array()
-        
+
         array['country_code'] = u(self.country_code)  # py2: type unicode, py3: type str
         array['state'] = u(self.state)  # py2: type unicode, py3: type str
         array['city'] = u(self.city)  # py2: type unicode, py3: type str
@@ -356,19 +356,19 @@ class OrderInfo(Result):
     https://core.telegram.org/bots/api#orderinfo
 
     Optional keyword parameters:
-    
+
     :param name: Optional. User name
     :type  name: str|unicode
-    
+
     :param phone_number: Optional. User's phone number
     :type  phone_number: str|unicode
-    
+
     :param email: Optional. User email
     :type  email: str|unicode
-    
+
     :param shipping_address: Optional. User shipping address
     :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -380,24 +380,24 @@ class OrderInfo(Result):
         https://core.telegram.org/bots/api#orderinfo
 
         Optional keyword parameters:
-        
+
         :param name: Optional. User name
         :type  name: str|unicode
-        
+
         :param phone_number: Optional. User's phone number
         :type  phone_number: str|unicode
-        
+
         :param email: Optional. User email
         :type  email: str|unicode
-        
+
         :param shipping_address: Optional. User shipping address
         :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(OrderInfo, self).__init__()
-        
+
         assert_type_or_raise(name, None, unicode_type, parameter_name="name")
         self.name = name
         assert_type_or_raise(phone_number, None, unicode_type, parameter_name="phone_number")
@@ -425,7 +425,7 @@ class OrderInfo(Result):
         # end if
 
         array = super(OrderInfo, self).to_array()
-        
+
         if self.name is not None:
             array['name'] = u(self.name)  # py2: type unicode, py3: type str
         # end if
@@ -451,7 +451,7 @@ class OrderInfo(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = Result.validate_array(array)
         data['name'] = u(array.get('name')) if array.get('name') is not None else None
         data['phone_number'] = u(array.get('phone_number')) if array.get('phone_number') is not None else None
@@ -512,34 +512,34 @@ class SuccessfulPayment(Result):
     This object contains basic information about a successful payment.
 
     https://core.telegram.org/bots/api#successfulpayment
-    
+
 
     Parameters:
-    
+
     :param currency: Three-letter ISO 4217 currency code
     :type  currency: str|unicode
-    
+
     :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  total_amount: int
-    
+
     :param invoice_payload: Bot specified invoice payload
     :type  invoice_payload: str|unicode
-    
+
     :param telegram_payment_charge_id: Telegram payment identifier
     :type  telegram_payment_charge_id: str|unicode
-    
+
     :param provider_payment_charge_id: Provider payment identifier
     :type  provider_payment_charge_id: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
     :type  shipping_option_id: str|unicode
-    
+
     :param order_info: Optional. Order info provided by the user
     :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -549,39 +549,39 @@ class SuccessfulPayment(Result):
         This object contains basic information about a successful payment.
 
         https://core.telegram.org/bots/api#successfulpayment
-        
+
 
         Parameters:
-        
+
         :param currency: Three-letter ISO 4217 currency code
         :type  currency: str|unicode
-        
+
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
-        
+
         :param invoice_payload: Bot specified invoice payload
         :type  invoice_payload: str|unicode
-        
+
         :param telegram_payment_charge_id: Telegram payment identifier
         :type  telegram_payment_charge_id: str|unicode
-        
+
         :param provider_payment_charge_id: Provider payment identifier
         :type  provider_payment_charge_id: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
         :type  shipping_option_id: str|unicode
-        
+
         :param order_info: Optional. Order info provided by the user
         :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(SuccessfulPayment, self).__init__()
-        
+
         assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
         assert_type_or_raise(total_amount, int, parameter_name="total_amount")
@@ -615,7 +615,7 @@ class SuccessfulPayment(Result):
         # end if
 
         array = super(SuccessfulPayment, self).to_array()
-        
+
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
         array['total_amount'] = int(self.total_amount)  # type int
         array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
@@ -640,7 +640,7 @@ class SuccessfulPayment(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = Result.validate_array(array)
         data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
@@ -704,25 +704,25 @@ class ShippingQuery(UpdateType):
     This object contains information about an incoming shipping query.
 
     https://core.telegram.org/bots/api#shippingquery
-    
+
 
     Parameters:
-    
+
     :param id: Unique query identifier
     :type  id: str|unicode
-    
+
     :param from_peer: User who sent the query
     :type  from_peer: pytgbot.api_types.receivable.peer.User
-    
+
     :param invoice_payload: Bot specified invoice payload
     :type  invoice_payload: str|unicode
-    
+
     :param shipping_address: User specified shipping address
     :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -732,31 +732,31 @@ class ShippingQuery(UpdateType):
         This object contains information about an incoming shipping query.
 
         https://core.telegram.org/bots/api#shippingquery
-        
+
 
         Parameters:
-        
+
         :param id: Unique query identifier
         :type  id: str|unicode
-        
+
         :param from_peer: User who sent the query
         :type  from_peer: pytgbot.api_types.receivable.peer.User
-        
+
         :param invoice_payload: Bot specified invoice payload
         :type  invoice_payload: str|unicode
-        
+
         :param shipping_address: User specified shipping address
         :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
-        
+
 
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(ShippingQuery, self).__init__()
         from .peer import User
-        
+
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -784,7 +784,7 @@ class ShippingQuery(UpdateType):
         # end if
 
         array = super(ShippingQuery, self).to_array()
-        
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
         array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
@@ -803,7 +803,7 @@ class ShippingQuery(UpdateType):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-        
+
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
@@ -864,34 +864,34 @@ class PreCheckoutQuery(UpdateType):
     This object contains information about an incoming pre-checkout query.
 
     https://core.telegram.org/bots/api#precheckoutquery
-    
+
 
     Parameters:
-    
+
     :param id: Unique query identifier
     :type  id: str|unicode
-    
+
     :param from_peer: User who sent the query
     :type  from_peer: pytgbot.api_types.receivable.peer.User
-    
+
     :param currency: Three-letter ISO 4217 currency code
     :type  currency: str|unicode
-    
+
     :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  total_amount: int
-    
+
     :param invoice_payload: Bot specified invoice payload
     :type  invoice_payload: str|unicode
-    
+
 
     Optional keyword parameters:
-    
+
     :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
     :type  shipping_option_id: str|unicode
-    
+
     :param order_info: Optional. Order info provided by the user
     :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -901,40 +901,40 @@ class PreCheckoutQuery(UpdateType):
         This object contains information about an incoming pre-checkout query.
 
         https://core.telegram.org/bots/api#precheckoutquery
-        
+
 
         Parameters:
-        
+
         :param id: Unique query identifier
         :type  id: str|unicode
-        
+
         :param from_peer: User who sent the query
         :type  from_peer: pytgbot.api_types.receivable.peer.User
-        
+
         :param currency: Three-letter ISO 4217 currency code
         :type  currency: str|unicode
-        
+
         :param total_amount: Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  total_amount: int
-        
+
         :param invoice_payload: Bot specified invoice payload
         :type  invoice_payload: str|unicode
-        
+
 
         Optional keyword parameters:
-        
+
         :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
         :type  shipping_option_id: str|unicode
-        
+
         :param order_info: Optional. Order info provided by the user
         :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(PreCheckoutQuery, self).__init__()
         from .peer import User
-        
+
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -968,7 +968,7 @@ class PreCheckoutQuery(UpdateType):
         # end if
 
         array = super(PreCheckoutQuery, self).to_array()
-        
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['from'] = self.from_peer.to_array()  # type User
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
@@ -994,7 +994,7 @@ class PreCheckoutQuery(UpdateType):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-        
+
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
@@ -1051,4 +1051,3 @@ class PreCheckoutQuery(UpdateType):
         )
     # end def __contains__
 # end class PreCheckoutQuery
-

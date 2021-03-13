@@ -679,4 +679,3 @@ class EncryptedCredentials(Result):
         )
     # end def __contains__
 # end class EncryptedCredentials
-

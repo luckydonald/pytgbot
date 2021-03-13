@@ -1708,4 +1708,3 @@ class InputMediaDocument(InputMediaWithThumb):
         )
     # end def __contains__
 # end class InputMediaDocument
-

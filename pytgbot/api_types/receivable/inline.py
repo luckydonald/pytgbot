@@ -357,4 +357,3 @@ class ChosenInlineResult(UpdateType):
         )
     # end def __contains__
 # end class ChosenInlineResult
-

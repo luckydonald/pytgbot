@@ -154,4 +154,3 @@ class GameHighScore(Result):
         )
     # end def __contains__
 # end class GameHighScore
-

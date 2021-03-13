@@ -11,16 +11,16 @@ class LabeledPrice(Sendable):
     This object represents a portion of the price for goods or services.
 
     https://core.telegram.org/bots/api#labeledprice
-    
+
 
     Parameters:
-    
+
     :param label: Portion label
     :type  label: str|unicode
-    
+
     :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :type  amount: int
-    
+
 
     Optional keyword parameters:
     """
@@ -30,16 +30,16 @@ class LabeledPrice(Sendable):
         This object represents a portion of the price for goods or services.
 
         https://core.telegram.org/bots/api#labeledprice
-        
+
 
         Parameters:
-        
+
         :param label: Portion label
         :type  label: str|unicode
-        
+
         :param amount: Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
         :type  amount: int
-        
+
 
         Optional keyword parameters:
         """
@@ -65,7 +65,7 @@ class LabeledPrice(Sendable):
         # end if
 
         array = super(LabeledPrice, self).to_array()
-        
+
         array['label'] = u(self.label)  # py2: type unicode, py3: type str
         array['amount'] = int(self.amount)  # type int
 
@@ -140,19 +140,19 @@ class ShippingOption(Sendable):
     This object represents one shipping option.
 
     https://core.telegram.org/bots/api#shippingoption
-    
+
 
     Parameters:
-    
+
     :param id: Shipping option identifier
     :type  id: str|unicode
-    
+
     :param title: Option title
     :type  title: str|unicode
-    
+
     :param prices: List of price portions
     :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
-    
+
 
     Optional keyword parameters:
     """
@@ -162,24 +162,24 @@ class ShippingOption(Sendable):
         This object represents one shipping option.
 
         https://core.telegram.org/bots/api#shippingoption
-        
+
 
         Parameters:
-        
+
         :param id: Shipping option identifier
         :type  id: str|unicode
-        
+
         :param title: Option title
         :type  title: str|unicode
-        
+
         :param prices: List of price portions
         :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
-        
+
 
         Optional keyword parameters:
         """
         super(ShippingOption, self).__init__()
-        
+
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(title, unicode_type, parameter_name="title")
@@ -203,7 +203,7 @@ class ShippingOption(Sendable):
         # end if
 
         array = super(ShippingOption, self).to_array()
-        
+
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['prices'] = self._as_array(self.prices)  # type list of LabeledPrice
@@ -220,7 +220,7 @@ class ShippingOption(Sendable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-        
+
         data = Sendable.validate_array(array)
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))
@@ -274,4 +274,3 @@ class ShippingOption(Sendable):
         )
     # end def __contains__
 # end class ShippingOption
-

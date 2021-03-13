@@ -11,16 +11,16 @@ class BotCommand(Sendable):
     This object represents a bot command.
 
     https://core.telegram.org/bots/api#botcommand
-    
+
 
     Parameters:
-    
+
     :param command: Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
     :type  command: str|unicode
-    
+
     :param description: Description of the command, 3-256 characters.
     :type  description: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -30,16 +30,16 @@ class BotCommand(Sendable):
         This object represents a bot command.
 
         https://core.telegram.org/bots/api#botcommand
-        
+
 
         Parameters:
-        
+
         :param command: Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
         :type  command: str|unicode
-        
+
         :param description: Description of the command, 3-256 characters.
         :type  description: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -65,7 +65,7 @@ class BotCommand(Sendable):
         # end if
 
         array = super(BotCommand, self).to_array()
-        
+
         array['command'] = u(self.command)  # py2: type unicode, py3: type str
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
 
@@ -133,4 +133,3 @@ class BotCommand(Sendable):
         )
     # end def __contains__
 # end class BotCommand
-

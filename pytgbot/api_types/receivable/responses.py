@@ -11,16 +11,16 @@ class MessageId(Result):
     This object represents a unique message identifier.
 
     https://core.telegram.org/bots/api#messageid
-    
+
 
     Parameters:
-    
+
     :param message_id: Unique message identifier
     :type  message_id: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -30,16 +30,16 @@ class MessageId(Result):
         This object represents a unique message identifier.
 
         https://core.telegram.org/bots/api#messageid
-        
+
 
         Parameters:
-        
+
         :param message_id: Unique message identifier
         :type  message_id: int
-        
+
 
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -65,7 +65,7 @@ class MessageId(Result):
         # end if
 
         array = super(MessageId, self).to_array()
-        
+
         array['message_id'] = int(self.message_id)  # type int
 
         return array
@@ -130,4 +130,3 @@ class MessageId(Result):
         )
     # end def __contains__
 # end class MessageId
-

@@ -5327,4 +5327,3 @@ class InputContactMessageContent(InputMessageContent):
         )
     # end def __contains__
 # end class InputContactMessageContent
-

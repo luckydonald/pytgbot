@@ -24,22 +24,22 @@ class PassportElementErrorDataField(PassportElementError):
     Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
 
     https://core.telegram.org/bots/api#passportelementerrordatafield
-    
+
 
     Parameters:
-    
+
     :param type: The section of the user's Telegram Passport which has the error, one of "personal_details", "passport", "driver_license", "identity_card", "internal_passport", "address"
     :type  type: str|unicode
-    
+
     :param field_name: Name of the data field which has the error
     :type  field_name: str|unicode
-    
+
     :param data_hash: Base64-encoded data hash
     :type  data_hash: str|unicode
-    
+
     :param message: Error message
     :type  message: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -49,22 +49,22 @@ class PassportElementErrorDataField(PassportElementError):
         Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
 
         https://core.telegram.org/bots/api#passportelementerrordatafield
-        
+
 
         Parameters:
-        
+
         :param type: The section of the user's Telegram Passport which has the error, one of "personal_details", "passport", "driver_license", "identity_card", "internal_passport", "address"
         :type  type: str|unicode
-        
+
         :param field_name: Name of the data field which has the error
         :type  field_name: str|unicode
-        
+
         :param data_hash: Base64-encoded data hash
         :type  data_hash: str|unicode
-        
+
         :param message: Error message
         :type  message: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -95,7 +95,7 @@ class PassportElementErrorDataField(PassportElementError):
         # end if
 
         array = super(PassportElementErrorDataField, self).to_array()
-        
+
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['field_name'] = u(self.field_name)  # py2: type unicode, py3: type str
@@ -115,7 +115,7 @@ class PassportElementErrorDataField(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always data.
         data['type'] = u(array.get('type'))
         data['field_name'] = u(array.get('field_name'))
         data['data_hash'] = u(array.get('data_hash'))
@@ -176,19 +176,19 @@ class PassportElementErrorFrontSide(PassportElementError):
     Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
 
     https://core.telegram.org/bots/api#passportelementerrorfrontside
-    
+
 
     Parameters:
-    
+
     :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
     :type  type: str|unicode
-    
+
     :param file_hash: Base64-encoded hash of the file with the front side of the document
     :type  file_hash: str|unicode
-    
+
     :param message: Error message
     :type  message: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -198,19 +198,19 @@ class PassportElementErrorFrontSide(PassportElementError):
         Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
 
         https://core.telegram.org/bots/api#passportelementerrorfrontside
-        
+
 
         Parameters:
-        
+
         :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
         :type  type: str|unicode
-        
+
         :param file_hash: Base64-encoded hash of the file with the front side of the document
         :type  file_hash: str|unicode
-        
+
         :param message: Error message
         :type  message: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -239,7 +239,7 @@ class PassportElementErrorFrontSide(PassportElementError):
         # end if
 
         array = super(PassportElementErrorFrontSide, self).to_array()
-        
+
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
@@ -258,7 +258,7 @@ class PassportElementErrorFrontSide(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always front_side.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -318,19 +318,19 @@ class PassportElementErrorReverseSide(PassportElementError):
     Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
 
     https://core.telegram.org/bots/api#passportelementerrorreverseside
-    
+
 
     Parameters:
-    
+
     :param type: The section of the user's Telegram Passport which has the issue, one of "driver_license", "identity_card"
     :type  type: str|unicode
-    
+
     :param file_hash: Base64-encoded hash of the file with the reverse side of the document
     :type  file_hash: str|unicode
-    
+
     :param message: Error message
     :type  message: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -340,19 +340,19 @@ class PassportElementErrorReverseSide(PassportElementError):
         Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
 
         https://core.telegram.org/bots/api#passportelementerrorreverseside
-        
+
 
         Parameters:
-        
+
         :param type: The section of the user's Telegram Passport which has the issue, one of "driver_license", "identity_card"
         :type  type: str|unicode
-        
+
         :param file_hash: Base64-encoded hash of the file with the reverse side of the document
         :type  file_hash: str|unicode
-        
+
         :param message: Error message
         :type  message: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -381,7 +381,7 @@ class PassportElementErrorReverseSide(PassportElementError):
         # end if
 
         array = super(PassportElementErrorReverseSide, self).to_array()
-        
+
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
@@ -400,7 +400,7 @@ class PassportElementErrorReverseSide(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always reverse_side.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -460,19 +460,19 @@ class PassportElementErrorSelfie(PassportElementError):
     Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
 
     https://core.telegram.org/bots/api#passportelementerrorselfie
-    
+
 
     Parameters:
-    
+
     :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
     :type  type: str|unicode
-    
+
     :param file_hash: Base64-encoded hash of the file with the selfie
     :type  file_hash: str|unicode
-    
+
     :param message: Error message
     :type  message: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -482,19 +482,19 @@ class PassportElementErrorSelfie(PassportElementError):
         Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
 
         https://core.telegram.org/bots/api#passportelementerrorselfie
-        
+
 
         Parameters:
-        
+
         :param type: The section of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport"
         :type  type: str|unicode
-        
+
         :param file_hash: Base64-encoded hash of the file with the selfie
         :type  file_hash: str|unicode
-        
+
         :param message: Error message
         :type  message: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -523,7 +523,7 @@ class PassportElementErrorSelfie(PassportElementError):
         # end if
 
         array = super(PassportElementErrorSelfie, self).to_array()
-        
+
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
@@ -542,7 +542,7 @@ class PassportElementErrorSelfie(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always selfie.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -602,19 +602,19 @@ class PassportElementErrorFile(PassportElementError):
     Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
 
     https://core.telegram.org/bots/api#passportelementerrorfile
-    
+
 
     Parameters:
-    
+
     :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
-    
+
     :param file_hash: Base64-encoded file hash
     :type  file_hash: str|unicode
-    
+
     :param message: Error message
     :type  message: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -624,19 +624,19 @@ class PassportElementErrorFile(PassportElementError):
         Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
 
         https://core.telegram.org/bots/api#passportelementerrorfile
-        
+
 
         Parameters:
-        
+
         :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
-        
+
         :param file_hash: Base64-encoded file hash
         :type  file_hash: str|unicode
-        
+
         :param message: Error message
         :type  message: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -665,7 +665,7 @@ class PassportElementErrorFile(PassportElementError):
         # end if
 
         array = super(PassportElementErrorFile, self).to_array()
-        
+
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
@@ -684,7 +684,7 @@ class PassportElementErrorFile(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always file.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -744,19 +744,19 @@ class PassportElementErrorFiles(PassportElementError):
     Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
 
     https://core.telegram.org/bots/api#passportelementerrorfiles
-    
+
 
     Parameters:
-    
+
     :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
-    
+
     :param file_hashes: List of base64-encoded file hashes
     :type  file_hashes: list of str|unicode
-    
+
     :param message: Error message
     :type  message: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -766,19 +766,19 @@ class PassportElementErrorFiles(PassportElementError):
         Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
 
         https://core.telegram.org/bots/api#passportelementerrorfiles
-        
+
 
         Parameters:
-        
+
         :param type: The section of the user's Telegram Passport which has the issue, one of "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
-        
+
         :param file_hashes: List of base64-encoded file hashes
         :type  file_hashes: list of str|unicode
-        
+
         :param message: Error message
         :type  message: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -807,7 +807,7 @@ class PassportElementErrorFiles(PassportElementError):
         # end if
 
         array = super(PassportElementErrorFiles, self).to_array()
-        
+
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['file_hashes'] = self._as_array(self.file_hashes)  # type list of str
@@ -826,7 +826,7 @@ class PassportElementErrorFiles(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always files.
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
@@ -886,19 +886,19 @@ class PassportElementErrorTranslationFile(PassportElementError):
     Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
 
     https://core.telegram.org/bots/api#passportelementerrortranslationfile
-    
+
 
     Parameters:
-    
+
     :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
-    
+
     :param file_hash: Base64-encoded file hash
     :type  file_hash: str|unicode
-    
+
     :param message: Error message
     :type  message: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -908,19 +908,19 @@ class PassportElementErrorTranslationFile(PassportElementError):
         Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
 
         https://core.telegram.org/bots/api#passportelementerrortranslationfile
-        
+
 
         Parameters:
-        
+
         :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
-        
+
         :param file_hash: Base64-encoded file hash
         :type  file_hash: str|unicode
-        
+
         :param message: Error message
         :type  message: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -949,7 +949,7 @@ class PassportElementErrorTranslationFile(PassportElementError):
         # end if
 
         array = super(PassportElementErrorTranslationFile, self).to_array()
-        
+
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['file_hash'] = u(self.file_hash)  # py2: type unicode, py3: type str
@@ -968,7 +968,7 @@ class PassportElementErrorTranslationFile(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always translation_file.
         data['type'] = u(array.get('type'))
         data['file_hash'] = u(array.get('file_hash'))
         data['message'] = u(array.get('message'))
@@ -1028,19 +1028,19 @@ class PassportElementErrorTranslationFiles(PassportElementError):
     Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
 
     https://core.telegram.org/bots/api#passportelementerrortranslationfiles
-    
+
 
     Parameters:
-    
+
     :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
     :type  type: str|unicode
-    
+
     :param file_hashes: List of base64-encoded file hashes
     :type  file_hashes: list of str|unicode
-    
+
     :param message: Error message
     :type  message: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -1050,19 +1050,19 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
 
         https://core.telegram.org/bots/api#passportelementerrortranslationfiles
-        
+
 
         Parameters:
-        
+
         :param type: Type of element of the user's Telegram Passport which has the issue, one of "passport", "driver_license", "identity_card", "internal_passport", "utility_bill", "bank_statement", "rental_agreement", "passport_registration", "temporary_registration"
         :type  type: str|unicode
-        
+
         :param file_hashes: List of base64-encoded file hashes
         :type  file_hashes: list of str|unicode
-        
+
         :param message: Error message
         :type  message: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -1091,7 +1091,7 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         # end if
 
         array = super(PassportElementErrorTranslationFiles, self).to_array()
-        
+
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['file_hashes'] = self._as_array(self.file_hashes)  # type list of str
@@ -1110,7 +1110,7 @@ class PassportElementErrorTranslationFiles(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always translation_files.
         data['type'] = u(array.get('type'))
         data['file_hashes'] = PassportElementErrorTranslationFiles._builtin_from_array_list(required_type=unicode_type, value=array.get('file_hashes'), list_level=1)
         data['message'] = u(array.get('message'))
@@ -1170,19 +1170,19 @@ class PassportElementErrorUnspecified(PassportElementError):
     Represents an issue in an unspecified place. The error is considered resolved when new data is added.
 
     https://core.telegram.org/bots/api#passportelementerrorunspecified
-    
+
 
     Parameters:
-    
+
     :param type: Type of element of the user's Telegram Passport which has the issue
     :type  type: str|unicode
-    
+
     :param element_hash: Base64-encoded element hash
     :type  element_hash: str|unicode
-    
+
     :param message: Error message
     :type  message: str|unicode
-    
+
 
     Optional keyword parameters:
     """
@@ -1192,19 +1192,19 @@ class PassportElementErrorUnspecified(PassportElementError):
         Represents an issue in an unspecified place. The error is considered resolved when new data is added.
 
         https://core.telegram.org/bots/api#passportelementerrorunspecified
-        
+
 
         Parameters:
-        
+
         :param type: Type of element of the user's Telegram Passport which has the issue
         :type  type: str|unicode
-        
+
         :param element_hash: Base64-encoded element hash
         :type  element_hash: str|unicode
-        
+
         :param message: Error message
         :type  message: str|unicode
-        
+
 
         Optional keyword parameters:
         """
@@ -1233,7 +1233,7 @@ class PassportElementErrorUnspecified(PassportElementError):
         # end if
 
         array = super(PassportElementErrorUnspecified, self).to_array()
-        
+
         array['source'] = u(self.source)  # py2: type unicode, py3: type str
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
         array['element_hash'] = u(self.element_hash)  # py2: type unicode, py3: type str
@@ -1252,7 +1252,7 @@ class PassportElementErrorUnspecified(PassportElementError):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         data = PassportElementError.validate_array(array)
-        data['source'] = u(array.get('source'))
+        # 'source' is always unspecified.
         data['type'] = u(array.get('type'))
         data['element_hash'] = u(array.get('element_hash'))
         data['message'] = u(array.get('message'))
@@ -1305,4 +1305,3 @@ class PassportElementErrorUnspecified(PassportElementError):
         )
     # end def __contains__
 # end class PassportElementErrorUnspecified
-

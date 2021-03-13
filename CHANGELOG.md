@@ -1,8 +1,17 @@
 # Changelog
 
+## Version 5.1 (not released yet)
+⚠️ Breaking changes:
+- ⚠️ Moved `ProximityAlertTriggered` from `pytgbot.api_types.receiveable.media.ProximityAlertTriggered` to `pytgbot.api_types.receiveable.services.ProximityAlertTriggered`. It also no longer subclasses `receiveable.media.Media`, but a new `receiveable.services.ServiceMessage`
+    - there should be a import from the old location making that backwards compatible, but that's not something you should depend on as we will remove it in a newer version.
+
+
+Random observations:
+- polls can have 45 more letters now
+
 ## Version 5.0.0.1
 Added `download_url` parameter to the constructor of the `Bot`s, so one can set the download url for non-official API servers.
-Those might be different for a selfhosted server. 
+Those might be different for a selfhosted server.
 If that is not given but only a `base_url` is, we'll try to guess it but show a warning.
 That is used in `get_download_url(…)`.
 
@@ -20,14 +29,14 @@ Fixed importing the wrong bot, the async one, per default.
 This is a re-release of `5.0.0-beta.1`, as PyPi did like that short version format better.
 Other than the version number it is exactly the same as `5.0.0-beta.1`.
 
-## Version 5.0.0-beta.1 
+## Version 5.0.0-beta.1
 Core:
 - The already for a while now deprecated `pytgbot.api_types.sendable.InputFile`, `pytgbot.api_types.sendable.InputFileFromURL` and `pytgbot.api_types.sendable.InputFileFromDisk` can no longer be found in `pytgbot.api_types.sendable.\*`
-  They are now only available at `pytgbot.api_types.sendable.files.\*`, resulting in 
+  They are now only available at `pytgbot.api_types.sendable.files.\*`, resulting in
   - `pytgbot.api_types.sendable.files.InputFile`,
   - `pytgbot.api_types.sendable.files.InputFileFromURL` and
   - `pytgbot.api_types.sendable.files.InputFileFromDisk`.
-- `.as_array()` now has a `prefer_original=False` boolean, if it should return the data this was constructed with if available. Otherwise, it will be constructed normally from the data of the object, as it was before. 
+- `.as_array()` now has a `prefer_original=False` boolean, if it should return the data this was constructed with if available. Otherwise, it will be constructed normally from the data of the object, as it was before.
 
 Licence:
 - Switched from GPL to LGPL.

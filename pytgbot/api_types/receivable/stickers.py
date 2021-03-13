@@ -11,31 +11,31 @@ class StickerSet(Result):
     This object represents a sticker set.
 
     https://core.telegram.org/bots/api#stickerset
-    
+
 
     Parameters:
-    
+
     :param name: Sticker set name
     :type  name: str|unicode
-    
+
     :param title: Sticker set title
     :type  title: str|unicode
-    
+
     :param is_animated: True, if the sticker set contains animated stickers
     :type  is_animated: bool
-    
+
     :param contains_masks: True, if the sticker set contains masks
     :type  contains_masks: bool
-    
+
     :param stickers: List of all set stickers
     :type  stickers: list of pytgbot.api_types.receivable.media.Sticker
-    
+
 
     Optional keyword parameters:
-    
+
     :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -45,38 +45,38 @@ class StickerSet(Result):
         This object represents a sticker set.
 
         https://core.telegram.org/bots/api#stickerset
-        
+
 
         Parameters:
-        
+
         :param name: Sticker set name
         :type  name: str|unicode
-        
+
         :param title: Sticker set title
         :type  title: str|unicode
-        
+
         :param is_animated: True, if the sticker set contains animated stickers
         :type  is_animated: bool
-        
+
         :param contains_masks: True, if the sticker set contains masks
         :type  contains_masks: bool
-        
+
         :param stickers: List of all set stickers
         :type  stickers: list of pytgbot.api_types.receivable.media.Sticker
-        
+
 
         Optional keyword parameters:
-        
+
         :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
         super(StickerSet, self).__init__()
         from .media import PhotoSize
         from .media import Sticker
-        
+
         assert_type_or_raise(name, unicode_type, parameter_name="name")
         self.name = name
         assert_type_or_raise(title, unicode_type, parameter_name="title")
@@ -108,7 +108,7 @@ class StickerSet(Result):
         # end if
 
         array = super(StickerSet, self).to_array()
-        
+
         array['name'] = u(self.name)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['is_animated'] = bool(self.is_animated)  # type bool
@@ -132,7 +132,7 @@ class StickerSet(Result):
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import PhotoSize
         from .media import Sticker
-        
+
         data = Result.validate_array(array)
         data['name'] = u(array.get('name'))
         data['title'] = u(array.get('title'))
@@ -195,25 +195,25 @@ class MaskPosition(Result):
     This object describes the position on faces where a mask should be placed by default.
 
     https://core.telegram.org/bots/api#maskposition
-    
+
 
     Parameters:
-    
+
     :param point: The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin".
     :type  point: str|unicode
-    
+
     :param x_shift: Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.
     :type  x_shift: float
-    
+
     :param y_shift: Shift by Y-axis measured in heights of the mask scaled to the face size, from top to bottom. For example, 1.0 will place the mask just below the default mask position.
     :type  y_shift: float
-    
+
     :param scale: Mask scaling coefficient. For example, 2.0 means double size.
     :type  scale: float
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -223,25 +223,25 @@ class MaskPosition(Result):
         This object describes the position on faces where a mask should be placed by default.
 
         https://core.telegram.org/bots/api#maskposition
-        
+
 
         Parameters:
-        
+
         :param point: The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin".
         :type  point: str|unicode
-        
+
         :param x_shift: Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.
         :type  x_shift: float
-        
+
         :param y_shift: Shift by Y-axis measured in heights of the mask scaled to the face size, from top to bottom. For example, 1.0 will place the mask just below the default mask position.
         :type  y_shift: float
-        
+
         :param scale: Mask scaling coefficient. For example, 2.0 means double size.
         :type  scale: float
-        
+
 
         Optional keyword parameters:
-        
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -273,7 +273,7 @@ class MaskPosition(Result):
         # end if
 
         array = super(MaskPosition, self).to_array()
-        
+
         array['point'] = u(self.point)  # py2: type unicode, py3: type str
         array['x_shift'] = float(self.x_shift)  # type float
         array['y_shift'] = float(self.y_shift)  # type float
@@ -344,4 +344,3 @@ class MaskPosition(Result):
         )
     # end def __contains__
 # end class MaskPosition
-
