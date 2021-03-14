@@ -8,7 +8,6 @@
 Random observations:
 - `id`: This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
 - polls can have 45 more letters now
-- what's wrong with the missing `VoiceChatStarted` import in `Message`?
 
 ## Version 5.0.0.1
 Added `download_url` parameter to the constructor of the `Bot`s, so one can set the download url for non-official API servers.
