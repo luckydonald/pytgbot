@@ -201,12 +201,12 @@ Array with names of functions which have no parameters table and thus wouldn't b
 """
 
 WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters table and thus wouldn't be detected.
-    "CallbackGame",
-    "InlineQueryResult",
-    #"InputMessageContent",
-    "InputMedia",
-    "PassportElementError",
-    "InputMediaWithThumb",
+    # "CallbackGame",
+    # "InlineQueryResult",
+    # #"InputMessageContent",
+    # "InputMedia",
+    # "PassportElementError",
+    # "InputMediaWithThumb",
 ]
 """ Array with names of classes which have no parameters table and thus wouldn't be detected."""
 

@@ -9,7 +9,7 @@ from luckydonaldUtils.files.basics import mkdir_p  # luckydonaldUtils v0.49+
 from luckydonaldUtils.interactions import answer, confirm
 from luckydonaldUtils.logger import logging
 
-from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS, CUSTOM_CLASSES
+from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__PARENT, WHITELISTED_FUNCS, WHITELISTED_CLASSES, CUSTOM_CLASSES
 from code_generator_template import path_to_import_text, split_path
 from jinja2.exceptions import TemplateError, TemplateSyntaxError
 
@@ -348,18 +348,21 @@ def load_from_html(folder):
             logger.warning("Skipped: Missing link, title or description")
             continue
         if not all([table_type, param_strings]):
-            if title not in WHITELISTED_FUNCS:
+            if title in WHITELISTED_FUNCS:
+                table_type = 'func'
+            elif title  in WHITELISTED_CLASSES:
+                table_type = 'class'
+            else:
                 logger.warning(
                     "Skipped. Has no table with Parameters or Fields.\n"
-                    "Also isn't a whitelisted function in `code_generator_settings.WHITELISTED_FUNCS`."
+                    "Also isn't a whitelisted function in `code_generator_settings.WHITELISTED_CLASSES` or class in `code_generator_settings.WHITELISTED_CLASSES`."
                 )
                 continue
             # -> else: is in WHITELISTED_FUNCS:
-            table_type = "func"
         # end if
         descr = "\n".join(descr)
         logger.info("descr: " + repr(descr))
-        params_string = "\n".join(param_strings) if param_strings else None  # WHITELISTED_FUNCS have no params
+        params_string = "\n".join(param_strings) if param_strings else None  # WHITELISTED_FUNCS/WHITELISTED_CLASSES have no params
         if table_type == "func":
             seems_valid = False
             if len(default_returns) != 2:
@@ -415,6 +418,9 @@ def load_from_html(folder):
             else:
                 parent_clazz = answer("Parent class name", "TgBotApiObject")
             # end if
+            if title in WHITELISTED_CLASSES:
+                pass
+            # end def
             result = clazz(
                 clazz=title, parent_clazz=parent_clazz, description=descr, link=link, params_string=params_string
             )

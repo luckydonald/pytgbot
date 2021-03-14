@@ -106,17 +106,19 @@ def clazz(clazz, parent_clazz, description, link, params_string, init_super_args
     variables_needed = []
     variables_optional = []
     imports: Set[Variable] = set()
-    for param in params_string.split("\n"):
-        variable = parse_param_types(param)
-        # any variable.types has always_is_value => lenght must be 1.
-        assert(not any([type_.always_is_value is not None for type_ in variable.types]) or len(variable.types) == 1)
-        if variable.optional:
-            variables_optional.append(variable)
-        else:
-            variables_needed.append(variable)
-        # end if
-        imports.update(variable.all_imports)
-    # end for
+    if params_string is not None:  # is None for WHITELISTED_CLASSES
+        for param in params_string.split("\n"):
+            variable = parse_param_types(param)
+            # any variable.types has always_is_value => lenght must be 1.
+            assert(not any([type_.always_is_value is not None for type_ in variable.types]) or len(variable.types) == 1)
+            if variable.optional:
+                variables_optional.append(variable)
+            else:
+                variables_needed.append(variable)
+            # end if
+            imports.update(variable.all_imports)
+        # end for
+    # end if
     imports: List[Variable] = list(imports)
     imports.sort()
     if isinstance(parent_clazz, str):
