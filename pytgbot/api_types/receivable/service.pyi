@@ -2,12 +2,13 @@
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from typing import Any, Union, List
+from pytgbot.api_types.receivable import Receivable
 from pytgbot.api_types.receivable.service import ServiceMessage
 
 __author__ = 'luckydonald'
 
 
-class ServiceMessage(ServiceMessage):
+class ServiceMessage(Receivable):
     """
     parent class for all service messages, those are not directly media related special attributes of the Message object.
 

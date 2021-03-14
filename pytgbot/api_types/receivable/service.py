@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
+from . import Receivable
+
 __author__ = 'luckydonald'
 
 
-class ServiceMessage(ServiceMessage):
+class ServiceMessage(Receivable):
     """
     parent class for all service messages, those are not directly media related special attributes of the Message object.
 

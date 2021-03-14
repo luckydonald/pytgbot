@@ -45,7 +45,7 @@ class MediaModel(BaseModel):  # Receivable"""parent class for all receivable med
 # end class Media
 
 
-class ServiceMessageModel(BaseModel):  # ServiceMessage"""parent class for all service messages, those are not directly media related special attributes of the Message object.
+class ServiceMessageModel(BaseModel):  # Receivable"""parent class for all service messages, those are not directly media related special attributes of the Message object.
     """
 
 # end class ServiceMessage

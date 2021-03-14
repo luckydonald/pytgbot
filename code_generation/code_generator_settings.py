@@ -34,7 +34,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "Dice":                     ("pytgbot.api_types.receivable.media.", "Media", None),  # March 30, 2020
 
     # pytgbot.api_types.receivable.service.
-    "ServiceMessage":                ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
+    "ServiceMessage":                ("pytgbot.api_types.receivable.service.", "Receivable", None),  # November 4, 2020
     "ProximityAlertTriggered":       ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
     "MessageAutoDeleteTimerChanged": ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # March 9, 2021, (import changed November 4, 2020)
     "VoiceChatStarted":              ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
