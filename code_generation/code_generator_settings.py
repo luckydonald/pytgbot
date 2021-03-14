@@ -207,6 +207,7 @@ WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters 
     # "InputMedia",
     # "PassportElementError",
     # "InputMediaWithThumb",
+    "VoiceChatStarted",
 ]
 """ Array with names of classes which have no parameters table and thus wouldn't be detected."""
 

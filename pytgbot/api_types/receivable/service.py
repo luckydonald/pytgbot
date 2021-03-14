@@ -296,6 +296,114 @@ class MessageAutoDeleteTimerChanged(ServiceMessage):
 # end class MessageAutoDeleteTimerChanged
 
 
+class VoiceChatStarted(ServiceMessage):
+    """
+    This object represents a service message about a voice chat started in the chat. Currently holds no information.
+
+    https://core.telegram.org/bots/api#voicechatstarted
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, _raw=None):
+        """
+        This object represents a service message about a voice chat started in the chat. Currently holds no information.
+
+        https://core.telegram.org/bots/api#voicechatstarted
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(VoiceChatStarted, self).__init__()
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self, prefer_original=False):
+        """
+        Serializes this VoiceChatStarted to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
+        array = super(VoiceChatStarted, self).to_array()
+
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the VoiceChatStarted constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = ServiceMessage.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new VoiceChatStarted from a given dictionary.
+
+        :return: new VoiceChatStarted instance.
+        :rtype: VoiceChatStarted
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = VoiceChatStarted.validate_array(array)
+        data['_raw'] = array
+        return VoiceChatStarted(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(voicechatstarted_instance)`
+        """
+        return "VoiceChatStarted()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(voicechatstarted_instance)`
+        """
+        if self._raw:
+            return "VoiceChatStarted.from_array({self._raw})".format(self=self)
+        # end if
+        return "VoiceChatStarted()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in voicechatstarted_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class VoiceChatStarted
+
+
 class VoiceChatEnded(ServiceMessage):
     """
     This object represents a service message about a voice chat ended in the chat.
