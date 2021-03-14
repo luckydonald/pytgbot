@@ -1,10 +1,10 @@
 # Changelog
 
-## Version 5.1 (not released yet)
+## Version 5.1.0 (not released yet)
 ⚠️ Breaking changes:
 - ⚠️ Moved `ProximityAlertTriggered` from `pytgbot.api_types.receiveable.media.ProximityAlertTriggered` to `pytgbot.api_types.receiveable.services.ProximityAlertTriggered`. It also no longer subclasses `receiveable.media.Media`, but a new `receiveable.services.ServiceMessage`
     - there should be a import from the old location making that backwards compatible, but that's not something you should depend on as we will remove it in a newer version.
-
+- Fixed httpx import error in the async client.
 Random observations:
 - `id`: This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
 - polls can have 45 more letters now

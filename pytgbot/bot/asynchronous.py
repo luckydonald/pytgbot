@@ -23,7 +23,6 @@ from async_property import async_property
 from typing import Union, Optional, List, Any
 from asyncio import sleep
 import httpx
-import httpx.exceptions
 
 
 from ..api_types.receivable.game import GameHighScore
@@ -71,6 +70,7 @@ class AsyncBot(BotBase):
         Called by `.username` and `.id` properties.
 
         This function is synchronous.
+        In fact, `AsyncBot` uses `SyncBot` to load those.
         In fact, `AsyncBot` uses `SyncBot` to load those.
         :return:
         """
@@ -266,9 +266,9 @@ class AsyncBot(BotBase):
                 use_long_polling=use_long_polling, request_timeout=request_timeout
             )
             return self._get_updates__process_result(result)
-        except (httpx.exceptions.HTTPError, TgApiException) as e:
+        except (httpx.HTTPError, TgApiException) as e:
             if error_as_empty:
-                if not isinstance(e, httpx.exceptions.TimeoutException) or not use_long_polling:
+                if not isinstance(e, httpx.TimeoutException) or not use_long_polling:
                     logger.warning(
                         "Network related error happened in get_updates(), but will be ignored: " + str(e),
                         exc_info=True
