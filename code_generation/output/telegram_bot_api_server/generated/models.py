@@ -114,7 +114,7 @@ class InputMediaWithThumbModel(BaseModel):  # InputMedia"""This object represent
 
     type: str
     media: str
-    thumb: Union['InputFileModel', str]
+    thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
     caption_entities: Optional[List['MessageEntityModel']]
@@ -128,7 +128,7 @@ class InputMediaPlayableModel(BaseModel):  # InputMediaWithThumb"""This object r
 
     type: str
     media: str
-    thumb: Union['InputFileModel', str]
+    thumb: Optional[Union['InputFileModel', str]]
     duration: Optional[int]
     caption: Optional[str]
     parse_mode: Optional[str]
@@ -143,7 +143,7 @@ class InputMediaVideolikeModel(BaseModel):  # InputMediaPlayable"""This object r
 
     type: str
     media: str
-    thumb: Union['InputFileModel', str]
+    thumb: Optional[Union['InputFileModel', str]]
     duration: Optional[int]
     width: Optional[int]
     height: Optional[int]

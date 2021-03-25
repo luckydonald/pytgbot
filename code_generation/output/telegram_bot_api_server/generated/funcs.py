@@ -1480,7 +1480,7 @@ async def promote_chat_member(
     can_post_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can create channel posts, channels only'),
     can_edit_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can edit messages of other users and can pin messages, channels only'),
     can_delete_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can delete messages of other users'),
-    can_manage_voice_chats: Optional[bool] = Query(None, description='Pass True, if the administrator can manage voice chats, supergroups only'),
+    can_manage_voice_chats: Optional[bool] = Query(None, description='Pass True, if the administrator can manage voice chats'),
     can_restrict_members: Optional[bool] = Query(None, description='Pass True, if the administrator can restrict, ban or unban chat members'),
     can_promote_members: Optional[bool] = Query(None, description='Pass True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)'),
     can_change_info: Optional[bool] = Query(None, description='Pass True, if the administrator can change chat title, photo and other settings'),

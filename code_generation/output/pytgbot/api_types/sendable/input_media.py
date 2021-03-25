@@ -265,7 +265,7 @@ class InputMediaWithThumb(InputMedia):
         # end if
     # end def
 
-    def __init__(self, type, media, thumb, caption=None, parse_mode=None, caption_entities=None):
+    def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None):
         """
         This object represents the content of a media message to be sent.
 
@@ -299,7 +299,7 @@ class InputMediaWithThumb(InputMedia):
 
         # 'type' is set by InputMedia base class
         # 'media' is set by InputMedia base class
-        assert_type_or_raise(thumb, InputFile, unicode_type, parameter_name="thumb")
+        assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")
         self.thumb = thumb
         # 'caption' is set by InputMedia base class
         # 'parse_mode' is set by InputMedia base class
@@ -424,7 +424,7 @@ class InputMediaPlayable(InputMediaWithThumb):
 
 
 
-    def __init__(self, type, media, thumb, duration=None, caption=None, parse_mode=None, caption_entities=None):
+    def __init__(self, type, media, thumb=None, duration=None, caption=None, parse_mode=None, caption_entities=None):
         """
         This object represents the content of a media message to be sent.
 
@@ -611,7 +611,7 @@ class InputMediaVideolike(InputMediaPlayable):
 
 
 
-    def __init__(self, type, media, thumb, duration=None, width=None, height=None, caption=None, parse_mode=None, caption_entities=None):
+    def __init__(self, type, media, thumb=None, duration=None, width=None, height=None, caption=None, parse_mode=None, caption_entities=None):
         """
         This object represents the content of a media message to be sent.
 

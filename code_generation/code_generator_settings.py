@@ -760,6 +760,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
             api_name='thumb',
             name='thumb',
             pytg_name=None,
+            optional=True,
             types=[
                 Type(string='InputFile', is_builtin=False, always_is_value=None, is_list=0, import_path='pytgbot.api_types.sendable.files', description=None),
                 Type(string='str', is_builtin=True, always_is_value=None, is_list=0, import_path=None, description=None),
