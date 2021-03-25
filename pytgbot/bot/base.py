@@ -2467,7 +2467,7 @@ class BotBase(object):
         :param can_delete_messages: Pass True, if the administrator can delete messages of other users
         :type  can_delete_messages: bool
 
-        :param can_manage_voice_chats: Pass True, if the administrator can manage voice chats, supergroups only
+        :param can_manage_voice_chats: Pass True, if the administrator can manage voice chats
         :type  can_manage_voice_chats: bool
 
         :param can_restrict_members: Pass True, if the administrator can restrict, ban or unban chat members
