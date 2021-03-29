@@ -107,7 +107,7 @@ class InputMediaModel(BaseModel):  # Sendable"""This object represents the conte
 # end class InputMedia
 
 
-class InputMediaWithThumbModel(BaseModel):  # InputMedia"""This object represents the content of a media message to be sent.
+class InputMediaWithThumbModel(BaseModel):  # InputMedia"""InputMedia but with a thumb field.
 
     https://core.telegram.org/bots/api#inputmedia
     """
@@ -121,7 +121,7 @@ class InputMediaWithThumbModel(BaseModel):  # InputMedia"""This object represent
 # end class InputMediaWithThumb
 
 
-class InputMediaPlayableModel(BaseModel):  # InputMediaWithThumb"""This object represents the content of a media message to be sent.
+class InputMediaPlayableModel(BaseModel):  # InputMediaWithThumb"""InputMedia with a thumb and duration.
 
     https://core.telegram.org/bots/api#inputmedia
     """

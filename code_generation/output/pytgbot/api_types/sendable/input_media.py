@@ -217,7 +217,7 @@ class InputMedia(Sendable):
 
 class InputMediaWithThumb(InputMedia):
     """
-    This object represents the content of a media message to be sent.
+    InputMedia but with a thumb field.
 
     https://core.telegram.org/bots/api#inputmedia
 
@@ -280,7 +280,7 @@ class InputMediaWithThumb(InputMedia):
     # noinspection PyShadowingBuiltins
     def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None):
         """
-        This object represents the content of a media message to be sent.
+        InputMedia but with a thumb field.
 
         https://core.telegram.org/bots/api#inputmedia
 
@@ -321,7 +321,7 @@ class InputMediaWithThumb(InputMedia):
 
     def to_array(self):
         """
-        Serializes this InputMediaPhoto to a dictionary.
+        Serializes this InputMediaWithThumb to a dictionary.
 
         :return: dictionary representation of this object.
         :rtype: dict
@@ -339,7 +339,7 @@ class InputMediaWithThumb(InputMedia):
     @staticmethod
     def validate_array(array):
         """
-        Builds a new array with valid values for the InputMediaPhoto constructor.
+        Builds a new array with valid values for the InputMediaWithThumb constructor.
 
         :return: new array with valid values
         :rtype: dict
@@ -403,7 +403,7 @@ class InputMediaWithThumb(InputMedia):
 
 class InputMediaPlayable(InputMediaWithThumb):
     """
-    This object represents the content of a media message to be sent.
+    InputMedia with a thumb and duration.
 
     https://core.telegram.org/bots/api#inputmedia
 
@@ -440,7 +440,7 @@ class InputMediaPlayable(InputMediaWithThumb):
     # noinspection PyShadowingBuiltins
     def __init__(self, type, media, thumb=None, duration=None, caption=None, parse_mode=None, caption_entities=None):
         """
-        This object represents the content of a media message to be sent.
+        InputMedia with a thumb and duration.
 
         https://core.telegram.org/bots/api#inputmedia
 

@@ -47,7 +47,7 @@ class InputMedia(Sendable):
 
 class InputMediaWithThumb(InputMedia):
     """
-    This object represents the content of a media message to be sent.
+    InputMedia but with a thumb field.
 
     https://core.telegram.org/bots/api#inputmedia
 
@@ -85,7 +85,7 @@ class InputMediaWithThumb(InputMedia):
 
 class InputMediaPlayable(InputMediaWithThumb):
     """
-    This object represents the content of a media message to be sent.
+    InputMedia with a thumb and duration.
 
     https://core.telegram.org/bots/api#inputmedia
 
