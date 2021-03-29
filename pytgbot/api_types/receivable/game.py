@@ -57,7 +57,6 @@ class GameHighScore(Result):
         """
         super(GameHighScore, self).__init__()
         from .peer import User
-
         assert_type_or_raise(position, int, parameter_name="position")
         self.position = position
         assert_type_or_raise(user, User, parameter_name="user")

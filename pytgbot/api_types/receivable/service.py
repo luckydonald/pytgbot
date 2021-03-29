@@ -115,7 +115,6 @@ class ProximityAlertTriggered(ServiceMessage):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = ServiceMessage.validate_array(array)
         data['traveler'] = User.from_array(array.get('traveler'))
         data['watcher'] = User.from_array(array.get('watcher'))

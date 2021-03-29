@@ -765,7 +765,6 @@ class Audio(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
@@ -1164,7 +1163,6 @@ class Video(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
@@ -2114,7 +2112,6 @@ class PollAnswer(Receivable):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = Receivable.validate_array(array)
         data['poll_id'] = u(array.get('poll_id'))
         data['user'] = User.from_array(array.get('user'))
@@ -3451,7 +3448,6 @@ class Sticker(Media):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .stickers import MaskPosition
-
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
@@ -3638,7 +3634,6 @@ class Game(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['title'] = u(array.get('title'))
         data['description'] = u(array.get('description'))
