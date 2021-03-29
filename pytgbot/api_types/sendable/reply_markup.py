@@ -82,7 +82,6 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         :type  selective: bool
         """
         super(ReplyKeyboardMarkup, self).__init__()
-
         assert_type_or_raise(keyboard, list, parameter_name="keyboard")
         self.keyboard = keyboard
         assert_type_or_raise(resize_keyboard, None, bool, parameter_name="resize_keyboard")
@@ -132,7 +131,6 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = ReplyMarkup.validate_array(array)
         data['keyboard'] = KeyboardButton.from_array_list(array.get('keyboard'), list_level=2)
         data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
@@ -241,7 +239,6 @@ class KeyboardButton(Button):
         :type  request_poll: pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType
         """
         super(KeyboardButton, self).__init__()
-
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
         assert_type_or_raise(request_contact, None, bool, parameter_name="request_contact")
@@ -291,7 +288,6 @@ class KeyboardButton(Button):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Button.validate_array(array)
         data['text'] = u(array.get('text'))
         data['request_contact'] = bool(array.get('request_contact')) if array.get('request_contact') is not None else None
@@ -557,7 +553,6 @@ class ReplyKeyboardRemove(ReplyMarkup):
         if not array:  # None or {}
             return None
         # end if
-        assert_type_or_raise(array, dict, parameter_name="array")
 
         data = ReplyKeyboardRemove.validate_array(array)
         instance = ReplyKeyboardRemove(**data)
@@ -629,7 +624,6 @@ class InlineKeyboardMarkup(ReplyMarkup):
         Optional keyword parameters:
         """
         super(InlineKeyboardMarkup, self).__init__()
-
         assert_type_or_raise(inline_keyboard, list, parameter_name="inline_keyboard")
         self.inline_keyboard = inline_keyboard
     # end def __init__
@@ -664,7 +658,6 @@ class InlineKeyboardMarkup(ReplyMarkup):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = ReplyMarkup.validate_array(array)
         data['inline_keyboard'] = InlineKeyboardButton.from_array_list(array.get('inline_keyboard'), list_level=2)
         return data
@@ -796,7 +789,6 @@ class InlineKeyboardButton(Button):
         """
         super(InlineKeyboardButton, self).__init__()
         from ..receivable.updates import CallbackGame
-
         assert_type_or_raise(text, unicode_type, parameter_name="text")
         self.text = text
         assert_type_or_raise(url, None, unicode_type, parameter_name="url")
@@ -829,6 +821,7 @@ class InlineKeyboardButton(Button):
             return self._raw
         # end if
 
+        from ..receivable.updates import CallbackGame
         array = super(InlineKeyboardButton, self).to_array()
 
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
@@ -867,7 +860,6 @@ class InlineKeyboardButton(Button):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.updates import CallbackGame
-
         data = Button.validate_array(array)
         data['text'] = u(array.get('text'))
         data['url'] = u(array.get('url')) if array.get('url') is not None else None

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from .files import InputFile
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Sendable
@@ -63,7 +62,8 @@ class InputMedia(Sendable):
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMedia, self).__init__()
-
+        from .files import InputFile
+        from ..receivable.media import MessageEntity
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         assert_type_or_raise(media, InputFile, unicode_type, parameter_name="media")
@@ -90,6 +90,8 @@ class InputMedia(Sendable):
             return self._raw
         # end if
 
+        from .files import InputFile
+        from ..receivable.media import MessageEntity
         array = super(InputMedia, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -122,7 +124,8 @@ class InputMedia(Sendable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
+        from .files import InputFile
+        from ..receivable.media import MessageEntity
         data = Sendable.validate_array(array)
         data['type'] = u(array.get('type'))
         if isinstance(array.get('media'), InputFile):
@@ -281,7 +284,7 @@ class InputMediaWithThumb(InputMedia):
     # noinspection PyShadowingBuiltins
     def __init__(self, type, media, thumb=None, caption=None, parse_mode=None, caption_entities=None):
         """
-        This object represents the content of a media message to be sent.
+        InputMedia but with a thumb field.
 
         https://core.telegram.org/bots/api#inputmedia
 
@@ -310,7 +313,6 @@ class InputMediaWithThumb(InputMedia):
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaWithThumb, self).__init__(type=type, media=media, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
-
         # 'type' is set by InputMedia base class
         # 'media' is set by InputMedia base class
         assert_type_or_raise(thumb, None, InputFile, unicode_type, parameter_name="thumb")
@@ -480,7 +482,6 @@ class InputMediaPlayable(InputMediaWithThumb):
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaPlayable, self).__init__(type=type, media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
-
         # 'type' is set by InputMediaWithThumb base class
         # 'media' is set by InputMediaWithThumb base class
         # 'thumb' is set by InputMediaWithThumb base class
@@ -529,7 +530,6 @@ class InputMediaPlayable(InputMediaWithThumb):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = InputMediaWithThumb.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -674,7 +674,6 @@ class InputMediaVideolike(InputMediaPlayable):
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaVideolike, self).__init__(type=type, media=media, thumb=thumb, duration=duration, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
-
         # 'type' is set by InputMediaPlayable base class
         # 'media' is set by InputMediaPlayable base class
         # 'thumb' is set by InputMediaPlayable base class
@@ -730,7 +729,6 @@ class InputMediaVideolike(InputMediaPlayable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = InputMediaPlayable.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -846,7 +844,6 @@ class InputMediaPhoto(InputMedia):
         """
         super(InputMediaPhoto, self).__init__(type='photo', media=media, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
         from ..receivable.media import MessageEntity
-
         # 'type' is set by InputMedia base class
         # 'media' is set by InputMedia base class
         # 'caption' is set by InputMedia base class
@@ -868,6 +865,7 @@ class InputMediaPhoto(InputMedia):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
         array = super(InputMediaPhoto, self).to_array()
 
         # 'type' given by superclass
@@ -889,7 +887,6 @@ class InputMediaPhoto(InputMedia):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-
         data = InputMedia.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -1030,7 +1027,6 @@ class InputMediaVideo(InputMediaVideolike):
         super(InputMediaVideo, self).__init__(type='video', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, width=width, height=height, duration=duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
-
         # 'type' is set by InputMediaVideolike base class
         # 'media' is set by InputMediaVideolike base class
         # 'thumb' is set by InputMediaVideolike base class
@@ -1058,6 +1054,8 @@ class InputMediaVideo(InputMediaVideolike):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         array = super(InputMediaVideo, self).to_array()
 
         # 'type' given by superclass
@@ -1087,7 +1085,6 @@ class InputMediaVideo(InputMediaVideolike):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .files import InputFile
-
         data = InputMediaVideolike.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -1227,7 +1224,6 @@ class InputMediaAnimation(InputMediaVideolike):
         super(InputMediaAnimation, self).__init__(type='animation', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, width=width, height=height, duration=duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
-
         # 'type' is set by InputMediaVideolike base class
         # 'media' is set by InputMediaVideolike base class
         # 'thumb' is set by InputMediaVideolike base class
@@ -1253,6 +1249,8 @@ class InputMediaAnimation(InputMediaVideolike):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         array = super(InputMediaAnimation, self).to_array()
 
         # 'type' given by superclass
@@ -1279,7 +1277,6 @@ class InputMediaAnimation(InputMediaVideolike):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .files import InputFile
-
         data = InputMediaVideolike.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -1418,7 +1415,6 @@ class InputMediaAudio(InputMediaPlayable):
         super(InputMediaAudio, self).__init__(type='audio', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
-
         # 'type' is set by InputMediaPlayable base class
         # 'media' is set by InputMediaPlayable base class
         # 'thumb' is set by InputMediaPlayable base class
@@ -1446,6 +1442,8 @@ class InputMediaAudio(InputMediaPlayable):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         array = super(InputMediaAudio, self).to_array()
 
         # 'type' given by superclass
@@ -1476,7 +1474,6 @@ class InputMediaAudio(InputMediaPlayable):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .files import InputFile
-
         data = InputMediaPlayable.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type
@@ -1603,7 +1600,6 @@ class InputMediaDocument(InputMediaWithThumb):
         super(InputMediaDocument, self).__init__(type='document', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
         from ..receivable.media import MessageEntity
         from .files import InputFile
-
         # 'type' is set by InputMediaWithThumb base class
         # 'media' is set by InputMediaWithThumb base class
         # 'thumb' is set by InputMediaWithThumb base class
@@ -1628,6 +1624,8 @@ class InputMediaDocument(InputMediaWithThumb):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .files import InputFile
         array = super(InputMediaDocument, self).to_array()
 
         # 'type' given by superclass
@@ -1654,7 +1652,6 @@ class InputMediaDocument(InputMediaWithThumb):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .files import InputFile
-
         data = InputMediaWithThumb.validate_array(array)
         # 'type' is given by class type
         # 'media' is given by class type

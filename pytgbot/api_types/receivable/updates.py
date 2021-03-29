@@ -46,7 +46,6 @@ class CallbackGame(UpdateType):
         """
         super(CallbackGame, self).__init__()
 
-
         self._raw = _raw
     # end def __init__
 
@@ -229,7 +228,6 @@ class Update(Receivable):
         from .payments import PreCheckoutQuery
         from .payments import ShippingQuery
         from .peer import ChatMemberUpdated
-
         assert_type_or_raise(update_id, int, parameter_name="update_id")
         self.update_id = update_id
         assert_type_or_raise(message, None, Message, parameter_name="message")
@@ -276,6 +274,13 @@ class Update(Receivable):
             return self._raw
         # end if
 
+        from .inline import ChosenInlineResult
+        from .inline import InlineQuery
+        from .media import Poll
+        from .media import PollAnswer
+        from .payments import PreCheckoutQuery
+        from .payments import ShippingQuery
+        from .peer import ChatMemberUpdated
         array = super(Update, self).to_array()
 
         array['update_id'] = int(self.update_id)  # type int
@@ -338,7 +343,6 @@ class Update(Receivable):
         from .payments import PreCheckoutQuery
         from .payments import ShippingQuery
         from .peer import ChatMemberUpdated
-
         data = Receivable.validate_array(array)
         data['update_id'] = int(array.get('update_id'))
         data['message'] = Message.from_array(array.get('message')) if array.get('message') is not None else None
@@ -998,7 +1002,6 @@ class Message(UpdateType):
         from .service import VoiceChatParticipantsInvited
         from .service import VoiceChatStarted
         from ..sendable.reply_markup import InlineKeyboardMarkup
-
         assert_type_or_raise(message_id, int, parameter_name="message_id")
         self.message_id = message_id
         assert_type_or_raise(date, int, parameter_name="date")
@@ -1127,6 +1130,32 @@ class Message(UpdateType):
             return self._raw
         # end if
 
+        from .media import Animation
+        from .media import Audio
+        from .media import Contact
+        from .media import Dice
+        from .media import Document
+        from .media import Game
+        from .media import Location
+        from .media import MessageEntity
+        from .media import PhotoSize
+        from .media import Poll
+        from .media import Sticker
+        from .media import Venue
+        from .media import Video
+        from .media import VideoNote
+        from .media import Voice
+        from .passport import PassportData
+        from .payments import Invoice
+        from .payments import SuccessfulPayment
+        from .peer import Chat
+        from .peer import User
+        from .service import MessageAutoDeleteTimerChanged
+        from .service import ProximityAlertTriggered
+        from .service import VoiceChatEnded
+        from .service import VoiceChatParticipantsInvited
+        from .service import VoiceChatStarted
+        from ..sendable.reply_markup import InlineKeyboardMarkup
         array = super(Message, self).to_array()
 
         array['message_id'] = int(self.message_id)  # type int
@@ -1327,7 +1356,6 @@ class Message(UpdateType):
         from .service import VoiceChatParticipantsInvited
         from .service import VoiceChatStarted
         from ..sendable.reply_markup import InlineKeyboardMarkup
-
         data = UpdateType.validate_array(array)
         data['message_id'] = int(array.get('message_id'))
         data['date'] = int(array.get('date'))
@@ -1513,7 +1541,6 @@ class CallbackQuery(UpdateType):
         """
         super(CallbackQuery, self).__init__()
         from .peer import User
-
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -1546,6 +1573,7 @@ class CallbackQuery(UpdateType):
             return self._raw
         # end if
 
+        from .peer import User
         array = super(CallbackQuery, self).to_array()
 
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
@@ -1577,7 +1605,6 @@ class CallbackQuery(UpdateType):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))

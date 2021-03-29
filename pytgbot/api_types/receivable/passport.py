@@ -51,7 +51,6 @@ class PassportData(Result):
         :type  _raw: None | dict
         """
         super(PassportData, self).__init__()
-
         assert_type_or_raise(data, list, parameter_name="data")
         self.data = data
         assert_type_or_raise(credentials, EncryptedCredentials, parameter_name="credentials")
@@ -91,7 +90,6 @@ class PassportData(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Result.validate_array(array)
         data['data'] = EncryptedPassportElement.from_array_list(array.get('data'), list_level=1)
         data['credentials'] = EncryptedCredentials.from_array(array.get('credentials'))
@@ -393,7 +391,6 @@ class EncryptedPassportElement(Result):
         :type  _raw: None | dict
         """
         super(EncryptedPassportElement, self).__init__()
-
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         assert_type_or_raise(hash, unicode_type, parameter_name="hash")
@@ -473,7 +470,6 @@ class EncryptedPassportElement(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Result.validate_array(array)
         data['type'] = u(array.get('type'))
         data['hash'] = u(array.get('hash'))

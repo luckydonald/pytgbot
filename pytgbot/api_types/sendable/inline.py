@@ -182,6 +182,7 @@ class InlineQueryResultArticle(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultArticle, self).to_array()
 
         # 'type' given by superclass
@@ -223,9 +224,8 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
-        # 'type' is given by class type
+        # 'type' is always article.
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))
         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content'))
@@ -428,6 +428,8 @@ class InlineQueryResultPhoto(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultPhoto, self).to_array()
 
         # 'type' given by superclass
@@ -476,9 +478,8 @@ class InlineQueryResultPhoto(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
-        # 'type' is given by class type
+        # 'type' is always photo.
         data['id'] = u(array.get('id'))
         data['photo_url'] = u(array.get('photo_url'))
         data['thumb_url'] = u(array.get('thumb_url'))
@@ -691,6 +692,8 @@ class InlineQueryResultGif(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultGif, self).to_array()
 
         # 'type' given by superclass
@@ -742,7 +745,6 @@ class InlineQueryResultGif(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -817,9 +819,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
 
     Parameters:
-
-    :param type: Type of the result, must be mpeg4_gif
-    :type  type: str|unicode
 
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
@@ -961,6 +960,8 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultMpeg4Gif, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -1011,7 +1012,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -1240,6 +1240,8 @@ class InlineQueryResultVideo(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultVideo, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -1289,7 +1291,6 @@ class InlineQueryResultVideo(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -1484,6 +1485,8 @@ class InlineQueryResultAudio(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultAudio, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -1525,7 +1528,6 @@ class InlineQueryResultAudio(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -1673,8 +1675,7 @@ class InlineQueryResultVoice(InlineQueryResult):
         super(InlineQueryResultVoice, self).__init__(id, "voice")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
-        # 'type' is given by class type
+        self.type = 'voice'
         # 'id' is given by class type
         assert_type_or_raise(voice_url, unicode_type, parameter_name="voice_url")
         self.voice_url = voice_url
@@ -1708,6 +1709,8 @@ class InlineQueryResultVoice(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultVoice, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1747,7 +1750,6 @@ class InlineQueryResultVoice(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -1961,6 +1963,8 @@ class InlineQueryResultDocument(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultDocument, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -2009,7 +2013,6 @@ class InlineQueryResultDocument(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -2226,6 +2229,7 @@ class InlineQueryResultLocation(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultLocation, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -2273,7 +2277,6 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -2500,6 +2503,7 @@ class InlineQueryResultVenue(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultVenue, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -2548,7 +2552,6 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -2742,6 +2745,7 @@ class InlineQueryResultContact(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultContact, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -2782,7 +2786,6 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is set by class type
         # 'id' is set by class type
@@ -2917,6 +2920,7 @@ class InlineQueryResultGame(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultGame, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -2938,7 +2942,6 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -3112,6 +3115,8 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedPhoto, self).to_array()
 
         # 'type' given by superclass
@@ -3153,7 +3158,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -3325,6 +3329,8 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedGif, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -3362,7 +3368,6 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -3533,6 +3538,8 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -3570,7 +3577,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -3710,6 +3716,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedSticker, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -3734,7 +3741,6 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -3911,6 +3917,8 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedDocument, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -3949,7 +3957,6 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -4129,6 +4136,8 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedVideo, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -4167,7 +4176,6 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -4341,6 +4349,8 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedVoice, self).to_array()
         # 'type' given by superclass
         # 'id' given by superclass
@@ -4376,7 +4386,6 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -4541,6 +4550,8 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedAudio, self).to_array()
 
         # 'type' given by superclass
@@ -4576,7 +4587,6 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is given by class type
         # 'id' is given by class type
@@ -4688,7 +4698,6 @@ class InputTextMessageContent(InputMessageContent):
         """
         super(InputTextMessageContent, self).__init__()
         from ..receivable.media import MessageEntity
-
         assert_type_or_raise(message_text, unicode_type, parameter_name="message_text")
         self.message_text = message_text
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
@@ -4713,6 +4722,7 @@ class InputTextMessageContent(InputMessageContent):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
         array = super(InputTextMessageContent, self).to_array()
 
         array['message_text'] = u(self.message_text)  # py2: type unicode, py3: type str
@@ -4739,7 +4749,6 @@ class InputTextMessageContent(InputMessageContent):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-
         data = InputMessageContent.validate_array(array)
         data['message_text'] = u(array.get('message_text'))
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None

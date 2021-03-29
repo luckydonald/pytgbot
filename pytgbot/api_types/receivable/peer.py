@@ -380,7 +380,6 @@ class Chat(Peer):
         super(Chat, self).__init__()
         from .media import ChatPhoto
         from .updates import Message
-
         assert_type_or_raise(id, int, parameter_name="id")
         self.id = id
         assert_type_or_raise(type, unicode_type, parameter_name="type")
@@ -435,6 +434,8 @@ class Chat(Peer):
             return self._raw
         # end if
 
+        from .media import ChatPhoto
+        from .updates import Message
         array = super(Chat, self).to_array()
 
         array['id'] = int(self.id)  # type int
@@ -502,7 +503,6 @@ class Chat(Peer):
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import ChatPhoto
         from .updates import Message
-
         data = Peer.validate_array(array)
         data['id'] = int(array.get('id'))
         data['type'] = u(array.get('type'))
@@ -640,7 +640,6 @@ class ChatInviteLink(Result):
         :type  _raw: None | dict
         """
         super(ChatInviteLink, self).__init__()
-
         assert_type_or_raise(invite_link, unicode_type, parameter_name="invite_link")
         self.invite_link = invite_link
         assert_type_or_raise(creator, User, parameter_name="creator")
@@ -696,7 +695,6 @@ class ChatInviteLink(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Result.validate_array(array)
         data['invite_link'] = u(array.get('invite_link'))
         data['creator'] = User.from_array(array.get('creator'))
@@ -918,7 +916,6 @@ class ChatMember(Result):
         :type  _raw: None | dict
         """
         super(ChatMember, self).__init__()
-
         assert_type_or_raise(user, User, parameter_name="user")
         self.user = user
         assert_type_or_raise(status, unicode_type, parameter_name="status")
@@ -1058,7 +1055,6 @@ class ChatMember(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Result.validate_array(array)
         data['user'] = User.from_array(array.get('user'))
         data['status'] = u(array.get('status'))
@@ -1200,7 +1196,6 @@ class ChatMemberUpdated(Result):
         :type  _raw: None | dict
         """
         super(ChatMemberUpdated, self).__init__()
-
         assert_type_or_raise(chat, Chat, parameter_name="chat")
         self.chat = chat
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -1254,7 +1249,6 @@ class ChatMemberUpdated(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Result.validate_array(array)
         data['chat'] = Chat.from_array(array.get('chat'))
         data['from_peer'] = User.from_array(array.get('from'))
@@ -1561,7 +1555,6 @@ class ChatLocation(Result):
         """
         super(ChatLocation, self).__init__()
         from .media import Location
-
         assert_type_or_raise(location, Location, parameter_name="location")
         self.location = location
         assert_type_or_raise(address, unicode_type, parameter_name="address")
@@ -1584,6 +1577,7 @@ class ChatLocation(Result):
             return self._raw
         # end if
 
+        from .media import Location
         array = super(ChatLocation, self).to_array()
 
         array['location'] = self.location.to_array()  # type Location
@@ -1602,7 +1596,6 @@ class ChatLocation(Result):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import Location
-
         data = Result.validate_array(array)
         data['location'] = Location.from_array(array.get('location'))
         data['address'] = u(array.get('address'))

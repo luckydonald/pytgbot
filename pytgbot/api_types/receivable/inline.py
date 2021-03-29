@@ -71,7 +71,6 @@ class InlineQuery(Result):
         super(InlineQuery, self).__init__()
         from .media import Location
         from .peer import User
-
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -100,6 +99,8 @@ class InlineQuery(Result):
             return self._raw
         # end if
 
+        from .media import Location
+        from .peer import User
         array = super(InlineQuery, self).to_array()
 
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
@@ -124,7 +125,6 @@ class InlineQuery(Result):
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import Location
         from .peer import User
-
         data = Result.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
@@ -247,7 +247,6 @@ class ChosenInlineResult(UpdateType):
         super(ChosenInlineResult, self).__init__()
         from .media import Location
         from .peer import User
-
         assert_type_or_raise(result_id, unicode_type, parameter_name="result_id")
         self.result_id = result_id
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -276,6 +275,8 @@ class ChosenInlineResult(UpdateType):
             return self._raw
         # end if
 
+        from .media import Location
+        from .peer import User
         array = super(ChosenInlineResult, self).to_array()
 
         array['result_id'] = u(self.result_id)  # py2: type unicode, py3: type str
@@ -302,7 +303,6 @@ class ChosenInlineResult(UpdateType):
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import Location
         from .peer import User
-
         data = UpdateType.validate_array(array)
         data['result_id'] = u(array.get('result_id'))
         data['from_peer'] = User.from_array(array.get('from'))
