@@ -179,7 +179,6 @@ class ShippingOption(Sendable):
         Optional keyword parameters:
         """
         super(ShippingOption, self).__init__()
-
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(title, unicode_type, parameter_name="title")
@@ -220,7 +219,6 @@ class ShippingOption(Sendable):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Sendable.validate_array(array)
         data['id'] = u(array.get('id'))
         data['title'] = u(array.get('title'))

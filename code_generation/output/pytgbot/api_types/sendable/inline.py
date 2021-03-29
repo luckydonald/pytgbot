@@ -145,7 +145,6 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         super(InlineQueryResultArticle, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'article'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -183,6 +182,7 @@ class InlineQueryResultArticle(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultArticle, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -224,7 +224,6 @@ class InlineQueryResultArticle(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always article.
         data['id'] = u(array.get('id'))
@@ -388,7 +387,6 @@ class InlineQueryResultPhoto(InlineQueryResult):
         super(InlineQueryResultPhoto, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'photo'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -430,6 +428,8 @@ class InlineQueryResultPhoto(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultPhoto, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -478,7 +478,6 @@ class InlineQueryResultPhoto(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always photo.
         data['id'] = u(array.get('id'))
@@ -650,7 +649,6 @@ class InlineQueryResultGif(InlineQueryResult):
         super(InlineQueryResultGif, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'gif'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -694,6 +692,8 @@ class InlineQueryResultGif(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultGif, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -745,7 +745,6 @@ class InlineQueryResultGif(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always gif.
         data['id'] = u(array.get('id'))
@@ -918,7 +917,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         super(InlineQueryResultMpeg4Gif, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'mpeg4_gif'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -962,6 +960,8 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultMpeg4Gif, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1013,7 +1013,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always mpeg4_gif.
         data['id'] = u(array.get('id'))
@@ -1196,7 +1195,6 @@ class InlineQueryResultVideo(InlineQueryResult):
         super(InlineQueryResultVideo, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'video'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1242,6 +1240,8 @@ class InlineQueryResultVideo(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultVideo, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1292,7 +1292,6 @@ class InlineQueryResultVideo(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always video.
         data['id'] = u(array.get('id'))
@@ -1450,7 +1449,6 @@ class InlineQueryResultAudio(InlineQueryResult):
         super(InlineQueryResultAudio, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'audio'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1488,6 +1486,8 @@ class InlineQueryResultAudio(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultAudio, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1530,7 +1530,6 @@ class InlineQueryResultAudio(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always audio.
         data['id'] = u(array.get('id'))
@@ -1678,7 +1677,6 @@ class InlineQueryResultVoice(InlineQueryResult):
         super(InlineQueryResultVoice, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'voice'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1714,6 +1712,8 @@ class InlineQueryResultVoice(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultVoice, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -1753,7 +1753,6 @@ class InlineQueryResultVoice(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always voice.
         data['id'] = u(array.get('id'))
@@ -1924,7 +1923,6 @@ class InlineQueryResultDocument(InlineQueryResult):
         super(InlineQueryResultDocument, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'document'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -1968,6 +1966,8 @@ class InlineQueryResultDocument(InlineQueryResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultDocument, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -2017,7 +2017,6 @@ class InlineQueryResultDocument(InlineQueryResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always document.
         data['id'] = u(array.get('id'))
@@ -2191,7 +2190,6 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         super(InlineQueryResultLocation, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'location'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2235,6 +2233,7 @@ class InlineQueryResultLocation(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultLocation, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -2283,7 +2282,6 @@ class InlineQueryResultLocation(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always location.
         data['id'] = u(array.get('id'))
@@ -2463,7 +2461,6 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         super(InlineQueryResultVenue, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'venue'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2509,6 +2506,7 @@ class InlineQueryResultVenue(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultVenue, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -2558,7 +2556,6 @@ class InlineQueryResultVenue(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always venue.
         data['id'] = u(array.get('id'))
@@ -2715,7 +2712,6 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         super(InlineQueryResultContact, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'contact'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2753,6 +2749,7 @@ class InlineQueryResultContact(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultContact, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -2794,7 +2791,6 @@ class InlineQueryResultContact(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always contact.
         data['id'] = u(array.get('id'))
@@ -2905,7 +2901,6 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         super(InlineQueryResultGame, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'game'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -2929,6 +2924,7 @@ class InlineQueryResultGame(InlineQueryResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultGame, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -2951,7 +2947,6 @@ class InlineQueryResultGame(InlineQueryResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryResult.validate_array(array)
         # 'type' is always game.
         data['id'] = u(array.get('id'))
@@ -3090,7 +3085,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         super(InlineQueryResultCachedPhoto, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'photo'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -3126,6 +3120,8 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedPhoto, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3167,7 +3163,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is always photo.
         data['id'] = u(array.get('id'))
@@ -3306,7 +3301,6 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         super(InlineQueryResultCachedGif, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'gif'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -3340,6 +3334,8 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedGif, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3378,7 +3374,6 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is always gif.
         data['id'] = u(array.get('id'))
@@ -3516,7 +3511,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         super(InlineQueryResultCachedMpeg4Gif, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'mpeg4_gif'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -3550,6 +3544,8 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3588,7 +3584,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is always mpeg4_gif.
         data['id'] = u(array.get('id'))
@@ -3703,7 +3698,6 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         super(InlineQueryResultCachedSticker, self).__init__()
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'sticker'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -3729,6 +3723,7 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedSticker, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3754,7 +3749,6 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is always sticker.
         data['id'] = u(array.get('id'))
@@ -3896,7 +3890,6 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         super(InlineQueryResultCachedDocument, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'document'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -3932,6 +3925,8 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedDocument, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -3971,7 +3966,6 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is always document.
         data['id'] = u(array.get('id'))
@@ -4116,7 +4110,6 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         super(InlineQueryResultCachedVideo, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'video'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -4152,6 +4145,8 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedVideo, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -4191,7 +4186,6 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is always video.
         data['id'] = u(array.get('id'))
@@ -4332,7 +4326,6 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         super(InlineQueryResultCachedVoice, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'voice'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -4366,6 +4359,8 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedVoice, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -4402,7 +4397,6 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is always voice.
         data['id'] = u(array.get('id'))
@@ -4536,7 +4530,6 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         super(InlineQueryResultCachedAudio, self).__init__()
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         self.type = 'audio'
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
@@ -4568,6 +4561,8 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
+        from .reply_markup import InlineKeyboardMarkup
         array = super(InlineQueryResultCachedAudio, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -4603,7 +4598,6 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
         from .reply_markup import InlineKeyboardMarkup
-
         data = InlineQueryCachedResult.validate_array(array)
         # 'type' is always audio.
         data['id'] = u(array.get('id'))
@@ -4715,7 +4709,6 @@ class InputTextMessageContent(InputMessageContent):
         """
         super(InputTextMessageContent, self).__init__()
         from ..receivable.media import MessageEntity
-
         assert_type_or_raise(message_text, unicode_type, parameter_name="message_text")
         self.message_text = message_text
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
@@ -4740,6 +4733,7 @@ class InputTextMessageContent(InputMessageContent):
             return self._raw
         # end if
 
+        from ..receivable.media import MessageEntity
         array = super(InputTextMessageContent, self).to_array()
 
         array['message_text'] = u(self.message_text)  # py2: type unicode, py3: type str
@@ -4766,7 +4760,6 @@ class InputTextMessageContent(InputMessageContent):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from ..receivable.media import MessageEntity
-
         data = InputMessageContent.validate_array(array)
         data['message_text'] = u(array.get('message_text'))
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None

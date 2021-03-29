@@ -76,7 +76,6 @@ class StickerSet(Result):
         super(StickerSet, self).__init__()
         from .media import PhotoSize
         from .media import Sticker
-
         assert_type_or_raise(name, unicode_type, parameter_name="name")
         self.name = name
         assert_type_or_raise(title, unicode_type, parameter_name="title")
@@ -107,6 +106,8 @@ class StickerSet(Result):
             return self._raw
         # end if
 
+        from .media import PhotoSize
+        from .media import Sticker
         array = super(StickerSet, self).to_array()
 
         array['name'] = u(self.name)  # py2: type unicode, py3: type str
@@ -132,7 +133,6 @@ class StickerSet(Result):
         assert_type_or_raise(array, dict, parameter_name="array")
         from .media import PhotoSize
         from .media import Sticker
-
         data = Result.validate_array(array)
         data['name'] = u(array.get('name'))
         data['title'] = u(array.get('title'))

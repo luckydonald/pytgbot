@@ -57,7 +57,6 @@ class GameHighScore(Result):
         """
         super(GameHighScore, self).__init__()
         from .peer import User
-
         assert_type_or_raise(position, int, parameter_name="position")
         self.position = position
         assert_type_or_raise(user, User, parameter_name="user")
@@ -82,6 +81,7 @@ class GameHighScore(Result):
             return self._raw
         # end if
 
+        from .peer import User
         array = super(GameHighScore, self).to_array()
 
         array['position'] = int(self.position)  # type int
@@ -101,7 +101,6 @@ class GameHighScore(Result):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = Result.validate_array(array)
         data['position'] = int(array.get('position'))
         data['user'] = User.from_array(array.get('user'))

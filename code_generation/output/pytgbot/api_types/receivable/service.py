@@ -71,7 +71,6 @@ class ProximityAlertTriggered(ServiceMessage):
         """
         super(ProximityAlertTriggered, self).__init__()
         from .peer import User
-
         assert_type_or_raise(traveler, User, parameter_name="traveler")
         self.traveler = traveler
         assert_type_or_raise(watcher, User, parameter_name="watcher")
@@ -96,6 +95,7 @@ class ProximityAlertTriggered(ServiceMessage):
             return self._raw
         # end if
 
+        from .peer import User
         array = super(ProximityAlertTriggered, self).to_array()
 
         array['traveler'] = self.traveler.to_array()  # type User
@@ -115,7 +115,6 @@ class ProximityAlertTriggered(ServiceMessage):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = ServiceMessage.validate_array(array)
         data['traveler'] = User.from_array(array.get('traveler'))
         data['watcher'] = User.from_array(array.get('watcher'))
@@ -561,7 +560,6 @@ class VoiceChatParticipantsInvited(ServiceMessage):
         """
         super(VoiceChatParticipantsInvited, self).__init__()
         from .peer import User
-
         assert_type_or_raise(users, None, list, parameter_name="users")
         self.users = users
 
@@ -582,6 +580,7 @@ class VoiceChatParticipantsInvited(ServiceMessage):
             return self._raw
         # end if
 
+        from .peer import User
         array = super(VoiceChatParticipantsInvited, self).to_array()
 
         if self.users is not None:
@@ -601,7 +600,6 @@ class VoiceChatParticipantsInvited(ServiceMessage):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = ServiceMessage.validate_array(array)
         data['users'] = User.from_array_list(array.get('users'), list_level=1) if array.get('users') is not None else None
         return data

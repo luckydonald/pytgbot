@@ -397,7 +397,6 @@ class OrderInfo(Result):
         :type  _raw: None | dict
         """
         super(OrderInfo, self).__init__()
-
         assert_type_or_raise(name, None, unicode_type, parameter_name="name")
         self.name = name
         assert_type_or_raise(phone_number, None, unicode_type, parameter_name="phone_number")
@@ -451,7 +450,6 @@ class OrderInfo(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Result.validate_array(array)
         data['name'] = u(array.get('name')) if array.get('name') is not None else None
         data['phone_number'] = u(array.get('phone_number')) if array.get('phone_number') is not None else None
@@ -581,7 +579,6 @@ class SuccessfulPayment(Result):
         :type  _raw: None | dict
         """
         super(SuccessfulPayment, self).__init__()
-
         assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
         assert_type_or_raise(total_amount, int, parameter_name="total_amount")
@@ -640,7 +637,6 @@ class SuccessfulPayment(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Result.validate_array(array)
         data['currency'] = u(array.get('currency'))
         data['total_amount'] = int(array.get('total_amount'))
@@ -756,7 +752,6 @@ class ShippingQuery(UpdateType):
         """
         super(ShippingQuery, self).__init__()
         from .peer import User
-
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -783,6 +778,7 @@ class ShippingQuery(UpdateType):
             return self._raw
         # end if
 
+        from .peer import User
         array = super(ShippingQuery, self).to_array()
 
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
@@ -803,7 +799,6 @@ class ShippingQuery(UpdateType):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))
@@ -934,7 +929,6 @@ class PreCheckoutQuery(UpdateType):
         """
         super(PreCheckoutQuery, self).__init__()
         from .peer import User
-
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(from_peer, User, parameter_name="from_peer")
@@ -967,6 +961,7 @@ class PreCheckoutQuery(UpdateType):
             return self._raw
         # end if
 
+        from .peer import User
         array = super(PreCheckoutQuery, self).to_array()
 
         array['id'] = u(self.id)  # py2: type unicode, py3: type str
@@ -994,7 +989,6 @@ class PreCheckoutQuery(UpdateType):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = UpdateType.validate_array(array)
         data['id'] = u(array.get('id'))
         data['from_peer'] = User.from_array(array.get('from'))

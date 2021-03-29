@@ -90,7 +90,6 @@ class MessageEntity(Result):
         """
         super(MessageEntity, self).__init__()
         from .peer import User
-
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
         assert_type_or_raise(offset, int, parameter_name="offset")
@@ -121,6 +120,7 @@ class MessageEntity(Result):
             return self._raw
         # end if
 
+        from .peer import User
         array = super(MessageEntity, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
@@ -149,7 +149,6 @@ class MessageEntity(Result):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = Result.validate_array(array)
         data['type'] = u(array.get('type'))
         data['offset'] = int(array.get('offset'))
@@ -461,7 +460,6 @@ class Animation(Media):
         :type  _raw: None | dict
         """
         super(Animation, self).__init__()
-
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
@@ -530,7 +528,6 @@ class Animation(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
@@ -677,7 +674,6 @@ class Audio(Media):
         :type  _raw: None | dict
         """
         super(Audio, self).__init__()
-
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
@@ -750,7 +746,6 @@ class Audio(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
@@ -879,7 +874,6 @@ class Document(Media):
         :type  _raw: None | dict
         """
         super(Document, self).__init__()
-
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
@@ -939,7 +933,6 @@ class Document(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
@@ -1083,7 +1076,6 @@ class Video(Media):
         :type  _raw: None | dict
         """
         super(Video, self).__init__()
-
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
@@ -1152,7 +1144,6 @@ class Video(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
@@ -1281,7 +1272,6 @@ class VideoNote(Media):
         :type  _raw: None | dict
         """
         super(VideoNote, self).__init__()
-
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
@@ -1337,7 +1327,6 @@ class VideoNote(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
@@ -2060,7 +2049,6 @@ class PollAnswer(Receivable):
         """
         super(PollAnswer, self).__init__()
         from .peer import User
-
         assert_type_or_raise(poll_id, unicode_type, parameter_name="poll_id")
         self.poll_id = poll_id
         assert_type_or_raise(user, User, parameter_name="user")
@@ -2085,6 +2073,7 @@ class PollAnswer(Receivable):
             return self._raw
         # end if
 
+        from .peer import User
         array = super(PollAnswer, self).to_array()
 
         array['poll_id'] = u(self.poll_id)  # py2: type unicode, py3: type str
@@ -2104,7 +2093,6 @@ class PollAnswer(Receivable):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .peer import User
-
         data = Receivable.validate_array(array)
         data['poll_id'] = u(array.get('poll_id'))
         data['user'] = User.from_array(array.get('user'))
@@ -2269,7 +2257,6 @@ class Poll(Media):
         :type  _raw: None | dict
         """
         super(Poll, self).__init__()
-
         assert_type_or_raise(id, unicode_type, parameter_name="id")
         self.id = id
         assert_type_or_raise(question, unicode_type, parameter_name="question")
@@ -2352,7 +2339,6 @@ class Poll(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['id'] = u(array.get('id'))
         data['question'] = u(array.get('question'))
@@ -2675,7 +2661,6 @@ class Venue(Media):
         :type  _raw: None | dict
         """
         super(Venue, self).__init__()
-
         assert_type_or_raise(location, Location, parameter_name="location")
         self.location = location
         assert_type_or_raise(title, unicode_type, parameter_name="title")
@@ -2738,7 +2723,6 @@ class Venue(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['location'] = Location.from_array(array.get('location'))
         data['title'] = u(array.get('title'))
@@ -2841,7 +2825,6 @@ class UserProfilePhotos(Result):
         :type  _raw: None | dict
         """
         super(UserProfilePhotos, self).__init__()
-
         assert_type_or_raise(total_count, int, parameter_name="total_count")
         self.total_count = total_count
         assert_type_or_raise(photos, list, parameter_name="photos")
@@ -2881,7 +2864,6 @@ class UserProfilePhotos(Result):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Result.validate_array(array)
         data['total_count'] = int(array.get('total_count'))
         data['photos'] = PhotoSize.from_array_list(array.get('photos'), list_level=2)
@@ -3348,7 +3330,6 @@ class Sticker(Media):
         """
         super(Sticker, self).__init__()
         from .stickers import MaskPosition
-
         assert_type_or_raise(file_id, unicode_type, parameter_name="file_id")
         self.file_id = file_id
         assert_type_or_raise(file_unique_id, unicode_type, parameter_name="file_unique_id")
@@ -3387,6 +3368,7 @@ class Sticker(Media):
             return self._raw
         # end if
 
+        from .stickers import MaskPosition
         array = super(Sticker, self).to_array()
 
         array['file_id'] = u(self.file_id)  # py2: type unicode, py3: type str
@@ -3423,7 +3405,6 @@ class Sticker(Media):
         """
         assert_type_or_raise(array, dict, parameter_name="array")
         from .stickers import MaskPosition
-
         data = Media.validate_array(array)
         data['file_id'] = u(array.get('file_id'))
         data['file_unique_id'] = u(array.get('file_unique_id'))
@@ -3553,7 +3534,6 @@ class Game(Media):
         :type  _raw: None | dict
         """
         super(Game, self).__init__()
-
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         self.title = title
         assert_type_or_raise(description, unicode_type, parameter_name="description")
@@ -3611,7 +3591,6 @@ class Game(Media):
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = Media.validate_array(array)
         data['title'] = u(array.get('title'))
         data['description'] = u(array.get('description'))
