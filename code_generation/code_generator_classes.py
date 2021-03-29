@@ -6,6 +6,7 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from luckydonaldUtils.functions import cached
 from luckydonaldUtils.imports.relative import relimport
 
+BUILTIN_NAMES = ('type', 'id')  # everything which makes the variable become gray in PyCharm
 
 class KwargableObject(Mapping):
     """ allow `**self`, and include all @property s """
@@ -135,6 +136,18 @@ class Clazz(ClassOrFunction):
             "keywords": self.keywords,
         }
     # end def
+
+    def has_builtin_variables(self, duplicate_of_parent=None):
+        """
+        :param duplicate_of_parent: Filter for variable.duplicate_of_parent. None to not filter, True/False to allow only those.
+        :return:
+        """
+        return any([
+            variable.name in BUILTIN_NAMES
+            for variable in self.variables
+            if duplicate_of_parent is None or variable.duplicate_of_parent == duplicate_of_parent
+        ])
+    # end if
 
     def clone(self):
         return self.__class__(**self.to_array())
