@@ -40,7 +40,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
         {{ self.class_docstring()|indent -}}
         """{% endif %}
-        super({{ clazz.clazz }}, self).__init__({%- for variable in clazz.variables if variable.duplicate_of_parent %}{{ variable.value_to_set }}{% if not loop.last %}, {% endif %}{%- endfor %})
+        super({{ clazz.clazz }}, self).__init__({%- for variable in clazz.variables if variable.duplicate_of_parent %}{{ variable.name }}={{ variable.value_to_set }}{% if not loop.last %}, {% endif %}{%- endfor %})
 
         {%- block imports_block -%}
         {%- if clazz.imports %}

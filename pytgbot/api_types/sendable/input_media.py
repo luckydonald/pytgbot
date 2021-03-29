@@ -296,7 +296,7 @@ class InputMediaWithThumb(InputMedia):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaWithThumb, self).__init__(type, media, caption, parse_mode, caption_entities)
+        super(InputMediaWithThumb, self).__init__(type=type, media=media, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
 
         # 'type' is set by InputMedia base class
         # 'media' is set by InputMedia base class
@@ -482,7 +482,7 @@ class InputMediaPlayable(InputMediaWithThumb):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaPlayable, self).__init__(type, media, thumb, caption, parse_mode, caption_entities)
+        super(InputMediaPlayable, self).__init__(type=type, media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
 
         # 'type' is set by InputMediaWithThumb base class
         # 'media' is set by InputMediaWithThumb base class
@@ -675,7 +675,7 @@ class InputMediaVideolike(InputMediaPlayable):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaVideolike, self).__init__(type, media, thumb, duration, caption, parse_mode, caption_entities)
+        super(InputMediaVideolike, self).__init__(type=type, media=media, thumb=thumb, duration=duration, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
 
         # 'type' is set by InputMediaPlayable base class
         # 'media' is set by InputMediaPlayable base class
@@ -845,7 +845,7 @@ class InputMediaPhoto(InputMedia):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
-        super(InputMediaPhoto, self).__init__('photo', media, caption, parse_mode, caption_entities)
+        super(InputMediaPhoto, self).__init__(type='photo', media=media, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
         from ..receivable.media import MessageEntity
 
         # 'type' is set by InputMedia base class
@@ -1027,7 +1027,7 @@ class InputMediaVideo(InputMediaVideolike):
         :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
         :type  supports_streaming: bool
         """
-        super(InputMediaVideo, self).__init__('video', media, thumb, caption, parse_mode, caption_entities, width, height, duration)
+        super(InputMediaVideo, self).__init__(type='video', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, width=width, height=height, duration=duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
 
@@ -1223,7 +1223,7 @@ class InputMediaAnimation(InputMediaVideolike):
         :param duration: Optional. Animation duration
         :type  duration: int
         """
-        super(InputMediaAnimation, self).__init__('animation', media, thumb, caption, parse_mode, caption_entities, width, height, duration)
+        super(InputMediaAnimation, self).__init__(type='animation', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, width=width, height=height, duration=duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
 
@@ -1413,7 +1413,7 @@ class InputMediaAudio(InputMediaPlayable):
         :param title: Optional. Title of the audio
         :type  title: str|unicode
         """
-        super(InputMediaAudio, self).__init__('audio', media, thumb, caption, parse_mode, caption_entities, duration)
+        super(InputMediaAudio, self).__init__(type='audio', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration)
         from ..receivable.media import MessageEntity
         from .files import InputFile
 
@@ -1597,7 +1597,7 @@ class InputMediaDocument(InputMediaWithThumb):
         :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
         :type  disable_content_type_detection: bool
         """
-        super(InputMediaDocument, self).__init__('document', media, thumb, caption, parse_mode, caption_entities)
+        super(InputMediaDocument, self).__init__(type='document', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
         from ..receivable.media import MessageEntity
         from .files import InputFile
 

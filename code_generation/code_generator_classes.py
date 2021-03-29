@@ -521,6 +521,10 @@ class Variable(dict):
 
     @property
     def value_to_set(self):
+        """
+        Used in super class call super().__init__(...)
+        :return:
+        """
         if not self.is_fixed_value:
             return self.name
         # end if
