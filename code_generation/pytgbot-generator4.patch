@@ -1,0 +1,1238 @@
+diff --git a/code_generation/output/pytgbot/api_types/__init__.py b/code_generation/output/pytgbot/api_types/__init__.py
+index a40343e..57c2f9e 100644
+--- a/code_generation/output/pytgbot/api_types/__init__.py
++++ b/code_generation/output/pytgbot/api_types/__init__.py
+@@ -1,10 +1,15 @@
+ # -*- coding: utf-8 -*-
++import logging
++from json import dumps as _json_dumps
+ from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+-from luckydonaldUtils.exceptions import assert_type_or_raise
++# NOTE: `from . import receivable` import at the bottom of this file
++
+ __author__ = 'luckydonald'
+ __all__ = [
+     'TgBotApiObject',
+ ]
++__all__ += ["from_array_list", "as_array", "receivable"]
++logger = logging.getLogger(__name__)
+ 
+ 
+ class TgBotApiObject(object):
+@@ -27,12 +32,23 @@ class TgBotApiObject(object):
+         return array
+     # end def to_array
+ 
++    @staticmethod
++    def validate_array(array):
++        """
++        Builds a new array with valid values for the {{ clazz.clazz }} constructor.
++
++        :return: new array with valid values
++        :rtype: dict
++        """
++        return {}
++    # end def
++
+     @staticmethod
+     def from_array(array):
+         if not array:
+             return None
+-        return {}
+-    # end def
++        return TgBotApiObject()
++    # end def from_array
+ 
+     # # # # # # # # # # # # # #
+     # helper functions below #
+@@ -46,10 +62,13 @@ class TgBotApiObject(object):
+         :param cls: Type as what it should be parsed as. Can be any class extending :class:`TgBotApiObject`.
+                     E.g. If you call `Class.from_array_list`, it will automatically be set to `Class`.
+         :type  cls: class
+-    ,    :param result: The result to parse
+-    ,    :param list_level: "list of" * list_level
++
++        :param result: The result to parse
++
++        :param list_level: "list of" * list_level
+         :type  list_level: int
+-    ,    :return: the result as `required_type` type
++
++        :return: the result as `required_type` type
+         """
+         return from_array_list(cls, result, list_level, is_builtin=False)  # the one below, not itself. Yes, same name...
+     # end def from_array_list
+@@ -86,4 +105,72 @@ class TgBotApiObject(object):
+             self._raw = None
+         # end if
+     # end def
+-# end class TgBotApiObject
++# end class
++
++
++# # # # # # #
++# Functions #
++# # # # # # #
++
++
++def from_array_list(required_type, result, list_level, is_builtin):
++    """
++    Tries to parse the `result` as type given in `required_type`, while traversing into lists as often as specified in `list_level`.
++
++    :param required_type: What it should be parsed as
++    :type  required_type: class
++
++    :param result: The result to parse
++
++    :param list_level: "list of" * list_level
++    :type  list_level: int
++
++    :param is_builtin: if it is a builtin python type like :class:`int`, :class:`bool`, etc.
++    :type  is_builtin: bool
++
++    :return: the result as `required_type` type
++    """
++    logger.debug("Trying parsing as {type}, list_level={list_level}, is_builtin={is_builtin}".format(
++        type=required_type.__name__, list_level=list_level, is_builtin=is_builtin
++    ))
++    if list_level > 0:
++        assert isinstance(result, (list, tuple))
++        return [from_array_list(required_type, obj, list_level-1, is_builtin) for obj in result]
++    # end if
++    if is_builtin:
++        if isinstance(result, required_type):
++            logger.debug("Already is correct type.")
++            return required_type(result)
++        elif isinstance(required_type, unicode_type):  # handle str, so emojis work for py2.
++            return u(result)
++        else:
++            logger.warning("Trying parsing with ast.literal_eval()...")
++            import ast
++            return ast.literal_eval(str(result))  # raises ValueError if it could not parse
++        # end if
++    else:
++        return required_type.from_array(result)
++    # end if
++# end def _parse_builtin_type
++
++
++def as_array(obj):
++    """
++    Creates an json-like representation of a variable, supporting types with a `.to_array()` function.
++
++    :rtype: dict|list|str|int|float|bool|None
++    """
++    if hasattr(obj, "to_array"):
++        return obj.to_array()
++    elif isinstance(obj, (list, tuple)):
++        return [as_array(x) for x in obj]
++    elif isinstance(obj, dict):
++        return {key: as_array(obj[key]) for key in obj.keys()}
++    else:
++        _json_dumps(obj)  # raises error if is wrong json
++        return obj
++    # end if
++# end def
++
++
++from . import receivable  # bottom of file so TgBotApiObject is already defined.
+diff --git a/code_generation/output/pytgbot/api_types/__init__.pyi b/code_generation/output/pytgbot/api_types/__init__.pyi
+index 81b368f..c490637 100644
+--- a/code_generation/output/pytgbot/api_types/__init__.pyi
++++ b/code_generation/output/pytgbot/api_types/__init__.pyi
+@@ -1,7 +1,9 @@
+ # -*- coding: utf-8 -*-
+ from luckydonaldUtils.exceptions import assert_type_or_raise
+ from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+-from typing import Any, Union, List
++from luckydonaldUtils.typing import JSONType
++from typing import TypeVar, Type, Union
++
+ __author__ = 'luckydonald'
+ 
+ 
+@@ -15,3 +17,9 @@ class TgBotApiObject(object):
+     :type  _raw: None | dict
+     """
+ # end class TgBotApiObject
++
++
++REQUIRED_TYPE = TypeVar('REQUIRED_TYPE')
++def from_array_list(required_type: Type[REQUIRED_TYPE], result: JSONType, list_level: int, is_builtin: bool) -> REQUIRED_TYPE: pass
++
++def as_array(obj: Union[TgBotApiObject, list, tuple, dict, JSONType]) -> JSONType: pass
+diff --git a/code_generation/output/pytgbot/api_types/receivable/__init__.py b/code_generation/output/pytgbot/api_types/receivable/__init__.py
+index 241cb20..d5e34ec 100644
+--- a/code_generation/output/pytgbot/api_types/receivable/__init__.py
++++ b/code_generation/output/pytgbot/api_types/receivable/__init__.py
+@@ -8,6 +8,7 @@ __all__ = [
+     'Receivable',
+     'Result',
+ ]
++__all__ += ["game", "inline", "media", "payments", "peer", "stickers", "updates", "Receivable", "Result", "WebhookInfo"]
+ 
+ 
+ class Receivable(TgBotApiObject):
+@@ -36,3 +37,5 @@ class Result(Receivable):
+ 
+     pass
+ # end class Result
++
++from .updates import WebhookInfo
+diff --git a/code_generation/output/pytgbot/api_types/receivable/media.py b/code_generation/output/pytgbot/api_types/receivable/media.py
+index b5ae9b4..996ce93 100644
+--- a/code_generation/output/pytgbot/api_types/receivable/media.py
++++ b/code_generation/output/pytgbot/api_types/receivable/media.py
+@@ -28,6 +28,7 @@ __all__ = [
+     'Sticker',
+     'Game',
+ ]
++__all__ += ['DownloadableMedia']
+ 
+ 
+ class Media(Receivable):
+@@ -229,6 +230,23 @@ class MessageEntity(Result):
+ # end class MessageEntity
+ 
+ 
++class DownloadableMedia(Media):
++    @staticmethod
++    def validate_array(array):
++        """
++        Subclass for all :class:`Media` which has a :py:attr:`file_id` and optionally a :py:attr:`file_size`
++        :param array: a array to parse
++        :type  array: dict
++        :return: a dict with file_id and file_size extracted from the array
++        :rtype: dict
++        """
++        data = Media.from_array(array)
++        data["file_id"] = array.get("file_id")
++        data["file_size"] = array.get("file_size")  # can be None
++        return data
++# end class DownloadableMedia
++
++
+ class PhotoSize(Result):
+     """
+     This object represents one size of a photo or a file / sticker thumbnail.
+@@ -2804,6 +2822,9 @@ class Venue(Media):
+ # end class Venue
+ 
+ 
++from .service import ProximityAlertTriggered
++
++
+ class UserProfilePhotos(Result):
+     """
+     This object represent a user's profile pictures.
+@@ -2942,7 +2963,10 @@ class UserProfilePhotos(Result):
+ 
+ class File(Receivable):
+     """
+-    This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
++    This object represents a file ready to be downloaded.
++    The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
++    It is guaranteed that the link will be valid for at least 1 hour.
++    When the link expires, a new one can be requested by calling getFile.
+ 
+     Maximum file size to download is 20 MB
+ 
+@@ -2972,7 +2996,10 @@ class File(Receivable):
+ 
+     def __init__(self, file_id, file_unique_id, file_size=None, file_path=None, _raw=None):
+         """
+-        This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
++        This object represents a file ready to be downloaded.
++        The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
++        It is guaranteed that the link will be valid for at least 1 hour.
++        When the link expires, a new one can be requested by calling getFile.
+ 
+         Maximum file size to download is 20 MB
+ 
+@@ -3012,6 +3039,21 @@ class File(Receivable):
+         self._raw = _raw
+     # end def __init__
+ 
++    def get_download_url(self, token):
++        """
++        Creates a url to download the file.
++
++        Note: Contains the secret API key, so you should not share this url!
++
++        :param token: API key
++        :type  token: str
++
++        :return: url
++        :rtype: str
++        """
++        return "https://api.telegram.org/file/bot{token}/{file_path}".format(token=token, file_path=self.file_path)
++    # end def get_download_url
++
+     def to_array(self, prefer_original=False):
+         """
+         Serializes this File to a dictionary.
+diff --git a/code_generation/output/pytgbot/api_types/sendable/__init__.py b/code_generation/output/pytgbot/api_types/sendable/__init__.py
+index 9b45aab..1e6d73e 100644
+--- a/code_generation/output/pytgbot/api_types/sendable/__init__.py
++++ b/code_generation/output/pytgbot/api_types/sendable/__init__.py
+@@ -1,12 +1,16 @@
+ # -*- coding: utf-8 -*-
+ from luckydonaldUtils.encoding import unicode_type, to_unicode as u
+ from luckydonaldUtils.exceptions import assert_type_or_raise
+-from . import TgBotApiObject
++from .. import TgBotApiObject
+ 
+ __author__ = 'luckydonald'
+ __all__ = [
+     'Sendable',
+ ]
++__all__ += ["files", "inline", "payments", "reply_markup"]
++
++# UPCOMING CHANGE IN v2.2.0:
++from . import files  # backwards compatibility, before v2.2.0
+ 
+ 
+ class Sendable(TgBotApiObject):
+diff --git a/code_generation/output/pytgbot/api_types/sendable/inline.py b/code_generation/output/pytgbot/api_types/sendable/inline.py
+index 01d3174..522858b 100644
+--- a/code_generation/output/pytgbot/api_types/sendable/inline.py
++++ b/code_generation/output/pytgbot/api_types/sendable/inline.py
+@@ -172,11 +172,11 @@ class InlineQueryResultArticle(InlineQueryResult):
+         :param thumb_height: Optional. Thumbnail height
+         :type  thumb_height: int
+         """
+-        super(InlineQueryResultArticle, self).__init__()
++        super(InlineQueryResultArticle, self).__init__(id, "article")
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'article'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(title, unicode_type, parameter_name="title")
+         self.title = title
+         assert_type_or_raise(input_message_content, InputMessageContent, parameter_name="input_message_content")
+@@ -214,8 +214,8 @@ class InlineQueryResultArticle(InlineQueryResult):
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultArticle, self).to_array()
+ 
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+         array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
+         if self.reply_markup is not None:
+@@ -413,12 +413,12 @@ class InlineQueryResultPhoto(InlineQueryResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the photo
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultPhoto, self).__init__()
++        super(InlineQueryResultPhoto, self).__init__(id, "photo")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'photo'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(photo_url, unicode_type, parameter_name="photo_url")
+         self.photo_url = photo_url
+         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
+@@ -461,8 +461,8 @@ class InlineQueryResultPhoto(InlineQueryResult):
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultPhoto, self).to_array()
+ 
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['photo_url'] = u(self.photo_url)  # py2: type unicode, py3: type str
+         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+         if self.photo_width is not None:
+@@ -675,12 +675,12 @@ class InlineQueryResultGif(InlineQueryResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultGif, self).__init__()
++        super(InlineQueryResultGif, self).__init__(id, "gif")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'gif'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(gif_url, unicode_type, parameter_name="gif_url")
+         self.gif_url = gif_url
+         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
+@@ -725,8 +725,8 @@ class InlineQueryResultGif(InlineQueryResult):
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultGif, self).to_array()
+ 
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['gif_url'] = u(self.gif_url)  # py2: type unicode, py3: type str
+         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+         if self.gif_width is not None:
+@@ -775,8 +775,8 @@ class InlineQueryResultGif(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always gif.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['gif_url'] = u(array.get('gif_url'))
+         data['thumb_url'] = u(array.get('thumb_url'))
+         data['gif_width'] = int(array.get('gif_width')) if array.get('gif_width') is not None else None
+@@ -943,12 +943,12 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultMpeg4Gif, self).__init__()
++        super(InlineQueryResultMpeg4Gif, self).__init__(id, "mpeg4_gif")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'mpeg4_gif'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(mpeg4_url, unicode_type, parameter_name="mpeg4_url")
+         self.mpeg4_url = mpeg4_url
+         assert_type_or_raise(thumb_url, unicode_type, parameter_name="thumb_url")
+@@ -992,9 +992,8 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultMpeg4Gif, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['mpeg4_url'] = u(self.mpeg4_url)  # py2: type unicode, py3: type str
+         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+         if self.mpeg4_width is not None:
+@@ -1043,8 +1042,8 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always mpeg4_gif.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['mpeg4_url'] = u(array.get('mpeg4_url'))
+         data['thumb_url'] = u(array.get('thumb_url'))
+         data['mpeg4_width'] = int(array.get('mpeg4_width')) if array.get('mpeg4_width') is not None else None
+@@ -1221,10 +1220,11 @@ class InlineQueryResultVideo(InlineQueryResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the video. This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultVideo, self).__init__()
++        super(InlineQueryResultVideo, self).__init__(id, "video")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'video'
++
++        # type is given by class type
+         assert_type_or_raise(id, unicode_type, parameter_name="id")
+         self.id = id
+         assert_type_or_raise(video_url, unicode_type, parameter_name="video_url")
+@@ -1272,9 +1272,8 @@ class InlineQueryResultVideo(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultVideo, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['video_url'] = u(self.video_url)  # py2: type unicode, py3: type str
+         array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+         array['thumb_url'] = u(self.thumb_url)  # py2: type unicode, py3: type str
+@@ -1322,8 +1321,8 @@ class InlineQueryResultVideo(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always video.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['video_url'] = u(array.get('video_url'))
+         data['mime_type'] = u(array.get('mime_type'))
+         data['thumb_url'] = u(array.get('thumb_url'))
+@@ -1475,12 +1474,12 @@ class InlineQueryResultAudio(InlineQueryResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the audio
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultAudio, self).__init__()
++        super(InlineQueryResultAudio, self).__init__(id, "audio")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'audio'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # type is given by class type
++        # id is given by class type
+         assert_type_or_raise(audio_url, unicode_type, parameter_name="audio_url")
+         self.audio_url = audio_url
+         assert_type_or_raise(title, unicode_type, parameter_name="title")
+@@ -1518,9 +1517,8 @@ class InlineQueryResultAudio(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultAudio, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['audio_url'] = u(self.audio_url)  # py2: type unicode, py3: type str
+         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+         if self.caption is not None:
+@@ -1560,8 +1558,8 @@ class InlineQueryResultAudio(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always audio.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['audio_url'] = u(array.get('audio_url'))
+         data['title'] = u(array.get('title'))
+         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+@@ -1703,12 +1701,11 @@ class InlineQueryResultVoice(InlineQueryResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the voice recording
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultVoice, self).__init__()
++        super(InlineQueryResultVoice, self).__init__(id, "voice")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         self.type = 'voice'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++        # 'id' is given by class type
+         assert_type_or_raise(voice_url, unicode_type, parameter_name="voice_url")
+         self.voice_url = voice_url
+         assert_type_or_raise(title, unicode_type, parameter_name="title")
+@@ -1783,8 +1780,8 @@ class InlineQueryResultVoice(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always voice.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['voice_url'] = u(array.get('voice_url'))
+         data['title'] = u(array.get('title'))
+         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+@@ -1949,12 +1946,12 @@ class InlineQueryResultDocument(InlineQueryResult):
+         :param thumb_height: Optional. Thumbnail height
+         :type  thumb_height: int
+         """
+-        super(InlineQueryResultDocument, self).__init__()
++        super(InlineQueryResultDocument, self).__init__(id, "document")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'document'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(title, unicode_type, parameter_name="title")
+         self.title = title
+         assert_type_or_raise(document_url, unicode_type, parameter_name="document_url")
+@@ -1998,9 +1995,8 @@ class InlineQueryResultDocument(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultDocument, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+         array['document_url'] = u(self.document_url)  # py2: type unicode, py3: type str
+         array['mime_type'] = u(self.mime_type)  # py2: type unicode, py3: type str
+@@ -2047,8 +2043,8 @@ class InlineQueryResultDocument(InlineQueryResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always document.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['title'] = u(array.get('title'))
+         data['document_url'] = u(array.get('document_url'))
+         data['mime_type'] = u(array.get('mime_type'))
+@@ -2217,11 +2213,11 @@ class InlineQueryResultLocation(InlineQueryResult):
+         :param thumb_height: Optional. Thumbnail height
+         :type  thumb_height: int
+         """
+-        super(InlineQueryResultLocation, self).__init__()
++        super(InlineQueryResultLocation, self).__init__(id, "location")
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'location'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(latitude, float, parameter_name="latitude")
+         self.latitude = latitude
+         assert_type_or_raise(longitude, float, parameter_name="longitude")
+@@ -2264,9 +2260,8 @@ class InlineQueryResultLocation(InlineQueryResult):
+ 
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultLocation, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['latitude'] = float(self.latitude)  # type float
+         array['longitude'] = float(self.longitude)  # type float
+         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+@@ -2312,8 +2307,8 @@ class InlineQueryResultLocation(InlineQueryResult):
+         assert_type_or_raise(array, dict, parameter_name="array")
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always location.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['latitude'] = float(array.get('latitude'))
+         data['longitude'] = float(array.get('longitude'))
+         data['title'] = u(array.get('title'))
+@@ -2488,9 +2483,11 @@ class InlineQueryResultVenue(InlineQueryResult):
+         :param thumb_height: Optional. Thumbnail height
+         :type  thumb_height: int
+         """
+-        super(InlineQueryResultVenue, self).__init__()
++        super(InlineQueryResultVenue, self).__init__(id, "venue")
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'venue'
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(id, unicode_type, parameter_name="id")
+         self.id = id
+         assert_type_or_raise(latitude, float, parameter_name="latitude")
+@@ -2537,9 +2534,8 @@ class InlineQueryResultVenue(InlineQueryResult):
+ 
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultVenue, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['latitude'] = float(self.latitude)  # type float
+         array['longitude'] = float(self.longitude)  # type float
+         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+@@ -2586,8 +2582,8 @@ class InlineQueryResultVenue(InlineQueryResult):
+         assert_type_or_raise(array, dict, parameter_name="array")
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always venue.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['latitude'] = float(array.get('latitude'))
+         data['longitude'] = float(array.get('longitude'))
+         data['title'] = u(array.get('title'))
+@@ -2739,11 +2735,11 @@ class InlineQueryResultContact(InlineQueryResult):
+         :param thumb_height: Optional. Thumbnail height
+         :type  thumb_height: int
+         """
+-        super(InlineQueryResultContact, self).__init__()
++        super(InlineQueryResultContact, self).__init__(id, "contact")
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'contact'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(phone_number, unicode_type, parameter_name="phone_number")
+         self.phone_number = phone_number
+         assert_type_or_raise(first_name, unicode_type, parameter_name="first_name")
+@@ -2780,9 +2776,8 @@ class InlineQueryResultContact(InlineQueryResult):
+ 
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultContact, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['phone_number'] = u(self.phone_number)  # py2: type unicode, py3: type str
+         array['first_name'] = u(self.first_name)  # py2: type unicode, py3: type str
+         if self.last_name is not None:
+@@ -2821,7 +2816,8 @@ class InlineQueryResultContact(InlineQueryResult):
+         assert_type_or_raise(array, dict, parameter_name="array")
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always contact.
++        # 'type' is set by class type
++        # 'id' is set by class type
+         data['id'] = u(array.get('id'))
+         data['phone_number'] = u(array.get('phone_number'))
+         data['first_name'] = u(array.get('first_name'))
+@@ -2928,11 +2924,11 @@ class InlineQueryResultGame(InlineQueryResult):
+         :param reply_markup: Optional. Inline keyboard attached to the message
+         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
+         """
+-        super(InlineQueryResultGame, self).__init__()
++        super(InlineQueryResultGame, self).__init__(id, "game")
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'game'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
+         self.game_short_name = game_short_name
+         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
+@@ -2955,9 +2951,8 @@ class InlineQueryResultGame(InlineQueryResult):
+ 
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultGame, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
+         if self.reply_markup is not None:
+             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+@@ -2977,8 +2972,8 @@ class InlineQueryResultGame(InlineQueryResult):
+         assert_type_or_raise(array, dict, parameter_name="array")
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryResult.validate_array(array)
+-        # 'type' is always game.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['game_short_name'] = u(array.get('game_short_name'))
+         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+         return data
+@@ -3111,12 +3106,12 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the photo
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultCachedPhoto, self).__init__()
++        super(InlineQueryResultCachedPhoto, self).__init__(id, "photo")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'photo'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(photo_file_id, unicode_type, parameter_name="photo_file_id")
+         self.photo_file_id = photo_file_id
+         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
+@@ -3153,8 +3148,8 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultCachedPhoto, self).to_array()
+ 
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['photo_file_id'] = u(self.photo_file_id)  # py2: type unicode, py3: type str
+         if self.title is not None:
+             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+@@ -3193,8 +3188,8 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryCachedResult.validate_array(array)
+-        # 'type' is always photo.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['photo_file_id'] = u(array.get('photo_file_id'))
+         data['title'] = u(array.get('title')) if array.get('title') is not None else None
+         data['description'] = u(array.get('description')) if array.get('description') is not None else None
+@@ -3327,12 +3322,12 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultCachedGif, self).__init__()
++        super(InlineQueryResultCachedGif, self).__init__(id, "gif")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'gif'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(gif_file_id, unicode_type, parameter_name="gif_file_id")
+         self.gif_file_id = gif_file_id
+         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
+@@ -3366,9 +3361,8 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultCachedGif, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['gif_file_id'] = u(self.gif_file_id)  # py2: type unicode, py3: type str
+         if self.title is not None:
+             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+@@ -3404,8 +3398,8 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryCachedResult.validate_array(array)
+-        # 'type' is always gif.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['gif_file_id'] = u(array.get('gif_file_id'))
+         data['title'] = u(array.get('title')) if array.get('title') is not None else None
+         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+@@ -3537,12 +3531,12 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultCachedMpeg4Gif, self).__init__()
++        super(InlineQueryResultCachedMpeg4Gif, self).__init__(id, "mpeg4_gif")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'mpeg4_gif'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(mpeg4_file_id, unicode_type, parameter_name="mpeg4_file_id")
+         self.mpeg4_file_id = mpeg4_file_id
+         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
+@@ -3576,9 +3570,8 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultCachedMpeg4Gif, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['mpeg4_file_id'] = u(self.mpeg4_file_id)  # py2: type unicode, py3: type str
+         if self.title is not None:
+             array['title'] = u(self.title)  # py2: type unicode, py3: type str
+@@ -3614,8 +3607,8 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryCachedResult.validate_array(array)
+-        # 'type' is always mpeg4_gif.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['mpeg4_file_id'] = u(array.get('mpeg4_file_id'))
+         data['title'] = u(array.get('title')) if array.get('title') is not None else None
+         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+@@ -3725,11 +3718,11 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the sticker
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultCachedSticker, self).__init__()
++        super(InlineQueryResultCachedSticker, self).__init__(id, "sticker")
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'sticker'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(sticker_file_id, unicode_type, parameter_name="sticker_file_id")
+         self.sticker_file_id = sticker_file_id
+         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
+@@ -3754,9 +3747,8 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
+ 
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultCachedSticker, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['sticker_file_id'] = u(self.sticker_file_id)  # py2: type unicode, py3: type str
+         if self.reply_markup is not None:
+             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
+@@ -3779,8 +3771,8 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
+         assert_type_or_raise(array, dict, parameter_name="array")
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryCachedResult.validate_array(array)
+-        # 'type' is always sticker.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['sticker_file_id'] = u(array.get('sticker_file_id'))
+         data['reply_markup'] = InlineKeyboardMarkup.from_array(array.get('reply_markup')) if array.get('reply_markup') is not None else None
+         data['input_message_content'] = InputMessageContent.from_array(array.get('input_message_content')) if array.get('input_message_content') is not None else None
+@@ -3916,12 +3908,12 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the file
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultCachedDocument, self).__init__()
++        super(InlineQueryResultCachedDocument, self).__init__(id, "document")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'document'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(title, unicode_type, parameter_name="title")
+         self.title = title
+         assert_type_or_raise(document_file_id, unicode_type, parameter_name="document_file_id")
+@@ -3957,9 +3949,8 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultCachedDocument, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+         array['document_file_id'] = u(self.document_file_id)  # py2: type unicode, py3: type str
+         if self.description is not None:
+@@ -3996,8 +3987,8 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryCachedResult.validate_array(array)
+-        # 'type' is always document.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['title'] = u(array.get('title'))
+         data['document_file_id'] = u(array.get('document_file_id'))
+         data['description'] = u(array.get('description')) if array.get('description') is not None else None
+@@ -4136,12 +4127,12 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the video
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultCachedVideo, self).__init__()
++        super(InlineQueryResultCachedVideo, self).__init__(id, "video")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'video'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(video_file_id, unicode_type, parameter_name="video_file_id")
+         self.video_file_id = video_file_id
+         assert_type_or_raise(title, unicode_type, parameter_name="title")
+@@ -4177,9 +4168,8 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultCachedVideo, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['video_file_id'] = u(self.video_file_id)  # py2: type unicode, py3: type str
+         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+         if self.description is not None:
+@@ -4216,8 +4206,8 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryCachedResult.validate_array(array)
+-        # 'type' is always video.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['video_file_id'] = u(array.get('video_file_id'))
+         data['title'] = u(array.get('title'))
+         data['description'] = u(array.get('description')) if array.get('description') is not None else None
+@@ -4352,12 +4342,12 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the voice message
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultCachedVoice, self).__init__()
++        super(InlineQueryResultCachedVoice, self).__init__(id, "voice")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'voice'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(voice_file_id, unicode_type, parameter_name="voice_file_id")
+         self.voice_file_id = voice_file_id
+         assert_type_or_raise(title, unicode_type, parameter_name="title")
+@@ -4391,9 +4381,8 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultCachedVoice, self).to_array()
+-
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['voice_file_id'] = u(self.voice_file_id)  # py2: type unicode, py3: type str
+         array['title'] = u(self.title)  # py2: type unicode, py3: type str
+         if self.caption is not None:
+@@ -4427,8 +4416,8 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryCachedResult.validate_array(array)
+-        # 'type' is always voice.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['voice_file_id'] = u(array.get('voice_file_id'))
+         data['title'] = u(array.get('title'))
+         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+@@ -4556,12 +4545,12 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
+         :param input_message_content: Optional. Content of the message to be sent instead of the audio
+         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
+         """
+-        super(InlineQueryResultCachedAudio, self).__init__()
++        super(InlineQueryResultCachedAudio, self).__init__(id, "audio")
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+-        self.type = 'audio'
+-        assert_type_or_raise(id, unicode_type, parameter_name="id")
+-        self.id = id
++
++        # 'type' is given by class type
++        # 'id' is given by class type
+         assert_type_or_raise(audio_file_id, unicode_type, parameter_name="audio_file_id")
+         self.audio_file_id = audio_file_id
+         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
+@@ -4594,8 +4583,8 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
+         from .reply_markup import InlineKeyboardMarkup
+         array = super(InlineQueryResultCachedAudio, self).to_array()
+ 
+-        array['type'] = u(self.type)  # py2: type unicode, py3: type str
+-        array['id'] = u(self.id)  # py2: type unicode, py3: type str
++        # 'type' given by superclass
++        # 'id' given by superclass
+         array['audio_file_id'] = u(self.audio_file_id)  # py2: type unicode, py3: type str
+         if self.caption is not None:
+             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+@@ -4628,8 +4617,8 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
+         from ..receivable.media import MessageEntity
+         from .reply_markup import InlineKeyboardMarkup
+         data = InlineQueryCachedResult.validate_array(array)
+-        # 'type' is always audio.
+-        data['id'] = u(array.get('id'))
++        # 'type' is given by class type
++        # 'id' is given by class type
+         data['audio_file_id'] = u(array.get('audio_file_id'))
+         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
+@@ -4712,7 +4701,7 @@ class InputTextMessageContent(InputMessageContent):
+     :type  disable_web_page_preview: bool
+     """
+ 
+-    def __init__(self, message_text, parse_mode=None, entities=None, disable_web_page_preview=None):
++    def __init__(self, message_text, parse_mode=None, entities=None, disable_web_page_preview=False):
+         """
+         Represents the content of a text message to be sent as the result of an inline query.
+ 
+@@ -4848,6 +4837,7 @@ class InputTextMessageContent(InputMessageContent):
+ class InputLocationMessageContent(InputMessageContent):
+     """
+     Represents the content of a location message to be sent as the result of an inline query.
++    Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ 
+     https://core.telegram.org/bots/api#inputlocationmessagecontent
+ 
+@@ -4879,6 +4869,7 @@ class InputLocationMessageContent(InputMessageContent):
+     def __init__(self, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None):
+         """
+         Represents the content of a location message to be sent as the result of an inline query.
++        Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ 
+         https://core.telegram.org/bots/api#inputlocationmessagecontent
+ 
+@@ -5025,6 +5016,7 @@ class InputLocationMessageContent(InputMessageContent):
+ class InputVenueMessageContent(InputMessageContent):
+     """
+     Represents the content of a venue message to be sent as the result of an inline query.
++    Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ 
+     https://core.telegram.org/bots/api#inputvenuemessagecontent
+ 
+@@ -5062,6 +5054,7 @@ class InputVenueMessageContent(InputMessageContent):
+     def __init__(self, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None):
+         """
+         Represents the content of a venue message to be sent as the result of an inline query.
++        Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ 
+         https://core.telegram.org/bots/api#inputvenuemessagecontent
+ 
+@@ -5222,6 +5215,7 @@ class InputVenueMessageContent(InputMessageContent):
+ class InputContactMessageContent(InputMessageContent):
+     """
+     Represents the content of a contact message to be sent as the result of an inline query.
++    Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ 
+     https://core.telegram.org/bots/api#inputcontactmessagecontent
+ 
+@@ -5247,6 +5241,7 @@ class InputContactMessageContent(InputMessageContent):
+     def __init__(self, phone_number, first_name, last_name=None, vcard=None):
+         """
+         Represents the content of a contact message to be sent as the result of an inline query.
++        Note: This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
+ 
+         https://core.telegram.org/bots/api#inputcontactmessagecontent
+ 
+diff --git a/code_generation/output/pytgbot/api_types/sendable/input_media.py b/code_generation/output/pytgbot/api_types/sendable/input_media.py
+index 50f5fea..b0cdb02 100644
+--- a/code_generation/output/pytgbot/api_types/sendable/input_media.py
++++ b/code_generation/output/pytgbot/api_types/sendable/input_media.py
+@@ -333,13 +333,20 @@ class InputMediaWithThumb(InputMedia):
+         # 'caption_entities' is set by InputMedia base class
+     # end def __init__
+ 
+-    def to_array(self):
++    def to_array(self, prefer_original=False):
+         """
+         Serializes this InputMediaWithThumb to a dictionary.
+ 
++        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
++        :type  prefer_original: bool
++
+         :return: dictionary representation of this object.
+         :rtype: dict
+         """
++        if prefer_original and self._raw:
++            return self._raw
++        # end if
++
+         array = super(InputMediaWithThumb, self).to_array()
+         # 'type' is handled by superclass
+         array['media'] = u(self.media)  # py2: type unicode, py3: type str
+diff --git a/code_generation/output/pytgbot/api_types/sendable/reply_markup.py b/code_generation/output/pytgbot/api_types/sendable/reply_markup.py
+index 57fe2e8..bdf2843 100644
+--- a/code_generation/output/pytgbot/api_types/sendable/reply_markup.py
++++ b/code_generation/output/pytgbot/api_types/sendable/reply_markup.py
+@@ -497,7 +497,16 @@ class ReplyKeyboardRemove(ReplyMarkup):
+ 
+         Optional keyword parameters:
+ 
+-        :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
++        :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only.
++                          Targets: 1) users that are @mentioned in the text of the Message object;
++                                   2) if the bot's message is a reply (has reply_to_message_id),
++                                      sender of the original message.
++                          Example: A user requests to change the bot's language,
++                                   bot replies to the request with a keyboard to select the new language.
++                                   Other users in the group don't see the keyboard.
++                          Example: A user votes in a poll, bot returns confirmation message in reply to the vote and
++                                   removes keyboard for that user, while still showing the keyboard with poll options to
++                                   users who haven't voted yet.
+         :type  selective: bool
+         """
+         super(ReplyKeyboardRemove, self).__init__()
+@@ -718,6 +727,9 @@ class InlineKeyboardButton(Button):
+     """
+     This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
+ 
++    Note: This will only work in Telegram versions released after 9 April, 2016.
++          Older clients will display unsupported message.
++
+     https://core.telegram.org/bots/api#inlinekeyboardbutton
+ 
+ 
+@@ -1083,14 +1095,21 @@ class LoginUrl(Sendable):
+ 
+ class ForceReply(ReplyMarkup):
+     """
+-    Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
+-
+-    Example: A poll bot for groups runs in privacy mode (only receives commands, replies to its messages and mentions). There could be two ways to create a new poll:
+-
+-    Explain the user how to send a command with parameters (e.g. /newpoll question answer1 answer2). May be appealing for hardcore users but lacks modern day polish.
+-    Guide the user through a step-by-step process. 'Please send me your question', 'Cool, now let's add the first answer option', 'Great. Keep adding answer options, then send /done when you're ready'.
+-
+-    The last option is definitely more attractive. And if you use ForceReply in your bot's questions, it will receive the user's answers even if it only receives replies, commands and mentions — without any extra work for the user.
++    Upon receiving a message with this object, Telegram clients will display a reply interface to the user
++    (act as if the user has selected the bot's message and tapped 'Reply').
++    This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice
++    privacy mode.
++
++    Example: A poll bot for groups runs in privacy mode (only receives commands, replies to its messages and mentions).
++             There could be two ways to create a new poll:
++             1) Explain the user how to send a command with parameters (e.g. `/newpoll question answer1 answer2`).
++                May be appealing for hardcore users but lacks modern day polish.
++             2) Guide the user through a step-by-step process. 'Please send me your question',
++                'Cool, now let's add the first answer option',
++                'Great. Keep adding answer options, then send `/done` when you're ready'.
++    The last option is definitely more attractive. And if you use ForceReply in your bot's questions,
++    it will receive the user's answers even if it only receives replies, commands and mentions
++    — without any extra work for the user.
+ 
+     https://core.telegram.org/bots/api#forcereply
+ 
+@@ -1106,14 +1125,22 @@ class ForceReply(ReplyMarkup):
+ 
+     def __init__(self, selective=None):
+         """
+-        Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
+-
+-        Example: A poll bot for groups runs in privacy mode (only receives commands, replies to its messages and mentions). There could be two ways to create a new poll:
+-
+-        Explain the user how to send a command with parameters (e.g. /newpoll question answer1 answer2). May be appealing for hardcore users but lacks modern day polish.
+-        Guide the user through a step-by-step process. 'Please send me your question', 'Cool, now let's add the first answer option', 'Great. Keep adding answer options, then send /done when you're ready'.
+-
+-        The last option is definitely more attractive. And if you use ForceReply in your bot's questions, it will receive the user's answers even if it only receives replies, commands and mentions — without any extra work for the user.
++        Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as
++        if the user has selected the bot's message and tapped 'Reply').
++        This can be extremely useful if you want to
++        create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
++
++        Example:
++        A poll bot for groups runs in privacy mode (only receives commands, replies to its messages and mentions).
++        There could be two ways to create a new poll:
++         - Explain the user how to send a command with parameters (e.g. /newpoll question answer1 answer2).
++           May be appealing for hardcore users but lacks modern day polish.
++         - Guide the user through a step-by-step process. 'Please send me your question',
++           'Cool, now let's add the first answer option',
++           'Great. Keep adding answer options, then send /done when you're ready'.
++        The last option is definitely more attractive. And if you use ForceReply in your bot's questions,
++        it will receive the user's answers even if it only receives replies, commands and mentions
++        — without any extra work for the user.
+ 
+         https://core.telegram.org/bots/api#forcereply
+ 
+@@ -1122,8 +1149,13 @@ class ForceReply(ReplyMarkup):
+ 
+ 
+         Optional keyword parameters:
+-
+-        :param selective: Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
++        :param selective: Optional. Use this parameter if you want to show the keyboard to/force reply from specific users only.
++                          Targets: 1) users that are @mentioned in the text of the Message object;
++                                   2) if the bot's message is a reply (has reply_to_message_id),
++                                      sender of the original message.
++                          Example:
++                          A user requests to change the bot's language, bot replies to the request with a keyboard to
++                          select the new language. Other users in the group don't see the keyboard.
+         :type  selective: bool
+         """
+         super(ForceReply, self).__init__()
