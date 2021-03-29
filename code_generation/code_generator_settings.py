@@ -580,11 +580,17 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             name='media',
             pytg_name=None,
             types=[
+                    Type(string='InputFile', is_builtin=False, always_is_value=None, is_list=0, import_path='pytgbot.api_types.sendable.files', description=None),
                     Type(string='str', is_builtin=True, always_is_value=None, is_list=0, import_path=None, description=None),
             ],
             optional=False,
             default=None,
             description='File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »',
+            additional_allowed_type_matchings=[
+                [
+                    Type(string='str', is_builtin=True, always_is_value=None, is_list=0, import_path=None, description=None),
+                ],
+            ]
         )
     ],
     keywords=[

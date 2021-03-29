@@ -99,20 +99,41 @@ class Clazz(ClassOrFunction):
         ignore_description: bool = False,
         ignore_optional: bool = False,
         ignore_type_always_is_value: bool = False,
+        allow_additional_allowed_type_matchings: bool = False,
     ) -> bool:
+        if self.get_same_variable(
+            variable=variable, ignore_pytg_name=ignore_pytg_name, ignore_description=ignore_description,
+            ignore_optional=ignore_optional, ignore_type_always_is_value=ignore_type_always_is_value,
+            allow_additional_allowed_type_matchings=allow_additional_allowed_type_matchings,
+        ) is None:
+            return False
+        # end if
+        return False
+    # end def
+
+    def get_same_variable(
+        self,
+        variable: 'Variable',
+        ignore_pytg_name: bool = False,
+        ignore_description: bool = False,
+        ignore_optional: bool = False,
+        ignore_type_always_is_value: bool = False,
+        allow_additional_allowed_type_matchings: bool = False,
+    ) -> Optional['Variable']:
         assert_type_or_raise(variable, Variable, parameter_name='variable')
         for own_variable in self.variables:
-            if variable.compare(
-                own_variable,
+            if own_variable.compare(
+                variable,
                 ignore_pytg_name=ignore_pytg_name,
                 ignore_description=ignore_description,
                 ignore_optional=ignore_optional,
                 ignore_type_always_is_value=ignore_type_always_is_value,
+                allow_additional_allowed_type_matchings=allow_additional_allowed_type_matchings,
             ):
-                return True
+                return own_variable
             # end if
         # end for
-        return False
+        return None
     # end if
 
     def __repr__(self):
@@ -327,6 +348,7 @@ class Variable(dict):
             default: Union[None, str, 'Type'] = None,
             description: Optional[str] = None,
             duplicate_of_parent: Optional[bool] = None,
+            additional_allowed_type_matchings: Optional[List[List['Type']]] = None,
     ):
         """
         :param api_name: Name the telegram api uses.
@@ -346,6 +368,7 @@ class Variable(dict):
         self.default = default  # bool
         self.description = description  # some text about it.  # parse_param_types(param)
         self.duplicate_of_parent = duplicate_of_parent
+        self.additional_allowed_type_matchings = additional_allowed_type_matchings if additional_allowed_type_matchings else []
     # end def
 
     """
@@ -556,6 +579,7 @@ class Variable(dict):
                 "api_name={s.api_name!r}, name={s.name!r}, pytg_name={s.pytg_name!r}, types={s.types!r}, "
                 "optional={s.optional!r}, default={s.default!r}, description={s.description!r}, "
                 "duplicate_of_parent={s.duplicate_of_parent!r}"
+                # "duplicate_of_parent={s.duplicate_of_parent!r}, additional_allowed_type_matchings={s.additional_allowed_type_matchings!r}"
             ")"
         ).format(s=self)
     # end def __repr__
@@ -574,23 +598,30 @@ class Variable(dict):
         ignore_pytg_name: bool = False,
         ignore_description: bool = False,
         ignore_optional: bool = False,
-        ignore_type_always_is_value: bool = False
+        ignore_type_always_is_value: bool = False,
+        allow_additional_allowed_type_matchings: bool = False,
     ):
         assert_type_or_raise(other, Variable, parameter_name='other')
         return (
             self.api_name == other.api_name and
             self.name == other.name and
             (
-                len(self.types) == len(other.types) and
-                all(
-                    Type.compare(
-                        self=own_type,
-                        other=other.types[i],
-                        ignore_always_is_value=ignore_type_always_is_value,
-                        ignore_description=ignore_description
+                any(
+                    len(own_types) == len(other.types)
+                    and
+                    all(
+                        Type.compare(
+                            self=own_type,
+                            other=other.types[i],
+                            ignore_always_is_value=ignore_type_always_is_value,
+                            ignore_description=ignore_description
+                        )
+                        for i, own_type
+                        in enumerate(own_types)
                     )
-                    for i, own_type
-                    in enumerate(self.types)
+                    for own_types in
+                    [self.types] +
+                    (self.additional_allowed_type_matchings if allow_additional_allowed_type_matchings and self.additional_allowed_type_matchings else [])
                 )
             ) and
             (ignore_pytg_name or self.pytg_name == other.pytg_name) and
@@ -611,6 +642,7 @@ class Variable(dict):
             "default": self.default,
             "description": self.description,
             "duplicate_of_parent": self.duplicate_of_parent,
+            "additional_allowed_type_matchings": [types[:] for types in self.additional_allowed_type_matchings],  # deep
         }
     # end def
 

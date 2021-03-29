@@ -507,13 +507,19 @@ def preprocess_results(results: List[Union[Clazz, Function]], additional_items: 
             parent_clazz: Clazz = clazzes_by_name[result.parent_clazz.string]
             for variable in result.variables:
                 variable: Variable
-                variable.duplicate_of_parent = parent_clazz.has_same_variable(
+                parent_variable = parent_clazz.get_same_variable(
                     variable,
                     ignore_pytg_name=True,
                     ignore_description=True,
                     ignore_optional=True,
                     ignore_type_always_is_value=True,
+                    allow_additional_allowed_type_matchings=True,
                 )
+                variable.duplicate_of_parent = parent_variable is not None
+                # if we fit parent's class 'additional_allowed_type_matchings', we should upgrade our own types.
+                if variable.duplicate_of_parent and parent_variable.additional_allowed_type_matchings:
+                    variable.types = parent_variable.types[:]
+                # end if
             # end for
         else:
             logger.warning(f'Could not resolve parent class: {result.parent_clazz}')
