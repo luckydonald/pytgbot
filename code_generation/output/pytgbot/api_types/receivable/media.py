@@ -5,6 +5,29 @@ from . import Receivable
 from . import Result
 
 __author__ = 'luckydonald'
+__all__ = [
+    'Media',
+    'MessageEntity',
+    'PhotoSize',
+    'Animation',
+    'Audio',
+    'Document',
+    'Video',
+    'VideoNote',
+    'Voice',
+    'Contact',
+    'Dice',
+    'PollOption',
+    'PollAnswer',
+    'Poll',
+    'Location',
+    'Venue',
+    'UserProfilePhotos',
+    'File',
+    'ChatPhoto',
+    'Sticker',
+    'Game',
+]
 
 
 class Media(Receivable):

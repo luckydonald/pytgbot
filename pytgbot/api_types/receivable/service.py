@@ -4,6 +4,14 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Receivable
 
 __author__ = 'luckydonald'
+__all__ = [
+    'ServiceMessage',
+    'ProximityAlertTriggered',
+    'MessageAutoDeleteTimerChanged',
+    'VoiceChatStarted',
+    'VoiceChatEnded',
+    'VoiceChatParticipantsInvited',
+]
 
 
 class ServiceMessage(Receivable):

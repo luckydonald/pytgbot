@@ -4,6 +4,9 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Sendable
 
 __author__ = 'luckydonald'
+__all__ = [
+    'BotCommand',
+]
 
 
 class BotCommand(Sendable):

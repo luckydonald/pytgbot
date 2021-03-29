@@ -4,6 +4,10 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Result
 
 __author__ = 'luckydonald'
+__all__ = [
+    'StickerSet',
+    'MaskPosition',
+]
 
 
 class StickerSet(Result):

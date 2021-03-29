@@ -5,6 +5,10 @@ from . import Result
 from .updates import UpdateType
 
 __author__ = 'luckydonald'
+__all__ = [
+    'InlineQuery',
+    'ChosenInlineResult',
+]
 
 
 class InlineQuery(Result):

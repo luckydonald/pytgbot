@@ -1,12 +1,34 @@
 # -*- coding: utf-8 -*-
-__all__ = ['Media', 'MessageEntity', 'DownloadableMedia', 'PhotoSize', 'Audio', 'Animation', 'Document', 'Sticker', 'Video', 'Voice', 'VideoNote', 'Contact', 'Location', 'Venue', 'UserProfilePhotos', 'File', 'ChatPhoto', 'Game']
-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Receivable
 from . import Result
 
 __author__ = 'luckydonald'
+__all__ = [
+    'Media',
+    'MessageEntity',
+    'PhotoSize',
+    'Animation',
+    'Audio',
+    'Document',
+    'Video',
+    'VideoNote',
+    'Voice',
+    'Contact',
+    'Dice',
+    'PollOption',
+    'PollAnswer',
+    'Poll',
+    'Location',
+    'Venue',
+    'UserProfilePhotos',
+    'File',
+    'ChatPhoto',
+    'Sticker',
+    'Game',
+]
+__all__ += ['DownloadableMedia']
 
 
 class Media(Receivable):

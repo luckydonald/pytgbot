@@ -5,6 +5,14 @@ from . import Result
 from .updates import UpdateType
 
 __author__ = 'luckydonald'
+__all__ = [
+    'Invoice',
+    'ShippingAddress',
+    'OrderInfo',
+    'SuccessfulPayment',
+    'ShippingQuery',
+    'PreCheckoutQuery',
+]
 
 
 class Invoice(Result):

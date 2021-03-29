@@ -3,8 +3,13 @@ from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Result
 
-__all__ = ['PassportData', 'PassportFile', 'EncryptedPassportElement', 'EncryptedCredentials']
 __author__ = 'luckydonald'
+__all__ = [
+    'PassportData',
+    'PassportFile',
+    'EncryptedPassportElement',
+    'EncryptedCredentials',
+]
 
 
 class PassportData(Result):

@@ -4,6 +4,15 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Receivable
 
 __author__ = 'luckydonald'
+__all__ = [
+    'UpdateType',
+    'CallbackGame',
+    'Update',
+    'WebhookInfo',
+    'Message',
+    'CallbackQuery',
+    'ResponseParameters',
+]
 
 
 class UpdateType(Receivable):

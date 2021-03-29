@@ -4,7 +4,10 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from .. import TgBotApiObject
 
 __author__ = 'luckydonald'
-__all__ = ["files", "inline", "payments", "reply_markup", "Sendable"]
+__all__ = [
+    'Sendable',
+]
+__all__ += ["files", "inline", "payments", "reply_markup"]
 
 # UPCOMING CHANGE IN v2.2.0:
 from . import files  # backwards compatibility, before v2.2.0

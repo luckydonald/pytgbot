@@ -4,6 +4,35 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 from . import Sendable
 
 __author__ = 'luckydonald'
+__all__ = [
+    'InlineQueryResult',
+    'InlineQueryCachedResult',
+    'InputMessageContent',
+    'InlineQueryResultArticle',
+    'InlineQueryResultPhoto',
+    'InlineQueryResultGif',
+    'InlineQueryResultMpeg4Gif',
+    'InlineQueryResultVideo',
+    'InlineQueryResultAudio',
+    'InlineQueryResultVoice',
+    'InlineQueryResultDocument',
+    'InlineQueryResultLocation',
+    'InlineQueryResultVenue',
+    'InlineQueryResultContact',
+    'InlineQueryResultGame',
+    'InlineQueryResultCachedPhoto',
+    'InlineQueryResultCachedGif',
+    'InlineQueryResultCachedMpeg4Gif',
+    'InlineQueryResultCachedSticker',
+    'InlineQueryResultCachedDocument',
+    'InlineQueryResultCachedVideo',
+    'InlineQueryResultCachedVoice',
+    'InlineQueryResultCachedAudio',
+    'InputTextMessageContent',
+    'InputLocationMessageContent',
+    'InputVenueMessageContent',
+    'InputContactMessageContent',
+]
 
 
 class InlineQueryResult(Sendable):
