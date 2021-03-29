@@ -86,6 +86,13 @@ class InputFile(object):
         self._size = None
     # end def
 
+    def to_array(self):
+        """"
+        So that the to string doesn't error out.
+        """
+        return "<InputFile ({s.__class__.__name__}) - File with mime {s.mime!r} and name {s.name!r}>".format(s=self)
+    # end if
+
     @abstractmethod
     def get_request_files(self, var_name):
         """
