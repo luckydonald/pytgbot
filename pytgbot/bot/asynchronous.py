@@ -99,7 +99,7 @@ class AsyncBot(BotBase):
         :param command: The Url command parameter
         :type  command: str
 
-        :param request_timeout: When the request should time out. Default: `None`
+        :param request_timeout: When the request should time out. Default: `self._default_timeout`
         :type  request_timeout: int
 
         :param files: if it needs to send files.
@@ -114,6 +114,7 @@ class AsyncBot(BotBase):
         :rtype:  DictObject.DictObject | pytgbot.api_types.receivable.Receivable
         """
 
+        request_timeout = self._default_timeout if request_timeout is None else request_timeout
         url, params, files = self._prepare_request(command, query)
         logger.debug('Sending async request to url {url!r} with params: {params!r}'.format(url=url, params=params))
         async with httpx.AsyncClient(

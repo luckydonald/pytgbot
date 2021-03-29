@@ -28,10 +28,11 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_BASE_URL = "https://api.telegram.org/bot{api_key}/{command}"
 DEFAULT_DOWNLOAD_URL = "https://api.telegram.org/file/bot{api_key}/{file}"
+DEFAULT_TIMEOUT = 60.0  # a int or float for seconds or None to not specify any.
 
 
 class BotBase(object):
-    def __init__(self, api_key, return_python_objects=True, base_url=None, download_url=None):
+    def __init__(self, api_key, return_python_objects=True, base_url=None, download_url=None, default_timeout=None):
         """
         A Bot instance. From here you can call all the functions.
         The api key can be obtained from @BotFather, see https://core.telegram.org/bots#6-botfather
@@ -56,6 +57,9 @@ class BotBase(object):
         :param return_python_objects: If it should convert the json to `pytgbot.api_types.*` object  (`True`, default)
                                       or return the parsed json values directly (`False`).
         :type  return_python_objects: bool
+
+        :param default_timeout: The default timeout to use for requests to the telegram api.
+    :type  return_python_objects: None|float|int
         """
         if api_key is None or not api_key:
             raise ValueError("No api_key given.")
@@ -65,6 +69,7 @@ class BotBase(object):
         self._last_update = datetime.now()
         self._base_url = DEFAULT_BASE_URL if base_url is None else base_url
         self._download_url = self.calculate_download_url(self._base_url, download_url)
+        self._default_timeout = DEFAULT_TIMEOUT if default_timeout is None else default_timeout
         self._me = None        # will be filled when using the property .id or .username, or when calling ._load_info()
     # end def __init__
 
