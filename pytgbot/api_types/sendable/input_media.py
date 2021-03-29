@@ -20,7 +20,7 @@ class InputMedia(Sendable):
     :type  type: str|unicode
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode
+    :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
     Optional keyword parameters:
@@ -48,7 +48,7 @@ class InputMedia(Sendable):
         :type  type: str|unicode
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode
+        :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
         Optional keyword parameters:
@@ -66,7 +66,7 @@ class InputMedia(Sendable):
 
         assert_type_or_raise(type, unicode_type, parameter_name="type")
         self.type = type
-        assert_type_or_raise(media, unicode_type, parameter_name="media")
+        assert_type_or_raise(media, InputFile, unicode_type, parameter_name="media")
         self.media = media
         assert_type_or_raise(caption, None, unicode_type, parameter_name="caption")
         self.caption = caption
@@ -93,7 +93,13 @@ class InputMedia(Sendable):
         array = super(InputMedia, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-        array['media'] = u(self.media)  # py2: type unicode, py3: type str
+        if isinstance(self.media, InputFile):
+            array['media'] = self.media.to_array()  # type InputFile
+        elif isinstance(self.media, str):
+            array['media'] = u(self.media)  # py2: type unicode, py3: type str
+        else:
+            raise TypeError('Unknown type, must be one of InputFile, str.')
+        # end if
         if self.caption is not None:
             array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
         # end if
@@ -119,7 +125,13 @@ class InputMedia(Sendable):
 
         data = Sendable.validate_array(array)
         data['type'] = u(array.get('type'))
-        data['media'] = u(array.get('media'))
+        if isinstance(array.get('media'), InputFile):
+            data['thumb'] = None  # will be filled later by get_request_data()
+        elif isinstance(array.get('media'), str):
+            data['media'] = u(array.get('media'))
+        else:
+            raise TypeError('Unknown type, must be one of InputFile, str.')
+        # end if
         data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
         data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         data['caption_entities'] = MessageEntity.from_array_list(array.get('caption_entities'), list_level=1) if array.get('caption_entities') is not None else None
@@ -217,7 +229,7 @@ class InputMediaWithThumb(InputMedia):
     :type  type: str|unicode
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode
+    :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
@@ -280,7 +292,7 @@ class InputMediaWithThumb(InputMedia):
         :type  type: str|unicode
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode
+        :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
@@ -323,46 +335,29 @@ class InputMediaWithThumb(InputMedia):
         # end if
 
         array = super(InputMediaWithThumb, self).to_array()
-
-        # 'type' given by superclass
-        # 'media' given by superclass
-        if isinstance(self.thumb, InputFile):
-            array['thumb'] = self.thumb.to_array()  # type InputFile
-        elif isinstance(self.thumb, str):
-            array['thumb'] = u(self.thumb)  # py2: type unicode, py3: type str
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end if
-        # 'caption' given by superclass
-        # 'parse_mode' given by superclass
-        # 'caption_entities' given by superclass
-
+        # 'type' is handled by superclass
+        array['media'] = u(self.media)  # py2: type unicode, py3: type str
+        if self.caption is not None:
+            array['caption'] = u(self.caption)  # py2: type unicode, py3: type str
+        if self.parse_mode is not None:
+            array['parse_mode'] = u(self.parse_mode)  # py2: type unicode, py3: type str
         return array
     # end def to_array
 
     @staticmethod
     def validate_array(array):
         """
-        Builds a new array with valid values for the InputMediaWithThumb constructor.
+        Builds a new array with valid values for the InputMediaPhoto constructor.
 
         :return: new array with valid values
         :rtype: dict
         """
         assert_type_or_raise(array, dict, parameter_name="array")
-
         data = InputMedia.validate_array(array)
-        # 'type' is given by class type
-        # 'media' is given by class type
-        if isinstance(array.get('thumb'), InputFile):
-            data['thumb'] = None  # will be filled later by get_request_data()
-        elif isinstance(array.get('thumb'), str):
-            data['thumb'] = u(array.get('thumb'))
-        else:
-            raise TypeError('Unknown type, must be one of InputFile, str.')
-        # end if
-        # 'caption' is given by class type
-        # 'parse_mode' is given by class type
-        # 'caption_entities' is given by class type
+        # 'type' is handled by the superclass.
+        data['media'] = u(array.get('media'))
+        data['caption'] = u(array.get('caption')) if array.get('caption') is not None else None
+        data['parse_mode'] = u(array.get('parse_mode')) if array.get('parse_mode') is not None else None
         return data
     # end def validate_array
 
@@ -427,7 +422,7 @@ class InputMediaPlayable(InputMediaWithThumb):
     :type  type: str|unicode
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode
+    :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
@@ -464,7 +459,7 @@ class InputMediaPlayable(InputMediaWithThumb):
         :type  type: str|unicode
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode
+        :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
@@ -609,7 +604,7 @@ class InputMediaVideolike(InputMediaPlayable):
     :type  type: str|unicode
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode
+    :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
     :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
@@ -652,7 +647,7 @@ class InputMediaVideolike(InputMediaPlayable):
         :type  type: str|unicode
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode
+        :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
         :param thumb: Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file.
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
@@ -809,7 +804,7 @@ class InputMediaPhoto(InputMedia):
     Parameters:
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode
+    :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
     Optional keyword parameters:
@@ -835,7 +830,7 @@ class InputMediaPhoto(InputMedia):
         Parameters:
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode
+        :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
         Optional keyword parameters:
@@ -962,7 +957,7 @@ class InputMediaVideo(InputMediaVideolike):
     Parameters:
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode
+    :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
     Optional keyword parameters:
@@ -1003,7 +998,7 @@ class InputMediaVideo(InputMediaVideolike):
         Parameters:
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
+        :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
         Optional keyword parameters:
@@ -1165,7 +1160,7 @@ class InputMediaAnimation(InputMediaVideolike):
     Parameters:
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
+    :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
     Optional keyword parameters:
@@ -1203,7 +1198,7 @@ class InputMediaAnimation(InputMediaVideolike):
         Parameters:
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
+        :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
         Optional keyword parameters:
@@ -1356,7 +1351,7 @@ class InputMediaAudio(InputMediaPlayable):
     Parameters:
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
+    :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
     Optional keyword parameters:
@@ -1394,7 +1389,7 @@ class InputMediaAudio(InputMediaPlayable):
         Parameters:
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-       :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
+        :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
         Optional keyword parameters:
@@ -1553,7 +1548,7 @@ class InputMediaDocument(InputMediaWithThumb):
     Parameters:
 
     :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-    :type  media: str|unicode
+    :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
     Optional keyword parameters:
@@ -1585,7 +1580,7 @@ class InputMediaDocument(InputMediaWithThumb):
         Parameters:
 
         :param media: File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass "attach://<file_attach_name>" to upload a new one using multipart/form-data under <file_attach_name> name. More info on Sending Files »
-        :type  media: str|unicode|pytgbot.api_types.sendable.files.InputFile
+        :type  media: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
 
         Optional keyword parameters:
