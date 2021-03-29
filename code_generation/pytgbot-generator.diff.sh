@@ -11,5 +11,5 @@ find . -maxdepth 5 \( ! -type d \) -exec sh -c 'cp  "$@" "../code_generation/out
 
 cd code_generation/output/pytgbot/
 
-git diff . > ../../pytgbot-generator4.patch
+git diff . > ../../pytgbot-generator-patch.patch
 
