@@ -12,22 +12,22 @@ class GameHighScore(Result):
     This object represents one row of the high scores table for a game.
 
     https://core.telegram.org/bots/api#gamehighscore
-    
+
 
     Parameters:
-    
+
     :param position: Position in high score table for the game
     :type  position: int
-    
+
     :param user: User
     :type  user: pytgbot.api_types.receivable.peer.User
-    
+
     :param score: Score
     :type  score: int
-    
+
 
     Optional keyword parameters:
-    
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
