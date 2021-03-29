@@ -100,7 +100,7 @@ class InputMediaModel(BaseModel):  # Sendable"""This object represents the conte
     """
 
     type: str
-    media: str
+    media: Union['InputFileModel', str]
     caption: Optional[str]
     parse_mode: Optional[str]
     caption_entities: Optional[List['MessageEntityModel']]
@@ -113,7 +113,7 @@ class InputMediaWithThumbModel(BaseModel):  # InputMedia"""This object represent
     """
 
     type: str
-    media: str
+    media: Union['InputFileModel', str]
     thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
@@ -127,7 +127,7 @@ class InputMediaPlayableModel(BaseModel):  # InputMediaWithThumb"""This object r
     """
 
     type: str
-    media: str
+    media: Union['InputFileModel', str]
     thumb: Optional[Union['InputFileModel', str]]
     duration: Optional[int]
     caption: Optional[str]
@@ -142,7 +142,7 @@ class InputMediaVideolikeModel(BaseModel):  # InputMediaPlayable"""This object r
     """
 
     type: str
-    media: str
+    media: Union['InputFileModel', str]
     thumb: Optional[Union['InputFileModel', str]]
     duration: Optional[int]
     width: Optional[int]
@@ -874,7 +874,7 @@ class InputMediaPhotoModel(BaseModel):  # InputMedia"""Represents a photo to be 
     """
 
     type: str
-    media: str
+    media: Union['InputFileModel', str]
     caption: Optional[str]
     parse_mode: Optional[str]
     caption_entities: Optional[List['MessageEntityModel']]
@@ -887,7 +887,7 @@ class InputMediaVideoModel(BaseModel):  # InputMediaVideolike"""Represents a vid
     """
 
     type: str
-    media: str
+    media: Union['InputFileModel', str]
     thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
@@ -905,7 +905,7 @@ class InputMediaAnimationModel(BaseModel):  # InputMediaVideolike"""Represents a
     """
 
     type: str
-    media: str
+    media: Union['InputFileModel', str]
     thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
@@ -922,7 +922,7 @@ class InputMediaAudioModel(BaseModel):  # InputMediaPlayable"""Represents an aud
     """
 
     type: str
-    media: str
+    media: Union['InputFileModel', str]
     thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
@@ -939,7 +939,7 @@ class InputMediaDocumentModel(BaseModel):  # InputMediaWithThumb"""Represents a 
     """
 
     type: str
-    media: str
+    media: Union['InputFileModel', str]
     thumb: Optional[Union['InputFileModel', str]]
     caption: Optional[str]
     parse_mode: Optional[str]
