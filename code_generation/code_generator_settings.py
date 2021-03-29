@@ -759,7 +759,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
     ),
     link='https://core.telegram.org/bots/api#inputmedia',
     description=(
-        'This object represents the content of a media message to be sent.'
+        'InputMedia but with a thumb field.'
     ),
     parameters=[arg.clone() for arg in CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"].parameters] + [
         Variable(
@@ -812,7 +812,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
         to_array=[
             'def to_array(self):',
             '    """',
-            '    Serializes this InputMediaPhoto to a dictionary.',
+            '    Serializes this InputMediaWithThumb to a dictionary.',
             '',
             '    :return: dictionary representation of this object.',
             '    :rtype: dict',
@@ -831,7 +831,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWith
             '@staticmethod',
             'def validate_array(array):',
             '    """',
-            '    Builds a new array with valid values for the InputMediaPhoto constructor.',
+            '    Builds a new array with valid values for the InputMediaWithThumb constructor.',
             '',
             '    :return: new array with valid values',
             '    :rtype: dict',
@@ -898,7 +898,7 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaPlay
     ),
     link='https://core.telegram.org/bots/api#inputmedia',
     description=(
-        'This object represents the content of a media message to be sent.'
+        'InputMedia with a thumb and duration.'
     ),
     parameters=[arg.clone() for arg in CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMediaWithThumb"].parameters] + [
         Variable(
