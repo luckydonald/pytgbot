@@ -550,6 +550,16 @@ CUSTOM_CLASSES["pytgbot.api_types.receivable.sendable.input_media.InputMedia"] =
             path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["InputMedia"][CLASS_TYPE_PATHS__PARENT]][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
             name=CLASS_TYPE_PATHS["InputMedia"][CLASS_TYPE_PATHS__PARENT]
         ),
+        Import(
+            # Type(string='InputFile', is_builtin=False, always_is_value=None, is_list=0, import_path='pytgbot.api_types.sendable.files', description=None),
+            path=CLASS_TYPE_PATHS["InputFile"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name="InputFile"
+        ),
+        Import(
+            # Type(string='MessageEntity', is_builtin=False, always_is_value=None, is_list=1, import_path='pytgbot.api_types.receivable.media', description=None),
+            path=CLASS_TYPE_PATHS["MessageEntity"][CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+            name="MessageEntity"
+        ),
     ],
     parent_clazz=Type(
         string=CLASS_TYPE_PATHS["InputMedia"][CLASS_TYPE_PATHS__PARENT],

@@ -42,15 +42,12 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {{ self.class_docstring()|indent -}}
         """{% endif %}
         super({{ clazz.clazz }}, self).__init__({%- for variable in clazz.variables if variable.duplicate_of_parent %}{{ variable.name }}={{ variable.value_to_set }}{% if not loop.last %}, {% endif %}{%- endfor %})
-
-        {%- block imports_block -%}
-        {%- if clazz.imports %}
-        {% for import in clazz.imports if import.relative_import(base_path=clazz.import_path).path != '.' -%}
-        {{ import.import_statement_from_file(clazz.import_path) }}
-        {% endfor -%}
-        {% endif -%}
-        {%- endblock -%}
-        {% for variable in clazz.variables %}{#
+        {% block imports_block %}{#
+        #}{% if clazz.imports %}{% for import in clazz.imports if import.relative_import(base_path=clazz.import_path).path != '.' %}
+        {{ import.import_statement_from_file(clazz.import_path) }}{#
+        #}{% endfor %}{% endif %}{#
+        #}{% endblock %}{#
+        #}{% for variable in clazz.variables %}{#
         #}{% if not variable.is_fixed_value and not variable.duplicate_of_parent %}{#
         #}{% if variable.optional %}
         assert_type_or_raise({{ variable.name }}, None, {{ types_as_tuple(clazz.variables, variable) }}, parameter_name="{{ variable.name }}"){#
@@ -96,7 +93,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         if prefer_original and self._raw:
             return self._raw
         # end if
-
+        {{ self.imports_block() }}
         array = super({{ clazz.clazz }}, self).to_array()
         {% for variable in clazz.variables %}{#
         #}{% if variable.duplicate_of_parent %}
