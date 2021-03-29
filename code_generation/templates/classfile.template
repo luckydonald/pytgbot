@@ -9,6 +9,10 @@ from luckydonaldUtils.exceptions import assert_type_or_raise
 {% endfor -%}
 
 __author__ = 'luckydonald'
+__all__ = [{% for clazz in clazzes %}
+    {{ clazz.clazz.__repr__() }},{#
+#}{% endfor %}
+]
 
 {% for clazz in clazzes %}
 {% include "class.template" %}
