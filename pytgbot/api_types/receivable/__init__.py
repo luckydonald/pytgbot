@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u
 from luckydonaldUtils.exceptions import assert_type_or_raise
-from . import TgBotApiObject
+from .. import TgBotApiObject
 
 __author__ = 'luckydonald'
 __all__ = [

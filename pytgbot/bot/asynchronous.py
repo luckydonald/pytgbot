@@ -74,7 +74,7 @@ class AsyncBot(BotBase):
         :return:
         """
 
-        from .syncrounous import SyncBot
+        from .synchronous import SyncBot
         bot = SyncBot(api_key=self.api_key, return_python_objects=True)
         myself = bot.get_me()
         self._me = myself
