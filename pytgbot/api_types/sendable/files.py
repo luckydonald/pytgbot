@@ -3,7 +3,6 @@ from abc import abstractmethod
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.exceptions import assert_type_or_raise
 from os import path as os_path
-import requests
 
 try:  # python 2:
     # noinspection PyCompatibility
@@ -384,6 +383,7 @@ class InputFileFromURL(InputFile):
         # end if
 
         # BLOB
+        import requests
         request = requests.get(url)
         if not request.status_code == 200:
             raise ValueError("Status code of request wasn't 200, but {!r}".format(request.status_code))
