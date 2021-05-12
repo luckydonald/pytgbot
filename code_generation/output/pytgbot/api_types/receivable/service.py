@@ -8,6 +8,7 @@ __all__ = [
     'ServiceMessage',
     'ProximityAlertTriggered',
     'MessageAutoDeleteTimerChanged',
+    'VoiceChatScheduled',
     'VoiceChatStarted',
     'VoiceChatEnded',
     'VoiceChatParticipantsInvited',
@@ -301,6 +302,132 @@ class MessageAutoDeleteTimerChanged(ServiceMessage):
         )
     # end def __contains__
 # end class MessageAutoDeleteTimerChanged
+
+
+class VoiceChatScheduled(ServiceMessage):
+    """
+    This object represents a service message about a voice chat scheduled in the chat.
+
+    https://core.telegram.org/bots/api#voicechatscheduled
+
+
+    Parameters:
+
+    :param start_date: Point in time (Unix timestamp) when the voice chat is supposed to be started by a chat administrator
+    :type  start_date: int
+
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, start_date, _raw=None):
+        """
+        This object represents a service message about a voice chat scheduled in the chat.
+
+        https://core.telegram.org/bots/api#voicechatscheduled
+
+
+        Parameters:
+
+        :param start_date: Point in time (Unix timestamp) when the voice chat is supposed to be started by a chat administrator
+        :type  start_date: int
+
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(VoiceChatScheduled, self).__init__()
+        assert_type_or_raise(start_date, int, parameter_name="start_date")
+        self.start_date = start_date
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self, prefer_original=False):
+        """
+        Serializes this VoiceChatScheduled to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
+        array = super(VoiceChatScheduled, self).to_array()
+
+        array['start_date'] = int(self.start_date)  # type int
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the VoiceChatScheduled constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = ServiceMessage.validate_array(array)
+        data['start_date'] = int(array.get('start_date'))
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new VoiceChatScheduled from a given dictionary.
+
+        :return: new VoiceChatScheduled instance.
+        :rtype: VoiceChatScheduled
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = VoiceChatScheduled.validate_array(array)
+        data['_raw'] = array
+        return VoiceChatScheduled(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(voicechatscheduled_instance)`
+        """
+        return "VoiceChatScheduled(start_date={self.start_date!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(voicechatscheduled_instance)`
+        """
+        if self._raw:
+            return "VoiceChatScheduled.from_array({self._raw})".format(self=self)
+        # end if
+        return "VoiceChatScheduled(start_date={self.start_date!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in voicechatscheduled_instance`
+        """
+        return (
+            key in ["start_date"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class VoiceChatScheduled
 
 
 class VoiceChatStarted(ServiceMessage):

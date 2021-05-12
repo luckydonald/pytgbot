@@ -69,6 +69,27 @@ class MessageAutoDeleteTimerChanged(ServiceMessage):
     message_auto_delete_time: int
 # end class MessageAutoDeleteTimerChanged
 
+class VoiceChatScheduled(ServiceMessage):
+    """
+    This object represents a service message about a voice chat scheduled in the chat.
+
+    https://core.telegram.org/bots/api#voicechatscheduled
+
+
+    Parameters:
+
+    :param start_date: Point in time (Unix timestamp) when the voice chat is supposed to be started by a chat administrator
+    :type  start_date: int
+
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    start_date: int
+# end class VoiceChatScheduled
+
 class VoiceChatStarted(ServiceMessage):
     """
     This object represents a service message about a voice chat started in the chat. Currently holds no information.

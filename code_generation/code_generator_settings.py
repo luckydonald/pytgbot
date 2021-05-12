@@ -37,9 +37,10 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "ServiceMessage":                ("pytgbot.api_types.receivable.service.", "Receivable", None),  # November 4, 2020
     "ProximityAlertTriggered":       ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
     "MessageAutoDeleteTimerChanged": ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # March 9, 2021, (import changed November 4, 2020)
-    "VoiceChatStarted":              ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
-    "VoiceChatEnded":                ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
-    "VoiceChatParticipantsInvited":  ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # November 4, 2020
+    "VoiceChatStarted":              ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # March 9, 2021
+    "VoiceChatEnded":                ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # March 9, 2021
+    "VoiceChatParticipantsInvited":  ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # March 9, 2021
+    "VoiceChatScheduled":            ("pytgbot.api_types.receivable.service.", "ServiceMessage", None),  # April 26, 2021
 
     # pytgbot.api_types.receivable.responses.*
     "MessageId":       ("pytgbot.api_types.receivable.responses.", "Result", None),  # July 29, 2019
@@ -106,6 +107,7 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "InputLocationMessageContent":  ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),
     "InputVenueMessageContent":     ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),
     "InputContactMessageContent":   ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),
+    "InputInvoiceMessageContent":   ("pytgbot.api_types.sendable.inline.", "InputMessageContent", None),  # April 26, 2021
     "InlineQueryResult":            ("pytgbot.api_types.sendable.inline.", "Sendable", None),
     "InlineQueryResultArticle":     ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),
     "InlineQueryResultPhoto":       ("pytgbot.api_types.sendable.inline.", "InlineQueryResult", None),

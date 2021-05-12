@@ -4494,15 +4494,15 @@ class BotBase(object):
         return result
     # end def _answer_inline_query__process_result
 
-    def _send_invoice__make_request(self, chat_id, title, description, payload, provider_token, start_parameter, currency, prices, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_invoice__make_request(self, chat_id, title, description, payload, provider_token, currency, prices, max_tip_amount=None, suggested_tip_amounts=None, start_parameter=None, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendInvoice endpoint.
 
 
         Parameters:
 
-        :param chat_id: Unique identifier for the target private chat
-        :type  chat_id: int
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
 
         :param title: Product name, 1-32 characters
         :type  title: str|unicode
@@ -4516,9 +4516,6 @@ class BotBase(object):
         :param provider_token: Payments provider token, obtained via Botfather
         :type  provider_token: str|unicode
 
-        :param start_parameter: Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
-        :type  start_parameter: str|unicode
-
         :param currency: Three-letter ISO 4217 currency code, see more on currencies
         :type  currency: str|unicode
 
@@ -4527,6 +4524,15 @@ class BotBase(object):
 
 
         Optional keyword parameters:
+
+        :param max_tip_amount: The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+        :type  max_tip_amount: int
+
+        :param suggested_tip_amounts: A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+        :type  suggested_tip_amounts: list of int
+
+        :param start_parameter: Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter
+        :type  start_parameter: str|unicode
 
         :param provider_data: A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
         :type  provider_data: str|unicode
@@ -4582,14 +4588,16 @@ class BotBase(object):
         from pytgbot.api_types.sendable.payments import LabeledPrice
         from pytgbot.api_types.sendable.reply_markup import InlineKeyboardMarkup
 
-        assert_type_or_raise(chat_id, int, parameter_name="chat_id")
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(title, unicode_type, parameter_name="title")
         assert_type_or_raise(description, unicode_type, parameter_name="description")
         assert_type_or_raise(payload, unicode_type, parameter_name="payload")
         assert_type_or_raise(provider_token, unicode_type, parameter_name="provider_token")
-        assert_type_or_raise(start_parameter, unicode_type, parameter_name="start_parameter")
         assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         assert_type_or_raise(prices, list, parameter_name="prices")
+        assert_type_or_raise(max_tip_amount, None, int, parameter_name="max_tip_amount")
+        assert_type_or_raise(suggested_tip_amounts, None, list, parameter_name="suggested_tip_amounts")
+        assert_type_or_raise(start_parameter, None, unicode_type, parameter_name="start_parameter")
         assert_type_or_raise(provider_data, None, unicode_type, parameter_name="provider_data")
         assert_type_or_raise(photo_url, None, unicode_type, parameter_name="photo_url")
         assert_type_or_raise(photo_size, None, int, parameter_name="photo_size")
@@ -4606,7 +4614,7 @@ class BotBase(object):
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        return self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, currency=currency, prices=prices, max_tip_amount=max_tip_amount, suggested_tip_amounts=suggested_tip_amounts, start_parameter=start_parameter, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_invoice__make_request
 
     def _send_invoice__process_result(self, result):

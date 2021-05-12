@@ -4942,9 +4942,6 @@ class InvoiceMessage(ReturnableMessageBase):
     :param provider_token: Payments provider token, obtained via Botfather
     :type  provider_token: str|unicode
 
-    :param start_parameter: Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
-    :type  start_parameter: str|unicode
-
     :param currency: Three-letter ISO 4217 currency code, see more on currencies
     :type  currency: str|unicode
 
@@ -4960,6 +4957,15 @@ class InvoiceMessage(ReturnableMessageBase):
 
     :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
     :type  reply_id: DEFAULT_MESSAGE_ID | int
+
+    :param max_tip_amount: The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+    :type  max_tip_amount: int
+
+    :param suggested_tip_amounts: A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+    :type  suggested_tip_amounts: list of int
+
+    :param start_parameter: Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter
+    :type  start_parameter: str|unicode
 
     :param provider_data: A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
     :type  provider_data: str|unicode
@@ -5007,7 +5013,7 @@ class InvoiceMessage(ReturnableMessageBase):
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     """
 
-    def __init__(self, title, description, payload, provider_token, start_parameter, currency, prices, receiver=None, reply_id=DEFAULT_MESSAGE_ID, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
+    def __init__(self, title, description, payload, provider_token, currency, prices, receiver=None, reply_id=DEFAULT_MESSAGE_ID, max_tip_amount=None, suggested_tip_amounts=None, start_parameter=None, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, allow_sending_without_reply=None, reply_markup=None):
         """
 
         Use this method to send invoices. On success, the sent Message is returned.
@@ -5029,9 +5035,6 @@ class InvoiceMessage(ReturnableMessageBase):
         :param provider_token: Payments provider token, obtained via Botfather
         :type  provider_token: str|unicode
 
-        :param start_parameter: Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
-        :type  start_parameter: str|unicode
-
         :param currency: Three-letter ISO 4217 currency code, see more on currencies
         :type  currency: str|unicode
 
@@ -5047,6 +5050,15 @@ class InvoiceMessage(ReturnableMessageBase):
 
         :param reply_id: Set if you want to overwrite the `reply_to_message_id`, which automatically is the message triggering the bot.
         :type  reply_id: DEFAULT_MESSAGE_ID | int
+
+        :param max_tip_amount: The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+        :type  max_tip_amount: int
+
+        :param suggested_tip_amounts: A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+        :type  suggested_tip_amounts: list of int
+
+        :param start_parameter: Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter
+        :type  start_parameter: str|unicode
 
         :param provider_data: A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
         :type  provider_data: str|unicode
@@ -5107,8 +5119,6 @@ class InvoiceMessage(ReturnableMessageBase):
         self.payload = payload
         assert_type_or_raise(provider_token, unicode_type, parameter_name="provider_token")
         self.provider_token = provider_token
-        assert_type_or_raise(start_parameter, unicode_type, parameter_name="start_parameter")
-        self.start_parameter = start_parameter
         assert_type_or_raise(currency, unicode_type, parameter_name="currency")
         self.currency = currency
         assert_type_or_raise(prices, list, parameter_name="prices")
@@ -5117,6 +5127,12 @@ class InvoiceMessage(ReturnableMessageBase):
         self.receiver = receiver
         assert_type_or_raise(reply_id, None, DEFAULT_MESSAGE_ID, int, parameter_name="reply_id")
         self.reply_id = reply_id
+        assert_type_or_raise(max_tip_amount, None, int, parameter_name="max_tip_amount")
+        self.max_tip_amount = max_tip_amount
+        assert_type_or_raise(suggested_tip_amounts, None, list, parameter_name="suggested_tip_amounts")
+        self.suggested_tip_amounts = suggested_tip_amounts
+        assert_type_or_raise(start_parameter, None, unicode_type, parameter_name="start_parameter")
+        self.start_parameter = start_parameter
         assert_type_or_raise(provider_data, None, unicode_type, parameter_name="provider_data")
         self.provider_data = provider_data
         assert_type_or_raise(photo_url, None, unicode_type, parameter_name="photo_url")
@@ -5169,11 +5185,13 @@ class InvoiceMessage(ReturnableMessageBase):
             description=self.description,
             payload=self.payload,
             provider_token=self.provider_token,
-            start_parameter=self.start_parameter,
             currency=self.currency,
             prices=self.prices,
             chat_id=self.receiver,
             reply_to_message_id=self.reply_id,
+            max_tip_amount=self.max_tip_amount,
+            suggested_tip_amounts=self.suggested_tip_amounts,
+            start_parameter=self.start_parameter,
             provider_data=self.provider_data,
             photo_url=self.photo_url,
             photo_size=self.photo_size,
@@ -5208,7 +5226,6 @@ class InvoiceMessage(ReturnableMessageBase):
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
         array['payload'] = u(self.payload)  # py2: type unicode, py3: type str
         array['provider_token'] = u(self.provider_token)  # py2: type unicode, py3: type str
-        array['start_parameter'] = u(self.start_parameter)  # py2: type unicode, py3: type str
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
         array['prices'] = PytgbotApiBot._as_array(self.prices)  # type list of LabeledPrice
         if isinstance(self.receiver, str):
@@ -5225,6 +5242,9 @@ class InvoiceMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int.')
         # end if
+        array['max_tip_amount'] = int(self.max_tip_amount)  # type int
+        array['suggested_tip_amounts'] = PytgbotApiBot._as_array(self.suggested_tip_amounts)  # type list of int
+        array['start_parameter'] = u(self.start_parameter)  # py2: type unicode, py3: type str
         array['provider_data'] = u(self.provider_data)  # py2: type unicode, py3: type str
         array['photo_url'] = u(self.photo_url)  # py2: type unicode, py3: type str
         array['photo_size'] = int(self.photo_size)  # type int
@@ -5259,7 +5279,6 @@ class InvoiceMessage(ReturnableMessageBase):
         data['description'] = u(array.get('description'))
         data['payload'] = u(array.get('payload'))
         data['provider_token'] = u(array.get('provider_token'))
-        data['start_parameter'] = u(array.get('start_parameter'))
         data['currency'] = u(array.get('currency'))
         data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
         if array.get('chat_id') is None:
@@ -5280,6 +5299,9 @@ class InvoiceMessage(ReturnableMessageBase):
         else:
             raise TypeError('Unknown type, must be one of DEFAULT_MESSAGE_ID, int or None.')
         # end if
+        data['max_tip_amount'] = int(array.get('max_tip_amount')) if array.get('max_tip_amount') is not None else None
+        data['suggested_tip_amounts'] = TgBotApiObject._builtin_from_array_list(required_type=int, value=array.get('suggested_tip_amounts'), list_level=1) if array.get('suggested_tip_amounts') is not None else None
+        data['start_parameter'] = u(array.get('start_parameter')) if array.get('start_parameter') is not None else None
         data['provider_data'] = u(array.get('provider_data')) if array.get('provider_data') is not None else None
         data['photo_url'] = u(array.get('photo_url')) if array.get('photo_url') is not None else None
         data['photo_size'] = int(array.get('photo_size')) if array.get('photo_size') is not None else None
@@ -5319,14 +5341,14 @@ class InvoiceMessage(ReturnableMessageBase):
         """
         Implements `str(invoicemessage_instance)`
         """
-        return "InvoiceMessage(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, start_parameter={self.start_parameter!r}, currency={self.currency!r}, prices={self.prices!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "InvoiceMessage(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, currency={self.currency!r}, prices={self.prices!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, max_tip_amount={self.max_tip_amount!r}, suggested_tip_amounts={self.suggested_tip_amounts!r}, start_parameter={self.start_parameter!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
         """
         Implements `repr(invoicemessage_instance)`
         """
-        return "InvoiceMessage(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, start_parameter={self.start_parameter!r}, currency={self.currency!r}, prices={self.prices!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "InvoiceMessage(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, currency={self.currency!r}, prices={self.prices!r}, receiver={self.receiver!r}, reply_id={self.reply_id!r}, max_tip_amount={self.max_tip_amount!r}, suggested_tip_amounts={self.suggested_tip_amounts!r}, start_parameter={self.start_parameter!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r}, disable_notification={self.disable_notification!r}, allow_sending_without_reply={self.allow_sending_without_reply!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -5334,7 +5356,7 @@ class InvoiceMessage(ReturnableMessageBase):
         Implements `"key" in invoicemessage_instance`
         """
         return (
-            key in ["title", "description", "payload", "provider_token", "start_parameter", "currency", "prices", "receiver", "reply_id", "provider_data", "photo_url", "photo_size", "photo_width", "photo_height", "need_name", "need_phone_number", "need_email", "need_shipping_address", "send_phone_number_to_provider", "send_email_to_provider", "is_flexible", "disable_notification", "allow_sending_without_reply", "reply_markup"]
+            key in ["title", "description", "payload", "provider_token", "currency", "prices", "receiver", "reply_id", "max_tip_amount", "suggested_tip_amounts", "start_parameter", "provider_data", "photo_url", "photo_size", "photo_width", "photo_height", "need_name", "need_phone_number", "need_email", "need_shipping_address", "send_phone_number_to_provider", "send_email_to_provider", "is_flexible", "disable_notification", "allow_sending_without_reply", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

@@ -7,7 +7,7 @@ from typing import Any, Union, List, Optional
 __author__ = 'luckydonald'
 
 __all__ = [
-    'MediaModel', 'ServiceMessageModel', 'PeerModel', 'UpdateTypeModel', 'CallbackGameModel', 'InlineQueryResultModel', 'InlineQueryCachedResultModel', 'InputMessageContentModel', 'InputMediaModel', 'InputMediaWithThumbModel', 'InputMediaPlayableModel', 'InputMediaVideolikeModel', 'PassportElementErrorModel', 'ButtonModel', 'ReplyMarkupModel', 'ReceivableModel', 'SendableModel', 'ResultModel', 'TgBotApiObjectModel', 'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageIdModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'ProximityAlertTriggeredModel', 'MessageAutoDeleteTimerChangedModel', 'VoiceChatStartedModel', 'VoiceChatEndedModel', 'VoiceChatParticipantsInvitedModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatInviteLinkModel', 'ChatMemberModel', 'ChatMemberUpdatedModel', 'ChatPermissionsModel', 'ChatLocationModel', 'BotCommandModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
+    'MediaModel', 'ServiceMessageModel', 'PeerModel', 'UpdateTypeModel', 'CallbackGameModel', 'InlineQueryResultModel', 'InlineQueryCachedResultModel', 'InputMessageContentModel', 'InputMediaModel', 'InputMediaWithThumbModel', 'InputMediaPlayableModel', 'InputMediaVideolikeModel', 'PassportElementErrorModel', 'ButtonModel', 'ReplyMarkupModel', 'ReceivableModel', 'SendableModel', 'ResultModel', 'TgBotApiObjectModel', 'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageIdModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'ProximityAlertTriggeredModel', 'MessageAutoDeleteTimerChangedModel', 'VoiceChatScheduledModel', 'VoiceChatStartedModel', 'VoiceChatEndedModel', 'VoiceChatParticipantsInvitedModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatInviteLinkModel', 'ChatMemberModel', 'ChatMemberUpdatedModel', 'ChatPermissionsModel', 'ChatLocationModel', 'BotCommandModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'InputInvoiceMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
 ]
 
 FAST_API_ISSUE_884_IS_FIXED = False
@@ -334,6 +334,7 @@ class MessageModel(BaseModel):  # UpdateType"""This object represents a message.
     connected_website: Optional[str]
     passport_data: Optional['PassportDataModel']
     proximity_alert_triggered: Optional['ProximityAlertTriggeredModel']
+    voice_chat_scheduled: Optional['VoiceChatScheduledModel']
     voice_chat_started: Optional['VoiceChatStartedModel']
     voice_chat_ended: Optional['VoiceChatEndedModel']
     voice_chat_participants_invited: Optional['VoiceChatParticipantsInvitedModel']
@@ -581,6 +582,15 @@ class MessageAutoDeleteTimerChangedModel(BaseModel):  # ServiceMessage"""This ob
 
     message_auto_delete_time: int
 # end class MessageAutoDeleteTimerChanged
+
+
+class VoiceChatScheduledModel(BaseModel):  # ServiceMessage"""This object represents a service message about a voice chat scheduled in the chat.
+
+    https://core.telegram.org/bots/api#voicechatscheduled
+    """
+
+    start_date: int
+# end class VoiceChatScheduled
 
 
 class VoiceChatStartedModel(BaseModel):  # ServiceMessage"""This object represents a service message about a voice chat started in the chat. Currently holds no information.
@@ -1001,6 +1011,7 @@ class InlineQueryModel(BaseModel):  # Result"""This object represents an incomin
     from_peer: 'UserModel'
     query: str
     offset: str
+    chat_type: Optional[str]
     location: Optional['LocationModel']
 # end class InlineQuery
 
@@ -1448,6 +1459,34 @@ class InputContactMessageContentModel(BaseModel):  # InputMessageContent"""Repre
 # end class InputContactMessageContent
 
 
+class InputInvoiceMessageContentModel(BaseModel):  # InputMessageContent"""Represents the content of an invoice message to be sent as the result of an inline query.
+
+    https://core.telegram.org/bots/api#inputinvoicemessagecontent
+    """
+
+    title: str
+    description: str
+    payload: str
+    provider_token: str
+    currency: str
+    prices: List['LabeledPriceModel']
+    max_tip_amount: Optional[int]
+    suggested_tip_amounts: Optional[List[int]]
+    provider_data: Optional[str]
+    photo_url: Optional[str]
+    photo_size: Optional[int]
+    photo_width: Optional[int]
+    photo_height: Optional[int]
+    need_name: Optional[bool]
+    need_phone_number: Optional[bool]
+    need_email: Optional[bool]
+    need_shipping_address: Optional[bool]
+    send_phone_number_to_provider: Optional[bool]
+    send_email_to_provider: Optional[bool]
+    is_flexible: Optional[bool]
+# end class InputInvoiceMessageContent
+
+
 class ChosenInlineResultModel(BaseModel):  # UpdateType"""Represents a result of an inline query that was chosen by the user and sent to their chat partner.
     Note: It is necessary to enable inline feedback via @Botfather in order to receive these objects in updates.
 
@@ -1792,6 +1831,7 @@ LocationModel.update_forward_refs()
 VenueModel.update_forward_refs()
 ProximityAlertTriggeredModel.update_forward_refs()
 MessageAutoDeleteTimerChangedModel.update_forward_refs()
+VoiceChatScheduledModel.update_forward_refs()
 VoiceChatStartedModel.update_forward_refs()
 VoiceChatEndedModel.update_forward_refs()
 VoiceChatParticipantsInvitedModel.update_forward_refs()
@@ -1847,6 +1887,7 @@ InputTextMessageContentModel.update_forward_refs()
 InputLocationMessageContentModel.update_forward_refs()
 InputVenueMessageContentModel.update_forward_refs()
 InputContactMessageContentModel.update_forward_refs()
+InputInvoiceMessageContentModel.update_forward_refs()
 ChosenInlineResultModel.update_forward_refs()
 LabeledPriceModel.update_forward_refs()
 InvoiceModel.update_forward_refs()

@@ -304,7 +304,7 @@ async def forward_message(
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
 ) -> JSONableResponse:
     """
-    Use this method to forward messages of any kind. On success, the sent Message is returned.
+    Use this method to forward messages of any kind. Service messages can't be forwarded. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#forwardmessage
     """
@@ -347,7 +347,7 @@ async def copy_message(
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
-    Use this method to copy messages of any kind. The method is analogous to the method forwardMessage, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
+    Use this method to copy messages of any kind. Service messages and invoice messages can't be copied. The method is analogous to the method forwardMessage, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
 
     https://core.telegram.org/bots/api#copymessage
     """
@@ -2863,14 +2863,16 @@ async def answer_inline_query(
 @routes.api_route('/{token}/sendInvoice', methods=['GET', 'POST'], tags=['official'])
 async def send_invoice(
     token: str = TOKEN_VALIDATION,
-    chat_id: int = Query(..., description='Unique identifier for the target private chat'),
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     title: str = Query(..., description='Product name, 1-32 characters'),
     description: str = Query(..., description='Product description, 1-255 characters'),
     payload: str = Query(..., description='Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.'),
     provider_token: str = Query(..., description='Payments provider token, obtained via Botfather'),
-    start_parameter: str = Query(..., description='Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter'),
     currency: str = Query(..., description='Three-letter ISO 4217 currency code, see more on currencies'),
     prices: Json[List['LabeledPriceModel']] = Query(..., description='Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)'),
+    max_tip_amount: Optional[int] = Query(None, description='The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0'),
+    suggested_tip_amounts: Optional[List[int]] = Query(None, description='A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.'),
+    start_parameter: Optional[str] = Query(None, description='Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter'),
     provider_data: Optional[str] = Query(None, description='A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.'),
     photo_url: Optional[str] = Query(None, description='URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.'),
     photo_size: Optional[int] = Query(None, description='Photo size'),
@@ -2920,9 +2922,11 @@ async def send_invoice(
         description=description,
         payload=payload,
         provider_token=provider_token,
-        start_parameter=start_parameter,
         currency=currency,
         prices=prices,
+        max_tip_amount=max_tip_amount,
+        suggested_tip_amounts=suggested_tip_amounts,
+        start_parameter=start_parameter,
         provider_data=provider_data,
         photo_url=photo_url,
         photo_size=photo_size,

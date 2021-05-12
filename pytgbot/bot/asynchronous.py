@@ -451,7 +451,7 @@ class AsyncBot(BotBase):
 
     async def forward_message(self, chat_id: Union[int, str], from_chat_id: Union[int, str], message_id: int, disable_notification: Optional[bool] = None) -> Message:
         """
-        Use this method to forward messages of any kind. On success, the sent Message is returned.
+        Use this method to forward messages of any kind. Service messages can't be forwarded. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#forwardmessage
 
@@ -485,7 +485,7 @@ class AsyncBot(BotBase):
 
     async def copy_message(self, chat_id: Union[int, str], from_chat_id: Union[int, str], message_id: int, caption: Optional[str] = None, parse_mode: Optional[str] = None, caption_entities: Optional[List[MessageEntity]] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]] = None) -> MessageId:
         """
-        Use this method to copy messages of any kind. The method is analogous to the method forwardMessage, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
+        Use this method to copy messages of any kind. Service messages and invoice messages can't be copied. The method is analogous to the method forwardMessage, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
 
         https://core.telegram.org/bots/api#copymessage
 
@@ -2680,7 +2680,7 @@ class AsyncBot(BotBase):
         return self._answer_inline_query__process_result(result)
     # end def answer_inline_query
 
-    async def send_invoice(self, chat_id: int, title: str, description: str, payload: str, provider_token: str, start_parameter: str, currency: str, prices: List[LabeledPrice], provider_data: Optional[str] = None, photo_url: Optional[str] = None, photo_size: Optional[int] = None, photo_width: Optional[int] = None, photo_height: Optional[int] = None, need_name: Optional[bool] = None, need_phone_number: Optional[bool] = None, need_email: Optional[bool] = None, need_shipping_address: Optional[bool] = None, send_phone_number_to_provider: Optional[bool] = None, send_email_to_provider: Optional[bool] = None, is_flexible: Optional[bool] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Message:
+    async def send_invoice(self, chat_id: Union[int, str], title: str, description: str, payload: str, provider_token: str, currency: str, prices: List[LabeledPrice], max_tip_amount: Optional[int] = None, suggested_tip_amounts: Optional[List[int]] = None, start_parameter: Optional[str] = None, provider_data: Optional[str] = None, photo_url: Optional[str] = None, photo_size: Optional[int] = None, photo_width: Optional[int] = None, photo_height: Optional[int] = None, need_name: Optional[bool] = None, need_phone_number: Optional[bool] = None, need_email: Optional[bool] = None, need_shipping_address: Optional[bool] = None, send_phone_number_to_provider: Optional[bool] = None, send_email_to_provider: Optional[bool] = None, is_flexible: Optional[bool] = None, disable_notification: Optional[bool] = None, reply_to_message_id: Optional[int] = None, allow_sending_without_reply: Optional[bool] = None, reply_markup: Optional[InlineKeyboardMarkup] = None) -> Message:
         """
         Use this method to send invoices. On success, the sent Message is returned.
 
@@ -2690,8 +2690,8 @@ class AsyncBot(BotBase):
 
         Parameters:
 
-        :param chat_id: Unique identifier for the target private chat
-        :type  chat_id: int
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
 
         :param title: Product name, 1-32 characters
         :type  title: str|unicode
@@ -2705,9 +2705,6 @@ class AsyncBot(BotBase):
         :param provider_token: Payments provider token, obtained via Botfather
         :type  provider_token: str|unicode
 
-        :param start_parameter: Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
-        :type  start_parameter: str|unicode
-
         :param currency: Three-letter ISO 4217 currency code, see more on currencies
         :type  currency: str|unicode
 
@@ -2716,6 +2713,15 @@ class AsyncBot(BotBase):
 
 
         Optional keyword parameters:
+
+        :param max_tip_amount: The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+        :type  max_tip_amount: int
+
+        :param suggested_tip_amounts: A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+        :type  suggested_tip_amounts: list of int
+
+        :param start_parameter: Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter
+        :type  start_parameter: str|unicode
 
         :param provider_data: A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
         :type  provider_data: str|unicode
@@ -2770,7 +2776,7 @@ class AsyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = await self._send_invoice__make_request(chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, start_parameter=start_parameter, currency=currency, prices=prices, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = await self._send_invoice__make_request(chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, currency=currency, prices=prices, max_tip_amount=max_tip_amount, suggested_tip_amounts=suggested_tip_amounts, start_parameter=start_parameter, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_invoice__process_result(result)
     # end def send_invoice
 

@@ -788,6 +788,9 @@ class Message(UpdateType):
     :param proximity_alert_triggered: Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
     :type  proximity_alert_triggered: pytgbot.api_types.receivable.service.ProximityAlertTriggered
 
+    :param voice_chat_scheduled: Optional. Service message: voice chat scheduled
+    :type  voice_chat_scheduled: pytgbot.api_types.receivable.service.VoiceChatScheduled
+
     :param voice_chat_started: Optional. Service message: voice chat started
     :type  voice_chat_started: pytgbot.api_types.receivable.service.VoiceChatStarted
 
@@ -804,7 +807,7 @@ class Message(UpdateType):
     :type  _raw: None | dict
     """
 
-    def __init__(self, message_id, date, chat, from_peer=None, sender_chat=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_sender_name=None, forward_date=None, reply_to_message=None, via_bot=None, edit_date=None, media_group_id=None, author_signature=None, text=None, entities=None, animation=None, audio=None, document=None, photo=None, sticker=None, video=None, video_note=None, voice=None, caption=None, caption_entities=None, contact=None, dice=None, game=None, poll=None, venue=None, location=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, message_auto_delete_timer_changed=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, proximity_alert_triggered=None, voice_chat_started=None, voice_chat_ended=None, voice_chat_participants_invited=None, reply_markup=None, _raw=None):
+    def __init__(self, message_id, date, chat, from_peer=None, sender_chat=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_sender_name=None, forward_date=None, reply_to_message=None, via_bot=None, edit_date=None, media_group_id=None, author_signature=None, text=None, entities=None, animation=None, audio=None, document=None, photo=None, sticker=None, video=None, video_note=None, voice=None, caption=None, caption_entities=None, contact=None, dice=None, game=None, poll=None, venue=None, location=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, message_auto_delete_timer_changed=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, proximity_alert_triggered=None, voice_chat_scheduled=None, voice_chat_started=None, voice_chat_ended=None, voice_chat_participants_invited=None, reply_markup=None, _raw=None):
         """
         This object represents a message.
 
@@ -969,6 +972,9 @@ class Message(UpdateType):
         :param proximity_alert_triggered: Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
         :type  proximity_alert_triggered: pytgbot.api_types.receivable.service.ProximityAlertTriggered
 
+        :param voice_chat_scheduled: Optional. Service message: voice chat scheduled
+        :type  voice_chat_scheduled: pytgbot.api_types.receivable.service.VoiceChatScheduled
+
         :param voice_chat_started: Optional. Service message: voice chat started
         :type  voice_chat_started: pytgbot.api_types.receivable.service.VoiceChatStarted
 
@@ -1009,6 +1015,7 @@ class Message(UpdateType):
         from .service import ProximityAlertTriggered
         from .service import VoiceChatEnded
         from .service import VoiceChatParticipantsInvited
+        from .service import VoiceChatScheduled
         from .service import VoiceChatStarted
         from ..sendable.reply_markup import InlineKeyboardMarkup
         assert_type_or_raise(message_id, int, parameter_name="message_id")
@@ -1113,6 +1120,8 @@ class Message(UpdateType):
         self.passport_data = passport_data
         assert_type_or_raise(proximity_alert_triggered, None, ProximityAlertTriggered, parameter_name="proximity_alert_triggered")
         self.proximity_alert_triggered = proximity_alert_triggered
+        assert_type_or_raise(voice_chat_scheduled, None, VoiceChatScheduled, parameter_name="voice_chat_scheduled")
+        self.voice_chat_scheduled = voice_chat_scheduled
         assert_type_or_raise(voice_chat_started, None, VoiceChatStarted, parameter_name="voice_chat_started")
         self.voice_chat_started = voice_chat_started
         assert_type_or_raise(voice_chat_ended, None, VoiceChatEnded, parameter_name="voice_chat_ended")
@@ -1163,6 +1172,7 @@ class Message(UpdateType):
         from .service import ProximityAlertTriggered
         from .service import VoiceChatEnded
         from .service import VoiceChatParticipantsInvited
+        from .service import VoiceChatScheduled
         from .service import VoiceChatStarted
         from ..sendable.reply_markup import InlineKeyboardMarkup
         array = super(Message, self).to_array()
@@ -1314,6 +1324,9 @@ class Message(UpdateType):
         if self.proximity_alert_triggered is not None:
             array['proximity_alert_triggered'] = self.proximity_alert_triggered.to_array()  # type ProximityAlertTriggered
         # end if
+        if self.voice_chat_scheduled is not None:
+            array['voice_chat_scheduled'] = self.voice_chat_scheduled.to_array()  # type VoiceChatScheduled
+        # end if
         if self.voice_chat_started is not None:
             array['voice_chat_started'] = self.voice_chat_started.to_array()  # type VoiceChatStarted
         # end if
@@ -1363,6 +1376,7 @@ class Message(UpdateType):
         from .service import ProximityAlertTriggered
         from .service import VoiceChatEnded
         from .service import VoiceChatParticipantsInvited
+        from .service import VoiceChatScheduled
         from .service import VoiceChatStarted
         from ..sendable.reply_markup import InlineKeyboardMarkup
         data = UpdateType.validate_array(array)
@@ -1417,6 +1431,7 @@ class Message(UpdateType):
         data['connected_website'] = u(array.get('connected_website')) if array.get('connected_website') is not None else None
         data['passport_data'] = PassportData.from_array(array.get('passport_data')) if array.get('passport_data') is not None else None
         data['proximity_alert_triggered'] = ProximityAlertTriggered.from_array(array.get('proximity_alert_triggered')) if array.get('proximity_alert_triggered') is not None else None
+        data['voice_chat_scheduled'] = VoiceChatScheduled.from_array(array.get('voice_chat_scheduled')) if array.get('voice_chat_scheduled') is not None else None
         data['voice_chat_started'] = VoiceChatStarted.from_array(array.get('voice_chat_started')) if array.get('voice_chat_started') is not None else None
         data['voice_chat_ended'] = VoiceChatEnded.from_array(array.get('voice_chat_ended')) if array.get('voice_chat_ended') is not None else None
         data['voice_chat_participants_invited'] = VoiceChatParticipantsInvited.from_array(array.get('voice_chat_participants_invited')) if array.get('voice_chat_participants_invited') is not None else None
@@ -1445,7 +1460,7 @@ class Message(UpdateType):
         """
         Implements `str(message_instance)`
         """
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, message_auto_delete_timer_changed={self.message_auto_delete_timer_changed!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, voice_chat_started={self.voice_chat_started!r}, voice_chat_ended={self.voice_chat_ended!r}, voice_chat_participants_invited={self.voice_chat_participants_invited!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, message_auto_delete_timer_changed={self.message_auto_delete_timer_changed!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, voice_chat_scheduled={self.voice_chat_scheduled!r}, voice_chat_started={self.voice_chat_started!r}, voice_chat_ended={self.voice_chat_ended!r}, voice_chat_participants_invited={self.voice_chat_participants_invited!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1455,7 +1470,7 @@ class Message(UpdateType):
         if self._raw:
             return "Message.from_array({self._raw})".format(self=self)
         # end if
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, message_auto_delete_timer_changed={self.message_auto_delete_timer_changed!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, voice_chat_started={self.voice_chat_started!r}, voice_chat_ended={self.voice_chat_ended!r}, voice_chat_participants_invited={self.voice_chat_participants_invited!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, message_auto_delete_timer_changed={self.message_auto_delete_timer_changed!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, voice_chat_scheduled={self.voice_chat_scheduled!r}, voice_chat_started={self.voice_chat_started!r}, voice_chat_ended={self.voice_chat_ended!r}, voice_chat_participants_invited={self.voice_chat_participants_invited!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1463,7 +1478,7 @@ class Message(UpdateType):
         Implements `"key" in message_instance`
         """
         return (
-            key in ["message_id", "date", "chat", "from_peer", "sender_chat", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "reply_to_message", "via_bot", "edit_date", "media_group_id", "author_signature", "text", "entities", "animation", "audio", "document", "photo", "sticker", "video", "video_note", "voice", "caption", "caption_entities", "contact", "dice", "game", "poll", "venue", "location", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "message_auto_delete_timer_changed", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "proximity_alert_triggered", "voice_chat_started", "voice_chat_ended", "voice_chat_participants_invited", "reply_markup"]
+            key in ["message_id", "date", "chat", "from_peer", "sender_chat", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "reply_to_message", "via_bot", "edit_date", "media_group_id", "author_signature", "text", "entities", "animation", "audio", "document", "photo", "sticker", "video", "video_note", "voice", "caption", "caption_entities", "contact", "dice", "game", "poll", "venue", "location", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "message_auto_delete_timer_changed", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "proximity_alert_triggered", "voice_chat_scheduled", "voice_chat_started", "voice_chat_ended", "voice_chat_participants_invited", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

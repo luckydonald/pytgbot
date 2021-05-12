@@ -32,6 +32,7 @@ __all__ = [
     'InputLocationMessageContent',
     'InputVenueMessageContent',
     'InputContactMessageContent',
+    'InputInvoiceMessageContent',
 ]
 
 
@@ -5370,3 +5371,343 @@ class InputContactMessageContent(InputMessageContent):
         )
     # end def __contains__
 # end class InputContactMessageContent
+
+
+class InputInvoiceMessageContent(InputMessageContent):
+    """
+    Represents the content of an invoice message to be sent as the result of an inline query.
+
+    https://core.telegram.org/bots/api#inputinvoicemessagecontent
+
+
+    Parameters:
+
+    :param title: Product name, 1-32 characters
+    :type  title: str|unicode
+
+    :param description: Product description, 1-255 characters
+    :type  description: str|unicode
+
+    :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
+    :type  payload: str|unicode
+
+    :param provider_token: Payment provider token, obtained via Botfather
+    :type  provider_token: str|unicode
+
+    :param currency: Three-letter ISO 4217 currency code, see more on currencies
+    :type  currency: str|unicode
+
+    :param prices: Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+    :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
+
+
+    Optional keyword parameters:
+
+    :param max_tip_amount: Optional. The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+    :type  max_tip_amount: int
+
+    :param suggested_tip_amounts: Optional. A JSON-serialized array of suggested amounts of tip in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+    :type  suggested_tip_amounts: list of int
+
+    :param provider_data: Optional. A JSON-serialized object for data about the invoice, which will be shared with the payment provider. A detailed description of the required fields should be provided by the payment provider.
+    :type  provider_data: str|unicode
+
+    :param photo_url: Optional. URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
+    :type  photo_url: str|unicode
+
+    :param photo_size: Optional. Photo size
+    :type  photo_size: int
+
+    :param photo_width: Optional. Photo width
+    :type  photo_width: int
+
+    :param photo_height: Optional. Photo height
+    :type  photo_height: int
+
+    :param need_name: Optional. Pass True, if you require the user's full name to complete the order
+    :type  need_name: bool
+
+    :param need_phone_number: Optional. Pass True, if you require the user's phone number to complete the order
+    :type  need_phone_number: bool
+
+    :param need_email: Optional. Pass True, if you require the user's email address to complete the order
+    :type  need_email: bool
+
+    :param need_shipping_address: Optional. Pass True, if you require the user's shipping address to complete the order
+    :type  need_shipping_address: bool
+
+    :param send_phone_number_to_provider: Optional. Pass True, if user's phone number should be sent to provider
+    :type  send_phone_number_to_provider: bool
+
+    :param send_email_to_provider: Optional. Pass True, if user's email address should be sent to provider
+    :type  send_email_to_provider: bool
+
+    :param is_flexible: Optional. Pass True, if the final price depends on the shipping method
+    :type  is_flexible: bool
+    """
+
+    def __init__(self, title, description, payload, provider_token, currency, prices, max_tip_amount=None, suggested_tip_amounts=None, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None):
+        """
+        Represents the content of an invoice message to be sent as the result of an inline query.
+
+        https://core.telegram.org/bots/api#inputinvoicemessagecontent
+
+
+        Parameters:
+
+        :param title: Product name, 1-32 characters
+        :type  title: str|unicode
+
+        :param description: Product description, 1-255 characters
+        :type  description: str|unicode
+
+        :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
+        :type  payload: str|unicode
+
+        :param provider_token: Payment provider token, obtained via Botfather
+        :type  provider_token: str|unicode
+
+        :param currency: Three-letter ISO 4217 currency code, see more on currencies
+        :type  currency: str|unicode
+
+        :param prices: Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+        :type  prices: list of pytgbot.api_types.sendable.payments.LabeledPrice
+
+
+        Optional keyword parameters:
+
+        :param max_tip_amount: Optional. The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+        :type  max_tip_amount: int
+
+        :param suggested_tip_amounts: Optional. A JSON-serialized array of suggested amounts of tip in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+        :type  suggested_tip_amounts: list of int
+
+        :param provider_data: Optional. A JSON-serialized object for data about the invoice, which will be shared with the payment provider. A detailed description of the required fields should be provided by the payment provider.
+        :type  provider_data: str|unicode
+
+        :param photo_url: Optional. URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
+        :type  photo_url: str|unicode
+
+        :param photo_size: Optional. Photo size
+        :type  photo_size: int
+
+        :param photo_width: Optional. Photo width
+        :type  photo_width: int
+
+        :param photo_height: Optional. Photo height
+        :type  photo_height: int
+
+        :param need_name: Optional. Pass True, if you require the user's full name to complete the order
+        :type  need_name: bool
+
+        :param need_phone_number: Optional. Pass True, if you require the user's phone number to complete the order
+        :type  need_phone_number: bool
+
+        :param need_email: Optional. Pass True, if you require the user's email address to complete the order
+        :type  need_email: bool
+
+        :param need_shipping_address: Optional. Pass True, if you require the user's shipping address to complete the order
+        :type  need_shipping_address: bool
+
+        :param send_phone_number_to_provider: Optional. Pass True, if user's phone number should be sent to provider
+        :type  send_phone_number_to_provider: bool
+
+        :param send_email_to_provider: Optional. Pass True, if user's email address should be sent to provider
+        :type  send_email_to_provider: bool
+
+        :param is_flexible: Optional. Pass True, if the final price depends on the shipping method
+        :type  is_flexible: bool
+        """
+        super(InputInvoiceMessageContent, self).__init__()
+        from .payments import LabeledPrice
+        assert_type_or_raise(title, unicode_type, parameter_name="title")
+        self.title = title
+        assert_type_or_raise(description, unicode_type, parameter_name="description")
+        self.description = description
+        assert_type_or_raise(payload, unicode_type, parameter_name="payload")
+        self.payload = payload
+        assert_type_or_raise(provider_token, unicode_type, parameter_name="provider_token")
+        self.provider_token = provider_token
+        assert_type_or_raise(currency, unicode_type, parameter_name="currency")
+        self.currency = currency
+        assert_type_or_raise(prices, list, parameter_name="prices")
+        self.prices = prices
+        assert_type_or_raise(max_tip_amount, None, int, parameter_name="max_tip_amount")
+        self.max_tip_amount = max_tip_amount
+        assert_type_or_raise(suggested_tip_amounts, None, list, parameter_name="suggested_tip_amounts")
+        self.suggested_tip_amounts = suggested_tip_amounts
+        assert_type_or_raise(provider_data, None, unicode_type, parameter_name="provider_data")
+        self.provider_data = provider_data
+        assert_type_or_raise(photo_url, None, unicode_type, parameter_name="photo_url")
+        self.photo_url = photo_url
+        assert_type_or_raise(photo_size, None, int, parameter_name="photo_size")
+        self.photo_size = photo_size
+        assert_type_or_raise(photo_width, None, int, parameter_name="photo_width")
+        self.photo_width = photo_width
+        assert_type_or_raise(photo_height, None, int, parameter_name="photo_height")
+        self.photo_height = photo_height
+        assert_type_or_raise(need_name, None, bool, parameter_name="need_name")
+        self.need_name = need_name
+        assert_type_or_raise(need_phone_number, None, bool, parameter_name="need_phone_number")
+        self.need_phone_number = need_phone_number
+        assert_type_or_raise(need_email, None, bool, parameter_name="need_email")
+        self.need_email = need_email
+        assert_type_or_raise(need_shipping_address, None, bool, parameter_name="need_shipping_address")
+        self.need_shipping_address = need_shipping_address
+        assert_type_or_raise(send_phone_number_to_provider, None, bool, parameter_name="send_phone_number_to_provider")
+        self.send_phone_number_to_provider = send_phone_number_to_provider
+        assert_type_or_raise(send_email_to_provider, None, bool, parameter_name="send_email_to_provider")
+        self.send_email_to_provider = send_email_to_provider
+        assert_type_or_raise(is_flexible, None, bool, parameter_name="is_flexible")
+        self.is_flexible = is_flexible
+    # end def __init__
+
+    def to_array(self, prefer_original=False):
+        """
+        Serializes this InputInvoiceMessageContent to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
+        from .payments import LabeledPrice
+        array = super(InputInvoiceMessageContent, self).to_array()
+
+        array['title'] = u(self.title)  # py2: type unicode, py3: type str
+        array['description'] = u(self.description)  # py2: type unicode, py3: type str
+        array['payload'] = u(self.payload)  # py2: type unicode, py3: type str
+        array['provider_token'] = u(self.provider_token)  # py2: type unicode, py3: type str
+        array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
+        array['prices'] = self._as_array(self.prices)  # type list of LabeledPrice
+        if self.max_tip_amount is not None:
+            array['max_tip_amount'] = int(self.max_tip_amount)  # type int
+        # end if
+        if self.suggested_tip_amounts is not None:
+            array['suggested_tip_amounts'] = self._as_array(self.suggested_tip_amounts)  # type list of int
+        # end if
+        if self.provider_data is not None:
+            array['provider_data'] = u(self.provider_data)  # py2: type unicode, py3: type str
+        # end if
+        if self.photo_url is not None:
+            array['photo_url'] = u(self.photo_url)  # py2: type unicode, py3: type str
+        # end if
+        if self.photo_size is not None:
+            array['photo_size'] = int(self.photo_size)  # type int
+        # end if
+        if self.photo_width is not None:
+            array['photo_width'] = int(self.photo_width)  # type int
+        # end if
+        if self.photo_height is not None:
+            array['photo_height'] = int(self.photo_height)  # type int
+        # end if
+        if self.need_name is not None:
+            array['need_name'] = bool(self.need_name)  # type bool
+        # end if
+        if self.need_phone_number is not None:
+            array['need_phone_number'] = bool(self.need_phone_number)  # type bool
+        # end if
+        if self.need_email is not None:
+            array['need_email'] = bool(self.need_email)  # type bool
+        # end if
+        if self.need_shipping_address is not None:
+            array['need_shipping_address'] = bool(self.need_shipping_address)  # type bool
+        # end if
+        if self.send_phone_number_to_provider is not None:
+            array['send_phone_number_to_provider'] = bool(self.send_phone_number_to_provider)  # type bool
+        # end if
+        if self.send_email_to_provider is not None:
+            array['send_email_to_provider'] = bool(self.send_email_to_provider)  # type bool
+        # end if
+        if self.is_flexible is not None:
+            array['is_flexible'] = bool(self.is_flexible)  # type bool
+        # end if
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the InputInvoiceMessageContent constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        from .payments import LabeledPrice
+        data = InputMessageContent.validate_array(array)
+        data['title'] = u(array.get('title'))
+        data['description'] = u(array.get('description'))
+        data['payload'] = u(array.get('payload'))
+        data['provider_token'] = u(array.get('provider_token'))
+        data['currency'] = u(array.get('currency'))
+        data['prices'] = LabeledPrice.from_array_list(array.get('prices'), list_level=1)
+        data['max_tip_amount'] = int(array.get('max_tip_amount')) if array.get('max_tip_amount') is not None else None
+        data['suggested_tip_amounts'] = InputInvoiceMessageContent._builtin_from_array_list(required_type=int, value=array.get('suggested_tip_amounts'), list_level=1) if array.get('suggested_tip_amounts') is not None else None
+        data['provider_data'] = u(array.get('provider_data')) if array.get('provider_data') is not None else None
+        data['photo_url'] = u(array.get('photo_url')) if array.get('photo_url') is not None else None
+        data['photo_size'] = int(array.get('photo_size')) if array.get('photo_size') is not None else None
+        data['photo_width'] = int(array.get('photo_width')) if array.get('photo_width') is not None else None
+        data['photo_height'] = int(array.get('photo_height')) if array.get('photo_height') is not None else None
+        data['need_name'] = bool(array.get('need_name')) if array.get('need_name') is not None else None
+        data['need_phone_number'] = bool(array.get('need_phone_number')) if array.get('need_phone_number') is not None else None
+        data['need_email'] = bool(array.get('need_email')) if array.get('need_email') is not None else None
+        data['need_shipping_address'] = bool(array.get('need_shipping_address')) if array.get('need_shipping_address') is not None else None
+        data['send_phone_number_to_provider'] = bool(array.get('send_phone_number_to_provider')) if array.get('send_phone_number_to_provider') is not None else None
+        data['send_email_to_provider'] = bool(array.get('send_email_to_provider')) if array.get('send_email_to_provider') is not None else None
+        data['is_flexible'] = bool(array.get('is_flexible')) if array.get('is_flexible') is not None else None
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new InputInvoiceMessageContent from a given dictionary.
+
+        :return: new InputInvoiceMessageContent instance.
+        :rtype: InputInvoiceMessageContent
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = InputInvoiceMessageContent.validate_array(array)
+        instance = InputInvoiceMessageContent(**data)
+        instance._raw = array
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(inputinvoicemessagecontent_instance)`
+        """
+        return "InputInvoiceMessageContent(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, currency={self.currency!r}, prices={self.prices!r}, max_tip_amount={self.max_tip_amount!r}, suggested_tip_amounts={self.suggested_tip_amounts!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(inputinvoicemessagecontent_instance)`
+        """
+        if self._raw:
+            return "InputInvoiceMessageContent.from_array({self._raw})".format(self=self)
+        # end if
+        return "InputInvoiceMessageContent(title={self.title!r}, description={self.description!r}, payload={self.payload!r}, provider_token={self.provider_token!r}, currency={self.currency!r}, prices={self.prices!r}, max_tip_amount={self.max_tip_amount!r}, suggested_tip_amounts={self.suggested_tip_amounts!r}, provider_data={self.provider_data!r}, photo_url={self.photo_url!r}, photo_size={self.photo_size!r}, photo_width={self.photo_width!r}, photo_height={self.photo_height!r}, need_name={self.need_name!r}, need_phone_number={self.need_phone_number!r}, need_email={self.need_email!r}, need_shipping_address={self.need_shipping_address!r}, send_phone_number_to_provider={self.send_phone_number_to_provider!r}, send_email_to_provider={self.send_email_to_provider!r}, is_flexible={self.is_flexible!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in inputinvoicemessagecontent_instance`
+        """
+        return (
+            key in ["title", "description", "payload", "provider_token", "currency", "prices", "max_tip_amount", "suggested_tip_amounts", "provider_data", "photo_url", "photo_size", "photo_width", "photo_height", "need_name", "need_phone_number", "need_email", "need_shipping_address", "send_phone_number_to_provider", "send_email_to_provider", "is_flexible"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class InputInvoiceMessageContent
