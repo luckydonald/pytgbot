@@ -46,10 +46,13 @@ class TgBotApiObject(object):
         :param cls: Type as what it should be parsed as. Can be any class extending :class:`TgBotApiObject`.
                     E.g. If you call `Class.from_array_list`, it will automatically be set to `Class`.
         :type  cls: class
-    ,    :param result: The result to parse
-    ,    :param list_level: "list of" * list_level
+
+        :param result: The result to parse
+
+        :param list_level: "list of" * list_level
         :type  list_level: int
-    ,    :return: the result as `required_type` type
+
+        :return: the result as `required_type` type
         """
         return from_array_list(cls, result, list_level, is_builtin=False)  # the one below, not itself. Yes, same name...
     # end def from_array_list
