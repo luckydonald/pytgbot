@@ -320,6 +320,9 @@ class Message(UpdateType):
     :param proximity_alert_triggered: Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
     :type  proximity_alert_triggered: pytgbot.api_types.receivable.service.ProximityAlertTriggered
 
+    :param voice_chat_scheduled: Optional. Service message: voice chat scheduled
+    :type  voice_chat_scheduled: pytgbot.api_types.receivable.service.VoiceChatScheduled
+
     :param voice_chat_started: Optional. Service message: voice chat started
     :type  voice_chat_started: pytgbot.api_types.receivable.service.VoiceChatStarted
 
@@ -386,6 +389,7 @@ class Message(UpdateType):
     connected_website: str
     passport_data: PassportData
     proximity_alert_triggered: ProximityAlertTriggered
+    voice_chat_scheduled: VoiceChatScheduled
     voice_chat_started: VoiceChatStarted
     voice_chat_ended: VoiceChatEnded
     voice_chat_participants_invited: VoiceChatParticipantsInvited

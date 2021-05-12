@@ -35,6 +35,9 @@ class InlineQuery(Result):
 
     Optional keyword parameters:
 
+    :param chat_type: Optional. Type of the chat, from which the inline query was sent. Can be either "sender" for a private chat with the inline query sender, "private", "group", "supergroup", or "channel". The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat
+    :type  chat_type: str|unicode
+
     :param location: Optional. Sender location, only for bots that request user location
     :type  location: pytgbot.api_types.receivable.media.Location
 
@@ -42,7 +45,7 @@ class InlineQuery(Result):
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, from_peer, query, offset, location=None, _raw=None):
+    def __init__(self, id, from_peer, query, offset, chat_type=None, location=None, _raw=None):
         """
         This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
 
@@ -66,6 +69,9 @@ class InlineQuery(Result):
 
         Optional keyword parameters:
 
+        :param chat_type: Optional. Type of the chat, from which the inline query was sent. Can be either "sender" for a private chat with the inline query sender, "private", "group", "supergroup", or "channel". The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat
+        :type  chat_type: str|unicode
+
         :param location: Optional. Sender location, only for bots that request user location
         :type  location: pytgbot.api_types.receivable.media.Location
 
@@ -83,6 +89,8 @@ class InlineQuery(Result):
         self.query = query
         assert_type_or_raise(offset, unicode_type, parameter_name="offset")
         self.offset = offset
+        assert_type_or_raise(chat_type, None, unicode_type, parameter_name="chat_type")
+        self.chat_type = chat_type
         assert_type_or_raise(location, None, Location, parameter_name="location")
         self.location = location
 
@@ -111,6 +119,9 @@ class InlineQuery(Result):
         array['from'] = self.from_peer.to_array()  # type User
         array['query'] = u(self.query)  # py2: type unicode, py3: type str
         array['offset'] = u(self.offset)  # py2: type unicode, py3: type str
+        if self.chat_type is not None:
+            array['chat_type'] = u(self.chat_type)  # py2: type unicode, py3: type str
+        # end if
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
         # end if
@@ -134,6 +145,7 @@ class InlineQuery(Result):
         data['from_peer'] = User.from_array(array.get('from'))
         data['query'] = u(array.get('query'))
         data['offset'] = u(array.get('offset'))
+        data['chat_type'] = u(array.get('chat_type')) if array.get('chat_type') is not None else None
         data['location'] = Location.from_array(array.get('location')) if array.get('location') is not None else None
         return data
     # end def validate_array
@@ -159,7 +171,7 @@ class InlineQuery(Result):
         """
         Implements `str(inlinequery_instance)`
         """
-        return "InlineQuery(id={self.id!r}, from_peer={self.from_peer!r}, query={self.query!r}, offset={self.offset!r}, location={self.location!r})".format(self=self)
+        return "InlineQuery(id={self.id!r}, from_peer={self.from_peer!r}, query={self.query!r}, offset={self.offset!r}, chat_type={self.chat_type!r}, location={self.location!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -169,7 +181,7 @@ class InlineQuery(Result):
         if self._raw:
             return "InlineQuery.from_array({self._raw})".format(self=self)
         # end if
-        return "InlineQuery(id={self.id!r}, from_peer={self.from_peer!r}, query={self.query!r}, offset={self.offset!r}, location={self.location!r})".format(self=self)
+        return "InlineQuery(id={self.id!r}, from_peer={self.from_peer!r}, query={self.query!r}, offset={self.offset!r}, chat_type={self.chat_type!r}, location={self.location!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -177,7 +189,7 @@ class InlineQuery(Result):
         Implements `"key" in inlinequery_instance`
         """
         return (
-            key in ["id", "from_peer", "query", "offset", "location"]
+            key in ["id", "from_peer", "query", "offset", "chat_type", "location"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
