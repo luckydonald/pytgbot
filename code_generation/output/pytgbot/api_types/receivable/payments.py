@@ -112,7 +112,6 @@ class Invoice(Result):
         array['start_parameter'] = u(self.start_parameter)  # py2: type unicode, py3: type str
         array['currency'] = u(self.currency)  # py2: type unicode, py3: type str
         array['total_amount'] = int(self.total_amount)  # type int
-
         return array
     # end def to_array
 
@@ -287,7 +286,6 @@ class ShippingAddress(Result):
         array['street_line1'] = u(self.street_line1)  # py2: type unicode, py3: type str
         array['street_line2'] = u(self.street_line2)  # py2: type unicode, py3: type str
         array['post_code'] = u(self.post_code)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -445,7 +443,6 @@ class OrderInfo(Result):
         if self.shipping_address is not None:
             array['shipping_address'] = self.shipping_address.to_array()  # type ShippingAddress
         # end if
-
         return array
     # end def to_array
 
@@ -632,7 +629,6 @@ class SuccessfulPayment(Result):
         if self.order_info is not None:
             array['order_info'] = self.order_info.to_array()  # type OrderInfo
         # end if
-
         return array
     # end def to_array
 
@@ -793,7 +789,6 @@ class ShippingQuery(UpdateType):
         array['from'] = self.from_peer.to_array()  # type User
         array['invoice_payload'] = u(self.invoice_payload)  # py2: type unicode, py3: type str
         array['shipping_address'] = self.shipping_address.to_array()  # type ShippingAddress
-
         return array
     # end def to_array
 
@@ -983,7 +978,6 @@ class PreCheckoutQuery(UpdateType):
         if self.order_info is not None:
             array['order_info'] = self.order_info.to_array()  # type OrderInfo
         # end if
-
         return array
     # end def to_array
 

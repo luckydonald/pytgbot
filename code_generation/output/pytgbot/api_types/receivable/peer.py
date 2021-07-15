@@ -181,7 +181,6 @@ class User(Peer):
         if self.supports_inline_queries is not None:
             array['supports_inline_queries'] = bool(self.supports_inline_queries)  # type bool
         # end if
-
         return array
     # end def to_array
 
@@ -504,7 +503,6 @@ class Chat(Peer):
         if self.location is not None:
             array['location'] = self.location.to_array()  # type ChatLocation
         # end if
-
         return array
     # end def to_array
 
@@ -698,7 +696,6 @@ class ChatInviteLink(Result):
         if self.member_limit is not None:
             array['member_limit'] = int(self.member_limit)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -811,7 +808,6 @@ class ChatMember(Result):
         # end if
 
         array = super(ChatMember, self).to_array()
-
 
         return array
     # end def to_array
@@ -966,7 +962,6 @@ class ChatMemberOwner(ChatMember):
         if self.custom_title is not None:
             array['custom_title'] = u(self.custom_title)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -1229,7 +1224,6 @@ class ChatMemberAdministrator(ChatMember):
         if self.custom_title is not None:
             array['custom_title'] = u(self.custom_title)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -1378,7 +1372,6 @@ class ChatMemberMember(ChatMember):
 
         array['status'] = u(self.status)  # py2: type unicode, py3: type str
         array['user'] = self.user.to_array()  # type User
-
         return array
     # end def to_array
 
@@ -1604,7 +1597,6 @@ class ChatMemberRestricted(ChatMember):
         array['can_send_other_messages'] = bool(self.can_send_other_messages)  # type bool
         array['can_add_web_page_previews'] = bool(self.can_add_web_page_previews)  # type bool
         array['until_date'] = int(self.until_date)  # type int
-
         return array
     # end def to_array
 
@@ -1750,7 +1742,6 @@ class ChatMemberLeft(ChatMember):
 
         array['status'] = u(self.status)  # py2: type unicode, py3: type str
         array['user'] = self.user.to_array()  # type User
-
         return array
     # end def to_array
 
@@ -1895,7 +1886,6 @@ class ChatMemberBanned(ChatMember):
         array['status'] = u(self.status)  # py2: type unicode, py3: type str
         array['user'] = self.user.to_array()  # type User
         array['until_date'] = int(self.until_date)  # type int
-
         return array
     # end def to_array
 
@@ -2070,7 +2060,6 @@ class ChatMemberUpdated(Result):
         if self.invite_link is not None:
             array['invite_link'] = self.invite_link.to_array()  # type ChatInviteLink
         # end if
-
         return array
     # end def to_array
 
@@ -2272,7 +2261,6 @@ class ChatPermissions(Result):
         if self.can_pin_messages is not None:
             array['can_pin_messages'] = bool(self.can_pin_messages)  # type bool
         # end if
-
         return array
     # end def to_array
 
@@ -2416,7 +2404,6 @@ class ChatLocation(Result):
 
         array['location'] = self.location.to_array()  # type Location
         array['address'] = u(self.address)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 

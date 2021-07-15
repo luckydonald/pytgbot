@@ -141,7 +141,6 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
         # end if
-
         return array
     # end def to_array
 
@@ -299,7 +298,6 @@ class KeyboardButton(Button):
         if self.request_poll is not None:
             array['request_poll'] = self.request_poll.to_array()  # type KeyboardButtonPollType
         # end if
-
         return array
     # end def to_array
 
@@ -415,7 +413,6 @@ class KeyboardButtonPollType(Button):
         if self.type is not None:
             array['type'] = u(self.type)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -538,7 +535,6 @@ class ReplyKeyboardRemove(ReplyMarkup):
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
         # end if
-
         return array
     # end def to_array
 
@@ -660,7 +656,6 @@ class InlineKeyboardMarkup(ReplyMarkup):
         array = super(InlineKeyboardMarkup, self).to_array()
 
         array['inline_keyboard'] = self._as_array(self.inline_keyboard)  # type list of list of InlineKeyboardButton
-
         return array
     # end def to_array
 
@@ -858,7 +853,6 @@ class InlineKeyboardButton(Button):
         if self.pay is not None:
             array['pay'] = bool(self.pay)  # type bool
         # end if
-
         return array
     # end def to_array
 
@@ -1024,7 +1018,6 @@ class LoginUrl(Sendable):
         if self.request_write_access is not None:
             array['request_write_access'] = bool(self.request_write_access)  # type bool
         # end if
-
         return array
     # end def to_array
 
@@ -1175,7 +1168,6 @@ class ForceReply(ReplyMarkup):
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
         # end if
-
         return array
     # end def to_array
 

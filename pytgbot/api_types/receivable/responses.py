@@ -70,7 +70,6 @@ class MessageId(Result):
         array = super(MessageId, self).to_array()
 
         array['message_id'] = int(self.message_id)  # type int
-
         return array
     # end def to_array
 

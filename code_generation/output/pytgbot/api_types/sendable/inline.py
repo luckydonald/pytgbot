@@ -240,7 +240,6 @@ class InlineQueryResultArticle(InlineQueryResult):
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -493,7 +492,6 @@ class InlineQueryResultPhoto(InlineQueryResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -760,7 +758,6 @@ class InlineQueryResultGif(InlineQueryResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -1028,7 +1025,6 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -1307,7 +1303,6 @@ class InlineQueryResultVideo(InlineQueryResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -1545,7 +1540,6 @@ class InlineQueryResultAudio(InlineQueryResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -1768,7 +1762,6 @@ class InlineQueryResultVoice(InlineQueryResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -2032,7 +2025,6 @@ class InlineQueryResultDocument(InlineQueryResult):
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -2298,7 +2290,6 @@ class InlineQueryResultLocation(InlineQueryResult):
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -2572,7 +2563,6 @@ class InlineQueryResultVenue(InlineQueryResult):
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -2807,7 +2797,6 @@ class InlineQueryResultContact(InlineQueryResult):
         if self.thumb_height is not None:
             array['thumb_height'] = int(self.thumb_height)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -2963,7 +2952,6 @@ class InlineQueryResultGame(InlineQueryResult):
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         # end if
-
         return array
     # end def to_array
 
@@ -3178,7 +3166,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -3389,7 +3376,6 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -3599,7 +3585,6 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -3765,7 +3750,6 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -3981,7 +3965,6 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -4201,7 +4184,6 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -4412,7 +4394,6 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -4613,7 +4594,6 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 
@@ -4776,7 +4756,6 @@ class InputTextMessageContent(InputMessageContent):
         if self.disable_web_page_preview is not None:
             array['disable_web_page_preview'] = bool(self.disable_web_page_preview)  # type bool
         # end if
-
         return array
     # end def to_array
 
@@ -4952,7 +4931,6 @@ class InputLocationMessageContent(InputMessageContent):
         if self.proximity_alert_radius is not None:
             array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -5147,7 +5125,6 @@ class InputVenueMessageContent(InputMessageContent):
         if self.google_place_type is not None:
             array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -5304,7 +5281,6 @@ class InputContactMessageContent(InputMessageContent):
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -5627,7 +5603,6 @@ class InputInvoiceMessageContent(InputMessageContent):
         if self.is_flexible is not None:
             array['is_flexible'] = bool(self.is_flexible)  # type bool
         # end if
-
         return array
     # end def to_array
 

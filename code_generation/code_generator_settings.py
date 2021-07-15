@@ -216,6 +216,13 @@ WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters 
 Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
 """
 
+FUNCTION_ALIASES = {
+    "kickChatMember": "banChatMember",
+    "getChatMembersCount": "getChatMemberCount",
+    "sendMsg": "sendMessage",
+    "sendText": "sendMessage",
+}
+
 WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters table and thus wouldn't be detected.
     # "CallbackGame",
     # "InlineQueryResult",

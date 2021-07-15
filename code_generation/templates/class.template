@@ -106,7 +106,6 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
         {{ set_array(variable)|trim()|indent(8) }}{#
         #}{% endif %}{#
         #}{% endfor %}
-
         return array
     # end def to_array{% set needs_space = True %}{% endif %}{% if needs_space and (not clazz.body or clazz.body.validate_array != []) %}
 

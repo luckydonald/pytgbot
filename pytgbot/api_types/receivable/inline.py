@@ -125,7 +125,6 @@ class InlineQuery(Result):
         if self.location is not None:
             array['location'] = self.location.to_array()  # type Location
         # end if
-
         return array
     # end def to_array
 
@@ -304,7 +303,6 @@ class ChosenInlineResult(UpdateType):
         if self.inline_message_id is not None:
             array['inline_message_id'] = u(self.inline_message_id)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 

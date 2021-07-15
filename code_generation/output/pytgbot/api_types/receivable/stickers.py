@@ -122,7 +122,6 @@ class StickerSet(Result):
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
         # end if
-
         return array
     # end def to_array
 
@@ -282,7 +281,6 @@ class MaskPosition(Result):
         array['x_shift'] = float(self.x_shift)  # type float
         array['y_shift'] = float(self.y_shift)  # type float
         array['scale'] = float(self.scale)  # type float
-
         return array
     # end def to_array
 

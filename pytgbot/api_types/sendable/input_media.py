@@ -123,7 +123,6 @@ class InputMedia(Sendable):
         if self.caption_entities is not None:
             array['caption_entities'] = self._as_array(self.caption_entities)  # type list of MessageEntity
         # end if
-
         return array
     # end def to_array
 
@@ -529,7 +528,6 @@ class InputMediaPlayable(InputMediaWithThumb):
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
         # 'caption_entities' given by superclass
-
         return array
     # end def to_array
 
@@ -728,7 +726,6 @@ class InputMediaVideolike(InputMediaPlayable):
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
         # 'caption_entities' given by superclass
-
         return array
     # end def to_array
 
@@ -885,7 +882,6 @@ class InputMediaPhoto(InputMedia):
         # 'caption' given by superclass
         # 'parse_mode' given by superclass
         # 'caption_entities' given by superclass
-
         return array
     # end def to_array
 
@@ -1082,7 +1078,6 @@ class InputMediaVideo(InputMediaVideolike):
         if self.supports_streaming is not None:
             array['supports_streaming'] = bool(self.supports_streaming)  # type bool
         # end if
-
         return array
     # end def to_array
 
@@ -1274,7 +1269,6 @@ class InputMediaAnimation(InputMediaVideolike):
         # 'width' given by superclass
         # 'height' given by superclass
         # 'duration' given by superclass
-
         return array
     # end def to_array
 
@@ -1471,7 +1465,6 @@ class InputMediaAudio(InputMediaPlayable):
         if self.title is not None:
             array['title'] = u(self.title)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -1649,7 +1642,6 @@ class InputMediaDocument(InputMediaWithThumb):
         if self.disable_content_type_detection is not None:
             array['disable_content_type_detection'] = bool(self.disable_content_type_detection)  # type bool
         # end if
-
         return array
     # end def to_array
 

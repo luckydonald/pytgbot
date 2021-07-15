@@ -110,7 +110,6 @@ class ProximityAlertTriggered(ServiceMessage):
         array['traveler'] = self.traveler.to_array()  # type User
         array['watcher'] = self.watcher.to_array()  # type User
         array['distance'] = int(self.distance)  # type int
-
         return array
     # end def to_array
 
@@ -239,7 +238,6 @@ class MessageAutoDeleteTimerChanged(ServiceMessage):
         array = super(MessageAutoDeleteTimerChanged, self).to_array()
 
         array['message_auto_delete_time'] = int(self.message_auto_delete_time)  # type int
-
         return array
     # end def to_array
 
@@ -365,7 +363,6 @@ class VoiceChatScheduled(ServiceMessage):
         array = super(VoiceChatScheduled, self).to_array()
 
         array['start_date'] = int(self.start_date)  # type int
-
         return array
     # end def to_array
 
@@ -473,7 +470,6 @@ class VoiceChatStarted(ServiceMessage):
         # end if
 
         array = super(VoiceChatStarted, self).to_array()
-
 
         return array
     # end def to_array
@@ -599,7 +595,6 @@ class VoiceChatEnded(ServiceMessage):
         array = super(VoiceChatEnded, self).to_array()
 
         array['duration'] = int(self.duration)  # type int
-
         return array
     # end def to_array
 
@@ -721,7 +716,6 @@ class VoiceChatParticipantsInvited(ServiceMessage):
         if self.users is not None:
             array['users'] = self._as_array(self.users)  # type list of User
         # end if
-
         return array
     # end def to_array
 

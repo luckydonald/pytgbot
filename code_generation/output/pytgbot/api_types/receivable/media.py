@@ -158,7 +158,6 @@ class MessageEntity(Result):
         if self.language is not None:
             array['language'] = u(self.language)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -328,7 +327,6 @@ class PhotoSize(Result):
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -538,7 +536,6 @@ class Animation(Media):
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -756,7 +753,6 @@ class Audio(Media):
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
         # end if
-
         return array
     # end def to_array
 
@@ -943,7 +939,6 @@ class Document(Media):
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -1154,7 +1149,6 @@ class Video(Media):
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -1337,7 +1331,6 @@ class VideoNote(Media):
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -1508,7 +1501,6 @@ class Voice(Media):
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -1680,7 +1672,6 @@ class Contact(Media):
         if self.vcard is not None:
             array['vcard'] = u(self.vcard)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -1819,7 +1810,6 @@ class Dice(Media):
 
         array['emoji'] = u(self.emoji)  # py2: type unicode, py3: type str
         array['value'] = int(self.value)  # type int
-
         return array
     # end def to_array
 
@@ -1955,7 +1945,6 @@ class PollOption(Receivable):
 
         array['text'] = u(self.text)  # py2: type unicode, py3: type str
         array['voter_count'] = int(self.voter_count)  # type int
-
         return array
     # end def to_array
 
@@ -2102,7 +2091,6 @@ class PollAnswer(Receivable):
         array['poll_id'] = u(self.poll_id)  # py2: type unicode, py3: type str
         array['user'] = self.user.to_array()  # type User
         array['option_ids'] = self._as_array(self.option_ids)  # type list of int
-
         return array
     # end def to_array
 
@@ -2349,7 +2337,6 @@ class Poll(Media):
         if self.close_date is not None:
             array['close_date'] = int(self.close_date)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -2540,7 +2527,6 @@ class Location(Media):
         if self.proximity_alert_radius is not None:
             array['proximity_alert_radius'] = int(self.proximity_alert_radius)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -2733,7 +2719,6 @@ class Venue(Media):
         if self.google_place_type is not None:
             array['google_place_type'] = u(self.google_place_type)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -2874,7 +2859,6 @@ class UserProfilePhotos(Result):
 
         array['total_count'] = int(self.total_count)  # type int
         array['photos'] = self._as_array(self.photos)  # type list of list of PhotoSize
-
         return array
     # end def to_array
 
@@ -3036,7 +3020,6 @@ class File(Receivable):
         if self.file_path is not None:
             array['file_path'] = u(self.file_path)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -3192,7 +3175,6 @@ class ChatPhoto(Result):
         array['small_file_unique_id'] = u(self.small_file_unique_id)  # py2: type unicode, py3: type str
         array['big_file_id'] = u(self.big_file_id)  # py2: type unicode, py3: type str
         array['big_file_unique_id'] = u(self.big_file_unique_id)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -3414,7 +3396,6 @@ class Sticker(Media):
         if self.file_size is not None:
             array['file_size'] = int(self.file_size)  # type int
         # end if
-
         return array
     # end def to_array
 
@@ -3601,7 +3582,6 @@ class Game(Media):
         if self.animation is not None:
             array['animation'] = self.animation.to_array()  # type Animation
         # end if
-
         return array
     # end def to_array
 

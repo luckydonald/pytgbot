@@ -90,7 +90,6 @@ class GameHighScore(Result):
         array['position'] = int(self.position)  # type int
         array['user'] = self.user.to_array()  # type User
         array['score'] = int(self.score)  # type int
-
         return array
     # end def to_array
 

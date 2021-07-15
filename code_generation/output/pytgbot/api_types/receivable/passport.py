@@ -82,7 +82,6 @@ class PassportData(Result):
 
         array['data'] = self._as_array(self.data)  # type list of EncryptedPassportElement
         array['credentials'] = self.credentials.to_array()  # type EncryptedCredentials
-
         return array
     # end def to_array
 
@@ -236,7 +235,6 @@ class PassportFile(Result):
         array['file_unique_id'] = u(self.file_unique_id)  # py2: type unicode, py3: type str
         array['file_size'] = int(self.file_size)  # type int
         array['file_date'] = int(self.file_date)  # type int
-
         return array
     # end def to_array
 
@@ -462,7 +460,6 @@ class EncryptedPassportElement(Result):
         if self.translation is not None:
             array['translation'] = self._as_array(self.translation)  # type list of PassportFile
         # end if
-
         return array
     # end def to_array
 
@@ -615,7 +612,6 @@ class EncryptedCredentials(Result):
         array['data'] = u(self.data)  # py2: type unicode, py3: type str
         array['hash'] = u(self.hash)  # py2: type unicode, py3: type str
         array['secret'] = u(self.secret)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 

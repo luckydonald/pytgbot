@@ -79,7 +79,6 @@ class BotCommand(Sendable):
 
         array['command'] = u(self.command)  # py2: type unicode, py3: type str
         array['description'] = u(self.description)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -181,7 +180,6 @@ class BotCommandScope(Sendable):
         # end if
 
         array = super(BotCommandScope, self).to_array()
-
 
         return array
     # end def to_array
@@ -293,7 +291,6 @@ class BotCommandScopeDefault(BotCommandScope):
         array = super(BotCommandScopeDefault, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -405,7 +402,6 @@ class BotCommandScopeAllPrivateChats(BotCommandScope):
         array = super(BotCommandScopeAllPrivateChats, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -517,7 +513,6 @@ class BotCommandScopeAllGroupChats(BotCommandScope):
         array = super(BotCommandScopeAllGroupChats, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -629,7 +624,6 @@ class BotCommandScopeAllChatAdministrators(BotCommandScope):
         array = super(BotCommandScopeAllChatAdministrators, self).to_array()
 
         array['type'] = u(self.type)  # py2: type unicode, py3: type str
-
         return array
     # end def to_array
 
@@ -756,7 +750,6 @@ class BotCommandScopeChat(BotCommandScope):
         else:
             raise TypeError('Unknown type, must be one of int, str.')
         # end if
-
         return array
     # end def to_array
 
@@ -890,7 +883,6 @@ class BotCommandScopeChatAdministrators(BotCommandScope):
         else:
             raise TypeError('Unknown type, must be one of int, str.')
         # end if
-
         return array
     # end def to_array
 
@@ -1033,7 +1025,6 @@ class BotCommandScopeChatMember(BotCommandScope):
             raise TypeError('Unknown type, must be one of int, str.')
         # end if
         array['user_id'] = int(self.user_id)  # type int
-
         return array
     # end def to_array
 

@@ -332,7 +332,6 @@ class Update(Receivable):
         if self.chat_member is not None:
             array['chat_member'] = self.chat_member.to_array()  # type ChatMemberUpdated
         # end if
-
         return array
     # end def to_array
 
@@ -551,7 +550,6 @@ class WebhookInfo(Receivable):
         if self.allowed_updates is not None:
             array['allowed_updates'] = self._as_array(self.allowed_updates)  # type list of str
         # end if
-
         return array
     # end def to_array
 
@@ -1339,7 +1337,6 @@ class Message(UpdateType):
         if self.reply_markup is not None:
             array['reply_markup'] = self.reply_markup.to_array()  # type InlineKeyboardMarkup
         # end if
-
         return array
     # end def to_array
 
@@ -1615,7 +1612,6 @@ class CallbackQuery(UpdateType):
         if self.game_short_name is not None:
             array['game_short_name'] = u(self.game_short_name)  # py2: type unicode, py3: type str
         # end if
-
         return array
     # end def to_array
 
@@ -1753,7 +1749,6 @@ class ResponseParameters(Receivable):
         if self.retry_after is not None:
             array['retry_after'] = int(self.retry_after)  # type int
         # end if
-
         return array
     # end def to_array
 
