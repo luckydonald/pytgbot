@@ -15,6 +15,7 @@ from pytgbot.api_types.sendable.passport import PassportElementError
 from pytgbot.api_types.sendable.payments import ShippingOption
 from pytgbot.api_types.sendable.payments import LabeledPrice
 from pytgbot.api_types.receivable.media import MessageEntity
+from pytgbot.api_types.sendable.command import BotCommandScope
 from pytgbot.api_types.sendable.command import BotCommand
 from pytgbot.api_types.receivable.peer import ChatPermissions
 from pytgbot.api_types.sendable.inline import InlineQueryResult
@@ -1357,8 +1358,8 @@ async def get_file(
 # end def
 
 
-@routes.api_route('/{token}/kickChatMember', methods=['GET', 'POST'], tags=['official'])
-async def kick_chat_member(
+@routes.api_route('/{token}/banChatMember', methods=['GET', 'POST'], tags=['official'])
+async def ban_chat_member(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target group or username of the target supergroup or channel (in the format @channelusername)'),
     user_id: int = Query(..., description='Unique identifier of the target user'),
@@ -1366,9 +1367,9 @@ async def kick_chat_member(
     revoke_messages: Optional[bool] = Query(None, description='Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.'),
 ) -> JSONableResponse:
     """
-    Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+    Use this method to ban a user in a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
-    https://core.telegram.org/bots/api#kickchatmember
+    https://core.telegram.org/bots/api#banchatmember
     """
 
     from .....main import _get_bot
@@ -1383,7 +1384,7 @@ async def kick_chat_member(
         raise HTTPException(404, detail="chat not found?")
     # end try
 
-    result = await bot.kick_chat_member(
+    result = await bot.ban_chat_member(
         entity=entity,
         user_id=user_id,
         until_date=until_date,
@@ -1402,7 +1403,7 @@ async def unban_chat_member(
     only_if_banned: Optional[bool] = Query(None, description='Do nothing if the user is not banned'),
 ) -> JSONableResponse:
     """
-    Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. By default, this method guarantees that after the call the user is not a member of the chat, but will be able to join it. So if the user is a member of the chat they will also be removed from the chat. If you don't want this, use the parameter only_if_banned. Returns True on success.
+    Use this method to unban a previously banned user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. By default, this method guarantees that after the call the user is not a member of the chat, but will be able to join it. So if the user is a member of the chat they will also be removed from the chat. If you don't want this, use the parameter only_if_banned. Returns True on success.
 
     https://core.telegram.org/bots/api#unbanchatmember
     """
@@ -2062,15 +2063,15 @@ async def get_chat_administrators(
 # end def
 
 
-@routes.api_route('/{token}/getChatMembersCount', methods=['GET', 'POST'], tags=['official'])
-async def get_chat_members_count(
+@routes.api_route('/{token}/getChatMemberCount', methods=['GET', 'POST'], tags=['official'])
+async def get_chat_member_count(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)'),
 ) -> JSONableResponse:
     """
     Use this method to get the number of members in a chat. Returns Int on success.
 
-    https://core.telegram.org/bots/api#getchatmemberscount
+    https://core.telegram.org/bots/api#getchatmembercount
     """
 
     from .....main import _get_bot
@@ -2085,7 +2086,7 @@ async def get_chat_members_count(
         raise HTTPException(404, detail="chat not found?")
     # end try
 
-    result = await bot.get_chat_members_count(
+    result = await bot.get_chat_member_count(
         entity=entity,
     )
     data = await to_web_api(result, bot)
@@ -2229,15 +2230,21 @@ async def answer_callback_query(
 async def set_my_commands(
     token: str = TOKEN_VALIDATION,
     commands: Json[List['BotCommandModel']] = Query(..., description="A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified."),
+    scope: Optional[Json['BotCommandScopeModel']] = Query(None, description='A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to BotCommandScopeDefault.'),
+    language_code: Optional[str] = Query(None, description='A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands'),
 ) -> JSONableResponse:
     """
-    Use this method to change the list of the bot's commands. Returns True on success.
+    Use this method to change the list of the bot's commands. See https://core.telegram.org/bots#commands for more details about bot commands. Returns True on success.
 
     https://core.telegram.org/bots/api#setmycommands
     """
     commands: List[BotCommandModel] = parse_obj_as(
         List[BotCommandModel],
         obj=commands,
+    )
+    scope: Optional[BotCommandScopeModel] = parse_obj_as(
+        Optional[BotCommandScopeModel],
+        obj=scope,
     )
 
     from .....main import _get_bot
@@ -2247,6 +2254,38 @@ async def set_my_commands(
 
     result = await bot.set_my_commands(
         commands=commands,
+        scope=scope,
+        language_code=language_code,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+@routes.api_route('/{token}/deleteMyCommands', methods=['GET', 'POST'], tags=['official'])
+async def delete_my_commands(
+    token: str = TOKEN_VALIDATION,
+    scope: Optional[Json['BotCommandScopeModel']] = Query(None, description='A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to BotCommandScopeDefault.'),
+    language_code: Optional[str] = Query(None, description='A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands'),
+) -> JSONableResponse:
+    """
+    Use this method to delete the list of the bot's commands for the given scope and user language. After deletion, higher level commands will be shown to affected users. Returns True on success.
+
+    https://core.telegram.org/bots/api#deletemycommands
+    """
+    scope: Optional[BotCommandScopeModel] = parse_obj_as(
+        Optional[BotCommandScopeModel],
+        obj=scope,
+    )
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+
+
+
+    result = await bot.delete_my_commands(
+        scope=scope,
+        language_code=language_code,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -2256,12 +2295,18 @@ async def set_my_commands(
 @routes.api_route('/{token}/getMyCommands', methods=['GET', 'POST'], tags=['official'])
 async def get_my_commands(
     token: str = TOKEN_VALIDATION,
+    scope: Optional[Json['BotCommandScopeModel']] = Query(None, description='A JSON-serialized object, describing scope of users. Defaults to BotCommandScopeDefault.'),
+    language_code: Optional[str] = Query(None, description='A two-letter ISO 639-1 language code or an empty string'),
 ) -> JSONableResponse:
     """
-    Use this method to get the current list of the bot's commands. Requires no parameters. Returns Array of BotCommand on success.
+    Use this method to get the current list of the bot's commands for the given scope and user language. Returns Array of BotCommand on success. If commands aren't set, an empty list is returned.
 
     https://core.telegram.org/bots/api#getmycommands
     """
+    scope: Optional[BotCommandScopeModel] = parse_obj_as(
+        Optional[BotCommandScopeModel],
+        obj=scope,
+    )
 
     from .....main import _get_bot
     bot = await _get_bot(token)
@@ -2269,6 +2314,8 @@ async def get_my_commands(
 
 
     result = await bot.get_my_commands(
+        scope=scope,
+        language_code=language_code,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())

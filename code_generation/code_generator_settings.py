@@ -46,17 +46,31 @@ CLASS_TYPE_PATHS = {  # class: import, master_class, descr
     "MessageId":       ("pytgbot.api_types.receivable.responses.", "Result", None),  # July 29, 2019
 
     # pytgbot.api_types.receivable.peer.*
-    "ChatMemberUpdated":  ("pytgbot.api_types.receivable.peer.", "Result", None),  # March 9, 2021
-    "ChatPermissions":    ("pytgbot.api_types.receivable.peer.", "Result", None),  # July 29, 2019
-    "ChatInviteLink":     ("pytgbot.api_types.receivable.peer.", "Result", None),  # March 9, 2021
-    "ChatLocation":       ("pytgbot.api_types.receivable.peer.", "Result", None),  # November 4, 2020
-    "ChatMember":         ("pytgbot.api_types.receivable.peer.", "Result", None),
-    "Peer":               ("pytgbot.api_types.receivable.peer.", "Result", None),
-    "User":               ("pytgbot.api_types.receivable.peer.", "Peer", None),
-    "Chat":               ("pytgbot.api_types.receivable.peer.", "Peer", None),
+    "ChatMemberUpdated":       ("pytgbot.api_types.receivable.peer.", "Result", None),  # March 9, 2021
+    "ChatPermissions":         ("pytgbot.api_types.receivable.peer.", "Result", None),  # July 29, 2019
+    "ChatInviteLink":          ("pytgbot.api_types.receivable.peer.", "Result", None),  # March 9, 2021
+    "ChatLocation":            ("pytgbot.api_types.receivable.peer.", "Result", None),  # November 4, 2020
+    "ChatMember":              ("pytgbot.api_types.receivable.peer.", "Result", None),
+    "ChatMemberOwner":         ("pytgbot.api_types.receivable.peer.", "ChatMember", None),  # June 25, 2021
+    "ChatMemberAdministrator": ("pytgbot.api_types.receivable.peer.", "ChatMember", None),  # June 25, 2021
+    "ChatMemberMember":        ("pytgbot.api_types.receivable.peer.", "ChatMember", None),  # June 25, 2021
+    "ChatMemberRestricted":    ("pytgbot.api_types.receivable.peer.", "ChatMember", None),  # June 25, 2021
+    "ChatMemberLeft":          ("pytgbot.api_types.receivable.peer.", "ChatMember", None),  # June 25, 2021
+    "ChatMemberBanned":        ("pytgbot.api_types.receivable.peer.", "ChatMember", None),  # June 25, 2021
+    "Peer":                    ("pytgbot.api_types.receivable.peer.", "Result", None),
+    "User":                    ("pytgbot.api_types.receivable.peer.", "Peer", None),
+    "Chat":                    ("pytgbot.api_types.receivable.peer.", "Peer", None),
 
     # pytgbot.api_types.receivable.command.*
-    "BotCommand":            ("pytgbot.api_types.sendable.command.", "Sendable", None),
+    "BotCommand":                           ("pytgbot.api_types.sendable.command.", "Sendable", None),
+    "BotCommandScope":                      ("pytgbot.api_types.sendable.command.", "Sendable", None),  # June 25, 2021
+    "BotCommandScopeAllPrivateChats":       ("pytgbot.api_types.sendable.command.", "BotCommandScope", None),  # June 25, 2021
+    "BotCommandScopeDefault":               ("pytgbot.api_types.sendable.command.", "BotCommandScope", None),  # June 25, 2021
+    "BotCommandScopeAllGroupChats":         ("pytgbot.api_types.sendable.command.", "BotCommandScope", None),  # June 25, 2021
+    "BotCommandScopeAllChatAdministrators": ("pytgbot.api_types.sendable.command.", "BotCommandScope", None),  # June 25, 2021
+    "BotCommandScopeChat":                  ("pytgbot.api_types.sendable.command.", "BotCommandScope", None),  # June 25, 2021
+    "BotCommandScopeChatAdministrators":    ("pytgbot.api_types.sendable.command.", "BotCommandScope", None),  # June 25, 2021
+    "BotCommandScopeChatMember":            ("pytgbot.api_types.sendable.command.", "BotCommandScope", None),  # June 25, 2021
 
     # pytgbot.api_types.receivable.updates.*
     "Update":               ("pytgbot.api_types.receivable.updates.", "Receivable", None),
@@ -182,10 +196,10 @@ class: import, master_class, descr
 
 WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
     # "func": {'return': {'expected': '', 'replace': ''}, 'r_type': {'expected': '', 'replace': ''}},
-    "getMe":                  {'return': {'expected': '', 'replace': 'Returns basic information about the bot in form of a User object'}, 'r_type': {'expected': '', 'replace': 'User'}},
-    "logOut":                 {'return': {'expected': '', 'replace': 'Returns True on success'}, 'r_type': {'expected': '', 'replace': 'True'}},  # November 4, 2020
+    "getMe":                  {'return': {'expected': 'Returns basic information about the bot in form of a User object', 'replace': 'Returns basic information about the bot in form of a User object'}, 'r_type': {'expected': 'User', 'replace': 'User'}},
+    "logOut":                 {'return': {'expected': 'Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},  # November 4, 2020
     "getWebhookInfo":         {'return': {'expected': 'On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty', 'replace': 'On success, returns a WebhookInfo object'}, 'r_type': {'expected': 'WebhookInfo or getUpdates or url', 'replace': 'WebhookInfo'}},
-    "kickChatMember":         {'return': {'expected': 'In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
+    "banChatMember":          {'return': {'expected': 'In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
     "unbanChatMember":        {'return': {'expected': 'The user will not return to the group or channel automatically, but will be able to join via link, etc. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'True', 'replace': 'True'}},
     "getChatAdministrators":  {'return': {'expected': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned', 'replace': 'On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots'}, 'r_type': {'expected': 'list of ChatMember', 'replace': 'list of ChatMember'}},
     "setChatStickerSet":      {'return': {'expected': 'Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success', 'replace': 'Returns True on success'}, 'r_type': {'expected': 'can_set_sticker_set or getChat or True', 'replace': 'True'}},
@@ -196,7 +210,7 @@ WHITELISTED_FUNCS = {  # Array with names of functions which have no parameters 
     "sendMediaGroup":         {'return': {'expected': 'On success, an array of Messages that were sent is returned', 'replace': 'On success, an array of Messages that were sent is returned'}, 'r_type': {'expected': 'list of Messages', 'replace': 'list of Message'}},
     "answerShippingQuery":    {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
     "answerPreCheckoutQuery": {'return': {'expected': 'On success, True is returned', 'replace': 'On success, True is returned'}, 'r_type': {'expected': '', 'replace': 'True'}},
-    "getMyCommands":          {'return': {'expected': 'Returns Array of BotCommand on success', 'replace': 'On success, an array of the commands is returned'}, 'r_type': {'expected': 'list of BotCommand', 'replace': 'list of BotCommand'}},
+    "getMyCommands":          {'return': {'expected': "Returns Array of BotCommand on success. If commands aren't set, an empty list is returned", 'replace': "On success, an array of the commands is returned. If commands aren't set, an empty list is returned"}, 'r_type': {'expected': 'list of BotCommand', 'replace': 'list of BotCommand'}},
 }
 """
 Array with names of functions which have no parameters table and thus wouldn't be detected, or default replacements of stuff which just won't get parsed correctly.
@@ -210,6 +224,8 @@ WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters 
     # "PassportElementError",
     # "InputMediaWithThumb",
     "VoiceChatStarted",
+    "ChatMember",  # June 25, 2021
+    "BotCommandScope",  # June 25, 2021
 ]
 """ Array with names of classes which have no parameters table and thus wouldn't be detected."""
 

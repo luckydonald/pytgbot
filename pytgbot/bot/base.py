@@ -2276,9 +2276,9 @@ class BotBase(object):
         return result
     # end def _get_file__process_result
 
-    def _kick_chat_member__make_request(self, chat_id, user_id, until_date=None, revoke_messages=None):
+    def _ban_chat_member__make_request(self, chat_id, user_id, until_date=None, revoke_messages=None):
         """
-        Internal function for making the request to the API's kickChatMember endpoint.
+        Internal function for making the request to the API's banChatMember endpoint.
 
 
         Parameters:
@@ -2306,12 +2306,12 @@ class BotBase(object):
         assert_type_or_raise(user_id, int, parameter_name="user_id")
         assert_type_or_raise(until_date, None, int, parameter_name="until_date")
         assert_type_or_raise(revoke_messages, None, bool, parameter_name="revoke_messages")
-        return self.do("kickChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date, revoke_messages=revoke_messages)
-    # end def _kick_chat_member__make_request
+        return self.do("banChatMember", chat_id=chat_id, user_id=user_id, until_date=until_date, revoke_messages=revoke_messages)
+    # end def _ban_chat_member__make_request
 
-    def _kick_chat_member__process_result(self, result):
+    def _ban_chat_member__process_result(self, result):
         """
-        Internal function for processing the json data returned by the API's kickChatMember endpoint.
+        Internal function for processing the json data returned by the API's banChatMember endpoint.
 
         :return: Returns True on success
         :rtype:  bool
@@ -2330,7 +2330,7 @@ class BotBase(object):
         raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
-    # end def _kick_chat_member__process_result
+    # end def _ban_chat_member__process_result
 
     def _unban_chat_member__make_request(self, chat_id, user_id, only_if_banned=None):
         """
@@ -3282,9 +3282,9 @@ class BotBase(object):
         return result
     # end def _get_chat_administrators__process_result
 
-    def _get_chat_members_count__make_request(self, chat_id):
+    def _get_chat_member_count__make_request(self, chat_id):
         """
-        Internal function for making the request to the API's getChatMembersCount endpoint.
+        Internal function for making the request to the API's getChatMemberCount endpoint.
 
 
         Parameters:
@@ -3298,12 +3298,12 @@ class BotBase(object):
         """
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
-        return self.do("getChatMembersCount", chat_id=chat_id)
-    # end def _get_chat_members_count__make_request
+        return self.do("getChatMemberCount", chat_id=chat_id)
+    # end def _get_chat_member_count__make_request
 
-    def _get_chat_members_count__process_result(self, result):
+    def _get_chat_member_count__process_result(self, result):
         """
-        Internal function for processing the json data returned by the API's getChatMembersCount endpoint.
+        Internal function for processing the json data returned by the API's getChatMemberCount endpoint.
 
         :return: Returns Int on success
         :rtype:  int
@@ -3322,7 +3322,7 @@ class BotBase(object):
         raise TgApiParseException("Could not parse result.")  # See debug log for details!
         # end if return_python_objects
         return result
-    # end def _get_chat_members_count__process_result
+    # end def _get_chat_member_count__process_result
 
     def _get_chat_member__make_request(self, chat_id, user_id):
         """
@@ -3519,7 +3519,7 @@ class BotBase(object):
         return result
     # end def _answer_callback_query__process_result
 
-    def _set_my_commands__make_request(self, commands):
+    def _set_my_commands__make_request(self, commands, scope=None, language_code=None):
         """
         Internal function for making the request to the API's setMyCommands endpoint.
 
@@ -3530,13 +3530,24 @@ class BotBase(object):
         :type  commands: list of pytgbot.api_types.sendable.command.BotCommand
 
 
+        Optional keyword parameters:
+
+        :param scope: A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to BotCommandScopeDefault.
+        :type  scope: pytgbot.api_types.sendable.command.BotCommandScope
+
+        :param language_code: A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands
+        :type  language_code: str|unicode
+
         :return: the decoded json
         :rtype:  dict|list|bool
         """
         from pytgbot.api_types.sendable.command import BotCommand
+        from pytgbot.api_types.sendable.command import BotCommandScope
 
         assert_type_or_raise(commands, list, parameter_name="commands")
-        return self.do("setMyCommands", commands=commands)
+        assert_type_or_raise(scope, None, BotCommandScope, parameter_name="scope")
+        assert_type_or_raise(language_code, None, unicode_type, parameter_name="language_code")
+        return self.do("setMyCommands", commands=commands, scope=scope, language_code=language_code)
     # end def _set_my_commands__make_request
 
     def _set_my_commands__process_result(self, result):
@@ -3562,23 +3573,80 @@ class BotBase(object):
         return result
     # end def _set_my_commands__process_result
 
-    def _get_my_commands__make_request(self):
+    def _delete_my_commands__make_request(self, scope=None, language_code=None):
         """
-        Internal function for making the request to the API's getMyCommands endpoint.
+        Internal function for making the request to the API's deleteMyCommands endpoint.
 
+
+        Optional keyword parameters:
+
+        :param scope: A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to BotCommandScopeDefault.
+        :type  scope: pytgbot.api_types.sendable.command.BotCommandScope
+
+        :param language_code: A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands
+        :type  language_code: str|unicode
 
         :return: the decoded json
         :rtype:  dict|list|bool
         """
+        from pytgbot.api_types.sendable.command import BotCommandScope
 
-        return self.do("getMyCommands", )
+        assert_type_or_raise(scope, None, BotCommandScope, parameter_name="scope")
+        assert_type_or_raise(language_code, None, unicode_type, parameter_name="language_code")
+        return self.do("deleteMyCommands", scope=scope, language_code=language_code)
+    # end def _delete_my_commands__make_request
+
+    def _delete_my_commands__process_result(self, result):
+        """
+        Internal function for processing the json data returned by the API's deleteMyCommands endpoint.
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        if not self.return_python_objects:
+            return result
+        # end if
+
+        logger.debug("Trying to parse {data}".format(data=repr(result)))
+        try:
+            return from_array_list(bool, result, list_level=0, is_builtin=True)
+        except TgApiParseException:
+            logger.debug("Failed parsing as primitive bool", exc_info=True)
+        # end try
+            # no valid parsing so far
+        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def _delete_my_commands__process_result
+
+    def _get_my_commands__make_request(self, scope=None, language_code=None):
+        """
+        Internal function for making the request to the API's getMyCommands endpoint.
+
+
+        Optional keyword parameters:
+
+        :param scope: A JSON-serialized object, describing scope of users. Defaults to BotCommandScopeDefault.
+        :type  scope: pytgbot.api_types.sendable.command.BotCommandScope
+
+        :param language_code: A two-letter ISO 639-1 language code or an empty string
+        :type  language_code: str|unicode
+
+        :return: the decoded json
+        :rtype:  dict|list|bool
+        """
+        from pytgbot.api_types.sendable.command import BotCommandScope
+
+        assert_type_or_raise(scope, None, BotCommandScope, parameter_name="scope")
+        assert_type_or_raise(language_code, None, unicode_type, parameter_name="language_code")
+        return self.do("getMyCommands", scope=scope, language_code=language_code)
     # end def _get_my_commands__make_request
 
     def _get_my_commands__process_result(self, result):
         """
         Internal function for processing the json data returned by the API's getMyCommands endpoint.
 
-        :return: On success, an array of the commands is returned
+        :return: On success, an array of the commands is returned. If commands aren't set, an empty list is returned
         :rtype:  list of pytgbot.api_types.sendable.command.BotCommand
         """
         if not self.return_python_objects:
