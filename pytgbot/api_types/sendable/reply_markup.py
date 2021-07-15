@@ -65,11 +65,14 @@ class ReplyKeyboardMarkup(ReplyMarkup):
     :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
     :type  one_time_keyboard: bool
 
+    :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
+    :type  input_field_placeholder: str|unicode
+
     :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
     :type  selective: bool
     """
 
-    def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, selective=None):
+    def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, input_field_placeholder=None, selective=None):
         """
         This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 
@@ -90,6 +93,9 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
         :type  one_time_keyboard: bool
 
+        :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
+        :type  input_field_placeholder: str|unicode
+
         :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
         :type  selective: bool
         """
@@ -100,6 +106,8 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         self.resize_keyboard = resize_keyboard
         assert_type_or_raise(one_time_keyboard, None, bool, parameter_name="one_time_keyboard")
         self.one_time_keyboard = one_time_keyboard
+        assert_type_or_raise(input_field_placeholder, None, unicode_type, parameter_name="input_field_placeholder")
+        self.input_field_placeholder = input_field_placeholder
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
@@ -127,6 +135,9 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         if self.one_time_keyboard is not None:
             array['one_time_keyboard'] = bool(self.one_time_keyboard)  # type bool
         # end if
+        if self.input_field_placeholder is not None:
+            array['input_field_placeholder'] = u(self.input_field_placeholder)  # py2: type unicode, py3: type str
+        # end if
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
         # end if
@@ -147,6 +158,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         data['keyboard'] = KeyboardButton.from_array_list(array.get('keyboard'), list_level=2)
         data['resize_keyboard'] = bool(array.get('resize_keyboard')) if array.get('resize_keyboard') is not None else None
         data['one_time_keyboard'] = bool(array.get('one_time_keyboard')) if array.get('one_time_keyboard') is not None else None
+        data['input_field_placeholder'] = u(array.get('input_field_placeholder')) if array.get('input_field_placeholder') is not None else None
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
         return data
     # end def validate_array
@@ -173,7 +185,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         """
         Implements `str(replykeyboardmarkup_instance)`
         """
-        return "ReplyKeyboardMarkup(keyboard={self.keyboard!r}, resize_keyboard={self.resize_keyboard!r}, one_time_keyboard={self.one_time_keyboard!r}, selective={self.selective!r})".format(self=self)
+        return "ReplyKeyboardMarkup(keyboard={self.keyboard!r}, resize_keyboard={self.resize_keyboard!r}, one_time_keyboard={self.one_time_keyboard!r}, input_field_placeholder={self.input_field_placeholder!r}, selective={self.selective!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -183,7 +195,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         if self._raw:
             return "ReplyKeyboardMarkup.from_array({self._raw})".format(self=self)
         # end if
-        return "ReplyKeyboardMarkup(keyboard={self.keyboard!r}, resize_keyboard={self.resize_keyboard!r}, one_time_keyboard={self.one_time_keyboard!r}, selective={self.selective!r})".format(self=self)
+        return "ReplyKeyboardMarkup(keyboard={self.keyboard!r}, resize_keyboard={self.resize_keyboard!r}, one_time_keyboard={self.one_time_keyboard!r}, input_field_placeholder={self.input_field_placeholder!r}, selective={self.selective!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -191,7 +203,7 @@ class ReplyKeyboardMarkup(ReplyMarkup):
         Implements `"key" in replykeyboardmarkup_instance`
         """
         return (
-            key in ["keyboard", "resize_keyboard", "one_time_keyboard", "selective"]
+            key in ["keyboard", "resize_keyboard", "one_time_keyboard", "input_field_placeholder", "selective"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -1119,11 +1131,14 @@ class ForceReply(ReplyMarkup):
 
     Optional keyword parameters:
 
+    :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the reply is active; 1-64 characters
+    :type  input_field_placeholder: str|unicode
+
     :param selective: Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
     :type  selective: bool
     """
 
-    def __init__(self, selective=None):
+    def __init__(self, input_field_placeholder=None, selective=None):
         """
         Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as
         if the user has selected the bot's message and tapped 'Reply').
@@ -1149,6 +1164,10 @@ class ForceReply(ReplyMarkup):
 
 
         Optional keyword parameters:
+
+        :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the reply is active; 1-64 characters
+        :type  input_field_placeholder: str|unicode
+
         :param selective: Optional. Use this parameter if you want to show the keyboard to/force reply from specific users only.
                           Targets: 1) users that are @mentioned in the text of the Message object;
                                    2) if the bot's message is a reply (has reply_to_message_id),
@@ -1160,6 +1179,8 @@ class ForceReply(ReplyMarkup):
         """
         super(ForceReply, self).__init__()
         self.force_reply = True
+        assert_type_or_raise(input_field_placeholder, None, unicode_type, parameter_name="input_field_placeholder")
+        self.input_field_placeholder = input_field_placeholder
         assert_type_or_raise(selective, None, bool, parameter_name="selective")
         self.selective = selective
     # end def __init__
@@ -1181,6 +1202,9 @@ class ForceReply(ReplyMarkup):
         array = super(ForceReply, self).to_array()
 
         array['force_reply'] = bool(self.force_reply)  # type bool
+        if self.input_field_placeholder is not None:
+            array['input_field_placeholder'] = u(self.input_field_placeholder)  # py2: type unicode, py3: type str
+        # end if
         if self.selective is not None:
             array['selective'] = bool(self.selective)  # type bool
         # end if
@@ -1199,6 +1223,7 @@ class ForceReply(ReplyMarkup):
         assert_type_or_raise(array, dict, parameter_name="array")
         data = ReplyMarkup.validate_array(array)
         # 'force_reply' is always True.
+        data['input_field_placeholder'] = u(array.get('input_field_placeholder')) if array.get('input_field_placeholder') is not None else None
         data['selective'] = bool(array.get('selective')) if array.get('selective') is not None else None
         return data
     # end def validate_array
@@ -1225,7 +1250,7 @@ class ForceReply(ReplyMarkup):
         """
         Implements `str(forcereply_instance)`
         """
-        return "ForceReply(force_reply={self.force_reply!r}, selective={self.selective!r})".format(self=self)
+        return "ForceReply(force_reply={self.force_reply!r}, input_field_placeholder={self.input_field_placeholder!r}, selective={self.selective!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1235,7 +1260,7 @@ class ForceReply(ReplyMarkup):
         if self._raw:
             return "ForceReply.from_array({self._raw})".format(self=self)
         # end if
-        return "ForceReply(force_reply={self.force_reply!r}, selective={self.selective!r})".format(self=self)
+        return "ForceReply(force_reply={self.force_reply!r}, input_field_placeholder={self.input_field_placeholder!r}, selective={self.selective!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1243,7 +1268,7 @@ class ForceReply(ReplyMarkup):
         Implements `"key" in forcereply_instance`
         """
         return (
-            key in ["force_reply", "selective"]
+            key in ["force_reply", "input_field_placeholder", "selective"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
