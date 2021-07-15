@@ -350,8 +350,14 @@ def load_from_html(folder):
         if not all([table_type, param_strings]):
             if title in WHITELISTED_FUNCS:
                 table_type = 'func'
-            elif title  in WHITELISTED_CLASSES:
+            elif title in WHITELISTED_CLASSES:
                 table_type = 'class'
+            elif [key[key.rindex('.')+1:] for key in CUSTOM_CLASSES.keys()]:
+                logger.info(
+                    "Skipped. Has no table with Parameters or Fields.\n"
+                    "Has a `code_generator_settings.CUSTOM_CLASSES` which seems to fit though."
+                )
+                continue
             else:
                 logger.warning(
                     "Skipped. Has no table with Parameters or Fields.\n"
