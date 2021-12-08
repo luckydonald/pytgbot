@@ -35,13 +35,14 @@ class InputMedia(Sendable):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
@@ -63,13 +64,14 @@ class InputMedia(Sendable):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMedia, self).__init__()
@@ -250,13 +252,14 @@ class InputMediaWithThumb(InputMedia):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
@@ -313,13 +316,14 @@ class InputMediaWithThumb(InputMedia):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaWithThumb, self).__init__(type=type, media=media, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
@@ -438,13 +442,14 @@ class InputMediaPlayable(InputMediaWithThumb):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
@@ -475,13 +480,14 @@ class InputMediaPlayable(InputMediaWithThumb):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaPlayable, self).__init__(type=type, media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
@@ -623,13 +629,14 @@ class InputMediaVideolike(InputMediaPlayable):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
@@ -666,13 +673,14 @@ class InputMediaVideolike(InputMediaPlayable):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the media to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaVideolike, self).__init__(type=type, media=media, thumb=thumb, duration=duration, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
@@ -808,13 +816,14 @@ class InputMediaPhoto(InputMedia):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
     """
 
@@ -834,13 +843,14 @@ class InputMediaPhoto(InputMedia):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
         """
         super(InputMediaPhoto, self).__init__(type='photo', media=media, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)
@@ -959,28 +969,34 @@ class InputMediaVideo(InputMediaVideolike):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+                  The thumbnail should be in JPEG format and less than 200 kB in size.
+                  A thumbnail's width and height should not exceed 320.
+                  Ignored if the file is not uploaded using multipart/form-data.
+                  Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+                  More info on Sending Files ».
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-    :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the video caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param width: Optional. Video width
+    :param width: Optional. Video width.
     :type  width: int
 
-    :param height: Optional. Video height
+    :param height: Optional. Video height.
     :type  height: int
 
-    :param duration: Optional. Video duration in seconds
+    :param duration: Optional. Video duration in seconds.
     :type  duration: int
 
-    :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
+    :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming.
     :type  supports_streaming: bool
     """
 
@@ -1000,28 +1016,34 @@ class InputMediaVideo(InputMediaVideolike):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+                      The thumbnail should be in JPEG format and less than 200 kB in size.
+                      A thumbnail's width and height should not exceed 320.
+                      Ignored if the file is not uploaded using multipart/form-data.
+                      Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+                      More info on Sending Files ».
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-        :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the video caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param width: Optional. Video width
+        :param width: Optional. Video width.
         :type  width: int
 
-        :param height: Optional. Video height
+        :param height: Optional. Video height.
         :type  height: int
 
-        :param duration: Optional. Video duration in seconds
+        :param duration: Optional. Video duration in seconds.
         :type  duration: int
 
-        :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
+        :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming.
         :type  supports_streaming: bool
         """
         super(InputMediaVideo, self).__init__(type='video', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, width=width, height=height, duration=duration)
@@ -1161,25 +1183,31 @@ class InputMediaAnimation(InputMediaVideolike):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+                  The thumbnail should be in JPEG format and less than 200 kB in size.
+                  A thumbnail's width and height should not exceed 320.
+                  Ignored if the file is not uploaded using multipart/form-data.
+                  Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+                  More info on Sending Files ».
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-    :param caption: Optional. Caption of the animation to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the animation to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the animation caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the animation caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param width: Optional. Animation width
+    :param width: Optional. Animation width.
     :type  width: int
 
-    :param height: Optional. Animation height
+    :param height: Optional. Animation height.
     :type  height: int
 
-    :param duration: Optional. Animation duration in seconds
+    :param duration: Optional. Animation duration in seconds.
     :type  duration: int
     """
 
@@ -1199,25 +1227,31 @@ class InputMediaAnimation(InputMediaVideolike):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+                      The thumbnail should be in JPEG format and less than 200 kB in size.
+                      A thumbnail's width and height should not exceed 320.
+                      Ignored if the file is not uploaded using multipart/form-data.
+                      Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+                      More info on Sending Files ».
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-        :param caption: Optional. Caption of the animation to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the animation to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the animation caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the animation caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param width: Optional. Animation width
+        :param width: Optional. Animation width.
         :type  width: int
 
-        :param height: Optional. Animation height
+        :param height: Optional. Animation height.
         :type  height: int
 
-        :param duration: Optional. Animation duration in seconds
+        :param duration: Optional. Animation duration in seconds.
         :type  duration: int
         """
         super(InputMediaAnimation, self).__init__(type='animation', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, width=width, height=height, duration=duration)
@@ -1351,25 +1385,31 @@ class InputMediaAudio(InputMediaPlayable):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+                  The thumbnail should be in JPEG format and less than 200 kB in size.
+                  A thumbnail's width and height should not exceed 320.
+                  Ignored if the file is not uploaded using multipart/form-data.
+                  Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+                  More info on Sending Files ».
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-    :param caption: Optional. Caption of the audio to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the audio to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the audio caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param duration: Optional. Duration of the audio in seconds
+    :param duration: Optional. Duration of the audio in seconds.
     :type  duration: int
 
-    :param performer: Optional. Performer of the audio
+    :param performer: Optional. Performer of the audio.
     :type  performer: str|unicode
 
-    :param title: Optional. Title of the audio
+    :param title: Optional. Title of the audio.
     :type  title: str|unicode
     """
 
@@ -1389,25 +1429,31 @@ class InputMediaAudio(InputMediaPlayable):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+                      The thumbnail should be in JPEG format and less than 200 kB in size.
+                      A thumbnail's width and height should not exceed 320.
+                      Ignored if the file is not uploaded using multipart/form-data.
+                      Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+                      More info on Sending Files ».
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-        :param caption: Optional. Caption of the audio to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the audio to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the audio caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param duration: Optional. Duration of the audio in seconds
+        :param duration: Optional. Duration of the audio in seconds.
         :type  duration: int
 
-        :param performer: Optional. Performer of the audio
+        :param performer: Optional. Performer of the audio.
         :type  performer: str|unicode
 
-        :param title: Optional. Title of the audio
+        :param title: Optional. Title of the audio.
         :type  title: str|unicode
         """
         super(InputMediaAudio, self).__init__(type='audio', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration)
@@ -1547,19 +1593,26 @@ class InputMediaDocument(InputMediaWithThumb):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+    :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+                  The thumbnail should be in JPEG format and less than 200 kB in size.
+                  A thumbnail's width and height should not exceed 320.
+                  Ignored if the file is not uploaded using multipart/form-data.
+                  Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+                  More info on Sending Files ».
     :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-    :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the document caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always True, if the document is sent as part of an album.
+    :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data.
+                                           Always True, if the document is sent as part of an album.
     :type  disable_content_type_detection: bool
     """
 
@@ -1579,19 +1632,26 @@ class InputMediaDocument(InputMediaWithThumb):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        :param thumb: Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
+                      The thumbnail should be in JPEG format and less than 200 kB in size.
+                      A thumbnail's width and height should not exceed 320.
+                      Ignored if the file is not uploaded using multipart/form-data.
+                      Thumbnails can't be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
+                      More info on Sending Files ».
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-        :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the document caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always True, if the document is sent as part of an album.
+        :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data.
+                                               Always True, if the document is sent as part of an album.
         :type  disable_content_type_detection: bool
         """
         super(InputMediaDocument, self).__init__(type='document', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)

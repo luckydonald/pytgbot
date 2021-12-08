@@ -109,25 +109,25 @@ class InlineQueryResultArticle(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param url: Optional. URL of the result
+    :param url: Optional. URL of the result.
     :type  url: str|unicode
 
-    :param hide_url: Optional. Pass True, if you don't want the URL to be shown in the message
+    :param hide_url: Optional. Pass True, if you don't want the URL to be shown in the message.
     :type  hide_url: bool
 
-    :param description: Optional. Short description of the result
+    :param description: Optional. Short description of the result.
     :type  description: str|unicode
 
-    :param thumb_url: Optional. Url of the thumbnail for the result
+    :param thumb_url: Optional. Url of the thumbnail for the result.
     :type  thumb_url: str|unicode
 
-    :param thumb_width: Optional. Thumbnail width
+    :param thumb_width: Optional. Thumbnail width.
     :type  thumb_width: int
 
-    :param thumb_height: Optional. Thumbnail height
+    :param thumb_height: Optional. Thumbnail height.
     :type  thumb_height: int
     """
 
@@ -152,25 +152,25 @@ class InlineQueryResultArticle(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param url: Optional. URL of the result
+        :param url: Optional. URL of the result.
         :type  url: str|unicode
 
-        :param hide_url: Optional. Pass True, if you don't want the URL to be shown in the message
+        :param hide_url: Optional. Pass True, if you don't want the URL to be shown in the message.
         :type  hide_url: bool
 
-        :param description: Optional. Short description of the result
+        :param description: Optional. Short description of the result.
         :type  description: str|unicode
 
-        :param thumb_url: Optional. Url of the thumbnail for the result
+        :param thumb_url: Optional. Url of the thumbnail for the result.
         :type  thumb_url: str|unicode
 
-        :param thumb_width: Optional. Thumbnail width
+        :param thumb_width: Optional. Thumbnail width.
         :type  thumb_width: int
 
-        :param thumb_height: Optional. Thumbnail height
+        :param thumb_height: Optional. Thumbnail height.
         :type  thumb_height: int
         """
         super(InlineQueryResultArticle, self).__init__()
@@ -337,31 +337,32 @@ class InlineQueryResultPhoto(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param photo_width: Optional. Width of the photo
+    :param photo_width: Optional. Width of the photo.
     :type  photo_width: int
 
-    :param photo_height: Optional. Height of the photo
+    :param photo_height: Optional. Height of the photo.
     :type  photo_height: int
 
-    :param title: Optional. Title for the result
+    :param title: Optional. Title for the result.
     :type  title: str|unicode
 
-    :param description: Optional. Short description of the result
+    :param description: Optional. Short description of the result.
     :type  description: str|unicode
 
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the photo
+    :param input_message_content: Optional. Content of the message to be sent instead of the photo.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -386,31 +387,32 @@ class InlineQueryResultPhoto(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param photo_width: Optional. Width of the photo
+        :param photo_width: Optional. Width of the photo.
         :type  photo_width: int
 
-        :param photo_height: Optional. Height of the photo
+        :param photo_height: Optional. Height of the photo.
         :type  photo_height: int
 
-        :param title: Optional. Title for the result
+        :param title: Optional. Title for the result.
         :type  title: str|unicode
 
-        :param description: Optional. Short description of the result
+        :param description: Optional. Short description of the result.
         :type  description: str|unicode
 
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the photo
+        :param input_message_content: Optional. Content of the message to be sent instead of the photo.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultPhoto, self).__init__()
@@ -592,34 +594,36 @@ class InlineQueryResultGif(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param gif_width: Optional. Width of the GIF
+    :param gif_width: Optional. Width of the GIF.
     :type  gif_width: int
 
-    :param gif_height: Optional. Height of the GIF
+    :param gif_height: Optional. Height of the GIF.
     :type  gif_height: int
 
-    :param gif_duration: Optional. Duration of the GIF in seconds
+    :param gif_duration: Optional. Duration of the GIF in seconds.
     :type  gif_duration: int
 
-    :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+    :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4".
+                            Defaults to "image/jpeg".
     :type  thumb_mime_type: str|unicode
 
-    :param title: Optional. Title for the result
+    :param title: Optional. Title for the result.
     :type  title: str|unicode
 
-    :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+    :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -644,34 +648,36 @@ class InlineQueryResultGif(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param gif_width: Optional. Width of the GIF
+        :param gif_width: Optional. Width of the GIF.
         :type  gif_width: int
 
-        :param gif_height: Optional. Height of the GIF
+        :param gif_height: Optional. Height of the GIF.
         :type  gif_height: int
 
-        :param gif_duration: Optional. Duration of the GIF in seconds
+        :param gif_duration: Optional. Duration of the GIF in seconds.
         :type  gif_duration: int
 
-        :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+        :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4".
+                                Defaults to "image/jpeg".
         :type  thumb_mime_type: str|unicode
 
-        :param title: Optional. Title for the result
+        :param title: Optional. Title for the result.
         :type  title: str|unicode
 
-        :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+        :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultGif, self).__init__()
@@ -859,34 +865,36 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param mpeg4_width: Optional. Video width
+    :param mpeg4_width: Optional. Video width.
     :type  mpeg4_width: int
 
-    :param mpeg4_height: Optional. Video height
+    :param mpeg4_height: Optional. Video height.
     :type  mpeg4_height: int
 
-    :param mpeg4_duration: Optional. Video duration in seconds
+    :param mpeg4_duration: Optional. Video duration in seconds.
     :type  mpeg4_duration: int
 
-    :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+    :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4".
+                            Defaults to "image/jpeg".
     :type  thumb_mime_type: str|unicode
 
-    :param title: Optional. Title for the result
+    :param title: Optional. Title for the result.
     :type  title: str|unicode
 
-    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+    :param input_message_content: Optional. Content of the message to be sent instead of the video animation.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -911,34 +919,36 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param mpeg4_width: Optional. Video width
+        :param mpeg4_width: Optional. Video width.
         :type  mpeg4_width: int
 
-        :param mpeg4_height: Optional. Video height
+        :param mpeg4_height: Optional. Video height.
         :type  mpeg4_height: int
 
-        :param mpeg4_duration: Optional. Video duration in seconds
+        :param mpeg4_duration: Optional. Video duration in seconds.
         :type  mpeg4_duration: int
 
-        :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
+        :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4".
+                                Defaults to "image/jpeg".
         :type  thumb_mime_type: str|unicode
 
-        :param title: Optional. Title for the result
+        :param title: Optional. Title for the result.
         :type  title: str|unicode
 
-        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+        :param input_message_content: Optional. Content of the message to be sent instead of the video animation.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultMpeg4Gif, self).__init__()
@@ -1134,31 +1144,33 @@ class InlineQueryResultVideo(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the video caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param video_width: Optional. Video width
+    :param video_width: Optional. Video width.
     :type  video_width: int
 
-    :param video_height: Optional. Video height
+    :param video_height: Optional. Video height.
     :type  video_height: int
 
-    :param video_duration: Optional. Video duration in seconds
+    :param video_duration: Optional. Video duration in seconds.
     :type  video_duration: int
 
-    :param description: Optional. Short description of the result
+    :param description: Optional. Short description of the result.
     :type  description: str|unicode
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the video. This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
+    :param input_message_content: Optional. Content of the message to be sent instead of the video.
+                                  This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -1191,31 +1203,33 @@ class InlineQueryResultVideo(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the video caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param video_width: Optional. Video width
+        :param video_width: Optional. Video width.
         :type  video_width: int
 
-        :param video_height: Optional. Video height
+        :param video_height: Optional. Video height.
         :type  video_height: int
 
-        :param video_duration: Optional. Video duration in seconds
+        :param video_duration: Optional. Video duration in seconds.
         :type  video_duration: int
 
-        :param description: Optional. Short description of the result
+        :param description: Optional. Short description of the result.
         :type  description: str|unicode
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the video. This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
+        :param input_message_content: Optional. Content of the message to be sent instead of the video.
+                                      This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultVideo, self).__init__()
@@ -1406,25 +1420,26 @@ class InlineQueryResultAudio(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the audio caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param performer: Optional. Performer
+    :param performer: Optional. Performer.
     :type  performer: str|unicode
 
-    :param audio_duration: Optional. Audio duration in seconds
+    :param audio_duration: Optional. Audio duration in seconds.
     :type  audio_duration: int
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the audio
+    :param input_message_content: Optional. Content of the message to be sent instead of the audio.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -1450,25 +1465,26 @@ class InlineQueryResultAudio(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the audio caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param performer: Optional. Performer
+        :param performer: Optional. Performer.
         :type  performer: str|unicode
 
-        :param audio_duration: Optional. Audio duration in seconds
+        :param audio_duration: Optional. Audio duration in seconds.
         :type  audio_duration: int
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the audio
+        :param input_message_content: Optional. Content of the message to be sent instead of the audio.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultAudio, self).__init__()
@@ -1639,22 +1655,23 @@ class InlineQueryResultVoice(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the voice message caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param voice_duration: Optional. Recording duration in seconds
+    :param voice_duration: Optional. Recording duration in seconds.
     :type  voice_duration: int
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the voice recording
+    :param input_message_content: Optional. Content of the message to be sent instead of the voice recording.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -1680,22 +1697,23 @@ class InlineQueryResultVoice(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the voice message caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param voice_duration: Optional. Recording duration in seconds
+        :param voice_duration: Optional. Recording duration in seconds.
         :type  voice_duration: int
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the voice recording
+        :param input_message_content: Optional. Content of the message to be sent instead of the voice recording.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultVoice, self).__init__()
@@ -1863,31 +1881,32 @@ class InlineQueryResultDocument(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the document caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param description: Optional. Short description of the result
+    :param description: Optional. Short description of the result.
     :type  description: str|unicode
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the file
+    :param input_message_content: Optional. Content of the message to be sent instead of the file.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-    :param thumb_url: Optional. URL of the thumbnail (JPEG only) for the file
+    :param thumb_url: Optional. URL of the thumbnail (JPEG only) for the file.
     :type  thumb_url: str|unicode
 
-    :param thumb_width: Optional. Thumbnail width
+    :param thumb_width: Optional. Thumbnail width.
     :type  thumb_width: int
 
-    :param thumb_height: Optional. Thumbnail height
+    :param thumb_height: Optional. Thumbnail height.
     :type  thumb_height: int
     """
 
@@ -1916,31 +1935,32 @@ class InlineQueryResultDocument(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the document caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param description: Optional. Short description of the result
+        :param description: Optional. Short description of the result.
         :type  description: str|unicode
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the file
+        :param input_message_content: Optional. Content of the message to be sent instead of the file.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-        :param thumb_url: Optional. URL of the thumbnail (JPEG only) for the file
+        :param thumb_url: Optional. URL of the thumbnail (JPEG only) for the file.
         :type  thumb_url: str|unicode
 
-        :param thumb_width: Optional. Thumbnail width
+        :param thumb_width: Optional. Thumbnail width.
         :type  thumb_width: int
 
-        :param thumb_height: Optional. Thumbnail height
+        :param thumb_height: Optional. Thumbnail height.
         :type  thumb_height: int
         """
         super(InlineQueryResultDocument, self).__init__()
@@ -2130,31 +2150,33 @@ class InlineQueryResultLocation(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500.
     :type  horizontal_accuracy: float
 
     :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
     :type  live_period: int
 
-    :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+    :param heading: Optional. For live locations, a direction in which the user is moving, in degrees.
+                    Must be between 1 and 360 if specified.
     :type  heading: int
 
-    :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+    :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters.
+                                   Must be between 1 and 100000 if specified.
     :type  proximity_alert_radius: int
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the location
+    :param input_message_content: Optional. Content of the message to be sent instead of the location.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-    :param thumb_url: Optional. Url of the thumbnail for the result
+    :param thumb_url: Optional. Url of the thumbnail for the result.
     :type  thumb_url: str|unicode
 
-    :param thumb_width: Optional. Thumbnail width
+    :param thumb_width: Optional. Thumbnail width.
     :type  thumb_width: int
 
-    :param thumb_height: Optional. Thumbnail height
+    :param thumb_height: Optional. Thumbnail height.
     :type  thumb_height: int
     """
 
@@ -2183,31 +2205,33 @@ class InlineQueryResultLocation(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+        :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500.
         :type  horizontal_accuracy: float
 
         :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
         :type  live_period: int
 
-        :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+        :param heading: Optional. For live locations, a direction in which the user is moving, in degrees.
+                        Must be between 1 and 360 if specified.
         :type  heading: int
 
-        :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+        :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters.
+                                       Must be between 1 and 100000 if specified.
         :type  proximity_alert_radius: int
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the location
+        :param input_message_content: Optional. Content of the message to be sent instead of the location.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-        :param thumb_url: Optional. Url of the thumbnail for the result
+        :param thumb_url: Optional. Url of the thumbnail for the result.
         :type  thumb_url: str|unicode
 
-        :param thumb_width: Optional. Thumbnail width
+        :param thumb_width: Optional. Thumbnail width.
         :type  thumb_width: int
 
-        :param thumb_height: Optional. Thumbnail height
+        :param thumb_height: Optional. Thumbnail height.
         :type  thumb_height: int
         """
         super(InlineQueryResultLocation, self).__init__()
@@ -2397,31 +2421,33 @@ class InlineQueryResultVenue(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param foursquare_id: Optional. Foursquare identifier of the venue if known
+    :param foursquare_id: Optional. Foursquare identifier of the venue if known.
     :type  foursquare_id: str|unicode
 
-    :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
+    :param foursquare_type: Optional. Foursquare type of the venue, if known.
+                            (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".).
     :type  foursquare_type: str|unicode
 
-    :param google_place_id: Optional. Google Places identifier of the venue
+    :param google_place_id: Optional. Google Places identifier of the venue.
     :type  google_place_id: str|unicode
 
-    :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+    :param google_place_type: Optional. Google Places type of the venue.
+                              (See supported types.).
     :type  google_place_type: str|unicode
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the venue
+    :param input_message_content: Optional. Content of the message to be sent instead of the venue.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-    :param thumb_url: Optional. Url of the thumbnail for the result
+    :param thumb_url: Optional. Url of the thumbnail for the result.
     :type  thumb_url: str|unicode
 
-    :param thumb_width: Optional. Thumbnail width
+    :param thumb_width: Optional. Thumbnail width.
     :type  thumb_width: int
 
-    :param thumb_height: Optional. Thumbnail height
+    :param thumb_height: Optional. Thumbnail height.
     :type  thumb_height: int
     """
 
@@ -2453,31 +2479,33 @@ class InlineQueryResultVenue(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param foursquare_id: Optional. Foursquare identifier of the venue if known
+        :param foursquare_id: Optional. Foursquare identifier of the venue if known.
         :type  foursquare_id: str|unicode
 
-        :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
+        :param foursquare_type: Optional. Foursquare type of the venue, if known.
+                                (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".).
         :type  foursquare_type: str|unicode
 
-        :param google_place_id: Optional. Google Places identifier of the venue
+        :param google_place_id: Optional. Google Places identifier of the venue.
         :type  google_place_id: str|unicode
 
-        :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+        :param google_place_type: Optional. Google Places type of the venue.
+                                  (See supported types.).
         :type  google_place_type: str|unicode
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the venue
+        :param input_message_content: Optional. Content of the message to be sent instead of the venue.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-        :param thumb_url: Optional. Url of the thumbnail for the result
+        :param thumb_url: Optional. Url of the thumbnail for the result.
         :type  thumb_url: str|unicode
 
-        :param thumb_width: Optional. Thumbnail width
+        :param thumb_width: Optional. Thumbnail width.
         :type  thumb_width: int
 
-        :param thumb_height: Optional. Thumbnail height
+        :param thumb_height: Optional. Thumbnail height.
         :type  thumb_height: int
         """
         super(InlineQueryResultVenue, self).__init__()
@@ -2665,25 +2693,25 @@ class InlineQueryResultContact(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param last_name: Optional. Contact's last name
+    :param last_name: Optional. Contact's last name.
     :type  last_name: str|unicode
 
-    :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+    :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes.
     :type  vcard: str|unicode
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the contact
+    :param input_message_content: Optional. Content of the message to be sent instead of the contact.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-    :param thumb_url: Optional. Url of the thumbnail for the result
+    :param thumb_url: Optional. Url of the thumbnail for the result.
     :type  thumb_url: str|unicode
 
-    :param thumb_width: Optional. Thumbnail width
+    :param thumb_width: Optional. Thumbnail width.
     :type  thumb_width: int
 
-    :param thumb_height: Optional. Thumbnail height
+    :param thumb_height: Optional. Thumbnail height.
     :type  thumb_height: int
     """
 
@@ -2709,25 +2737,25 @@ class InlineQueryResultContact(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param last_name: Optional. Contact's last name
+        :param last_name: Optional. Contact's last name.
         :type  last_name: str|unicode
 
-        :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+        :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes.
         :type  vcard: str|unicode
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the contact
+        :param input_message_content: Optional. Content of the message to be sent instead of the contact.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-        :param thumb_url: Optional. Url of the thumbnail for the result
+        :param thumb_url: Optional. Url of the thumbnail for the result.
         :type  thumb_url: str|unicode
 
-        :param thumb_width: Optional. Thumbnail width
+        :param thumb_width: Optional. Thumbnail width.
         :type  thumb_width: int
 
-        :param thumb_height: Optional. Thumbnail height
+        :param thumb_height: Optional. Thumbnail height.
         :type  thumb_height: int
         """
         super(InlineQueryResultContact, self).__init__()
@@ -2892,7 +2920,7 @@ class InlineQueryResultGame(InlineQueryResult):
 
     Optional keyword parameters:
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
     """
 
@@ -2915,7 +2943,7 @@ class InlineQueryResultGame(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         """
         super(InlineQueryResultGame, self).__init__()
@@ -3039,25 +3067,26 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
 
     Optional keyword parameters:
 
-    :param title: Optional. Title for the result
+    :param title: Optional. Title for the result.
     :type  title: str|unicode
 
-    :param description: Optional. Short description of the result
+    :param description: Optional. Short description of the result.
     :type  description: str|unicode
 
-    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the photo
+    :param input_message_content: Optional. Content of the message to be sent instead of the photo.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -3079,25 +3108,26 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param title: Optional. Title for the result
+        :param title: Optional. Title for the result.
         :type  title: str|unicode
 
-        :param description: Optional. Short description of the result
+        :param description: Optional. Short description of the result.
         :type  description: str|unicode
 
-        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the photo caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the photo
+        :param input_message_content: Optional. Content of the message to be sent instead of the photo.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedPhoto, self).__init__()
@@ -3260,22 +3290,23 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
 
     Optional keyword parameters:
 
-    :param title: Optional. Title for the result
+    :param title: Optional. Title for the result.
     :type  title: str|unicode
 
-    :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+    :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -3297,22 +3328,23 @@ class InlineQueryResultCachedGif(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param title: Optional. Title for the result
+        :param title: Optional. Title for the result.
         :type  title: str|unicode
 
-        :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation
+        :param input_message_content: Optional. Content of the message to be sent instead of the GIF animation.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedGif, self).__init__()
@@ -3469,22 +3501,23 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
 
     Optional keyword parameters:
 
-    :param title: Optional. Title for the result
+    :param title: Optional. Title for the result.
     :type  title: str|unicode
 
-    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+    :param input_message_content: Optional. Content of the message to be sent instead of the video animation.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -3506,22 +3539,23 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param title: Optional. Title for the result
+        :param title: Optional. Title for the result.
         :type  title: str|unicode
 
-        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the video animation
+        :param input_message_content: Optional. Content of the message to be sent instead of the video animation.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedMpeg4Gif, self).__init__()
@@ -3679,10 +3713,10 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
 
     Optional keyword parameters:
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the sticker
+    :param input_message_content: Optional. Content of the message to be sent instead of the sticker.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -3705,10 +3739,10 @@ class InlineQueryResultCachedSticker(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the sticker
+        :param input_message_content: Optional. Content of the message to be sent instead of the sticker.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedSticker, self).__init__()
@@ -3842,22 +3876,23 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
 
     Optional keyword parameters:
 
-    :param description: Optional. Short description of the result
+    :param description: Optional. Short description of the result.
     :type  description: str|unicode
 
-    :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the document caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the file
+    :param input_message_content: Optional. Content of the message to be sent instead of the file.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -3883,22 +3918,23 @@ class InlineQueryResultCachedDocument(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param description: Optional. Short description of the result
+        :param description: Optional. Short description of the result.
         :type  description: str|unicode
 
-        :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the document to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the document caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the document caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the file
+        :param input_message_content: Optional. Content of the message to be sent instead of the file.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedDocument, self).__init__()
@@ -4062,22 +4098,23 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
 
     Optional keyword parameters:
 
-    :param description: Optional. Short description of the result
+    :param description: Optional. Short description of the result.
     :type  description: str|unicode
 
-    :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the video caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the video
+    :param input_message_content: Optional. Content of the message to be sent instead of the video.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -4102,22 +4139,23 @@ class InlineQueryResultCachedVideo(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param description: Optional. Short description of the result
+        :param description: Optional. Short description of the result.
         :type  description: str|unicode
 
-        :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption of the video to be sent, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the video caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the video caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the video
+        :param input_message_content: Optional. Content of the message to be sent instead of the video.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedVideo, self).__init__()
@@ -4282,19 +4320,20 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the voice message caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the voice message
+    :param input_message_content: Optional. Content of the message to be sent instead of the voice message.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -4320,19 +4359,20 @@ class InlineQueryResultCachedVoice(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the voice message caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the voice message
+        :param input_message_content: Optional. Content of the message to be sent instead of the voice message.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedVoice, self).__init__()
@@ -4488,19 +4528,20 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
     Optional keyword parameters:
 
-    :param caption: Optional. Caption, 0-1024 characters after entities parsing
+    :param caption: Optional. Caption, 0-1024 characters after entities parsing.
     :type  caption: str|unicode
 
-    :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the audio caption.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param reply_markup: Optional. Inline keyboard attached to the message
+    :param reply_markup: Optional. Inline keyboard attached to the message.
     :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-    :param input_message_content: Optional. Content of the message to be sent instead of the audio
+    :param input_message_content: Optional. Content of the message to be sent instead of the audio.
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
     """
 
@@ -4523,19 +4564,20 @@ class InlineQueryResultCachedAudio(InlineQueryCachedResult):
 
         Optional keyword parameters:
 
-        :param caption: Optional. Caption, 0-1024 characters after entities parsing
+        :param caption: Optional. Caption, 0-1024 characters after entities parsing.
         :type  caption: str|unicode
 
-        :param parse_mode: Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the audio caption.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode.
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the audio
+        :param input_message_content: Optional. Content of the message to be sent instead of the audio.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
         """
         super(InlineQueryResultCachedAudio, self).__init__()
@@ -4683,13 +4725,14 @@ class InputTextMessageContent(InputMessageContent):
 
     Optional keyword parameters:
 
-    :param parse_mode: Optional. Mode for parsing entities in the message text. See formatting options for more details.
+    :param parse_mode: Optional. Mode for parsing entities in the message text.
+                       See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param entities: Optional. List of special entities that appear in message text, which can be specified instead of parse_mode
+    :param entities: Optional. List of special entities that appear in message text, which can be specified instead of parse_mode.
     :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
+    :param disable_web_page_preview: Optional. Disables link previews for links in the sent message.
     :type  disable_web_page_preview: bool
     """
 
@@ -4708,13 +4751,14 @@ class InputTextMessageContent(InputMessageContent):
 
         Optional keyword parameters:
 
-        :param parse_mode: Optional. Mode for parsing entities in the message text. See formatting options for more details.
+        :param parse_mode: Optional. Mode for parsing entities in the message text.
+                           See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param entities: Optional. List of special entities that appear in message text, which can be specified instead of parse_mode
+        :param entities: Optional. List of special entities that appear in message text, which can be specified instead of parse_mode.
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param disable_web_page_preview: Optional. Disables link previews for links in the sent message
+        :param disable_web_page_preview: Optional. Disables link previews for links in the sent message.
         :type  disable_web_page_preview: bool
         """
         super(InputTextMessageContent, self).__init__()
@@ -4843,16 +4887,18 @@ class InputLocationMessageContent(InputMessageContent):
 
     Optional keyword parameters:
 
-    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500.
     :type  horizontal_accuracy: float
 
     :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
     :type  live_period: int
 
-    :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+    :param heading: Optional. For live locations, a direction in which the user is moving, in degrees.
+                    Must be between 1 and 360 if specified.
     :type  heading: int
 
-    :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+    :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters.
+                                   Must be between 1 and 100000 if specified.
     :type  proximity_alert_radius: int
     """
 
@@ -4874,16 +4920,18 @@ class InputLocationMessageContent(InputMessageContent):
 
         Optional keyword parameters:
 
-        :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+        :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500.
         :type  horizontal_accuracy: float
 
         :param live_period: Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
         :type  live_period: int
 
-        :param heading: Optional. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+        :param heading: Optional. For live locations, a direction in which the user is moving, in degrees.
+                        Must be between 1 and 360 if specified.
         :type  heading: int
 
-        :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+        :param proximity_alert_radius: Optional. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters.
+                                       Must be between 1 and 100000 if specified.
         :type  proximity_alert_radius: int
         """
         super(InputLocationMessageContent, self).__init__()
@@ -5025,16 +5073,18 @@ class InputVenueMessageContent(InputMessageContent):
 
     Optional keyword parameters:
 
-    :param foursquare_id: Optional. Foursquare identifier of the venue, if known
+    :param foursquare_id: Optional. Foursquare identifier of the venue, if known.
     :type  foursquare_id: str|unicode
 
-    :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
+    :param foursquare_type: Optional. Foursquare type of the venue, if known.
+                            (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".).
     :type  foursquare_type: str|unicode
 
-    :param google_place_id: Optional. Google Places identifier of the venue
+    :param google_place_id: Optional. Google Places identifier of the venue.
     :type  google_place_id: str|unicode
 
-    :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+    :param google_place_type: Optional. Google Places type of the venue.
+                              (See supported types.).
     :type  google_place_type: str|unicode
     """
 
@@ -5062,16 +5112,18 @@ class InputVenueMessageContent(InputMessageContent):
 
         Optional keyword parameters:
 
-        :param foursquare_id: Optional. Foursquare identifier of the venue, if known
+        :param foursquare_id: Optional. Foursquare identifier of the venue, if known.
         :type  foursquare_id: str|unicode
 
-        :param foursquare_type: Optional. Foursquare type of the venue, if known. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
+        :param foursquare_type: Optional. Foursquare type of the venue, if known.
+                                (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".).
         :type  foursquare_type: str|unicode
 
-        :param google_place_id: Optional. Google Places identifier of the venue
+        :param google_place_id: Optional. Google Places identifier of the venue.
         :type  google_place_id: str|unicode
 
-        :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+        :param google_place_type: Optional. Google Places type of the venue.
+                                  (See supported types.).
         :type  google_place_type: str|unicode
         """
         super(InputVenueMessageContent, self).__init__()
@@ -5215,10 +5267,10 @@ class InputContactMessageContent(InputMessageContent):
 
     Optional keyword parameters:
 
-    :param last_name: Optional. Contact's last name
+    :param last_name: Optional. Contact's last name.
     :type  last_name: str|unicode
 
-    :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+    :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes.
     :type  vcard: str|unicode
     """
 
@@ -5240,10 +5292,10 @@ class InputContactMessageContent(InputMessageContent):
 
         Optional keyword parameters:
 
-        :param last_name: Optional. Contact's last name
+        :param last_name: Optional. Contact's last name.
         :type  last_name: str|unicode
 
-        :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+        :param vcard: Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes.
         :type  vcard: str|unicode
         """
         super(InputContactMessageContent, self).__init__()
@@ -5379,46 +5431,54 @@ class InputInvoiceMessageContent(InputMessageContent):
 
     Optional keyword parameters:
 
-    :param max_tip_amount: Optional. The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+    :param max_tip_amount: Optional. The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double).
+                           For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145.
+                           See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
+                           Defaults to 0.
     :type  max_tip_amount: int
 
-    :param suggested_tip_amounts: Optional. A JSON-serialized array of suggested amounts of tip in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+    :param suggested_tip_amounts: Optional. A JSON-serialized array of suggested amounts of tip in the smallest units of the currency (integer, not float/double).
+                                  At most 4 suggested tip amounts can be specified.
+                                  The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
     :type  suggested_tip_amounts: list of int
 
-    :param provider_data: Optional. A JSON-serialized object for data about the invoice, which will be shared with the payment provider. A detailed description of the required fields should be provided by the payment provider.
+    :param provider_data: Optional. A JSON-serialized object for data about the invoice, which will be shared with the payment provider.
+                          A detailed description of the required fields should be provided by the payment provider.
     :type  provider_data: str|unicode
 
-    :param photo_url: Optional. URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
+    :param photo_url: Optional. URL of the product photo for the invoice.
+                      Can be a photo of the goods or a marketing image for a service.
+                      People like it better when they see what they are paying for.
     :type  photo_url: str|unicode
 
-    :param photo_size: Optional. Photo size
+    :param photo_size: Optional. Photo size.
     :type  photo_size: int
 
-    :param photo_width: Optional. Photo width
+    :param photo_width: Optional. Photo width.
     :type  photo_width: int
 
-    :param photo_height: Optional. Photo height
+    :param photo_height: Optional. Photo height.
     :type  photo_height: int
 
-    :param need_name: Optional. Pass True, if you require the user's full name to complete the order
+    :param need_name: Optional. Pass True, if you require the user's full name to complete the order.
     :type  need_name: bool
 
-    :param need_phone_number: Optional. Pass True, if you require the user's phone number to complete the order
+    :param need_phone_number: Optional. Pass True, if you require the user's phone number to complete the order.
     :type  need_phone_number: bool
 
-    :param need_email: Optional. Pass True, if you require the user's email address to complete the order
+    :param need_email: Optional. Pass True, if you require the user's email address to complete the order.
     :type  need_email: bool
 
-    :param need_shipping_address: Optional. Pass True, if you require the user's shipping address to complete the order
+    :param need_shipping_address: Optional. Pass True, if you require the user's shipping address to complete the order.
     :type  need_shipping_address: bool
 
-    :param send_phone_number_to_provider: Optional. Pass True, if user's phone number should be sent to provider
+    :param send_phone_number_to_provider: Optional. Pass True, if user's phone number should be sent to provider.
     :type  send_phone_number_to_provider: bool
 
-    :param send_email_to_provider: Optional. Pass True, if user's email address should be sent to provider
+    :param send_email_to_provider: Optional. Pass True, if user's email address should be sent to provider.
     :type  send_email_to_provider: bool
 
-    :param is_flexible: Optional. Pass True, if the final price depends on the shipping method
+    :param is_flexible: Optional. Pass True, if the final price depends on the shipping method.
     :type  is_flexible: bool
     """
 
@@ -5452,46 +5512,54 @@ class InputInvoiceMessageContent(InputMessageContent):
 
         Optional keyword parameters:
 
-        :param max_tip_amount: Optional. The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+        :param max_tip_amount: Optional. The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double).
+                               For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145.
+                               See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
+                               Defaults to 0.
         :type  max_tip_amount: int
 
-        :param suggested_tip_amounts: Optional. A JSON-serialized array of suggested amounts of tip in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+        :param suggested_tip_amounts: Optional. A JSON-serialized array of suggested amounts of tip in the smallest units of the currency (integer, not float/double).
+                                      At most 4 suggested tip amounts can be specified.
+                                      The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
         :type  suggested_tip_amounts: list of int
 
-        :param provider_data: Optional. A JSON-serialized object for data about the invoice, which will be shared with the payment provider. A detailed description of the required fields should be provided by the payment provider.
+        :param provider_data: Optional. A JSON-serialized object for data about the invoice, which will be shared with the payment provider.
+                              A detailed description of the required fields should be provided by the payment provider.
         :type  provider_data: str|unicode
 
-        :param photo_url: Optional. URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
+        :param photo_url: Optional. URL of the product photo for the invoice.
+                          Can be a photo of the goods or a marketing image for a service.
+                          People like it better when they see what they are paying for.
         :type  photo_url: str|unicode
 
-        :param photo_size: Optional. Photo size
+        :param photo_size: Optional. Photo size.
         :type  photo_size: int
 
-        :param photo_width: Optional. Photo width
+        :param photo_width: Optional. Photo width.
         :type  photo_width: int
 
-        :param photo_height: Optional. Photo height
+        :param photo_height: Optional. Photo height.
         :type  photo_height: int
 
-        :param need_name: Optional. Pass True, if you require the user's full name to complete the order
+        :param need_name: Optional. Pass True, if you require the user's full name to complete the order.
         :type  need_name: bool
 
-        :param need_phone_number: Optional. Pass True, if you require the user's phone number to complete the order
+        :param need_phone_number: Optional. Pass True, if you require the user's phone number to complete the order.
         :type  need_phone_number: bool
 
-        :param need_email: Optional. Pass True, if you require the user's email address to complete the order
+        :param need_email: Optional. Pass True, if you require the user's email address to complete the order.
         :type  need_email: bool
 
-        :param need_shipping_address: Optional. Pass True, if you require the user's shipping address to complete the order
+        :param need_shipping_address: Optional. Pass True, if you require the user's shipping address to complete the order.
         :type  need_shipping_address: bool
 
-        :param send_phone_number_to_provider: Optional. Pass True, if user's phone number should be sent to provider
+        :param send_phone_number_to_provider: Optional. Pass True, if user's phone number should be sent to provider.
         :type  send_phone_number_to_provider: bool
 
-        :param send_email_to_provider: Optional. Pass True, if user's email address should be sent to provider
+        :param send_email_to_provider: Optional. Pass True, if user's email address should be sent to provider.
         :type  send_email_to_provider: bool
 
-        :param is_flexible: Optional. Pass True, if the final price depends on the shipping method
+        :param is_flexible: Optional. Pass True, if the final price depends on the shipping method.
         :type  is_flexible: bool
         """
         super(InputInvoiceMessageContent, self).__init__()

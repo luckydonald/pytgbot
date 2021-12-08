@@ -667,7 +667,7 @@ class VoiceChatParticipantsInvited(ServiceMessage):
 
     Optional keyword parameters:
 
-    :param users: Optional. New members that were invited to the voice chat
+    :param users: Optional. New members that were invited to the voice chat.
     :type  users: list of pytgbot.api_types.receivable.peer.User
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -682,7 +682,7 @@ class VoiceChatParticipantsInvited(ServiceMessage):
 
         Optional keyword parameters:
 
-        :param users: Optional. New members that were invited to the voice chat
+        :param users: Optional. New members that were invited to the voice chat.
         :type  users: list of pytgbot.api_types.receivable.peer.User
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.

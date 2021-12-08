@@ -58,22 +58,25 @@ class User(Peer):
 
     Optional keyword parameters:
 
-    :param last_name: Optional. User's or bot's last name
+    :param last_name: Optional. User's or bot's last name.
     :type  last_name: str|unicode
 
-    :param username: Optional. User's or bot's username
+    :param username: Optional. User's or bot's username.
     :type  username: str|unicode
 
-    :param language_code: Optional. IETF language tag of the user's language
+    :param language_code: Optional. IETF language tag of the user's language.
     :type  language_code: str|unicode
 
-    :param can_join_groups: Optional. True, if the bot can be invited to groups. Returned only in getMe.
+    :param can_join_groups: Optional. True, if the bot can be invited to groups.
+                            Returned only in getMe.
     :type  can_join_groups: bool
 
-    :param can_read_all_group_messages: Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+    :param can_read_all_group_messages: Optional. True, if privacy mode is disabled for the bot.
+                                        Returned only in getMe.
     :type  can_read_all_group_messages: bool
 
-    :param supports_inline_queries: Optional. True, if the bot supports inline queries. Returned only in getMe.
+    :param supports_inline_queries: Optional. True, if the bot supports inline queries.
+                                    Returned only in getMe.
     :type  supports_inline_queries: bool
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -101,22 +104,25 @@ class User(Peer):
 
         Optional keyword parameters:
 
-        :param last_name: Optional. User's or bot's last name
+        :param last_name: Optional. User's or bot's last name.
         :type  last_name: str|unicode
 
-        :param username: Optional. User's or bot's username
+        :param username: Optional. User's or bot's username.
         :type  username: str|unicode
 
-        :param language_code: Optional. IETF language tag of the user's language
+        :param language_code: Optional. IETF language tag of the user's language.
         :type  language_code: str|unicode
 
-        :param can_join_groups: Optional. True, if the bot can be invited to groups. Returned only in getMe.
+        :param can_join_groups: Optional. True, if the bot can be invited to groups.
+                                Returned only in getMe.
         :type  can_join_groups: bool
 
-        :param can_read_all_group_messages: Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+        :param can_read_all_group_messages: Optional. True, if privacy mode is disabled for the bot.
+                                            Returned only in getMe.
         :type  can_read_all_group_messages: bool
 
-        :param supports_inline_queries: Optional. True, if the bot supports inline queries. Returned only in getMe.
+        :param supports_inline_queries: Optional. True, if the bot supports inline queries.
+                                        Returned only in getMe.
         :type  supports_inline_queries: bool
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -272,58 +278,75 @@ class Chat(Peer):
 
     Optional keyword parameters:
 
-    :param title: Optional. Title, for supergroups, channels and group chats
+    :param title: Optional. Title, for supergroups, channels and group chats.
     :type  title: str|unicode
 
-    :param username: Optional. Username, for private chats, supergroups and channels if available
+    :param username: Optional. Username, for private chats, supergroups and channels if available.
     :type  username: str|unicode
 
-    :param first_name: Optional. First name of the other party in a private chat
+    :param first_name: Optional. First name of the other party in a private chat.
     :type  first_name: str|unicode
 
-    :param last_name: Optional. Last name of the other party in a private chat
+    :param last_name: Optional. Last name of the other party in a private chat.
     :type  last_name: str|unicode
 
-    :param photo: Optional. Chat photo. Returned only in getChat.
+    :param photo: Optional. Chat photo.
+                  Returned only in getChat.
     :type  photo: pytgbot.api_types.receivable.media.ChatPhoto
 
-    :param bio: Optional. Bio of the other party in a private chat. Returned only in getChat.
+    :param bio: Optional. Bio of the other party in a private chat.
+                Returned only in getChat.
     :type  bio: str|unicode
 
-    :param has_private_forwards: Optional. True, if privacy settings of the other party in the private chat allows to use tg://user?id=<user_id> links only in chats with the user. Returned only in getChat.
+    :param has_private_forwards: Optional. True, if privacy settings of the other party in the private chat allows to use tg://user?id=<user_id> links only in chats with the user.
+                                 Returned only in getChat.
     :type  has_private_forwards: bool
 
-    :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
+    :param description: Optional. Description, for groups, supergroups and channel chats.
+                        Returned only in getChat.
     :type  description: str|unicode
 
-    :param invite_link: Optional. Primary invite link, for groups, supergroups and channel chats. Returned only in getChat.
+    :param invite_link: Optional. Primary invite link, for groups, supergroups and channel chats.
+                        Returned only in getChat.
     :type  invite_link: str|unicode
 
-    :param pinned_message: Optional. The most recent pinned message (by sending date). Returned only in getChat.
+    :param pinned_message: Optional. The most recent pinned message (by sending date).
+                           Returned only in getChat.
     :type  pinned_message: pytgbot.api_types.receivable.updates.Message
 
-    :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
+    :param permissions: Optional. Default chat member permissions, for groups and supergroups.
+                        Returned only in getChat.
     :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
-    :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user; in seconds. Returned only in getChat.
+    :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user; in seconds.
+                            Returned only in getChat.
     :type  slow_mode_delay: int
 
-    :param message_auto_delete_time: Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds. Returned only in getChat.
+    :param message_auto_delete_time: Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds.
+                                     Returned only in getChat.
     :type  message_auto_delete_time: int
 
-    :param has_protected_content: Optional. True, if messages from the chat can't be forwarded to other chats. Returned only in getChat.
+    :param has_protected_content: Optional. True, if messages from the chat can't be forwarded to other chats.
+                                  Returned only in getChat.
     :type  has_protected_content: bool
 
-    :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
+    :param sticker_set_name: Optional. For supergroups, name of group sticker set.
+                             Returned only in getChat.
     :type  sticker_set_name: str|unicode
 
-    :param can_set_sticker_set: Optional. True, if the bot can change the group sticker set. Returned only in getChat.
+    :param can_set_sticker_set: Optional. True, if the bot can change the group sticker set.
+                                Returned only in getChat.
     :type  can_set_sticker_set: bool
 
-    :param linked_chat_id: Optional. Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa; for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier. Returned only in getChat.
+    :param linked_chat_id: Optional. Unique identifier for the linked chat, i.e.
+                           the discussion group identifier for a channel and vice versa; for supergroups and channel chats.
+                           This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it.
+                           But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+                           Returned only in getChat.
     :type  linked_chat_id: int
 
-    :param location: Optional. For supergroups, the location to which the supergroup is connected. Returned only in getChat.
+    :param location: Optional. For supergroups, the location to which the supergroup is connected.
+                     Returned only in getChat.
     :type  location: pytgbot.api_types.receivable.peer.ChatLocation
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -348,58 +371,75 @@ class Chat(Peer):
 
         Optional keyword parameters:
 
-        :param title: Optional. Title, for supergroups, channels and group chats
+        :param title: Optional. Title, for supergroups, channels and group chats.
         :type  title: str|unicode
 
-        :param username: Optional. Username, for private chats, supergroups and channels if available
+        :param username: Optional. Username, for private chats, supergroups and channels if available.
         :type  username: str|unicode
 
-        :param first_name: Optional. First name of the other party in a private chat
+        :param first_name: Optional. First name of the other party in a private chat.
         :type  first_name: str|unicode
 
-        :param last_name: Optional. Last name of the other party in a private chat
+        :param last_name: Optional. Last name of the other party in a private chat.
         :type  last_name: str|unicode
 
-        :param photo: Optional. Chat photo. Returned only in getChat.
+        :param photo: Optional. Chat photo.
+                      Returned only in getChat.
         :type  photo: pytgbot.api_types.receivable.media.ChatPhoto
 
-        :param bio: Optional. Bio of the other party in a private chat. Returned only in getChat.
+        :param bio: Optional. Bio of the other party in a private chat.
+                    Returned only in getChat.
         :type  bio: str|unicode
 
-        :param has_private_forwards: Optional. True, if privacy settings of the other party in the private chat allows to use tg://user?id=<user_id> links only in chats with the user. Returned only in getChat.
+        :param has_private_forwards: Optional. True, if privacy settings of the other party in the private chat allows to use tg://user?id=<user_id> links only in chats with the user.
+                                     Returned only in getChat.
         :type  has_private_forwards: bool
 
-        :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
+        :param description: Optional. Description, for groups, supergroups and channel chats.
+                            Returned only in getChat.
         :type  description: str|unicode
 
-        :param invite_link: Optional. Primary invite link, for groups, supergroups and channel chats. Returned only in getChat.
+        :param invite_link: Optional. Primary invite link, for groups, supergroups and channel chats.
+                            Returned only in getChat.
         :type  invite_link: str|unicode
 
-        :param pinned_message: Optional. The most recent pinned message (by sending date). Returned only in getChat.
+        :param pinned_message: Optional. The most recent pinned message (by sending date).
+                               Returned only in getChat.
         :type  pinned_message: pytgbot.api_types.receivable.updates.Message
 
-        :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
+        :param permissions: Optional. Default chat member permissions, for groups and supergroups.
+                            Returned only in getChat.
         :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
-        :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user; in seconds. Returned only in getChat.
+        :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user; in seconds.
+                                Returned only in getChat.
         :type  slow_mode_delay: int
 
-        :param message_auto_delete_time: Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds. Returned only in getChat.
+        :param message_auto_delete_time: Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds.
+                                         Returned only in getChat.
         :type  message_auto_delete_time: int
 
-        :param has_protected_content: Optional. True, if messages from the chat can't be forwarded to other chats. Returned only in getChat.
+        :param has_protected_content: Optional. True, if messages from the chat can't be forwarded to other chats.
+                                      Returned only in getChat.
         :type  has_protected_content: bool
 
-        :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
+        :param sticker_set_name: Optional. For supergroups, name of group sticker set.
+                                 Returned only in getChat.
         :type  sticker_set_name: str|unicode
 
-        :param can_set_sticker_set: Optional. True, if the bot can change the group sticker set. Returned only in getChat.
+        :param can_set_sticker_set: Optional. True, if the bot can change the group sticker set.
+                                    Returned only in getChat.
         :type  can_set_sticker_set: bool
 
-        :param linked_chat_id: Optional. Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa; for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier. Returned only in getChat.
+        :param linked_chat_id: Optional. Unique identifier for the linked chat, i.e.
+                               the discussion group identifier for a channel and vice versa; for supergroups and channel chats.
+                               This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it.
+                               But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+                               Returned only in getChat.
         :type  linked_chat_id: int
 
-        :param location: Optional. For supergroups, the location to which the supergroup is connected. Returned only in getChat.
+        :param location: Optional. For supergroups, the location to which the supergroup is connected.
+                         Returned only in getChat.
         :type  location: pytgbot.api_types.receivable.peer.ChatLocation
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -638,16 +678,16 @@ class ChatInviteLink(Result):
 
     Optional keyword parameters:
 
-    :param name: Optional. Invite link name
+    :param name: Optional. Invite link name.
     :type  name: str|unicode
 
-    :param expire_date: Optional. Point in time (Unix timestamp) when the link will expire or has been expired
+    :param expire_date: Optional. Point in time (Unix timestamp) when the link will expire or has been expired.
     :type  expire_date: int
 
-    :param member_limit: Optional. Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+    :param member_limit: Optional. Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999.
     :type  member_limit: int
 
-    :param pending_join_request_count: Optional. Number of pending join requests created using this link
+    :param pending_join_request_count: Optional. Number of pending join requests created using this link.
     :type  pending_join_request_count: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -681,16 +721,16 @@ class ChatInviteLink(Result):
 
         Optional keyword parameters:
 
-        :param name: Optional. Invite link name
+        :param name: Optional. Invite link name.
         :type  name: str|unicode
 
-        :param expire_date: Optional. Point in time (Unix timestamp) when the link will expire or has been expired
+        :param expire_date: Optional. Point in time (Unix timestamp) when the link will expire or has been expired.
         :type  expire_date: int
 
-        :param member_limit: Optional. Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+        :param member_limit: Optional. Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999.
         :type  member_limit: int
 
-        :param pending_join_request_count: Optional. Number of pending join requests created using this link
+        :param pending_join_request_count: Optional. Number of pending join requests created using this link.
         :type  pending_join_request_count: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -952,7 +992,7 @@ class ChatMemberOwner(ChatMember):
 
     Optional keyword parameters:
 
-    :param custom_title: Optional. Custom title for this user
+    :param custom_title: Optional. Custom title for this user.
     :type  custom_title: str|unicode
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -980,7 +1020,7 @@ class ChatMemberOwner(ChatMember):
 
         Optional keyword parameters:
 
-        :param custom_title: Optional. Custom title for this user
+        :param custom_title: Optional. Custom title for this user.
         :type  custom_title: str|unicode
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1133,16 +1173,16 @@ class ChatMemberAdministrator(ChatMember):
 
     Optional keyword parameters:
 
-    :param can_post_messages: Optional. True, if the administrator can post in the channel; channels only
+    :param can_post_messages: Optional. True, if the administrator can post in the channel; channels only.
     :type  can_post_messages: bool
 
-    :param can_edit_messages: Optional. True, if the administrator can edit messages of other users and can pin messages; channels only
+    :param can_edit_messages: Optional. True, if the administrator can edit messages of other users and can pin messages; channels only.
     :type  can_edit_messages: bool
 
-    :param can_pin_messages: Optional. True, if the user is allowed to pin messages; groups and supergroups only
+    :param can_pin_messages: Optional. True, if the user is allowed to pin messages; groups and supergroups only.
     :type  can_pin_messages: bool
 
-    :param custom_title: Optional. Custom title for this user
+    :param custom_title: Optional. Custom title for this user.
     :type  custom_title: str|unicode
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1194,16 +1234,16 @@ class ChatMemberAdministrator(ChatMember):
 
         Optional keyword parameters:
 
-        :param can_post_messages: Optional. True, if the administrator can post in the channel; channels only
+        :param can_post_messages: Optional. True, if the administrator can post in the channel; channels only.
         :type  can_post_messages: bool
 
-        :param can_edit_messages: Optional. True, if the administrator can edit messages of other users and can pin messages; channels only
+        :param can_edit_messages: Optional. True, if the administrator can edit messages of other users and can pin messages; channels only.
         :type  can_edit_messages: bool
 
-        :param can_pin_messages: Optional. True, if the user is allowed to pin messages; groups and supergroups only
+        :param can_pin_messages: Optional. True, if the user is allowed to pin messages; groups and supergroups only.
         :type  can_pin_messages: bool
 
-        :param custom_title: Optional. Custom title for this user
+        :param custom_title: Optional. Custom title for this user.
         :type  custom_title: str|unicode
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2212,7 +2252,7 @@ class ChatJoinRequest(Result):
     :param bio: Optional. Bio of the user.
     :type  bio: str|unicode
 
-    :param invite_link: Optional. Chat invite link that was used by the user to send the join request
+    :param invite_link: Optional. Chat invite link that was used by the user to send the join request.
     :type  invite_link: pytgbot.api_types.receivable.peer.ChatInviteLink
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2243,7 +2283,7 @@ class ChatJoinRequest(Result):
         :param bio: Optional. Bio of the user.
         :type  bio: str|unicode
 
-        :param invite_link: Optional. Chat invite link that was used by the user to send the join request
+        :param invite_link: Optional. Chat invite link that was used by the user to send the join request.
         :type  invite_link: pytgbot.api_types.receivable.peer.ChatInviteLink
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2365,28 +2405,30 @@ class ChatPermissions(Result):
 
     Optional keyword parameters:
 
-    :param can_send_messages: Optional. True, if the user is allowed to send text messages, contacts, locations and venues
+    :param can_send_messages: Optional. True, if the user is allowed to send text messages, contacts, locations and venues.
     :type  can_send_messages: bool
 
-    :param can_send_media_messages: Optional. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+    :param can_send_media_messages: Optional. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages.
     :type  can_send_media_messages: bool
 
-    :param can_send_polls: Optional. True, if the user is allowed to send polls, implies can_send_messages
+    :param can_send_polls: Optional. True, if the user is allowed to send polls, implies can_send_messages.
     :type  can_send_polls: bool
 
-    :param can_send_other_messages: Optional. True, if the user is allowed to send animations, games, stickers and use inline bots, implies can_send_media_messages
+    :param can_send_other_messages: Optional. True, if the user is allowed to send animations, games, stickers and use inline bots, implies can_send_media_messages.
     :type  can_send_other_messages: bool
 
-    :param can_add_web_page_previews: Optional. True, if the user is allowed to add web page previews to their messages, implies can_send_media_messages
+    :param can_add_web_page_previews: Optional. True, if the user is allowed to add web page previews to their messages, implies can_send_media_messages.
     :type  can_add_web_page_previews: bool
 
-    :param can_change_info: Optional. True, if the user is allowed to change the chat title, photo and other settings. Ignored in public supergroups
+    :param can_change_info: Optional. True, if the user is allowed to change the chat title, photo and other settings.
+                            Ignored in public supergroups.
     :type  can_change_info: bool
 
-    :param can_invite_users: Optional. True, if the user is allowed to invite new users to the chat
+    :param can_invite_users: Optional. True, if the user is allowed to invite new users to the chat.
     :type  can_invite_users: bool
 
-    :param can_pin_messages: Optional. True, if the user is allowed to pin messages. Ignored in public supergroups
+    :param can_pin_messages: Optional. True, if the user is allowed to pin messages.
+                             Ignored in public supergroups.
     :type  can_pin_messages: bool
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2401,28 +2443,30 @@ class ChatPermissions(Result):
 
         Optional keyword parameters:
 
-        :param can_send_messages: Optional. True, if the user is allowed to send text messages, contacts, locations and venues
+        :param can_send_messages: Optional. True, if the user is allowed to send text messages, contacts, locations and venues.
         :type  can_send_messages: bool
 
-        :param can_send_media_messages: Optional. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+        :param can_send_media_messages: Optional. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages.
         :type  can_send_media_messages: bool
 
-        :param can_send_polls: Optional. True, if the user is allowed to send polls, implies can_send_messages
+        :param can_send_polls: Optional. True, if the user is allowed to send polls, implies can_send_messages.
         :type  can_send_polls: bool
 
-        :param can_send_other_messages: Optional. True, if the user is allowed to send animations, games, stickers and use inline bots, implies can_send_media_messages
+        :param can_send_other_messages: Optional. True, if the user is allowed to send animations, games, stickers and use inline bots, implies can_send_media_messages.
         :type  can_send_other_messages: bool
 
-        :param can_add_web_page_previews: Optional. True, if the user is allowed to add web page previews to their messages, implies can_send_media_messages
+        :param can_add_web_page_previews: Optional. True, if the user is allowed to add web page previews to their messages, implies can_send_media_messages.
         :type  can_add_web_page_previews: bool
 
-        :param can_change_info: Optional. True, if the user is allowed to change the chat title, photo and other settings. Ignored in public supergroups
+        :param can_change_info: Optional. True, if the user is allowed to change the chat title, photo and other settings.
+                                Ignored in public supergroups.
         :type  can_change_info: bool
 
-        :param can_invite_users: Optional. True, if the user is allowed to invite new users to the chat
+        :param can_invite_users: Optional. True, if the user is allowed to invite new users to the chat.
         :type  can_invite_users: bool
 
-        :param can_pin_messages: Optional. True, if the user is allowed to pin messages. Ignored in public supergroups
+        :param can_pin_messages: Optional. True, if the user is allowed to pin messages.
+                                 Ignored in public supergroups.
         :type  can_pin_messages: bool
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
