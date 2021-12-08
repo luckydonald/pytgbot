@@ -22,7 +22,7 @@ class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
 
     Optional keyword parameters:
     {% for keyword in clazz.keywords if not keyword.is_fixed_value %}
-    :param {{ keyword.name }}: {{ keyword.description }}
+    :param {{ keyword.name }}: {{ keyword.description_sentence_split_str(indent=4 + 7 + keyword.name.__len__() + 2) }}{# 4 spaces, 7 letters before param, two spaces after param #}
     :type  {{ keyword.name }}: {{ for_type_list_of_full(keyword) }}
     {% endfor -%}{%- if not is_sendable %}
     :param _raw: Optional. Original data this object was generated from. Could be `None`.

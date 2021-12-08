@@ -1,3 +1,4 @@
+import re
 from itertools import chain
 from symbol import parameters
 from typing import Mapping, Union, List, Tuple, Optional, Callable
@@ -7,6 +8,7 @@ from luckydonaldUtils.functions import cached
 from luckydonaldUtils.imports.relative import relimport
 
 BUILTIN_NAMES = ('type', 'id')  # everything which makes the variable become gray in PyCharm
+SENTENCE_SPLIT_REGEX = re.compile('[\.!?](?:\s+|(?=NOTE:))', re.MULTILINE)
 
 class KwargableObject(Mapping):
     """ allow `**self`, and include all @property s """
@@ -554,6 +556,32 @@ class Variable(dict):
         # we did all the checks, so it must be always be the same value.
         return True
     # end if
+
+    @property
+    def description_sentence_split_list(self) -> Optional[List[str]]:
+        if self.description is None:
+            return None
+        # end if
+        text: str = self.description
+
+        splits = SENTENCE_SPLIT_REGEX.split(text)
+        if not ". ".join(splits) in (text, text.replace('.NOTE:', '. NOTE:')):
+            return [text]
+        # end if
+        return [f'{split}.' for split in splits]
+    # end def
+
+    def description_sentence_split_str(self, *, indent=0) -> Optional[str]:
+        splits = self.description_sentence_split_list
+        if splits[0] == 'Optional.':
+            splits[1] = f'Optional. {splits[1]}'
+            del splits[0]
+        # end if
+        if splits is None:
+            return None
+        # end if
+        return f"\n{' ' * indent}".join(splits)
+    # end def
 
     @property
     def value_to_set(self):
