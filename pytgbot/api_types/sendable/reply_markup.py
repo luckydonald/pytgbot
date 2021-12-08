@@ -59,16 +59,21 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
     Optional keyword parameters:
 
-    :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
+    :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons).
+                            Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
     :type  resize_keyboard: bool
 
-    :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
+    :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used.
+                              The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again.
+                              Defaults to false.
     :type  one_time_keyboard: bool
 
-    :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
+    :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
     :type  input_field_placeholder: str|unicode
 
-    :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
+    :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only.
+                      Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language.
+                      Other users in the group don't see the keyboard.
     :type  selective: bool
     """
 
@@ -87,16 +92,21 @@ class ReplyKeyboardMarkup(ReplyMarkup):
 
         Optional keyword parameters:
 
-        :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
+        :param resize_keyboard: Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons).
+                                Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard.
         :type  resize_keyboard: bool
 
-        :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again. Defaults to false.
+        :param one_time_keyboard: Optional. Requests clients to hide the keyboard as soon as it's been used.
+                                  The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again.
+                                  Defaults to false.
         :type  one_time_keyboard: bool
 
-        :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
+        :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
         :type  input_field_placeholder: str|unicode
 
-        :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
+        :param selective: Optional. Use this parameter if you want to show the keyboard to specific users only.
+                          Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language.
+                          Other users in the group don't see the keyboard.
         :type  selective: bool
         """
         super(ReplyKeyboardMarkup, self).__init__()
@@ -226,13 +236,16 @@ class KeyboardButton(Button):
 
     Optional keyword parameters:
 
-    :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
+    :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed.
+                            Available in private chats only.
     :type  request_contact: bool
 
-    :param request_location: Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
+    :param request_location: Optional. If True, the user's current location will be sent when the button is pressed.
+                             Available in private chats only.
     :type  request_location: bool
 
-    :param request_poll: Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
+    :param request_poll: Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed.
+                         Available in private chats only.
     :type  request_poll: pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType
     """
 
@@ -252,13 +265,16 @@ class KeyboardButton(Button):
 
         Optional keyword parameters:
 
-        :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
+        :param request_contact: Optional. If True, the user's phone number will be sent as a contact when the button is pressed.
+                                Available in private chats only.
         :type  request_contact: bool
 
-        :param request_location: Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
+        :param request_location: Optional. If True, the user's current location will be sent when the button is pressed.
+                                 Available in private chats only.
         :type  request_location: bool
 
-        :param request_poll: Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
+        :param request_poll: Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed.
+                             Available in private chats only.
         :type  request_poll: pytgbot.api_types.sendable.reply_markup.KeyboardButtonPollType
         """
         super(KeyboardButton, self).__init__()
@@ -374,7 +390,9 @@ class KeyboardButtonPollType(Button):
 
     Optional keyword parameters:
 
-    :param type: Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
+    :param type: Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode.
+                 If regular is passed, only regular polls will be allowed.
+                 Otherwise, the user will be allowed to create a poll of any type.
     :type  type: str|unicode
     """
 
@@ -386,7 +404,9 @@ class KeyboardButtonPollType(Button):
 
         Optional keyword parameters:
 
-        :param type: Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
+        :param type: Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode.
+                     If regular is passed, only regular polls will be allowed.
+                     Otherwise, the user will be allowed to create a poll of any type.
         :type  type: str|unicode
         """
         super(KeyboardButtonPollType, self).__init__()
@@ -490,7 +510,8 @@ class ReplyKeyboardRemove(ReplyMarkup):
 
     Optional keyword parameters:
 
-    :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
+    :param selective: Optional. Use this parameter if you want to remove the keyboard for specific users only.
+                      Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
     :type  selective: bool
     """
 
@@ -748,22 +769,28 @@ class InlineKeyboardButton(Button):
 
     Optional keyword parameters:
 
-    :param url: Optional. HTTP or tg:// url to be opened when the button is pressed. Links tg://user?id=<user_id> can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
+    :param url: Optional. HTTP or tg:// url to be opened when the button is pressed.
+                Links tg://user?id=<user_id> can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
     :type  url: str|unicode
 
-    :param login_url: Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.
+    :param login_url: Optional. An HTTP URL used to automatically authorize the user.
+                      Can be used as a replacement for the Telegram Login Widget.
     :type  login_url: pytgbot.api_types.sendable.reply_markup.LoginUrl
 
-    :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+    :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes.
     :type  callback_data: str|unicode
 
-    :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. Can be empty, in which case just the bot's username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it. Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
+    :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field.
+                                Can be empty, in which case just the bot's username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it.
+                                Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
     :type  switch_inline_query: str|unicode
 
-    :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot's username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
+    :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field.
+                                             Can be empty, in which case only the bot's username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
     :type  switch_inline_query_current_chat: str|unicode
 
-    :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
+    :param callback_game: Optional. Description of the game that will be launched when the user presses the button.
+                          NOTE: This type of button must always be the first button in the first row.
     :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
 
     :param pay: Optional. Specify True, to send a Pay button.
@@ -786,22 +813,28 @@ class InlineKeyboardButton(Button):
 
         Optional keyword parameters:
 
-        :param url: Optional. HTTP or tg:// url to be opened when the button is pressed. Links tg://user?id=<user_id> can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
+        :param url: Optional. HTTP or tg:// url to be opened when the button is pressed.
+                    Links tg://user?id=<user_id> can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
         :type  url: str|unicode
 
-        :param login_url: Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.
+        :param login_url: Optional. An HTTP URL used to automatically authorize the user.
+                          Can be used as a replacement for the Telegram Login Widget.
         :type  login_url: pytgbot.api_types.sendable.reply_markup.LoginUrl
 
-        :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
+        :param callback_data: Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes.
         :type  callback_data: str|unicode
 
-        :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. Can be empty, in which case just the bot's username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it. Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
+        :param switch_inline_query: Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field.
+                                    Can be empty, in which case just the bot's username will be inserted.Note: This offers an easy way for users to start using your bot in inline mode when they are currently in a private chat with it.
+                                    Especially useful when combined with switch_pm… actions – in this case the user will be automatically returned to the chat they switched from, skipping the chat selection screen.
         :type  switch_inline_query: str|unicode
 
-        :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. Can be empty, in which case only the bot's username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
+        :param switch_inline_query_current_chat: Optional. If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field.
+                                                 Can be empty, in which case only the bot's username will be inserted.This offers a quick way for the user to open your bot in inline mode in the same chat – good for selecting something from multiple options.
         :type  switch_inline_query_current_chat: str|unicode
 
-        :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
+        :param callback_game: Optional. Description of the game that will be launched when the user presses the button.
+                              NOTE: This type of button must always be the first button in the first row.
         :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
 
         :param pay: Optional. Specify True, to send a Pay button.
@@ -961,7 +994,11 @@ class LoginUrl(Sendable):
     :param forward_text: Optional. New text of the button in forwarded messages.
     :type  forward_text: str|unicode
 
-    :param bot_username: Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
+    :param bot_username: Optional. Username of a bot, which will be used for user authorization.
+                         See Setting up a bot for more details.
+                         If not specified, the current bot's username will be assumed.
+                         The url's domain must be the same as the domain linked with the bot.
+                         See Linking your domain to the bot for more details.
     :type  bot_username: str|unicode
 
     :param request_write_access: Optional. Pass True to request the permission for your bot to send messages to the user.
@@ -989,7 +1026,11 @@ class LoginUrl(Sendable):
         :param forward_text: Optional. New text of the button in forwarded messages.
         :type  forward_text: str|unicode
 
-        :param bot_username: Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
+        :param bot_username: Optional. Username of a bot, which will be used for user authorization.
+                             See Setting up a bot for more details.
+                             If not specified, the current bot's username will be assumed.
+                             The url's domain must be the same as the domain linked with the bot.
+                             See Linking your domain to the bot for more details.
         :type  bot_username: str|unicode
 
         :param request_write_access: Optional. Pass True to request the permission for your bot to send messages to the user.
@@ -1126,10 +1167,11 @@ class ForceReply(ReplyMarkup):
 
     Optional keyword parameters:
 
-    :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the reply is active; 1-64 characters
+    :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the reply is active; 1-64 characters.
     :type  input_field_placeholder: str|unicode
 
-    :param selective: Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
+    :param selective: Optional. Use this parameter if you want to force reply from specific users only.
+                      Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
     :type  selective: bool
     """
 
@@ -1160,7 +1202,7 @@ class ForceReply(ReplyMarkup):
 
         Optional keyword parameters:
 
-        :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the reply is active; 1-64 characters
+        :param input_field_placeholder: Optional. The placeholder to be shown in the input field when the reply is active; 1-64 characters.
         :type  input_field_placeholder: str|unicode
 
         :param selective: Optional. Use this parameter if you want to show the keyboard to/force reply from specific users only.

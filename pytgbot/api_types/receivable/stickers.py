@@ -37,7 +37,7 @@ class StickerSet(Result):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
+    :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format.
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -71,7 +71,7 @@ class StickerSet(Result):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
+        :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format.
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.

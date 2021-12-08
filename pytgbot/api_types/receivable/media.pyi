@@ -582,7 +582,7 @@ class Location(Media):
     :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
     :type  horizontal_accuracy: float
 
-    :param live_period: Optional. Time relative to the message sending date, during which the location can be updated, in seconds. For active live locations only.
+    :param live_period: Optional. Time relative to the message sending date, during which the location can be updated; in seconds. For active live locations only.
     :type  live_period: int
 
     :param heading: Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.

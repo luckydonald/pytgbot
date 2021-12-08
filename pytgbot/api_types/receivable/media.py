@@ -66,13 +66,13 @@ class MessageEntity(Result):
 
     Optional keyword parameters:
 
-    :param url: Optional. For "text_link" only, url that will be opened after user taps on the text
+    :param url: Optional. For "text_link" only, url that will be opened after user taps on the text.
     :type  url: str|unicode
 
-    :param user: Optional. For "text_mention" only, the mentioned user
+    :param user: Optional. For "text_mention" only, the mentioned user.
     :type  user: pytgbot.api_types.receivable.peer.User
 
-    :param language: Optional. For "pre" only, the programming language of the entity text
+    :param language: Optional. For "pre" only, the programming language of the entity text.
     :type  language: str|unicode
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -100,13 +100,13 @@ class MessageEntity(Result):
 
         Optional keyword parameters:
 
-        :param url: Optional. For "text_link" only, url that will be opened after user taps on the text
+        :param url: Optional. For "text_link" only, url that will be opened after user taps on the text.
         :type  url: str|unicode
 
-        :param user: Optional. For "text_mention" only, the mentioned user
+        :param user: Optional. For "text_mention" only, the mentioned user.
         :type  user: pytgbot.api_types.receivable.peer.User
 
-        :param language: Optional. For "pre" only, the programming language of the entity text
+        :param language: Optional. For "pre" only, the programming language of the entity text.
         :type  language: str|unicode
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -270,7 +270,7 @@ class PhotoSize(Result):
 
     Optional keyword parameters:
 
-    :param file_size: Optional. File size in bytes
+    :param file_size: Optional. File size in bytes.
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -301,7 +301,7 @@ class PhotoSize(Result):
 
         Optional keyword parameters:
 
-        :param file_size: Optional. File size in bytes
+        :param file_size: Optional. File size in bytes.
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -440,16 +440,16 @@ class Animation(Media):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Animation thumbnail as defined by sender
+    :param thumb: Optional. Animation thumbnail as defined by sender.
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-    :param file_name: Optional. Original animation filename as defined by sender
+    :param file_name: Optional. Original animation filename as defined by sender.
     :type  file_name: str|unicode
 
-    :param mime_type: Optional. MIME type of the file as defined by sender
+    :param mime_type: Optional. MIME type of the file as defined by sender.
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes.
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -483,16 +483,16 @@ class Animation(Media):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Animation thumbnail as defined by sender
+        :param thumb: Optional. Animation thumbnail as defined by sender.
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-        :param file_name: Optional. Original animation filename as defined by sender
+        :param file_name: Optional. Original animation filename as defined by sender.
         :type  file_name: str|unicode
 
-        :param mime_type: Optional. MIME type of the file as defined by sender
+        :param mime_type: Optional. MIME type of the file as defined by sender.
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size in bytes
+        :param file_size: Optional. File size in bytes.
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -647,22 +647,22 @@ class Audio(Media):
 
     Optional keyword parameters:
 
-    :param performer: Optional. Performer of the audio as defined by sender or by audio tags
+    :param performer: Optional. Performer of the audio as defined by sender or by audio tags.
     :type  performer: str|unicode
 
-    :param title: Optional. Title of the audio as defined by sender or by audio tags
+    :param title: Optional. Title of the audio as defined by sender or by audio tags.
     :type  title: str|unicode
 
-    :param file_name: Optional. Original filename as defined by sender
+    :param file_name: Optional. Original filename as defined by sender.
     :type  file_name: str|unicode
 
-    :param mime_type: Optional. MIME type of the file as defined by sender
+    :param mime_type: Optional. MIME type of the file as defined by sender.
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes.
     :type  file_size: int
 
-    :param thumb: Optional. Thumbnail of the album cover to which the music file belongs
+    :param thumb: Optional. Thumbnail of the album cover to which the music file belongs.
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -690,22 +690,22 @@ class Audio(Media):
 
         Optional keyword parameters:
 
-        :param performer: Optional. Performer of the audio as defined by sender or by audio tags
+        :param performer: Optional. Performer of the audio as defined by sender or by audio tags.
         :type  performer: str|unicode
 
-        :param title: Optional. Title of the audio as defined by sender or by audio tags
+        :param title: Optional. Title of the audio as defined by sender or by audio tags.
         :type  title: str|unicode
 
-        :param file_name: Optional. Original filename as defined by sender
+        :param file_name: Optional. Original filename as defined by sender.
         :type  file_name: str|unicode
 
-        :param mime_type: Optional. MIME type of the file as defined by sender
+        :param mime_type: Optional. MIME type of the file as defined by sender.
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size in bytes
+        :param file_size: Optional. File size in bytes.
         :type  file_size: int
 
-        :param thumb: Optional. Thumbnail of the album cover to which the music file belongs
+        :param thumb: Optional. Thumbnail of the album cover to which the music file belongs.
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -861,16 +861,16 @@ class Document(Media):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Document thumbnail as defined by sender
+    :param thumb: Optional. Document thumbnail as defined by sender.
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-    :param file_name: Optional. Original filename as defined by sender
+    :param file_name: Optional. Original filename as defined by sender.
     :type  file_name: str|unicode
 
-    :param mime_type: Optional. MIME type of the file as defined by sender
+    :param mime_type: Optional. MIME type of the file as defined by sender.
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size in bytes
+    :param file_size: Optional. File size in bytes.
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -895,16 +895,16 @@ class Document(Media):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Document thumbnail as defined by sender
+        :param thumb: Optional. Document thumbnail as defined by sender.
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-        :param file_name: Optional. Original filename as defined by sender
+        :param file_name: Optional. Original filename as defined by sender.
         :type  file_name: str|unicode
 
-        :param mime_type: Optional. MIME type of the file as defined by sender
+        :param mime_type: Optional. MIME type of the file as defined by sender.
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size in bytes
+        :param file_size: Optional. File size in bytes.
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1053,16 +1053,16 @@ class Video(Media):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Video thumbnail
+    :param thumb: Optional. Video thumbnail.
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-    :param file_name: Optional. Original filename as defined by sender
+    :param file_name: Optional. Original filename as defined by sender.
     :type  file_name: str|unicode
 
-    :param mime_type: Optional. Mime type of a file as defined by sender
+    :param mime_type: Optional. Mime type of a file as defined by sender.
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes.
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1096,16 +1096,16 @@ class Video(Media):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Video thumbnail
+        :param thumb: Optional. Video thumbnail.
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-        :param file_name: Optional. Original filename as defined by sender
+        :param file_name: Optional. Original filename as defined by sender.
         :type  file_name: str|unicode
 
-        :param mime_type: Optional. Mime type of a file as defined by sender
+        :param mime_type: Optional. Mime type of a file as defined by sender.
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size in bytes
+        :param file_size: Optional. File size in bytes.
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1263,10 +1263,10 @@ class VideoNote(Media):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Video thumbnail
+    :param thumb: Optional. Video thumbnail.
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-    :param file_size: Optional. File size in bytes
+    :param file_size: Optional. File size in bytes.
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1297,10 +1297,10 @@ class VideoNote(Media):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Video thumbnail
+        :param thumb: Optional. Video thumbnail.
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-        :param file_size: Optional. File size in bytes
+        :param file_size: Optional. File size in bytes.
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1439,10 +1439,10 @@ class Voice(Media):
 
     Optional keyword parameters:
 
-    :param mime_type: Optional. MIME type of the file as defined by sender
+    :param mime_type: Optional. MIME type of the file as defined by sender.
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size in bytes
+    :param file_size: Optional. File size in bytes.
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1470,10 +1470,10 @@ class Voice(Media):
 
         Optional keyword parameters:
 
-        :param mime_type: Optional. MIME type of the file as defined by sender
+        :param mime_type: Optional. MIME type of the file as defined by sender.
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size in bytes
+        :param file_size: Optional. File size in bytes.
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1605,13 +1605,15 @@ class Contact(Media):
 
     Optional keyword parameters:
 
-    :param last_name: Optional. Contact's last name
+    :param last_name: Optional. Contact's last name.
     :type  last_name: str|unicode
 
-    :param user_id: Optional. Contact's user identifier in Telegram. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
+    :param user_id: Optional. Contact's user identifier in Telegram.
+                    This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it.
+                    But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
     :type  user_id: int
 
-    :param vcard: Optional. Additional data about the contact in the form of a vCard
+    :param vcard: Optional. Additional data about the contact in the form of a vCard.
     :type  vcard: str|unicode
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1636,13 +1638,15 @@ class Contact(Media):
 
         Optional keyword parameters:
 
-        :param last_name: Optional. Contact's last name
+        :param last_name: Optional. Contact's last name.
         :type  last_name: str|unicode
 
-        :param user_id: Optional. Contact's user identifier in Telegram. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
+        :param user_id: Optional. Contact's user identifier in Telegram.
+                        This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it.
+                        But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
         :type  user_id: int
 
-        :param vcard: Optional. Additional data about the contact in the form of a vCard
+        :param vcard: Optional. Additional data about the contact in the form of a vCard.
         :type  vcard: str|unicode
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2212,19 +2216,21 @@ class Poll(Media):
 
     Optional keyword parameters:
 
-    :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
+    :param correct_option_id: Optional. 0-based identifier of the correct answer option.
+                              Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
     :type  correct_option_id: int
 
-    :param explanation: Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
+    :param explanation: Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters.
     :type  explanation: str|unicode
 
-    :param explanation_entities: Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+    :param explanation_entities: Optional. Special entities like usernames, URLs, bot commands, etc.
+                                 that appear in the explanation.
     :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param open_period: Optional. Amount of time in seconds the poll will be active after creation
+    :param open_period: Optional. Amount of time in seconds the poll will be active after creation.
     :type  open_period: int
 
-    :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+    :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed.
     :type  close_date: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2267,19 +2273,21 @@ class Poll(Media):
 
         Optional keyword parameters:
 
-        :param correct_option_id: Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
+        :param correct_option_id: Optional. 0-based identifier of the correct answer option.
+                                  Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
         :type  correct_option_id: int
 
-        :param explanation: Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
+        :param explanation: Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters.
         :type  explanation: str|unicode
 
-        :param explanation_entities: Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+        :param explanation_entities: Optional. Special entities like usernames, URLs, bot commands, etc.
+                                     that appear in the explanation.
         :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param open_period: Optional. Amount of time in seconds the poll will be active after creation
+        :param open_period: Optional. Amount of time in seconds the poll will be active after creation.
         :type  open_period: int
 
-        :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+        :param close_date: Optional. Point in time (Unix timestamp) when the poll will be automatically closed.
         :type  close_date: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2449,16 +2457,19 @@ class Location(Media):
 
     Optional keyword parameters:
 
-    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+    :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500.
     :type  horizontal_accuracy: float
 
-    :param live_period: Optional. Time relative to the message sending date, during which the location can be updated; in seconds. For active live locations only.
+    :param live_period: Optional. Time relative to the message sending date, during which the location can be updated; in seconds.
+                        For active live locations only.
     :type  live_period: int
 
-    :param heading: Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.
+    :param heading: Optional. The direction in which user is moving, in degrees; 1-360.
+                    For active live locations only.
     :type  heading: int
 
-    :param proximity_alert_radius: Optional. Maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only.
+    :param proximity_alert_radius: Optional. Maximum distance for proximity alerts about approaching another chat member, in meters.
+                                   For sent live locations only.
     :type  proximity_alert_radius: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2483,16 +2494,19 @@ class Location(Media):
 
         Optional keyword parameters:
 
-        :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
+        :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500.
         :type  horizontal_accuracy: float
 
-        :param live_period: Optional. Time relative to the message sending date, during which the location can be updated; in seconds. For active live locations only.
+        :param live_period: Optional. Time relative to the message sending date, during which the location can be updated; in seconds.
+                            For active live locations only.
         :type  live_period: int
 
-        :param heading: Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.
+        :param heading: Optional. The direction in which user is moving, in degrees; 1-360.
+                        For active live locations only.
         :type  heading: int
 
-        :param proximity_alert_radius: Optional. Maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only.
+        :param proximity_alert_radius: Optional. Maximum distance for proximity alerts about approaching another chat member, in meters.
+                                       For sent live locations only.
         :type  proximity_alert_radius: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2635,16 +2649,18 @@ class Venue(Media):
 
     Optional keyword parameters:
 
-    :param foursquare_id: Optional. Foursquare identifier of the venue
+    :param foursquare_id: Optional. Foursquare identifier of the venue.
     :type  foursquare_id: str|unicode
 
-    :param foursquare_type: Optional. Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
+    :param foursquare_type: Optional. Foursquare type of the venue.
+                            (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".).
     :type  foursquare_type: str|unicode
 
-    :param google_place_id: Optional. Google Places identifier of the venue
+    :param google_place_id: Optional. Google Places identifier of the venue.
     :type  google_place_id: str|unicode
 
-    :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+    :param google_place_type: Optional. Google Places type of the venue.
+                              (See supported types.).
     :type  google_place_type: str|unicode
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2672,16 +2688,18 @@ class Venue(Media):
 
         Optional keyword parameters:
 
-        :param foursquare_id: Optional. Foursquare identifier of the venue
+        :param foursquare_id: Optional. Foursquare identifier of the venue.
         :type  foursquare_id: str|unicode
 
-        :param foursquare_type: Optional. Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
+        :param foursquare_type: Optional. Foursquare type of the venue.
+                                (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".).
         :type  foursquare_type: str|unicode
 
-        :param google_place_id: Optional. Google Places identifier of the venue
+        :param google_place_id: Optional. Google Places identifier of the venue.
         :type  google_place_id: str|unicode
 
-        :param google_place_type: Optional. Google Places type of the venue. (See supported types.)
+        :param google_place_type: Optional. Google Places type of the venue.
+                                  (See supported types.).
         :type  google_place_type: str|unicode
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2968,10 +2986,11 @@ class File(Receivable):
 
     Optional keyword parameters:
 
-    :param file_size: Optional. File size in bytes, if known
+    :param file_size: Optional. File size in bytes, if known.
     :type  file_size: int
 
-    :param file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
+    :param file_path: Optional. File path.
+                      Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
     :type  file_path: str|unicode
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -3001,10 +3020,11 @@ class File(Receivable):
 
         Optional keyword parameters:
 
-        :param file_size: Optional. File size in bytes, if known
+        :param file_size: Optional. File size in bytes, if known.
         :type  file_size: int
 
-        :param file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
+        :param file_path: Optional. File path.
+                          Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
         :type  file_path: str|unicode
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -3311,19 +3331,19 @@ class Sticker(Media):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Sticker thumbnail in the .WEBP or .JPG format
+    :param thumb: Optional. Sticker thumbnail in the .WEBP or .JPG format.
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-    :param emoji: Optional. Emoji associated with the sticker
+    :param emoji: Optional. Emoji associated with the sticker.
     :type  emoji: str|unicode
 
-    :param set_name: Optional. Name of the sticker set to which the sticker belongs
+    :param set_name: Optional. Name of the sticker set to which the sticker belongs.
     :type  set_name: str|unicode
 
-    :param mask_position: Optional. For mask stickers, the position where the mask should be placed
+    :param mask_position: Optional. For mask stickers, the position where the mask should be placed.
     :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
 
-    :param file_size: Optional. File size in bytes
+    :param file_size: Optional. File size in bytes.
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -3357,19 +3377,19 @@ class Sticker(Media):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Sticker thumbnail in the .WEBP or .JPG format
+        :param thumb: Optional. Sticker thumbnail in the .WEBP or .JPG format.
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-        :param emoji: Optional. Emoji associated with the sticker
+        :param emoji: Optional. Emoji associated with the sticker.
         :type  emoji: str|unicode
 
-        :param set_name: Optional. Name of the sticker set to which the sticker belongs
+        :param set_name: Optional. Name of the sticker set to which the sticker belongs.
         :type  set_name: str|unicode
 
-        :param mask_position: Optional. For mask stickers, the position where the mask should be placed
+        :param mask_position: Optional. For mask stickers, the position where the mask should be placed.
         :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
 
-        :param file_size: Optional. File size in bytes
+        :param file_size: Optional. File size in bytes.
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -3533,13 +3553,16 @@ class Game(Media):
 
     Optional keyword parameters:
 
-    :param text: Optional. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters.
+    :param text: Optional. Brief description of the game or high scores included in the game message.
+                 Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText.
+                 0-4096 characters.
     :type  text: str|unicode
 
     :param text_entities: Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
     :type  text_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param animation: Optional. Animation that will be displayed in the game message in chats. Upload via BotFather
+    :param animation: Optional. Animation that will be displayed in the game message in chats.
+                      Upload via BotFather.
     :type  animation: pytgbot.api_types.receivable.media.Animation
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -3567,13 +3590,16 @@ class Game(Media):
 
         Optional keyword parameters:
 
-        :param text: Optional. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters.
+        :param text: Optional. Brief description of the game or high scores included in the game message.
+                     Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText.
+                     0-4096 characters.
         :type  text: str|unicode
 
         :param text_entities: Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
         :type  text_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param animation: Optional. Animation that will be displayed in the game message in chats. Upload via BotFather
+        :param animation: Optional. Animation that will be displayed in the game message in chats.
+                          Upload via BotFather.
         :type  animation: pytgbot.api_types.receivable.media.Animation
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.

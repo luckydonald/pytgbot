@@ -363,16 +363,16 @@ class OrderInfo(Result):
 
     Optional keyword parameters:
 
-    :param name: Optional. User name
+    :param name: Optional. User name.
     :type  name: str|unicode
 
-    :param phone_number: Optional. User's phone number
+    :param phone_number: Optional. User's phone number.
     :type  phone_number: str|unicode
 
-    :param email: Optional. User email
+    :param email: Optional. User email.
     :type  email: str|unicode
 
-    :param shipping_address: Optional. User shipping address
+    :param shipping_address: Optional. User shipping address.
     :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -387,16 +387,16 @@ class OrderInfo(Result):
 
         Optional keyword parameters:
 
-        :param name: Optional. User name
+        :param name: Optional. User name.
         :type  name: str|unicode
 
-        :param phone_number: Optional. User's phone number
+        :param phone_number: Optional. User's phone number.
         :type  phone_number: str|unicode
 
-        :param email: Optional. User email
+        :param email: Optional. User email.
         :type  email: str|unicode
 
-        :param shipping_address: Optional. User shipping address
+        :param shipping_address: Optional. User shipping address.
         :type  shipping_address: pytgbot.api_types.receivable.payments.ShippingAddress
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -537,10 +537,10 @@ class SuccessfulPayment(Result):
 
     Optional keyword parameters:
 
-    :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
+    :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user.
     :type  shipping_option_id: str|unicode
 
-    :param order_info: Optional. Order info provided by the user
+    :param order_info: Optional. Order info provided by the user.
     :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -574,10 +574,10 @@ class SuccessfulPayment(Result):
 
         Optional keyword parameters:
 
-        :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
+        :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user.
         :type  shipping_option_id: str|unicode
 
-        :param order_info: Optional. Order info provided by the user
+        :param order_info: Optional. Order info provided by the user.
         :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -884,10 +884,10 @@ class PreCheckoutQuery(UpdateType):
 
     Optional keyword parameters:
 
-    :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
+    :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user.
     :type  shipping_option_id: str|unicode
 
-    :param order_info: Optional. Order info provided by the user
+    :param order_info: Optional. Order info provided by the user.
     :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -921,10 +921,10 @@ class PreCheckoutQuery(UpdateType):
 
         Optional keyword parameters:
 
-        :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user
+        :param shipping_option_id: Optional. Identifier of the shipping option chosen by the user.
         :type  shipping_option_id: str|unicode
 
-        :param order_info: Optional. Order info provided by the user
+        :param order_info: Optional. Order info provided by the user.
         :type  order_info: pytgbot.api_types.receivable.payments.OrderInfo
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.

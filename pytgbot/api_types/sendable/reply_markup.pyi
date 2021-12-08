@@ -178,8 +178,7 @@ class InlineKeyboardButton(Button):
     :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
     :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
 
-    :param pay: Optional. Specify True, to send a Pay button.
-                NOTE: This type of button must always be the first button in the first row and can only be used in invoice messages.
+    :param pay: Optional. Specify True, to send a Pay button.NOTE: This type of button must always be the first button in the first row and can only be used in invoice messages.
     :type  pay: bool
     """
     text: str
