@@ -624,7 +624,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
+        :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_web_page_preview: Disables link previews for links in this message
@@ -769,7 +769,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the new caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the new caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -852,7 +852,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -935,7 +935,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param duration: Duration of the audio in seconds
@@ -1037,7 +1037,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_content_type_detection: Disables automatic server-side content type detection for files uploaded using multipart/form-data
@@ -1137,7 +1137,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
@@ -1240,7 +1240,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1327,7 +1327,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param duration: Duration of the voice message in seconds
@@ -1747,7 +1747,7 @@ class BotBase(object):
         """
         Internal function for processing the json data returned by the API's stopMessageLiveLocation endpoint.
 
-        :return: On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned
+        :return: On success, if the message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         if not self.return_python_objects:
@@ -1988,7 +1988,7 @@ class BotBase(object):
         :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
         :type  explanation_parse_mode: str|unicode
 
-        :param explanation_entities: List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
+        :param explanation_entities: A JSON-serialized list of special entities that appear in the poll explanation, which can be specified instead of parse_mode
         :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
@@ -2144,7 +2144,7 @@ class BotBase(object):
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
 
-        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
+        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, choose_sticker for stickers, find_location for location data, record_video_note or upload_video_note for video notes.
         :type  action: str|unicode
 
 
@@ -2583,6 +2583,98 @@ class BotBase(object):
         return result
     # end def _set_chat_administrator_custom_title__process_result
 
+    def _ban_chat_sender_chat__make_request(self, chat_id, sender_chat_id):
+        """
+        Internal function for making the request to the API's banChatSenderChat endpoint.
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param sender_chat_id: Unique identifier of the target sender chat
+        :type  sender_chat_id: int
+
+
+        :return: the decoded json
+        :rtype:  dict|list|bool
+        """
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        assert_type_or_raise(sender_chat_id, int, parameter_name="sender_chat_id")
+        return self.do("banChatSenderChat", chat_id=chat_id, sender_chat_id=sender_chat_id)
+    # end def _ban_chat_sender_chat__make_request
+
+    def _ban_chat_sender_chat__process_result(self, result):
+        """
+        Internal function for processing the json data returned by the API's banChatSenderChat endpoint.
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        if not self.return_python_objects:
+            return result
+        # end if
+
+        logger.debug("Trying to parse {data}".format(data=repr(result)))
+        try:
+            return from_array_list(bool, result, list_level=0, is_builtin=True)
+        except TgApiParseException:
+            logger.debug("Failed parsing as primitive bool", exc_info=True)
+        # end try
+            # no valid parsing so far
+        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def _ban_chat_sender_chat__process_result
+
+    def _unban_chat_sender_chat__make_request(self, chat_id, sender_chat_id):
+        """
+        Internal function for making the request to the API's unbanChatSenderChat endpoint.
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param sender_chat_id: Unique identifier of the target sender chat
+        :type  sender_chat_id: int
+
+
+        :return: the decoded json
+        :rtype:  dict|list|bool
+        """
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        assert_type_or_raise(sender_chat_id, int, parameter_name="sender_chat_id")
+        return self.do("unbanChatSenderChat", chat_id=chat_id, sender_chat_id=sender_chat_id)
+    # end def _unban_chat_sender_chat__make_request
+
+    def _unban_chat_sender_chat__process_result(self, result):
+        """
+        Internal function for processing the json data returned by the API's unbanChatSenderChat endpoint.
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        if not self.return_python_objects:
+            return result
+        # end if
+
+        logger.debug("Trying to parse {data}".format(data=repr(result)))
+        try:
+            return from_array_list(bool, result, list_level=0, is_builtin=True)
+        except TgApiParseException:
+            logger.debug("Failed parsing as primitive bool", exc_info=True)
+        # end try
+            # no valid parsing so far
+        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def _unban_chat_sender_chat__process_result
+
     def _set_chat_permissions__make_request(self, chat_id, permissions):
         """
         Internal function for making the request to the API's setChatPermissions endpoint.
@@ -2593,7 +2685,7 @@ class BotBase(object):
         :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
         :type  chat_id: int | str|unicode
 
-        :param permissions: New default chat permissions
+        :param permissions: A JSON-serialized object for new default chat permissions
         :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
 
@@ -2672,7 +2764,7 @@ class BotBase(object):
         return result
     # end def _export_chat_invite_link__process_result
 
-    def _create_chat_invite_link__make_request(self, chat_id, expire_date=None, member_limit=None):
+    def _create_chat_invite_link__make_request(self, chat_id, name=None, expire_date=None, member_limit=None, creates_join_request=None):
         """
         Internal function for making the request to the API's createChatInviteLink endpoint.
 
@@ -2685,20 +2777,28 @@ class BotBase(object):
 
         Optional keyword parameters:
 
+        :param name: Invite link name; 0-32 characters
+        :type  name: str|unicode
+
         :param expire_date: Point in time (Unix timestamp) when the link will expire
         :type  expire_date: int
 
         :param member_limit: Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
         :type  member_limit: int
 
+        :param creates_join_request: True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified
+        :type  creates_join_request: bool
+
         :return: the decoded json
         :rtype:  dict|list|bool
         """
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        assert_type_or_raise(name, None, unicode_type, parameter_name="name")
         assert_type_or_raise(expire_date, None, int, parameter_name="expire_date")
         assert_type_or_raise(member_limit, None, int, parameter_name="member_limit")
-        return self.do("createChatInviteLink", chat_id=chat_id, expire_date=expire_date, member_limit=member_limit)
+        assert_type_or_raise(creates_join_request, None, bool, parameter_name="creates_join_request")
+        return self.do("createChatInviteLink", chat_id=chat_id, name=name, expire_date=expire_date, member_limit=member_limit, creates_join_request=creates_join_request)
     # end def _create_chat_invite_link__make_request
 
     def _create_chat_invite_link__process_result(self, result):
@@ -2725,7 +2825,7 @@ class BotBase(object):
         return result
     # end def _create_chat_invite_link__process_result
 
-    def _edit_chat_invite_link__make_request(self, chat_id, invite_link, expire_date=None, member_limit=None):
+    def _edit_chat_invite_link__make_request(self, chat_id, invite_link, name=None, expire_date=None, member_limit=None, creates_join_request=None):
         """
         Internal function for making the request to the API's editChatInviteLink endpoint.
 
@@ -2741,11 +2841,17 @@ class BotBase(object):
 
         Optional keyword parameters:
 
+        :param name: Invite link name; 0-32 characters
+        :type  name: str|unicode
+
         :param expire_date: Point in time (Unix timestamp) when the link will expire
         :type  expire_date: int
 
         :param member_limit: Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
         :type  member_limit: int
+
+        :param creates_join_request: True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified
+        :type  creates_join_request: bool
 
         :return: the decoded json
         :rtype:  dict|list|bool
@@ -2753,9 +2859,11 @@ class BotBase(object):
 
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(invite_link, unicode_type, parameter_name="invite_link")
+        assert_type_or_raise(name, None, unicode_type, parameter_name="name")
         assert_type_or_raise(expire_date, None, int, parameter_name="expire_date")
         assert_type_or_raise(member_limit, None, int, parameter_name="member_limit")
-        return self.do("editChatInviteLink", chat_id=chat_id, invite_link=invite_link, expire_date=expire_date, member_limit=member_limit)
+        assert_type_or_raise(creates_join_request, None, bool, parameter_name="creates_join_request")
+        return self.do("editChatInviteLink", chat_id=chat_id, invite_link=invite_link, name=name, expire_date=expire_date, member_limit=member_limit, creates_join_request=creates_join_request)
     # end def _edit_chat_invite_link__make_request
 
     def _edit_chat_invite_link__process_result(self, result):
@@ -2828,6 +2936,98 @@ class BotBase(object):
         # end if return_python_objects
         return result
     # end def _revoke_chat_invite_link__process_result
+
+    def _approve_chat_join_request__make_request(self, chat_id, user_id):
+        """
+        Internal function for making the request to the API's approveChatJoinRequest endpoint.
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+
+
+        :return: the decoded json
+        :rtype:  dict|list|bool
+        """
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
+        return self.do("approveChatJoinRequest", chat_id=chat_id, user_id=user_id)
+    # end def _approve_chat_join_request__make_request
+
+    def _approve_chat_join_request__process_result(self, result):
+        """
+        Internal function for processing the json data returned by the API's approveChatJoinRequest endpoint.
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        if not self.return_python_objects:
+            return result
+        # end if
+
+        logger.debug("Trying to parse {data}".format(data=repr(result)))
+        try:
+            return from_array_list(bool, result, list_level=0, is_builtin=True)
+        except TgApiParseException:
+            logger.debug("Failed parsing as primitive bool", exc_info=True)
+        # end try
+            # no valid parsing so far
+        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def _approve_chat_join_request__process_result
+
+    def _decline_chat_join_request__make_request(self, chat_id, user_id):
+        """
+        Internal function for making the request to the API's declineChatJoinRequest endpoint.
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+
+
+        :return: the decoded json
+        :rtype:  dict|list|bool
+        """
+
+        assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
+        assert_type_or_raise(user_id, int, parameter_name="user_id")
+        return self.do("declineChatJoinRequest", chat_id=chat_id, user_id=user_id)
+    # end def _decline_chat_join_request__make_request
+
+    def _decline_chat_join_request__process_result(self, result):
+        """
+        Internal function for processing the json data returned by the API's declineChatJoinRequest endpoint.
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        if not self.return_python_objects:
+            return result
+        # end if
+
+        logger.debug("Trying to parse {data}".format(data=repr(result)))
+        try:
+            return from_array_list(bool, result, list_level=0, is_builtin=True)
+        except TgApiParseException:
+            logger.debug("Failed parsing as primitive bool", exc_info=True)
+        # end try
+            # no valid parsing so far
+        raise TgApiParseException("Could not parse result.")  # See debug log for details!
+        # end if return_python_objects
+        return result
+    # end def _decline_chat_join_request__process_result
 
     def _set_chat_photo__make_request(self, chat_id, photo):
         """
@@ -3475,7 +3675,7 @@ class BotBase(object):
         :param text: Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
         :type  text: str|unicode
 
-        :param show_alert: If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
+        :param show_alert: If True, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
         :type  show_alert: bool
 
         :param url: URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game — note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
@@ -3691,7 +3891,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
+        :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_web_page_preview: Disables link previews for links in this message
@@ -3769,7 +3969,7 @@ class BotBase(object):
         :param parse_mode: Mode for parsing entities in the message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param reply_markup: A JSON-serialized object for an inline keyboard.
@@ -3864,7 +4064,7 @@ class BotBase(object):
         """
         Internal function for processing the json data returned by the API's editMessageMedia endpoint.
 
-        :return: On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned
+        :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         if not self.return_python_objects:
@@ -3985,7 +4185,7 @@ class BotBase(object):
         """
         Internal function for processing the json data returned by the API's stopPoll endpoint.
 
-        :return: On success, the stopped Poll with the final results is returned
+        :return: On success, the stopped Poll is returned
         :rtype:  pytgbot.api_types.receivable.media.Poll
         """
         if not self.return_python_objects:
@@ -4521,7 +4721,7 @@ class BotBase(object):
         :param switch_pm_text: If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
         :type  switch_pm_text: str|unicode
 
-        :param switch_pm_parameter: Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
+        :param switch_pm_parameter: Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an OAuth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
         :type  switch_pm_parameter: str|unicode
 
         :return: the decoded json
@@ -4980,7 +5180,7 @@ class BotBase(object):
         """
         Internal function for processing the json data returned by the API's setGameScore endpoint.
 
-        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True
+        :return: On success, if the message is not an inline message, the Message is returned, otherwise True is returned. Returns an error, if the new score is not greater than the user's current score in the chat and force is False
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         if not self.return_python_objects:

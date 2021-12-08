@@ -334,7 +334,7 @@ class SyncBot(BotBase):
 
     def get_me(self):
         """
-        A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
+        A simple method for testing your bot's authentication token. Requires no parameters. Returns basic information about the bot in form of a User object.
 
         https://core.telegram.org/bots/api#getme
 
@@ -388,7 +388,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
+        :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_web_page_preview: Disables link previews for links in this message
@@ -477,7 +477,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the new caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the new caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -526,7 +526,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -576,7 +576,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param duration: Duration of the audio in seconds
@@ -640,7 +640,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_content_type_detection: Disables automatic server-side content type detection for files uploaded using multipart/form-data
@@ -704,7 +704,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
@@ -768,7 +768,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -817,7 +817,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param duration: Duration of the voice message in seconds
@@ -1036,7 +1036,7 @@ class SyncBot(BotBase):
 
     def stop_message_live_location(self, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
-        Use this method to stop updating a live location message before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+        Use this method to stop updating a live location message before live_period expires. On success, if the message is not an inline message, the edited Message is returned, otherwise True is returned.
 
         https://core.telegram.org/bots/api#stopmessagelivelocation
 
@@ -1058,7 +1058,7 @@ class SyncBot(BotBase):
 
         Returns:
 
-        :return: On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned
+        :return: On success, if the message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         result = self._stop_message_live_location__make_request(chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
@@ -1215,7 +1215,7 @@ class SyncBot(BotBase):
         :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
         :type  explanation_parse_mode: str|unicode
 
-        :param explanation_entities: List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
+        :param explanation_entities: A JSON-serialized list of special entities that appear in the poll explanation, which can be specified instead of parse_mode
         :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
@@ -1305,7 +1305,7 @@ class SyncBot(BotBase):
         :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
 
-        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
+        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, choose_sticker for stickers, find_location for location data, record_video_note or upload_video_note for video notes.
         :type  action: str|unicode
 
 
@@ -1375,7 +1375,7 @@ class SyncBot(BotBase):
 
     def ban_chat_member(self, chat_id, user_id, until_date=None, revoke_messages=None):
         """
-        Use this method to ban a user in a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+        Use this method to ban a user in a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
         https://core.telegram.org/bots/api#banchatmember
 
@@ -1440,7 +1440,7 @@ class SyncBot(BotBase):
 
     def restrict_chat_member(self, chat_id, user_id, permissions, until_date=None):
         """
-        Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
+        Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate administrator rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
 
         https://core.telegram.org/bots/api#restrictchatmember
 
@@ -1474,7 +1474,7 @@ class SyncBot(BotBase):
 
     def promote_chat_member(self, chat_id, user_id, is_anonymous=None, can_manage_chat=None, can_post_messages=None, can_edit_messages=None, can_delete_messages=None, can_manage_voice_chats=None, can_restrict_members=None, can_promote_members=None, can_change_info=None, can_invite_users=None, can_pin_messages=None):
         """
-        Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
+        Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Pass False for all boolean parameters to demote a user. Returns True on success.
 
         https://core.telegram.org/bots/api#promotechatmember
 
@@ -1562,9 +1562,61 @@ class SyncBot(BotBase):
         return self._set_chat_administrator_custom_title__process_result(result)
     # end def set_chat_administrator_custom_title
 
+    def ban_chat_sender_chat(self, chat_id, sender_chat_id):
+        """
+        Use this method to ban a channel chat in a supergroup or a channel. The owner of the chat will not be able to send messages and join live streams on behalf of the chat, unless it is unbanned first. The bot must be an administrator in the supergroup or channel for this to work and must have the appropriate administrator rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#banchatsenderchat
+
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param sender_chat_id: Unique identifier of the target sender chat
+        :type  sender_chat_id: int
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        result = self._ban_chat_sender_chat__make_request(chat_id=chat_id, sender_chat_id=sender_chat_id)
+        return self._ban_chat_sender_chat__process_result(result)
+    # end def ban_chat_sender_chat
+
+    def unban_chat_sender_chat(self, chat_id, sender_chat_id):
+        """
+        Use this method to unban a previously banned channel chat in a supergroup or channel. The bot must be an administrator for this to work and must have the appropriate administrator rights. Returns True on success.
+
+        https://core.telegram.org/bots/api#unbanchatsenderchat
+
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param sender_chat_id: Unique identifier of the target sender chat
+        :type  sender_chat_id: int
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        result = self._unban_chat_sender_chat__make_request(chat_id=chat_id, sender_chat_id=sender_chat_id)
+        return self._unban_chat_sender_chat__process_result(result)
+    # end def unban_chat_sender_chat
+
     def set_chat_permissions(self, chat_id, permissions):
         """
-        Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights. Returns True on success.
+        Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members administrator rights. Returns True on success.
 
         https://core.telegram.org/bots/api#setchatpermissions
 
@@ -1575,7 +1627,7 @@ class SyncBot(BotBase):
         :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
         :type  chat_id: int | str|unicode
 
-        :param permissions: New default chat permissions
+        :param permissions: A JSON-serialized object for new default chat permissions
         :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
 
@@ -1590,7 +1642,7 @@ class SyncBot(BotBase):
 
     def export_chat_invite_link(self, chat_id):
         """
-        Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
+        Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the new invite link as String on success.
 
         Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink or by calling the getChat method. If your bot needs to generate a new primary invite link replacing its previous one, use exportChatInviteLink again.
 
@@ -1614,9 +1666,9 @@ class SyncBot(BotBase):
         return self._export_chat_invite_link__process_result(result)
     # end def export_chat_invite_link
 
-    def create_chat_invite_link(self, chat_id, expire_date=None, member_limit=None):
+    def create_chat_invite_link(self, chat_id, name=None, expire_date=None, member_limit=None, creates_join_request=None):
         """
-        Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. The link can be revoked using the method revokeChatInviteLink. Returns the new invite link as ChatInviteLink object.
+        Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. The link can be revoked using the method revokeChatInviteLink. Returns the new invite link as ChatInviteLink object.
 
         https://core.telegram.org/bots/api#createchatinvitelink
 
@@ -1630,24 +1682,30 @@ class SyncBot(BotBase):
 
         Optional keyword parameters:
 
+        :param name: Invite link name; 0-32 characters
+        :type  name: str|unicode
+
         :param expire_date: Point in time (Unix timestamp) when the link will expire
         :type  expire_date: int
 
         :param member_limit: Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
         :type  member_limit: int
 
+        :param creates_join_request: True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified
+        :type  creates_join_request: bool
+
         Returns:
 
         :return: Returns the new invite link as ChatInviteLink object
         :rtype:  pytgbot.api_types.receivable.peer.ChatInviteLink
         """
-        result = self._create_chat_invite_link__make_request(chat_id=chat_id, expire_date=expire_date, member_limit=member_limit)
+        result = self._create_chat_invite_link__make_request(chat_id=chat_id, name=name, expire_date=expire_date, member_limit=member_limit, creates_join_request=creates_join_request)
         return self._create_chat_invite_link__process_result(result)
     # end def create_chat_invite_link
 
-    def edit_chat_invite_link(self, chat_id, invite_link, expire_date=None, member_limit=None):
+    def edit_chat_invite_link(self, chat_id, invite_link, name=None, expire_date=None, member_limit=None, creates_join_request=None):
         """
-        Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the edited invite link as a ChatInviteLink object.
+        Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the edited invite link as a ChatInviteLink object.
 
         https://core.telegram.org/bots/api#editchatinvitelink
 
@@ -1664,24 +1722,30 @@ class SyncBot(BotBase):
 
         Optional keyword parameters:
 
+        :param name: Invite link name; 0-32 characters
+        :type  name: str|unicode
+
         :param expire_date: Point in time (Unix timestamp) when the link will expire
         :type  expire_date: int
 
         :param member_limit: Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
         :type  member_limit: int
 
+        :param creates_join_request: True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified
+        :type  creates_join_request: bool
+
         Returns:
 
         :return: Returns the edited invite link as a ChatInviteLink object
         :rtype:  pytgbot.api_types.receivable.peer.ChatInviteLink
         """
-        result = self._edit_chat_invite_link__make_request(chat_id=chat_id, invite_link=invite_link, expire_date=expire_date, member_limit=member_limit)
+        result = self._edit_chat_invite_link__make_request(chat_id=chat_id, invite_link=invite_link, name=name, expire_date=expire_date, member_limit=member_limit, creates_join_request=creates_join_request)
         return self._edit_chat_invite_link__process_result(result)
     # end def edit_chat_invite_link
 
     def revoke_chat_invite_link(self, chat_id, invite_link):
         """
-        Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the revoked invite link as ChatInviteLink object.
+        Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the revoked invite link as ChatInviteLink object.
 
         https://core.telegram.org/bots/api#revokechatinvitelink
 
@@ -1705,9 +1769,61 @@ class SyncBot(BotBase):
         return self._revoke_chat_invite_link__process_result(result)
     # end def revoke_chat_invite_link
 
+    def approve_chat_join_request(self, chat_id, user_id):
+        """
+        Use this method to approve a chat join request. The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right. Returns True on success.
+
+        https://core.telegram.org/bots/api#approvechatjoinrequest
+
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        result = self._approve_chat_join_request__make_request(chat_id=chat_id, user_id=user_id)
+        return self._approve_chat_join_request__process_result(result)
+    # end def approve_chat_join_request
+
+    def decline_chat_join_request(self, chat_id, user_id):
+        """
+        Use this method to decline a chat join request. The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right. Returns True on success.
+
+        https://core.telegram.org/bots/api#declinechatjoinrequest
+
+
+
+        Parameters:
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :type  chat_id: int | str|unicode
+
+        :param user_id: Unique identifier of the target user
+        :type  user_id: int
+
+
+        Returns:
+
+        :return: Returns True on success
+        :rtype:  bool
+        """
+        result = self._decline_chat_join_request__make_request(chat_id=chat_id, user_id=user_id)
+        return self._decline_chat_join_request__process_result(result)
+    # end def decline_chat_join_request
+
     def set_chat_photo(self, chat_id, photo):
         """
-        Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+        Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
         https://core.telegram.org/bots/api#setchatphoto
 
@@ -1733,7 +1849,7 @@ class SyncBot(BotBase):
 
     def delete_chat_photo(self, chat_id):
         """
-        Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+        Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
         https://core.telegram.org/bots/api#deletechatphoto
 
@@ -1756,7 +1872,7 @@ class SyncBot(BotBase):
 
     def set_chat_title(self, chat_id, title):
         """
-        Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+        Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
         https://core.telegram.org/bots/api#setchattitle
 
@@ -1782,7 +1898,7 @@ class SyncBot(BotBase):
 
     def set_chat_description(self, chat_id, description=None):
         """
-        Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+        Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
         https://core.telegram.org/bots/api#setchatdescription
 
@@ -1810,7 +1926,7 @@ class SyncBot(BotBase):
 
     def pin_chat_message(self, chat_id, message_id, disable_notification=None):
         """
-        Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+        Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel. Returns True on success.
 
         https://core.telegram.org/bots/api#pinchatmessage
 
@@ -1841,7 +1957,7 @@ class SyncBot(BotBase):
 
     def unpin_chat_message(self, chat_id, message_id=None):
         """
-        Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+        Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel. Returns True on success.
 
         https://core.telegram.org/bots/api#unpinchatmessage
 
@@ -1869,7 +1985,7 @@ class SyncBot(BotBase):
 
     def unpin_all_chat_messages(self, chat_id):
         """
-        Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+        Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel. Returns True on success.
 
         https://core.telegram.org/bots/api#unpinallchatmessages
 
@@ -2010,7 +2126,7 @@ class SyncBot(BotBase):
 
     def set_chat_sticker_set(self, chat_id, sticker_set_name):
         """
-        Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
+        Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
 
         https://core.telegram.org/bots/api#setchatstickerset
 
@@ -2036,7 +2152,7 @@ class SyncBot(BotBase):
 
     def delete_chat_sticker_set(self, chat_id):
         """
-        Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
+        Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
 
         https://core.telegram.org/bots/api#deletechatstickerset
 
@@ -2079,7 +2195,7 @@ class SyncBot(BotBase):
         :param text: Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
         :type  text: str|unicode
 
-        :param show_alert: If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
+        :param show_alert: If True, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
         :type  show_alert: bool
 
         :param url: URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game — note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
@@ -2206,7 +2322,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
+        :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_web_page_preview: Disables link previews for links in this message
@@ -2249,7 +2365,7 @@ class SyncBot(BotBase):
         :param parse_mode: Mode for parsing entities in the message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param reply_markup: A JSON-serialized object for an inline keyboard.
@@ -2266,7 +2382,7 @@ class SyncBot(BotBase):
 
     def edit_message_media(self, media, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
         """
-        Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded. Use a previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+        Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded; use a previously uploaded file via its file_id or specify a URL. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
 
         https://core.telegram.org/bots/api#editmessagemedia
 
@@ -2294,7 +2410,7 @@ class SyncBot(BotBase):
 
         Returns:
 
-        :return: On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned
+        :return: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         result = self._edit_message_media__make_request(media=media, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id, reply_markup=reply_markup)
@@ -2334,7 +2450,7 @@ class SyncBot(BotBase):
 
     def stop_poll(self, chat_id, message_id, reply_markup=None):
         """
-        Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the final results is returned.
+        Use this method to stop a poll which was sent by the bot. On success, the stopped Poll is returned.
 
         https://core.telegram.org/bots/api#stoppoll
 
@@ -2356,7 +2472,7 @@ class SyncBot(BotBase):
 
         Returns:
 
-        :return: On success, the stopped Poll with the final results is returned
+        :return: On success, the stopped Poll is returned
         :rtype:  pytgbot.api_types.receivable.media.Poll
         """
         result = self._stop_poll__make_request(chat_id=chat_id, message_id=message_id, reply_markup=reply_markup)
@@ -2675,7 +2791,7 @@ class SyncBot(BotBase):
         :param switch_pm_text: If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
         :type  switch_pm_text: str|unicode
 
-        :param switch_pm_parameter: Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
+        :param switch_pm_parameter: Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an OAuth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
         :type  switch_pm_parameter: str|unicode
 
         Returns:
@@ -2921,7 +3037,7 @@ class SyncBot(BotBase):
 
     def set_game_score(self, user_id, score, force=None, disable_edit_message=None, chat_id=None, message_id=None, inline_message_id=None):
         """
-        Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+        Use this method to set the score of the specified user in a game message. On success, if the message is not an inline message, the Message is returned, otherwise True is returned. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
 
         https://core.telegram.org/bots/api#setgamescore
 
@@ -2955,7 +3071,7 @@ class SyncBot(BotBase):
 
         Returns:
 
-        :return: On success, if the message was sent by the bot, returns the edited Message, otherwise returns True
+        :return: On success, if the message is not an inline message, the Message is returned, otherwise True is returned. Returns an error, if the new score is not greater than the user's current score in the chat and force is False
         :rtype:  pytgbot.api_types.receivable.updates.Message | bool
         """
         result = self._set_game_score__make_request(user_id=user_id, score=score, force=force, disable_edit_message=disable_edit_message, chat_id=chat_id, message_id=message_id, inline_message_id=inline_message_id)

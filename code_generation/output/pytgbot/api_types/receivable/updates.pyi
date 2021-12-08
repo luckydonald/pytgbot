@@ -87,6 +87,9 @@ class Update(Receivable):
     :param chat_member: Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify "chat_member" in the list of allowed_updates to receive these updates.
     :type  chat_member: pytgbot.api_types.receivable.peer.ChatMemberUpdated
 
+    :param chat_join_request: Optional. A request to join the chat has been sent. The bot must have the can_invite_users administrator right in the chat to receive these updates.
+    :type  chat_join_request: pytgbot.api_types.receivable.peer.ChatJoinRequest
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
@@ -104,6 +107,7 @@ class Update(Receivable):
     poll_answer: PollAnswer
     my_chat_member: ChatMemberUpdated
     chat_member: ChatMemberUpdated
+    chat_join_request: ChatJoinRequest
 # end class Update
 
 class WebhookInfo(Receivable):
@@ -200,6 +204,9 @@ class Message(UpdateType):
     :param forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
     :type  forward_date: int
 
+    :param is_automatic_forward: Optional. True, if the message is a channel post that was automatically forwarded to the connected discussion group
+    :type  is_automatic_forward: bool
+
     :param reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
     :type  reply_to_message: pytgbot.api_types.receivable.updates.Message
 
@@ -208,6 +215,9 @@ class Message(UpdateType):
 
     :param edit_date: Optional. Date the message was last edited in Unix time
     :type  edit_date: int
+
+    :param has_protected_content: Optional. True, if the message can't be forwarded
+    :type  has_protected_content: bool
 
     :param media_group_id: Optional. The unique identifier of a media message group this message belongs to
     :type  media_group_id: str|unicode
@@ -349,9 +359,11 @@ class Message(UpdateType):
     forward_signature: str
     forward_sender_name: str
     forward_date: int
+    is_automatic_forward: bool
     reply_to_message: Message
     via_bot: User
     edit_date: int
+    has_protected_content: bool
     media_group_id: str
     author_signature: str
     text: str

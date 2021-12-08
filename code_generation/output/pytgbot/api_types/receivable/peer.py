@@ -17,6 +17,7 @@ __all__ = [
     'ChatMemberLeft',
     'ChatMemberBanned',
     'ChatMemberUpdated',
+    'ChatJoinRequest',
     'ChatPermissions',
     'ChatLocation',
 ]
@@ -289,6 +290,9 @@ class Chat(Peer):
     :param bio: Optional. Bio of the other party in a private chat. Returned only in getChat.
     :type  bio: str|unicode
 
+    :param has_private_forwards: Optional. True, if privacy settings of the other party in the private chat allows to use tg://user?id=<user_id> links only in chats with the user. Returned only in getChat.
+    :type  has_private_forwards: bool
+
     :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
     :type  description: str|unicode
 
@@ -301,11 +305,14 @@ class Chat(Peer):
     :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
     :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
-    :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in getChat.
+    :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user; in seconds. Returned only in getChat.
     :type  slow_mode_delay: int
 
     :param message_auto_delete_time: Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds. Returned only in getChat.
     :type  message_auto_delete_time: int
+
+    :param has_protected_content: Optional. True, if messages from the chat can't be forwarded to other chats. Returned only in getChat.
+    :type  has_protected_content: bool
 
     :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
     :type  sticker_set_name: str|unicode
@@ -323,7 +330,7 @@ class Chat(Peer):
     :type  _raw: None | dict
     """
 
-    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, photo=None, bio=None, description=None, invite_link=None, pinned_message=None, permissions=None, slow_mode_delay=None, message_auto_delete_time=None, sticker_set_name=None, can_set_sticker_set=None, linked_chat_id=None, location=None, _raw=None):
+    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None, photo=None, bio=None, has_private_forwards=None, description=None, invite_link=None, pinned_message=None, permissions=None, slow_mode_delay=None, message_auto_delete_time=None, has_protected_content=None, sticker_set_name=None, can_set_sticker_set=None, linked_chat_id=None, location=None, _raw=None):
         """
         This object represents a chat.
 
@@ -359,6 +366,9 @@ class Chat(Peer):
         :param bio: Optional. Bio of the other party in a private chat. Returned only in getChat.
         :type  bio: str|unicode
 
+        :param has_private_forwards: Optional. True, if privacy settings of the other party in the private chat allows to use tg://user?id=<user_id> links only in chats with the user. Returned only in getChat.
+        :type  has_private_forwards: bool
+
         :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
         :type  description: str|unicode
 
@@ -371,11 +381,14 @@ class Chat(Peer):
         :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
         :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
-        :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in getChat.
+        :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user; in seconds. Returned only in getChat.
         :type  slow_mode_delay: int
 
         :param message_auto_delete_time: Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds. Returned only in getChat.
         :type  message_auto_delete_time: int
+
+        :param has_protected_content: Optional. True, if messages from the chat can't be forwarded to other chats. Returned only in getChat.
+        :type  has_protected_content: bool
 
         :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
         :type  sticker_set_name: str|unicode
@@ -411,6 +424,8 @@ class Chat(Peer):
         self.photo = photo
         assert_type_or_raise(bio, None, unicode_type, parameter_name="bio")
         self.bio = bio
+        assert_type_or_raise(has_private_forwards, None, bool, parameter_name="has_private_forwards")
+        self.has_private_forwards = has_private_forwards
         assert_type_or_raise(description, None, unicode_type, parameter_name="description")
         self.description = description
         assert_type_or_raise(invite_link, None, unicode_type, parameter_name="invite_link")
@@ -423,6 +438,8 @@ class Chat(Peer):
         self.slow_mode_delay = slow_mode_delay
         assert_type_or_raise(message_auto_delete_time, None, int, parameter_name="message_auto_delete_time")
         self.message_auto_delete_time = message_auto_delete_time
+        assert_type_or_raise(has_protected_content, None, bool, parameter_name="has_protected_content")
+        self.has_protected_content = has_protected_content
         assert_type_or_raise(sticker_set_name, None, unicode_type, parameter_name="sticker_set_name")
         self.sticker_set_name = sticker_set_name
         assert_type_or_raise(can_set_sticker_set, None, bool, parameter_name="can_set_sticker_set")
@@ -473,6 +490,9 @@ class Chat(Peer):
         if self.bio is not None:
             array['bio'] = u(self.bio)  # py2: type unicode, py3: type str
         # end if
+        if self.has_private_forwards is not None:
+            array['has_private_forwards'] = bool(self.has_private_forwards)  # type bool
+        # end if
         if self.description is not None:
             array['description'] = u(self.description)  # py2: type unicode, py3: type str
         # end if
@@ -490,6 +510,9 @@ class Chat(Peer):
         # end if
         if self.message_auto_delete_time is not None:
             array['message_auto_delete_time'] = int(self.message_auto_delete_time)  # type int
+        # end if
+        if self.has_protected_content is not None:
+            array['has_protected_content'] = bool(self.has_protected_content)  # type bool
         # end if
         if self.sticker_set_name is not None:
             array['sticker_set_name'] = u(self.sticker_set_name)  # py2: type unicode, py3: type str
@@ -526,12 +549,14 @@ class Chat(Peer):
         data['last_name'] = u(array.get('last_name')) if array.get('last_name') is not None else None
         data['photo'] = ChatPhoto.from_array(array.get('photo')) if array.get('photo') is not None else None
         data['bio'] = u(array.get('bio')) if array.get('bio') is not None else None
+        data['has_private_forwards'] = True if array.get('has_private_forwards') is not None else None
         data['description'] = u(array.get('description')) if array.get('description') is not None else None
         data['invite_link'] = u(array.get('invite_link')) if array.get('invite_link') is not None else None
         data['pinned_message'] = Message.from_array(array.get('pinned_message')) if array.get('pinned_message') is not None else None
         data['permissions'] = ChatPermissions.from_array(array.get('permissions')) if array.get('permissions') is not None else None
         data['slow_mode_delay'] = int(array.get('slow_mode_delay')) if array.get('slow_mode_delay') is not None else None
         data['message_auto_delete_time'] = int(array.get('message_auto_delete_time')) if array.get('message_auto_delete_time') is not None else None
+        data['has_protected_content'] = True if array.get('has_protected_content') is not None else None
         data['sticker_set_name'] = u(array.get('sticker_set_name')) if array.get('sticker_set_name') is not None else None
         data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
         data['linked_chat_id'] = int(array.get('linked_chat_id')) if array.get('linked_chat_id') is not None else None
@@ -560,7 +585,7 @@ class Chat(Peer):
         """
         Implements `str(chat_instance)`
         """
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, bio={self.bio!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, message_auto_delete_time={self.message_auto_delete_time!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r}, linked_chat_id={self.linked_chat_id!r}, location={self.location!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, bio={self.bio!r}, has_private_forwards={self.has_private_forwards!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, message_auto_delete_time={self.message_auto_delete_time!r}, has_protected_content={self.has_protected_content!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r}, linked_chat_id={self.linked_chat_id!r}, location={self.location!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -570,7 +595,7 @@ class Chat(Peer):
         if self._raw:
             return "Chat.from_array({self._raw})".format(self=self)
         # end if
-        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, bio={self.bio!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, message_auto_delete_time={self.message_auto_delete_time!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r}, linked_chat_id={self.linked_chat_id!r}, location={self.location!r})".format(self=self)
+        return "Chat(id={self.id!r}, type={self.type!r}, title={self.title!r}, username={self.username!r}, first_name={self.first_name!r}, last_name={self.last_name!r}, photo={self.photo!r}, bio={self.bio!r}, has_private_forwards={self.has_private_forwards!r}, description={self.description!r}, invite_link={self.invite_link!r}, pinned_message={self.pinned_message!r}, permissions={self.permissions!r}, slow_mode_delay={self.slow_mode_delay!r}, message_auto_delete_time={self.message_auto_delete_time!r}, has_protected_content={self.has_protected_content!r}, sticker_set_name={self.sticker_set_name!r}, can_set_sticker_set={self.can_set_sticker_set!r}, linked_chat_id={self.linked_chat_id!r}, location={self.location!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -578,7 +603,7 @@ class Chat(Peer):
         Implements `"key" in chat_instance`
         """
         return (
-            key in ["id", "type", "title", "username", "first_name", "last_name", "photo", "bio", "description", "invite_link", "pinned_message", "permissions", "slow_mode_delay", "message_auto_delete_time", "sticker_set_name", "can_set_sticker_set", "linked_chat_id", "location"]
+            key in ["id", "type", "title", "username", "first_name", "last_name", "photo", "bio", "has_private_forwards", "description", "invite_link", "pinned_message", "permissions", "slow_mode_delay", "message_auto_delete_time", "has_protected_content", "sticker_set_name", "can_set_sticker_set", "linked_chat_id", "location"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -601,6 +626,9 @@ class ChatInviteLink(Result):
     :param creator: Creator of the link
     :type  creator: pytgbot.api_types.receivable.peer.User
 
+    :param creates_join_request: True, if users joining the chat via the link need to be approved by chat administrators
+    :type  creates_join_request: bool
+
     :param is_primary: True, if the link is primary
     :type  is_primary: bool
 
@@ -610,17 +638,23 @@ class ChatInviteLink(Result):
 
     Optional keyword parameters:
 
+    :param name: Optional. Invite link name
+    :type  name: str|unicode
+
     :param expire_date: Optional. Point in time (Unix timestamp) when the link will expire or has been expired
     :type  expire_date: int
 
     :param member_limit: Optional. Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
     :type  member_limit: int
 
+    :param pending_join_request_count: Optional. Number of pending join requests created using this link
+    :type  pending_join_request_count: int
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, invite_link, creator, is_primary, is_revoked, expire_date=None, member_limit=None, _raw=None):
+    def __init__(self, invite_link, creator, creates_join_request, is_primary, is_revoked, name=None, expire_date=None, member_limit=None, pending_join_request_count=None, _raw=None):
         """
         Represents an invite link for a chat.
 
@@ -635,6 +669,9 @@ class ChatInviteLink(Result):
         :param creator: Creator of the link
         :type  creator: pytgbot.api_types.receivable.peer.User
 
+        :param creates_join_request: True, if users joining the chat via the link need to be approved by chat administrators
+        :type  creates_join_request: bool
+
         :param is_primary: True, if the link is primary
         :type  is_primary: bool
 
@@ -644,11 +681,17 @@ class ChatInviteLink(Result):
 
         Optional keyword parameters:
 
+        :param name: Optional. Invite link name
+        :type  name: str|unicode
+
         :param expire_date: Optional. Point in time (Unix timestamp) when the link will expire or has been expired
         :type  expire_date: int
 
         :param member_limit: Optional. Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
         :type  member_limit: int
+
+        :param pending_join_request_count: Optional. Number of pending join requests created using this link
+        :type  pending_join_request_count: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
@@ -658,14 +701,20 @@ class ChatInviteLink(Result):
         self.invite_link = invite_link
         assert_type_or_raise(creator, User, parameter_name="creator")
         self.creator = creator
+        assert_type_or_raise(creates_join_request, bool, parameter_name="creates_join_request")
+        self.creates_join_request = creates_join_request
         assert_type_or_raise(is_primary, bool, parameter_name="is_primary")
         self.is_primary = is_primary
         assert_type_or_raise(is_revoked, bool, parameter_name="is_revoked")
         self.is_revoked = is_revoked
+        assert_type_or_raise(name, None, unicode_type, parameter_name="name")
+        self.name = name
         assert_type_or_raise(expire_date, None, int, parameter_name="expire_date")
         self.expire_date = expire_date
         assert_type_or_raise(member_limit, None, int, parameter_name="member_limit")
         self.member_limit = member_limit
+        assert_type_or_raise(pending_join_request_count, None, int, parameter_name="pending_join_request_count")
+        self.pending_join_request_count = pending_join_request_count
 
         self._raw = _raw
     # end def __init__
@@ -688,13 +737,20 @@ class ChatInviteLink(Result):
 
         array['invite_link'] = u(self.invite_link)  # py2: type unicode, py3: type str
         array['creator'] = self.creator.to_array()  # type User
+        array['creates_join_request'] = bool(self.creates_join_request)  # type bool
         array['is_primary'] = bool(self.is_primary)  # type bool
         array['is_revoked'] = bool(self.is_revoked)  # type bool
+        if self.name is not None:
+            array['name'] = u(self.name)  # py2: type unicode, py3: type str
+        # end if
         if self.expire_date is not None:
             array['expire_date'] = int(self.expire_date)  # type int
         # end if
         if self.member_limit is not None:
             array['member_limit'] = int(self.member_limit)  # type int
+        # end if
+        if self.pending_join_request_count is not None:
+            array['pending_join_request_count'] = int(self.pending_join_request_count)  # type int
         # end if
         return array
     # end def to_array
@@ -711,10 +767,13 @@ class ChatInviteLink(Result):
         data = Result.validate_array(array)
         data['invite_link'] = u(array.get('invite_link'))
         data['creator'] = User.from_array(array.get('creator'))
+        data['creates_join_request'] = bool(array.get('creates_join_request'))
         data['is_primary'] = bool(array.get('is_primary'))
         data['is_revoked'] = bool(array.get('is_revoked'))
+        data['name'] = u(array.get('name')) if array.get('name') is not None else None
         data['expire_date'] = int(array.get('expire_date')) if array.get('expire_date') is not None else None
         data['member_limit'] = int(array.get('member_limit')) if array.get('member_limit') is not None else None
+        data['pending_join_request_count'] = int(array.get('pending_join_request_count')) if array.get('pending_join_request_count') is not None else None
         return data
     # end def validate_array
 
@@ -739,7 +798,7 @@ class ChatInviteLink(Result):
         """
         Implements `str(chatinvitelink_instance)`
         """
-        return "ChatInviteLink(invite_link={self.invite_link!r}, creator={self.creator!r}, is_primary={self.is_primary!r}, is_revoked={self.is_revoked!r}, expire_date={self.expire_date!r}, member_limit={self.member_limit!r})".format(self=self)
+        return "ChatInviteLink(invite_link={self.invite_link!r}, creator={self.creator!r}, creates_join_request={self.creates_join_request!r}, is_primary={self.is_primary!r}, is_revoked={self.is_revoked!r}, name={self.name!r}, expire_date={self.expire_date!r}, member_limit={self.member_limit!r}, pending_join_request_count={self.pending_join_request_count!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -749,7 +808,7 @@ class ChatInviteLink(Result):
         if self._raw:
             return "ChatInviteLink.from_array({self._raw})".format(self=self)
         # end if
-        return "ChatInviteLink(invite_link={self.invite_link!r}, creator={self.creator!r}, is_primary={self.is_primary!r}, is_revoked={self.is_revoked!r}, expire_date={self.expire_date!r}, member_limit={self.member_limit!r})".format(self=self)
+        return "ChatInviteLink(invite_link={self.invite_link!r}, creator={self.creator!r}, creates_join_request={self.creates_join_request!r}, is_primary={self.is_primary!r}, is_revoked={self.is_revoked!r}, name={self.name!r}, expire_date={self.expire_date!r}, member_limit={self.member_limit!r}, pending_join_request_count={self.pending_join_request_count!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -757,7 +816,7 @@ class ChatInviteLink(Result):
         Implements `"key" in chatinvitelink_instance`
         """
         return (
-            key in ["invite_link", "creator", "is_primary", "is_revoked", "expire_date", "member_limit"]
+            key in ["invite_link", "creator", "creates_join_request", "is_primary", "is_revoked", "name", "expire_date", "member_limit", "pending_join_request_count"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -2127,6 +2186,175 @@ class ChatMemberUpdated(Result):
         )
     # end def __contains__
 # end class ChatMemberUpdated
+
+
+class ChatJoinRequest(Result):
+    """
+    Represents a join request sent to a chat.
+
+    https://core.telegram.org/bots/api#chatjoinrequest
+
+
+    Parameters:
+
+    :param chat: Chat to which the request was sent
+    :type  chat: pytgbot.api_types.receivable.peer.Chat
+
+    :param from_peer: User that sent the join request
+    :type  from_peer: pytgbot.api_types.receivable.peer.User
+
+    :param date: Date the request was sent in Unix time
+    :type  date: int
+
+
+    Optional keyword parameters:
+
+    :param bio: Optional. Bio of the user.
+    :type  bio: str|unicode
+
+    :param invite_link: Optional. Chat invite link that was used by the user to send the join request
+    :type  invite_link: pytgbot.api_types.receivable.peer.ChatInviteLink
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+    def __init__(self, chat, from_peer, date, bio=None, invite_link=None, _raw=None):
+        """
+        Represents a join request sent to a chat.
+
+        https://core.telegram.org/bots/api#chatjoinrequest
+
+
+        Parameters:
+
+        :param chat: Chat to which the request was sent
+        :type  chat: pytgbot.api_types.receivable.peer.Chat
+
+        :param from_peer: User that sent the join request
+        :type  from_peer: pytgbot.api_types.receivable.peer.User
+
+        :param date: Date the request was sent in Unix time
+        :type  date: int
+
+
+        Optional keyword parameters:
+
+        :param bio: Optional. Bio of the user.
+        :type  bio: str|unicode
+
+        :param invite_link: Optional. Chat invite link that was used by the user to send the join request
+        :type  invite_link: pytgbot.api_types.receivable.peer.ChatInviteLink
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(ChatJoinRequest, self).__init__()
+        assert_type_or_raise(chat, Chat, parameter_name="chat")
+        self.chat = chat
+        assert_type_or_raise(from_peer, User, parameter_name="from_peer")
+        self.from_peer = from_peer
+        assert_type_or_raise(date, int, parameter_name="date")
+        self.date = date
+        assert_type_or_raise(bio, None, unicode_type, parameter_name="bio")
+        self.bio = bio
+        assert_type_or_raise(invite_link, None, ChatInviteLink, parameter_name="invite_link")
+        self.invite_link = invite_link
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self, prefer_original=False):
+        """
+        Serializes this ChatJoinRequest to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
+        array = super(ChatJoinRequest, self).to_array()
+
+        array['chat'] = self.chat.to_array()  # type Chat
+        array['from'] = self.from_peer.to_array()  # type User
+        array['date'] = int(self.date)  # type int
+        if self.bio is not None:
+            array['bio'] = u(self.bio)  # py2: type unicode, py3: type str
+        # end if
+        if self.invite_link is not None:
+            array['invite_link'] = self.invite_link.to_array()  # type ChatInviteLink
+        # end if
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ChatJoinRequest constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        data['chat'] = Chat.from_array(array.get('chat'))
+        data['from_peer'] = User.from_array(array.get('from'))
+        data['date'] = int(array.get('date'))
+        data['bio'] = u(array.get('bio')) if array.get('bio') is not None else None
+        data['invite_link'] = ChatInviteLink.from_array(array.get('invite_link')) if array.get('invite_link') is not None else None
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize a new ChatJoinRequest from a given dictionary.
+
+        :return: new ChatJoinRequest instance.
+        :rtype: ChatJoinRequest
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        data = ChatJoinRequest.validate_array(array)
+        data['_raw'] = array
+        return ChatJoinRequest(**data)
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(chatjoinrequest_instance)`
+        """
+        return "ChatJoinRequest(chat={self.chat!r}, from_peer={self.from_peer!r}, date={self.date!r}, bio={self.bio!r}, invite_link={self.invite_link!r})".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(chatjoinrequest_instance)`
+        """
+        if self._raw:
+            return "ChatJoinRequest.from_array({self._raw})".format(self=self)
+        # end if
+        return "ChatJoinRequest(chat={self.chat!r}, from_peer={self.from_peer!r}, date={self.date!r}, bio={self.bio!r}, invite_link={self.invite_link!r})".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in chatjoinrequest_instance`
+        """
+        return (
+            key in ["chat", "from_peer", "date", "bio", "invite_link"]
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+# end class ChatJoinRequest
 
 
 class ChatPermissions(Result):

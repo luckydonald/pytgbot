@@ -47,7 +47,7 @@ class PassportFile(Result):
     :param file_unique_id: Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
     :type  file_unique_id: str|unicode
 
-    :param file_size: File size
+    :param file_size: File size in bytes
     :type  file_size: int
 
     :param file_date: Unix time when the file was uploaded

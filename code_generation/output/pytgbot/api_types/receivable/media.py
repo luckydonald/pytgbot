@@ -252,7 +252,7 @@ class PhotoSize(Result):
 
     Optional keyword parameters:
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -283,7 +283,7 @@ class PhotoSize(Result):
 
         Optional keyword parameters:
 
-        :param file_size: Optional. File size
+        :param file_size: Optional. File size in bytes
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -431,7 +431,7 @@ class Animation(Media):
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -474,7 +474,7 @@ class Animation(Media):
         :param mime_type: Optional. MIME type of the file as defined by sender
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size
+        :param file_size: Optional. File size in bytes
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -641,7 +641,7 @@ class Audio(Media):
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param thumb: Optional. Thumbnail of the album cover to which the music file belongs
@@ -684,7 +684,7 @@ class Audio(Media):
         :param mime_type: Optional. MIME type of the file as defined by sender
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size
+        :param file_size: Optional. File size in bytes
         :type  file_size: int
 
         :param thumb: Optional. Thumbnail of the album cover to which the music file belongs
@@ -852,7 +852,7 @@ class Document(Media):
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -886,7 +886,7 @@ class Document(Media):
         :param mime_type: Optional. MIME type of the file as defined by sender
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size
+        :param file_size: Optional. File size in bytes
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1044,7 +1044,7 @@ class Video(Media):
     :param mime_type: Optional. Mime type of a file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1087,7 +1087,7 @@ class Video(Media):
         :param mime_type: Optional. Mime type of a file as defined by sender
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size
+        :param file_size: Optional. File size in bytes
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1248,7 +1248,7 @@ class VideoNote(Media):
     :param thumb: Optional. Video thumbnail
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1282,7 +1282,7 @@ class VideoNote(Media):
         :param thumb: Optional. Video thumbnail
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-        :param file_size: Optional. File size
+        :param file_size: Optional. File size in bytes
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1424,7 +1424,7 @@ class Voice(Media):
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -1455,7 +1455,7 @@ class Voice(Media):
         :param mime_type: Optional. MIME type of the file as defined by sender
         :type  mime_type: str|unicode
 
-        :param file_size: Optional. File size
+        :param file_size: Optional. File size in bytes
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -2434,7 +2434,7 @@ class Location(Media):
     :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
     :type  horizontal_accuracy: float
 
-    :param live_period: Optional. Time relative to the message sending date, during which the location can be updated, in seconds. For active live locations only.
+    :param live_period: Optional. Time relative to the message sending date, during which the location can be updated; in seconds. For active live locations only.
     :type  live_period: int
 
     :param heading: Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.
@@ -2468,7 +2468,7 @@ class Location(Media):
         :param horizontal_accuracy: Optional. The radius of uncertainty for the location, measured in meters; 0-1500
         :type  horizontal_accuracy: float
 
-        :param live_period: Optional. Time relative to the message sending date, during which the location can be updated, in seconds. For active live locations only.
+        :param live_period: Optional. Time relative to the message sending date, during which the location can be updated; in seconds. For active live locations only.
         :type  live_period: int
 
         :param heading: Optional. The direction in which user is moving, in degrees; 1-360. For active live locations only.
@@ -2944,7 +2944,7 @@ class File(Receivable):
 
     Optional keyword parameters:
 
-    :param file_size: Optional. File size, if known
+    :param file_size: Optional. File size in bytes, if known
     :type  file_size: int
 
     :param file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
@@ -2974,7 +2974,7 @@ class File(Receivable):
 
         Optional keyword parameters:
 
-        :param file_size: Optional. File size, if known
+        :param file_size: Optional. File size in bytes, if known
         :type  file_size: int
 
         :param file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
@@ -3281,7 +3281,7 @@ class Sticker(Media):
     :param mask_position: Optional. For mask stickers, the position where the mask should be placed
     :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -3327,7 +3327,7 @@ class Sticker(Media):
         :param mask_position: Optional. For mask stickers, the position where the mask should be placed
         :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
 
-        :param file_size: Optional. File size
+        :param file_size: Optional. File size in bytes
         :type  file_size: int
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.

@@ -160,7 +160,7 @@ class InlineKeyboardButton(Button):
 
     Optional keyword parameters:
 
-    :param url: Optional. HTTP or tg:// url to be opened when button is pressed
+    :param url: Optional. HTTP or tg:// url to be opened when the button is pressed. Links tg://user?id=<user_id> can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings.
     :type  url: str|unicode
 
     :param login_url: Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.
@@ -178,7 +178,7 @@ class InlineKeyboardButton(Button):
     :param callback_game: Optional. Description of the game that will be launched when the user presses the button.NOTE: This type of button must always be the first button in the first row.
     :type  callback_game: pytgbot.api_types.receivable.updates.CallbackGame
 
-    :param pay: Optional. Specify True, to send a Pay button.NOTE: This type of button must always be the first button in the first row.
+    :param pay: Optional. Specify True, to send a Pay button.NOTE: This type of button must always be the first button in the first row and can only be used in invoice messages.
     :type  pay: bool
     """
     text: str

@@ -977,7 +977,7 @@ class InputMediaVideo(InputMediaVideolike):
     :param height: Optional. Video height
     :type  height: int
 
-    :param duration: Optional. Video duration
+    :param duration: Optional. Video duration in seconds
     :type  duration: int
 
     :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
@@ -1018,7 +1018,7 @@ class InputMediaVideo(InputMediaVideolike):
         :param height: Optional. Video height
         :type  height: int
 
-        :param duration: Optional. Video duration
+        :param duration: Optional. Video duration in seconds
         :type  duration: int
 
         :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
@@ -1179,7 +1179,7 @@ class InputMediaAnimation(InputMediaVideolike):
     :param height: Optional. Animation height
     :type  height: int
 
-    :param duration: Optional. Animation duration
+    :param duration: Optional. Animation duration in seconds
     :type  duration: int
     """
 
@@ -1217,7 +1217,7 @@ class InputMediaAnimation(InputMediaVideolike):
         :param height: Optional. Animation height
         :type  height: int
 
-        :param duration: Optional. Animation duration
+        :param duration: Optional. Animation duration in seconds
         :type  duration: int
         """
         super(InputMediaAnimation, self).__init__(type='animation', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, width=width, height=height, duration=duration)
@@ -1559,7 +1559,7 @@ class InputMediaDocument(InputMediaWithThumb):
     :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-    :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
+    :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always True, if the document is sent as part of an album.
     :type  disable_content_type_detection: bool
     """
 
@@ -1591,7 +1591,7 @@ class InputMediaDocument(InputMediaWithThumb):
         :param caption_entities: Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
-        :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
+        :param disable_content_type_detection: Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always True, if the document is sent as part of an album.
         :type  disable_content_type_detection: bool
         """
         super(InputMediaDocument, self).__init__(type='document', media=media, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities)

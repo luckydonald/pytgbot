@@ -7,7 +7,7 @@ from typing import Any, Union, List, Optional
 __author__ = 'luckydonald'
 
 __all__ = [
-    'MediaModel', 'ServiceMessageModel', 'PeerModel', 'UpdateTypeModel', 'CallbackGameModel', 'InlineQueryResultModel', 'InlineQueryCachedResultModel', 'InputMessageContentModel', 'InputMediaModel', 'InputMediaWithThumbModel', 'InputMediaPlayableModel', 'InputMediaVideolikeModel', 'PassportElementErrorModel', 'ButtonModel', 'ReplyMarkupModel', 'ReceivableModel', 'SendableModel', 'ResultModel', 'TgBotApiObjectModel', 'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageIdModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'ProximityAlertTriggeredModel', 'MessageAutoDeleteTimerChangedModel', 'VoiceChatScheduledModel', 'VoiceChatStartedModel', 'VoiceChatEndedModel', 'VoiceChatParticipantsInvitedModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatInviteLinkModel', 'ChatMemberModel', 'ChatMemberOwnerModel', 'ChatMemberAdministratorModel', 'ChatMemberMemberModel', 'ChatMemberRestrictedModel', 'ChatMemberLeftModel', 'ChatMemberBannedModel', 'ChatMemberUpdatedModel', 'ChatPermissionsModel', 'ChatLocationModel', 'BotCommandModel', 'BotCommandScopeModel', 'BotCommandScopeDefaultModel', 'BotCommandScopeAllPrivateChatsModel', 'BotCommandScopeAllGroupChatsModel', 'BotCommandScopeAllChatAdministratorsModel', 'BotCommandScopeChatModel', 'BotCommandScopeChatAdministratorsModel', 'BotCommandScopeChatMemberModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'InputInvoiceMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
+    'MediaModel', 'ServiceMessageModel', 'PeerModel', 'UpdateTypeModel', 'CallbackGameModel', 'InlineQueryResultModel', 'InlineQueryCachedResultModel', 'InputMessageContentModel', 'InputMediaModel', 'InputMediaWithThumbModel', 'InputMediaPlayableModel', 'InputMediaVideolikeModel', 'PassportElementErrorModel', 'ButtonModel', 'ReplyMarkupModel', 'ReceivableModel', 'SendableModel', 'ResultModel', 'TgBotApiObjectModel', 'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageIdModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'ProximityAlertTriggeredModel', 'MessageAutoDeleteTimerChangedModel', 'VoiceChatScheduledModel', 'VoiceChatStartedModel', 'VoiceChatEndedModel', 'VoiceChatParticipantsInvitedModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatInviteLinkModel', 'ChatMemberModel', 'ChatMemberOwnerModel', 'ChatMemberAdministratorModel', 'ChatMemberMemberModel', 'ChatMemberRestrictedModel', 'ChatMemberLeftModel', 'ChatMemberBannedModel', 'ChatMemberUpdatedModel', 'ChatJoinRequestModel', 'ChatPermissionsModel', 'ChatLocationModel', 'BotCommandModel', 'BotCommandScopeModel', 'BotCommandScopeDefaultModel', 'BotCommandScopeAllPrivateChatsModel', 'BotCommandScopeAllGroupChatsModel', 'BotCommandScopeAllChatAdministratorsModel', 'BotCommandScopeChatModel', 'BotCommandScopeChatAdministratorsModel', 'BotCommandScopeChatMemberModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'InputInvoiceMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
 ]
 
 FAST_API_ISSUE_884_IS_FIXED = False
@@ -216,6 +216,7 @@ class UpdateModel(BaseModel):  # Receivable"""This object represents an incoming
     poll_answer: Optional['PollAnswerModel']
     my_chat_member: Optional['ChatMemberUpdatedModel']
     chat_member: Optional['ChatMemberUpdatedModel']
+    chat_join_request: Optional['ChatJoinRequestModel']
 # end class Update
 
 
@@ -265,12 +266,14 @@ class ChatModel(BaseModel):  # Peer"""This object represents a chat.
     last_name: Optional[str]
     photo: Optional['ChatPhotoModel']
     bio: Optional[str]
+    has_private_forwards: Optional[bool]
     description: Optional[str]
     invite_link: Optional[str]
     pinned_message: Optional['MessageModel']
     permissions: Optional['ChatPermissionsModel']
     slow_mode_delay: Optional[int]
     message_auto_delete_time: Optional[int]
+    has_protected_content: Optional[bool]
     sticker_set_name: Optional[str]
     can_set_sticker_set: Optional[bool]
     linked_chat_id: Optional[int]
@@ -294,9 +297,11 @@ class MessageModel(BaseModel):  # UpdateType"""This object represents a message.
     forward_signature: Optional[str]
     forward_sender_name: Optional[str]
     forward_date: Optional[int]
+    is_automatic_forward: Optional[bool]
     reply_to_message: Optional['MessageModel']
     via_bot: Optional['UserModel']
     edit_date: Optional[int]
+    has_protected_content: Optional[bool]
     media_group_id: Optional[str]
     author_signature: Optional[str]
     text: Optional[str]
@@ -783,10 +788,13 @@ class ChatInviteLinkModel(BaseModel):  # Result"""Represents an invite link for 
 
     invite_link: str
     creator: 'UserModel'
+    creates_join_request: bool
     is_primary: bool
     is_revoked: bool
+    name: Optional[str]
     expire_date: Optional[int]
     member_limit: Optional[int]
+    pending_join_request_count: Optional[int]
 # end class ChatInviteLink
 
 
@@ -896,6 +904,19 @@ class ChatMemberUpdatedModel(BaseModel):  # Result"""This object represents chan
     new_chat_member: 'ChatMemberModel'
     invite_link: Optional['ChatInviteLinkModel']
 # end class ChatMemberUpdated
+
+
+class ChatJoinRequestModel(BaseModel):  # Result"""Represents a join request sent to a chat.
+
+    https://core.telegram.org/bots/api#chatjoinrequest
+    """
+
+    chat: 'ChatModel'
+    from_peer: 'UserModel'
+    date: int
+    bio: Optional[str]
+    invite_link: Optional['ChatInviteLinkModel']
+# end class ChatJoinRequest
 
 
 class ChatPermissionsModel(BaseModel):  # Result"""Describes actions that a non-administrator user is allowed to take in a chat.
@@ -1997,6 +2018,7 @@ ChatMemberRestrictedModel.update_forward_refs()
 ChatMemberLeftModel.update_forward_refs()
 ChatMemberBannedModel.update_forward_refs()
 ChatMemberUpdatedModel.update_forward_refs()
+ChatJoinRequestModel.update_forward_refs()
 ChatPermissionsModel.update_forward_refs()
 ChatLocationModel.update_forward_refs()
 BotCommandModel.update_forward_refs()

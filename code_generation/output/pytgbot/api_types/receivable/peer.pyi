@@ -109,6 +109,9 @@ class Chat(Peer):
     :param bio: Optional. Bio of the other party in a private chat. Returned only in getChat.
     :type  bio: str|unicode
 
+    :param has_private_forwards: Optional. True, if privacy settings of the other party in the private chat allows to use tg://user?id=<user_id> links only in chats with the user. Returned only in getChat.
+    :type  has_private_forwards: bool
+
     :param description: Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
     :type  description: str|unicode
 
@@ -121,11 +124,14 @@ class Chat(Peer):
     :param permissions: Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
     :type  permissions: pytgbot.api_types.receivable.peer.ChatPermissions
 
-    :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in getChat.
+    :param slow_mode_delay: Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user; in seconds. Returned only in getChat.
     :type  slow_mode_delay: int
 
     :param message_auto_delete_time: Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds. Returned only in getChat.
     :type  message_auto_delete_time: int
+
+    :param has_protected_content: Optional. True, if messages from the chat can't be forwarded to other chats. Returned only in getChat.
+    :type  has_protected_content: bool
 
     :param sticker_set_name: Optional. For supergroups, name of group sticker set. Returned only in getChat.
     :type  sticker_set_name: str|unicode
@@ -150,12 +156,14 @@ class Chat(Peer):
     last_name: str
     photo: ChatPhoto
     bio: str
+    has_private_forwards: bool
     description: str
     invite_link: str
     pinned_message: Message
     permissions: ChatPermissions
     slow_mode_delay: int
     message_auto_delete_time: int
+    has_protected_content: bool
     sticker_set_name: str
     can_set_sticker_set: bool
     linked_chat_id: int
@@ -177,6 +185,9 @@ class ChatInviteLink(Result):
     :param creator: Creator of the link
     :type  creator: pytgbot.api_types.receivable.peer.User
 
+    :param creates_join_request: True, if users joining the chat via the link need to be approved by chat administrators
+    :type  creates_join_request: bool
+
     :param is_primary: True, if the link is primary
     :type  is_primary: bool
 
@@ -186,21 +197,30 @@ class ChatInviteLink(Result):
 
     Optional keyword parameters:
 
+    :param name: Optional. Invite link name
+    :type  name: str|unicode
+
     :param expire_date: Optional. Point in time (Unix timestamp) when the link will expire or has been expired
     :type  expire_date: int
 
     :param member_limit: Optional. Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
     :type  member_limit: int
 
+    :param pending_join_request_count: Optional. Number of pending join requests created using this link
+    :type  pending_join_request_count: int
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
     invite_link: str
     creator: User
+    creates_join_request: bool
     is_primary: bool
     is_revoked: bool
+    name: str
     expire_date: int
     member_limit: int
+    pending_join_request_count: int
 # end class ChatInviteLink
 
 class ChatMember(Result):
@@ -510,6 +530,43 @@ class ChatMemberUpdated(Result):
     new_chat_member: ChatMember
     invite_link: ChatInviteLink
 # end class ChatMemberUpdated
+
+class ChatJoinRequest(Result):
+    """
+    Represents a join request sent to a chat.
+
+    https://core.telegram.org/bots/api#chatjoinrequest
+
+
+    Parameters:
+
+    :param chat: Chat to which the request was sent
+    :type  chat: pytgbot.api_types.receivable.peer.Chat
+
+    :param from_peer: User that sent the join request
+    :type  from_peer: pytgbot.api_types.receivable.peer.User
+
+    :param date: Date the request was sent in Unix time
+    :type  date: int
+
+
+    Optional keyword parameters:
+
+    :param bio: Optional. Bio of the user.
+    :type  bio: str|unicode
+
+    :param invite_link: Optional. Chat invite link that was used by the user to send the join request
+    :type  invite_link: pytgbot.api_types.receivable.peer.ChatInviteLink
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+    chat: Chat
+    from_peer: User
+    date: int
+    bio: str
+    invite_link: ChatInviteLink
+# end class ChatJoinRequest
 
 class ChatPermissions(Result):
     """

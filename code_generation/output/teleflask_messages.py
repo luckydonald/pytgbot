@@ -93,7 +93,7 @@ class TextMessage(ReturnableMessageBase):
     :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
+    :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
     :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
     :param disable_web_page_preview: Disables link previews for links in this message
@@ -135,7 +135,7 @@ class TextMessage(ReturnableMessageBase):
         :param parse_mode: Mode for parsing entities in the message text. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param entities: List of special entities that appear in message text, which can be specified instead of parse_mode
+        :param entities: A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
         :type  entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_web_page_preview: Disables link previews for links in this message
@@ -383,7 +383,7 @@ class PhotoMessage(ReturnableMessageBase):
     :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -425,7 +425,7 @@ class PhotoMessage(ReturnableMessageBase):
         :param parse_mode: Mode for parsing entities in the photo caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -686,7 +686,7 @@ class AudioMessage(ReturnableMessageBase):
     :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
     :param duration: Duration of the audio in seconds
@@ -741,7 +741,7 @@ class AudioMessage(ReturnableMessageBase):
         :param parse_mode: Mode for parsing entities in the audio caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param duration: Duration of the audio in seconds
@@ -1050,7 +1050,7 @@ class DocumentMessage(ReturnableMessageBase):
     :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
     :param disable_content_type_detection: Disables automatic server-side content type detection for files uploaded using multipart/form-data
@@ -1098,7 +1098,7 @@ class DocumentMessage(ReturnableMessageBase):
         :param parse_mode: Mode for parsing entities in the document caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_content_type_detection: Disables automatic server-side content type detection for files uploaded using multipart/form-data
@@ -1397,7 +1397,7 @@ class VideoMessage(ReturnableMessageBase):
     :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
     :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
@@ -1454,7 +1454,7 @@ class VideoMessage(ReturnableMessageBase):
         :param parse_mode: Mode for parsing entities in the video caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param supports_streaming: Pass True, if the uploaded video is suitable for streaming
@@ -1768,7 +1768,7 @@ class AnimationMessage(ReturnableMessageBase):
     :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
     :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -1822,7 +1822,7 @@ class AnimationMessage(ReturnableMessageBase):
         :param parse_mode: Mode for parsing entities in the animation caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
@@ -2116,7 +2116,7 @@ class VoiceMessage(ReturnableMessageBase):
     :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
     :type  parse_mode: str|unicode
 
-    :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+    :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
     :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
     :param duration: Duration of the voice message in seconds
@@ -2161,7 +2161,7 @@ class VoiceMessage(ReturnableMessageBase):
         :param parse_mode: Mode for parsing entities in the voice message caption. See formatting options for more details.
         :type  parse_mode: str|unicode
 
-        :param caption_entities: List of special entities that appear in the caption, which can be specified instead of parse_mode
+        :param caption_entities: A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
         :type  caption_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param duration: Duration of the voice message in seconds
@@ -3913,7 +3913,7 @@ class PollMessage(ReturnableMessageBase):
     :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
     :type  explanation_parse_mode: str|unicode
 
-    :param explanation_entities: List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
+    :param explanation_entities: A JSON-serialized list of special entities that appear in the poll explanation, which can be specified instead of parse_mode
     :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
     :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
@@ -3979,7 +3979,7 @@ class PollMessage(ReturnableMessageBase):
         :param explanation_parse_mode: Mode for parsing entities in the explanation. See formatting options for more details.
         :type  explanation_parse_mode: str|unicode
 
-        :param explanation_entities: List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
+        :param explanation_entities: A JSON-serialized list of special entities that appear in the poll explanation, which can be specified instead of parse_mode
         :type  explanation_entities: list of pytgbot.api_types.receivable.media.MessageEntity
 
         :param open_period: Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
@@ -4501,7 +4501,7 @@ class ChatActionMessage(ReturnableMessageBase):
 
     Parameters:
 
-    :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
+    :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, choose_sticker for stickers, find_location for location data, record_video_note or upload_video_note for video notes.
     :type  action: str|unicode
 
 
@@ -4526,7 +4526,7 @@ class ChatActionMessage(ReturnableMessageBase):
 
         Parameters:
 
-        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
+        :param action: Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, choose_sticker for stickers, find_location for location data, record_video_note or upload_video_note for video notes.
         :type  action: str|unicode
 
 

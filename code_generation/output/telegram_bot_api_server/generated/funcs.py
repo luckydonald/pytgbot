@@ -202,7 +202,7 @@ async def get_me(
     token: str = TOKEN_VALIDATION,
 ) -> JSONableResponse:
     """
-    A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
+    A simple method for testing your bot's authentication token. Requires no parameters. Returns basic information about the bot in form of a User object.
 
     https://core.telegram.org/bots/api#getme
     """
@@ -247,7 +247,7 @@ async def send_message(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     text: str = Query(..., description='Text of the message to be sent, 1-4096 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the message text. See formatting options for more details.'),
-    entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in message text, which can be specified instead of parse_mode'),
+    entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode'),
     disable_web_page_preview: Optional[bool] = Query(None, description='Disables link previews for links in this message'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
@@ -341,7 +341,7 @@ async def copy_message(
     message_id: int = Query(..., description='Message identifier in the chat specified in from_chat_id'),
     caption: Optional[str] = Query(None, description='New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the new caption. See formatting options for more details.'),
-    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the new caption, which can be specified instead of parse_mode'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of parse_mode'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
@@ -397,7 +397,7 @@ async def send_photo(
     photo: Json[Union['InputFileModel', str]] = Query(..., description="Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20. More info on Sending Files »"),
     caption: Optional[str] = Query(None, description='Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the photo caption. See formatting options for more details.'),
-    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
@@ -456,7 +456,7 @@ async def send_audio(
     audio: Json[Union['InputFileModel', str]] = Query(..., description='Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Audio caption, 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the audio caption. See formatting options for more details.'),
-    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode'),
     duration: Optional[int] = Query(None, description='Duration of the audio in seconds'),
     performer: Optional[str] = Query(None, description='Performer'),
     title: Optional[str] = Query(None, description='Track name'),
@@ -529,7 +529,7 @@ async def send_document(
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the document caption. See formatting options for more details.'),
-    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode'),
     disable_content_type_detection: Optional[bool] = Query(None, description='Disables automatic server-side content type detection for files uploaded using multipart/form-data'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
@@ -599,7 +599,7 @@ async def send_video(
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the video caption. See formatting options for more details.'),
-    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode'),
     supports_streaming: Optional[bool] = Query(None, description='Pass True, if the uploaded video is suitable for streaming'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
@@ -672,7 +672,7 @@ async def send_animation(
     thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail\'s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can\'t be reused and can be only uploaded as a new file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the animation caption. See formatting options for more details.'),
-    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
     allow_sending_without_reply: Optional[bool] = Query(None, description='Pass True, if the message should be sent even if the specified replied-to message is not found'),
@@ -739,7 +739,7 @@ async def send_voice(
     voice: Json[Union['InputFileModel', str]] = Query(..., description='Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
     caption: Optional[str] = Query(None, description='Voice message caption, 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the voice message caption. See formatting options for more details.'),
-    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode'),
     duration: Optional[int] = Query(None, description='Duration of the voice message in seconds'),
     disable_notification: Optional[bool] = Query(None, description='Sends the message silently. Users will receive a notification with no sound.'),
     reply_to_message_id: Optional[int] = Query(None, description='If the message is a reply, ID of the original message'),
@@ -1010,7 +1010,7 @@ async def stop_message_live_location(
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for a new inline keyboard.'),
 ) -> JSONableResponse:
     """
-    Use this method to stop updating a live location message before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+    Use this method to stop updating a live location message before live_period expires. On success, if the message is not an inline message, the edited Message is returned, otherwise True is returned.
 
     https://core.telegram.org/bots/api#stopmessagelivelocation
     """
@@ -1164,7 +1164,7 @@ async def send_poll(
     correct_option_id: Optional[int] = Query(None, description='0-based identifier of the correct answer option, required for polls in quiz mode'),
     explanation: Optional[str] = Query(None, description='Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing'),
     explanation_parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the explanation. See formatting options for more details.'),
-    explanation_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the poll explanation, which can be specified instead of parse_mode'),
+    explanation_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in the poll explanation, which can be specified instead of parse_mode'),
     open_period: Optional[int] = Query(None, description="Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date."),
     close_date: Optional[int] = Query(None, description="Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period."),
     is_closed: Optional[bool] = Query(None, description='Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.'),
@@ -1272,7 +1272,7 @@ async def send_dice(
 async def send_chat_action(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
-    action: str = Query(..., description='Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.'),
+    action: str = Query(..., description='Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_voice or upload_voice for voice notes, upload_document for general files, choose_sticker for stickers, find_location for location data, record_video_note or upload_video_note for video notes.'),
 ) -> JSONableResponse:
     """
     Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). Returns True on success.
@@ -1367,7 +1367,7 @@ async def ban_chat_member(
     revoke_messages: Optional[bool] = Query(None, description='Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.'),
 ) -> JSONableResponse:
     """
-    Use this method to ban a user in a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+    Use this method to ban a user in a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
     https://core.telegram.org/bots/api#banchatmember
     """
@@ -1439,7 +1439,7 @@ async def restrict_chat_member(
     until_date: Optional[int] = Query(None, description='Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever'),
 ) -> JSONableResponse:
     """
-    Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
+    Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate administrator rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
 
     https://core.telegram.org/bots/api#restrictchatmember
     """
@@ -1489,7 +1489,7 @@ async def promote_chat_member(
     can_pin_messages: Optional[bool] = Query(None, description='Pass True, if the administrator can pin messages, supergroups only'),
 ) -> JSONableResponse:
     """
-    Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
+    Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Pass False for all boolean parameters to demote a user. Returns True on success.
 
     https://core.telegram.org/bots/api#promotechatmember
     """
@@ -1561,14 +1561,80 @@ async def set_chat_administrator_custom_title(
 # end def
 
 
+@routes.api_route('/{token}/banChatSenderChat', methods=['GET', 'POST'], tags=['official'])
+async def ban_chat_sender_chat(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    sender_chat_id: int = Query(..., description='Unique identifier of the target sender chat'),
+) -> JSONableResponse:
+    """
+    Use this method to ban a channel chat in a supergroup or a channel. The owner of the chat will not be able to send messages and join live streams on behalf of the chat, unless it is unbanned first. The bot must be an administrator in the supergroup or channel for this to work and must have the appropriate administrator rights. Returns True on success.
+
+    https://core.telegram.org/bots/api#banchatsenderchat
+    """
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.ban_chat_sender_chat(
+        entity=entity,
+        sender_chat_id=sender_chat_id,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+@routes.api_route('/{token}/unbanChatSenderChat', methods=['GET', 'POST'], tags=['official'])
+async def unban_chat_sender_chat(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    sender_chat_id: int = Query(..., description='Unique identifier of the target sender chat'),
+) -> JSONableResponse:
+    """
+    Use this method to unban a previously banned channel chat in a supergroup or channel. The bot must be an administrator for this to work and must have the appropriate administrator rights. Returns True on success.
+
+    https://core.telegram.org/bots/api#unbanchatsenderchat
+    """
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.unban_chat_sender_chat(
+        entity=entity,
+        sender_chat_id=sender_chat_id,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
 @routes.api_route('/{token}/setChatPermissions', methods=['GET', 'POST'], tags=['official'])
 async def set_chat_permissions(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)'),
-    permissions: Json['ChatPermissionsModel'] = Query(..., description='New default chat permissions'),
+    permissions: Json['ChatPermissionsModel'] = Query(..., description='A JSON-serialized object for new default chat permissions'),
 ) -> JSONableResponse:
     """
-    Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights. Returns True on success.
+    Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members administrator rights. Returns True on success.
 
     https://core.telegram.org/bots/api#setchatpermissions
     """
@@ -1604,7 +1670,7 @@ async def export_chat_invite_link(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
 ) -> JSONableResponse:
     """
-    Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
+    Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the new invite link as String on success.
 
     Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink or by calling the getChat method. If your bot needs to generate a new primary invite link replacing its previous one, use exportChatInviteLink again.
 
@@ -1636,11 +1702,13 @@ async def export_chat_invite_link(
 async def create_chat_invite_link(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    name: Optional[str] = Query(None, description='Invite link name; 0-32 characters'),
     expire_date: Optional[int] = Query(None, description='Point in time (Unix timestamp) when the link will expire'),
     member_limit: Optional[int] = Query(None, description='Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999'),
+    creates_join_request: Optional[bool] = Query(None, description="True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified"),
 ) -> JSONableResponse:
     """
-    Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. The link can be revoked using the method revokeChatInviteLink. Returns the new invite link as ChatInviteLink object.
+    Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. The link can be revoked using the method revokeChatInviteLink. Returns the new invite link as ChatInviteLink object.
 
     https://core.telegram.org/bots/api#createchatinvitelink
     """
@@ -1659,8 +1727,10 @@ async def create_chat_invite_link(
 
     result = await bot.create_chat_invite_link(
         entity=entity,
+        name=name,
         expire_date=expire_date,
         member_limit=member_limit,
+        creates_join_request=creates_join_request,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -1672,11 +1742,13 @@ async def edit_chat_invite_link(
     token: str = TOKEN_VALIDATION,
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
     invite_link: str = Query(..., description='The invite link to edit'),
+    name: Optional[str] = Query(None, description='Invite link name; 0-32 characters'),
     expire_date: Optional[int] = Query(None, description='Point in time (Unix timestamp) when the link will expire'),
     member_limit: Optional[int] = Query(None, description='Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999'),
+    creates_join_request: Optional[bool] = Query(None, description="True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified"),
 ) -> JSONableResponse:
     """
-    Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the edited invite link as a ChatInviteLink object.
+    Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the edited invite link as a ChatInviteLink object.
 
     https://core.telegram.org/bots/api#editchatinvitelink
     """
@@ -1696,8 +1768,10 @@ async def edit_chat_invite_link(
     result = await bot.edit_chat_invite_link(
         entity=entity,
         invite_link=invite_link,
+        name=name,
         expire_date=expire_date,
         member_limit=member_limit,
+        creates_join_request=creates_join_request,
     )
     data = await to_web_api(result, bot)
     return r_success(data.to_array())
@@ -1711,7 +1785,7 @@ async def revoke_chat_invite_link(
     invite_link: str = Query(..., description='The invite link to revoke'),
 ) -> JSONableResponse:
     """
-    Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the revoked invite link as ChatInviteLink object.
+    Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the revoked invite link as ChatInviteLink object.
 
     https://core.telegram.org/bots/api#revokechatinvitelink
     """
@@ -1737,6 +1811,72 @@ async def revoke_chat_invite_link(
 # end def
 
 
+@routes.api_route('/{token}/approveChatJoinRequest', methods=['GET', 'POST'], tags=['official'])
+async def approve_chat_join_request(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    user_id: int = Query(..., description='Unique identifier of the target user'),
+) -> JSONableResponse:
+    """
+    Use this method to approve a chat join request. The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right. Returns True on success.
+
+    https://core.telegram.org/bots/api#approvechatjoinrequest
+    """
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.approve_chat_join_request(
+        entity=entity,
+        user_id=user_id,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
+@routes.api_route('/{token}/declineChatJoinRequest', methods=['GET', 'POST'], tags=['official'])
+async def decline_chat_join_request(
+    token: str = TOKEN_VALIDATION,
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
+    user_id: int = Query(..., description='Unique identifier of the target user'),
+) -> JSONableResponse:
+    """
+    Use this method to decline a chat join request. The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right. Returns True on success.
+
+    https://core.telegram.org/bots/api#declinechatjoinrequest
+    """
+
+    from .....main import _get_bot
+    bot = await _get_bot(token)
+
+    try:
+        entity = await get_entity(bot, chat_id)
+    except BotMethodInvalidError:
+        assert isinstance(chat_id, int) or (isinstance(chat_id, str) and len(chat_id) > 0 and chat_id[0] == '@')
+        entity = chat_id
+    except ValueError:
+        raise HTTPException(404, detail="chat not found?")
+    # end try
+
+    result = await bot.decline_chat_join_request(
+        entity=entity,
+        user_id=user_id,
+    )
+    data = await to_web_api(result, bot)
+    return r_success(data.to_array())
+# end def
+
+
 @routes.api_route('/{token}/setChatPhoto', methods=['GET', 'POST'], tags=['official'])
 async def set_chat_photo(
     token: str = TOKEN_VALIDATION,
@@ -1744,7 +1884,7 @@ async def set_chat_photo(
     photo: Json['InputFileModel'] = Query(..., description='New chat photo, uploaded using multipart/form-data'),
 ) -> JSONableResponse:
     """
-    Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+    Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
     https://core.telegram.org/bots/api#setchatphoto
     """
@@ -1780,7 +1920,7 @@ async def delete_chat_photo(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
 ) -> JSONableResponse:
     """
-    Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+    Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
     https://core.telegram.org/bots/api#deletechatphoto
     """
@@ -1812,7 +1952,7 @@ async def set_chat_title(
     title: str = Query(..., description='New chat title, 1-255 characters'),
 ) -> JSONableResponse:
     """
-    Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+    Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
     https://core.telegram.org/bots/api#setchattitle
     """
@@ -1845,7 +1985,7 @@ async def set_chat_description(
     description: Optional[str] = Query(None, description='New chat description, 0-255 characters'),
 ) -> JSONableResponse:
     """
-    Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+    Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
     https://core.telegram.org/bots/api#setchatdescription
     """
@@ -1879,7 +2019,7 @@ async def pin_chat_message(
     disable_notification: Optional[bool] = Query(None, description='Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats.'),
 ) -> JSONableResponse:
     """
-    Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+    Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel. Returns True on success.
 
     https://core.telegram.org/bots/api#pinchatmessage
     """
@@ -1913,7 +2053,7 @@ async def unpin_chat_message(
     message_id: Optional[int] = Query(None, description='Identifier of a message to unpin. If not specified, the most recent pinned message (by sending date) will be unpinned.'),
 ) -> JSONableResponse:
     """
-    Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+    Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel. Returns True on success.
 
     https://core.telegram.org/bots/api#unpinchatmessage
     """
@@ -1945,7 +2085,7 @@ async def unpin_all_chat_messages(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target channel (in the format @channelusername)'),
 ) -> JSONableResponse:
     """
-    Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+    Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel. Returns True on success.
 
     https://core.telegram.org/bots/api#unpinallchatmessages
     """
@@ -2134,7 +2274,7 @@ async def set_chat_sticker_set(
     sticker_set_name: str = Query(..., description='Name of the sticker set to be set as the group sticker set'),
 ) -> JSONableResponse:
     """
-    Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
+    Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
 
     https://core.telegram.org/bots/api#setchatstickerset
     """
@@ -2166,7 +2306,7 @@ async def delete_chat_sticker_set(
     chat_id: Union[int, str] = Query(..., description='Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)'),
 ) -> JSONableResponse:
     """
-    Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
+    Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
 
     https://core.telegram.org/bots/api#deletechatstickerset
     """
@@ -2196,7 +2336,7 @@ async def answer_callback_query(
     token: str = TOKEN_VALIDATION,
     callback_query_id: str = Query(..., description='Unique identifier for the query to be answered'),
     text: Optional[str] = Query(None, description='Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters'),
-    show_alert: Optional[bool] = Query(None, description='If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.'),
+    show_alert: Optional[bool] = Query(None, description='If True, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.'),
     url: Optional[str] = Query(None, description="URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game — note that this will only work if the query comes from a callback_game button.Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter."),
     cache_time: Optional[int] = Query(None, description='The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.'),
 ) -> JSONableResponse:
@@ -2330,7 +2470,7 @@ async def edit_message_text(
     message_id: Optional[int] = Query(None, description='Required if inline_message_id is not specified. Identifier of the message to edit'),
     inline_message_id: Optional[str] = Query(None, description='Required if chat_id and message_id are not specified. Identifier of the inline message'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the message text. See formatting options for more details.'),
-    entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in message text, which can be specified instead of parse_mode'),
+    entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode'),
     disable_web_page_preview: Optional[bool] = Query(None, description='Disables link previews for links in this message'),
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for an inline keyboard.'),
 ) -> JSONableResponse:
@@ -2383,7 +2523,7 @@ async def edit_message_caption(
     inline_message_id: Optional[str] = Query(None, description='Required if chat_id and message_id are not specified. Identifier of the inline message'),
     caption: Optional[str] = Query(None, description='New caption of the message, 0-1024 characters after entities parsing'),
     parse_mode: Optional[str] = Query(None, description='Mode for parsing entities in the message caption. See formatting options for more details.'),
-    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='List of special entities that appear in the caption, which can be specified instead of parse_mode'),
+    caption_entities: Optional[Json[List['MessageEntityModel']]] = Query(None, description='A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode'),
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for an inline keyboard.'),
 ) -> JSONableResponse:
     """
@@ -2436,7 +2576,7 @@ async def edit_message_media(
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for a new inline keyboard.'),
 ) -> JSONableResponse:
     """
-    Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded. Use a previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+    Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded; use a previously uploaded file via its file_id or specify a URL. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
 
     https://core.telegram.org/bots/api#editmessagemedia
     """
@@ -2522,7 +2662,7 @@ async def stop_poll(
     reply_markup: Optional[Json['InlineKeyboardMarkupModel']] = Query(None, description='A JSON-serialized object for a new message inline keyboard.'),
 ) -> JSONableResponse:
     """
-    Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the final results is returned.
+    Use this method to stop a poll which was sent by the bot. On success, the stopped Poll is returned.
 
     https://core.telegram.org/bots/api#stoppoll
     """
@@ -2876,7 +3016,7 @@ async def answer_inline_query(
     is_personal: Optional[bool] = Query(None, description='Pass True, if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query'),
     next_offset: Optional[str] = Query(None, description="Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes."),
     switch_pm_text: Optional[str] = Query(None, description='If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter'),
-    switch_pm_parameter: Optional[str] = Query(None, description="Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities."),
+    switch_pm_parameter: Optional[str] = Query(None, description="Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an OAuth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities."),
 ) -> JSONableResponse:
     """
     Use this method to send answers to an inline query. On success, True is returned.No more than 50 results per query are allowed.
@@ -3146,7 +3286,7 @@ async def set_game_score(
     inline_message_id: Optional[str] = Query(None, description='Required if chat_id and message_id are not specified. Identifier of the inline message'),
 ) -> JSONableResponse:
     """
-    Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+    Use this method to set the score of the specified user in a game message. On success, if the message is not an inline message, the Message is returned, otherwise True is returned. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
 
     https://core.telegram.org/bots/api#setgamescore
     """
