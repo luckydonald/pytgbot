@@ -568,7 +568,7 @@ class Variable(dict):
         if not ". ".join(splits) in (text, text.replace('.NOTE:', '. NOTE:')):
             return [text]
         # end if
-        return [f'{split}.' for split in splits]
+        return [f'{split}{"" if split.endswith(".") else "."}' for split in splits]
     # end def
 
     def description_sentence_split_str(self, *, indent=0) -> Optional[str]:
