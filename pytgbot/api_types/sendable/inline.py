@@ -328,7 +328,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
     :param id: Unique identifier for this result, 1-64 bytes
     :type  id: str|unicode
 
-    :param photo_url: A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
+    :param photo_url: A valid URL of the photo. Photo must be in JPEG format. Photo size must not exceed 5MB
     :type  photo_url: str|unicode
 
     :param thumb_url: URL of the thumbnail for the photo
@@ -377,7 +377,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         :param id: Unique identifier for this result, 1-64 bytes
         :type  id: str|unicode
 
-        :param photo_url: A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
+        :param photo_url: A valid URL of the photo. Photo must be in JPEG format. Photo size must not exceed 5MB
         :type  photo_url: str|unicode
 
         :param thumb_url: URL of the thumbnail for the photo
@@ -598,7 +598,7 @@ class InlineQueryResultGif(InlineQueryResult):
     :param gif_height: Optional. Height of the GIF
     :type  gif_height: int
 
-    :param gif_duration: Optional. Duration of the GIF
+    :param gif_duration: Optional. Duration of the GIF in seconds
     :type  gif_duration: int
 
     :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
@@ -650,7 +650,7 @@ class InlineQueryResultGif(InlineQueryResult):
         :param gif_height: Optional. Height of the GIF
         :type  gif_height: int
 
-        :param gif_duration: Optional. Duration of the GIF
+        :param gif_duration: Optional. Duration of the GIF in seconds
         :type  gif_duration: int
 
         :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
@@ -865,7 +865,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
     :param mpeg4_height: Optional. Video height
     :type  mpeg4_height: int
 
-    :param mpeg4_duration: Optional. Video duration
+    :param mpeg4_duration: Optional. Video duration in seconds
     :type  mpeg4_duration: int
 
     :param thumb_mime_type: Optional. MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4". Defaults to "image/jpeg"
@@ -1124,7 +1124,7 @@ class InlineQueryResultVideo(InlineQueryResult):
     :param mime_type: Mime type of the content of video url, "text/html" or "video/mp4"
     :type  mime_type: str|unicode
 
-    :param thumb_url: URL of the thumbnail (jpeg only) for the video
+    :param thumb_url: URL of the thumbnail (JPEG only) for the video
     :type  thumb_url: str|unicode
 
     :param title: Title for the result
@@ -1878,7 +1878,7 @@ class InlineQueryResultDocument(InlineQueryResult):
     :param input_message_content: Optional. Content of the message to be sent instead of the file
     :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-    :param thumb_url: Optional. URL of the thumbnail (jpeg only) for the file
+    :param thumb_url: Optional. URL of the thumbnail (JPEG only) for the file
     :type  thumb_url: str|unicode
 
     :param thumb_width: Optional. Thumbnail width
@@ -1931,7 +1931,7 @@ class InlineQueryResultDocument(InlineQueryResult):
         :param input_message_content: Optional. Content of the message to be sent instead of the file
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
-        :param thumb_url: Optional. URL of the thumbnail (jpeg only) for the file
+        :param thumb_url: Optional. URL of the thumbnail (JPEG only) for the file
         :type  thumb_url: str|unicode
 
         :param thumb_width: Optional. Thumbnail width
@@ -3161,7 +3161,6 @@ class InlineQueryResultCachedPhoto(InlineQueryCachedResult):
         if self.input_message_content is not None:
             array['input_message_content'] = self.input_message_content.to_array()  # type InputMessageContent
         # end if
-
         return array
     # end def to_array
 

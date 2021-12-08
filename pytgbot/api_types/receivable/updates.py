@@ -168,11 +168,14 @@ class Update(Receivable):
     :param chat_member: Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify "chat_member" in the list of allowed_updates to receive these updates.
     :type  chat_member: pytgbot.api_types.receivable.peer.ChatMemberUpdated
 
+    :param chat_join_request: Optional. A request to join the chat has been sent. The bot must have the can_invite_users administrator right in the chat to receive these updates.
+    :type  chat_join_request: pytgbot.api_types.receivable.peer.ChatJoinRequest
+
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, update_id, message=None, edited_message=None, channel_post=None, edited_channel_post=None, inline_query=None, chosen_inline_result=None, callback_query=None, shipping_query=None, pre_checkout_query=None, poll=None, poll_answer=None, my_chat_member=None, chat_member=None, _raw=None):
+    def __init__(self, update_id, message=None, edited_message=None, channel_post=None, edited_channel_post=None, inline_query=None, chosen_inline_result=None, callback_query=None, shipping_query=None, pre_checkout_query=None, poll=None, poll_answer=None, my_chat_member=None, chat_member=None, chat_join_request=None, _raw=None):
         """
         This object represents an incoming update.At most one of the optional parameters can be present in any given update.
 
@@ -226,6 +229,9 @@ class Update(Receivable):
         :param chat_member: Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify "chat_member" in the list of allowed_updates to receive these updates.
         :type  chat_member: pytgbot.api_types.receivable.peer.ChatMemberUpdated
 
+        :param chat_join_request: Optional. A request to join the chat has been sent. The bot must have the can_invite_users administrator right in the chat to receive these updates.
+        :type  chat_join_request: pytgbot.api_types.receivable.peer.ChatJoinRequest
+
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
         :type  _raw: None | dict
         """
@@ -236,6 +242,7 @@ class Update(Receivable):
         from .media import PollAnswer
         from .payments import PreCheckoutQuery
         from .payments import ShippingQuery
+        from .peer import ChatJoinRequest
         from .peer import ChatMemberUpdated
         assert_type_or_raise(update_id, int, parameter_name="update_id")
         self.update_id = update_id
@@ -265,6 +272,8 @@ class Update(Receivable):
         self.my_chat_member = my_chat_member
         assert_type_or_raise(chat_member, None, ChatMemberUpdated, parameter_name="chat_member")
         self.chat_member = chat_member
+        assert_type_or_raise(chat_join_request, None, ChatJoinRequest, parameter_name="chat_join_request")
+        self.chat_join_request = chat_join_request
 
         self._raw = _raw
     # end def __init__
@@ -289,6 +298,7 @@ class Update(Receivable):
         from .media import PollAnswer
         from .payments import PreCheckoutQuery
         from .payments import ShippingQuery
+        from .peer import ChatJoinRequest
         from .peer import ChatMemberUpdated
         array = super(Update, self).to_array()
 
@@ -332,6 +342,9 @@ class Update(Receivable):
         if self.chat_member is not None:
             array['chat_member'] = self.chat_member.to_array()  # type ChatMemberUpdated
         # end if
+        if self.chat_join_request is not None:
+            array['chat_join_request'] = self.chat_join_request.to_array()  # type ChatJoinRequest
+        # end if
         return array
     # end def to_array
 
@@ -350,6 +363,7 @@ class Update(Receivable):
         from .media import PollAnswer
         from .payments import PreCheckoutQuery
         from .payments import ShippingQuery
+        from .peer import ChatJoinRequest
         from .peer import ChatMemberUpdated
         data = Receivable.validate_array(array)
         data['update_id'] = int(array.get('update_id'))
@@ -366,6 +380,7 @@ class Update(Receivable):
         data['poll_answer'] = PollAnswer.from_array(array.get('poll_answer')) if array.get('poll_answer') is not None else None
         data['my_chat_member'] = ChatMemberUpdated.from_array(array.get('my_chat_member')) if array.get('my_chat_member') is not None else None
         data['chat_member'] = ChatMemberUpdated.from_array(array.get('chat_member')) if array.get('chat_member') is not None else None
+        data['chat_join_request'] = ChatJoinRequest.from_array(array.get('chat_join_request')) if array.get('chat_join_request') is not None else None
         return data
     # end def validate_array
 
@@ -390,7 +405,7 @@ class Update(Receivable):
         """
         Implements `str(update_instance)`
         """
-        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r}, poll_answer={self.poll_answer!r}, my_chat_member={self.my_chat_member!r}, chat_member={self.chat_member!r})".format(self=self)
+        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r}, poll_answer={self.poll_answer!r}, my_chat_member={self.my_chat_member!r}, chat_member={self.chat_member!r}, chat_join_request={self.chat_join_request!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -400,7 +415,7 @@ class Update(Receivable):
         if self._raw:
             return "Update.from_array({self._raw})".format(self=self)
         # end if
-        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r}, poll_answer={self.poll_answer!r}, my_chat_member={self.my_chat_member!r}, chat_member={self.chat_member!r})".format(self=self)
+        return "Update(update_id={self.update_id!r}, message={self.message!r}, edited_message={self.edited_message!r}, channel_post={self.channel_post!r}, edited_channel_post={self.edited_channel_post!r}, inline_query={self.inline_query!r}, chosen_inline_result={self.chosen_inline_result!r}, callback_query={self.callback_query!r}, shipping_query={self.shipping_query!r}, pre_checkout_query={self.pre_checkout_query!r}, poll={self.poll!r}, poll_answer={self.poll_answer!r}, my_chat_member={self.my_chat_member!r}, chat_member={self.chat_member!r}, chat_join_request={self.chat_join_request!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -408,7 +423,7 @@ class Update(Receivable):
         Implements `"key" in update_instance`
         """
         return (
-            key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query", "poll", "poll_answer", "my_chat_member", "chat_member"]
+            key in ["update_id", "message", "edited_message", "channel_post", "edited_channel_post", "inline_query", "chosen_inline_result", "callback_query", "shipping_query", "pre_checkout_query", "poll", "poll_answer", "my_chat_member", "chat_member", "chat_join_request"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )
@@ -666,6 +681,9 @@ class Message(UpdateType):
     :param forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
     :type  forward_date: int
 
+    :param is_automatic_forward: Optional. True, if the message is a channel post that was automatically forwarded to the connected discussion group
+    :type  is_automatic_forward: bool
+
     :param reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
     :type  reply_to_message: pytgbot.api_types.receivable.updates.Message
 
@@ -674,6 +692,9 @@ class Message(UpdateType):
 
     :param edit_date: Optional. Date the message was last edited in Unix time
     :type  edit_date: int
+
+    :param has_protected_content: Optional. True, if the message can't be forwarded
+    :type  has_protected_content: bool
 
     :param media_group_id: Optional. The unique identifier of a media message group this message belongs to
     :type  media_group_id: str|unicode
@@ -805,7 +826,7 @@ class Message(UpdateType):
     :type  _raw: None | dict
     """
 
-    def __init__(self, message_id, date, chat, from_peer=None, sender_chat=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_sender_name=None, forward_date=None, reply_to_message=None, via_bot=None, edit_date=None, media_group_id=None, author_signature=None, text=None, entities=None, animation=None, audio=None, document=None, photo=None, sticker=None, video=None, video_note=None, voice=None, caption=None, caption_entities=None, contact=None, dice=None, game=None, poll=None, venue=None, location=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, message_auto_delete_timer_changed=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, proximity_alert_triggered=None, voice_chat_scheduled=None, voice_chat_started=None, voice_chat_ended=None, voice_chat_participants_invited=None, reply_markup=None, _raw=None):
+    def __init__(self, message_id, date, chat, from_peer=None, sender_chat=None, forward_from=None, forward_from_chat=None, forward_from_message_id=None, forward_signature=None, forward_sender_name=None, forward_date=None, is_automatic_forward=None, reply_to_message=None, via_bot=None, edit_date=None, has_protected_content=None, media_group_id=None, author_signature=None, text=None, entities=None, animation=None, audio=None, document=None, photo=None, sticker=None, video=None, video_note=None, voice=None, caption=None, caption_entities=None, contact=None, dice=None, game=None, poll=None, venue=None, location=None, new_chat_members=None, left_chat_member=None, new_chat_title=None, new_chat_photo=None, delete_chat_photo=None, group_chat_created=None, supergroup_chat_created=None, channel_chat_created=None, message_auto_delete_timer_changed=None, migrate_to_chat_id=None, migrate_from_chat_id=None, pinned_message=None, invoice=None, successful_payment=None, connected_website=None, passport_data=None, proximity_alert_triggered=None, voice_chat_scheduled=None, voice_chat_started=None, voice_chat_ended=None, voice_chat_participants_invited=None, reply_markup=None, _raw=None):
         """
         This object represents a message.
 
@@ -850,6 +871,9 @@ class Message(UpdateType):
         :param forward_date: Optional. For forwarded messages, date the original message was sent in Unix time
         :type  forward_date: int
 
+        :param is_automatic_forward: Optional. True, if the message is a channel post that was automatically forwarded to the connected discussion group
+        :type  is_automatic_forward: bool
+
         :param reply_to_message: Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
         :type  reply_to_message: pytgbot.api_types.receivable.updates.Message
 
@@ -858,6 +882,9 @@ class Message(UpdateType):
 
         :param edit_date: Optional. Date the message was last edited in Unix time
         :type  edit_date: int
+
+        :param has_protected_content: Optional. True, if the message can't be forwarded
+        :type  has_protected_content: bool
 
         :param media_group_id: Optional. The unique identifier of a media message group this message belongs to
         :type  media_group_id: str|unicode
@@ -1038,12 +1065,16 @@ class Message(UpdateType):
         self.forward_sender_name = forward_sender_name
         assert_type_or_raise(forward_date, None, int, parameter_name="forward_date")
         self.forward_date = forward_date
+        assert_type_or_raise(is_automatic_forward, None, bool, parameter_name="is_automatic_forward")
+        self.is_automatic_forward = is_automatic_forward
         assert_type_or_raise(reply_to_message, None, Message, parameter_name="reply_to_message")
         self.reply_to_message = reply_to_message
         assert_type_or_raise(via_bot, None, User, parameter_name="via_bot")
         self.via_bot = via_bot
         assert_type_or_raise(edit_date, None, int, parameter_name="edit_date")
         self.edit_date = edit_date
+        assert_type_or_raise(has_protected_content, None, bool, parameter_name="has_protected_content")
+        self.has_protected_content = has_protected_content
         assert_type_or_raise(media_group_id, None, unicode_type, parameter_name="media_group_id")
         self.media_group_id = media_group_id
         assert_type_or_raise(author_signature, None, unicode_type, parameter_name="author_signature")
@@ -1202,6 +1233,9 @@ class Message(UpdateType):
         if self.forward_date is not None:
             array['forward_date'] = int(self.forward_date)  # type int
         # end if
+        if self.is_automatic_forward is not None:
+            array['is_automatic_forward'] = bool(self.is_automatic_forward)  # type bool
+        # end if
         if self.reply_to_message is not None:
             array['reply_to_message'] = self.reply_to_message.to_array()  # type Message
         # end if
@@ -1210,6 +1244,9 @@ class Message(UpdateType):
         # end if
         if self.edit_date is not None:
             array['edit_date'] = int(self.edit_date)  # type int
+        # end if
+        if self.has_protected_content is not None:
+            array['has_protected_content'] = bool(self.has_protected_content)  # type bool
         # end if
         if self.media_group_id is not None:
             array['media_group_id'] = u(self.media_group_id)  # py2: type unicode, py3: type str
@@ -1388,9 +1425,11 @@ class Message(UpdateType):
         data['forward_signature'] = u(array.get('forward_signature')) if array.get('forward_signature') is not None else None
         data['forward_sender_name'] = u(array.get('forward_sender_name')) if array.get('forward_sender_name') is not None else None
         data['forward_date'] = int(array.get('forward_date')) if array.get('forward_date') is not None else None
+        data['is_automatic_forward'] = True if array.get('is_automatic_forward') is not None else None
         data['reply_to_message'] = Message.from_array(array.get('reply_to_message')) if array.get('reply_to_message') is not None else None
         data['via_bot'] = User.from_array(array.get('via_bot')) if array.get('via_bot') is not None else None
         data['edit_date'] = int(array.get('edit_date')) if array.get('edit_date') is not None else None
+        data['has_protected_content'] = True if array.get('has_protected_content') is not None else None
         data['media_group_id'] = u(array.get('media_group_id')) if array.get('media_group_id') is not None else None
         data['author_signature'] = u(array.get('author_signature')) if array.get('author_signature') is not None else None
         data['text'] = u(array.get('text')) if array.get('text') is not None else None
@@ -1457,7 +1496,7 @@ class Message(UpdateType):
         """
         Implements `str(message_instance)`
         """
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, message_auto_delete_timer_changed={self.message_auto_delete_timer_changed!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, voice_chat_scheduled={self.voice_chat_scheduled!r}, voice_chat_started={self.voice_chat_started!r}, voice_chat_ended={self.voice_chat_ended!r}, voice_chat_participants_invited={self.voice_chat_participants_invited!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, is_automatic_forward={self.is_automatic_forward!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, has_protected_content={self.has_protected_content!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, message_auto_delete_timer_changed={self.message_auto_delete_timer_changed!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, voice_chat_scheduled={self.voice_chat_scheduled!r}, voice_chat_started={self.voice_chat_started!r}, voice_chat_ended={self.voice_chat_ended!r}, voice_chat_participants_invited={self.voice_chat_participants_invited!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -1467,7 +1506,7 @@ class Message(UpdateType):
         if self._raw:
             return "Message.from_array({self._raw})".format(self=self)
         # end if
-        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, message_auto_delete_timer_changed={self.message_auto_delete_timer_changed!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, voice_chat_scheduled={self.voice_chat_scheduled!r}, voice_chat_started={self.voice_chat_started!r}, voice_chat_ended={self.voice_chat_ended!r}, voice_chat_participants_invited={self.voice_chat_participants_invited!r}, reply_markup={self.reply_markup!r})".format(self=self)
+        return "Message(message_id={self.message_id!r}, date={self.date!r}, chat={self.chat!r}, from_peer={self.from_peer!r}, sender_chat={self.sender_chat!r}, forward_from={self.forward_from!r}, forward_from_chat={self.forward_from_chat!r}, forward_from_message_id={self.forward_from_message_id!r}, forward_signature={self.forward_signature!r}, forward_sender_name={self.forward_sender_name!r}, forward_date={self.forward_date!r}, is_automatic_forward={self.is_automatic_forward!r}, reply_to_message={self.reply_to_message!r}, via_bot={self.via_bot!r}, edit_date={self.edit_date!r}, has_protected_content={self.has_protected_content!r}, media_group_id={self.media_group_id!r}, author_signature={self.author_signature!r}, text={self.text!r}, entities={self.entities!r}, animation={self.animation!r}, audio={self.audio!r}, document={self.document!r}, photo={self.photo!r}, sticker={self.sticker!r}, video={self.video!r}, video_note={self.video_note!r}, voice={self.voice!r}, caption={self.caption!r}, caption_entities={self.caption_entities!r}, contact={self.contact!r}, dice={self.dice!r}, game={self.game!r}, poll={self.poll!r}, venue={self.venue!r}, location={self.location!r}, new_chat_members={self.new_chat_members!r}, left_chat_member={self.left_chat_member!r}, new_chat_title={self.new_chat_title!r}, new_chat_photo={self.new_chat_photo!r}, delete_chat_photo={self.delete_chat_photo!r}, group_chat_created={self.group_chat_created!r}, supergroup_chat_created={self.supergroup_chat_created!r}, channel_chat_created={self.channel_chat_created!r}, message_auto_delete_timer_changed={self.message_auto_delete_timer_changed!r}, migrate_to_chat_id={self.migrate_to_chat_id!r}, migrate_from_chat_id={self.migrate_from_chat_id!r}, pinned_message={self.pinned_message!r}, invoice={self.invoice!r}, successful_payment={self.successful_payment!r}, connected_website={self.connected_website!r}, passport_data={self.passport_data!r}, proximity_alert_triggered={self.proximity_alert_triggered!r}, voice_chat_scheduled={self.voice_chat_scheduled!r}, voice_chat_started={self.voice_chat_started!r}, voice_chat_ended={self.voice_chat_ended!r}, voice_chat_participants_invited={self.voice_chat_participants_invited!r}, reply_markup={self.reply_markup!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -1475,7 +1514,7 @@ class Message(UpdateType):
         Implements `"key" in message_instance`
         """
         return (
-            key in ["message_id", "date", "chat", "from_peer", "sender_chat", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "reply_to_message", "via_bot", "edit_date", "media_group_id", "author_signature", "text", "entities", "animation", "audio", "document", "photo", "sticker", "video", "video_note", "voice", "caption", "caption_entities", "contact", "dice", "game", "poll", "venue", "location", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "message_auto_delete_timer_changed", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "proximity_alert_triggered", "voice_chat_scheduled", "voice_chat_started", "voice_chat_ended", "voice_chat_participants_invited", "reply_markup"]
+            key in ["message_id", "date", "chat", "from_peer", "sender_chat", "forward_from", "forward_from_chat", "forward_from_message_id", "forward_signature", "forward_sender_name", "forward_date", "is_automatic_forward", "reply_to_message", "via_bot", "edit_date", "has_protected_content", "media_group_id", "author_signature", "text", "entities", "animation", "audio", "document", "photo", "sticker", "video", "video_note", "voice", "caption", "caption_entities", "contact", "dice", "game", "poll", "venue", "location", "new_chat_members", "left_chat_member", "new_chat_title", "new_chat_photo", "delete_chat_photo", "group_chat_created", "supergroup_chat_created", "channel_chat_created", "message_auto_delete_timer_changed", "migrate_to_chat_id", "migrate_from_chat_id", "pinned_message", "invoice", "successful_payment", "connected_website", "passport_data", "proximity_alert_triggered", "voice_chat_scheduled", "voice_chat_started", "voice_chat_ended", "voice_chat_participants_invited", "reply_markup"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

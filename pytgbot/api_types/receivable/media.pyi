@@ -85,7 +85,7 @@ class PhotoSize(Result):
 
     Optional keyword parameters:
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -134,7 +134,7 @@ class Animation(Media):
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -184,7 +184,7 @@ class Audio(Media):
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param thumb: Optional. Thumbnail of the album cover to which the music file belongs
@@ -231,7 +231,7 @@ class Document(Media):
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -281,7 +281,7 @@ class Video(Media):
     :param mime_type: Optional. Mime type of a file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -325,7 +325,7 @@ class VideoNote(Media):
     :param thumb: Optional. Video thumbnail
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -363,7 +363,7 @@ class Voice(Media):
     :param mime_type: Optional. MIME type of the file as defined by sender
     :type  mime_type: str|unicode
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -692,7 +692,7 @@ class File(Receivable):
 
     Optional keyword parameters:
 
-    :param file_size: Optional. File size, if known
+    :param file_size: Optional. File size in bytes, if known
     :type  file_size: int
 
     :param file_path: Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
@@ -779,7 +779,7 @@ class Sticker(Media):
     :param mask_position: Optional. For mask stickers, the position where the mask should be placed
     :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
 
-    :param file_size: Optional. File size
+    :param file_size: Optional. File size in bytes
     :type  file_size: int
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.

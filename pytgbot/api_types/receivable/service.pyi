@@ -57,7 +57,7 @@ class MessageAutoDeleteTimerChanged(ServiceMessage):
 
     Parameters:
 
-    :param message_auto_delete_time: New auto-delete time for messages in the chat
+    :param message_auto_delete_time: New auto-delete time for messages in the chat; in seconds
     :type  message_auto_delete_time: int
 
 
@@ -112,7 +112,7 @@ class VoiceChatEnded(ServiceMessage):
 
     Parameters:
 
-    :param duration: Voice chat duration; in seconds
+    :param duration: Voice chat duration in seconds
     :type  duration: int
 
 

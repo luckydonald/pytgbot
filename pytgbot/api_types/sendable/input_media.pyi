@@ -245,7 +245,7 @@ class InputMediaVideo(InputMediaVideolike):
     :param height: Optional. Video height
     :type  height: int
 
-    :param duration: Optional. Video duration
+    :param duration: Optional. Video duration in seconds
     :type  duration: int
 
     :param supports_streaming: Optional. Pass True, if the uploaded video is suitable for streaming
@@ -299,7 +299,7 @@ class InputMediaAnimation(InputMediaVideolike):
     :param height: Optional. Animation height
     :type  height: int
 
-    :param duration: Optional. Animation duration
+    :param duration: Optional. Animation duration in seconds
     :type  duration: int
     """
     type: str
