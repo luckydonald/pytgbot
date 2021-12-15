@@ -120,7 +120,7 @@ class ChatMember(Result):
             "kicked": ChatMemberBanned,
         }
         data = ChatMember.validate_array(array)
-        assert status in data
+        assert "status" in data
         status = data["status"]
         assert status in STATUS_TO_SUBCLASS_MAPPING
         cls = STATUS_TO_SUBCLASS_MAPPING[status]
