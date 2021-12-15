@@ -6,10 +6,10 @@ from . import Result
 __author__ = 'luckydonald'
 __all__ = [
     'Peer',
+    'ChatMember',
     'User',
     'Chat',
     'ChatInviteLink',
-    'ChatMember',
     'ChatMemberOwner',
     'ChatMemberAdministrator',
     'ChatMemberMember',
@@ -35,6 +35,129 @@ class Peer(Result):
 
     pass
 # end class Peer
+
+
+class ChatMember(Result):
+    """
+    This object contains information about one member of a chat. See the subclasses of this class for supported types.
+
+    https://core.telegram.org/bots/api#chatmember
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+
+
+
+    def __init__(self, _raw=None):
+        """
+        This object contains information about one member of a chat. See the subclasses of this class for supported types.
+
+        https://core.telegram.org/bots/api#chatmember
+
+        Optional keyword parameters:
+
+        :param _raw: Optional. Original data this object was generated from. Could be `None`.
+        :type  _raw: None | dict
+        """
+        super(ChatMember, self).__init__()
+
+        self._raw = _raw
+    # end def __init__
+
+    def to_array(self, prefer_original=False):
+        """
+        Serializes this ChatMember to a dictionary.
+
+        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
+        :type  prefer_original: bool
+
+        :return: dictionary representation of this object.
+        :rtype: dict
+        """
+        if prefer_original and self._raw:
+            return self._raw
+        # end if
+
+        array = super(ChatMember, self).to_array()
+
+        return array
+    # end def to_array
+
+    @staticmethod
+    def validate_array(array):
+        """
+        Builds a new array with valid values for the ChatMember constructor.
+
+        :return: new array with valid values
+        :rtype: dict
+        """
+        assert_type_or_raise(array, dict, parameter_name="array")
+        data = Result.validate_array(array)
+        return data
+    # end def validate_array
+
+    @staticmethod
+    def from_array(array):
+        """
+        Deserialize the matching ChatMember subclass from a given dictionary.
+
+        :return: new ChatMember instance.
+        :rtype: ChatMember
+        """
+        if not array:  # None or {}
+            return None
+        # end if
+
+        STATUS_TO_SUBCLASS_MAPPING = {
+            "creator": ChatMemberOwner,
+            "administrator": ChatMemberAdministrator,
+            "member": ChatMemberMember,
+            "restricted": ChatMemberRestricted,
+            "left": ChatMemberLeft,
+            "kicked": ChatMemberBanned,
+        }
+        data = ChatMember.validate_array(array)
+        assert "status" in data
+        status = data["status"]
+        assert status in STATUS_TO_SUBCLASS_MAPPING
+        cls = STATUS_TO_SUBCLASS_MAPPING[status]
+        instance = cls.from_array(data)
+        return instance
+    # end def from_array
+
+    def __str__(self):
+        """
+        Implements `str(chatmember_instance)`
+        """
+        return "ChatMember()".format(self=self)
+    # end def __str__
+
+    def __repr__(self):
+        """
+        Implements `repr(chatmember_instance)`
+        """
+        if self._raw:
+            return "ChatMember.from_array({self._raw})".format(self=self)
+        # end if
+        return "ChatMember()".format(self=self)
+    # end def __repr__
+
+    def __contains__(self, key):
+        """
+        Implements `"key" in chatmember_instance`
+        """
+        return (
+            key in []
+            and hasattr(self, key)
+            and bool(getattr(self, key, None))
+        )
+    # end def __contains__
+
+
+# end class ChatMember
 
 
 class User(Peer):
@@ -598,7 +721,7 @@ class Chat(Peer):
         data['message_auto_delete_time'] = int(array.get('message_auto_delete_time')) if array.get('message_auto_delete_time') is not None else None
         data['has_protected_content'] = True if array.get('has_protected_content') is not None else None
         data['sticker_set_name'] = u(array.get('sticker_set_name')) if array.get('sticker_set_name') is not None else None
-        data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
+        data['can_set_sticker_set'] = True if array.get('can_set_sticker_set') is not None else None
         data['linked_chat_id'] = int(array.get('linked_chat_id')) if array.get('linked_chat_id') is not None else None
         data['location'] = ChatLocation.from_array(array.get('location')) if array.get('location') is not None else None
         return data
@@ -862,113 +985,6 @@ class ChatInviteLink(Result):
         )
     # end def __contains__
 # end class ChatInviteLink
-
-
-class ChatMember(Result):
-    """
-    This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:
-
-    https://core.telegram.org/bots/api#chatmember
-
-    Optional keyword parameters:
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-
-    def __init__(self, _raw=None):
-        """
-        This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:
-
-        https://core.telegram.org/bots/api#chatmember
-
-        Optional keyword parameters:
-
-        :param _raw: Optional. Original data this object was generated from. Could be `None`.
-        :type  _raw: None | dict
-        """
-        super(ChatMember, self).__init__()
-
-        self._raw = _raw
-    # end def __init__
-
-    def to_array(self, prefer_original=False):
-        """
-        Serializes this ChatMember to a dictionary.
-
-        :param prefer_original: If we should return the data this was constructed with if available. If it's not available, it will be constructed normally from the data of the object.
-        :type  prefer_original: bool
-
-        :return: dictionary representation of this object.
-        :rtype: dict
-        """
-        if prefer_original and self._raw:
-            return self._raw
-        # end if
-
-        array = super(ChatMember, self).to_array()
-
-        return array
-    # end def to_array
-
-    @staticmethod
-    def validate_array(array):
-        """
-        Builds a new array with valid values for the ChatMember constructor.
-
-        :return: new array with valid values
-        :rtype: dict
-        """
-        assert_type_or_raise(array, dict, parameter_name="array")
-        data = Result.validate_array(array)
-        return data
-    # end def validate_array
-
-    @staticmethod
-    def from_array(array):
-        """
-        Deserialize a new ChatMember from a given dictionary.
-
-        :return: new ChatMember instance.
-        :rtype: ChatMember
-        """
-        if not array:  # None or {}
-            return None
-        # end if
-
-        data = ChatMember.validate_array(array)
-        data['_raw'] = array
-        return ChatMember(**data)
-    # end def from_array
-
-    def __str__(self):
-        """
-        Implements `str(chatmember_instance)`
-        """
-        return "ChatMember()".format(self=self)
-    # end def __str__
-
-    def __repr__(self):
-        """
-        Implements `repr(chatmember_instance)`
-        """
-        if self._raw:
-            return "ChatMember.from_array({self._raw})".format(self=self)
-        # end if
-        return "ChatMember()".format(self=self)
-    # end def __repr__
-
-    def __contains__(self, key):
-        """
-        Implements `"key" in chatmember_instance`
-        """
-        return (
-            key in []
-            and hasattr(self, key)
-            and bool(getattr(self, key, None))
-        )
-    # end def __contains__
-# end class ChatMember
 
 
 class ChatMemberOwner(ChatMember):
