@@ -20,6 +20,19 @@ class Peer(Result):
     """
 # end class Peer
 
+class ChatMember(Result):
+    """
+    This object contains information about one member of a chat. See the subclasses of this class for supported types.
+
+    https://core.telegram.org/bots/api#chatmember
+
+    Optional keyword parameters:
+
+    :param _raw: Optional. Original data this object was generated from. Could be `None`.
+    :type  _raw: None | dict
+    """
+# end class ChatMember
+
 class User(Peer):
     """
     This object represents a Telegram user or bot.
@@ -222,19 +235,6 @@ class ChatInviteLink(Result):
     member_limit: int
     pending_join_request_count: int
 # end class ChatInviteLink
-
-class ChatMember(Result):
-    """
-    This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:
-
-    https://core.telegram.org/bots/api#chatmember
-
-    Optional keyword parameters:
-
-    :param _raw: Optional. Original data this object was generated from. Could be `None`.
-    :type  _raw: None | dict
-    """
-# end class ChatMember
 
 class ChatMemberOwner(ChatMember):
     """

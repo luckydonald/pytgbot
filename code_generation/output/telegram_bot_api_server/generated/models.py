@@ -7,7 +7,7 @@ from typing import Any, Union, List, Optional
 __author__ = 'luckydonald'
 
 __all__ = [
-    'MediaModel', 'ServiceMessageModel', 'PeerModel', 'UpdateTypeModel', 'CallbackGameModel', 'InlineQueryResultModel', 'InlineQueryCachedResultModel', 'InputMessageContentModel', 'InputMediaModel', 'InputMediaWithThumbModel', 'InputMediaPlayableModel', 'InputMediaVideolikeModel', 'PassportElementErrorModel', 'ButtonModel', 'ReplyMarkupModel', 'ReceivableModel', 'SendableModel', 'ResultModel', 'TgBotApiObjectModel', 'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageIdModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'ProximityAlertTriggeredModel', 'MessageAutoDeleteTimerChangedModel', 'VoiceChatScheduledModel', 'VoiceChatStartedModel', 'VoiceChatEndedModel', 'VoiceChatParticipantsInvitedModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatInviteLinkModel', 'ChatMemberModel', 'ChatMemberOwnerModel', 'ChatMemberAdministratorModel', 'ChatMemberMemberModel', 'ChatMemberRestrictedModel', 'ChatMemberLeftModel', 'ChatMemberBannedModel', 'ChatMemberUpdatedModel', 'ChatJoinRequestModel', 'ChatPermissionsModel', 'ChatLocationModel', 'BotCommandModel', 'BotCommandScopeModel', 'BotCommandScopeDefaultModel', 'BotCommandScopeAllPrivateChatsModel', 'BotCommandScopeAllGroupChatsModel', 'BotCommandScopeAllChatAdministratorsModel', 'BotCommandScopeChatModel', 'BotCommandScopeChatAdministratorsModel', 'BotCommandScopeChatMemberModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'InputInvoiceMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
+    'MediaModel', 'ServiceMessageModel', 'PeerModel', 'UpdateTypeModel', 'CallbackGameModel', 'InlineQueryResultModel', 'InlineQueryCachedResultModel', 'InputMessageContentModel', 'InputMediaModel', 'InputMediaWithThumbModel', 'InputMediaPlayableModel', 'InputMediaVideolikeModel', 'PassportElementErrorModel', 'ButtonModel', 'ReplyMarkupModel', 'ReceivableModel', 'SendableModel', 'ResultModel', 'TgBotApiObjectModel', 'ChatMemberModel', 'UpdateModel', 'WebhookInfoModel', 'UserModel', 'ChatModel', 'MessageModel', 'MessageIdModel', 'MessageEntityModel', 'PhotoSizeModel', 'AnimationModel', 'AudioModel', 'DocumentModel', 'VideoModel', 'VideoNoteModel', 'VoiceModel', 'ContactModel', 'DiceModel', 'PollOptionModel', 'PollAnswerModel', 'PollModel', 'LocationModel', 'VenueModel', 'ProximityAlertTriggeredModel', 'MessageAutoDeleteTimerChangedModel', 'VoiceChatScheduledModel', 'VoiceChatStartedModel', 'VoiceChatEndedModel', 'VoiceChatParticipantsInvitedModel', 'UserProfilePhotosModel', 'FileModel', 'ReplyKeyboardMarkupModel', 'KeyboardButtonModel', 'KeyboardButtonPollTypeModel', 'ReplyKeyboardRemoveModel', 'InlineKeyboardMarkupModel', 'InlineKeyboardButtonModel', 'LoginUrlModel', 'CallbackQueryModel', 'ForceReplyModel', 'ChatPhotoModel', 'ChatInviteLinkModel', 'ChatMemberOwnerModel', 'ChatMemberAdministratorModel', 'ChatMemberMemberModel', 'ChatMemberRestrictedModel', 'ChatMemberLeftModel', 'ChatMemberBannedModel', 'ChatMemberUpdatedModel', 'ChatJoinRequestModel', 'ChatPermissionsModel', 'ChatLocationModel', 'BotCommandModel', 'BotCommandScopeModel', 'BotCommandScopeDefaultModel', 'BotCommandScopeAllPrivateChatsModel', 'BotCommandScopeAllGroupChatsModel', 'BotCommandScopeAllChatAdministratorsModel', 'BotCommandScopeChatModel', 'BotCommandScopeChatAdministratorsModel', 'BotCommandScopeChatMemberModel', 'ResponseParametersModel', 'InputMediaPhotoModel', 'InputMediaVideoModel', 'InputMediaAnimationModel', 'InputMediaAudioModel', 'InputMediaDocumentModel', 'StickerModel', 'StickerSetModel', 'MaskPositionModel', 'InlineQueryModel', 'InlineQueryResultArticleModel', 'InlineQueryResultPhotoModel', 'InlineQueryResultGifModel', 'InlineQueryResultMpeg4GifModel', 'InlineQueryResultVideoModel', 'InlineQueryResultAudioModel', 'InlineQueryResultVoiceModel', 'InlineQueryResultDocumentModel', 'InlineQueryResultLocationModel', 'InlineQueryResultVenueModel', 'InlineQueryResultContactModel', 'InlineQueryResultGameModel', 'InlineQueryResultCachedPhotoModel', 'InlineQueryResultCachedGifModel', 'InlineQueryResultCachedMpeg4GifModel', 'InlineQueryResultCachedStickerModel', 'InlineQueryResultCachedDocumentModel', 'InlineQueryResultCachedVideoModel', 'InlineQueryResultCachedVoiceModel', 'InlineQueryResultCachedAudioModel', 'InputTextMessageContentModel', 'InputLocationMessageContentModel', 'InputVenueMessageContentModel', 'InputContactMessageContentModel', 'InputInvoiceMessageContentModel', 'ChosenInlineResultModel', 'LabeledPriceModel', 'InvoiceModel', 'ShippingAddressModel', 'OrderInfoModel', 'ShippingOptionModel', 'SuccessfulPaymentModel', 'ShippingQueryModel', 'PreCheckoutQueryModel', 'PassportDataModel', 'PassportFileModel', 'EncryptedPassportElementModel', 'EncryptedCredentialsModel', 'PassportElementErrorDataFieldModel', 'PassportElementErrorFrontSideModel', 'PassportElementErrorReverseSideModel', 'PassportElementErrorSelfieModel', 'PassportElementErrorFileModel', 'PassportElementErrorFilesModel', 'PassportElementErrorTranslationFileModel', 'PassportElementErrorTranslationFilesModel', 'PassportElementErrorUnspecifiedModel', 'GameModel', 'GameHighScoreModel',
 ]
 
 FAST_API_ISSUE_884_IS_FIXED = False
@@ -195,6 +195,14 @@ class TgBotApiObjectModel(BaseModel):  # object"""Base class for every api objec
     """
 
 # end class TgBotApiObject
+
+
+class ChatMemberModel(BaseModel):  # Result"""This object contains information about one member of a chat. See the subclasses of this class for supported types.
+
+    https://core.telegram.org/bots/api#chatmember
+    """
+
+# end class ChatMember
 
 
 class UpdateModel(BaseModel):  # Receivable"""This object represents an incoming update.At most one of the optional parameters can be present in any given update.
@@ -796,14 +804,6 @@ class ChatInviteLinkModel(BaseModel):  # Result"""Represents an invite link for 
     member_limit: Optional[int]
     pending_join_request_count: Optional[int]
 # end class ChatInviteLink
-
-
-class ChatMemberModel(BaseModel):  # Result"""This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:
-
-    https://core.telegram.org/bots/api#chatmember
-    """
-
-# end class ChatMember
 
 
 class ChatMemberOwnerModel(BaseModel):  # ChatMember"""Represents a chat member that owns the chat and has all administrator privileges.
@@ -1970,6 +1970,7 @@ ReceivableModel.update_forward_refs()
 SendableModel.update_forward_refs()
 ResultModel.update_forward_refs()
 TgBotApiObjectModel.update_forward_refs()
+ChatMemberModel.update_forward_refs()
 UpdateModel.update_forward_refs()
 WebhookInfoModel.update_forward_refs()
 UserModel.update_forward_refs()
@@ -2010,7 +2011,6 @@ CallbackQueryModel.update_forward_refs()
 ForceReplyModel.update_forward_refs()
 ChatPhotoModel.update_forward_refs()
 ChatInviteLinkModel.update_forward_refs()
-ChatMemberModel.update_forward_refs()
 ChatMemberOwnerModel.update_forward_refs()
 ChatMemberAdministratorModel.update_forward_refs()
 ChatMemberMemberModel.update_forward_refs()

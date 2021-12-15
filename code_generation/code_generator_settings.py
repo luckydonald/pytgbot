@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 CLASS_TYPE_PATHS__IMPORT = 0
 CLASS_TYPE_PATHS__PARENT = 1
 CLASS_TYPE_PATHS__DESCRIPTION = 2
@@ -232,7 +234,7 @@ WHITELISTED_CLASSES = [  # Array with names of classes which have no parameters 
     # "PassportElementError",
     # "InputMediaWithThumb",
     "VoiceChatStarted",
-    "ChatMember",  # June 25, 2021
+    # "ChatMember",  # June 25, 2021
     "BotCommandScope",  # June 25, 2021
 ]
 """ Array with names of classes which have no parameters table and thus wouldn't be detected."""
@@ -1374,5 +1376,68 @@ CUSTOM_CLASSES["pytgbot.api_types.TgBotApiObject"] = CustomClazz(
         repr=[],
         contains=[],
         after=[],
+    ),
+)
+Clazz(clazz='ChatMember', import_path=Import(path='pytgbot.api_types.receivable.peer', name='ChatMember', is_init=False), imports=[], parent_clazz=Type(string='Result', is_builtin=False, always_is_value=None, is_list=0, import_path='pytgbot.api_types.receivable', description=None), link='https://core.telegram.org/bots/api#chatmember',
+      description='This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:',
+      parameters=[], keywords=[]),
+CUSTOM_CLASSES["pytgbot.api_types.receivable.peer.ChatMember"] = CustomClazz(
+    clazz='ChatMember',
+    import_path=Import(path=CLASS_TYPE_PATHS['ChatMember'][CLASS_TYPE_PATHS__IMPORT].rstrip('.'), name="ChatMember", is_init=False),
+    imports=[],
+    parent_clazz=Type(
+        string=CLASS_TYPE_PATHS["ChatMember"][CLASS_TYPE_PATHS__PARENT],
+        is_builtin=False,
+        always_is_value=None,
+        is_list=0,
+        import_path=CLASS_TYPE_PATHS[CLASS_TYPE_PATHS["ChatMember"][CLASS_TYPE_PATHS__PARENT]][
+            CLASS_TYPE_PATHS__IMPORT].rstrip('.'),
+        description=None
+    ),
+    link='https://core.telegram.org/bots/api#chatmember',
+    description=(
+        'This object contains information about one member of a chat. See the subclasses of this class for supported types.'
+    ),
+    parameters=[],
+    keywords=[],
+    body=ReplacementBody(
+        before=None,
+        init=None,
+        to_array=None,
+        validate_array=None,
+        from_array=[
+            '@staticmethod',
+            'def from_array(array):',
+            '    """',
+            '    Deserialize the matching ChatMember subclass from a given dictionary.',
+            '',
+            '    :return: new ChatMember instance.',
+            '    :rtype: ChatMember',
+            '    """',
+            '    if not array:  # None or {}',
+            '        return None',
+            '    # end if',
+            '',
+            '    STATUS_TO_SUBCLASS_MAPPING = {',
+            '        "creator": ChatMemberOwner,',
+            '        "administrator": ChatMemberAdministrator,',
+            '        "member": ChatMemberMember,',
+            '        "restricted": ChatMemberRestricted,',
+            '        "left": ChatMemberLeft,',
+            '        "kicked": ChatMemberBanned,',
+            '    }',
+            '    data = ChatMember.validate_array(array)',
+            '    assert status in data',
+            '    status = data["status"]',
+            '    assert status in STATUS_TO_SUBCLASS_MAPPING',
+            '    cls = STATUS_TO_SUBCLASS_MAPPING[status]',
+            '    instance = cls.from_array(data)',
+            '    return instance',
+            '# end def from_array',
+        ],
+        str=None,
+        repr=None,
+        contains=None,
+        after=None,
     ),
 )
