@@ -119,12 +119,11 @@ class ChatMember(Result):
             "left": ChatMemberLeft,
             "kicked": ChatMemberBanned,
         }
-        data = ChatMember.validate_array(array)
-        assert "status" in data
-        status = data["status"]
+        assert "status" in array
+        status = array["status"]
         assert status in STATUS_TO_SUBCLASS_MAPPING
         cls = STATUS_TO_SUBCLASS_MAPPING[status]
-        instance = cls.from_array(data)
+        instance = cls.from_array(array)
         return instance
     # end def from_array
 
