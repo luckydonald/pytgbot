@@ -598,7 +598,7 @@ class Chat(Peer):
         data['message_auto_delete_time'] = int(array.get('message_auto_delete_time')) if array.get('message_auto_delete_time') is not None else None
         data['has_protected_content'] = True if array.get('has_protected_content') is not None else None
         data['sticker_set_name'] = u(array.get('sticker_set_name')) if array.get('sticker_set_name') is not None else None
-        data['can_set_sticker_set'] = bool(array.get('can_set_sticker_set')) if array.get('can_set_sticker_set') is not None else None
+        data['can_set_sticker_set'] = True if array.get('can_set_sticker_set') is not None else None
         data['linked_chat_id'] = int(array.get('linked_chat_id')) if array.get('linked_chat_id') is not None else None
         data['location'] = ChatLocation.from_array(array.get('location')) if array.get('location') is not None else None
         return data

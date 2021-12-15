@@ -180,10 +180,10 @@ class Message(UpdateType):
 
     Optional keyword parameters:
 
-    :param from_peer: Optional. Sender, empty for messages sent to channels
+    :param from_peer: Optional. Sender of the message; empty for messages sent to channels. For backward compatibility, the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat.
     :type  from_peer: pytgbot.api_types.receivable.peer.User
 
-    :param sender_chat: Optional. Sender of the message, sent on behalf of a chat. The channel itself for channel messages. The supergroup itself for messages from anonymous group administrators. The linked channel for messages automatically forwarded to the discussion group
+    :param sender_chat: Optional. Sender of the message, sent on behalf of a chat. For example, the channel itself for channel posts, the supergroup itself for messages from anonymous group administrators, the linked channel for messages automatically forwarded to the discussion group.  For backward compatibility, the field from contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat.
     :type  sender_chat: pytgbot.api_types.receivable.peer.Chat
 
     :param forward_from: Optional. For forwarded messages, sender of the original message
