@@ -1,9 +1,22 @@
 # Changelog
 
-## Version 5.1.0 (not released yet)
+## Version 5.5.1
+- Added compatibility fallback for the renamed `bot.kick_chat_member(…)` and `bot.get_chat_members_count(…)`.
+   - Still you should now use `bot.ban_chat_member(…)` and `bot.get_chat_member_count(…)` instead.
+
+## Version 5.5 
+- Pulled in the latest changes from bot API 5.5.
+
+##### `⚠️ Breaking changes in 5.5`
+Telegram renamed two functions:
+  - `bot.kick_chat_member(…)` is now `bot.ban_chat_member(…)` and
+  - `bot.get_chat_members_count(…)` is now `bot.get_chat_member_count(…)` instead.
+Those are missing compatibility code to still work on the python side.
+
+## Version 5.1.0
 
 
-##### `⚠️ Breaking changes`
+##### `⚠️ Breaking changes un 5.1`
 - ⚠️ Moved `ProximityAlertTriggered` from `pytgbot.api_types.receiveable.media.ProximityAlertTriggered` to `pytgbot.api_types.receiveable.services.ProximityAlertTriggered`. It also no longer subclasses `receiveable.media.Media`, but a new `receiveable.services.ServiceMessage`
     - there should be a import from the old location making that backwards compatible, but that's not something you should depend on as we will remove it in a newer version.
 
@@ -14,8 +27,6 @@
 ##### Other changes
 - Fixed httpx import error in the async client.
 - Fix for `InputMediaWithThumb.thumb` not being optional [R2TG-9V].
-
-
 
 ## Version 5.0.0.1
 Added `download_url` parameter to the constructor of the `Bot`s, so one can set the download url for non-official API servers.

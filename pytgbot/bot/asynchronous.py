@@ -6,6 +6,7 @@ from datetime import timedelta, datetime
 from DictObject import DictObject
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
+from luckydonaldUtils.functions import deprecated
 from luckydonaldUtils.exceptions import assert_type_or_raise
 
 from ..exceptions import TgApiServerException, TgApiParseException
@@ -177,10 +178,22 @@ class AsyncBot(BotBase):
         return await self.do(command, **kwargs)
     # end def _do_fileupload
 
+    # compatibility
+
     async def send_msg(self, *args, **kwargs):
-        """ alias to :func:`send_message` """
+        """ alias to the newer :func:`send_message` """
         return await self.send_message(*args, **kwargs)
     # end def send_msg
+
+    async def kick_chat_member(self, *args, **kwargs):
+        """ alias to the newer :func:`ban_chat_member` """
+        return await self.ban_chat_member(*args, **kwargs)
+    # end def kick_chat_member
+
+    async def get_chat_members_count(self, *args, **kwargs):
+        """ alias to the newer :func:`get_chat_member_count` """
+        return await self.get_chat_member_count(*args, **kwargs)
+    # end def get_chat_members_count
 
     # start of generated functions
 

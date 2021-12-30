@@ -6,6 +6,7 @@ from datetime import timedelta, datetime
 from DictObject import DictObject
 from luckydonaldUtils.logger import logging
 from luckydonaldUtils.encoding import unicode_type, to_unicode as u, to_native as n
+from luckydonaldUtils.functions import deprecated
 from luckydonaldUtils.exceptions import assert_type_or_raise
 
 from ..exceptions import TgApiServerException, TgApiParseException
@@ -177,12 +178,20 @@ class {% if is_asyncio %}AsyncBot{% else %}SyncBot{% endif %}(BotBase):
         return {% if is_asyncio %}await {% endif %}self.do(command, **kwargs)
     # end def _do_fileupload
 
-    {% if is_asyncio %}async {% endif %}def send_msg(self, *args, **kwargs):
-        """ alias to :func:`send_message` """
-        return {% if is_asyncio %}await {% endif %}self.send_message(*args, **kwargs)
-    # end def send_msg
+    # compatibility{#
+    #}
+    {% set replacement_functions = {"send_msg": "send_message", "kick_chat_member": "ban_chat_member", "get_chat_members_count": "get_chat_member_count"} %}{#
+    #}{% for old_function, new_function in replacement_functions.items() %}
+    {% if is_asyncio %}{% else %}@deprecated("The function `bot.{{ old_function }}(…) is now named `bot.{{ new_function }}(…)`.")
+    {% endif %}{% if is_asyncio %}async {% endif %}def {{ old_function }}(self, *args, **kwargs):
+        """ alias to the newer :func:`{{ new_function }}` """
+        return {% if is_asyncio %}await {% endif %}self.{{ new_function }}(*args, **kwargs)
+    # end def {{ old_function }}
+    {% endfor %}{#
 
-    # start of generated functions
+    #}
+    # start of generated functions{#
+    #}
     {% for function in functions %}{#
     #}{% if function.name == 'get_updates' %}{#
     #}{% if is_asyncio %}
