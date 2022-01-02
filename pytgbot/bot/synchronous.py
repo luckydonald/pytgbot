@@ -382,7 +382,7 @@ class SyncBot(BotBase):
         return self._log_out__process_result(result)
     # end def log_out
 
-    def send_message(self, chat_id, text, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_message(self, chat_id, text, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send text messages. On success, the sent Message is returned.
 
@@ -413,6 +413,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -427,11 +430,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_message__make_request(chat_id=chat_id, text=text, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_message__make_request(chat_id=chat_id, text=text, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_message__process_result(result)
     # end def send_message
 
-    def forward_message(self, chat_id, from_chat_id, message_id, disable_notification=None):
+    def forward_message(self, chat_id, from_chat_id, message_id, disable_notification=None, protect_content=None):
         """
         Use this method to forward messages of any kind. Service messages can't be forwarded. On success, the sent Message is returned.
 
@@ -456,16 +459,19 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the forwarded message from forwarding and saving
+        :type  protect_content: bool
+
         Returns:
 
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._forward_message__make_request(chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, disable_notification=disable_notification)
+        result = self._forward_message__make_request(chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, disable_notification=disable_notification, protect_content=protect_content)
         return self._forward_message__process_result(result)
     # end def forward_message
 
-    def copy_message(self, chat_id, from_chat_id, message_id, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def copy_message(self, chat_id, from_chat_id, message_id, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to copy messages of any kind. Service messages and invoice messages can't be copied. The method is analogous to the method forwardMessage, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
 
@@ -499,6 +505,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -513,11 +522,11 @@ class SyncBot(BotBase):
         :return: Returns the MessageId of the sent message on success
         :rtype:  pytgbot.api_types.receivable.responses.MessageId
         """
-        result = self._copy_message__make_request(chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._copy_message__make_request(chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._copy_message__process_result(result)
     # end def copy_message
 
-    def send_photo(self, chat_id, photo, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_photo(self, chat_id, photo, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send photos. On success, the sent Message is returned.
 
@@ -548,6 +557,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -562,11 +574,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_photo__make_request(chat_id=chat_id, photo=photo, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_photo__make_request(chat_id=chat_id, photo=photo, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_photo__process_result(result)
     # end def send_photo
 
-    def send_audio(self, chat_id, audio, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_audio(self, chat_id, audio, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
         For sending voice messages, use the sendVoice method instead.
@@ -610,6 +622,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -624,11 +639,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_audio__make_request(chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_audio__make_request(chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_audio__process_result(result)
     # end def send_audio
 
-    def send_document(self, chat_id, document, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_document(self, chat_id, document, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 
@@ -665,6 +680,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -679,11 +697,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_document__make_request(chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_content_type_detection=disable_content_type_detection, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_document__make_request(chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_content_type_detection=disable_content_type_detection, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_document__process_result(result)
     # end def send_document
 
-    def send_video(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_video(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
 
@@ -729,6 +747,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -743,11 +764,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_video__make_request(chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, supports_streaming=supports_streaming, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_video__make_request(chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, supports_streaming=supports_streaming, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_video__process_result(result)
     # end def send_video
 
-    def send_animation(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_animation(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
 
@@ -790,6 +811,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -804,11 +828,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_animation__make_request(chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_animation__make_request(chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_animation__process_result(result)
     # end def send_animation
 
-    def send_voice(self, chat_id, voice, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_voice(self, chat_id, voice, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
@@ -842,6 +866,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -856,11 +883,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_voice__make_request(chat_id=chat_id, voice=voice, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_voice__make_request(chat_id=chat_id, voice=voice, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_voice__process_result(result)
     # end def send_voice
 
-    def send_video_note(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_video_note(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
 
@@ -891,6 +918,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -905,11 +935,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_video_note__make_request(chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_video_note__make_request(chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_video_note__process_result(result)
     # end def send_video_note
 
-    def send_media_group(self, chat_id, media, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None):
+    def send_media_group(self, chat_id, media, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None):
         """
         Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
 
@@ -931,6 +961,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends messages silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent messages from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the messages are a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -942,11 +975,11 @@ class SyncBot(BotBase):
         :return: On success, an array of Messages that were sent is returned
         :rtype:  list of pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_media_group__make_request(chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply)
+        result = self._send_media_group__make_request(chat_id=chat_id, media=media, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply)
         return self._send_media_group__process_result(result)
     # end def send_media_group
 
-    def send_location(self, chat_id, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_location(self, chat_id, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send point on the map. On success, the sent Message is returned.
 
@@ -983,6 +1016,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -997,7 +1033,7 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_location__make_request(chat_id=chat_id, latitude=latitude, longitude=longitude, horizontal_accuracy=horizontal_accuracy, live_period=live_period, heading=heading, proximity_alert_radius=proximity_alert_radius, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_location__make_request(chat_id=chat_id, latitude=latitude, longitude=longitude, horizontal_accuracy=horizontal_accuracy, live_period=live_period, heading=heading, proximity_alert_radius=proximity_alert_radius, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_location__process_result(result)
     # end def send_location
 
@@ -1081,7 +1117,7 @@ class SyncBot(BotBase):
         return self._stop_message_live_location__process_result(result)
     # end def stop_message_live_location
 
-    def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_venue(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send information about a venue. On success, the sent Message is returned.
 
@@ -1124,6 +1160,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1138,11 +1177,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_venue__make_request(chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, google_place_id=google_place_id, google_place_type=google_place_type, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_venue__make_request(chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, google_place_id=google_place_id, google_place_type=google_place_type, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_venue__process_result(result)
     # end def send_venue
 
-    def send_contact(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_contact(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send phone contacts. On success, the sent Message is returned.
 
@@ -1173,6 +1212,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1187,11 +1229,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_contact__make_request(chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_contact__make_request(chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_contact__process_result(result)
     # end def send_contact
 
-    def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_poll(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send a native poll. On success, the sent Message is returned.
 
@@ -1246,6 +1288,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1260,11 +1305,11 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_poll__make_request(chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, explanation_entities=explanation_entities, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_poll__make_request(chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, explanation_entities=explanation_entities, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_poll__process_result(result)
     # end def send_poll
 
-    def send_dice(self, chat_id, emoji=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_dice(self, chat_id, emoji=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send an animated emoji that will display a random value. On success, the sent Message is returned.
 
@@ -1286,6 +1331,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1300,7 +1348,7 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_dice__make_request(chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_dice__make_request(chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_dice__process_result(result)
     # end def send_dice
 
@@ -2521,7 +2569,7 @@ class SyncBot(BotBase):
         return self._delete_message__process_result(result)
     # end def delete_message
 
-    def send_sticker(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_sticker(self, chat_id, sticker, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
@@ -2543,6 +2591,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -2557,7 +2608,7 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_sticker__make_request(chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_sticker__make_request(chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_sticker__process_result(result)
     # end def send_sticker
 
@@ -2819,7 +2870,7 @@ class SyncBot(BotBase):
         return self._answer_inline_query__process_result(result)
     # end def answer_inline_query
 
-    def send_invoice(self, chat_id, title, description, payload, provider_token, currency, prices, max_tip_amount=None, suggested_tip_amounts=None, start_parameter=None, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_invoice(self, chat_id, title, description, payload, provider_token, currency, prices, max_tip_amount=None, suggested_tip_amounts=None, start_parameter=None, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send invoices. On success, the sent Message is returned.
 
@@ -2901,6 +2952,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -2915,7 +2969,7 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_invoice__make_request(chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, currency=currency, prices=prices, max_tip_amount=max_tip_amount, suggested_tip_amounts=suggested_tip_amounts, start_parameter=start_parameter, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_invoice__make_request(chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, currency=currency, prices=prices, max_tip_amount=max_tip_amount, suggested_tip_amounts=suggested_tip_amounts, start_parameter=start_parameter, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_invoice__process_result(result)
     # end def send_invoice
 
@@ -3011,7 +3065,7 @@ class SyncBot(BotBase):
         return self._set_passport_data_errors__process_result(result)
     # end def set_passport_data_errors
 
-    def send_game(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def send_game(self, chat_id, game_short_name, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Use this method to send a game. On success, the sent Message is returned.
 
@@ -3033,6 +3087,9 @@ class SyncBot(BotBase):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -3047,7 +3104,7 @@ class SyncBot(BotBase):
         :return: On success, the sent Message is returned
         :rtype:  pytgbot.api_types.receivable.updates.Message
         """
-        result = self._send_game__make_request(chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        result = self._send_game__make_request(chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
         return self._send_game__process_result(result)
     # end def send_game
 

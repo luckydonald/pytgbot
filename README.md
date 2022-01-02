@@ -1,18 +1,12 @@
-# pytgbot - Telegram Bot API [`5`.`0`](https://core.telegram.org/bots/api)
-### Version [5.5 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
+# pytgbot - Telegram Bot API [`5`.`6`](https://core.telegram.org/bots/api)
+### Version [5.6 (stable)](https://github.com/luckydonald/pytgbot/blob/master/CHANGELOG.md#changelog) [![Join pytgbot group on telegram](https://img.shields.io/badge/Telegram%20Group-Join-blue.svg)](https://telegram.me/pytg_group)
 ###### Python module to access the telegram bot api.
 
 Native python package with a pure Python interface for the [Telegram Bot API](https://core.telegram.org/bots).
 > The code is generated directly from the API documentation, meaning up-to-date code is a matter of minutes.
 
 # Recent changes
- - Updated official API changes of [`Bot API 5`.`0` (November 4, 2020)](https://core.telegram.org/bots/api-changelog#november-4-2020)
- - Proper `asyncio` support, and a lot of cleanup in that regard.
- - LGPL Licence! **Whoooh!** _(Yes, AGPL and GPL sucks! LGPL is okeyish, but eh)_ 
-    - You can it without being forced to upload your project you are using it with!
-    - Only if you modify this library directly, you need to share it with the world again.
- - Support for custom servers, see [Custom servers](#custom-servers) section below on how to set those. 
- - [And more...](CHANGELOG.md)
+ - Updated with official API changes
 
  [Older changes...](CHANGELOG.md)
 

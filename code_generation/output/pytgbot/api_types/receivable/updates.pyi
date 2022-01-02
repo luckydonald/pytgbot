@@ -195,7 +195,7 @@ class Message(UpdateType):
     :param forward_from_message_id: Optional. For messages forwarded from channels, identifier of the original message in the channel
     :type  forward_from_message_id: int
 
-    :param forward_signature: Optional. For messages forwarded from channels, signature of the post author if present
+    :param forward_signature: Optional. For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present
     :type  forward_signature: str|unicode
 
     :param forward_sender_name: Optional. Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages

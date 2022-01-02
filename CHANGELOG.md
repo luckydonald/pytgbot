@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 5.6
+- Pulled in the latest changes from bot API 5.6.
+
 ## Version 5.5.1
 - Added compatibility fallback for the renamed `bot.kick_chat_member(…)` and `bot.get_chat_members_count(…)`.
    - Still you should now use `bot.ban_chat_member(…)` and `bot.get_chat_member_count(…)` instead.

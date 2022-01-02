@@ -17,10 +17,10 @@ class BotCommand(Sendable):
 
     Parameters:
 
-    :param command: Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
+    :param command: Text of the command; 1-32 characters. Can contain only lowercase English letters, digits and underscores.
     :type  command: str|unicode
 
-    :param description: Description of the command, 3-256 characters.
+    :param description: Description of the command; 1-256 characters.
     :type  description: str|unicode
 
 

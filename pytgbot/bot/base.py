@@ -605,7 +605,7 @@ class BotBase(object):
         return result
     # end def _log_out__process_result
 
-    def _send_message__make_request(self, chat_id, text, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_message__make_request(self, chat_id, text, parse_mode=None, entities=None, disable_web_page_preview=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendMessage endpoint.
 
@@ -633,6 +633,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -657,10 +660,11 @@ class BotBase(object):
         assert_type_or_raise(entities, None, list, parameter_name="entities")
         assert_type_or_raise(disable_web_page_preview, None, bool, parameter_name="disable_web_page_preview")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendMessage", chat_id=chat_id, text=text, parse_mode=parse_mode, entities=entities, disable_web_page_preview=disable_web_page_preview, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_message__make_request
 
     def _send_message__process_result(self, result):
@@ -687,7 +691,7 @@ class BotBase(object):
         return result
     # end def _send_message__process_result
 
-    def _forward_message__make_request(self, chat_id, from_chat_id, message_id, disable_notification=None):
+    def _forward_message__make_request(self, chat_id, from_chat_id, message_id, disable_notification=None, protect_content=None):
         """
         Internal function for making the request to the API's forwardMessage endpoint.
 
@@ -709,6 +713,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the forwarded message from forwarding and saving
+        :type  protect_content: bool
+
         :return: the decoded json
         :rtype:  dict|list|bool
         """
@@ -717,7 +724,8 @@ class BotBase(object):
         assert_type_or_raise(from_chat_id, (int, unicode_type), parameter_name="from_chat_id")
         assert_type_or_raise(message_id, int, parameter_name="message_id")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
-        return self.do("forwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, disable_notification=disable_notification)
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
+        return self.do("forwardMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, disable_notification=disable_notification, protect_content=protect_content)
     # end def _forward_message__make_request
 
     def _forward_message__process_result(self, result):
@@ -744,7 +752,7 @@ class BotBase(object):
         return result
     # end def _forward_message__process_result
 
-    def _copy_message__make_request(self, chat_id, from_chat_id, message_id, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _copy_message__make_request(self, chat_id, from_chat_id, message_id, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's copyMessage endpoint.
 
@@ -775,6 +783,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -800,10 +811,11 @@ class BotBase(object):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("copyMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("copyMessage", chat_id=chat_id, from_chat_id=from_chat_id, message_id=message_id, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _copy_message__make_request
 
     def _copy_message__process_result(self, result):
@@ -830,7 +842,7 @@ class BotBase(object):
         return result
     # end def _copy_message__process_result
 
-    def _send_photo__make_request(self, chat_id, photo, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_photo__make_request(self, chat_id, photo, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendPhoto endpoint.
 
@@ -858,6 +870,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -883,10 +898,11 @@ class BotBase(object):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendPhoto", chat_id=chat_id, photo=photo, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendPhoto", chat_id=chat_id, photo=photo, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_photo__make_request
 
     def _send_photo__process_result(self, result):
@@ -913,7 +929,7 @@ class BotBase(object):
         return result
     # end def _send_photo__process_result
 
-    def _send_audio__make_request(self, chat_id, audio, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_audio__make_request(self, chat_id, audio, caption=None, parse_mode=None, caption_entities=None, duration=None, performer=None, title=None, thumb=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendAudio endpoint.
 
@@ -953,6 +969,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -982,10 +1001,11 @@ class BotBase(object):
         assert_type_or_raise(title, None, unicode_type, parameter_name="title")
         assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendAudio", chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendAudio", chat_id=chat_id, audio=audio, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, performer=performer, title=title, thumb=thumb, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_audio__make_request
 
     def _send_audio__process_result(self, result):
@@ -1012,7 +1032,7 @@ class BotBase(object):
         return result
     # end def _send_audio__process_result
 
-    def _send_document__make_request(self, chat_id, document, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_document__make_request(self, chat_id, document, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_content_type_detection=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendDocument endpoint.
 
@@ -1046,6 +1066,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1073,10 +1096,11 @@ class BotBase(object):
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         assert_type_or_raise(disable_content_type_detection, None, bool, parameter_name="disable_content_type_detection")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendDocument", chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_content_type_detection=disable_content_type_detection, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendDocument", chat_id=chat_id, document=document, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_content_type_detection=disable_content_type_detection, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_document__make_request
 
     def _send_document__process_result(self, result):
@@ -1103,7 +1127,7 @@ class BotBase(object):
         return result
     # end def _send_document__process_result
 
-    def _send_video__make_request(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_video__make_request(self, chat_id, video, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, supports_streaming=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVideo endpoint.
 
@@ -1146,6 +1170,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1176,10 +1203,11 @@ class BotBase(object):
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         assert_type_or_raise(supports_streaming, None, bool, parameter_name="supports_streaming")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendVideo", chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, supports_streaming=supports_streaming, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendVideo", chat_id=chat_id, video=video, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, supports_streaming=supports_streaming, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_video__make_request
 
     def _send_video__process_result(self, result):
@@ -1206,7 +1234,7 @@ class BotBase(object):
         return result
     # end def _send_video__process_result
 
-    def _send_animation__make_request(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_animation__make_request(self, chat_id, animation, duration=None, width=None, height=None, thumb=None, caption=None, parse_mode=None, caption_entities=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendAnimation endpoint.
 
@@ -1246,6 +1274,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1275,10 +1306,11 @@ class BotBase(object):
         assert_type_or_raise(parse_mode, None, unicode_type, parameter_name="parse_mode")
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendAnimation", chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendAnimation", chat_id=chat_id, animation=animation, duration=duration, width=width, height=height, thumb=thumb, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_animation__make_request
 
     def _send_animation__process_result(self, result):
@@ -1305,7 +1337,7 @@ class BotBase(object):
         return result
     # end def _send_animation__process_result
 
-    def _send_voice__make_request(self, chat_id, voice, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_voice__make_request(self, chat_id, voice, caption=None, parse_mode=None, caption_entities=None, duration=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVoice endpoint.
 
@@ -1336,6 +1368,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1362,10 +1397,11 @@ class BotBase(object):
         assert_type_or_raise(caption_entities, None, list, parameter_name="caption_entities")
         assert_type_or_raise(duration, None, int, parameter_name="duration")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendVoice", chat_id=chat_id, voice=voice, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendVoice", chat_id=chat_id, voice=voice, caption=caption, parse_mode=parse_mode, caption_entities=caption_entities, duration=duration, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_voice__make_request
 
     def _send_voice__process_result(self, result):
@@ -1392,7 +1428,7 @@ class BotBase(object):
         return result
     # end def _send_voice__process_result
 
-    def _send_video_note__make_request(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_video_note__make_request(self, chat_id, video_note, duration=None, length=None, thumb=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVideoNote endpoint.
 
@@ -1420,6 +1456,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1444,10 +1483,11 @@ class BotBase(object):
         assert_type_or_raise(length, None, int, parameter_name="length")
         assert_type_or_raise(thumb, None, (InputFile, unicode_type), parameter_name="thumb")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendVideoNote", chat_id=chat_id, video_note=video_note, duration=duration, length=length, thumb=thumb, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_video_note__make_request
 
     def _send_video_note__process_result(self, result):
@@ -1474,7 +1514,7 @@ class BotBase(object):
         return result
     # end def _send_video_note__process_result
 
-    def _send_media_group__make_request(self, chat_id, media, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None):
+    def _send_media_group__make_request(self, chat_id, media, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None):
         """
         Internal function for making the request to the API's sendMediaGroup endpoint.
 
@@ -1493,6 +1533,9 @@ class BotBase(object):
         :param disable_notification: Sends messages silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent messages from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the messages are a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1510,9 +1553,10 @@ class BotBase(object):
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(media, (list, list, list, list), parameter_name="media")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
-        return self.do("sendMediaGroup", chat_id=chat_id, media=media, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply)
+        return self.do("sendMediaGroup", chat_id=chat_id, media=media, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply)
     # end def _send_media_group__make_request
 
     def _send_media_group__process_result(self, result):
@@ -1539,7 +1583,7 @@ class BotBase(object):
         return result
     # end def _send_media_group__process_result
 
-    def _send_location__make_request(self, chat_id, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_location__make_request(self, chat_id, latitude, longitude, horizontal_accuracy=None, live_period=None, heading=None, proximity_alert_radius=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendLocation endpoint.
 
@@ -1573,6 +1617,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1598,10 +1645,11 @@ class BotBase(object):
         assert_type_or_raise(heading, None, int, parameter_name="heading")
         assert_type_or_raise(proximity_alert_radius, None, int, parameter_name="proximity_alert_radius")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude, horizontal_accuracy=horizontal_accuracy, live_period=live_period, heading=heading, proximity_alert_radius=proximity_alert_radius, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendLocation", chat_id=chat_id, latitude=latitude, longitude=longitude, horizontal_accuracy=horizontal_accuracy, live_period=live_period, heading=heading, proximity_alert_radius=proximity_alert_radius, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_location__make_request
 
     def _send_location__process_result(self, result):
@@ -1773,7 +1821,7 @@ class BotBase(object):
         return result
     # end def _stop_message_live_location__process_result
 
-    def _send_venue__make_request(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_venue__make_request(self, chat_id, latitude, longitude, title, address, foursquare_id=None, foursquare_type=None, google_place_id=None, google_place_type=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendVenue endpoint.
 
@@ -1813,6 +1861,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1840,10 +1891,11 @@ class BotBase(object):
         assert_type_or_raise(google_place_id, None, unicode_type, parameter_name="google_place_id")
         assert_type_or_raise(google_place_type, None, unicode_type, parameter_name="google_place_type")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, google_place_id=google_place_id, google_place_type=google_place_type, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendVenue", chat_id=chat_id, latitude=latitude, longitude=longitude, title=title, address=address, foursquare_id=foursquare_id, foursquare_type=foursquare_type, google_place_id=google_place_id, google_place_type=google_place_type, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_venue__make_request
 
     def _send_venue__process_result(self, result):
@@ -1870,7 +1922,7 @@ class BotBase(object):
         return result
     # end def _send_venue__process_result
 
-    def _send_contact__make_request(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_contact__make_request(self, chat_id, phone_number, first_name, last_name=None, vcard=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendContact endpoint.
 
@@ -1898,6 +1950,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -1921,10 +1976,11 @@ class BotBase(object):
         assert_type_or_raise(last_name, None, unicode_type, parameter_name="last_name")
         assert_type_or_raise(vcard, None, unicode_type, parameter_name="vcard")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendContact", chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendContact", chat_id=chat_id, phone_number=phone_number, first_name=first_name, last_name=last_name, vcard=vcard, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_contact__make_request
 
     def _send_contact__process_result(self, result):
@@ -1951,7 +2007,7 @@ class BotBase(object):
         return result
     # end def _send_contact__process_result
 
-    def _send_poll__make_request(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_poll__make_request(self, chat_id, question, options, is_anonymous=None, type=None, allows_multiple_answers=None, correct_option_id=None, explanation=None, explanation_parse_mode=None, explanation_entities=None, open_period=None, close_date=None, is_closed=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendPoll endpoint.
 
@@ -2003,6 +2059,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -2035,10 +2094,11 @@ class BotBase(object):
         assert_type_or_raise(close_date, None, int, parameter_name="close_date")
         assert_type_or_raise(is_closed, None, bool, parameter_name="is_closed")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, explanation_entities=explanation_entities, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendPoll", chat_id=chat_id, question=question, options=options, is_anonymous=is_anonymous, type=type, allows_multiple_answers=allows_multiple_answers, correct_option_id=correct_option_id, explanation=explanation, explanation_parse_mode=explanation_parse_mode, explanation_entities=explanation_entities, open_period=open_period, close_date=close_date, is_closed=is_closed, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_poll__make_request
 
     def _send_poll__process_result(self, result):
@@ -2065,7 +2125,7 @@ class BotBase(object):
         return result
     # end def _send_poll__process_result
 
-    def _send_dice__make_request(self, chat_id, emoji=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_dice__make_request(self, chat_id, emoji=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendDice endpoint.
 
@@ -2083,6 +2143,9 @@ class BotBase(object):
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+
+        :param protect_content: Protects the contents of the sent message from forwarding
+        :type  protect_content: bool
 
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
@@ -2104,10 +2167,11 @@ class BotBase(object):
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendDice", chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendDice", chat_id=chat_id, emoji=emoji, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_dice__make_request
 
     def _send_dice__process_result(self, result):
@@ -4251,7 +4315,7 @@ class BotBase(object):
         return result
     # end def _delete_message__process_result
 
-    def _send_sticker__make_request(self, chat_id, sticker, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_sticker__make_request(self, chat_id, sticker, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendSticker endpoint.
 
@@ -4269,6 +4333,9 @@ class BotBase(object):
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
+
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
 
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
@@ -4291,10 +4358,11 @@ class BotBase(object):
         assert_type_or_raise(chat_id, (int, unicode_type), parameter_name="chat_id")
         assert_type_or_raise(sticker, (InputFile, unicode_type), parameter_name="sticker")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply), parameter_name="reply_markup")
-        return self.do("sendSticker", chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendSticker", chat_id=chat_id, sticker=sticker, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_sticker__make_request
 
     def _send_sticker__process_result(self, result):
@@ -4762,7 +4830,7 @@ class BotBase(object):
         return result
     # end def _answer_inline_query__process_result
 
-    def _send_invoice__make_request(self, chat_id, title, description, payload, provider_token, currency, prices, max_tip_amount=None, suggested_tip_amounts=None, start_parameter=None, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_invoice__make_request(self, chat_id, title, description, payload, provider_token, currency, prices, max_tip_amount=None, suggested_tip_amounts=None, start_parameter=None, provider_data=None, photo_url=None, photo_size=None, photo_width=None, photo_height=None, need_name=None, need_phone_number=None, need_email=None, need_shipping_address=None, send_phone_number_to_provider=None, send_email_to_provider=None, is_flexible=None, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendInvoice endpoint.
 
@@ -4841,6 +4909,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -4879,10 +4950,11 @@ class BotBase(object):
         assert_type_or_raise(send_email_to_provider, None, bool, parameter_name="send_email_to_provider")
         assert_type_or_raise(is_flexible, None, bool, parameter_name="is_flexible")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        return self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, currency=currency, prices=prices, max_tip_amount=max_tip_amount, suggested_tip_amounts=suggested_tip_amounts, start_parameter=start_parameter, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendInvoice", chat_id=chat_id, title=title, description=description, payload=payload, provider_token=provider_token, currency=currency, prices=prices, max_tip_amount=max_tip_amount, suggested_tip_amounts=suggested_tip_amounts, start_parameter=start_parameter, provider_data=provider_data, photo_url=photo_url, photo_size=photo_size, photo_width=photo_width, photo_height=photo_height, need_name=need_name, need_phone_number=need_phone_number, need_email=need_email, need_shipping_address=need_shipping_address, send_phone_number_to_provider=send_phone_number_to_provider, send_email_to_provider=send_email_to_provider, is_flexible=is_flexible, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_invoice__make_request
 
     def _send_invoice__process_result(self, result):
@@ -5065,7 +5137,7 @@ class BotBase(object):
         return result
     # end def _set_passport_data_errors__process_result
 
-    def _send_game__make_request(self, chat_id, game_short_name, disable_notification=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
+    def _send_game__make_request(self, chat_id, game_short_name, disable_notification=None, protect_content=None, reply_to_message_id=None, allow_sending_without_reply=None, reply_markup=None):
         """
         Internal function for making the request to the API's sendGame endpoint.
 
@@ -5084,6 +5156,9 @@ class BotBase(object):
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound.
         :type  disable_notification: bool
 
+        :param protect_content: Protects the contents of the sent message from forwarding and saving
+        :type  protect_content: bool
+
         :param reply_to_message_id: If the message is a reply, ID of the original message
         :type  reply_to_message_id: int
 
@@ -5101,10 +5176,11 @@ class BotBase(object):
         assert_type_or_raise(chat_id, int, parameter_name="chat_id")
         assert_type_or_raise(game_short_name, unicode_type, parameter_name="game_short_name")
         assert_type_or_raise(disable_notification, None, bool, parameter_name="disable_notification")
+        assert_type_or_raise(protect_content, None, bool, parameter_name="protect_content")
         assert_type_or_raise(reply_to_message_id, None, int, parameter_name="reply_to_message_id")
         assert_type_or_raise(allow_sending_without_reply, None, bool, parameter_name="allow_sending_without_reply")
         assert_type_or_raise(reply_markup, None, InlineKeyboardMarkup, parameter_name="reply_markup")
-        return self.do("sendGame", chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
+        return self.do("sendGame", chat_id=chat_id, game_short_name=game_short_name, disable_notification=disable_notification, protect_content=protect_content, reply_to_message_id=reply_to_message_id, allow_sending_without_reply=allow_sending_without_reply, reply_markup=reply_markup)
     # end def _send_game__make_request
 
     def _send_game__process_result(self, result):
