@@ -1430,7 +1430,7 @@ async def ban_chat_member(
 @routes.api_route('/{token}/unbanChatMember', methods=['GET', 'POST'], tags=['official'])
 async def unban_chat_member(
     token: str = TOKEN_VALIDATION,
-    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target group or username of the target supergroup or channel (in the format @username)'),
+    chat_id: Union[int, str] = Query(..., description='Unique identifier for the target group or username of the target supergroup or channel (in the format @channelusername)'),
     user_id: int = Query(..., description='Unique identifier of the target user'),
     only_if_banned: Optional[bool] = Query(None, description='Do nothing if the user is not banned'),
 ) -> JSONableResponse:
@@ -2770,7 +2770,7 @@ async def send_sticker(
     reply_markup: Optional[Json[Union['InlineKeyboardMarkupModel', 'ReplyKeyboardMarkupModel', 'ReplyKeyboardRemoveModel', 'ForceReplyModel']]] = Query(None, description='Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.'),
 ) -> JSONableResponse:
     """
-    Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
+    Use this method to send static .WEBP, animated .TGS, or video .WEBM stickers. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendsticker
     """
@@ -2871,12 +2871,13 @@ async def create_new_sticker_set(
     title: str = Query(..., description='Sticker set title, 1-64 characters'),
     emojis: str = Query(..., description='One or more emoji corresponding to the sticker'),
     png_sticker: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
-    tgs_sticker: Optional[Json['InputFileModel']] = Query(None, description='TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements'),
+    tgs_sticker: Optional[Json['InputFileModel']] = Query(None, description='TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/stickers#animated-sticker-requirements for technical requirements'),
+    webm_sticker: Optional[Json['InputFileModel']] = Query(None, description='WEBM video with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/stickers#video-sticker-requirements for technical requirements'),
     contains_masks: Optional[bool] = Query(None, description='Pass True, if a set of mask stickers should be created'),
     mask_position: Optional[Json['MaskPositionModel']] = Query(None, description='A JSON-serialized object for position where the mask should be placed on faces'),
 ) -> JSONableResponse:
     """
-    Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker. Returns True on success.
+    Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. You must use exactly one of the fields png_sticker, tgs_sticker, or webm_sticker. Returns True on success.
 
     https://core.telegram.org/bots/api#createnewstickerset
     """
@@ -2887,6 +2888,10 @@ async def create_new_sticker_set(
     tgs_sticker: Optional[InputFileModel] = parse_obj_as(
         Optional[InputFileModel],
         obj=tgs_sticker,
+    )
+    webm_sticker: Optional[InputFileModel] = parse_obj_as(
+        Optional[InputFileModel],
+        obj=webm_sticker,
     )
     mask_position: Optional[MaskPositionModel] = parse_obj_as(
         Optional[MaskPositionModel],
@@ -2905,6 +2910,7 @@ async def create_new_sticker_set(
         emojis=emojis,
         png_sticker=png_sticker,
         tgs_sticker=tgs_sticker,
+        webm_sticker=webm_sticker,
         contains_masks=contains_masks,
         mask_position=mask_position,
     )
@@ -2920,11 +2926,12 @@ async def add_sticker_to_set(
     name: str = Query(..., description='Sticker set name'),
     emojis: str = Query(..., description='One or more emoji corresponding to the sticker'),
     png_sticker: Optional[Json[Union['InputFileModel', str]]] = Query(None, description='PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »'),
-    tgs_sticker: Optional[Json['InputFileModel']] = Query(None, description='TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements'),
+    tgs_sticker: Optional[Json['InputFileModel']] = Query(None, description='TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/stickers#animated-sticker-requirements for technical requirements'),
+    webm_sticker: Optional[Json['InputFileModel']] = Query(None, description='WEBM video with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/stickers#video-sticker-requirements for technical requirements'),
     mask_position: Optional[Json['MaskPositionModel']] = Query(None, description='A JSON-serialized object for position where the mask should be placed on faces'),
 ) -> JSONableResponse:
     """
-    Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
+    Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker, tgs_sticker, or webm_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
 
     https://core.telegram.org/bots/api#addstickertoset
     """
@@ -2935,6 +2942,10 @@ async def add_sticker_to_set(
     tgs_sticker: Optional[InputFileModel] = parse_obj_as(
         Optional[InputFileModel],
         obj=tgs_sticker,
+    )
+    webm_sticker: Optional[InputFileModel] = parse_obj_as(
+        Optional[InputFileModel],
+        obj=webm_sticker,
     )
     mask_position: Optional[MaskPositionModel] = parse_obj_as(
         Optional[MaskPositionModel],
@@ -2952,6 +2963,7 @@ async def add_sticker_to_set(
         emojis=emojis,
         png_sticker=png_sticker,
         tgs_sticker=tgs_sticker,
+        webm_sticker=webm_sticker,
         mask_position=mask_position,
     )
     data = await to_web_api(result, bot)
@@ -3014,10 +3026,10 @@ async def set_sticker_set_thumb(
     token: str = TOKEN_VALIDATION,
     name: str = Query(..., description='Sticker set name'),
     user_id: int = Query(..., description='User identifier of the sticker set owner'),
-    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description="A PNG image with the thumbnail, must be up to 128 kilobytes in size and have width and height exactly 100px, or a TGS animation with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/animated_stickers#technical-requirements for animated sticker technical requirements. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files ». Animated sticker set thumbnail can't be uploaded via HTTP URL."),
+    thumb: Optional[Json[Union['InputFileModel', str]]] = Query(None, description="A PNG image with the thumbnail, must be up to 128 kilobytes in size and have width and height exactly 100px, or a TGS animation with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/stickers#animated-sticker-requirements for animated sticker technical requirements, or a WEBM video with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/stickers#video-sticker-requirements for video sticker technical requirements. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files ». Animated sticker set thumbnails can't be uploaded via HTTP URL."),
 ) -> JSONableResponse:
     """
-    Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only. Returns True on success.
+    Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only. Video thumbnails can be set only for video sticker sets only. Returns True on success.
 
     https://core.telegram.org/bots/api#setstickersetthumb
     """

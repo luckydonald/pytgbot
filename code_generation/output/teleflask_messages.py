@@ -4811,7 +4811,7 @@ class ChatActionMessage(ReturnableMessageBase):
 
 class StickerMessage(ReturnableMessageBase):
     """
-    Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
+    Use this method to send static .WEBP, animated .TGS, or video .WEBM stickers. On success, the sent Message is returned.
 
     https://core.telegram.org/bots/api#sendsticker
 
@@ -4847,7 +4847,7 @@ class StickerMessage(ReturnableMessageBase):
     def __init__(self, sticker, receiver=None, reply_id=DEFAULT_MESSAGE_ID, disable_notification=None, protect_content=None, allow_sending_without_reply=None, reply_markup=None):
         """
 
-        Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
+        Use this method to send static .WEBP, animated .TGS, or video .WEBM stickers. On success, the sent Message is returned.
 
         https://core.telegram.org/bots/api#sendsticker
 

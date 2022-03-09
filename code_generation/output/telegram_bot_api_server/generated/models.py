@@ -1130,6 +1130,7 @@ class StickerModel(BaseModel):  # Media"""This object represents a sticker.
     width: int
     height: int
     is_animated: bool
+    is_video: bool
     thumb: Optional['PhotoSizeModel']
     emoji: Optional[str]
     set_name: Optional[str]
@@ -1146,6 +1147,7 @@ class StickerSetModel(BaseModel):  # Result"""This object represents a sticker s
     name: str
     title: str
     is_animated: bool
+    is_video: bool
     contains_masks: bool
     stickers: List['StickerModel']
     thumb: Optional['PhotoSizeModel']
