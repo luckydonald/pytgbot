@@ -147,7 +147,8 @@ class BotCommand(Sendable):
 
 class BotCommandScope(Sendable):
     """
-    This object represents the scope to which bot commands are applied. Currently, the following 7 scopes are supported:
+    This object represents the scope to which bot commands are applied.
+    Currently, the following 7 scopes are supported:
 
     https://core.telegram.org/bots/api#botcommandscope
 
@@ -156,7 +157,8 @@ class BotCommandScope(Sendable):
 
     def __init__(self):
         """
-        This object represents the scope to which bot commands are applied. Currently, the following 7 scopes are supported:
+        This object represents the scope to which bot commands are applied.
+        Currently, the following 7 scopes are supported:
 
         https://core.telegram.org/bots/api#botcommandscope
 
@@ -247,7 +249,8 @@ class BotCommandScope(Sendable):
 
 class BotCommandScopeDefault(BotCommandScope):
     """
-    Represents the default scope of bot commands. Default commands are used if no commands with a narrower scope are specified for the user.
+    Represents the default scope of bot commands.
+    Default commands are used if no commands with a narrower scope are specified for the user.
 
     https://core.telegram.org/bots/api#botcommandscopedefault
 
@@ -260,7 +263,8 @@ class BotCommandScopeDefault(BotCommandScope):
 
     def __init__(self):
         """
-        Represents the default scope of bot commands. Default commands are used if no commands with a narrower scope are specified for the user.
+        Represents the default scope of bot commands.
+        Default commands are used if no commands with a narrower scope are specified for the user.
 
         https://core.telegram.org/bots/api#botcommandscopedefault
 

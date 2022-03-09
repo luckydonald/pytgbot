@@ -39,7 +39,8 @@ class Peer(Result):
 
 class ChatMember(Result):
     """
-    This object contains information about one member of a chat. See the subclasses of this class for supported types.
+    This object contains information about one member of a chat.
+    See the subclasses of this class for supported types.
 
     https://core.telegram.org/bots/api#chatmember
 
@@ -53,7 +54,8 @@ class ChatMember(Result):
 
     def __init__(self, _raw=None):
         """
-        This object contains information about one member of a chat. See the subclasses of this class for supported types.
+        This object contains information about one member of a chat.
+        See the subclasses of this class for supported types.
 
         https://core.telegram.org/bots/api#chatmember
 
@@ -1553,7 +1555,8 @@ class ChatMemberMember(ChatMember):
 
 class ChatMemberRestricted(ChatMember):
     """
-    Represents a chat member that is under certain restrictions in the chat. Supergroups only.
+    Represents a chat member that is under certain restrictions in the chat.
+    Supergroups only.
 
     https://core.telegram.org/bots/api#chatmemberrestricted
 
@@ -1605,7 +1608,8 @@ class ChatMemberRestricted(ChatMember):
 
     def __init__(self, status, user, is_member, can_change_info, can_invite_users, can_pin_messages, can_send_messages, can_send_media_messages, can_send_polls, can_send_other_messages, can_add_web_page_previews, until_date, _raw=None):
         """
-        Represents a chat member that is under certain restrictions in the chat. Supergroups only.
+        Represents a chat member that is under certain restrictions in the chat.
+        Supergroups only.
 
         https://core.telegram.org/bots/api#chatmemberrestricted
 
