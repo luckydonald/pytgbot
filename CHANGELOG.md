@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.7
+- Pulled in the latest changes from bot API 5.7.
+- Nicer multiline descriptions for classes.
+
 ## Version 5.6
 - Pulled in the latest changes from bot API 5.6.
 
