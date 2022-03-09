@@ -33,7 +33,8 @@ class PassportElementError(Sendable):
 
 class PassportElementErrorDataField(PassportElementError):
     """
-    Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
+    Represents an issue in one of the data fields that was provided by the user.
+    The error is considered resolved when the field's value changes.
 
     https://core.telegram.org/bots/api#passportelementerrordatafield
 
@@ -58,7 +59,8 @@ class PassportElementErrorDataField(PassportElementError):
 
     def __init__(self, type, field_name, data_hash, message):
         """
-        Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
+        Represents an issue in one of the data fields that was provided by the user.
+        The error is considered resolved when the field's value changes.
 
         https://core.telegram.org/bots/api#passportelementerrordatafield
 
@@ -184,7 +186,8 @@ class PassportElementErrorDataField(PassportElementError):
 
 class PassportElementErrorFrontSide(PassportElementError):
     """
-    Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
+    Represents an issue with the front side of a document.
+    The error is considered resolved when the file with the front side of the document changes.
 
     https://core.telegram.org/bots/api#passportelementerrorfrontside
 
@@ -206,7 +209,8 @@ class PassportElementErrorFrontSide(PassportElementError):
 
     def __init__(self, type, file_hash, message):
         """
-        Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
+        Represents an issue with the front side of a document.
+        The error is considered resolved when the file with the front side of the document changes.
 
         https://core.telegram.org/bots/api#passportelementerrorfrontside
 
@@ -325,7 +329,8 @@ class PassportElementErrorFrontSide(PassportElementError):
 
 class PassportElementErrorReverseSide(PassportElementError):
     """
-    Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
+    Represents an issue with the reverse side of a document.
+    The error is considered resolved when the file with reverse side of the document changes.
 
     https://core.telegram.org/bots/api#passportelementerrorreverseside
 
@@ -347,7 +352,8 @@ class PassportElementErrorReverseSide(PassportElementError):
 
     def __init__(self, type, file_hash, message):
         """
-        Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
+        Represents an issue with the reverse side of a document.
+        The error is considered resolved when the file with reverse side of the document changes.
 
         https://core.telegram.org/bots/api#passportelementerrorreverseside
 
@@ -466,7 +472,8 @@ class PassportElementErrorReverseSide(PassportElementError):
 
 class PassportElementErrorSelfie(PassportElementError):
     """
-    Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
+    Represents an issue with the selfie with a document.
+    The error is considered resolved when the file with the selfie changes.
 
     https://core.telegram.org/bots/api#passportelementerrorselfie
 
@@ -488,7 +495,8 @@ class PassportElementErrorSelfie(PassportElementError):
 
     def __init__(self, type, file_hash, message):
         """
-        Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
+        Represents an issue with the selfie with a document.
+        The error is considered resolved when the file with the selfie changes.
 
         https://core.telegram.org/bots/api#passportelementerrorselfie
 
@@ -607,7 +615,8 @@ class PassportElementErrorSelfie(PassportElementError):
 
 class PassportElementErrorFile(PassportElementError):
     """
-    Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
+    Represents an issue with a document scan.
+    The error is considered resolved when the file with the document scan changes.
 
     https://core.telegram.org/bots/api#passportelementerrorfile
 
@@ -629,7 +638,8 @@ class PassportElementErrorFile(PassportElementError):
 
     def __init__(self, type, file_hash, message):
         """
-        Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
+        Represents an issue with a document scan.
+        The error is considered resolved when the file with the document scan changes.
 
         https://core.telegram.org/bots/api#passportelementerrorfile
 
@@ -748,7 +758,8 @@ class PassportElementErrorFile(PassportElementError):
 
 class PassportElementErrorFiles(PassportElementError):
     """
-    Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
+    Represents an issue with a list of scans.
+    The error is considered resolved when the list of files containing the scans changes.
 
     https://core.telegram.org/bots/api#passportelementerrorfiles
 
@@ -770,7 +781,8 @@ class PassportElementErrorFiles(PassportElementError):
 
     def __init__(self, type, file_hashes, message):
         """
-        Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
+        Represents an issue with a list of scans.
+        The error is considered resolved when the list of files containing the scans changes.
 
         https://core.telegram.org/bots/api#passportelementerrorfiles
 
@@ -889,7 +901,8 @@ class PassportElementErrorFiles(PassportElementError):
 
 class PassportElementErrorTranslationFile(PassportElementError):
     """
-    Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
+    Represents an issue with one of the files that constitute the translation of a document.
+    The error is considered resolved when the file changes.
 
     https://core.telegram.org/bots/api#passportelementerrortranslationfile
 
@@ -911,7 +924,8 @@ class PassportElementErrorTranslationFile(PassportElementError):
 
     def __init__(self, type, file_hash, message):
         """
-        Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
+        Represents an issue with one of the files that constitute the translation of a document.
+        The error is considered resolved when the file changes.
 
         https://core.telegram.org/bots/api#passportelementerrortranslationfile
 
@@ -1030,7 +1044,8 @@ class PassportElementErrorTranslationFile(PassportElementError):
 
 class PassportElementErrorTranslationFiles(PassportElementError):
     """
-    Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
+    Represents an issue with the translated version of a document.
+    The error is considered resolved when a file with the document translation change.
 
     https://core.telegram.org/bots/api#passportelementerrortranslationfiles
 
@@ -1052,7 +1067,8 @@ class PassportElementErrorTranslationFiles(PassportElementError):
 
     def __init__(self, type, file_hashes, message):
         """
-        Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
+        Represents an issue with the translated version of a document.
+        The error is considered resolved when a file with the document translation change.
 
         https://core.telegram.org/bots/api#passportelementerrortranslationfiles
 
@@ -1171,7 +1187,8 @@ class PassportElementErrorTranslationFiles(PassportElementError):
 
 class PassportElementErrorUnspecified(PassportElementError):
     """
-    Represents an issue in an unspecified place. The error is considered resolved when new data is added.
+    Represents an issue in an unspecified place.
+    The error is considered resolved when new data is added.
 
     https://core.telegram.org/bots/api#passportelementerrorunspecified
 
@@ -1193,7 +1210,8 @@ class PassportElementErrorUnspecified(PassportElementError):
 
     def __init__(self, type, element_hash, message):
         """
-        Represents an issue in an unspecified place. The error is considered resolved when new data is added.
+        Represents an issue in an unspecified place.
+        The error is considered resolved when new data is added.
 
         https://core.telegram.org/bots/api#passportelementerrorunspecified
 

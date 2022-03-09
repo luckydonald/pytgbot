@@ -18,7 +18,8 @@ __all__ = [
 class UpdateType(Receivable):
     """
     All extending classes are an property of the Update type.
-    Like Message: Update.message
+    Like Message:
+    Update.message
 
     Optional keyword parameters:
 
@@ -32,7 +33,8 @@ class UpdateType(Receivable):
 
 class CallbackGame(UpdateType):
     """
-    A placeholder, currently holds no information. Use BotFather to set up your game.
+    A placeholder, currently holds no information.
+    Use BotFather to set up your game.
 
     https://core.telegram.org/bots/api#callbackgame
 
@@ -44,7 +46,8 @@ class CallbackGame(UpdateType):
 
     def __init__(self, _raw=None):
         """
-        A placeholder, currently holds no information. Use BotFather to set up your game.
+        A placeholder, currently holds no information.
+        Use BotFather to set up your game.
 
         https://core.telegram.org/bots/api#callbackgame
 
@@ -1584,9 +1587,14 @@ class Message(UpdateType):
 
 class CallbackQuery(UpdateType):
     """
-    This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
+    This object represents an incoming callback query from a callback button in an inline keyboard.
+    If the button that originated the query was attached to a message sent by the bot, the field message will be present.
+    If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present.
+    Exactly one of the fields data or game_short_name will be present.
 
-    NOTE: After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
+    NOTE:
+    After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery.
+    It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
 
     https://core.telegram.org/bots/api#callbackquery
 
@@ -1625,9 +1633,14 @@ class CallbackQuery(UpdateType):
 
     def __init__(self, id, from_peer, chat_instance, message=None, inline_message_id=None, data=None, game_short_name=None, _raw=None):
         """
-        This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
+        This object represents an incoming callback query from a callback button in an inline keyboard.
+        If the button that originated the query was attached to a message sent by the bot, the field message will be present.
+        If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present.
+        Exactly one of the fields data or game_short_name will be present.
 
-        NOTE: After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
+        NOTE:
+        After the user presses a callback button, Telegram clients will display a progress bar until you call answerCallbackQuery.
+        It is, therefore, necessary to react by calling answerCallbackQuery even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
 
         https://core.telegram.org/bots/api#callbackquery
 

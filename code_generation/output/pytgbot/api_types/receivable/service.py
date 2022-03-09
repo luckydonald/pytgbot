@@ -429,7 +429,8 @@ class VoiceChatScheduled(ServiceMessage):
 
 class VoiceChatStarted(ServiceMessage):
     """
-    This object represents a service message about a voice chat started in the chat. Currently holds no information.
+    This object represents a service message about a voice chat started in the chat.
+    Currently holds no information.
 
     https://core.telegram.org/bots/api#voicechatstarted
 
@@ -441,7 +442,8 @@ class VoiceChatStarted(ServiceMessage):
 
     def __init__(self, _raw=None):
         """
-        This object represents a service message about a voice chat started in the chat. Currently holds no information.
+        This object represents a service message about a voice chat started in the chat.
+        Currently holds no information.
 
         https://core.telegram.org/bots/api#voicechatstarted
 

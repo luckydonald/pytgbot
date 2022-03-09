@@ -149,7 +149,8 @@ class PassportData(Result):
 
 class PassportFile(Result):
     """
-    This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
+    This object represents a file uploaded to Telegram Passport.
+    Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
 
     https://core.telegram.org/bots/api#passportfile
 
@@ -177,7 +178,8 @@ class PassportFile(Result):
 
     def __init__(self, file_id, file_unique_id, file_size, file_date, _raw=None):
         """
-        This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
+        This object represents a file uploaded to Telegram Passport.
+        Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
 
         https://core.telegram.org/bots/api#passportfile
 
@@ -553,7 +555,8 @@ class EncryptedPassportElement(Result):
 
 class EncryptedCredentials(Result):
     """
-    Contains data required for decrypting and authenticating EncryptedPassportElement. See the Telegram Passport Documentation for a complete description of the data decryption and authentication processes.
+    Contains data required for decrypting and authenticating EncryptedPassportElement.
+    See the Telegram Passport Documentation for a complete description of the data decryption and authentication processes.
 
     https://core.telegram.org/bots/api#encryptedcredentials
 
@@ -578,7 +581,8 @@ class EncryptedCredentials(Result):
 
     def __init__(self, data, hash, secret, _raw=None):
         """
-        Contains data required for decrypting and authenticating EncryptedPassportElement. See the Telegram Passport Documentation for a complete description of the data decryption and authentication processes.
+        Contains data required for decrypting and authenticating EncryptedPassportElement.
+        See the Telegram Passport Documentation for a complete description of the data decryption and authentication processes.
 
         https://core.telegram.org/bots/api#encryptedcredentials
 

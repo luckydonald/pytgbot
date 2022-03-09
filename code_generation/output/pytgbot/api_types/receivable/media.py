@@ -46,7 +46,8 @@ class Media(Receivable):
 
 class MessageEntity(Result):
     """
-    This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
+    This object represents one special entity in a text message.
+    For example, hashtags, usernames, URLs, etc.
 
     https://core.telegram.org/bots/api#messageentity
 
@@ -80,7 +81,8 @@ class MessageEntity(Result):
 
     def __init__(self, type, offset, length, url=None, user=None, language=None, _raw=None):
         """
-        This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
+        This object represents one special entity in a text message.
+        For example, hashtags, usernames, URLs, etc.
 
         https://core.telegram.org/bots/api#messageentity
 
@@ -2944,7 +2946,10 @@ class UserProfilePhotos(Result):
 
 class File(Receivable):
     """
-    This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
+    This object represents a file ready to be downloaded.
+    The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
+    It is guaranteed that the link will be valid for at least 1 hour.
+    When the link expires, a new one can be requested by calling getFile.
 
     Maximum file size to download is 20 MB
 
@@ -2975,7 +2980,10 @@ class File(Receivable):
 
     def __init__(self, file_id, file_unique_id, file_size=None, file_path=None, _raw=None):
         """
-        This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
+        This object represents a file ready to be downloaded.
+        The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
+        It is guaranteed that the link will be valid for at least 1 hour.
+        When the link expires, a new one can be requested by calling getFile.
 
         Maximum file size to download is 20 MB
 
@@ -3502,7 +3510,8 @@ class Sticker(Media):
 
 class Game(Media):
     """
-    This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
+    This object represents a game.
+    Use BotFather to create and edit games, their short names will act as unique identifiers.
 
     https://core.telegram.org/bots/api#game
 
@@ -3539,7 +3548,8 @@ class Game(Media):
 
     def __init__(self, title, description, photo, text=None, text_entities=None, animation=None, _raw=None):
         """
-        This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
+        This object represents a game.
+        Use BotFather to create and edit games, their short names will act as unique identifiers.
 
         https://core.telegram.org/bots/api#game
 
