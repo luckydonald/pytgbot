@@ -6,7 +6,7 @@
 class {{ clazz.clazz -}}({{ clazz.parent_clazz.string }}):
     {% set needs_space = False %}{% if clazz.description or clazz.link or clazz.parameters or clazz.keywords %}"""
     {% block class_docstring -%}
-    {%- if clazz.description %}{{ clazz.description.strip()|indent }}{% endif %}{%- if clazz.description and clazz.link %}
+    {%- if clazz.description %}{{ clazz.description.strip()|add_linebreaks|indent }}{% endif %}{%- if clazz.description and clazz.link %}
 
     {% endif %}{% if clazz.link %}{{ clazz.link }}{% endif %}{%- if (clazz.description or clazz.link) and clazz.parameters %}
     {# first line -#}

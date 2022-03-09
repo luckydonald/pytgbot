@@ -13,6 +13,7 @@ from code_generator import safe_var_translations
 from code_generator_classes import Clazz, Function, Variable, Type
 from code_generator_settings import CLASS_TYPE_PATHS, CLASS_TYPE_PATHS__IMPORT
 from code_generator_settings import TYPE_STRING_OVERRIDES
+from code_generator_template_filters import add_linebreaks
 
 __author__ = 'luckydonald'
 logger = logging.getLogger(__name__)
@@ -88,6 +89,9 @@ class RelEnvironment(Environment):
 
 def get_template(file_name):
     env = RelEnvironment(loader=FileSystemLoader("templates"))
+
+    env.filters['add_linebreaks'] = add_linebreaks
+
     try:
         return env.get_template(file_name)
     except TemplateSyntaxError as e:
