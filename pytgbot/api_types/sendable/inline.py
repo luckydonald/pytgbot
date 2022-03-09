@@ -2218,7 +2218,7 @@ class InlineQueryResultLocation(InlineQueryResult):
         :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
 
-        :param input_message_content: Optional. Content of the message to be sent instead of the location
+        :param input_message_content: Optional. Content of the message to be sent instead of the location.
         :type  input_message_content: pytgbot.api_types.sendable.inline.InputMessageContent
 
         :param thumb_url: Optional. Url of the thumbnail for the result.
@@ -2939,7 +2939,7 @@ class InlineQueryResultGame(InlineQueryResult):
 
         Optional keyword parameters:
 
-        :param reply_markup: Optional. Inline keyboard attached to the message
+        :param reply_markup: Optional. Inline keyboard attached to the message.
         :type  reply_markup: pytgbot.api_types.sendable.reply_markup.InlineKeyboardMarkup
         """
         super(InlineQueryResultGame, self).__init__(id, "game")

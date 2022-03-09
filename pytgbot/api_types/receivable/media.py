@@ -2965,10 +2965,7 @@ class UserProfilePhotos(Result):
 
 class File(Receivable):
     """
-    This object represents a file ready to be downloaded.
-    The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
-    It is guaranteed that the link will be valid for at least 1 hour.
-    When the link expires, a new one can be requested by calling getFile.
+    This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
 
     Maximum file size to download is 20 MB
 
@@ -2999,10 +2996,7 @@ class File(Receivable):
 
     def __init__(self, file_id, file_unique_id, file_size=None, file_path=None, _raw=None):
         """
-        This object represents a file ready to be downloaded.
-        The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>.
-        It is guaranteed that the link will be valid for at least 1 hour.
-        When the link expires, a new one can be requested by calling getFile.
+        This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
 
         Maximum file size to download is 20 MB
 
@@ -3328,6 +3322,9 @@ class Sticker(Media):
     :param is_animated: True, if the sticker is animated
     :type  is_animated: bool
 
+    :param is_video: True, if the sticker is a video sticker
+    :type  is_video: bool
+
 
     Optional keyword parameters:
 
@@ -3350,7 +3347,7 @@ class Sticker(Media):
     :type  _raw: None | dict
     """
 
-    def __init__(self, file_id, file_unique_id, width, height, is_animated, thumb=None, emoji=None, set_name=None, mask_position=None, file_size=None, _raw=None):
+    def __init__(self, file_id, file_unique_id, width, height, is_animated, is_video, thumb=None, emoji=None, set_name=None, mask_position=None, file_size=None, _raw=None):
         """
         This object represents a sticker.
 
@@ -3373,6 +3370,9 @@ class Sticker(Media):
 
         :param is_animated: True, if the sticker is animated
         :type  is_animated: bool
+
+        :param is_video: True, if the sticker is a video sticker
+        :type  is_video: bool
 
 
         Optional keyword parameters:
@@ -3407,6 +3407,8 @@ class Sticker(Media):
         self.height = height
         assert_type_or_raise(is_animated, bool, parameter_name="is_animated")
         self.is_animated = is_animated
+        assert_type_or_raise(is_video, bool, parameter_name="is_video")
+        self.is_video = is_video
         assert_type_or_raise(thumb, None, PhotoSize, parameter_name="thumb")
         self.thumb = thumb
         assert_type_or_raise(emoji, None, unicode_type, parameter_name="emoji")
@@ -3443,6 +3445,7 @@ class Sticker(Media):
         array['width'] = int(self.width)  # type int
         array['height'] = int(self.height)  # type int
         array['is_animated'] = bool(self.is_animated)  # type bool
+        array['is_video'] = bool(self.is_video)  # type bool
         if self.thumb is not None:
             array['thumb'] = self.thumb.to_array()  # type PhotoSize
         # end if
@@ -3477,6 +3480,7 @@ class Sticker(Media):
         data['width'] = int(array.get('width'))
         data['height'] = int(array.get('height'))
         data['is_animated'] = bool(array.get('is_animated'))
+        data['is_video'] = bool(array.get('is_video'))
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
         data['emoji'] = u(array.get('emoji')) if array.get('emoji') is not None else None
         data['set_name'] = u(array.get('set_name')) if array.get('set_name') is not None else None
@@ -3506,7 +3510,7 @@ class Sticker(Media):
         """
         Implements `str(sticker_instance)`
         """
-        return "Sticker(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
+        return "Sticker(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, is_video={self.is_video!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -3516,7 +3520,7 @@ class Sticker(Media):
         if self._raw:
             return "Sticker.from_array({self._raw})".format(self=self)
         # end if
-        return "Sticker(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
+        return "Sticker(file_id={self.file_id!r}, file_unique_id={self.file_unique_id!r}, width={self.width!r}, height={self.height!r}, is_animated={self.is_animated!r}, is_video={self.is_video!r}, thumb={self.thumb!r}, emoji={self.emoji!r}, set_name={self.set_name!r}, mask_position={self.mask_position!r}, file_size={self.file_size!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -3524,7 +3528,7 @@ class Sticker(Media):
         Implements `"key" in sticker_instance`
         """
         return (
-            key in ["file_id", "file_unique_id", "width", "height", "is_animated", "thumb", "emoji", "set_name", "mask_position", "file_size"]
+            key in ["file_id", "file_unique_id", "width", "height", "is_animated", "is_video", "thumb", "emoji", "set_name", "mask_position", "file_size"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

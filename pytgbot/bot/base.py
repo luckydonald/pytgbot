@@ -2403,7 +2403,7 @@ class BotBase(object):
 
         Parameters:
 
-        :param chat_id: Unique identifier for the target group or username of the target supergroup or channel (in the format @username)
+        :param chat_id: Unique identifier for the target group or username of the target supergroup or channel (in the format @channelusername)
         :type  chat_id: int | str|unicode
 
         :param user_id: Unique identifier of the target user
@@ -4480,7 +4480,7 @@ class BotBase(object):
         return result
     # end def _upload_sticker_file__process_result
 
-    def _create_new_sticker_set__make_request(self, user_id, name, title, emojis, png_sticker=None, tgs_sticker=None, contains_masks=None, mask_position=None):
+    def _create_new_sticker_set__make_request(self, user_id, name, title, emojis, png_sticker=None, tgs_sticker=None, webm_sticker=None, contains_masks=None, mask_position=None):
         """
         Internal function for making the request to the API's createNewStickerSet endpoint.
 
@@ -4505,8 +4505,11 @@ class BotBase(object):
         :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-        :param tgs_sticker: TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        :param tgs_sticker: TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/stickers#animated-sticker-requirements for technical requirements
         :type  tgs_sticker: pytgbot.api_types.sendable.files.InputFile
+
+        :param webm_sticker: WEBM video with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/stickers#video-sticker-requirements for technical requirements
+        :type  webm_sticker: pytgbot.api_types.sendable.files.InputFile
 
         :param contains_masks: Pass True, if a set of mask stickers should be created
         :type  contains_masks: bool
@@ -4526,9 +4529,10 @@ class BotBase(object):
         assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
         assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
         assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
+        assert_type_or_raise(webm_sticker, None, InputFile, parameter_name="webm_sticker")
         assert_type_or_raise(contains_masks, None, bool, parameter_name="contains_masks")
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
-        return self.do("createNewStickerSet", user_id=user_id, name=name, title=title, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, contains_masks=contains_masks, mask_position=mask_position)
+        return self.do("createNewStickerSet", user_id=user_id, name=name, title=title, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, webm_sticker=webm_sticker, contains_masks=contains_masks, mask_position=mask_position)
     # end def _create_new_sticker_set__make_request
 
     def _create_new_sticker_set__process_result(self, result):
@@ -4554,7 +4558,7 @@ class BotBase(object):
         return result
     # end def _create_new_sticker_set__process_result
 
-    def _add_sticker_to_set__make_request(self, user_id, name, emojis, png_sticker=None, tgs_sticker=None, mask_position=None):
+    def _add_sticker_to_set__make_request(self, user_id, name, emojis, png_sticker=None, tgs_sticker=None, webm_sticker=None, mask_position=None):
         """
         Internal function for making the request to the API's addStickerToSet endpoint.
 
@@ -4576,8 +4580,11 @@ class BotBase(object):
         :param png_sticker: PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         :type  png_sticker: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
-        :param tgs_sticker: TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        :param tgs_sticker: TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/stickers#animated-sticker-requirements for technical requirements
         :type  tgs_sticker: pytgbot.api_types.sendable.files.InputFile
+
+        :param webm_sticker: WEBM video with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/stickers#video-sticker-requirements for technical requirements
+        :type  webm_sticker: pytgbot.api_types.sendable.files.InputFile
 
         :param mask_position: A JSON-serialized object for position where the mask should be placed on faces
         :type  mask_position: pytgbot.api_types.receivable.stickers.MaskPosition
@@ -4593,8 +4600,9 @@ class BotBase(object):
         assert_type_or_raise(emojis, unicode_type, parameter_name="emojis")
         assert_type_or_raise(png_sticker, None, (InputFile, unicode_type), parameter_name="png_sticker")
         assert_type_or_raise(tgs_sticker, None, InputFile, parameter_name="tgs_sticker")
+        assert_type_or_raise(webm_sticker, None, InputFile, parameter_name="webm_sticker")
         assert_type_or_raise(mask_position, None, MaskPosition, parameter_name="mask_position")
-        return self.do("addStickerToSet", user_id=user_id, name=name, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, mask_position=mask_position)
+        return self.do("addStickerToSet", user_id=user_id, name=name, emojis=emojis, png_sticker=png_sticker, tgs_sticker=tgs_sticker, webm_sticker=webm_sticker, mask_position=mask_position)
     # end def _add_sticker_to_set__make_request
 
     def _add_sticker_to_set__process_result(self, result):
@@ -4724,7 +4732,7 @@ class BotBase(object):
 
         Optional keyword parameters:
 
-        :param thumb: A PNG image with the thumbnail, must be up to 128 kilobytes in size and have width and height exactly 100px, or a TGS animation with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/animated_stickers#technical-requirements for animated sticker technical requirements. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files ». Animated sticker set thumbnail can't be uploaded via HTTP URL.
+        :param thumb: A PNG image with the thumbnail, must be up to 128 kilobytes in size and have width and height exactly 100px, or a TGS animation with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/stickers#animated-sticker-requirements for animated sticker technical requirements, or a WEBM video with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/stickers#video-sticker-requirements for video sticker technical requirements. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files ». Animated sticker set thumbnails can't be uploaded via HTTP URL.
         :type  thumb: pytgbot.api_types.sendable.files.InputFile | str|unicode
 
         :return: the decoded json

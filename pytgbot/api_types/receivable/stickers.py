@@ -28,6 +28,9 @@ class StickerSet(Result):
     :param is_animated: True, if the sticker set contains animated stickers
     :type  is_animated: bool
 
+    :param is_video: True, if the sticker set contains video stickers
+    :type  is_video: bool
+
     :param contains_masks: True, if the sticker set contains masks
     :type  contains_masks: bool
 
@@ -37,14 +40,14 @@ class StickerSet(Result):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format.
+    :param thumb: Optional. Sticker set thumbnail in the .WEBP, .TGS, or .WEBM format.
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
     :type  _raw: None | dict
     """
 
-    def __init__(self, name, title, is_animated, contains_masks, stickers, thumb=None, _raw=None):
+    def __init__(self, name, title, is_animated, is_video, contains_masks, stickers, thumb=None, _raw=None):
         """
         This object represents a sticker set.
 
@@ -62,6 +65,9 @@ class StickerSet(Result):
         :param is_animated: True, if the sticker set contains animated stickers
         :type  is_animated: bool
 
+        :param is_video: True, if the sticker set contains video stickers
+        :type  is_video: bool
+
         :param contains_masks: True, if the sticker set contains masks
         :type  contains_masks: bool
 
@@ -71,7 +77,7 @@ class StickerSet(Result):
 
         Optional keyword parameters:
 
-        :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format.
+        :param thumb: Optional. Sticker set thumbnail in the .WEBP, .TGS, or .WEBM format.
         :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
         :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -86,6 +92,8 @@ class StickerSet(Result):
         self.title = title
         assert_type_or_raise(is_animated, bool, parameter_name="is_animated")
         self.is_animated = is_animated
+        assert_type_or_raise(is_video, bool, parameter_name="is_video")
+        self.is_video = is_video
         assert_type_or_raise(contains_masks, bool, parameter_name="contains_masks")
         self.contains_masks = contains_masks
         assert_type_or_raise(stickers, list, parameter_name="stickers")
@@ -117,6 +125,7 @@ class StickerSet(Result):
         array['name'] = u(self.name)  # py2: type unicode, py3: type str
         array['title'] = u(self.title)  # py2: type unicode, py3: type str
         array['is_animated'] = bool(self.is_animated)  # type bool
+        array['is_video'] = bool(self.is_video)  # type bool
         array['contains_masks'] = bool(self.contains_masks)  # type bool
         array['stickers'] = self._as_array(self.stickers)  # type list of Sticker
         if self.thumb is not None:
@@ -140,6 +149,7 @@ class StickerSet(Result):
         data['name'] = u(array.get('name'))
         data['title'] = u(array.get('title'))
         data['is_animated'] = bool(array.get('is_animated'))
+        data['is_video'] = bool(array.get('is_video'))
         data['contains_masks'] = bool(array.get('contains_masks'))
         data['stickers'] = Sticker.from_array_list(array.get('stickers'), list_level=1)
         data['thumb'] = PhotoSize.from_array(array.get('thumb')) if array.get('thumb') is not None else None
@@ -167,7 +177,7 @@ class StickerSet(Result):
         """
         Implements `str(stickerset_instance)`
         """
-        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r}, thumb={self.thumb!r})".format(self=self)
+        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, is_video={self.is_video!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r}, thumb={self.thumb!r})".format(self=self)
     # end def __str__
 
     def __repr__(self):
@@ -177,7 +187,7 @@ class StickerSet(Result):
         if self._raw:
             return "StickerSet.from_array({self._raw})".format(self=self)
         # end if
-        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r}, thumb={self.thumb!r})".format(self=self)
+        return "StickerSet(name={self.name!r}, title={self.title!r}, is_animated={self.is_animated!r}, is_video={self.is_video!r}, contains_masks={self.contains_masks!r}, stickers={self.stickers!r}, thumb={self.thumb!r})".format(self=self)
     # end def __repr__
 
     def __contains__(self, key):
@@ -185,7 +195,7 @@ class StickerSet(Result):
         Implements `"key" in stickerset_instance`
         """
         return (
-            key in ["name", "title", "is_animated", "contains_masks", "stickers", "thumb"]
+            key in ["name", "title", "is_animated", "is_video", "contains_masks", "stickers", "thumb"]
             and hasattr(self, key)
             and bool(getattr(self, key, None))
         )

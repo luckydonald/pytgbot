@@ -764,6 +764,9 @@ class Sticker(Media):
     :param is_animated: True, if the sticker is animated
     :type  is_animated: bool
 
+    :param is_video: True, if the sticker is a video sticker
+    :type  is_video: bool
+
 
     Optional keyword parameters:
 
@@ -790,6 +793,7 @@ class Sticker(Media):
     width: int
     height: int
     is_animated: bool
+    is_video: bool
     thumb: PhotoSize
     emoji: str
     set_name: str

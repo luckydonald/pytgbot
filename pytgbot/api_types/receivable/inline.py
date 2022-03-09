@@ -227,7 +227,7 @@ class ChosenInlineResult(UpdateType):
 
     :param inline_message_id: Optional. Identifier of the sent inline message.
                               Available only if there is an inline keyboard attached to the message.
-                              Will be also received in callback queries and can be used to edit the message..
+                              Will be also received in callback queries and can be used to edit the message.
     :type  inline_message_id: str|unicode
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.

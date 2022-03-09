@@ -25,6 +25,9 @@ class StickerSet(Result):
     :param is_animated: True, if the sticker set contains animated stickers
     :type  is_animated: bool
 
+    :param is_video: True, if the sticker set contains video stickers
+    :type  is_video: bool
+
     :param contains_masks: True, if the sticker set contains masks
     :type  contains_masks: bool
 
@@ -34,7 +37,7 @@ class StickerSet(Result):
 
     Optional keyword parameters:
 
-    :param thumb: Optional. Sticker set thumbnail in the .WEBP or .TGS format
+    :param thumb: Optional. Sticker set thumbnail in the .WEBP, .TGS, or .WEBM format
     :type  thumb: pytgbot.api_types.receivable.media.PhotoSize
 
     :param _raw: Optional. Original data this object was generated from. Could be `None`.
@@ -43,6 +46,7 @@ class StickerSet(Result):
     name: str
     title: str
     is_animated: bool
+    is_video: bool
     contains_masks: bool
     stickers: List[Sticker]
     thumb: PhotoSize
